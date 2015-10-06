@@ -52,8 +52,9 @@ QMAKE_CXXFLAGS_WARN_ON += -Wno-unused-parameter
 
 TEMPLATE = app
 
-SOURCES += main.cpp\
-        mainwindow.cpp
+SOURCES += main.cpp \
+    MainWindow.cpp
 
-HEADERS  += mainwindow.h \
-    glVariables.h
+HEADERS  += \
+    glVariables.h \
+    MainWindow.h

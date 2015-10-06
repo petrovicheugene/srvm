@@ -1,5 +1,6 @@
 //==========================================================
-#include "mainwindow.h"
+#include "MainWindow.h"
+#include "glVariables.h"
 //==========================================================
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
