@@ -4,8 +4,8 @@
 //================================
 #include <QString>
 
-#define DEBUG
-#ifdef DEBUG
+#define DBG
+#ifdef DBG
 #include <QDebug>
 #endif
 

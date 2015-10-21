@@ -11,7 +11,7 @@ greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
 #PRO VARS
 #Application version
-#RC_ICONS = "CMLogo.ico"
+RC_ICONS = "SDC.ico"
 
 VER_MAJ=0
 VER_MIN=0
@@ -52,9 +52,64 @@ QMAKE_CXXFLAGS_WARN_ON += -Wno-unused-parameter
 
 TEMPLATE = app
 
-SOURCES += main.cpp \
-    MainWindow.cpp
+INCLUDEPATH += ZPlotter \
+    ZModels \
+    ZModelViews
 
-HEADERS  += \
-    glVariables.h \
-    MainWindow.h
+SOURCES += main.cpp \
+    MainWindow.cpp \
+    ZSpectrumArray.cpp \
+    ZAbstractArrayIOHandler.cpp \
+    ZXMLArrayIOHandler.cpp \
+    ZFileActionManager.cpp \
+    ZAbstractSpectrumIOHandler.cpp \
+    ZSpeIOHandler.cpp \
+    ZSpeSpectrum.cpp \
+    ZAbstractSpectrumAuxData.cpp \
+    ZAbstractSpectrum.cpp \
+    ZSpeAuxData.cpp \
+    ZModels/ZArrayModel.cpp \
+    ZWidgetWithSidebar.cpp \
+    ZModelViews/ZSpectrumArrayWidget.cpp \
+    ZModelViews/ZSpectrumTableWidget.cpp \
+    ZModelViews/ZCalibrationTableWidget.cpp \
+    ZModelViews/ZChemElementWidget.cpp \
+    ZClickableLabel.cpp \
+    ZMessagePanel.cpp \
+    ZHelpBrowser.cpp \
+    ZPlotter/ZPlotter.cpp \
+    ZModels/ZChemElementModel.cpp \
+    ZModels/ZCalibrationModel.cpp \
+    ZModels/ZJointSpectraModel.cpp \
+
+
+HEADERS  += glVariables.h \
+    MainWindow.h \
+    ZSpectrumArray.h \
+    ZAbstractArrayIOHandler.h \
+    ZXMLArrayIOHandler.h \
+    ZFileActionManager.h \
+    ZAbstractSpectrumIOHandler.h \
+    ZSpeIOHandler.h \
+    ZSpeSpectrum.h \
+    ZAbstractSpectrumAuxData.h \
+    ZAbstractSpectrum.h \
+    ZSpeAuxData.h \
+    ZRawArray.h \
+    ZModels/ZArrayModel.h \
+    ZModelViews/ZWidgetWithSidebar.h \
+    ZModelViews/ZSpectrumArrayWidget.h \
+    ZModelViews/ZSpectrumTableWidget.h \
+    ZModelViews/ZCalibrationTableWidget.h \
+    ZModelViews/ZChemElementWidget.h \
+    ZClickableLabel.h \
+    ZMessagePanel.h \
+    ZHelpBrowser.h \
+    ZPlotter/ZPlotter.h \
+    ZModels/ZChemElementModel.h \
+    ZModels/ZCalibrationModel.h \
+    ZModels/ZJointSpectraModel.h \
+
+
+RESOURCES += \
+    resources.qrc

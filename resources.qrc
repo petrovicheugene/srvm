@@ -1,0 +1,8 @@
+<RCC>
+    <qresource prefix="/images">
+        <file>SDC.ico</file>
+        <file>sidebarBlueClose.png</file>
+        <file>sidebarBlueOpen.png</file>
+        <file>editclear.png</file>
+    </qresource>
+</RCC>
