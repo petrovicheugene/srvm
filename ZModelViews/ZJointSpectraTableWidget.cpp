@@ -1,9 +1,9 @@
 //=============================================================
-#include "ZSpectrumTableWidget.h"
+#include "ZJointSpectraTableWidget.h"
 #include <QTableView>
 #include <QHBoxLayout>
 #include <QVBoxLayout>
-
+#include <QAbstractItemModel>
 //=============================================================
 ZSpectrumTableWidget::ZSpectrumTableWidget(QWidget *parent) : QWidget(parent)
 {
@@ -20,3 +20,8 @@ void ZSpectrumTableWidget::zh_createComponents()
 
 }
 //=============================================================
+void ZSpectrumTableWidget::zp_setModel(QAbstractItemModel* model)
+{
+
+}
+//==============================================================

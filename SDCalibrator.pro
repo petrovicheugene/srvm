@@ -54,61 +54,63 @@ TEMPLATE = app
 
 INCLUDEPATH += ZPlotter \
     ZModels \
-    ZModelViews
+    ZModelViews \
+    ZWidgets \
+    ZComponents
 
 SOURCES += main.cpp \
     MainWindow.cpp \
-    ZSpectrumArray.cpp \
-    ZAbstractArrayIOHandler.cpp \
-    ZXMLArrayIOHandler.cpp \
-    ZFileActionManager.cpp \
-    ZAbstractSpectrumIOHandler.cpp \
-    ZSpeIOHandler.cpp \
-    ZSpeSpectrum.cpp \
-    ZAbstractSpectrumAuxData.cpp \
-    ZAbstractSpectrum.cpp \
-    ZSpeAuxData.cpp \
+    ZComponents/ZSpectrumArray.cpp \
+    ZComponents/ZAbstractArrayIOHandler.cpp \
+    ZComponents/ZXMLArrayIOHandler.cpp \
+    ZComponents/ZFileActionManager.cpp \
+    ZComponents/ZAbstractSpectrumIOHandler.cpp \
+    ZComponents/ZSpeIOHandler.cpp \
+    ZComponents/ZSpeSpectrum.cpp \
+    ZComponents/ZAbstractSpectrumAuxData.cpp \
+    ZComponents/ZAbstractSpectrum.cpp \
+    ZComponents/ZSpeAuxData.cpp \
     ZModels/ZArrayModel.cpp \
-    ZWidgetWithSidebar.cpp \
-    ZModelViews/ZSpectrumArrayWidget.cpp \
-    ZModelViews/ZSpectrumTableWidget.cpp \
-    ZModelViews/ZCalibrationTableWidget.cpp \
-    ZModelViews/ZChemElementWidget.cpp \
-    ZClickableLabel.cpp \
-    ZMessagePanel.cpp \
-    ZHelpBrowser.cpp \
-    ZPlotter/ZPlotter.cpp \
     ZModels/ZChemElementModel.cpp \
     ZModels/ZCalibrationModel.cpp \
     ZModels/ZJointSpectraModel.cpp \
+    ZModelViews/ZSpectrumArrayWidget.cpp \
+    ZModelViews/ZCalibrationTableWidget.cpp \
+    ZModelViews/ZChemElementWidget.cpp \
+    ZModelViews/ZJointSpectraTableWidget.cpp \
+    ZWidgets/ZClickableLabel.cpp \
+    ZWidgets/ZMessagePanel.cpp \
+    ZWidgets/ZHelpBrowser.cpp \
+    ZWidgets/ZWidgetWithSidebar.cpp \
+    ZPlotter/ZPlotter.cpp
 
 
 HEADERS  += glVariables.h \
     MainWindow.h \
-    ZSpectrumArray.h \
-    ZAbstractArrayIOHandler.h \
-    ZXMLArrayIOHandler.h \
-    ZFileActionManager.h \
-    ZAbstractSpectrumIOHandler.h \
-    ZSpeIOHandler.h \
-    ZSpeSpectrum.h \
-    ZAbstractSpectrumAuxData.h \
-    ZAbstractSpectrum.h \
-    ZSpeAuxData.h \
-    ZRawArray.h \
+    ZComponents/ZSpectrumArray.h \
+    ZComponents/ZAbstractArrayIOHandler.h \
+    ZComponents/ZXMLArrayIOHandler.h \
+    ZComponents/ZFileActionManager.h \
+    ZComponents/ZAbstractSpectrumIOHandler.h \
+    ZComponents/ZSpeIOHandler.h \
+    ZComponents/ZSpeSpectrum.h \
+    ZComponents/ZAbstractSpectrumAuxData.h \
+    ZComponents/ZAbstractSpectrum.h \
+    ZComponents/ZSpeAuxData.h \
+    ZComponents/ZRawArray.h \
     ZModels/ZArrayModel.h \
-    ZModelViews/ZWidgetWithSidebar.h \
-    ZModelViews/ZSpectrumArrayWidget.h \
-    ZModelViews/ZSpectrumTableWidget.h \
-    ZModelViews/ZCalibrationTableWidget.h \
-    ZModelViews/ZChemElementWidget.h \
-    ZClickableLabel.h \
-    ZMessagePanel.h \
-    ZHelpBrowser.h \
-    ZPlotter/ZPlotter.h \
     ZModels/ZChemElementModel.h \
     ZModels/ZCalibrationModel.h \
     ZModels/ZJointSpectraModel.h \
+    ZModelViews/ZSpectrumArrayWidget.h \
+    ZModelViews/ZCalibrationTableWidget.h \
+    ZModelViews/ZChemElementWidget.h \
+    ZModelViews/ZJointSpectraTableWidget.h \
+    ZWidgets/ZClickableLabel.h \
+    ZWidgets/ZMessagePanel.h \
+    ZWidgets/ZHelpBrowser.h \
+    ZWidgets/ZWidgetWithSidebar.h \
+    ZPlotter/ZPlotter.h \
 
 
 RESOURCES += \

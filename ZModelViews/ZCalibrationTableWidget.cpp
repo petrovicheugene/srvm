@@ -3,6 +3,7 @@
 #include <QTableView>
 #include <QHBoxLayout>
 #include <QVBoxLayout>
+#include <QAbstractItemModel>
 
 //==============================================================
 ZCalibrationTableWidget::ZCalibrationTableWidget(QWidget *parent) : QWidget(parent)
@@ -17,6 +18,11 @@ void ZCalibrationTableWidget::zh_createComponents()
 
     zv_table = new QTableView(this);
     mainLayout->addWidget(zv_table);
+
+}
+//==============================================================
+void ZCalibrationTableWidget::zp_setModel(QAbstractItemModel* model)
+{
 
 }
 //==============================================================

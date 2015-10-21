@@ -5,7 +5,7 @@
 #include <QWidget>
 //=============================================================
 class QTableView;
-
+class QAbstractItemModel;
 //=============================================================
 class ZSpectrumTableWidget : public QWidget
 {
@@ -13,6 +13,8 @@ class ZSpectrumTableWidget : public QWidget
 public:
     explicit ZSpectrumTableWidget(QWidget *parent = 0);
 
+    // FUNCS
+   void zp_setModel(QAbstractItemModel* model);
 
 signals:
 

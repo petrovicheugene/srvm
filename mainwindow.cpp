@@ -3,12 +3,18 @@
 #include "glVariables.h"
 #include "ZFileActionManager.h"
 #include "ZWidgetWithSidebar.h"
+// views
 #include "ZSpectrumArrayWidget.h"
-#include "ZSpectrumTableWidget.h"
+#include "ZJointSpectraTableWidget.h"
 #include "ZChemElementWidget.h"
 #include "ZCalibrationTableWidget.h"
 #include "ZPlotter.h"
 #include "ZMessagePanel.h"
+// models
+#include "ZArrayModel.h"
+#include "ZCalibrationModel.h"
+#include "ZChemElementModel.h"
+#include "ZJointSpectraModel.h"
 
 #include <QMessageBox>
 #include <QCloseEvent>
@@ -187,7 +193,8 @@ void MainWindow::zh_createConnections()
             zv_calibrationSidebarWidget, &ZWidgetWithSidebar::zp_saveSettings);
 
     // model<->views
-    zv_spectrumArrayWidget->zp_setModel();
+    zv_spectrumArrayWidget->zp_setModel(zv_arrayModel);
+    zv_spectrumTableWidget->zp_setModel(zv_jointSpectraModel);
 
 
 }

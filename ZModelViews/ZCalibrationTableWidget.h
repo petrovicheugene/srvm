@@ -5,12 +5,17 @@
 #include <QWidget>
 //==============================================================
 class QTableView;
+class QAbstractItemModel;
 //==============================================================
 class ZCalibrationTableWidget : public QWidget
 {
     Q_OBJECT
 public:
     explicit ZCalibrationTableWidget(QWidget *parent = 0);
+
+     // FUNCS
+    void zp_setModel(QAbstractItemModel* model);
+
 
 signals:
 

@@ -1,16 +1,16 @@
 //===========================================================
-#ifndef ZSPECTRAMODEL_H
-#define ZSPECTRAMODEL_H
+#ifndef ZJOINTSPECTRAMODEL_H
+#define ZJOINTSPECTRAMODEL_H
 //===========================================================
 #include <QAbstractTableModel>
 //===========================================================
 
 //===========================================================
-class ZSpectraModel : public QAbstractTableModel
+class ZJointSpectraModel : public QAbstractTableModel
 {
     Q_OBJECT
 public:
-    explicit ZSpectraModel(QObject *parent = 0);
+    explicit ZJointSpectraModel(QObject *parent = 0);
 
     virtual Qt::ItemFlags	flags(const QModelIndex & index) const;
     virtual int	columnCount(const QModelIndex & parent = QModelIndex()) const;
@@ -25,4 +25,4 @@ signals:
 public slots:
 };
 //===========================================================
-#endif // ZSPECTRAMODEL_H
+#endif // ZJOINTSPECTRAMODEL_H

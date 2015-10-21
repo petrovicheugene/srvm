@@ -64,10 +64,10 @@ private:
     ZPlotter* zv_plotter;
 
     // models
-    ZArrayModel zv_arrayModel;
-    ZJointSpectraModel zv_jointSpectraModel;
-    ZChemElementModel zv_chemElementModel;
-    ZCalibrationModel zv_calibrationModel;
+    ZArrayModel* zv_arrayModel;
+    ZJointSpectraModel* zv_jointSpectraModel;
+    ZChemElementModel* zv_chemElementModel;
+    ZCalibrationModel* zv_calibrationModel;
 
     // components
     ZFileActionManager* zv_fileActionManager;

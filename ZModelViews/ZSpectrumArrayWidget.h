@@ -5,12 +5,17 @@
 #include <QWidget>
 //==============================================================
 class QTableView;
+class QAbstractItemModel;
+
 //==============================================================
 class ZSpectrumArrayWidget : public QWidget
 {
     Q_OBJECT
 public:
     explicit ZSpectrumArrayWidget(QWidget *parent = 0);
+
+    // FUNCS
+   void zp_setModel(QAbstractItemModel* model);
 
 signals:
 
