@@ -1,10 +1,14 @@
 //==============================================================
 #include "ZSpectrumArrayWidget.h"
+#include "glVariables.h"
+
 #include <QTableView>
 #include <QHBoxLayout>
 #include <QVBoxLayout>
 #include <QAbstractItemModel>
 #include <QHeaderView>
+#include <QAction>
+#include <QPushButton>
 //==============================================================
 ZSpectrumArrayWidget::ZSpectrumArrayWidget(QWidget *parent) : QWidget(parent)
 {
@@ -18,7 +22,10 @@ void ZSpectrumArrayWidget::zh_createComponents()
     setLayout(mainLayout);
 
     zv_table = new QTableView(this);
-    mainLayout->addWidget(zv_table);
+    mainLayout->addWidget(zv_table, INT_MAX);
+
+    zv_buttonLayout = new QHBoxLayout(this);
+    mainLayout->addLayout(zv_buttonLayout);
 
 }
 //==============================================================
@@ -28,6 +35,47 @@ void ZSpectrumArrayWidget::zp_setModel(QAbstractItemModel* model)
     zv_table->horizontalHeader()->setSectionResizeMode(0, QHeaderView::Stretch);
     connect(zv_table->selectionModel(), &QItemSelectionModel::currentRowChanged,
             this, &ZSpectrumArrayWidget::zh_onCurrentArrayChanged);
+}
+//==============================================================
+void ZSpectrumArrayWidget::zp_appendButtonActions(QList<QAction*> actionList)
+{
+    zv_buttonLayout->addStretch();
+    for(int a = 0; a < actionList.count(); a++)
+    {
+        QPushButton* button = new QPushButton(this);
+        button->setFlat(true);
+        button->setIcon(actionList.at(a)->icon());
+        button->setToolTip(actionList.at(a)->toolTip());
+        connect(button, &QPushButton::clicked,
+                actionList[a], &QAction::trigger);
+        zv_buttonLayout->addWidget(button);
+    }
+}
+//==============================================================
+void ZSpectrumArrayWidget::zp_setCurrentArrayIndex(int arrayIndex)
+{
+    if(!zv_table->model())
+    {
+        return;
+    }
+
+    QModelIndex index = zv_table->model()->index(arrayIndex, 0, QModelIndex());
+    if(index.isValid())
+    {
+        zv_table->setCurrentIndex(index);
+    }
+}
+//==============================================================
+void ZSpectrumArrayWidget::zp_currentArrayIndex(int& arrayIndex)
+{
+    QModelIndex currentIndex = zv_table->currentIndex();
+    if(!currentIndex.isValid())
+    {
+        arrayIndex = -1;
+        return;
+    }
+
+    arrayIndex = currentIndex.row();
 }
 //==============================================================
 void ZSpectrumArrayWidget::zh_createConnections()

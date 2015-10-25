@@ -3,7 +3,7 @@
 #define GLVARIABLES_H
 //================================
 #include <QString>
-
+#include <limits.h>
 #define DBG
 #ifdef DBG
 #include <QDebug>

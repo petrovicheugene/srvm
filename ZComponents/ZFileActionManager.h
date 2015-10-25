@@ -40,7 +40,7 @@ private:
     QAction* zv_saveCalibrationToFileAction;
     QAction* zv_saveCalibrationAsFileAction;
 
-    QAction* zv_loadSpectrumFromFileAction;
+    //QAction* zv_loadSpectrumFromFileAction;
 
     QString zv_arrayFilePath;
 
@@ -63,7 +63,7 @@ private slots:
     void zh_onOpenCalibrationAction() const;
     void zh_onSaveCalibrationAction() const;
     void zh_onSaveCalibrationAsAction() const;
-    void zh_onOpenSpectraAction() const;
+    // void zh_onOpenSpectraAction() const;
 
 };
 //======================================================

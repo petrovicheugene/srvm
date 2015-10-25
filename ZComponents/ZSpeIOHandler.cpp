@@ -76,9 +76,9 @@ bool ZSpeIOHandler::zp_getSpectrumFromFile(QFile& file, ZAbstractSpectrum*& spec
             intensityList.append(intensity);
         }
 
-#ifdef DBG
-        qDebug() << "LN"<< lineNumber << line;
-#endif
+//#ifdef DBG
+//        qDebug() << "LN"<< lineNumber << line;
+//#endif
         lineNumber++;
     }
 

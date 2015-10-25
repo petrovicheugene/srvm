@@ -35,10 +35,8 @@ void ZFileActionManager::zp_appendActionsToMenu(QMenu* menu) const
         menu->addAction(zv_saveCalibrationAsFileAction);
         menu->addSeparator();
 
-        menu->addAction(zv_loadSpectrumFromFileAction);
-        menu->addSeparator();
     }
-}
+ }
 //======================================================
 QList<QAction*> ZFileActionManager::zp_actionList() const
 {
@@ -52,22 +50,22 @@ QList<QAction*> ZFileActionManager::zp_actionList() const
     actionList <<  zv_saveCalibrationToFileAction;
     actionList <<  zv_saveCalibrationAsFileAction;
 
-    actionList <<  zv_loadSpectrumFromFileAction;
+    // actionList <<  zv_loadSpectrumFromFileAction;
 
     return actionList;
 }
 //======================================================
 void ZFileActionManager::zh_createActions()
 {
-    zv_openArrayFromFileAction = new QAction(QIcon(":/images/document-open.png"), tr("&Open array"), this);
-    zv_saveArrayToFileAction = new QAction(QIcon(":/images/document-open.png"), tr("&Save array"), this);
-    zv_saveArrayAsFileAction = new QAction(QIcon(":/images/document-open.png"), tr("Save array &as..."), this);
+    zv_openArrayFromFileAction = new QAction(QIcon(":/images/document-open.png"), tr("&Open array list"), this);
+    zv_saveArrayToFileAction = new QAction(QIcon(":/images/document-open.png"), tr("&Save array list"), this);
+    zv_saveArrayAsFileAction = new QAction(QIcon(":/images/document-open.png"), tr("Save array list &as..."), this);
 
-    zv_openCalibrationFromFileAction = new QAction(QIcon(":/images/document-open.png"), tr("Open calibration"), this);
-    zv_saveCalibrationToFileAction = new QAction(QIcon(":/images/document-open.png"), tr("Save calibration"), this);
-    zv_saveCalibrationAsFileAction = new QAction(QIcon(":/images/document-open.png"), tr("Save calibration as..."), this);
+    zv_openCalibrationFromFileAction = new QAction(QIcon(":/images/document-open.png"), tr("Open calibration list"), this);
+    zv_saveCalibrationToFileAction = new QAction(QIcon(":/images/document-open.png"), tr("Save calibration list"), this);
+    zv_saveCalibrationAsFileAction = new QAction(QIcon(":/images/document-open.png"), tr("Save calibration list as..."), this);
 
-    zv_loadSpectrumFromFileAction = new QAction(QIcon(":/images/document-open.png"), tr("Append &spectra to array"), this);
+    // zv_loadSpectrumFromFileAction = new QAction(QIcon(":/images/document-open.png"), tr("Append &spectra to array"), this);
 }
 //======================================================
 void ZFileActionManager::zh_createConnections()
@@ -86,8 +84,8 @@ void ZFileActionManager::zh_createConnections()
     connect(zv_saveCalibrationAsFileAction, &QAction::triggered,
             this, &ZFileActionManager::zh_onSaveCalibrationAsAction);
 
-    connect(zv_loadSpectrumFromFileAction, &QAction::triggered,
-            this, &ZFileActionManager::zh_onOpenSpectraAction);
+//    connect(zv_loadSpectrumFromFileAction, &QAction::triggered,
+//            this, &ZFileActionManager::zh_onOpenSpectraAction);
 }
 //======================================================
 bool ZFileActionManager::zh_defineArrayFileName(QString& fileName) const
@@ -463,8 +461,8 @@ void ZFileActionManager::zh_onSaveCalibrationAsAction() const
 
 }
 //======================================================
-void ZFileActionManager::zh_onOpenSpectraAction() const
-{
+//void ZFileActionManager::zh_onOpenSpectraAction() const
+//{
 
-}
-//======================================================
+//}
+////======================================================

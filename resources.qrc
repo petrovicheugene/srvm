@@ -5,5 +5,10 @@
         <file>ZWidgets/sidebarBlueClose.png</file>
         <file>ZWidgets/sidebarBlueOpen.png</file>
         <file>SDC1.ico</file>
+        <file>addGreen.png</file>
+        <file>document-save.png</file>
+        <file>document-save-as.png</file>
+        <file>edit.png</file>
+        <file>trashBasket.png</file>
     </qresource>
 </RCC>

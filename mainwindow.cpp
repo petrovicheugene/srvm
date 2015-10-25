@@ -170,6 +170,13 @@ void MainWindow::zh_createMenu()
     zv_fileActionManager->zp_appendActionsToMenu(menu);
     zh_appendActionsToMenu(menu);
 
+    // Edit
+    menu = menuBar()->addMenu(tr("Edit"));
+    // menu->setCursor(Qt::PointingHandCursor);
+    menu->setObjectName("Edit");
+    zv_spectraArrayRepository->zp_appendActionsToMenu(menu);
+    zh_appendActionsToMenu(menu);
+
     // View
     menu = menuBar()->addMenu(tr("View"));
     // menu->setCursor(Qt::PointingHandCursor);
@@ -228,10 +235,15 @@ void MainWindow::zh_createConnections()
     zv_jointSpectraDataManager->zp_setSpectraArrayRepository(zv_spectraArrayRepository);
     zv_jointSpectraModel->zp_setDataManager(zv_jointSpectraDataManager);
 
-
     // repository <-> array view
+    zv_spectrumArrayWidget->zp_appendButtonActions(zv_spectraArrayRepository->zp_arrayActions());
+    zv_spectrumTableWidget->zp_appendButtonActions(zv_spectraArrayRepository->zp_spectrumActions());
     connect(zv_spectraArrayRepository, &ZSpectraArrayRepository::zg_currentFile,
             zv_spectraSidebarWidget, &ZWidgetWithSidebar::zp_setInfoLabelText);
+    connect(zv_spectraArrayRepository, &ZSpectraArrayRepository::zg_setCurrentArrayIndex,
+            zv_spectrumArrayWidget, &ZSpectrumArrayWidget::zp_setCurrentArrayIndex);
+    connect(zv_spectraArrayRepository, &ZSpectraArrayRepository::zg_requestCurrentArrayIndex,
+            zv_spectrumArrayWidget, &ZSpectrumArrayWidget::zp_currentArrayIndex);
 
 }
 //==========================================================

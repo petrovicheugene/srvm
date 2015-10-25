@@ -1,13 +1,47 @@
 //==================================================================
 #include "ZSpectraArrayRepository.h"
+#include "glVariables.h"
 #include <QMessageBox>
+
 //==================================================================
 ZSpectraArrayRepository::ZSpectraArrayRepository(QObject *parent) : QObject(parent)
 {
     zv_path = QString();
+    zv_dirty = false;
+    zh_createActions();
+    zh_createConnections();
 }
 //==================================================================
-bool ZSpectraArrayRepository::zp_isEmpty()
+void ZSpectraArrayRepository::zp_appendActionsToMenu(QMenu* menu) const
+{
+    if(menu->objectName() == "Edit")
+    {
+        menu->addAction(zv_appendArrayAction);
+        menu->addAction(zv_removeArrayAction);
+        menu->addSeparator();
+        menu->addAction(zv_appendSpectrumToArrayAction);
+        menu->addAction(zv_removeSpectrumFromArrayAction);
+        menu->addSeparator();
+    }
+}
+//==================================================================
+QList<QAction*> ZSpectraArrayRepository::zp_arrayActions() const
+{
+    QList<QAction*> actionList;
+    actionList << zv_appendArrayAction;
+    actionList << zv_removeArrayAction;
+    return actionList;
+}
+//==================================================================
+QList<QAction*> ZSpectraArrayRepository::zp_spectrumActions() const
+{
+    QList<QAction*> actionList;
+    actionList << zv_appendSpectrumToArrayAction;
+    actionList << zv_removeSpectrumFromArrayAction;
+    return actionList;
+}
+//==================================================================
+bool ZSpectraArrayRepository::zp_isEmpty() const
 {
     return zv_arrayList.isEmpty();
 }
@@ -144,6 +178,26 @@ void ZSpectraArrayRepository::zp_createArray(const ZRawArray& rawArray)
 
 }
 //==================================================================
+void ZSpectraArrayRepository::zh_removeArray(int arrayIndex)
+{
+    int nextCurrentIndex;
+    if(arrayIndex == zv_arrayList.count() - 1 && zv_arrayList.count() > 1)
+    {
+        nextCurrentIndex = zv_arrayList.count() - 2;
+    }
+    else
+    {
+        nextCurrentIndex = arrayIndex;
+    }
+
+    emit zg_currentOperation(OT_REMOVE_ARRAYS, arrayIndex, arrayIndex);
+
+    delete zv_arrayList.takeAt(arrayIndex);
+
+    emit zg_currentOperation(OT_END_REMOVE_ARRAYS, -1, -1);
+    emit zg_setCurrentArrayIndex(nextCurrentIndex);
+}
+//==================================================================
 void ZSpectraArrayRepository::zp_getArrayCount(int& arrayCount) const
 {
     arrayCount = zv_arrayList.count();
@@ -188,3 +242,88 @@ void ZSpectraArrayRepository::zp_getSpectrumName(int arrayIndex, int spectrumInd
     spectrumName = zv_arrayList.value(arrayIndex)->zp_spectrumFileName(spectrumIndex);
 }
 //==================================================================
+void ZSpectraArrayRepository::zh_onAppendArrayAction()
+{
+#ifdef DBG
+    qDebug() << "APPEND ARRAY";
+#endif
+
+    ZRawArray rawArray;
+    rawArray.name = tr("Array #")+QString::number(zv_arrayList.count() + 1);
+    zp_createArray(rawArray);
+    zv_dirty = true;
+    emit zg_currentFile(zv_dirty, zv_path);
+    emit zg_setCurrentArrayIndex(zv_arrayList.count() - 1);
+}
+//==================================================================
+void ZSpectraArrayRepository::zh_onRemoveArrayAction()
+{
+#ifdef DBG
+    qDebug() << "REMOVE ARRAY";
+#endif
+    int currentArrayIndex = -1;
+    emit zg_requestCurrentArrayIndex(currentArrayIndex);
+    if(currentArrayIndex < 0 || currentArrayIndex >= zv_arrayList.count())
+    {
+        return;
+    }
+
+    QString question = tr("Do you want to remove array \"%1\" from the list?").arg(zv_arrayList.value(currentArrayIndex)->zp_arrayName());
+    if(QMessageBox::question(0, tr("Array removing"), question, QMessageBox::Yes, QMessageBox::No)
+            == QMessageBox::Yes)
+    {
+        zh_removeArray(currentArrayIndex);
+    }
+}
+//==================================================================
+void ZSpectraArrayRepository::zh_onAppendSpectrumToArrayAction()
+{
+#ifdef DBG
+    qDebug() << "APPEND SPECTRUM";
+#endif
+}
+//==================================================================
+void ZSpectraArrayRepository::zh_onRemoveSpectrumFromArrayAction()
+{
+#ifdef DBG
+    qDebug() << "REMOVE SPECTRUM";
+#endif
+}
+//==================================================================
+void ZSpectraArrayRepository::zh_createActions()
+{
+    zv_appendArrayAction = new QAction(this);
+    zv_appendArrayAction->setIcon(QIcon(":/images/addGreen.png"));
+    zv_appendArrayAction->setText(tr("Append a new array"));
+    zv_appendArrayAction->setToolTip(tr("Append a new array to the list"));
+
+    zv_removeArrayAction = new QAction(this);
+    zv_removeArrayAction->setIcon(QIcon(":/images/trashBasket.png"));
+    zv_removeArrayAction->setText(tr("Remove current array"));
+    zv_removeArrayAction->setToolTip(tr("Remove current array from the list"));
+
+    zv_appendSpectrumToArrayAction = new QAction(this);
+    zv_appendSpectrumToArrayAction->setIcon(QIcon(":/images/addGreen.png"));
+    zv_appendSpectrumToArrayAction->setText(tr("Append spectrum"));
+    zv_appendSpectrumToArrayAction->setToolTip(tr("Append a spectrum to current array"));
+
+    zv_removeSpectrumFromArrayAction = new QAction(this);
+    zv_removeSpectrumFromArrayAction->setIcon(QIcon(":/images/trashBasket.png"));
+    zv_removeSpectrumFromArrayAction->setText(tr("Remove current spectrum"));
+    zv_removeSpectrumFromArrayAction->setToolTip(tr("Remove current spectrum from the array"));
+}
+//==================================================================
+void ZSpectraArrayRepository::zh_createConnections()
+{
+    connect(zv_appendArrayAction, &QAction::triggered,
+            this, &ZSpectraArrayRepository::zh_onAppendArrayAction);
+    connect(zv_removeArrayAction, &QAction::triggered,
+            this, &ZSpectraArrayRepository::zh_onRemoveArrayAction);
+    connect(zv_appendSpectrumToArrayAction, &QAction::triggered,
+            this, &ZSpectraArrayRepository::zh_onAppendSpectrumToArrayAction);
+    connect(zv_removeSpectrumFromArrayAction, &QAction::triggered,
+            this, &ZSpectraArrayRepository::zh_onRemoveSpectrumFromArrayAction);
+
+}
+//==================================================================
+
