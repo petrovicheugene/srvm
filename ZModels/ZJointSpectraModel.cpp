@@ -97,11 +97,11 @@ void ZJointSpectraModel::zp_setDataManager(ZJointSpectraDataManager* dataManager
     zv_dataManager = dataManager;
     // data manager <-> joint model
     connect(dataManager, &ZJointSpectraDataManager::zg_currentOperation,
-            this, &ZJointSpectraModel::zh_onDatamanagerOperation);
+            this, &ZJointSpectraModel::zh_onDataManagerOperation);
     endResetModel();
 }
 //==================================================================
-void ZJointSpectraModel::zh_onDatamanagerOperation(ZJointSpectraDataManager::OperationType type, int first, int last)
+void ZJointSpectraModel::zh_onDataManagerOperation(ZJointSpectraDataManager::OperationType type, int first, int last)
 {
     if(type == ZJointSpectraDataManager::OT_RESET_DATA)
     {
@@ -111,13 +111,22 @@ void ZJointSpectraModel::zh_onDatamanagerOperation(ZJointSpectraDataManager::Ope
     {
         endResetModel();
     }
-//    else if(type == ZJointSpectraDataManager::OT_REMOVE_ARRAYS)
-//    {
-//        beginRemoveRows(QModelIndex(), first, last);
-//    }
-//    else if(type == ZJointSpectraDataManager::OT_END_REMOVE_ARRAYS)
-//    {
-//        endRemoveRows();
-//    }
+    else if(type == ZJointSpectraDataManager::OT_INSERT_ROW)
+    {
+        beginInsertRows(QModelIndex(), first, last);
+    }
+    else if(type == ZJointSpectraDataManager::OT_END_INSERT_ROW)
+    {
+        endInsertRows();
+    }
+    else if(type == ZJointSpectraDataManager::OT_REMOVE_ROW)
+    {
+        beginRemoveRows(QModelIndex(), first, last);
+    }
+    else if(type == ZJointSpectraDataManager::OT_END_REMOVE_ROW)
+    {
+        endRemoveRows();
+    }
+
 }
 //==================================================================

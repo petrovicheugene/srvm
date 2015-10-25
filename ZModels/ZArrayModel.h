@@ -36,7 +36,7 @@ private:
 
 private slots:
 
-    void zh_onRepositoryOperation(ZSpectraArrayRepository::OperationType type, int first, int last);
+    void zh_onRepositoryOperation(ZSpectraArrayRepository::ArrayOperationType type, int first, int last);
 
  };
 //==================================================================

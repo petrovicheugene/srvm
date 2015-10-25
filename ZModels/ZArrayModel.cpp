@@ -94,26 +94,26 @@ void ZArrayModel::zp_setSpectraArrayRepository(ZSpectraArrayRepository* reposito
     beginResetModel();
     zv_repositiry = repository;
     // array repository <-> array model
-    connect(repository, &ZSpectraArrayRepository::zg_currentOperation,
+    connect(repository, &ZSpectraArrayRepository::zg_currentArrayOperation,
             this, &ZArrayModel::zh_onRepositoryOperation);
     endResetModel();
 }
 //==================================================================
-void ZArrayModel::zh_onRepositoryOperation(ZSpectraArrayRepository::OperationType type, int first, int last)
+void ZArrayModel::zh_onRepositoryOperation(ZSpectraArrayRepository::ArrayOperationType type, int first, int last)
 {
-    if(type == ZSpectraArrayRepository::OT_INSERT_ARRAYS)
+    if(type == ZSpectraArrayRepository::AOT_INSERT_ARRAYS)
     {
         beginInsertRows(QModelIndex(), first, last);
     }
-    else if(type == ZSpectraArrayRepository::OT_END_INSERT_ARRAYS)
+    else if(type == ZSpectraArrayRepository::AOT_END_INSERT_ARRAYS)
     {
         endInsertRows();
     }
-    else if(type == ZSpectraArrayRepository::OT_REMOVE_ARRAYS)
+    else if(type == ZSpectraArrayRepository::AOT_REMOVE_ARRAYS)
     {
         beginRemoveRows(QModelIndex(), first, last);
     }
-    else if(type == ZSpectraArrayRepository::OT_END_REMOVE_ARRAYS)
+    else if(type == ZSpectraArrayRepository::AOT_END_REMOVE_ARRAYS)
     {
         endRemoveRows();
     }

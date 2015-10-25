@@ -38,7 +38,7 @@ private:
 
 private slots:
 
-    void zh_onDatamanagerOperation(ZJointSpectraDataManager::OperationType, int, int);
+    void zh_onDataManagerOperation(ZJointSpectraDataManager::OperationType, int, int);
 
 };
 //===========================================================

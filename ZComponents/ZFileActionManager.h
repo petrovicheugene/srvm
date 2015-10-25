@@ -26,8 +26,11 @@ signals:
 
     void zg_message(QString) const;
     void zg_arrayList(QString, QList<ZRawArray>) const;
+    void zg_spectrumFileListToOpen(int, QStringList) const;
 
 public slots:
+
+    void zp_defineSpectrumFilesAndInitAppending(int arrayIndex);
 
 private:
 
@@ -51,7 +54,7 @@ private:
     bool zh_defineArrayFileName(QString&) const;
     // bool zh_getSpectrumArrayFromFile(const QString& fileName, ZSpectrumArray& array);
     // bool zh_getSpectrumFromFile(const QString&, QSharedPointer<ZAbstractSpectrum> &);
-    bool zh_getSpectrumFromFile(const QString&, ZAbstractSpectrum *&);
+    //bool zh_getSpectrumFromFile(const QString&, ZAbstractSpectrum *&);
     bool zh_getRawSpectrumArrayFromFile(const QString& fileName, QList<ZRawArray>& rawArray);
 
 private slots:
@@ -64,6 +67,8 @@ private slots:
     void zh_onSaveCalibrationAction() const;
     void zh_onSaveCalibrationAsAction() const;
     // void zh_onOpenSpectraAction() const;
+
+
 
 };
 //======================================================

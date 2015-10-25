@@ -12,8 +12,8 @@ void ZJointSpectraDataManager::zp_setSpectraArrayRepository(ZSpectraArrayReposit
 {
     zv_repositiry = repository;
     // array repository <-> array model
-//    connect(repository, &ZSpectraArrayRepository::zg_currentOperation,
-//            this, &ZArrayModel::zh_onRepositoryOperation);
+    connect(repository, &ZSpectraArrayRepository::zg_currentSpectrumOperation,
+            this, &ZJointSpectraDataManager::zh_onRepositoryOperation);
 }
 //==================================================================
 int ZJointSpectraDataManager::zp_rowCount() const
@@ -70,7 +70,7 @@ QString ZJointSpectraDataManager::zp_columnName(int columnIndex) const
     switch(columnIndex)
     {
     case 0:
-        name = "File" + QString::number(zv_currentArrayIndex);
+        name = "File";
         break;
     case 1:
         name = "Spectrum";
@@ -102,5 +102,31 @@ void ZJointSpectraDataManager::zp_currentArrayChanged(int current, int previous)
     emit zg_currentOperation(OT_END_RESET_DATA, -1, -1);
 
 }
+//==================================================================
+void ZJointSpectraDataManager::zh_onRepositoryOperation(ZSpectraArrayRepository::SpectrumOperationType type,
+                              int arrayIndex, int first, int last)
+{
+    if(zv_currentArrayIndex != arrayIndex)
+    {
+        return;
+    }
+
+    if(type == ZSpectraArrayRepository::SOT_INSERT_SPECTRA)
+    {
+        emit zg_currentOperation(OT_INSERT_ROW, first, last);
+    }
+    else if(type == ZSpectraArrayRepository::SOT_END_INSERT_SPECTRA)
+    {
+        emit zg_currentOperation(OT_END_INSERT_ROW, first, last);
+    }
+    else if(type == ZSpectraArrayRepository::SOT_REMOVE_SPECTRA)
+    {
+        emit zg_currentOperation(OT_REMOVE_ROW, first, last);
+    }
+    else if(type == ZSpectraArrayRepository::SOT_END_REMOVE_SPECTRA)
+    {
+        emit zg_currentOperation(OT_END_REMOVE_ROW, first, last);
+    }
+ }
 //==================================================================
 

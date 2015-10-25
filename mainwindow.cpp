@@ -229,6 +229,11 @@ void MainWindow::zh_createConnections()
     // file action manager <-> array repository
     connect(zv_fileActionManager, &ZFileActionManager::zg_arrayList,
             zv_spectraArrayRepository, &ZSpectraArrayRepository::zp_appendArrays);
+    connect(zv_fileActionManager, &ZFileActionManager::zg_spectrumFileListToOpen,
+            zv_spectraArrayRepository, &ZSpectraArrayRepository::zp_appendSpectraToArray);
+    connect(zv_spectraArrayRepository, &ZSpectraArrayRepository::zg_initSpectraAppending,
+            zv_fileActionManager, &ZFileActionManager::zp_defineSpectrumFilesAndInitAppending);
+
 
     // repository <-> model
     zv_arrayModel->zp_setSpectraArrayRepository(zv_spectraArrayRepository);

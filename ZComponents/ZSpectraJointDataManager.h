@@ -13,7 +13,11 @@ public:
     explicit ZJointSpectraDataManager(QObject *parent = 0);
 
     enum OperationType {OT_RESET_DATA,
-                        OT_END_RESET_DATA};
+                        OT_END_RESET_DATA,
+                       OT_INSERT_ROW,
+                       OT_END_INSERT_ROW,
+                       OT_REMOVE_ROW,
+                       OT_END_REMOVE_ROW};
     // FUNCS
     void zp_setSpectraArrayRepository(ZSpectraArrayRepository*);
 
@@ -29,6 +33,11 @@ signals:
 public slots:
 
     void zp_currentArrayChanged(int, int);
+
+private slots:
+
+    void zh_onRepositoryOperation(ZSpectraArrayRepository::SpectrumOperationType,
+                                  int arrayIndex, int first, int last);
 
 private:
 

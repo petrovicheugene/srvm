@@ -181,71 +181,71 @@ bool ZFileActionManager::zh_getRawSpectrumArrayFromFile(const QString& fileName,
     return readArrayRes;
 }
 //======================================================
-bool ZFileActionManager::zh_getSpectrumFromFile(const QString& fileName,
-                                                ZAbstractSpectrum*& spectrum)
-{
-#ifdef DBG
-    qDebug() << "SP PATH:" << fileName;
-#endif
+//bool ZFileActionManager::zh_getSpectrumFromFile(const QString& fileName,
+//                                                ZAbstractSpectrum*& spectrum)
+//{
+//#ifdef DBG
+//    qDebug() << "SP PATH:" << fileName;
+//#endif
 
-    ZAbstractSpectrumIOHandler* ioHandler;
-    QFileInfo fileInfo(fileName);
-    // here is an ability to using the other classes, that handle files of different formats
-    if(!fileInfo.exists() || !fileInfo.isFile())
-    {
-        QString msg = tr("Error: \"%1\" is not a file!").arg(fileName);
-        emit zg_message(msg);
-        return false;
-    }
-    else if(fileInfo.suffix() == "spe")
-    {
-        ioHandler = new ZSpeIOHandler(this);
-    }
-    else // other suffixes
-    {
-        QString msg = tr("Error handling file \"%1\"! Cannot handle \"%2\" files.").arg(fileName, fileInfo.suffix());
-        emit zg_message(msg);
-        return false;
-    }
+//    ZAbstractSpectrumIOHandler* ioHandler;
+//    QFileInfo fileInfo(fileName);
+//    // here is an ability to using the other classes, that handle files of different formats
+//    if(!fileInfo.exists() || !fileInfo.isFile())
+//    {
+//        QString msg = tr("Error: \"%1\" is not a file!").arg(fileName);
+//        emit zg_message(msg);
+//        return false;
+//    }
+//    else if(fileInfo.suffix() == "spe")
+//    {
+//        ioHandler = new ZSpeIOHandler(this);
+//    }
+//    else // other suffixes
+//    {
+//        QString msg = tr("Error handling file \"%1\"! Cannot handle \"%2\" files.").arg(fileName, fileInfo.suffix());
+//        emit zg_message(msg);
+//        return false;
+//    }
 
-    QFile file(fileName);
-    if(!file.open(QIODevice::ReadOnly))
-    {
-        QString errorMsg;
-        if(file.error() != QFile::NoError)
-        {
-            errorMsg = tr("Cannot read file \"%1\"! %2").arg(file.fileName(), file.errorString());
-        }
-        else
-        {
-            errorMsg = tr("Cannot read file \"%1\"! %2").arg(file.fileName(), tr("Unknown error"));
-        }
-        emit zg_message(errorMsg);
-        return false;
-    }
+//    QFile file(fileName);
+//    if(!file.open(QIODevice::ReadOnly))
+//    {
+//        QString errorMsg;
+//        if(file.error() != QFile::NoError)
+//        {
+//            errorMsg = tr("Cannot read file \"%1\"! %2").arg(file.fileName(), file.errorString());
+//        }
+//        else
+//        {
+//            errorMsg = tr("Cannot read file \"%1\"! %2").arg(file.fileName(), tr("Unknown error"));
+//        }
+//        emit zg_message(errorMsg);
+//        return false;
+//    }
 
-    connect(ioHandler, &ZAbstractSpectrumIOHandler::zg_message,
-            this, &ZFileActionManager::zg_message);
+//    connect(ioHandler, &ZAbstractSpectrumIOHandler::zg_message,
+//            this, &ZFileActionManager::zg_message);
 
-    // specrum loading
-    bool readSpectrumRes = ioHandler->zp_getSpectrumFromFile(file, spectrum);
+//    // specrum loading
+//    bool readSpectrumRes = ioHandler->zp_getSpectrumFromFile(file, spectrum);
 
-    if(file.isOpen())
-    {
-        file.close();
-    }
-    delete ioHandler;
+//    if(file.isOpen())
+//    {
+//        file.close();
+//    }
+//    delete ioHandler;
 
-    //    if(!readspectrumRes)
-    //    {
-    //        QString msg = tr("Data loading from file \"%1\" failed.").arg(fileName);
-    //        QMessageBox::critical(0, tr("Loading error"), msg, QMessageBox::Ok);
-    //        emit zg_message(msg);
-    //        return false;
-    //    }
+//    //    if(!readspectrumRes)
+//    //    {
+//    //        QString msg = tr("Data loading from file \"%1\" failed.").arg(fileName);
+//    //        QMessageBox::critical(0, tr("Loading error"), msg, QMessageBox::Ok);
+//    //        emit zg_message(msg);
+//    //        return false;
+//    //    }
 
-    return readSpectrumRes;
-}
+//    return readSpectrumRes;
+//}
 //======================================================
 void ZFileActionManager::zp_restoreSettings()
 {
@@ -274,6 +274,20 @@ void ZFileActionManager::zp_saveSettings() const
 
     settings.endGroup();
     settings.endGroup();
+}
+//======================================================
+void ZFileActionManager::zp_defineSpectrumFilesAndInitAppending(int arrayIndex)
+{
+    QStringList fileNameList = QFileDialog::getOpenFileNames(0, tr("Select spectrum file"),
+                                            zv_arrayFilePath,
+                                            tr("SRV spectrum files(*.spe);;All files(*.*)"));
+
+    if(fileNameList.isEmpty())
+    {
+        return;
+    }
+
+    emit zg_spectrumFileListToOpen(arrayIndex, fileNameList);
 }
 //======================================================
 void ZFileActionManager::zh_onOpenArrayAction() // outputs RawArray

@@ -18,11 +18,17 @@ public:
     explicit ZSpectraArrayRepository(QObject *parent = 0);
 
     // VARS
-    enum OperationType {OT_INSERT_ARRAYS,
-                        OT_END_INSERT_ARRAYS,
-                        OT_REMOVE_ARRAYS,
-                        OT_END_REMOVE_ARRAYS
-                       };
+    enum ArrayOperationType {AOT_INSERT_ARRAYS,
+                             AOT_END_INSERT_ARRAYS,
+                             AOT_REMOVE_ARRAYS,
+                             AOT_END_REMOVE_ARRAYS
+                            };
+
+    enum SpectrumOperationType {SOT_INSERT_SPECTRA,
+                                SOT_END_INSERT_SPECTRA,
+                                SOT_REMOVE_SPECTRA,
+                                SOT_END_REMOVE_SPECTRA
+                               };
 
     // FUNCS
     void zp_appendActionsToMenu(QMenu *menu) const;
@@ -42,15 +48,19 @@ public:
 signals:
 
     void zg_message(QString) const;
-    void zg_currentOperation(OperationType, int, int) const;
+    void zg_currentArrayOperation(ArrayOperationType, int, int) const;
+    void zg_currentSpectrumOperation(SpectrumOperationType, int, int, int) const;
     void zg_currentFile(bool dirty, QString fileName) const;
 
     void zg_setCurrentArrayIndex(int arrayIndex);
     void zg_requestCurrentArrayIndex(int& arrayIndex);
 
+    void zg_initSpectraAppending(int);
+
 public slots:
 
     void zp_appendArrays(QString path, QList<ZRawArray>);
+    void zp_appendSpectraToArray(int, QStringList);
     void zp_getArrayCount(int&) const;
     void zp_getSpectrumCount(int arrayIndex, int&) const;
     void zp_getArrayName(int arrayIndex, QString&) const;
@@ -60,7 +70,7 @@ private slots:
 
     void zh_onAppendArrayAction();
     void zh_onRemoveArrayAction();
-    void zh_onAppendSpectrumToArrayAction();
+    void zh_onAppendSpectraToArrayAction();
     void zh_onRemoveSpectrumFromArrayAction();
 
 
@@ -79,7 +89,7 @@ private:
     // FUNCS
     void zh_createActions();
     void zh_createConnections();
-    void zp_createArray(const ZRawArray&);
+    void zh_createArray(const ZRawArray&);
     void zh_removeArray(int);
     //  void zp_saveArrayListToFile();
 
