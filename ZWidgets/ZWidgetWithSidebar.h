@@ -22,7 +22,7 @@ signals:
 
 public slots:
 
-    void zp_setinfoLabelText(const QString&);
+    void zp_setInfoLabelText(bool, const QString&);
     void zp_saveSettings();
 
 private:

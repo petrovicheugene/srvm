@@ -1,9 +1,12 @@
 //==========================================================
 #include "MainWindow.h"
 #include "glVariables.h"
+// components
 #include "ZFileActionManager.h"
-#include "ZWidgetWithSidebar.h"
+#include "ZSpectraArrayRepository.h"
+#include "ZSpectraJointDataManager.h"
 // views
+#include "ZWidgetWithSidebar.h"
 #include "ZSpectrumArrayWidget.h"
 #include "ZJointSpectraTableWidget.h"
 #include "ZChemElementWidget.h"
@@ -15,6 +18,8 @@
 #include "ZCalibrationModel.h"
 #include "ZChemElementModel.h"
 #include "ZJointSpectraModel.h"
+
+
 
 #include <QMessageBox>
 #include <QCloseEvent>
@@ -37,6 +42,14 @@ MainWindow::MainWindow(QWidget *parent)
     //    QPalette palette = QPalette(Qt::darkBlue);
     //    this->setPalette(palette);
     zv_centralSplitter = 0;
+    zv_fileActionManager = 0;
+    zv_spectraArrayRepository = 0;
+    zv_jointSpectraDataManager = 0;
+
+    zv_arrayModel = 0;
+    zv_jointSpectraModel = 0;
+    zv_chemElementModel = 0;
+    zv_calibrationModel = 0;
 
     zh_createActions();
     zh_createComponents();
@@ -132,8 +145,13 @@ void MainWindow::zh_createComponents()
     // setting to dock
     zv_messagePanelDock->setWidget(zv_messagePanel);
 
-    // File Action Manager
+    // tabblifying docks by default
+    // this->tabifyDockWidget(zv_messagePanelDock, zv_calibrationArrayDock);
+
+    // Components
     zv_fileActionManager = new ZFileActionManager(this);
+    zv_spectraArrayRepository = new ZSpectraArrayRepository(this);
+    zv_jointSpectraDataManager = new ZJointSpectraDataManager(this);
 
     // Models
      zv_arrayModel = new ZArrayModel(this);
@@ -191,11 +209,29 @@ void MainWindow::zh_createConnections()
             zv_spectraSidebarWidget, &ZWidgetWithSidebar::zp_saveSettings);
     connect(this, &MainWindow::zg_saveSettings,
             zv_calibrationSidebarWidget, &ZWidgetWithSidebar::zp_saveSettings);
+    connect(this, &MainWindow::zg_saveSettings,
+            zv_fileActionManager, &ZFileActionManager::zp_saveSettings);
 
-    // model<->views
+
+    // views <-> model and other comps
     zv_spectrumArrayWidget->zp_setModel(zv_arrayModel);
     zv_spectrumTableWidget->zp_setModel(zv_jointSpectraModel);
+    connect(zv_spectrumArrayWidget, &ZSpectrumArrayWidget::zg_currentArrayChenged,
+            zv_jointSpectraDataManager, &ZJointSpectraDataManager::zp_currentArrayChanged);
 
+    // file action manager <-> array repository
+    connect(zv_fileActionManager, &ZFileActionManager::zg_arrayList,
+            zv_spectraArrayRepository, &ZSpectraArrayRepository::zp_appendArrays);
+
+    // repository <-> model
+    zv_arrayModel->zp_setSpectraArrayRepository(zv_spectraArrayRepository);
+    zv_jointSpectraDataManager->zp_setSpectraArrayRepository(zv_spectraArrayRepository);
+    zv_jointSpectraModel->zp_setDataManager(zv_jointSpectraDataManager);
+
+
+    // repository <-> array view
+    connect(zv_spectraArrayRepository, &ZSpectraArrayRepository::zg_currentFile,
+            zv_spectraSidebarWidget, &ZWidgetWithSidebar::zp_setInfoLabelText);
 
 }
 //==========================================================
@@ -212,15 +248,19 @@ void MainWindow::zh_appendActionsToMenu(QMenu* menu)
     {
         foreach(QDockWidget* dock, zv_dockList)
         {
-            QAction* viewAction = new QAction(this);
-            viewAction->setText(dock->windowTitle());
-            viewAction->setCheckable(true);
-            connect(viewAction, &QAction::toggled,
-                    dock, &QDockWidget::setVisible);
-            connect(dock, &QDockWidget::visibilityChanged,
-                    viewAction, &QAction::setChecked);
+//            QAction* viewAction = new QAction(this);
+//            viewAction->setText(dock->windowTitle());
+//            viewAction->setCheckable(true);
+//            QAction* viewAction = new QAction(this);
+//            viewAction->setText(dock->windowTitle());
+//            viewAction->setCheckable(true);
 
-            menu->addAction(viewAction);
+//            connect(viewAction, &QAction::toggled,
+//                    dock, &QDockWidget::setVisible);
+//            connect(dock, &QDockWidget::visibilityChanged,
+//                    viewAction, &QAction::setChecked);
+
+            menu->addAction(dock->toggleViewAction());
         }
         menu->addSeparator();
         return;

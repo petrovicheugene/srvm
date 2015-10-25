@@ -8,13 +8,13 @@
 //===================================================
 class ZSpeSpectrum : public ZAbstractSpectrum
 {
+    Q_OBJECT
 public:
 
-    ZSpeSpectrum();
-    ZSpeSpectrum(const QString& name);
-    virtual ~ZSpeSpectrum();
+    // explicit ZSpeSpectrum(QObject* parent);
+    explicit ZSpeSpectrum(const QList<int> &intensityList, const QString& path, QObject* parent);
 
-    ZAbstractSpectrumAuxData zp_auxData();
+    ZAbstractSpectrumAuxData zp_auxData() const override;
 
 private:
 

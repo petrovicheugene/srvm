@@ -1,0 +1,8 @@
+//==================================================================
+#include "ZJointSpectraModelDataManager.h"
+//==================================================================
+ZJointSpectraModelDataManager::ZJointSpectraModelDataManager(QObject *parent) : QObject(parent)
+{
+
+}
+//==================================================================

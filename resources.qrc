@@ -4,5 +4,6 @@
         <file>ZWidgets/editclear.png</file>
         <file>ZWidgets/sidebarBlueClose.png</file>
         <file>ZWidgets/sidebarBlueOpen.png</file>
+        <file>SDC1.ico</file>
     </qresource>
 </RCC>

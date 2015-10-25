@@ -19,7 +19,7 @@ public:
     void zp_appendActionsToMenu(QMenu*) const;
     QList<QAction*> zp_actionList() const;
 
-    void zp_restoreSettings() const;
+    void zp_restoreSettings();
     void zp_saveSettings() const;
 
 signals:

@@ -12,11 +12,13 @@
 #include <QFile>
 #include <QFileInfo>
 #include <QMessageBox>
+#include <QSettings>
 //======================================================
 ZFileActionManager::ZFileActionManager(QObject *parent) : QObject(parent)
 {
     zh_createActions();
     zh_createConnections();
+    zp_restoreSettings();
 }
 //======================================================
 void ZFileActionManager::zp_appendActionsToMenu(QMenu* menu) const
@@ -182,7 +184,7 @@ bool ZFileActionManager::zh_getRawSpectrumArrayFromFile(const QString& fileName,
 }
 //======================================================
 bool ZFileActionManager::zh_getSpectrumFromFile(const QString& fileName,
-ZAbstractSpectrum*& spectrum)
+                                                ZAbstractSpectrum*& spectrum)
 {
 #ifdef DBG
     qDebug() << "SP PATH:" << fileName;
@@ -247,14 +249,33 @@ ZAbstractSpectrum*& spectrum)
     return readSpectrumRes;
 }
 //======================================================
-void ZFileActionManager::zp_restoreSettings() const
+void ZFileActionManager::zp_restoreSettings()
 {
+    QSettings settings;
+    QVariant vData;
+    settings.beginGroup(glAppVersion);
+    settings.beginGroup("Common");
 
+    vData = settings.value("arrayFolderPath");
+    if(vData.isValid() && !vData.isNull() && vData.canConvert<QString>())
+    {
+        zv_arrayFilePath = vData.toString();
+    }
+
+    settings.endGroup();
+    settings.endGroup();
 }
 //======================================================
 void ZFileActionManager::zp_saveSettings() const
 {
+    QSettings settings;
+    settings.beginGroup(glAppVersion);
+    settings.beginGroup("Common");
 
+    settings.setValue("arrayFolderPath", QVariant(zv_arrayFilePath));
+
+    settings.endGroup();
+    settings.endGroup();
 }
 //======================================================
 void ZFileActionManager::zh_onOpenArrayAction() // outputs RawArray
@@ -280,7 +301,17 @@ void ZFileActionManager::zh_onOpenArrayAction() // outputs RawArray
         qDebug() << ra.name;
         for(int i = 0; i < ra.spectrumList.count(); i++)
         {
-           // qDebug() << ra.spectrumList.value(i);
+            qDebug() << ra.spectrumList.value(i).path;
+            QMap<QString, QString>::iterator it;
+            QMap<QString, QString> pMap = ra.spectrumList.value(i).concentrationMap;
+
+            for(it = pMap.begin(); it != pMap.end(); it++)
+            {
+                QString k, v;
+                k = it.key();
+                v = it.value();
+                qDebug() << k << " - " << v;
+            }
         }
 
         qDebug() << "********";
@@ -288,28 +319,30 @@ void ZFileActionManager::zh_onOpenArrayAction() // outputs RawArray
     }
 #endif
 
-//    // spectrum array list creation
-//    QList<ZSpectrumArray> spectrumArrayList;
-//    foreach(ZRawArray rawArray, rawArrayList)
-//    {
-//        ZSpectrumArray array;
-//        array.zp_setArrayName(rawArray.name);
+    emit zg_arrayList(fileName, rawArrayList);
 
-//        for(int s = 0; s < rawArray.pathList.count(); s++)
-//        {
-//            ZAbstractSpectrum* spectrum;
-//            if(!zh_getSpectrumFromFile(rawArray.pathList.value(s), spectrum))
-//            {
-//                array.zp_appendSpectrum(spectrum);
-//                // spectrum.clear();
-//            }
-//        }
-//        spectrumArrayList << array;
-//    }
+    //    // spectrum array list creation
+    //    QList<ZSpectrumArray> spectrumArrayList;
+    //    foreach(ZRawArray rawArray, rawArrayList)
+    //    {
+    //        ZSpectrumArray array;
+    //        array.zp_setArrayName(rawArray.name);
 
-//#ifdef DBG
-//    qDebug() << "STOP";
-//#endif
+    //        for(int s = 0; s < rawArray.pathList.count(); s++)
+    //        {
+    //            ZAbstractSpectrum* spectrum;
+    //            if(!zh_getSpectrumFromFile(rawArray.pathList.value(s), spectrum))
+    //            {
+    //                array.zp_appendSpectrum(spectrum);
+    //                // spectrum.clear();
+    //            }
+    //        }
+    //        spectrumArrayList << array;
+    //    }
+
+    //#ifdef DBG
+    //    qDebug() << "STOP";
+    //#endif
 
     //    ZSpectrumArray spectrumArray;
     //    if(!zh_getSpectrumArrayFromFile(fileName, spectrumArray))

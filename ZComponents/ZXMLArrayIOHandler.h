@@ -28,9 +28,8 @@ private:
     const QString zv_NAME = "name";
     const QString zv_ARRAY = "array";
     const QString zv_SPECTRUM = "spectrum";
-    // const QString  = "array";
-
     const QString zv_PATH = "path";
+    const QString zv_CONCENTRATION = "concentration";
 
     const QString zv_YES = "yes";
     const QString zv_NO = "no";
@@ -38,7 +37,10 @@ private:
 
     // FUNCS
     bool zh_detectRoot(const QXmlStreamReader& reader, bool& magicStringDetectionFlag) const;
-    bool zh_parseXMLElement(QList<ZRawArray>&, int, QXmlStreamReader&);
+    bool zh_parseXMLElement(QList<ZRawArray>&,
+                            int currentArrayIndex,
+                            int currentSpectrumIndex,
+                            QXmlStreamReader&);
     bool zh_checkfilePath(const QString& path) const;
 };
 //============================================================

@@ -3,8 +3,8 @@
 #define ZJOINTSPECTRAMODEL_H
 //===========================================================
 #include <QAbstractTableModel>
+#include "ZSpectraJointDataManager.h"
 //===========================================================
-
 //===========================================================
 class ZJointSpectraModel : public QAbstractTableModel
 {
@@ -20,9 +20,26 @@ public:
     virtual bool	setData(const QModelIndex & index, const QVariant & value, int role = Qt::EditRole);
     virtual QVariant	headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const;
 
-signals:
+    // FUNCS
+    void zp_setDataManager(ZJointSpectraDataManager* dataManager);
 
 public slots:
+
+
+signals:
+
+
+
+
+private:
+
+    // VARS
+    ZJointSpectraDataManager* zv_dataManager;
+
+private slots:
+
+    void zh_onDatamanagerOperation(ZJointSpectraDataManager::OperationType, int, int);
+
 };
 //===========================================================
 #endif // ZJOINTSPECTRAMODEL_H

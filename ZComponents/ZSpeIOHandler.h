@@ -12,7 +12,7 @@ class ZSpeIOHandler : public ZAbstractSpectrumIOHandler
 {
     Q_OBJECT
 public:
-    explicit ZSpeIOHandler(QObject* parent = 0);
+    explicit ZSpeIOHandler(QObject* spectrumParent, QObject* parent = 0);
 
     virtual bool zp_getSpectrumFromFile(const QString& path, ZAbstractSpectrum*&) const override;
     virtual bool zp_getSpectrumFromFile(QFile& file, ZAbstractSpectrum *&) const override;
@@ -21,6 +21,9 @@ public:
 signals:
     void zg_message(QString) const;
 private:
+
+    // VARS
+    const int zv_intensityStartLine = 20;
 
     // FUNCS
 

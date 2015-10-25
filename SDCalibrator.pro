@@ -11,7 +11,7 @@ greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
 #PRO VARS
 #Application version
-RC_ICONS = "SDC.ico"
+RC_ICONS = "SDC1.ico"
 
 VER_MAJ=0
 VER_MIN=0
@@ -82,7 +82,9 @@ SOURCES += main.cpp \
     ZWidgets/ZMessagePanel.cpp \
     ZWidgets/ZHelpBrowser.cpp \
     ZWidgets/ZWidgetWithSidebar.cpp \
-    ZPlotter/ZPlotter.cpp
+    ZPlotter/ZPlotter.cpp \
+    ZComponents/ZSpectraArrayRepository.cpp \
+    ZComponents/ZSpectraJointDataManager.cpp
 
 
 HEADERS  += glVariables.h \
@@ -111,6 +113,8 @@ HEADERS  += glVariables.h \
     ZWidgets/ZHelpBrowser.h \
     ZWidgets/ZWidgetWithSidebar.h \
     ZPlotter/ZPlotter.h \
+    ZComponents/ZSpectraArrayRepository.h \
+    ZComponents/ZSpectraJointDataManager.h
 
 
 RESOURCES += \

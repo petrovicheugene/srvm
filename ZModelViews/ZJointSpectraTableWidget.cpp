@@ -22,6 +22,6 @@ void ZSpectrumTableWidget::zh_createComponents()
 //=============================================================
 void ZSpectrumTableWidget::zp_setModel(QAbstractItemModel* model)
 {
-
+    zv_table->setModel(model);
 }
 //==============================================================

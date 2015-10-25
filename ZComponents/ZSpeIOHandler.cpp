@@ -7,7 +7,8 @@
 #include <QFileDevice>
 #include "ZSpeSpectrum.h"
 //===========================================================
-ZSpeIOHandler::ZSpeIOHandler(QObject* parent) : ZAbstractSpectrumIOHandler(parent)
+ZSpeIOHandler::ZSpeIOHandler(QObject *spectrumParent, QObject* parent)
+    : ZAbstractSpectrumIOHandler(spectrumParent, parent)
 {
 
 }
@@ -19,7 +20,6 @@ bool ZSpeIOHandler::zp_getSpectrumFromFile(const QString& path, ZAbstractSpectru
     {
         QString errorString = tr("File \"%1\" doesn't exist!").arg(path);
         emit zg_message(errorString);
-
         return false;
     }
 
@@ -61,16 +61,28 @@ bool ZSpeIOHandler::zp_getSpectrumFromFile(QFile& file, ZAbstractSpectrum*& spec
 
     QTextStream ts(&file);
     int lineNumber = 0;
+    QList<int> intensityList;
+    bool ok;
     while (!ts.atEnd())
     {
         QString line = ts.readLine();
+        if(lineNumber >= zv_intensityStartLine)
+        {
+            int intensity = line.toInt(&ok);
+            if(!ok)
+            {
+                intensity = 0;
+            }
+            intensityList.append(intensity);
+        }
+
 #ifdef DBG
         qDebug() << "LN"<< lineNumber << line;
 #endif
         lineNumber++;
     }
 
-    spectrum = new ZSpeSpectrum();
+    spectrum = new ZSpeSpectrum(intensityList, file.fileName(), zv_spectrumParent);
     return true;
 }
 //===========================================================

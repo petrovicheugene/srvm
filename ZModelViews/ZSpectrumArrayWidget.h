@@ -19,6 +19,8 @@ public:
 
 signals:
 
+   void zg_currentArrayChenged(int, int);
+
 public slots:
 
 
@@ -29,6 +31,11 @@ private:
 
     // FUNCS
     void zh_createComponents();
+    void zh_createConnections();
+
+private slots:
+
+    void zh_onCurrentArrayChanged(const QModelIndex & current, const QModelIndex & previous);
 
 };
 //==============================================================

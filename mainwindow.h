@@ -20,6 +20,8 @@ class ZArrayModel;
 class ZJointSpectraModel;
 class ZChemElementModel;
 class ZCalibrationModel;
+class ZSpectraArrayRepository;
+class ZJointSpectraDataManager;
 //==========================================================
 class MainWindow : public QMainWindow
 {
@@ -71,7 +73,8 @@ private:
 
     // components
     ZFileActionManager* zv_fileActionManager;
-
+    ZSpectraArrayRepository* zv_spectraArrayRepository;
+    ZJointSpectraDataManager* zv_jointSpectraDataManager;
 
     // FUNCS
     void closeEvent(QCloseEvent* e);

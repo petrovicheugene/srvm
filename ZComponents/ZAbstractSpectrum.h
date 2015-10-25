@@ -3,35 +3,46 @@
 #ifndef ZABSTRACTSPECTRUM_H
 #define ZABSTRACTSPECTRUM_H
 //==========================================================
+#include <QObject>
 #include <QMetaType>
 #include <QString>
+#include <QStringList>
 #include <QDate>
 #include <QTime>
 #include <QList>
+#include <QMap>
 #include "ZAbstractSpectrumAuxData.h"
-
 //==========================================================
-class ZAbstractSpectrum
+// Inheritage: ADD  SpectrumType !!!
+//==========================================================
+class ZAbstractSpectrum : public QObject
 {
+    Q_OBJECT
 public:
-    ZAbstractSpectrum();
-    ZAbstractSpectrum(const QString& name);
-    virtual ~ZAbstractSpectrum();
+    explicit ZAbstractSpectrum(const QList<int> &intensityList, const QString& path, QObject* parent);
 
     // VARS
     enum SpectrumType {ST_NA, ST_SPE};
 
     // FUNCS
-    QString zp_name();
-    SpectrumType zp_type();
-    // virtual ZAbstractSpectrumAuxData zp_auxData() = 0;
+    QString zp_name() const;
+    QString zp_path() const ;
+    SpectrumType zp_type() const;
+    void zp_insertConcentration(const QString& chemElement, const QString& concentration);
+    QStringList zp_chemElementList() const;
+    QString zp_concentration(const QString& chemElement) const;
+    QList<int> zp_spectrumData();
+    virtual ZAbstractSpectrumAuxData zp_auxData() const = 0;
+
 
 protected:
 
     // VARS
     SpectrumType zv_type;
     QString zv_name;
-    QList<double> zv_intensityList;
+    QString zv_path;
+    QList<int> zv_intensityList;
+    QMap<QString, QString> zv_concentrationMap;
 
 };
 //==========================================================

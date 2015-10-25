@@ -55,16 +55,21 @@ bool ZWidgetWithSidebar::zp_setSidebarWidget(QWidget* sideBarWidget)
     zv_splitter->insertWidget(0, zv_sideBarWidget);
     zv_splitter->setCollapsible(0, false);
 
-    zv_hideLabel->setPixmap(QPixmap(":/images/sidebarBlueClose.png"));
+    zv_hideLabel->setPixmap(QPixmap(":/images/ZWidgets/sidebarBlueClose.png"));
     zv_hideLabel->setVisible(true);
     zv_hideLabel->setToolTip(tr("Hide left panel"));
     zh_restoreSettings();
     return true;
 }
 //=======================================================
-void ZWidgetWithSidebar::zp_setinfoLabelText(const QString& text)
+void ZWidgetWithSidebar::zp_setInfoLabelText(bool dirty, const QString& text)
 {
-    zv_infoLabel->setText(text);
+    QString infoText = text;
+    if(dirty)
+    {
+        infoText += "*";
+    }
+    zv_infoLabel->setText(infoText);
 }
 //=======================================================
 void ZWidgetWithSidebar::zh_createComponents(QString title)
@@ -120,7 +125,6 @@ void ZWidgetWithSidebar::zh_createComponents(QString title)
     basementLayout->addWidget(zv_hideLabel);
 
     zv_infoLabel = new QLabel(this);
-    zv_infoLabel->setText("Bambarbia");
     basementLayout->addWidget(zv_infoLabel);
     basementLayout->addSpacing(margin);
 
@@ -166,12 +170,12 @@ void ZWidgetWithSidebar::zh_manageHideLabelPix()
 {
     if(zv_sideBarWidget->isVisible())
     {
-        zv_hideLabel->setPixmap(QPixmap(":/images/sidebarBlueClose.png"));
+        zv_hideLabel->setPixmap(QPixmap(":/images/ZWidgets/sidebarBlueClose.png"));
         zv_hideLabel->setToolTip(tr("Hide left panel"));
     }
     else
     {
-        zv_hideLabel->setPixmap(QPixmap(":/images/sidebarBlueOpen.png"));
+        zv_hideLabel->setPixmap(QPixmap(":/images/ZWidgets/sidebarBlueOpen.png"));
         zv_hideLabel->setToolTip(tr("Show left panel"));
     }
 }

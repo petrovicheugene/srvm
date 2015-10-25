@@ -123,9 +123,13 @@ bool ZXMLArrayIOHandler::zp_readSpectrumArray (QList<ZRawArray>& rawArrayList, Q
 
         if(reader.isStartElement())
         {
-            zh_parseXMLElement(rawArrayList, -1,reader);
+            zh_parseXMLElement(rawArrayList, -1, -1, reader);
         }
     }
+
+#ifdef DBG
+    qDebug() << "Stop";
+#endif
 
     if(reader.hasError())
     {
@@ -165,10 +169,12 @@ bool ZXMLArrayIOHandler::zh_detectRoot(const QXmlStreamReader& reader, bool& mag
 }
 //============================================================
 // returns true if closing tag opened in calling function is readed
-bool ZXMLArrayIOHandler::zh_parseXMLElement(QList<ZRawArray> &array, int currentIndex, QXmlStreamReader& reader)
+bool ZXMLArrayIOHandler::zh_parseXMLElement(QList<ZRawArray> &array,
+                                            int currentArrayIndex,
+                                            int currentSpectrumIndex,
+                                            QXmlStreamReader& reader)
 {
-    QString testString;
-
+    QString currentChemElement = QString();
     bool insertedElementOpened = false;
     // current start tag handling
     QString currentTagName = reader.name().toString();
@@ -177,20 +183,38 @@ bool ZXMLArrayIOHandler::zh_parseXMLElement(QList<ZRawArray> &array, int current
         ZRawArray rawArray;
         rawArray.name = reader.attributes().value(zv_NAME).toString();
         array.append(rawArray);
-        currentIndex = array.count() - 1;
+        currentArrayIndex = array.count() - 1;
         //   array.zp_setArrayName(reader.attributes().value(zv_NAME).toString());
+    }
+    else if(currentTagName == zv_SPECTRUM)
+    {
+        if(currentArrayIndex >= 0 && currentArrayIndex < array.count())
+        {
+            ZRawSpectrum rawSpectrum;
+            rawSpectrum.path = reader.attributes().value(zv_PATH).toString();
+            array[currentArrayIndex].spectrumList.append(rawSpectrum);
+            currentSpectrumIndex = array[currentArrayIndex].spectrumList.count() - 1;
+        }
+    }
+    else if(currentTagName == zv_CONCENTRATION)
+    {
+        if(currentArrayIndex >= 0 && currentArrayIndex < array.count() &&
+                currentSpectrumIndex >= 0 && currentSpectrumIndex < array.value(currentArrayIndex).spectrumList.count())
+         {
+            currentChemElement = reader.attributes().value(zv_NAME).toString();
+            array[currentArrayIndex].spectrumList[currentSpectrumIndex].
+                    concentrationMap.insert(currentChemElement, QString());
+        }
     }
 
     while(!reader.atEnd())
     {
         reader.readNext();
-        testString = reader.name().toString();
-
 
         if(reader.isStartElement())
         {
             insertedElementOpened = true;
-            bool closingTagReadedFlag = zh_parseXMLElement(array, currentIndex, reader);
+            bool closingTagReadedFlag = zh_parseXMLElement(array, currentArrayIndex, currentSpectrumIndex, reader);
             continue;
             if(closingTagReadedFlag)
             {
@@ -206,33 +230,37 @@ bool ZXMLArrayIOHandler::zh_parseXMLElement(QList<ZRawArray> &array, int current
                 continue;
             }
 
-            if(currentTagName == zv_PATH)
+            if(currentTagName == zv_CONCENTRATION)
             {
-                QString path = reader.text().toString();
-                if(!zh_checkfilePath(path))
-                {
-                    // error
-                    // TODO error message: path is not valid
-                }
-                else
-                {
-                    if(array.isEmpty())
-                    {
-                        // TODO error handling
-                        //                    QString errorMsg;
-                        //                    if(!array.zp_applySpectrum(path, errorMsg))
-                        //                    {
-                        //                        emit zg_message(errorMsg);
-                        //                    }
-                    }
-                    else
-                    {
-                        if(currentIndex >= 0 || currentIndex < array.count())
-                        {
-                           // array[currentIndex].spectrumList << path;
-                        }
-                    }
-                }
+                QString concentration = reader.text().toString();
+                array[currentArrayIndex].spectrumList[currentSpectrumIndex].
+                        concentrationMap[currentChemElement] = concentration;
+//                if(!zh_checkfilePath(path))
+//                {
+//                    // error
+//                    // TODO error message: path is not valid
+//                }
+//                else
+//                {
+//                    if(array.isEmpty())
+//                    {
+//                        // TODO error handling
+//                        //                    QString errorMsg;
+//                        //                    if(!array.zp_applySpectrum(path, errorMsg))
+//                        //                    {
+//                        //                        emit zg_message(errorMsg);
+//                        //                    }
+//                    }
+//                    else
+//                    {
+//                        if(currentArrayIndex >= 0 || currentArrayIndex < array.count())
+//                        {
+//                           // array[currentIndex].spectrumList << path;
+//                        }
+//                    }
+//                }
+
+
             }
         }
 
