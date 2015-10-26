@@ -54,6 +54,7 @@ signals:
 
     void zg_setCurrentArrayIndex(int arrayIndex);
     void zg_requestCurrentArrayIndex(int& arrayIndex);
+    void zg_requestSelectedSpectrumIndexList(QList<int>&);
 
     void zg_initSpectraAppending(int);
 
@@ -90,7 +91,9 @@ private:
     void zh_createActions();
     void zh_createConnections();
     void zh_createArray(const ZRawArray&);
+
     void zh_removeArray(int);
+    void zh_removeSpectrum(int, int);
     //  void zp_saveArrayListToFile();
 
 };

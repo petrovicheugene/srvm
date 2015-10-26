@@ -23,7 +23,7 @@ signals:
 
 public slots:
 
-
+    void zp_selectedSpectrumIndexList(QList<int>&);
 
 private:
 

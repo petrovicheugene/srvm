@@ -12,6 +12,7 @@ ZJointSpectraModel::ZJointSpectraModel(QObject *parent) : QAbstractTableModel(pa
 Qt::ItemFlags	ZJointSpectraModel::flags(const QModelIndex & index) const
 {
     Qt::ItemFlags flags;
+    flags |= Qt::ItemIsEnabled | Qt::ItemIsSelectable;
     return flags;
 }
 //==================================================================

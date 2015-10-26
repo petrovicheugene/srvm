@@ -3,6 +3,7 @@
 #include "glVariables.h"
 #include <QMessageBox>
 #include <QFileInfo>
+#include <QtAlgorithms>
 //==================================================================
 ZSpectraArrayRepository::ZSpectraArrayRepository(QObject *parent) : QObject(parent)
 {
@@ -121,7 +122,7 @@ void ZSpectraArrayRepository::zp_appendArrays(QString path, QList<ZRawArray> raw
             {
                 question = tr("File \"%1\" has been changed. ").arg(zv_path);
             }
-            question += tr("Do you want to save the changes?");
+            question += tr("Do you want to save current array changes?");
 
             if(QMessageBox::question(0, tr("Array appending"), question, QMessageBox::Yes, QMessageBox::No)
                     == QMessageBox::Yes)
@@ -243,6 +244,23 @@ void ZSpectraArrayRepository::zh_removeArray(int arrayIndex)
     emit zg_setCurrentArrayIndex(nextCurrentIndex);
 }
 //==================================================================
+void ZSpectraArrayRepository::zh_removeSpectrum(int arrayIndex, int spectrumIndex)
+{
+    if(arrayIndex < 0 || arrayIndex >= zv_arrayList.count())
+    {
+        return;
+    }
+
+    if(spectrumIndex < 0 || spectrumIndex >= zv_arrayList.at(arrayIndex)->zp_spectrumCount())
+    {
+        return;
+    }
+
+    emit zg_currentSpectrumOperation(SOT_REMOVE_SPECTRA, arrayIndex, spectrumIndex, spectrumIndex);
+    zv_arrayList[arrayIndex]->zp_removeSpectrum(spectrumIndex);
+    emit zg_currentSpectrumOperation(SOT_END_REMOVE_SPECTRA, arrayIndex, spectrumIndex, spectrumIndex);
+}
+//==================================================================
 void ZSpectraArrayRepository::zp_getArrayCount(int& arrayCount) const
 {
     arrayCount = zv_arrayList.count();
@@ -354,6 +372,30 @@ void ZSpectraArrayRepository::zh_onRemoveSpectrumFromArrayAction()
 #ifdef DBG
     qDebug() << "REMOVE SPECTRUM";
 #endif
+
+    QList<int> selectedSpectrumList;
+    emit zg_requestSelectedSpectrumIndexList(selectedSpectrumList);
+
+    if(selectedSpectrumList.isEmpty())
+    {
+        QString string = tr("There is no a spectrum to remove!");
+        QMessageBox::critical(0, tr("Spectra removing"), string, QMessageBox::Ok);
+        return;
+    }
+
+    int currentArrayIndex;
+    emit zg_requestCurrentArrayIndex(currentArrayIndex);
+    if(currentArrayIndex < 0 || currentArrayIndex >= zv_arrayList.count())
+    {
+         return;
+    }
+
+    qSort(selectedSpectrumList);
+
+    for(int i = selectedSpectrumList.count() - 1; i >= 0; i--)
+    {
+        zh_removeSpectrum(currentArrayIndex, selectedSpectrumList.value(i));
+    }
 }
 //==================================================================
 void ZSpectraArrayRepository::zh_createActions()

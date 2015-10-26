@@ -250,6 +250,10 @@ void MainWindow::zh_createConnections()
     connect(zv_spectraArrayRepository, &ZSpectraArrayRepository::zg_requestCurrentArrayIndex,
             zv_spectrumArrayWidget, &ZSpectrumArrayWidget::zp_currentArrayIndex);
 
+    // repository <-> joint spectrum view
+    connect(zv_spectraArrayRepository, &ZSpectraArrayRepository::zg_requestSelectedSpectrumIndexList,
+            zv_spectrumTableWidget, &ZSpectrumTableWidget::zp_selectedSpectrumIndexList);
+
 }
 //==========================================================
 void MainWindow::zh_appendActionsToMenu(QMenu* menu)

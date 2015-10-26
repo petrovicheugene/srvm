@@ -14,6 +14,18 @@ ZSpectrumTableWidget::ZSpectrumTableWidget(QWidget *parent) : QWidget(parent)
     zh_createComponents();
 }
 //=============================================================
+void ZSpectrumTableWidget::zp_selectedSpectrumIndexList(QList<int>& selectedSpectrumList)
+{
+    QModelIndexList indexList = zv_table->selectionModel()->selectedIndexes();
+    foreach(QModelIndex index, indexList)
+    {
+        if(!selectedSpectrumList.contains(index.row()))
+        {
+            selectedSpectrumList << index.row();
+        }
+    }
+}
+//=============================================================
 void ZSpectrumTableWidget::zh_createComponents()
 {
     QVBoxLayout* mainLayout = new QVBoxLayout(this);
