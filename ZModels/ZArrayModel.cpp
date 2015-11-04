@@ -117,5 +117,7 @@ void ZArrayModel::zh_onRepositoryOperation(ZSpectraArrayRepository::ArrayOperati
     {
         endRemoveRows();
     }
+
+    emit zg_checkCurrentArray();
 }
 //==================================================================

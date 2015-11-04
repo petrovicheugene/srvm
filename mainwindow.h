@@ -6,7 +6,7 @@
 //==========================================================
 class ZFileActionManager;
 class ZSpectrumArrayWidget;
-class ZSpectrumTableWidget;
+class ZJointSpectrumTableWidget;
 class ZChemElementWidget;
 class ZCalibrationTableWidget;
 class ZWidgetWithSidebar;
@@ -22,6 +22,9 @@ class ZChemElementModel;
 class ZCalibrationModel;
 class ZSpectraArrayRepository;
 class ZJointSpectraDataManager;
+class ZChemElementDataManager;
+class ZCalibrationRepository;
+
 //==========================================================
 class MainWindow : public QMainWindow
 {
@@ -38,8 +41,6 @@ signals:
 private:
 
     // VARS
-
-
     // actions
     QAction* zv_exitAction;
     QAction* zv_aboutAction;
@@ -51,15 +52,17 @@ private:
     // docks
     QList<QDockWidget*> zv_dockList;
     QDockWidget* zv_calibrationArrayDock;
+    QDockWidget* zv_chemElementArrayDock;
+
     QDockWidget* zv_messagePanelDock;
 
     // views
     ZWidgetWithSidebar* zv_spectraSidebarWidget;
-    ZWidgetWithSidebar* zv_calibrationSidebarWidget;
+    // ZWidgetWithSidebar* zv_calibrationSidebarWidget;
 
     ZSpectrumArrayWidget* zv_spectrumArrayWidget;
-    ZSpectrumTableWidget* zv_spectrumTableWidget;
-    ZChemElementWidget* zv_calibrationArrayWidget;
+    ZJointSpectrumTableWidget* zv_spectrumTableWidget;
+    ZChemElementWidget* zv_chemElementWidget;
     ZCalibrationTableWidget* zv_calibrationTableWidget;
 
     ZMessagePanel* zv_messagePanel;
@@ -75,6 +78,8 @@ private:
     ZFileActionManager* zv_fileActionManager;
     ZSpectraArrayRepository* zv_spectraArrayRepository;
     ZJointSpectraDataManager* zv_jointSpectraDataManager;
+    ZCalibrationRepository* zv_calibrationRepository;
+    ZChemElementDataManager* zv_chemElementDataManager;
 
     // FUNCS
     void closeEvent(QCloseEvent* e);

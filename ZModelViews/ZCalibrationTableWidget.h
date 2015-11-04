@@ -6,6 +6,8 @@
 //==============================================================
 class QTableView;
 class QAbstractItemModel;
+class QHBoxLayout;
+class QAction;
 //==============================================================
 class ZCalibrationTableWidget : public QWidget
 {
@@ -15,20 +17,29 @@ public:
 
      // FUNCS
     void zp_setModel(QAbstractItemModel* model);
-
+    void zp_appendButtonActions(QList<QAction*>);
 
 signals:
 
+    void zg_currentCalibrationChanged(int current, int previous);
+
 public slots:
 
-
+    void zp_selectedCalibrationIndexList(QList<int>& selectedList);
+    void zp_currentCalibrationIndex(int&);
+    
 private:
 
     // VARS
     QTableView* zv_table;
+    QHBoxLayout* zv_buttonLayout;
 
     // FUNCS
     void zh_createComponents();
+
+private slots:
+
+    void zh_onCurrentCalibrationChanged(const QModelIndex & current, const QModelIndex & previous);
 
 };
 //==============================================================

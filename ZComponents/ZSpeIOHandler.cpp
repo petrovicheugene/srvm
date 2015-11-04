@@ -13,6 +13,11 @@ ZSpeIOHandler::ZSpeIOHandler(QObject *spectrumParent, QObject* parent)
 
 }
 //===========================================================
+ZSpeIOHandler::~ZSpeIOHandler()
+{
+
+}
+//===========================================================
 bool ZSpeIOHandler::zp_getSpectrumFromFile(const QString& path, ZAbstractSpectrum*& spectrum) const
 {
     QFileInfo fileInfo(path);

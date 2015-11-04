@@ -15,9 +15,11 @@ public:
     explicit ZChemElementWidget(QWidget *parent = 0);
 
     // FUNCS
-   void zp_setModel(QAbstractItemModel* model);
+    void zp_setModel(QAbstractItemModel* model);
 
 signals:
+
+    void zg_currentCalibrationChanged(int, int);
 
 public slots:
 
@@ -29,6 +31,12 @@ private:
 
     // FUNCS
     void zh_createComponents();
+
+private slots:
+
+    void zh_onCurrentElementChanged(const QModelIndex & current,
+                                    const QModelIndex & previous);
+
 
 };
 //==============================================================

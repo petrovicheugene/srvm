@@ -2,21 +2,20 @@
 #ifndef ZXMLARRAYIOHANDLER_H
 #define ZXMLARRAYIOHANDLER_H
 //============================================================
-#include "ZAbstractArrayIOHandler.h"
+#include "ZAbstractSpectrumArrayIOHandler.h"
 #include "glVariables.h"
 //============================================================
 class QXmlStreamReader;
-
-
 //============================================================
-class ZXMLArrayIOHandler : public ZAbstractArrayIOHandler
+class ZXMLSpectrumArrayIOHandler : public ZAbstractSpectrumArrayIOHandler
 {
     Q_OBJECT
 public:
-    explicit ZXMLArrayIOHandler(QObject* parent = 0);
-    // virtual bool zp_readSpectrumArray (ZSpectrumArray& , QFile&) override;
-    virtual bool zp_readSpectrumArray (QList<ZRawArray>&, QFile&) override;
+    explicit ZXMLSpectrumArrayIOHandler(QObject* parent = 0);
+    virtual ~ZXMLSpectrumArrayIOHandler();
 
+    virtual bool zp_readSpectrumArray (QFile&, QList<ZRawSpectrumArray>&) const override;
+    virtual bool zp_writeSpectrumArray(QFile&, const QList<ZRawSpectrumArray>&) const override;
 
 private:
 
@@ -37,10 +36,10 @@ private:
 
     // FUNCS
     bool zh_detectRoot(const QXmlStreamReader& reader, bool& magicStringDetectionFlag) const;
-    bool zh_parseXMLElement(QList<ZRawArray>&,
+    bool zh_parseXMLElement(QList<ZRawSpectrumArray>&,
                             int currentArrayIndex,
                             int currentSpectrumIndex,
-                            QXmlStreamReader&);
+                            QXmlStreamReader&) const;
     bool zh_checkfilePath(const QString& path) const;
 };
 //============================================================

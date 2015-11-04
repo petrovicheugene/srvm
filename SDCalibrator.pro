@@ -56,13 +56,13 @@ INCLUDEPATH += ZPlotter \
     ZModels \
     ZModelViews \
     ZWidgets \
-    ZComponents
+    ZComponents \
+    ZDialogs \
+    ZModelViews/ZNumericDelegate
 
 SOURCES += main.cpp \
     MainWindow.cpp \
     ZComponents/ZSpectrumArray.cpp \
-    ZComponents/ZAbstractArrayIOHandler.cpp \
-    ZComponents/ZXMLArrayIOHandler.cpp \
     ZComponents/ZFileActionManager.cpp \
     ZComponents/ZAbstractSpectrumIOHandler.cpp \
     ZComponents/ZSpeIOHandler.cpp \
@@ -84,14 +84,26 @@ SOURCES += main.cpp \
     ZWidgets/ZWidgetWithSidebar.cpp \
     ZPlotter/ZPlotter.cpp \
     ZComponents/ZSpectraArrayRepository.cpp \
-    ZComponents/ZSpectraJointDataManager.cpp
+    ZComponents/ZAbstractSpectrumArrayIOHandler.cpp \
+    ZComponents/ZXMLSpectrumArrayIOHandler.cpp \
+    ZComponents/ZAbstractCalibrationIOHandler.cpp \
+    ZComponents/ZXMLCalibrationIOHandler.cpp \
+    ZComponents/ZSDCalibrationIOHandler.cpp \
+    ZComponents/ZCalibrationRepository.cpp \
+    ZComponents/ZAbstractCalibration.cpp \
+    ZComponents/ZSDCalibration.cpp \
+    ZComponents/ZXMLCalibration.cpp \
+    ZDialogs/ZCalibrationEditDialog.cpp \
+    ZComponents/ZJointSpectraDataManager.cpp \
+    ZComponents/ZChemElementList.cpp \
+    ZComponents/ZChemElementDataManager.cpp \
+    ZModelViews/ZNumericDelegate/ZNumericDelegate.cpp \
+    ZModelViews/ZNumericDelegate/ZNumericEditor.cpp
 
 
 HEADERS  += glVariables.h \
     MainWindow.h \
     ZComponents/ZSpectrumArray.h \
-    ZComponents/ZAbstractArrayIOHandler.h \
-    ZComponents/ZXMLArrayIOHandler.h \
     ZComponents/ZFileActionManager.h \
     ZComponents/ZAbstractSpectrumIOHandler.h \
     ZComponents/ZSpeIOHandler.h \
@@ -99,7 +111,6 @@ HEADERS  += glVariables.h \
     ZComponents/ZAbstractSpectrumAuxData.h \
     ZComponents/ZAbstractSpectrum.h \
     ZComponents/ZSpeAuxData.h \
-    ZComponents/ZRawArray.h \
     ZModels/ZArrayModel.h \
     ZModels/ZChemElementModel.h \
     ZModels/ZCalibrationModel.h \
@@ -114,8 +125,26 @@ HEADERS  += glVariables.h \
     ZWidgets/ZWidgetWithSidebar.h \
     ZPlotter/ZPlotter.h \
     ZComponents/ZSpectraArrayRepository.h \
-    ZComponents/ZSpectraJointDataManager.h
+    ZComponents/ZRawSpectrumArray.h \
+    ZComponents/ZAbstractSpectrumArrayIOHandler.h \
+    ZComponents/ZXMLSpectrumArrayIOHandler.h \
+    ZComponents/ZAbstractCalibrationIOHandler.h \
+    ZComponents/ZXMLCalibrationIOHandler.h \
+    ZComponents/ZSDCalibrationIOHandler.h \
+    ZComponents/ZCalibrationRepository.h \
+    ZComponents/ZAbstractCalibration.h \
+    ZComponents/ZSDCalibration.h \
+    ZComponents/ZXMLCalibration.h \
+    ZDialogs/ZCalibrationEditDialog.h \
+    ZComponents/ZJointSpectraDataManager.h \
+    ZComponents/ZChemElementList.h \
+    ZComponents/ZChemElementDataManager.h \
+    ZModelViews/ZNumericDelegate/ZNumericDelegate.h \
+    ZModelViews/ZNumericDelegate/ZNumericEditor.h
 
 
 RESOURCES += \
     resources.qrc
+
+DISTFILES += \
+    PLAN

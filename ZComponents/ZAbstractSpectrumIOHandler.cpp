@@ -6,4 +6,9 @@ ZAbstractSpectrumIOHandler::ZAbstractSpectrumIOHandler(QObject *spectrumParent, 
     zv_spectrumParent = spectrumParent;
 }
 //=============================================================
+ZAbstractSpectrumIOHandler::~ZAbstractSpectrumIOHandler()
+{
+
+}
+//=============================================================
 

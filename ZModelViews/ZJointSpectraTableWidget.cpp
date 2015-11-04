@@ -1,20 +1,22 @@
 //=============================================================
 #include "ZJointSpectraTableWidget.h"
 #include "glVariables.h"
+#include "ZNumericDelegate.h"
+#include "ZJointSpectraModel.h"
 
 #include <QTableView>
 #include <QHBoxLayout>
 #include <QVBoxLayout>
-#include <QAbstractItemModel>
 #include <QPushButton>
 #include <QAction>
 //=============================================================
-ZSpectrumTableWidget::ZSpectrumTableWidget(QWidget *parent) : QWidget(parent)
+ZJointSpectrumTableWidget::ZJointSpectrumTableWidget(QWidget *parent) : QWidget(parent)
 {
     zh_createComponents();
+    zh_createConnections();
 }
 //=============================================================
-void ZSpectrumTableWidget::zp_selectedSpectrumIndexList(QList<int>& selectedSpectrumList)
+void ZJointSpectrumTableWidget::zp_selectedSpectrumIndexList(QList<int>& selectedSpectrumList)
 {
     QModelIndexList indexList = zv_table->selectionModel()->selectedIndexes();
     foreach(QModelIndex index, indexList)
@@ -26,7 +28,7 @@ void ZSpectrumTableWidget::zp_selectedSpectrumIndexList(QList<int>& selectedSpec
     }
 }
 //=============================================================
-void ZSpectrumTableWidget::zh_createComponents()
+void ZJointSpectrumTableWidget::zh_createComponents()
 {
     QVBoxLayout* mainLayout = new QVBoxLayout(this);
     setLayout(mainLayout);
@@ -38,12 +40,21 @@ void ZSpectrumTableWidget::zh_createComponents()
     mainLayout->addLayout(zv_buttonLayout);
 }
 //=============================================================
-void ZSpectrumTableWidget::zp_setModel(QAbstractItemModel* model)
+void ZJointSpectrumTableWidget::zh_createConnections()
+{
+
+}
+//=============================================================
+void ZJointSpectrumTableWidget::zp_setModel(ZJointSpectraModel* model)
 {
     zv_table->setModel(model);
+    ZNumericDelegate* numericDelegate = new ZNumericDelegate(zv_table);
+    connect(numericDelegate, &ZNumericDelegate::editNext,
+            this, &ZJointSpectrumTableWidget::zp_editNext);
+    zv_table->setItemDelegate(numericDelegate);
 }
 //==============================================================
-void ZSpectrumTableWidget::zp_appendButtonActions(QList<QAction*> actionList)
+void ZJointSpectrumTableWidget::zp_appendButtonActions(QList<QAction*> actionList)
 {
     zv_buttonLayout->addStretch();
     for(int a = 0; a < actionList.count(); a++)
@@ -56,5 +67,30 @@ void ZSpectrumTableWidget::zp_appendButtonActions(QList<QAction*> actionList)
                 actionList[a], &QAction::trigger);
         zv_buttonLayout->addWidget(button);
     }
+}
+//==============================================================
+void ZJointSpectrumTableWidget::zp_editNext(QModelIndex editedIndex)
+{
+    if(!editedIndex.isValid() || editedIndex.row() < 0)
+    {
+        return;
+    }
+
+    if(editedIndex.row()+1 >= editedIndex.model()->rowCount())
+    {
+        // end of column - quit editing keeping current index as "current"
+        zv_table->setCurrentIndex(editedIndex);
+        return;
+    }
+
+    // defining next index
+    QModelIndex nextIndex = editedIndex.model()->index(editedIndex.row()+1, editedIndex.column());
+    if(!nextIndex.isValid())
+    {
+        return;
+    }
+
+    zv_table->setCurrentIndex(nextIndex);
+    zv_table->edit(nextIndex);
 }
 //==============================================================

@@ -1,6 +1,7 @@
 //==============================================================
 #include "ZSpectrumArrayWidget.h"
 #include "glVariables.h"
+#include "ZArrayModel.h"
 
 #include <QTableView>
 #include <QHBoxLayout>
@@ -26,15 +27,17 @@ void ZSpectrumArrayWidget::zh_createComponents()
 
     zv_buttonLayout = new QHBoxLayout(this);
     mainLayout->addLayout(zv_buttonLayout);
-
 }
 //==============================================================
-void ZSpectrumArrayWidget::zp_setModel(QAbstractItemModel* model)
+void ZSpectrumArrayWidget::zp_setModel(ZArrayModel *model)
 {
     zv_table->setModel(model);
     zv_table->horizontalHeader()->setSectionResizeMode(0, QHeaderView::Stretch);
     connect(zv_table->selectionModel(), &QItemSelectionModel::currentRowChanged,
             this, &ZSpectrumArrayWidget::zh_onCurrentArrayChanged);
+    connect(model, &ZArrayModel::zg_checkCurrentArray,
+            this, &ZSpectrumArrayWidget::zh_checkCurrentArray);
+
 }
 //==============================================================
 void ZSpectrumArrayWidget::zp_appendButtonActions(QList<QAction*> actionList)
@@ -83,8 +86,24 @@ void ZSpectrumArrayWidget::zh_createConnections()
 
 }
 //==============================================================
+void ZSpectrumArrayWidget::zh_checkCurrentArray()
+{
+    if(!zv_table->selectionModel())
+    {
+        return;
+    }
+
+    QModelIndex currentIndex = zv_table->selectionModel()->currentIndex();
+    if(!currentIndex.isValid() || currentIndex.row() < 0
+            || currentIndex.row() >= zv_table->model()->rowCount())
+    {
+        QModelIndex indexToGo = zv_table->model()->index(0,0);
+        zv_table->setCurrentIndex(indexToGo);
+    }
+}
+//==============================================================
 void ZSpectrumArrayWidget::zh_onCurrentArrayChanged(const QModelIndex & current, const QModelIndex & previous)
 {
-    emit zg_currentArrayChenged(current.row(), previous.row());
+    emit zg_currentArrayChanged(current.row(), previous.row());
 }
 //==============================================================

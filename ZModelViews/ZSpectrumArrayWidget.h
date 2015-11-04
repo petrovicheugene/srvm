@@ -5,7 +5,7 @@
 #include <QWidget>
 //==============================================================
 class QTableView;
-class QAbstractItemModel;
+class ZArrayModel;
 class QAction;
 class QHBoxLayout;
 //==============================================================
@@ -16,12 +16,12 @@ public:
     explicit ZSpectrumArrayWidget(QWidget *parent = 0);
 
     // FUNCS
-   void zp_setModel(QAbstractItemModel* model);
+   void zp_setModel(ZArrayModel* model);
    void zp_appendButtonActions(QList<QAction*>);
 
 signals:
 
-   void zg_currentArrayChenged(int, int);
+   void zg_currentArrayChanged(int, int);
 
 public slots:
 
@@ -37,6 +37,7 @@ private:
     // FUNCS
     void zh_createComponents();
     void zh_createConnections();
+    void zh_checkCurrentArray();
 
 private slots:
 

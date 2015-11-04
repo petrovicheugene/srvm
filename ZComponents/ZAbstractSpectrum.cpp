@@ -22,6 +22,12 @@ ZAbstractSpectrum::ZAbstractSpectrum(const QList<int> &intensityList, const QStr
     zv_intensityList = intensityList;
 }
 //==========================================================
+ZAbstractSpectrum::~ZAbstractSpectrum()
+{
+
+}
+
+//==========================================================
 ZAbstractSpectrum::SpectrumType ZAbstractSpectrum::zp_type() const
 {
     return zv_type;
@@ -47,7 +53,18 @@ QString ZAbstractSpectrum::zp_concentration(const QString& chemElement) const
     return zv_concentrationMap.value(chemElement);
 }
 //==========================================================
-QList<int> ZAbstractSpectrum::zp_spectrumData()
+bool ZAbstractSpectrum::zp_setConcentration(const QString& chemElement,
+                                            const QString& concentration)
+{
+    if(chemElement.isEmpty())
+    {
+        return false;
+    }
+    zv_concentrationMap.insert(chemElement, concentration);
+    return true;
+}
+//==========================================================
+QList<int> ZAbstractSpectrum::zp_spectrumIntensityArray()
 {
     return zv_intensityList;
 }

@@ -10,5 +10,14 @@
         <file>document-save-as.png</file>
         <file>edit.png</file>
         <file>trashBasket.png</file>
+        <file>ATrashBasket2Red.png</file>
+        <file>CTrashBasket2Green.png</file>
+        <file>STrashBasket2Blue.png</file>
+        <file>ABlueRemove.png</file>
+        <file>CGreenRemove.png</file>
+        <file>SPurpleRemove.png</file>
+        <file>ARemove3Green.png</file>
+        <file>CRemove3Blue.png</file>
+        <file>SRemove3Purple.png</file>
     </qresource>
 </RCC>

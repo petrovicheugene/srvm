@@ -10,7 +10,7 @@
 #include <QLabel>
 #include <QSettings>
 //=======================================================
-ZWidgetWithSidebar::ZWidgetWithSidebar(const QString &objectName, QWidget *parent) : QWidget(parent)
+ZWidgetWithSidebar::ZWidgetWithSidebar(const QString &objectName, QWidget *parent) : QFrame(parent)
 {
     zv_sideBarWidget = 0;
     zv_mainWidget = 0;
@@ -21,7 +21,7 @@ ZWidgetWithSidebar::ZWidgetWithSidebar(const QString &objectName, QWidget *paren
 
 }
 //=======================================================
-ZWidgetWithSidebar::ZWidgetWithSidebar(const QString &title, const QString &objectName, QWidget *parent) : QWidget(parent)
+ZWidgetWithSidebar::ZWidgetWithSidebar(const QString &title, const QString &objectName, QWidget *parent) : QFrame(parent)
 {
     zv_sideBarWidget = 0;
     zv_mainWidget = 0;
@@ -101,7 +101,9 @@ void ZWidgetWithSidebar::zh_createComponents(QString title)
     mainLayout->addWidget(zv_splitter);
 
     // Basement Widget
-    QWidget* basement = new QWidget(this);
+    QFrame* basement = new QFrame(this);
+    //basement->setFrameShape(QFrame::HLine);
+    //basement->setFrameStyle(QFrame::HLine | QFrame::Sunken);
     // basement layout
     QHBoxLayout* basementLayout = new QHBoxLayout(this);
     basement->setLayout(basementLayout);

@@ -1,8 +1,9 @@
 //==================================================================
 #include "ZJointSpectraModel.h"
+#include "glVariables.h"
+
 #include <QFont>
 #include <QColor>
-
 //==================================================================
 ZJointSpectraModel::ZJointSpectraModel(QObject *parent) : QAbstractTableModel(parent)
 {
@@ -13,6 +14,11 @@ Qt::ItemFlags	ZJointSpectraModel::flags(const QModelIndex & index) const
 {
     Qt::ItemFlags flags;
     flags |= Qt::ItemIsEnabled | Qt::ItemIsSelectable;
+
+    if(zv_dataManager->zp_isColumnChemElementColumn(index.column()))
+    {
+        flags |= Qt::ItemIsEditable;
+    }
     return flags;
 }
 //==================================================================
@@ -22,7 +28,6 @@ int ZJointSpectraModel::columnCount(const QModelIndex & parent) const
     {
         return 0;
     }
-
     return zv_dataManager->zp_columnCount();
 }
 //==================================================================
@@ -39,8 +44,8 @@ int ZJointSpectraModel::rowCount(const QModelIndex & parent) const
 QVariant ZJointSpectraModel::data(const QModelIndex & index, int role) const
 {
     if(!zv_dataManager || !index.isValid()
-            || index.row() < 0 || index.row() >=  zv_dataManager->zp_rowCount()
-            || index.column() < 0 || index.column() >= zv_dataManager->zp_rowCount())
+            || index.row() < 0 || index.row() >=  rowCount()
+            || index.column() < 0 || index.column() >= columnCount())
     {
         return QVariant();
     }
@@ -55,6 +60,22 @@ QVariant ZJointSpectraModel::data(const QModelIndex & index, int role) const
 //==================================================================
 bool	ZJointSpectraModel::setData(const QModelIndex & index, const QVariant & value, int role)
 {
+    if(!zv_dataManager || !index.isValid()
+            || index.row() < 0 || index.row() >=  rowCount()
+            || index.column() < 0 || index.column() >= columnCount()
+            || !value.isValid())
+    {
+        return false;
+    }
+
+    if(role == Qt::EditRole)
+    {
+        if(value.canConvert<QString>())
+        {
+            return zv_dataManager->zp_setChemConcentration(index.row(), index.column(), value.toString());
+        }
+    }
+
     return false;
 }
 //==================================================================
@@ -128,6 +149,37 @@ void ZJointSpectraModel::zh_onDataManagerOperation(ZJointSpectraDataManager::Ope
     {
         endRemoveRows();
     }
+    else if(type == ZJointSpectraDataManager::OT_INSERT_COLUMN)
+    {
+        beginInsertColumns(QModelIndex(), first, last);
+#ifdef DBG
+        qDebug() << "OT_INSERT_COLUMN" << first << last;
+#endif
 
+    }
+    else if(type == ZJointSpectraDataManager::OT_END_INSERT_COLUMN)
+    {
+        endInsertColumns();
+#ifdef DBG
+        qDebug() << "OT_END_INSERT_COLUMN";
+#endif
+
+    }
+    else if(type == ZJointSpectraDataManager::OT_REMOVE_COLUMN)
+    {
+        beginRemoveColumns(QModelIndex(), first, last);
+
+#ifdef DBG
+        qDebug() << "OT_REMOVE_COLUMN" << first << last;
+#endif
+    }
+    else if(type == ZJointSpectraDataManager::OT_END_REMOVE_COLUMN)
+    {
+        endRemoveColumns();
+#ifdef DBG
+        qDebug() << "OT_END_REMOVE_COLUMN";
+#endif
+
+    }
 }
 //==================================================================

@@ -3,17 +3,17 @@
 #define ZABSTRACTARRAYIOHANDLER_H
 //========================================================
 #include <QObject>
-#include "ZSpectrumArray.h"
-#include "QFile"
-#include "ZRawArray.h"
+#include <QFile>
+#include "ZRawSpectrumArray.h"
 //========================================================
-class ZAbstractArrayIOHandler : public QObject
+class ZAbstractSpectrumArrayIOHandler : public QObject
 {
     Q_OBJECT
 public:
-    explicit ZAbstractArrayIOHandler(QObject *parent = 0);
-    // virtual bool zp_readSpectrumArray(ZSpectrumArray& , QFile&) = 0;
-    virtual bool zp_readSpectrumArray (QList<ZRawArray>&, QFile&) = 0;
+    explicit ZAbstractSpectrumArrayIOHandler(QObject *parent = 0);
+    virtual ~ZAbstractSpectrumArrayIOHandler();
+    virtual bool zp_readSpectrumArray (QFile&, QList<ZRawSpectrumArray>&) const = 0;
+    virtual bool zp_writeSpectrumArray (QFile&, const QList<ZRawSpectrumArray>&) const = 0;
 
 signals:
 

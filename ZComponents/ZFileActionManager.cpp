@@ -1,9 +1,11 @@
 //======================================================
 #include "ZFileActionManager.h"
-#include "ZAbstractArrayIOHandler.h"
-#include "ZXMLArrayIOHandler.h"
+#include "ZAbstractSpectrumArrayIOHandler.h"
+#include "ZXMLSpectrumArrayIOHandler.h"
 #include "ZSpectrumArray.h"
 #include "ZAbstractSpectrumIOHandler.h"
+#include "ZAbstractCalibrationIOHandler.h"
+#include "ZXMLCalibrationIOHandler.h"
 #include "ZSpeIOHandler.h"
 #include "glVariables.h"
 
@@ -18,7 +20,7 @@ ZFileActionManager::ZFileActionManager(QObject *parent) : QObject(parent)
 {
     zh_createActions();
     zh_createConnections();
-    zp_restoreSettings();
+    zh_restoreSettings();
 }
 //======================================================
 void ZFileActionManager::zp_appendActionsToMenu(QMenu* menu) const
@@ -36,7 +38,7 @@ void ZFileActionManager::zp_appendActionsToMenu(QMenu* menu) const
         menu->addSeparator();
 
     }
- }
+}
 //======================================================
 QList<QAction*> ZFileActionManager::zp_actionList() const
 {
@@ -57,13 +59,13 @@ QList<QAction*> ZFileActionManager::zp_actionList() const
 //======================================================
 void ZFileActionManager::zh_createActions()
 {
-    zv_openArrayFromFileAction = new QAction(QIcon(":/images/document-open.png"), tr("&Open array list"), this);
-    zv_saveArrayToFileAction = new QAction(QIcon(":/images/document-open.png"), tr("&Save array list"), this);
-    zv_saveArrayAsFileAction = new QAction(QIcon(":/images/document-open.png"), tr("Save array list &as..."), this);
+    zv_openArrayFromFileAction = new QAction(QIcon(":/images/document-open.png"), tr("&Open spectrum array list"), this);
+    zv_saveArrayToFileAction = new QAction(QIcon(":/images/document-open.png"), tr("&Save spectrum array list"), this);
+    zv_saveArrayAsFileAction = new QAction(QIcon(":/images/document-open.png"), tr("Save spectrum array list &as..."), this);
 
-    zv_openCalibrationFromFileAction = new QAction(QIcon(":/images/document-open.png"), tr("Open calibration list"), this);
-    zv_saveCalibrationToFileAction = new QAction(QIcon(":/images/document-open.png"), tr("Save calibration list"), this);
-    zv_saveCalibrationAsFileAction = new QAction(QIcon(":/images/document-open.png"), tr("Save calibration list as..."), this);
+    zv_openCalibrationFromFileAction = new QAction(QIcon(":/images/document-open.png"), tr("Open &calibrations"), this);
+    zv_saveCalibrationToFileAction = new QAction(QIcon(":/images/document-open.png"), tr("Save calibration"), this);
+    zv_saveCalibrationAsFileAction = new QAction(QIcon(":/images/document-open.png"), tr("Save calibration as..."), this);
 
     // zv_loadSpectrumFromFileAction = new QAction(QIcon(":/images/document-open.png"), tr("Append &spectra to array"), this);
 }
@@ -71,11 +73,11 @@ void ZFileActionManager::zh_createActions()
 void ZFileActionManager::zh_createConnections()
 {
     connect(zv_openArrayFromFileAction, &QAction::triggered,
-            this, &ZFileActionManager::zh_onOpenArrayAction);
+            this, &ZFileActionManager::zh_onOpenSpectrumArrayAction);
     connect(zv_saveArrayToFileAction, &QAction::triggered,
-            this, &ZFileActionManager::zh_onSaveArrayAction);
+            this, &ZFileActionManager::zh_onSaveSpectrumArrayAction);
     connect(zv_saveArrayAsFileAction, &QAction::triggered,
-            this, &ZFileActionManager::zh_onSaveArrayAsAction);
+            this, &ZFileActionManager::zh_onSaveSpectrumArrayAsAction);
 
     connect(zv_openCalibrationFromFileAction, &QAction::triggered,
             this, &ZFileActionManager::zh_onOpenCalibrationAction);
@@ -84,16 +86,45 @@ void ZFileActionManager::zh_createConnections()
     connect(zv_saveCalibrationAsFileAction, &QAction::triggered,
             this, &ZFileActionManager::zh_onSaveCalibrationAsAction);
 
-//    connect(zv_loadSpectrumFromFileAction, &QAction::triggered,
-//            this, &ZFileActionManager::zh_onOpenSpectraAction);
+    //    connect(zv_loadSpectrumFromFileAction, &QAction::triggered,
+    //            this, &ZFileActionManager::zh_onOpenSpectraAction);
 }
 //======================================================
-bool ZFileActionManager::zh_defineArrayFileName(QString& fileName) const
+bool ZFileActionManager::zh_defineSpectrumArrayFileNameToOpen(QString& fileName) const
 {
     // opening
     fileName = QFileDialog::getOpenFileName(0, tr("Select file to open"),
-                                            zv_arrayFilePath,
-                                            tr("XML files(*.xml);;All files(*.*)"));
+                                            zv_spectrumArrayFolderPath,
+                                            tr("Spectrum array files(*.spar);;XML files(*.xml);;All files(*.*)"));
+    return zh_checkFile(fileName);
+}
+//======================================================
+bool ZFileActionManager::zh_defineSpectrumArrayFileNameToSave(QString& fileName) const
+{
+    // opening
+    fileName = QFileDialog::getSaveFileName(0, tr("Select file to save"),
+                                            zv_spectrumArrayFolderPath,
+                                            tr("Spectrum array files(*.spar);;XML files(*.xml);;All files(*.*)"));
+    return !fileName.isEmpty();
+}
+//======================================================
+
+bool ZFileActionManager::zh_defineCalibrationArrayFileName(QStringList& fileNames) const
+{
+    // opening
+    fileNames = QFileDialog::getOpenFileNames(0, tr("Select file to open"),
+                                              zv_calibrationFolderPath,
+                                              tr("SD Calibration files(*.clbr);;XML Calibration files(*.clbx);;XML files(*.xml);;All files(*.*)"));
+    if(fileNames.count() <= 0 )
+    {
+        return false;
+    }
+
+    return true;
+}
+//======================================================
+bool ZFileActionManager::zh_checkFile(const QString& fileName) const
+{
     if(fileName.isEmpty())
     {
         return false;
@@ -118,11 +149,12 @@ bool ZFileActionManager::zh_defineArrayFileName(QString& fileName) const
 
     return true;
 }
+
 //======================================================
-bool ZFileActionManager::zh_getRawSpectrumArrayFromFile(const QString& fileName, QList<ZRawArray>& rawArray)
+bool ZFileActionManager::zh_getRawSpectrumArrayFromFile(const QString& fileName, QList<ZRawSpectrumArray>& rawArray)
 {
     QFileInfo fileInfo(fileName);
-    ZAbstractArrayIOHandler* ioHandler;
+    ZAbstractSpectrumArrayIOHandler* ioHandler;
 
     // ioHandler subclass definition
     // here is an ability to using the other classes, that handle files of different formats
@@ -133,9 +165,9 @@ bool ZFileActionManager::zh_getRawSpectrumArrayFromFile(const QString& fileName,
         emit zg_message(msg);
         return false;
     }
-    else if(fileInfo.suffix() == "xml")
+    else if(fileInfo.suffix() == "xml" || fileInfo.suffix() == "spar")
     {
-        ioHandler = new ZXMLArrayIOHandler(this);
+        ioHandler = new ZXMLSpectrumArrayIOHandler(this);
     }
     else // other suffixes
     {
@@ -163,14 +195,14 @@ bool ZFileActionManager::zh_getRawSpectrumArrayFromFile(const QString& fileName,
     }
 
     // current directory  saving
-    zv_arrayFilePath = fileInfo.absolutePath();
+    zv_spectrumArrayFolderPath = fileInfo.absolutePath();
 
     // ability of message receiving
-    connect(ioHandler, &ZAbstractArrayIOHandler::zg_message,
+    connect(ioHandler, &ZAbstractSpectrumArrayIOHandler::zg_message,
             this, &ZFileActionManager::zg_message);
 
     // array loading
-    bool readArrayRes = ioHandler->zp_readSpectrumArray(rawArray, file);
+    bool readArrayRes = ioHandler->zp_readSpectrumArray(file, rawArray);
 
     if(file.isOpen())
     {
@@ -181,33 +213,33 @@ bool ZFileActionManager::zh_getRawSpectrumArrayFromFile(const QString& fileName,
     return readArrayRes;
 }
 //======================================================
-//bool ZFileActionManager::zh_getSpectrumFromFile(const QString& fileName,
-//                                                ZAbstractSpectrum*& spectrum)
+//bool ZFileActionManager::zh_getRawCalibrationArrayFromFile(const QString& fileName, QList<ZRawCalibrationArray>& rawArray)
 //{
-//#ifdef DBG
-//    qDebug() << "SP PATH:" << fileName;
-//#endif
-
-//    ZAbstractSpectrumIOHandler* ioHandler;
 //    QFileInfo fileInfo(fileName);
+//    ZAbstractCalibrationArrayIOHandler* ioHandler;
+
+//    // ioHandler subclass definition
 //    // here is an ability to using the other classes, that handle files of different formats
 //    if(!fileInfo.exists() || !fileInfo.isFile())
 //    {
 //        QString msg = tr("Error: \"%1\" is not a file!").arg(fileName);
+//        // QMessageBox::critical(0, tr("File handling error"), msg);
 //        emit zg_message(msg);
 //        return false;
 //    }
-//    else if(fileInfo.suffix() == "spe")
+//    else if(fileInfo.suffix() == "xml" || fileInfo.suffix() == "clar")
 //    {
-//        ioHandler = new ZSpeIOHandler(this);
+//        ioHandler = new ZXMLCalibrationArrayIOHandler(this);
 //    }
 //    else // other suffixes
 //    {
 //        QString msg = tr("Error handling file \"%1\"! Cannot handle \"%2\" files.").arg(fileName, fileInfo.suffix());
+//        QMessageBox::critical(0, tr("File handling error"), msg);
 //        emit zg_message(msg);
 //        return false;
 //    }
 
+//    // file opening
 //    QFile file(fileName);
 //    if(!file.open(QIODevice::ReadOnly))
 //    {
@@ -224,11 +256,15 @@ bool ZFileActionManager::zh_getRawSpectrumArrayFromFile(const QString& fileName,
 //        return false;
 //    }
 
-//    connect(ioHandler, &ZAbstractSpectrumIOHandler::zg_message,
+//    // current directory  saving
+//    zv_calibrationFolderPath = fileInfo.absolutePath();
+
+//    // ability of message receiving
+//    connect(ioHandler, &ZAbstractCalibrationArrayIOHandler::zg_message,
 //            this, &ZFileActionManager::zg_message);
 
-//    // specrum loading
-//    bool readSpectrumRes = ioHandler->zp_getSpectrumFromFile(file, spectrum);
+//    // array loading
+//    bool readArrayRes = ioHandler->zp_readCalibrationArray(rawArray, file);
 
 //    if(file.isOpen())
 //    {
@@ -236,28 +272,32 @@ bool ZFileActionManager::zh_getRawSpectrumArrayFromFile(const QString& fileName,
 //    }
 //    delete ioHandler;
 
-//    //    if(!readspectrumRes)
-//    //    {
-//    //        QString msg = tr("Data loading from file \"%1\" failed.").arg(fileName);
-//    //        QMessageBox::critical(0, tr("Loading error"), msg, QMessageBox::Ok);
-//    //        emit zg_message(msg);
-//    //        return false;
-//    //    }
-
-//    return readSpectrumRes;
+//    return readArrayRes;
 //}
 //======================================================
-void ZFileActionManager::zp_restoreSettings()
+void ZFileActionManager::zh_restoreSettings()
 {
     QSettings settings;
     QVariant vData;
     settings.beginGroup(glAppVersion);
     settings.beginGroup("Common");
 
-    vData = settings.value("arrayFolderPath");
+    vData = settings.value("spectrumArrayFolderPath");
     if(vData.isValid() && !vData.isNull() && vData.canConvert<QString>())
     {
-        zv_arrayFilePath = vData.toString();
+        zv_spectrumArrayFolderPath = vData.toString();
+    }
+
+    vData = settings.value("calibrationArrayFolderPath");
+    if(vData.isValid() && !vData.isNull() && vData.canConvert<QString>())
+    {
+        zv_calibrationFolderPath = vData.toString();
+    }
+
+    vData = settings.value("spectrumFolderPath");
+    if(vData.isValid() && !vData.isNull() && vData.canConvert<QString>())
+    {
+        zv_spectrumFolderPath = vData.toString();
     }
 
     settings.endGroup();
@@ -270,18 +310,84 @@ void ZFileActionManager::zp_saveSettings() const
     settings.beginGroup(glAppVersion);
     settings.beginGroup("Common");
 
-    settings.setValue("arrayFolderPath", QVariant(zv_arrayFilePath));
+    settings.setValue("spectrumArrayFolderPath", QVariant(zv_spectrumArrayFolderPath));
+    settings.setValue("calibrationArrayFolderPath", QVariant(zv_calibrationFolderPath));
+    settings.setValue("spectrumFolderPath", QVariant(zv_spectrumFolderPath));
 
     settings.endGroup();
     settings.endGroup();
 }
 //======================================================
+void ZFileActionManager::zp_openCalibrations() const
+{
+    zv_openCalibrationFromFileAction->trigger();
+}
+//======================================================
+void ZFileActionManager::zp_saveSpectraArrayList(QString filePath, QList<ZRawSpectrumArray> rawArrayList)
+{
+    // TODO Saving array to file
+
+#ifdef DBG
+    qDebug() << "FILE TO SAVE" << filePath;
+#endif
+
+    QFileInfo fileInfo(filePath);
+    ZAbstractSpectrumArrayIOHandler* ioHandler;
+
+    // ioHandler subclass definition
+    // here is an ability to using the other classes, that handle files of different formats
+    if(fileInfo.suffix() == "xml" || fileInfo.suffix() == "spar")
+    {
+        ioHandler = new ZXMLSpectrumArrayIOHandler(this);
+    }
+    else // other suffixes
+    {
+        QString msg = tr("Error handling file \"%1\"! Cannot handle \"%2\" files.").arg(filePath, fileInfo.suffix());
+        QMessageBox::critical(0, tr("File handling error"), msg);
+        emit zg_message(msg);
+        return;
+    }
+
+    // file opening
+    QFile file(filePath);
+    if(!file.open(QIODevice::WriteOnly))
+    {
+        QString errorMsg;
+        if(file.error() != QFile::NoError)
+        {
+            errorMsg = tr("Cannot read file \"%1\"! %2").arg(file.fileName(), file.errorString());
+        }
+        else
+        {
+            errorMsg = tr("Cannot read file \"%1\"! %2").arg(file.fileName(), tr("Unknown error"));
+        }
+        emit zg_message(errorMsg);
+        return;
+    }
+
+    // saving current directory
+    zv_spectrumArrayFolderPath = fileInfo.absolutePath();
+
+    // ability of message receiving
+    connect(ioHandler, &ZAbstractSpectrumArrayIOHandler::zg_message,
+            this, &ZFileActionManager::zg_message);
+
+    // array loading
+    bool writeArrayRes = ioHandler->zp_writeSpectrumArray(file, rawArrayList);
+
+    if(file.isOpen())
+    {
+        file.close();
+    }
+    delete ioHandler;
+    // TODO signal that saving has been completed
+}
+//======================================================
 void ZFileActionManager::zp_defineSpectrumFilesAndInitAppending(int arrayIndex)
 {
     QStringList fileNameList = QFileDialog::getOpenFileNames(0, tr("Select spectrum file"),
-                                            zv_arrayFilePath,
-                                            tr("SRV spectrum files(*.spe);;All files(*.*)"));
-
+                                                             zv_spectrumFolderPath,
+                                                             tr("SRV spectrum files(*.spe);;All files(*.*)"));
     if(fileNameList.isEmpty())
     {
         return;
@@ -290,15 +396,15 @@ void ZFileActionManager::zp_defineSpectrumFilesAndInitAppending(int arrayIndex)
     emit zg_spectrumFileListToOpen(arrayIndex, fileNameList);
 }
 //======================================================
-void ZFileActionManager::zh_onOpenArrayAction() // outputs RawArray
+void ZFileActionManager::zh_onOpenSpectrumArrayAction() // outputs RawArray
 {
     QString fileName;
-    if(!zh_defineArrayFileName(fileName))
+    if(!zh_defineSpectrumArrayFileNameToOpen(fileName))
     {
         return;
     }
 
-    QList<ZRawArray> rawArrayList;
+    QList<ZRawSpectrumArray> rawArrayList;
     if(!zh_getRawSpectrumArrayFromFile(fileName, rawArrayList))
     {
         QString msg = tr("Data loading from file \"%1\" failed.").arg(fileName);
@@ -307,162 +413,41 @@ void ZFileActionManager::zh_onOpenArrayAction() // outputs RawArray
         return;
     }
 
-#ifdef DBG
-    foreach(ZRawArray ra, rawArrayList)
+    emit zg_spectrumRawArrayList(fileName, rawArrayList);
+}
+//======================================================
+void ZFileActionManager::zh_onSaveSpectrumArrayAction() const
+{
+    emit zg_requestRawArrayListAndInitSaving(QString());
+}
+//======================================================
+void ZFileActionManager::zh_onSaveSpectrumArrayAsAction() const
+{
+    QString filePath;
+    if(zh_defineSpectrumArrayFileNameToSave(filePath))
     {
-        qDebug() << ra.name;
-        for(int i = 0; i < ra.spectrumList.count(); i++)
-        {
-            qDebug() << ra.spectrumList.value(i).path;
-            QMap<QString, QString>::iterator it;
-            QMap<QString, QString> pMap = ra.spectrumList.value(i).concentrationMap;
-
-            for(it = pMap.begin(); it != pMap.end(); it++)
-            {
-                QString k, v;
-                k = it.key();
-                v = it.value();
-                qDebug() << k << " - " << v;
-            }
-        }
-
-        qDebug() << "********";
-
+        emit zg_requestRawArrayListAndInitSaving(filePath);
     }
-#endif
+}
+//======================================================
+void ZFileActionManager::zh_onOpenCalibrationAction()
+{
+    QStringList fileNames;
+    if(!zh_defineCalibrationArrayFileName(fileNames))
+    {
+        return;
+    }
 
-    emit zg_arrayList(fileName, rawArrayList);
+    emit zg_calibrationFileListToOpen(fileNames);
 
-    //    // spectrum array list creation
-    //    QList<ZSpectrumArray> spectrumArrayList;
-    //    foreach(ZRawArray rawArray, rawArrayList)
-    //    {
-    //        ZSpectrumArray array;
-    //        array.zp_setArrayName(rawArray.name);
-
-    //        for(int s = 0; s < rawArray.pathList.count(); s++)
-    //        {
-    //            ZAbstractSpectrum* spectrum;
-    //            if(!zh_getSpectrumFromFile(rawArray.pathList.value(s), spectrum))
-    //            {
-    //                array.zp_appendSpectrum(spectrum);
-    //                // spectrum.clear();
-    //            }
-    //        }
-    //        spectrumArrayList << array;
-    //    }
-
-    //#ifdef DBG
-    //    qDebug() << "STOP";
-    //#endif
-
-    //    ZSpectrumArray spectrumArray;
-    //    if(!zh_getSpectrumArrayFromFile(fileName, spectrumArray))
+    //    QList<ZRawCalibrationArray> rawArrayList;
+    //    if(!zh_getRawCalibrationArrayFromFile(fileName, rawArrayList))
     //    {
     //        QString msg = tr("Data loading from file \"%1\" failed.").arg(fileName);
     //        QMessageBox::critical(0, tr("Loading error"), msg, QMessageBox::Ok);
     //        emit zg_message(msg);
     //        return;
     //    }
-
-    //    // spectra loading
-    //    //ZAbstractSpectrum spectrum;
-    //    for(int i = spectrumArray.zp_spectrumCount() -1; i >= 0; i--)
-    //    {
-
-    //#ifdef DBG
-    //        qDebug() << spectrumArray.zp_spectrumFileName(i);
-    //#endif
-    //        QSharedPointer<ZAbstractSpectrum> spectrum;
-    //        if(!zh_getSpectrumFromFile(spectrumArray.zp_spectrumFileName(i), spectrum))
-    //        {
-    //            spectrumArray.zp_removeSpectrum(i);
-    //            continue;
-    //        }
-
-    //        // setting a loaded spectrum into current place
-    //        if(!spectrum.isNull())
-    //        {
-    //            spectrumArray.zp_setSpectrumAtIndex(i, *spectrum);
-    //            spectrum.clear();
-    //        }
-    //    }
-
-    //    // TODO loading a loaded array to model
-}
-//======================================================
-//bool ZFileActionManager::zh_getSpectrumArrayFromFile(const QString &fileName,
-//                                                     ZSpectrumArray& spectrumArray)
-//{
-//    QFileInfo fileInfo(fileName);
-//    ZAbstractArrayIOHandler* ioHandler;
-
-//    // here is an ability to using the other classes, that handle files of different formats
-//    if(!fileInfo.exists() || !fileInfo.isFile())
-//    {
-//        QString msg = tr("Error: \"%1\" is not a file!").arg(fileName);
-//        // QMessageBox::critical(0, tr("File handling error"), msg);
-//        emit zg_message(msg);
-//        return false;
-//    }
-//    else if(fileInfo.suffix() == "xml")
-//    {
-//        ioHandler = new ZXMLArrayIOHandler(this);
-//    }
-//    else // other suffixes
-//    {
-//        QString msg = tr("Error handling file \"%1\"! Cannot handle \"%2\" files.").arg(fileName, fileInfo.suffix());
-//        QMessageBox::critical(0, tr("File handling error"), msg);
-//        emit zg_message(msg);
-//        return false;
-//    }
-
-//    QFile file(fileName);
-//    if(!file.open(QIODevice::ReadOnly))
-//    {
-//        QString errorMsg;
-//        if(file.error() != QFile::NoError)
-//        {
-//            errorMsg = tr("Cannot read file \"%1\"! %2").arg(file.fileName(), file.errorString());
-//        }
-//        else
-//        {
-//            errorMsg = tr("Cannot read file \"%1\"! %2").arg(file.fileName(), tr("Unknown error"));
-//        }
-//        emit zg_message(errorMsg);
-//        return false;
-//    }
-
-//    zv_arrayFilePath = fileInfo.absolutePath();
-
-//    connect(ioHandler, &ZAbstractArrayIOHandler::zg_message,
-//            this, &ZFileActionManager::zg_message);
-
-//    // array loading
-//    bool readArrayRes = ioHandler->zp_readSpectrumArray(spectrumArray, file);
-
-//    if(file.isOpen())
-//    {
-//        file.close();
-//    }
-//    delete ioHandler;
-
-//    return readArrayRes;
-//}
-//======================================================
-void ZFileActionManager::zh_onSaveArrayAction() const
-{
-
-}
-//======================================================
-void ZFileActionManager::zh_onSaveArrayAsAction() const
-{
-
-}
-//======================================================
-void ZFileActionManager::zh_onOpenCalibrationAction() const
-{
-
 }
 //======================================================
 void ZFileActionManager::zh_onSaveCalibrationAction() const
@@ -475,8 +460,3 @@ void ZFileActionManager::zh_onSaveCalibrationAsAction() const
 
 }
 //======================================================
-//void ZFileActionManager::zh_onOpenSpectraAction() const
-//{
-
-//}
-////======================================================

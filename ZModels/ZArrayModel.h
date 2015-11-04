@@ -29,6 +29,8 @@ public slots:
 
 signals:
 
+    void zg_checkCurrentArray();
+
 private:
 
     // VARS

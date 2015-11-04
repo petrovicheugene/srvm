@@ -4,7 +4,9 @@
 // components
 #include "ZFileActionManager.h"
 #include "ZSpectraArrayRepository.h"
-#include "ZSpectraJointDataManager.h"
+#include "ZJointSpectraDataManager.h"
+#include "ZCalibrationRepository.h"
+#include "ZChemElementDataManager.h"
 // views
 #include "ZWidgetWithSidebar.h"
 #include "ZSpectrumArrayWidget.h"
@@ -18,9 +20,10 @@
 #include "ZCalibrationModel.h"
 #include "ZChemElementModel.h"
 #include "ZJointSpectraModel.h"
-
-
-
+// qt
+#include <QHBoxLayout>
+#include <QVBoxLayout>
+#include <QFrame>
 #include <QMessageBox>
 #include <QCloseEvent>
 #include <QAction>
@@ -33,6 +36,7 @@
 #include <QToolBar>
 #include <QDockWidget>
 #include <QSplitter>
+#include <QStatusBar>
 //==========================================================
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -45,6 +49,7 @@ MainWindow::MainWindow(QWidget *parent)
     zv_fileActionManager = 0;
     zv_spectraArrayRepository = 0;
     zv_jointSpectraDataManager = 0;
+    zv_chemElementDataManager = 0;
 
     zv_arrayModel = 0;
     zv_jointSpectraModel = 0;
@@ -97,13 +102,20 @@ void MainWindow::zh_createComponents()
 {
     // CENTRAL WIDGET
     // Central widget
+    QWidget* centralWidget = new QWidget(this);
+    QVBoxLayout* cwLayout = new QVBoxLayout(this);
+    cwLayout->setMargin(2);
+    centralWidget->setLayout(cwLayout);
     zv_centralSplitter = new QSplitter(Qt::Vertical, this);
-    setCentralWidget(zv_centralSplitter);
+    cwLayout->addWidget(zv_centralSplitter);
+    setCentralWidget(centralWidget);
 
     // Spectrum Array View - central widget
     zv_spectraSidebarWidget = new ZWidgetWithSidebar(tr("Spectra"), "SPECTRUM_SIDEBAR_WIDGET", this);
+    zv_spectraSidebarWidget->setFrameStyle(QFrame::StyledPanel | QFrame::Plain);
+    zv_spectraSidebarWidget->setLineWidth(1);
     zv_spectrumArrayWidget = new ZSpectrumArrayWidget(this);
-    zv_spectrumTableWidget = new ZSpectrumTableWidget(this);
+    zv_spectrumTableWidget = new ZJointSpectrumTableWidget(this);
 
     zv_spectraSidebarWidget->zp_setSidebarWidget(zv_spectrumArrayWidget);
     zv_spectraSidebarWidget->zp_setMainWidget(zv_spectrumTableWidget);
@@ -111,30 +123,43 @@ void MainWindow::zh_createComponents()
     zv_centralSplitter->addWidget(zv_spectraSidebarWidget);
 
     // Plotter
-     zv_plotter = new ZPlotter(this);
-     zv_centralSplitter->addWidget(zv_plotter);
+    zv_plotter = new ZPlotter(this);
+    QFrame* frameWidget = new QFrame(this);
+    QVBoxLayout* plotterLayout = new QVBoxLayout(frameWidget);
+    frameWidget->setLayout(plotterLayout);
+    frameWidget->setFrameStyle(QFrame::StyledPanel | QFrame::Plain);
+    frameWidget->setLineWidth(1);
+    plotterLayout->addWidget(zv_plotter);
+    zv_centralSplitter->addWidget(frameWidget);
 
     zv_centralSplitter->setCollapsible(0, false);
     zv_centralSplitter->setCollapsible(0, false);
 
     // DOCKS
-    // Calibration Array View
+    // Chem Element Array View
+    zv_chemElementArrayDock = new QDockWidget(this);
+    zv_chemElementArrayDock->setObjectName("CHEMELEMENT_ARRAY_DOCK");
+    zv_chemElementArrayDock->setWindowTitle(tr("Chemical elements"));
+    zv_dockList << zv_chemElementArrayDock;
+    addDockWidget(Qt::LeftDockWidgetArea, zv_chemElementArrayDock);
+
+    // zv_calibrationSidebarWidget = new ZWidgetWithSidebar("CALIBRATION_SIDEBAR_WIDGET", this);
+    zv_chemElementWidget = new ZChemElementWidget(this);
+    // setting to dock
+    zv_chemElementArrayDock->setWidget(zv_chemElementWidget);
+
+    // Calibration View
     zv_calibrationArrayDock= new QDockWidget(this);
     zv_calibrationArrayDock->setObjectName("CALIBRATION_ARRAY_DOCK");
     zv_calibrationArrayDock->setWindowTitle(tr("Calibrations"));
     zv_dockList << zv_calibrationArrayDock;
     addDockWidget(Qt::LeftDockWidgetArea, zv_calibrationArrayDock);
 
-    zv_calibrationSidebarWidget = new ZWidgetWithSidebar("CALIBRATION_SIDEBAR_WIDGET", this);
-    zv_calibrationArrayWidget = new ZChemElementWidget(this);
     zv_calibrationTableWidget = new ZCalibrationTableWidget(this);
-
-    zv_calibrationSidebarWidget->zp_setSidebarWidget(zv_calibrationArrayWidget);
-    zv_calibrationSidebarWidget->zp_setMainWidget(zv_calibrationTableWidget);
     // setting to dock
-    zv_calibrationArrayDock->setWidget(zv_calibrationSidebarWidget);
+    zv_calibrationArrayDock->setWidget(zv_calibrationTableWidget);
 
-    // Message Panel
+     // Message Panel
     zv_messagePanelDock = new QDockWidget(this);
     zv_messagePanelDock->setObjectName("MESSAGE_PANEL_DOCK");
     zv_messagePanelDock->setWindowTitle(tr("Message"));
@@ -152,13 +177,16 @@ void MainWindow::zh_createComponents()
     zv_fileActionManager = new ZFileActionManager(this);
     zv_spectraArrayRepository = new ZSpectraArrayRepository(this);
     zv_jointSpectraDataManager = new ZJointSpectraDataManager(this);
+    zv_chemElementDataManager = new ZChemElementDataManager(this);
+    zv_calibrationRepository = new ZCalibrationRepository(this);
 
     // Models
-     zv_arrayModel = new ZArrayModel(this);
-     zv_jointSpectraModel = new ZJointSpectraModel(this);
-     zv_chemElementModel = new ZChemElementModel(this);
-     zv_calibrationModel = new ZCalibrationModel(this);
+    zv_arrayModel = new ZArrayModel(this);
+    zv_jointSpectraModel = new ZJointSpectraModel(this);
+    zv_chemElementModel = new ZChemElementModel(this);
+    zv_calibrationModel = new ZCalibrationModel(this);
 
+    statusBar();
 }
 //==========================================================
 void MainWindow::zh_createMenu()
@@ -215,32 +243,35 @@ void MainWindow::zh_createConnections()
     connect(this, &MainWindow::zg_saveSettings,
             zv_spectraSidebarWidget, &ZWidgetWithSidebar::zp_saveSettings);
     connect(this, &MainWindow::zg_saveSettings,
-            zv_calibrationSidebarWidget, &ZWidgetWithSidebar::zp_saveSettings);
-    connect(this, &MainWindow::zg_saveSettings,
             zv_fileActionManager, &ZFileActionManager::zp_saveSettings);
 
 
-    // views <-> model and other comps
+    // views set models
     zv_spectrumArrayWidget->zp_setModel(zv_arrayModel);
     zv_spectrumTableWidget->zp_setModel(zv_jointSpectraModel);
-    connect(zv_spectrumArrayWidget, &ZSpectrumArrayWidget::zg_currentArrayChenged,
+    zv_calibrationTableWidget->zp_setModel(zv_calibrationModel);
+    zv_chemElementWidget->zp_setModel(zv_chemElementModel);
+
+    connect(zv_spectrumArrayWidget, &ZSpectrumArrayWidget::zg_currentArrayChanged,
             zv_jointSpectraDataManager, &ZJointSpectraDataManager::zp_currentArrayChanged);
-
-    // file action manager <-> array repository
-    connect(zv_fileActionManager, &ZFileActionManager::zg_arrayList,
-            zv_spectraArrayRepository, &ZSpectraArrayRepository::zp_appendArrays);
-    connect(zv_fileActionManager, &ZFileActionManager::zg_spectrumFileListToOpen,
-            zv_spectraArrayRepository, &ZSpectraArrayRepository::zp_appendSpectraToArray);
-    connect(zv_spectraArrayRepository, &ZSpectraArrayRepository::zg_initSpectraAppending,
-            zv_fileActionManager, &ZFileActionManager::zp_defineSpectrumFilesAndInitAppending);
+    connect(zv_spectrumArrayWidget, &ZSpectrumArrayWidget::zg_currentArrayChanged,
+            zv_chemElementDataManager, &ZChemElementDataManager::zp_currentArrayChanged);
 
 
-    // repository <-> model
+    // File Action Manager <-> other components
+    zv_calibrationRepository->zp_connectToFileManager(zv_fileActionManager);
+    zv_spectraArrayRepository->zp_connectToFileActionManager(zv_fileActionManager);
+
+    // spectra repository <-> spectra model and array model
+    // spectra
     zv_arrayModel->zp_setSpectraArrayRepository(zv_spectraArrayRepository);
     zv_jointSpectraDataManager->zp_setSpectraArrayRepository(zv_spectraArrayRepository);
     zv_jointSpectraModel->zp_setDataManager(zv_jointSpectraDataManager);
+    // chem element
+    zv_chemElementDataManager->zp_setSpectraArrayRepository(zv_spectraArrayRepository);
+    zv_chemElementModel->zp_setChemElementDataManager(zv_chemElementDataManager);
 
-    // repository <-> array view
+    // spectra repository <-> array view
     zv_spectrumArrayWidget->zp_appendButtonActions(zv_spectraArrayRepository->zp_arrayActions());
     zv_spectrumTableWidget->zp_appendButtonActions(zv_spectraArrayRepository->zp_spectrumActions());
     connect(zv_spectraArrayRepository, &ZSpectraArrayRepository::zg_currentFile,
@@ -250,9 +281,21 @@ void MainWindow::zh_createConnections()
     connect(zv_spectraArrayRepository, &ZSpectraArrayRepository::zg_requestCurrentArrayIndex,
             zv_spectrumArrayWidget, &ZSpectrumArrayWidget::zp_currentArrayIndex);
 
-    // repository <-> joint spectrum view
+    // spectra repository <-> joint spectrum view
     connect(zv_spectraArrayRepository, &ZSpectraArrayRepository::zg_requestSelectedSpectrumIndexList,
-            zv_spectrumTableWidget, &ZSpectrumTableWidget::zp_selectedSpectrumIndexList);
+            zv_spectrumTableWidget, &ZJointSpectrumTableWidget::zp_selectedSpectrumIndexList);
+
+    // calibration repository <-> calibration model
+    zv_calibrationModel->zp_setCalibrationRepository(zv_calibrationRepository);
+
+    // calibration repository <-> calibration view
+    zv_calibrationTableWidget->zp_appendButtonActions(zv_calibrationRepository->zp_arrayActions());
+    connect(zv_calibrationRepository, &ZCalibrationRepository::zg_requestSelectedCalibrationIndexList,
+            zv_calibrationTableWidget, &ZCalibrationTableWidget::zp_selectedCalibrationIndexList);
+    connect(zv_calibrationRepository, &ZCalibrationRepository::zg_requestCurrentCalibrationIndex,
+            zv_calibrationTableWidget, &ZCalibrationTableWidget::zp_currentCalibrationIndex);
+    connect(zv_calibrationTableWidget, &ZCalibrationTableWidget::zg_currentCalibrationChanged,
+            zv_calibrationRepository, &ZCalibrationRepository::zp_onCurrentCalibrationChanged);
 
 }
 //==========================================================
@@ -269,17 +312,17 @@ void MainWindow::zh_appendActionsToMenu(QMenu* menu)
     {
         foreach(QDockWidget* dock, zv_dockList)
         {
-//            QAction* viewAction = new QAction(this);
-//            viewAction->setText(dock->windowTitle());
-//            viewAction->setCheckable(true);
-//            QAction* viewAction = new QAction(this);
-//            viewAction->setText(dock->windowTitle());
-//            viewAction->setCheckable(true);
+            //            QAction* viewAction = new QAction(this);
+            //            viewAction->setText(dock->windowTitle());
+            //            viewAction->setCheckable(true);
+            //            QAction* viewAction = new QAction(this);
+            //            viewAction->setText(dock->windowTitle());
+            //            viewAction->setCheckable(true);
 
-//            connect(viewAction, &QAction::toggled,
-//                    dock, &QDockWidget::setVisible);
-//            connect(dock, &QDockWidget::visibilityChanged,
-//                    viewAction, &QAction::setChecked);
+            //            connect(viewAction, &QAction::toggled,
+            //                    dock, &QDockWidget::setVisible);
+            //            connect(dock, &QDockWidget::visibilityChanged,
+            //                    viewAction, &QAction::setChecked);
 
             menu->addAction(dock->toggleViewAction());
         }

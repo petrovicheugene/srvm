@@ -1,82 +1,19 @@
 //============================================================
-#include "ZXMLArrayIOHandler.h"
+#include "ZXMLSpectrumArrayIOHandler.h"
 #include <QXmlStreamReader>
 #include <QFileInfo>
 //============================================================
-ZXMLArrayIOHandler::ZXMLArrayIOHandler(QObject *parent) : ZAbstractArrayIOHandler(parent)
+ZXMLSpectrumArrayIOHandler::ZXMLSpectrumArrayIOHandler(QObject *parent) : ZAbstractSpectrumArrayIOHandler(parent)
 {
 
 }
 //============================================================
-//bool ZXMLArrayIOHandler::zp_readSpectrumArray (ZSpectrumArray& array, QFile& file)
-//{
-//    if(!(file.openMode() & QIODevice::ReadOnly))
-//    {
-//        QString errorMsg = tr("File \"%1\" is not open in read mode!").arg(file.fileName());
-//        emit zg_message(errorMsg);
-//        return false;
-//    }
+ZXMLSpectrumArrayIOHandler::~ZXMLSpectrumArrayIOHandler()
+{
 
-//    // root checking
-//    QXmlStreamReader reader(&file);
-//    bool rootDetectedFlag = false;
-//    bool magicStringDetectionFlag = false;
-//    //bool parsingErrorFalg = false;
-
-//    while(!reader.atEnd())
-//    {
-//        reader.readNext();
-//        // property root element detection section
-//        if(!rootDetectedFlag)
-//        {
-//            if(!zh_detectRoot(reader, magicStringDetectionFlag))
-//            {
-//                continue;
-//            }
-
-//            if(!magicStringDetectionFlag)
-//            {
-//                QString errorMsg = tr("File \"%1\" is not recognized!").arg(file.fileName());
-//                emit zg_message(errorMsg);
-//                return false;
-//            }
-
-//            rootDetectedFlag = true;
-//        }
-
-//        // root text data handling section
-//        if(reader.isCharacters())
-//        {
-//            if(reader.text().toString().simplified().isEmpty())
-//            {
-//                continue;
-//            }
-//        }
-
-//        if(reader.isStartElement())
-//        {
-//            zh_parseXMLElement(array, reader);
-//        }
-//    }
-
-//    if(reader.hasError())
-//    {
-//        QString errorMsg = tr("File \"%1\" parsing failed! %2").arg(file.fileName(), reader.errorString());
-//        emit zg_message(errorMsg);
-//        return false;
-//    }
-//    else if(file.error() != QFile::NoError)
-//    {
-//        QString errorMsg = tr("Cannot read file \"%1\"! %2").arg(file.fileName(), file.errorString());
-//        emit zg_message(errorMsg);
-//        return false;
-//    }
-
-//    return true;
-
-//}
+}
 //============================================================
-bool ZXMLArrayIOHandler::zp_readSpectrumArray (QList<ZRawArray>& rawArrayList, QFile& file)
+bool ZXMLSpectrumArrayIOHandler::zp_readSpectrumArray (QFile& file, QList<ZRawSpectrumArray>& rawArrayList) const
 {
     if(!(file.openMode() & QIODevice::ReadOnly))
     {
@@ -108,7 +45,6 @@ bool ZXMLArrayIOHandler::zp_readSpectrumArray (QList<ZRawArray>& rawArrayList, Q
                 emit zg_message(errorMsg);
                 return false;
             }
-
             rootDetectedFlag = true;
         }
 
@@ -147,7 +83,62 @@ bool ZXMLArrayIOHandler::zp_readSpectrumArray (QList<ZRawArray>& rawArrayList, Q
     return true;
 }
 //============================================================
-bool ZXMLArrayIOHandler::zh_detectRoot(const QXmlStreamReader& reader, bool& magicStringDetectionFlag) const
+bool ZXMLSpectrumArrayIOHandler::zp_writeSpectrumArray(QFile& file, const QList<ZRawSpectrumArray>& rawArrayList) const
+{
+    if(!(file.openMode() & QIODevice::WriteOnly))
+    {
+        QString errorMsg = tr("File \"%1\" is not open in write mode!").arg(file.fileName());
+        emit zg_message(errorMsg);
+        return false;
+    }
+
+    QXmlStreamWriter writer(&file);
+    writer.setAutoFormatting(true);
+    // head
+    writer.writeStartDocument();
+    writer.writeStartElement(zv_ROOT);
+    writer.writeAttribute(zv_TYPE, zv_magicString);
+    // data
+
+    for(int a = 0; a < rawArrayList.count(); a++)
+    {
+        writer.writeStartElement(zv_ARRAY);
+        writer.writeAttribute(zv_NAME, rawArrayList.at(a).name);
+
+        for(int s = 0; s < rawArrayList.at(a).spectrumList.count(); s++)
+        {
+            writer.writeStartElement(zv_SPECTRUM);
+            writer.writeAttribute(zv_PATH, rawArrayList.value(a).spectrumList.value(s).path);
+
+            QMap<QString, QString>::const_iterator it;
+
+            for(it = rawArrayList[a].spectrumList[s].concentrationMap.begin();
+                it != rawArrayList[a].spectrumList[s].concentrationMap.end(); it++ )
+            {
+                writer.writeStartElement(zv_CONCENTRATION);
+                writer.writeAttribute(zv_NAME, it.key());
+                writer.writeCharacters(it.value());
+                writer.writeEndElement(); // concentration
+            }
+             writer.writeEndElement(); // spectrum
+        }
+          writer.writeEndElement(); // array
+    }
+
+    writer.writeEndElement(); // root
+    writer.writeEndDocument();
+
+    if(file.error() != QFile::NoError)
+    {
+        QString errorMsg = tr("Cannot write to file \"%1\"! %2").arg(file.fileName(), file.errorString());
+        emit zg_message(errorMsg);
+        return false;
+    }
+
+    return true;
+}
+//============================================================
+bool ZXMLSpectrumArrayIOHandler::zh_detectRoot(const QXmlStreamReader& reader, bool& magicStringDetectionFlag) const
 {
     // true - element name == root, error - trnado magic string existing flag
     if(reader.tokenType() != QXmlStreamReader::StartElement ||
@@ -169,10 +160,10 @@ bool ZXMLArrayIOHandler::zh_detectRoot(const QXmlStreamReader& reader, bool& mag
 }
 //============================================================
 // returns true if closing tag opened in calling function is readed
-bool ZXMLArrayIOHandler::zh_parseXMLElement(QList<ZRawArray> &array,
-                                            int currentArrayIndex,
-                                            int currentSpectrumIndex,
-                                            QXmlStreamReader& reader)
+bool ZXMLSpectrumArrayIOHandler::zh_parseXMLElement(QList<ZRawSpectrumArray> &array,
+                                                    int currentArrayIndex,
+                                                    int currentSpectrumIndex,
+                                                    QXmlStreamReader& reader) const
 {
     QString currentChemElement = QString();
     bool insertedElementOpened = false;
@@ -180,7 +171,7 @@ bool ZXMLArrayIOHandler::zh_parseXMLElement(QList<ZRawArray> &array,
     QString currentTagName = reader.name().toString();
     if(currentTagName == zv_ARRAY)
     {
-        ZRawArray rawArray;
+        ZRawSpectrumArray rawArray;
         rawArray.name = reader.attributes().value(zv_NAME).toString();
         array.append(rawArray);
         currentArrayIndex = array.count() - 1;
@@ -200,7 +191,7 @@ bool ZXMLArrayIOHandler::zh_parseXMLElement(QList<ZRawArray> &array,
     {
         if(currentArrayIndex >= 0 && currentArrayIndex < array.count() &&
                 currentSpectrumIndex >= 0 && currentSpectrumIndex < array.value(currentArrayIndex).spectrumList.count())
-         {
+        {
             currentChemElement = reader.attributes().value(zv_NAME).toString();
             array[currentArrayIndex].spectrumList[currentSpectrumIndex].
                     concentrationMap.insert(currentChemElement, QString());
@@ -235,32 +226,6 @@ bool ZXMLArrayIOHandler::zh_parseXMLElement(QList<ZRawArray> &array,
                 QString concentration = reader.text().toString();
                 array[currentArrayIndex].spectrumList[currentSpectrumIndex].
                         concentrationMap[currentChemElement] = concentration;
-//                if(!zh_checkfilePath(path))
-//                {
-//                    // error
-//                    // TODO error message: path is not valid
-//                }
-//                else
-//                {
-//                    if(array.isEmpty())
-//                    {
-//                        // TODO error handling
-//                        //                    QString errorMsg;
-//                        //                    if(!array.zp_applySpectrum(path, errorMsg))
-//                        //                    {
-//                        //                        emit zg_message(errorMsg);
-//                        //                    }
-//                    }
-//                    else
-//                    {
-//                        if(currentArrayIndex >= 0 || currentArrayIndex < array.count())
-//                        {
-//                           // array[currentIndex].spectrumList << path;
-//                        }
-//                    }
-//                }
-
-
             }
         }
 
@@ -278,7 +243,7 @@ bool ZXMLArrayIOHandler::zh_parseXMLElement(QList<ZRawArray> &array,
     return false;
 }
 //============================================================
-bool ZXMLArrayIOHandler::zh_checkfilePath(const QString& path) const
+bool ZXMLSpectrumArrayIOHandler::zh_checkfilePath(const QString& path) const
 {
     QFileInfo fileInfo(path);
     if((!fileInfo.exists()) || (!fileInfo.isFile()))

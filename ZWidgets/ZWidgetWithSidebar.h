@@ -2,13 +2,13 @@
 #ifndef ZSIDEAREDWIDGET_H
 #define ZSIDEAREDWIDGET_H
 //=======================================================
-#include <QWidget>
+#include <QFrame>
 //=======================================================
 class QSplitter;
 class QLabel;
 class ZClickableLabel;
 //=======================================================
-class ZWidgetWithSidebar : public QWidget
+class ZWidgetWithSidebar : public QFrame
 {
     Q_OBJECT
 public:

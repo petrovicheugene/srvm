@@ -5,11 +5,12 @@
 #include <QObject>
 #include <QList>
 #include <QMenu>
-#include "ZRawArray.h"
+#include "ZRawSpectrumArray.h"
 #include "ZSpectrumArray.h"
 
 //==================================================================
 class QAction;
+class ZFileActionManager;
 //==================================================================
 class ZSpectraArrayRepository : public QObject
 {
@@ -21,46 +22,76 @@ public:
     enum ArrayOperationType {AOT_INSERT_ARRAYS,
                              AOT_END_INSERT_ARRAYS,
                              AOT_REMOVE_ARRAYS,
-                             AOT_END_REMOVE_ARRAYS
+                             AOT_END_REMOVE_ARRAYS,
+                             AOT_DATA_CHANGED
                             };
 
     enum SpectrumOperationType {SOT_INSERT_SPECTRA,
                                 SOT_END_INSERT_SPECTRA,
                                 SOT_REMOVE_SPECTRA,
-                                SOT_END_REMOVE_SPECTRA
+                                SOT_END_REMOVE_SPECTRA,
+                                SOT_DATA_CHANGED
                                };
+
+    enum ChemElementOperationType {CEOT_INSERT_CHEM_ELEMENT,
+                                   CEOT_END_INSERT_CHEM_ELEMENT,
+                                   CEOT_REMOVE_CHEM_ELEMENT,
+                                   CEOT_END_REMOVE_CHEM_ELEMENT,
+                                   CEOT_CHEM_ELEMENT_CHANGED,
+                                   CEOT_CHEM_ELEMENT_VISIBLE_CHANGED
+                                  };
+
 
     // FUNCS
     void zp_appendActionsToMenu(QMenu *menu) const;
     QList<QAction*> zp_arrayActions() const;
     QList<QAction*>zp_spectrumActions() const;
 
+    void zp_connectToFileActionManager(ZFileActionManager*);
+
     bool zp_isEmpty() const;
     void zp_clear();
 
     int zp_arrayCount() const;
-    int zp_spectrumCount(int arrayIndex) const;
     QString zp_arrayName(int arrayIndex) const;
-    QString zp_spectrumName(int arrayIndex, int spectrumIndex) const;
 
+    int zp_spectrumCount(int arrayIndex) const;
+    QString zp_spectrumName(int arrayIndex, int spectrumIndex) const;
     QList<int> zp_spectrum(int arrayIndex, int spectrumIndex) const;
 
+    int zp_chemElementCount(int arrayIndex) const;
+    int zp_visibleChemElementCount(int arrayIndex) const;
+    int zp_numberVisibleChemElementsBeforeIndex(int arrayindex, int index) const;
+    QStringList zp_chemElementList(int arrayIndex) const;
+    QString zp_visibleChemElementName(int arrayIndex, int visibleIndex) const;
+    QString zp_chemElementName(int arrayIndex, int row) const;
+
+    bool zp_chemElementIsVisible(int arrayIndex, int row) const;
+    bool zp_setChemElementVisible(int arrayIndex, int row, bool visible) const;
+
+    QString zp_chemConcentration(int arrayIndex,
+                                 int spectrumIndex, int visibleChemElementIndex) const;
+    bool zp_setChemConcentration(int arrayIndex,
+                                 int spectrumIndex, int visibleChemElementIndex, const QString &concentration);
 signals:
 
     void zg_message(QString) const;
     void zg_currentArrayOperation(ArrayOperationType, int, int) const;
     void zg_currentSpectrumOperation(SpectrumOperationType, int, int, int) const;
+    void zg_currentChemElementOperation(ChemElementOperationType, int, int, int) const;
+
     void zg_currentFile(bool dirty, QString fileName) const;
 
     void zg_setCurrentArrayIndex(int arrayIndex);
     void zg_requestCurrentArrayIndex(int& arrayIndex);
     void zg_requestSelectedSpectrumIndexList(QList<int>&);
+    void zg_saveSpectraArrayList(QString, QList<ZRawSpectrumArray>) const;
 
     void zg_initSpectraAppending(int);
 
 public slots:
 
-    void zp_appendArrays(QString path, QList<ZRawArray>);
+    void zp_appendArrays(QString path, QList<ZRawSpectrumArray>);
     void zp_appendSpectraToArray(int, QStringList);
     void zp_getArrayCount(int&) const;
     void zp_getSpectrumCount(int arrayIndex, int&) const;
@@ -73,7 +104,8 @@ private slots:
     void zh_onRemoveArrayAction();
     void zh_onAppendSpectraToArrayAction();
     void zh_onRemoveSpectrumFromArrayAction();
-
+    void zh_onChemElementOperation(ZChemElementList::OperationType, int, int);
+    void zh_createRawArrayListAndStartSaving(QString filePath) const;
 
 private:
 
@@ -90,10 +122,12 @@ private:
     // FUNCS
     void zh_createActions();
     void zh_createConnections();
-    void zh_createArray(const ZRawArray&);
+    void zh_createArray(const ZRawSpectrumArray&);
 
     void zh_removeArray(int);
     void zh_removeSpectrum(int, int);
+    int zh_chemElementIndex(int arrayIndex, const QString& chemElement);
+    QList<ZRawSpectrumArray> zh_createRawArrayList() const;
     //  void zp_saveArrayListToFile();
 
 };

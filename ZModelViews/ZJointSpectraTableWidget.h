@@ -3,20 +3,21 @@
 #define ZSPECTRUMTABLEWIDGET_H
 //=============================================================
 #include <QWidget>
+#include <QModelIndex>
 //=============================================================
 class QTableView;
-class QAbstractItemModel;
+class ZJointSpectraModel;
 class QAction;
 class QHBoxLayout;
 //=============================================================
-class ZSpectrumTableWidget : public QWidget
+class ZJointSpectrumTableWidget : public QWidget
 {
     Q_OBJECT
 public:
-    explicit ZSpectrumTableWidget(QWidget *parent = 0);
+    explicit ZJointSpectrumTableWidget(QWidget *parent = 0);
 
     // FUNCS
-   void zp_setModel(QAbstractItemModel* model);
+   void zp_setModel(ZJointSpectraModel* model);
    void zp_appendButtonActions(QList<QAction*>);
 
 signals:
@@ -32,6 +33,11 @@ private:
     QHBoxLayout* zv_buttonLayout;
     // FUNCS
     void zh_createComponents();
+    void zh_createConnections();
+
+private slots:
+
+    void zp_editNext(QModelIndex editedIndex);
 
 };
 //=============================================================

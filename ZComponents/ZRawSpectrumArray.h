@@ -18,9 +18,9 @@ struct ZRawSpectrum
 };
 
 //========================================================
-struct ZRawArray
+struct ZRawSpectrumArray
 {
-    ZRawArray()
+    ZRawSpectrumArray()
     {
         name = QString();
         spectrumList = QList<ZRawSpectrum>();

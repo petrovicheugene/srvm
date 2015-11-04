@@ -3,7 +3,7 @@
 #define ZJOINTSPECTRAMODEL_H
 //===========================================================
 #include <QAbstractTableModel>
-#include "ZSpectraJointDataManager.h"
+#include "ZJointSpectraDataManager.h"
 //===========================================================
 //===========================================================
 class ZJointSpectraModel : public QAbstractTableModel
@@ -27,8 +27,6 @@ public slots:
 
 
 signals:
-
-
 
 
 private:

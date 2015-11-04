@@ -20,6 +20,7 @@ class ZAbstractSpectrum : public QObject
     Q_OBJECT
 public:
     explicit ZAbstractSpectrum(const QList<int> &intensityList, const QString& path, QObject* parent);
+    virtual ~ZAbstractSpectrum();
 
     // VARS
     enum SpectrumType {ST_NA, ST_SPE};
@@ -31,7 +32,8 @@ public:
     void zp_insertConcentration(const QString& chemElement, const QString& concentration);
     QStringList zp_chemElementList() const;
     QString zp_concentration(const QString& chemElement) const;
-    QList<int> zp_spectrumData();
+    bool zp_setConcentration(const QString& chemElement, const QString& concentration);
+    QList<int> zp_spectrumIntensityArray();
     virtual ZAbstractSpectrumAuxData zp_auxData() const = 0;
 
 
