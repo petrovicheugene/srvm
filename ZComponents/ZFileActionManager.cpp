@@ -325,11 +325,13 @@ void ZFileActionManager::zp_openCalibrations() const
 //======================================================
 void ZFileActionManager::zp_saveSpectraArrayList(QString filePath, QList<ZRawSpectrumArray> rawArrayList)
 {
-    // TODO Saving array to file
-
-#ifdef DBG
-    qDebug() << "FILE TO SAVE" << filePath;
-#endif
+    if(filePath.isEmpty())
+    {
+        if(!zh_defineSpectrumArrayFileNameToSave(filePath))
+        {
+            return;
+        }
+    }
 
     QFileInfo fileInfo(filePath);
     ZAbstractSpectrumArrayIOHandler* ioHandler;
@@ -380,6 +382,12 @@ void ZFileActionManager::zp_saveSpectraArrayList(QString filePath, QList<ZRawSpe
         file.close();
     }
     delete ioHandler;
+
+    if(writeArrayRes)
+    {
+        emit zg_spectrumArraySaved(filePath);
+    }
+
     // TODO signal that saving has been completed
 }
 //======================================================
@@ -393,6 +401,8 @@ void ZFileActionManager::zp_defineSpectrumFilesAndInitAppending(int arrayIndex)
         return;
     }
 
+    QFileInfo fileInfo(fileNameList.first()) ;
+    zv_spectrumFolderPath = fileInfo.absolutePath();
     emit zg_spectrumFileListToOpen(arrayIndex, fileNameList);
 }
 //======================================================

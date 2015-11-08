@@ -2,6 +2,7 @@
 #include "ZSpectrumArrayWidget.h"
 #include "glVariables.h"
 #include "ZArrayModel.h"
+#include "ZStringDelegate.h"
 
 #include <QTableView>
 #include <QHBoxLayout>
@@ -32,7 +33,9 @@ void ZSpectrumArrayWidget::zh_createComponents()
 void ZSpectrumArrayWidget::zp_setModel(ZArrayModel *model)
 {
     zv_table->setModel(model);
+    zv_table->setItemDelegate(new ZStringDelegate(false, zv_table));
     zv_table->horizontalHeader()->setSectionResizeMode(0, QHeaderView::Stretch);
+
     connect(zv_table->selectionModel(), &QItemSelectionModel::currentRowChanged,
             this, &ZSpectrumArrayWidget::zh_onCurrentArrayChanged);
     connect(model, &ZArrayModel::zg_checkCurrentArray,
@@ -79,6 +82,17 @@ void ZSpectrumArrayWidget::zp_currentArrayIndex(int& arrayIndex)
     }
 
     arrayIndex = currentIndex.row();
+}
+//==============================================================
+void ZSpectrumArrayWidget::zp_startCurrentArrayEdition()
+{
+    QModelIndex currentIndex = zv_table->currentIndex();
+    if(!currentIndex.isValid())
+    {
+        return;
+    }
+
+    zv_table->edit(currentIndex);
 }
 //==============================================================
 void ZSpectrumArrayWidget::zh_createConnections()

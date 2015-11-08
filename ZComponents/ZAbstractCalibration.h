@@ -34,8 +34,8 @@ public:
 
     CalibrationType zp_type() const;
 
-    bool zp_isChecked() const;
-    void zp_setChecked(bool);
+    bool zp_isVisible() const;
+    void zp_setVisible(bool);
 
     bool zp_isDirty() const;
     QString zp_suffix() const;
@@ -54,7 +54,7 @@ protected:
     QString zv_baseName;
     QString zv_path;
 
-    bool zv_checked;
+    bool zv_visibility;
     bool zv_dirty;
 
 };

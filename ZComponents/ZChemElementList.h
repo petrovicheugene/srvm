@@ -15,6 +15,7 @@ public:
         element = QString();
         visibility = true;
     }
+
     ZChemElement(const QString& name)
     {
         element = name;
@@ -37,7 +38,8 @@ public:
                         OT_REMOVE_CHEM_ELEMENT,
                         OT_END_REMOVE_CHEM_ELEMENT,
                         OT_CHANGED,
-                        OT_VISIBLE_CHANGED};
+                        OT_VISIBLE_CHANGE,
+                        OT_END_VISIBLE_CHANGE};
 
     bool zp_appendElement(const QString&);
     bool zp_removeElement(const QString&);
@@ -53,6 +55,8 @@ public:
 
     QString zp_visibleChemElementName(int visibleIndex) const;
     QString zp_chemElementName(int index) const;
+    bool zp_setChemElementName(int index, const QString& name);
+
     bool zp_chemElementIsVisible(int index) const;
     bool zp_setChemElementVisible(int row, bool visible);
     bool zp_setChemElementVisible(const QString&, bool);

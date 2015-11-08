@@ -62,7 +62,7 @@ QVariant ZCalibrationModel::data(const QModelIndex & index, int role) const
     {
         if(index.column() == 0)
         {
-            if(zv_calibrationRepository->zp_isChecked(index.row()))
+            if(zv_calibrationRepository->zp_calibrationIsVisible(index.row()))
             {
                 return QVariant(Qt::Checked);
             }
@@ -113,7 +113,7 @@ bool	ZCalibrationModel::setData(const QModelIndex & index, const QVariant & valu
                 return false;
             }
             Qt::CheckState checkState = static_cast<Qt::CheckState>(value.toInt());
-            zv_calibrationRepository->zp_setChecked(index.row(), checkState == Qt::Checked);
+            zv_calibrationRepository->zp_setVisible(index.row(), checkState == Qt::Checked);
             return true;
         }
     }

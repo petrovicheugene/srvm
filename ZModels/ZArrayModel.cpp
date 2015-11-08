@@ -52,6 +52,24 @@ QVariant ZArrayModel::data(const QModelIndex & index, int role) const
 //==================================================================
 bool	ZArrayModel::setData(const QModelIndex & index, const QVariant & value, int role)
 {
+    if(zv_repositiry == 0 || !index.isValid() || index.row() < 0 || index.row() >= rowCount()
+            || index.column() < 0 || index.column() >= columnCount() || !value.isValid())
+    {
+        return false;
+    }
+
+    if(role == Qt::EditRole)
+    {
+        if(index.column() == 0)
+        {
+            if(!value.canConvert<QString>())
+            {
+                return false;
+            }
+            return zv_repositiry->zp_setSpectrumArrayName(index.row(), value.toString());
+        }
+    }
+
     return false;
 }
 //==================================================================

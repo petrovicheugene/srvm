@@ -37,6 +37,7 @@ public:
     QString zp_columnName(int) const;
 
     bool zp_setVisible(bool visible, int row) const;
+    bool zp_setChemElementName(int chemElementIndex, const QString& chemElementName) const;
 
 signals:
 

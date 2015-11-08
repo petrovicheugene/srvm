@@ -4,7 +4,9 @@
 //==================================================================
 #include <QObject>
 #include <QModelIndex>
+
 #include "ZSpectraArrayRepository.h"
+#include "ZCalibrationRepository.h"
 //==================================================================
 class ZJointSpectraDataManager : public QObject
 {
@@ -21,12 +23,14 @@ public:
                         OT_INSERT_COLUMN,
                         OT_END_INSERT_COLUMN,
                         OT_REMOVE_COLUMN,
-                        OT_END_REMOVE_COLUMN};
+                        OT_END_REMOVE_COLUMN,
+                        OT_COLUMN_HEADER_CHANGED};
     // FUNCS
     void zp_setSpectraArrayRepository(ZSpectraArrayRepository*);
+    void zp_setCalibrationRepository(ZCalibrationRepository*);
 
     int zp_rowCount() const;
-    int zp_columnCount() const;
+    int zp_columnCount();
     int zp_visibleChemElementCount() const;
     bool zp_isColumnChemElementColumn(int column) const;
     QVariant zp_data(QModelIndex index) const;
@@ -45,24 +49,29 @@ public slots:
 private slots:
 
     void zh_onRepositoryArrayOperation(ZSpectraArrayRepository::SpectrumOperationType,
-                                  int arrayIndex, int first, int last);
+                                       int arrayIndex, int first, int last);
 
     void zh_onRepositoryChemElementOperation(ZSpectraArrayRepository::ChemElementOperationType,
-                                  int arrayIndex, int first, int last);
+                                             int arrayIndex, int first, int last);
 
+    void zh_onRepositoryCalibrationOperation(ZCalibrationRepository::OperationType, int, int);
 
 private:
 
     // VARS
     const int zv_spectrumDataColumnCount = 2;
     int zv_currentArrayIndex;
-    ZSpectraArrayRepository* zv_repositiry;
+    ZSpectraArrayRepository* zv_spectrumArrayRepositiry;
+    ZCalibrationRepository* zv_calibrationRepository;
     QString zv_currentChemElement;
+
+    int zv_visibleChemElementCount;
+    int zv_visibleCalibrationCount;
 
 
     // FUNCS
     int zh_convertChemElementIndexToVisibleChemElementIndex(int arrayIndex, int originalIndex);
-
+    void zh_defineColumnCounts();
 };
 
 //==================================================================

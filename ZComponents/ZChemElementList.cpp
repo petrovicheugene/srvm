@@ -17,9 +17,6 @@ bool ZChemElementList::zp_appendElement(const QString& element)
     int index = zv_elementList.count();
     emit zg_operationType(OT_INSERT_CHEM_ELEMENT, index, index);
     zv_elementList.append(ZChemElement(element));
-#ifdef DBG
-    qDebug() << "ADDED" << element;
-#endif
     emit zg_operationType(OT_END_INSERT_CHEM_ELEMENT, index, index);
     return true;
 }
@@ -84,14 +81,14 @@ bool ZChemElementList::zp_setChemElementVisible(const QString& element, bool vis
     }
 
     return zp_setChemElementVisible(elementIndex, visible);
-//    if(zv_elementList[elementIndex].visibility == visible)
-//    {
-//        return false;
-//    }
+    //    if(zv_elementList[elementIndex].visibility == visible)
+    //    {
+    //        return false;
+    //    }
 
-//    zv_elementList[elementIndex].visibility = visible;
-//    emit zg_operationType(OT_CHANGED, elementIndex, elementIndex);
-//    return true;
+    //    zv_elementList[elementIndex].visibility = visible;
+    //    emit zg_operationType(OT_CHANGED, elementIndex, elementIndex);
+    //    return true;
 }
 //=====================================================
 int ZChemElementList::zp_findElement(const QString& element) const
@@ -187,6 +184,18 @@ QString ZChemElementList::zp_chemElementName(int index) const
     return zv_elementList.value(index).element;
 }
 //=====================================================
+bool ZChemElementList::zp_setChemElementName(int index, const QString& name)
+{
+    if(index < 0 || index >= zv_elementList.count() || name.isEmpty())
+    {
+        return false;
+    }
+
+    zv_elementList[index].element = name;
+    emit zg_operationType(OT_CHANGED, index, index);
+    return true;
+}
+//=====================================================
 bool ZChemElementList::zp_chemElementIsVisible(int index) const
 {
     if(index < 0 || index >= zv_elementList.count())
@@ -209,8 +218,9 @@ bool ZChemElementList::zp_setChemElementVisible(int index, bool visible)
         return false;
     }
 
+    emit zg_operationType(OT_VISIBLE_CHANGE, index, index);
     zv_elementList[index].visibility = visible;
-    emit zg_operationType(OT_VISIBLE_CHANGED, index, index);
+    emit zg_operationType(OT_END_VISIBLE_CHANGE, index, index);
     return true;
 }
 //=====================================================

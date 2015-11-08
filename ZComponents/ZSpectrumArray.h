@@ -30,6 +30,7 @@ public:
     QString zp_chemElementName(int index) const;
     bool zp_chemElementIsVisible(int index) const;
     bool zp_setChemElementVisible(int row, bool visible);
+    bool zp_setChemElementName(int row, const QString&);
 
     QString zp_chemConcentration(const QString& chemElement,
                                  int spectrumIndex) const;
@@ -40,7 +41,9 @@ public:
     QList<int> zp_spectrumIntensityArray(int index) const;
     bool zp_removeSpectrum(int);
     void zp_clearArray();
-    bool zp_appendSpectrum(const ZRawSpectrum&);
+    bool zp_appendSpectrum(const ZRawSpectrum& rawSpectrum);
+    bool zp_appendNewChemElement();
+    bool zp_removeChemElement(int);
 
 signals:
 

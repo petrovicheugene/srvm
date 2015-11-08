@@ -5,12 +5,16 @@
 ZJointSpectraDataManager::ZJointSpectraDataManager(QObject *parent) : QObject(parent)
 {
     zv_currentArrayIndex = -1;
-    zv_repositiry = 0;
+    zv_spectrumArrayRepositiry = 0;
+    zv_calibrationRepository = 0;
+    zv_visibleChemElementCount = 0;
+    zv_visibleCalibrationCount = 0;
+
 }
 //==================================================================
 void ZJointSpectraDataManager::zp_setSpectraArrayRepository(ZSpectraArrayRepository* repository)
 {
-    zv_repositiry = repository;
+    zv_spectrumArrayRepositiry = repository;
     // array repository <-> array model
     connect(repository, &ZSpectraArrayRepository::zg_currentSpectrumOperation,
             this, &ZJointSpectraDataManager::zh_onRepositoryArrayOperation);
@@ -19,47 +23,66 @@ void ZJointSpectraDataManager::zp_setSpectraArrayRepository(ZSpectraArrayReposit
 
 }
 //==================================================================
+void ZJointSpectraDataManager::zp_setCalibrationRepository(ZCalibrationRepository* repository)
+{
+    zv_calibrationRepository = repository;
+    connect(repository, &ZCalibrationRepository::zg_currentOperation,
+            this, &ZJointSpectraDataManager::zh_onRepositoryCalibrationOperation);
+
+}
+//==================================================================
 int ZJointSpectraDataManager::zp_rowCount() const
 {
-    if(zv_currentArrayIndex < 0 || zv_repositiry == 0)
+    if(zv_currentArrayIndex < 0 || zv_spectrumArrayRepositiry == 0)
     {
         return 0;
     }
 
-    return zv_repositiry->zp_spectrumCount(zv_currentArrayIndex);
+    return zv_spectrumArrayRepositiry->zp_spectrumCount(zv_currentArrayIndex);
 }
 //==================================================================
-int ZJointSpectraDataManager::zp_columnCount() const
+int ZJointSpectraDataManager::zp_columnCount()
 {
-    if(zv_currentArrayIndex < 0 || zv_repositiry == 0)
-    {
-        return zv_spectrumDataColumnCount;
-    }
+//    if(zv_spectrumArrayRepositiry != 0 && zv_currentArrayIndex >= 0)
+//    {
+//        zv_visibleChemElementCount = zv_spectrumArrayRepositiry->zp_visibleChemElementCount(zv_currentArrayIndex);
+//    }
+//    else
+//    {
+//        zv_visibleChemElementCount = 0;
+//    }
 
-    int visibleElementCount = zv_repositiry->zp_visibleChemElementCount(zv_currentArrayIndex);
+//    if(zv_calibrationRepository != 0)
+//    {
+//        zv_visibleCalibrationCount = zv_calibrationRepository->zp_visibleCalibrationCount();
+//    }
+//    else
+//    {
+//        zv_visibleCalibrationCount = 0;
+//    }
 
-    return zv_spectrumDataColumnCount + visibleElementCount;
+    return zv_spectrumDataColumnCount + zv_visibleChemElementCount + zv_visibleCalibrationCount;
 }
 //==================================================================
 int ZJointSpectraDataManager::zp_visibleChemElementCount() const
 {
-    if(zv_currentArrayIndex < 0 || zv_repositiry == 0)
+    if(zv_currentArrayIndex < 0 || zv_spectrumArrayRepositiry == 0)
     {
         return 0;
     }
 
-    return zv_repositiry->zp_visibleChemElementCount(zv_currentArrayIndex);
+    return zv_spectrumArrayRepositiry->zp_visibleChemElementCount(zv_currentArrayIndex);
 }
 //==================================================================
 bool ZJointSpectraDataManager::zp_isColumnChemElementColumn(int column) const
 {
-    if(zv_repositiry == 0)
+    if(zv_spectrumArrayRepositiry == 0)
     {
         return false;
     }
 
     if(column < zv_spectrumDataColumnCount
-            || column > zv_repositiry->zp_visibleChemElementCount(zv_currentArrayIndex)
+            || column > zv_spectrumArrayRepositiry->zp_visibleChemElementCount(zv_currentArrayIndex)
             + zv_spectrumDataColumnCount)
     {
         return false;
@@ -70,14 +93,14 @@ bool ZJointSpectraDataManager::zp_isColumnChemElementColumn(int column) const
 //==================================================================
 QVariant ZJointSpectraDataManager::zp_data(QModelIndex index) const
 {
-    if(!zv_repositiry || !index.isValid())
+    if(!zv_spectrumArrayRepositiry || !index.isValid())
     {
         return QVariant();
     }
 
     if(index.column() == 0)
     {
-        return QVariant(zv_repositiry->zp_spectrumName(zv_currentArrayIndex, index.row()));
+        return QVariant(zv_spectrumArrayRepositiry->zp_spectrumName(zv_currentArrayIndex, index.row()));
     }
     if(index.column() == 1)
     {
@@ -86,16 +109,12 @@ QVariant ZJointSpectraDataManager::zp_data(QModelIndex index) const
         // return QVariant(zv_repositiry->zp_spectrum(zv_currentArrayIndex, index.row()));
     }
 
-    int visibleChemElementCount = zv_repositiry->zp_visibleChemElementCount(zv_currentArrayIndex);
+    int visibleChemElementCount = zv_spectrumArrayRepositiry->zp_visibleChemElementCount(zv_currentArrayIndex);
     if(index.column() >= zv_spectrumDataColumnCount && index.column() < visibleChemElementCount + zv_spectrumDataColumnCount)
     {
-        QString concentrationString = zv_repositiry->zp_chemConcentration(zv_currentArrayIndex,
-                                                                          index.row(),
-                                                                          index.column() - zv_spectrumDataColumnCount);
-#ifdef DBG
-        qDebug() << concentrationString << "COL" << index.column() - zv_spectrumDataColumnCount <<
-                    "ROW" << index.row();
-#endif
+        QString concentrationString = zv_spectrumArrayRepositiry->zp_chemConcentration(zv_currentArrayIndex,
+                                                                                       index.row(),
+                                                                                       index.column() - zv_spectrumDataColumnCount);
         return QVariant(concentrationString);
     }
 
@@ -107,6 +126,11 @@ QVariant ZJointSpectraDataManager::zp_data(QModelIndex index) const
 QString ZJointSpectraDataManager::zp_columnName(int columnIndex) const
 {
 
+    if(columnIndex == 2)
+    {
+
+    }
+
     if(columnIndex == 0)
     {
         return tr("File");
@@ -115,16 +139,43 @@ QString ZJointSpectraDataManager::zp_columnName(int columnIndex) const
     {
         return tr("Spectrum");
     }
-
-    if(zv_repositiry == 0)
+    else if(columnIndex > 1 && columnIndex < zv_spectrumDataColumnCount + zv_visibleChemElementCount)
     {
-        return QString();
+        if(zv_spectrumArrayRepositiry == 0)
+        {
+            return QString();
+        }
+
+        int visibleChemElementIndex = columnIndex - zv_spectrumDataColumnCount;
+        if(visibleChemElementIndex >= 0
+                && visibleChemElementIndex < zv_spectrumArrayRepositiry->zp_visibleChemElementCount(zv_currentArrayIndex))
+        {
+            return zv_spectrumArrayRepositiry->zp_visibleChemElementName(zv_currentArrayIndex, visibleChemElementIndex);
+        }
+        else
+        {
+            return QString();
+        }
     }
-
-    int chemElementIndex = columnIndex - zv_spectrumDataColumnCount;
-    if(chemElementIndex >= 0 && chemElementIndex < zv_repositiry->zp_visibleChemElementCount(zv_currentArrayIndex))
+    else if(columnIndex > 1 && columnIndex < zv_spectrumDataColumnCount +
+            zv_visibleChemElementCount + zv_visibleCalibrationCount)
     {
-        return zv_repositiry->zp_visibleChemElementName(zv_currentArrayIndex, chemElementIndex);
+        if(zv_calibrationRepository == 0)
+        {
+            return QString();
+        }
+
+        int visibleCalibrationIndex = columnIndex - zv_spectrumDataColumnCount - zv_visibleChemElementCount;
+        if(visibleCalibrationIndex >= 0
+                && visibleCalibrationIndex < zv_calibrationRepository->zp_visibleCalibrationCount())
+        {
+            return zv_calibrationRepository->zp_visibleCalibrationName(visibleCalibrationIndex);
+        }
+        else
+        {
+            return QString();
+        }
+
     }
 
     return QString();
@@ -132,7 +183,7 @@ QString ZJointSpectraDataManager::zp_columnName(int columnIndex) const
 //==================================================================
 bool ZJointSpectraDataManager::zp_setChemConcentration(int row, int column, const QString& consentration)
 {
-    if(!zv_repositiry || !zp_isColumnChemElementColumn(column)
+    if(!zv_spectrumArrayRepositiry || !zp_isColumnChemElementColumn(column)
             || zv_currentArrayIndex < 0 )
     {
         return false;
@@ -145,27 +196,29 @@ bool ZJointSpectraDataManager::zp_setChemConcentration(int row, int column, cons
         return false;
     }
 
-    return zv_repositiry->zp_setChemConcentration(zv_currentArrayIndex,
-                                                  row,
-                                                  column - zv_spectrumDataColumnCount,
-                                                  consentration);
+    return zv_spectrumArrayRepositiry->zp_setChemConcentration(zv_currentArrayIndex,
+                                                               row,
+                                                               column - zv_spectrumDataColumnCount,
+                                                               consentration);
 }
 //==================================================================
 void ZJointSpectraDataManager::zp_currentArrayChanged(int current, int previous)
 {
-#ifdef DBG
-    qDebug() << "ARRAY CURRENT" << current << "PREVIOUS" << previous;
-#endif
-
     emit zg_currentOperation(OT_RESET_DATA, -1, -1);
     zv_currentArrayIndex = current;
-    emit zg_currentOperation(OT_END_RESET_DATA, -1, -1);
+//    if(zv_currentArrayIndex >= 0 && zv_spectrumArrayRepositiry != 0)
+//    {
+//        zv_visibleChemElementCount = zv_spectrumArrayRepositiry->zp_visibleChemElementCount(zv_currentArrayIndex);
+//    }
 
+    zh_defineColumnCounts();
+    emit zg_currentOperation(OT_END_RESET_DATA, -1, -1);
 }
 //==================================================================
 void ZJointSpectraDataManager::zh_onRepositoryArrayOperation(ZSpectraArrayRepository::SpectrumOperationType type,
                                                              int arrayIndex, int first, int last)
 {
+    zh_defineColumnCounts();
     if(zv_currentArrayIndex != arrayIndex)
     {
         return;
@@ -193,13 +246,13 @@ void ZJointSpectraDataManager::zh_onRepositoryArrayOperation(ZSpectraArrayReposi
 void ZJointSpectraDataManager::zh_onRepositoryChemElementOperation(ZSpectraArrayRepository::ChemElementOperationType type,
                                                                    int arrayIndex, int first, int last)
 {
+    zh_defineColumnCounts();
     if(zv_currentArrayIndex != arrayIndex)
     {
         return;
     }
 
     int residual = last - first;
-
     int visibleFirst = zh_convertChemElementIndexToVisibleChemElementIndex(zv_currentArrayIndex, first);
 
     if(visibleFirst < 0)
@@ -230,23 +283,81 @@ void ZJointSpectraDataManager::zh_onRepositoryChemElementOperation(ZSpectraArray
     }
     else if(type == ZSpectraArrayRepository::CEOT_CHEM_ELEMENT_CHANGED)
     {
-        // TODO  Changing column name
-        // emit zg_currentOperation(OT_);
-
-        //        emit zg_currentOperation(OT_INSERT_COLUMN, first, last);
-        //        emit zg_currentOperation(OT_END_INSERT_COLUMN, first, last);
+        emit zg_currentOperation(OT_COLUMN_HEADER_CHANGED, visibleFirst, visibleLast);
     }
-    else if(type == ZSpectraArrayRepository::CEOT_CHEM_ELEMENT_VISIBLE_CHANGED)
+    else if(type == ZSpectraArrayRepository::CEOT_CHEM_ELEMENT_VISIBILITY_CHANGE)
     {
-        bool visible = zv_repositiry->zp_chemElementIsVisible(zv_currentArrayIndex, first);
-        if(visible)
+        bool visible = zv_spectrumArrayRepositiry->zp_chemElementIsVisible(zv_currentArrayIndex, first);
+        if(!visible)
         {
             emit zg_currentOperation(OT_INSERT_COLUMN, visibleFirst, visibleLast);
-            emit zg_currentOperation(OT_END_INSERT_COLUMN, visibleFirst, visibleLast);
         }
         else
         {
             emit zg_currentOperation(OT_REMOVE_COLUMN, visibleFirst, visibleLast);
+        }
+    }
+    else if(type == ZSpectraArrayRepository::CEOT_END_CHEM_ELEMENT_VISIBILITY_CHANGE)
+    {
+        bool visible = zv_spectrumArrayRepositiry->zp_chemElementIsVisible(zv_currentArrayIndex, first);
+        if(visible)
+        {
+            emit zg_currentOperation(OT_END_INSERT_COLUMN, visibleFirst, visibleLast);
+        }
+        else
+        {
+            emit zg_currentOperation(OT_END_REMOVE_COLUMN, visibleFirst, visibleLast);
+        }
+    }
+}
+//==================================================================
+void ZJointSpectraDataManager::zh_onRepositoryCalibrationOperation(ZCalibrationRepository::OperationType type, int first, int last)
+{
+    zh_defineColumnCounts();
+    int visibleFirst = zv_spectrumDataColumnCount + zv_visibleChemElementCount;
+    int visibleLast = visibleFirst + (last - first);
+
+    if(type == ZCalibrationRepository::OT_INSERT_CALIBRATIONS)
+    {
+        emit zg_currentOperation(OT_INSERT_COLUMN, visibleFirst, visibleLast);
+    }
+    else if(type == ZCalibrationRepository::OT_END_INSERT_CALIBRATIONS)
+    {
+        emit zg_currentOperation(OT_END_INSERT_COLUMN, visibleFirst, visibleLast);
+    }
+    else if(type == ZCalibrationRepository::OT_REMOVE_CALIBRATIONS)
+    {
+        emit zg_currentOperation(OT_REMOVE_COLUMN, visibleFirst, visibleLast);
+    }
+    else if(type == ZCalibrationRepository::OT_END_REMOVE_CALIBRATIONS)
+    {
+        emit zg_currentOperation(OT_END_REMOVE_COLUMN, visibleFirst, visibleLast);
+    }
+    else if(type == ZCalibrationRepository::OT_CALIBRATION_CHANGED)
+    {
+        emit zg_currentOperation(OT_COLUMN_HEADER_CHANGED, visibleFirst, visibleLast);
+    }
+    else if(type == ZCalibrationRepository::OT_CALIBRATION_VISIBILITY_CHANGE)
+    {
+        bool visible = zv_calibrationRepository->zp_calibrationIsVisible(first);
+        if(!visible)
+        {
+            emit zg_currentOperation(OT_INSERT_COLUMN, visibleFirst, visibleLast);
+        }
+        else
+        {
+            emit zg_currentOperation(OT_REMOVE_COLUMN, visibleFirst, visibleLast);
+        }
+    }
+    else if(type == ZCalibrationRepository::OT_END_CALIBRATION_VISIBILITY_CHANGE)
+    {
+        bool visible = zv_calibrationRepository->zp_calibrationIsVisible(first);
+        if(visible)
+        {
+            emit zg_currentOperation(OT_END_INSERT_COLUMN, visibleFirst, visibleLast);
+        }
+        else
+        {
             emit zg_currentOperation(OT_END_REMOVE_COLUMN, visibleFirst, visibleLast);
         }
     }
@@ -255,11 +366,32 @@ void ZJointSpectraDataManager::zh_onRepositoryChemElementOperation(ZSpectraArray
 int ZJointSpectraDataManager::zh_convertChemElementIndexToVisibleChemElementIndex(int arrayIndex,
                                                                                   int originalIndex)
 {
-    if(zv_repositiry == 0)
+    if(zv_spectrumArrayRepositiry == 0)
     {
         return -1;
     }
 
-    return zv_repositiry->zp_numberVisibleChemElementsBeforeIndex(arrayIndex, originalIndex);
+    return zv_spectrumArrayRepositiry->zp_numberVisibleChemElementsBeforeIndex(arrayIndex, originalIndex);
+}
+//==================================================================
+void ZJointSpectraDataManager::zh_defineColumnCounts()
+{
+    if(zv_spectrumArrayRepositiry != 0 && zv_currentArrayIndex >= 0)
+    {
+        zv_visibleChemElementCount = zv_spectrumArrayRepositiry->zp_visibleChemElementCount(zv_currentArrayIndex);
+    }
+    else
+    {
+        zv_visibleChemElementCount = 0;
+    }
+
+    if(zv_calibrationRepository != 0)
+    {
+        zv_visibleCalibrationCount = zv_calibrationRepository->zp_visibleCalibrationCount();
+    }
+    else
+    {
+        zv_visibleCalibrationCount = 0;
+    }
 }
 //==================================================================

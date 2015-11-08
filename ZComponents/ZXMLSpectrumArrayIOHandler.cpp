@@ -63,10 +63,6 @@ bool ZXMLSpectrumArrayIOHandler::zp_readSpectrumArray (QFile& file, QList<ZRawSp
         }
     }
 
-#ifdef DBG
-    qDebug() << "Stop";
-#endif
-
     if(reader.hasError())
     {
         QString errorMsg = tr("File \"%1\" parsing failed! %2").arg(file.fileName(), reader.errorString());

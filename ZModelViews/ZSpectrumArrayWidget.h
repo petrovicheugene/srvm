@@ -27,6 +27,7 @@ public slots:
 
     void zp_setCurrentArrayIndex(int);
     void zp_currentArrayIndex(int&);
+    void zp_startCurrentArrayEdition();
 
 private:
 

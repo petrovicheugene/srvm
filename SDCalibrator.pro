@@ -15,7 +15,7 @@ RC_ICONS = "SDC1.ico"
 
 VER_MAJ=0
 VER_MIN=0
-VER_PAT=0
+VER_PAT=1
 VER_RELEASE=a
 
 EXE_BASE_NAME=SDCalibrator
@@ -58,7 +58,8 @@ INCLUDEPATH += ZPlotter \
     ZWidgets \
     ZComponents \
     ZDialogs \
-    ZModelViews/ZNumericDelegate
+    ZModelViews/ZNumericDelegate \
+    ZModelViews/ZStringDelegate
 
 SOURCES += main.cpp \
     MainWindow.cpp \
@@ -98,7 +99,8 @@ SOURCES += main.cpp \
     ZComponents/ZChemElementList.cpp \
     ZComponents/ZChemElementDataManager.cpp \
     ZModelViews/ZNumericDelegate/ZNumericDelegate.cpp \
-    ZModelViews/ZNumericDelegate/ZNumericEditor.cpp
+    ZModelViews/ZNumericDelegate/ZNumericEditor.cpp \
+    ZModelViews/ZStringDelegate/ZStringDelegate.cpp
 
 
 HEADERS  += glVariables.h \
@@ -140,7 +142,8 @@ HEADERS  += glVariables.h \
     ZComponents/ZChemElementList.h \
     ZComponents/ZChemElementDataManager.h \
     ZModelViews/ZNumericDelegate/ZNumericDelegate.h \
-    ZModelViews/ZNumericDelegate/ZNumericEditor.h
+    ZModelViews/ZNumericDelegate/ZNumericEditor.h \
+    ZModelViews/ZStringDelegate/ZStringDelegate.h
 
 
 RESOURCES += \

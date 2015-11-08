@@ -70,6 +70,20 @@ int ZCalibrationRepository::zp_calibrationCount() const
     return zv_caibrationList.count();
 }
 //======================================================
+int ZCalibrationRepository::zp_visibleCalibrationCount() const
+{
+    int visible = 0;
+    for(int i = 0; i < zv_caibrationList.count(); i++)
+    {
+        if(zv_caibrationList.at(i)->zp_isVisible())
+        {
+            visible++;
+        }
+    }
+
+    return visible;
+}
+//======================================================
 QString ZCalibrationRepository::zp_calibrationName(int calibrationIndex) const
 {
     if(calibrationIndex < 0 || calibrationIndex >= zv_caibrationList.count())
@@ -81,24 +95,56 @@ QString ZCalibrationRepository::zp_calibrationName(int calibrationIndex) const
     return zv_caibrationList.value(calibrationIndex)->zp_name();
 }
 //======================================================
-bool ZCalibrationRepository::zp_isChecked(int row)
+QString ZCalibrationRepository::zp_visibleCalibrationName(int visibleCalibrationIndex) const
+{
+    if(visibleCalibrationIndex < 0 || visibleCalibrationIndex >= zp_visibleCalibrationCount())
+    {
+        return QString();
+    }
+
+    int visible = -1;
+    for(int i = 0; i < zv_caibrationList.count(); i++)
+    {
+        if(!zv_caibrationList.at(i)->zp_isVisible())
+        {
+            continue;
+        }
+
+        visible++;
+        if(visible == visibleCalibrationIndex)
+        {
+            return zv_caibrationList.at(i)->zp_name();
+        }
+    }
+
+    return QString();
+}
+//======================================================
+bool ZCalibrationRepository::zp_calibrationIsVisible(int row)
 {
     if(row < 0 || row >= zv_caibrationList.count())
     {
         return false;
     }
 
-    return zv_caibrationList.value(row)->zp_isChecked();
+    return zv_caibrationList.value(row)->zp_isVisible();
 }
 //======================================================
-void ZCalibrationRepository::zp_setChecked(int row, bool checked)
+void ZCalibrationRepository::zp_setVisible(int row, bool visibility)
 {
     if(row < 0 || row >= zv_caibrationList.count())
     {
         return;
     }
 
-    zv_caibrationList[row]->zp_setChecked(checked);
+    if(visibility == zv_caibrationList.at(row)->zp_isVisible())
+    {
+        return;
+    }
+
+    emit zg_currentOperation(OT_CALIBRATION_VISIBILITY_CHANGE, row, row);
+    zv_caibrationList[row]->zp_setVisible(visibility);
+    emit zg_currentOperation(OT_END_CALIBRATION_VISIBILITY_CHANGE, row, row);
 }
 //======================================================
 bool ZCalibrationRepository::zp_isDirty(int row)
@@ -139,18 +185,10 @@ void ZCalibrationRepository::zh_onNewCalibrationAction()
     ZCalibrationEditDialog dialog;
     if(!dialog.exec())
     {
-#ifdef DBG
-        qDebug() << "REJECT";
-#endif
-
         return;
     }
 
     zh_createNewCalibration(dialog.zp_calibrationFullName());
-
-#ifdef DBG
-    qDebug() << "ACCEPT";
-#endif
 }
 //======================================================
 void ZCalibrationRepository::zh_onEditCalibrationsAction()
@@ -166,16 +204,8 @@ void ZCalibrationRepository::zh_onEditCalibrationsAction()
     ZCalibrationEditDialog dialog;
     if(!dialog.exec())
     {
-#ifdef DBG
-        qDebug() << "REJECT";
-#endif
         return;
     }
-
-#ifdef DBG
-    qDebug() << "ACCEPT";
-#endif
-
 }
 //======================================================
 void ZCalibrationRepository::zh_onRemoveCalibrationsAction()
@@ -240,6 +270,7 @@ bool ZCalibrationRepository::zh_createCalibrationFromFile(const QString& fileNam
 
     if(res)
     {
+        calibration->zp_setVisible(true);
         res = zh_appendCalibrationToList(calibration);
     }
 
@@ -275,6 +306,7 @@ bool ZCalibrationRepository::zh_createNewCalibration(const QString& name)
         return false;
     }
 
+    calibration->zp_setVisible(true);
     return zh_appendCalibrationToList(calibration);
 }
 //======================================================
@@ -296,9 +328,6 @@ void ZCalibrationRepository::zh_actionAvailabilityControl(int current)
 {
     zv_editCalibrationsAction->setDisabled(current < 0);
     zv_removeCalibrationAction->setDisabled(current < 0);
-#ifdef DBG
-    qDebug() << "Availability Control" << current;
-#endif
 }
 //======================================================
 void ZCalibrationRepository::zh_createActions()

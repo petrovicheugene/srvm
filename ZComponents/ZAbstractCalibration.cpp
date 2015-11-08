@@ -15,7 +15,7 @@ QMap<ZAbstractCalibration::CalibrationType, QString> ZAbstractCalibration::zp_cr
 //=========================================================
 ZAbstractCalibration::ZAbstractCalibration(const QString& path, QObject *parent) : QObject(parent)
 {
-    zv_checked = false;
+    zv_visibility = false;
     QFileInfo fileInfo(path);
     if(!fileInfo.absoluteFilePath().isEmpty())
     {
@@ -94,17 +94,17 @@ ZAbstractCalibration::CalibrationType ZAbstractCalibration::zp_type() const
     return zv_type;
 }
 //=========================================================
-bool ZAbstractCalibration::zp_isChecked() const
+bool ZAbstractCalibration::zp_isVisible() const
 {
-    return zv_checked;
+    return zv_visibility;
 }
 //=========================================================
-void ZAbstractCalibration::zp_setChecked(bool checked)
+void ZAbstractCalibration::zp_setVisible(bool visibility)
 {
-    if(checked != zv_checked)
+    if(visibility != zv_visibility)
     {
-        zv_checked = checked;
-        emit zg_checkedChanged(zv_checked);
+        zv_visibility = visibility;
+        emit zg_checkedChanged(zv_visibility);
     }
 }
 //=========================================================

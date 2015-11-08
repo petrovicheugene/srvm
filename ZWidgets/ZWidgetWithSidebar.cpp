@@ -68,6 +68,7 @@ void ZWidgetWithSidebar::zp_setInfoLabelText(bool dirty, const QString& text)
     if(dirty)
     {
         infoText += "*";
+        infoText = "<font color=red><b>" + infoText + "</b></font>";
     }
     zv_infoLabel->setText(infoText);
 }

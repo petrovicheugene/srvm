@@ -266,6 +266,7 @@ void MainWindow::zh_createConnections()
     // spectra
     zv_arrayModel->zp_setSpectraArrayRepository(zv_spectraArrayRepository);
     zv_jointSpectraDataManager->zp_setSpectraArrayRepository(zv_spectraArrayRepository);
+    zv_jointSpectraDataManager->zp_setCalibrationRepository(zv_calibrationRepository);
     zv_jointSpectraModel->zp_setDataManager(zv_jointSpectraDataManager);
     // chem element
     zv_chemElementDataManager->zp_setSpectraArrayRepository(zv_spectraArrayRepository);
@@ -274,16 +275,33 @@ void MainWindow::zh_createConnections()
     // spectra repository <-> array view
     zv_spectrumArrayWidget->zp_appendButtonActions(zv_spectraArrayRepository->zp_arrayActions());
     zv_spectrumTableWidget->zp_appendButtonActions(zv_spectraArrayRepository->zp_spectrumActions());
+    zv_chemElementWidget->zp_appendButtonActions(zv_spectraArrayRepository->zp_chemElementActions());
+
     connect(zv_spectraArrayRepository, &ZSpectraArrayRepository::zg_currentFile,
             zv_spectraSidebarWidget, &ZWidgetWithSidebar::zp_setInfoLabelText);
     connect(zv_spectraArrayRepository, &ZSpectraArrayRepository::zg_setCurrentArrayIndex,
             zv_spectrumArrayWidget, &ZSpectrumArrayWidget::zp_setCurrentArrayIndex);
+    connect(zv_spectraArrayRepository, &ZSpectraArrayRepository::zg_startCurrentArrayEdition,
+            zv_spectrumArrayWidget, &ZSpectrumArrayWidget::zp_startCurrentArrayEdition);
+
+    connect(zv_spectraArrayRepository, &ZSpectraArrayRepository::zg_setCurrentChemElementIndex,
+            zv_chemElementWidget, &ZChemElementWidget::zp_setCurrentChemElementIndex);
+    connect(zv_spectraArrayRepository, &ZSpectraArrayRepository::zg_startCurrentChemElementEdition,
+            zv_chemElementWidget, &ZChemElementWidget::zp_startCurrentChemElementEdition);
+
     connect(zv_spectraArrayRepository, &ZSpectraArrayRepository::zg_requestCurrentArrayIndex,
             zv_spectrumArrayWidget, &ZSpectrumArrayWidget::zp_currentArrayIndex);
+
+
 
     // spectra repository <-> joint spectrum view
     connect(zv_spectraArrayRepository, &ZSpectraArrayRepository::zg_requestSelectedSpectrumIndexList,
             zv_spectrumTableWidget, &ZJointSpectrumTableWidget::zp_selectedSpectrumIndexList);
+
+    // calibration repository <-> chemical element view
+    connect(zv_spectraArrayRepository, &ZSpectraArrayRepository::zg_requestSelectedChemElementIndexList,
+            zv_chemElementWidget, &ZChemElementWidget::zp_selectedChemElementIndexList);
+
 
     // calibration repository <-> calibration model
     zv_calibrationModel->zp_setCalibrationRepository(zv_calibrationRepository);

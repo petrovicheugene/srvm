@@ -105,6 +105,11 @@ bool ZSpectrumArray::zp_setChemElementVisible(int row, bool visible)
     return zv_chemElementList.zp_setChemElementVisible(row, visible);
 }
 //===============================================
+bool ZSpectrumArray::zp_setChemElementName(int row, const QString& name)
+{
+    return zv_chemElementList.zp_setChemElementName(row, name);
+}
+//===============================================
 QString ZSpectrumArray::zp_chemConcentration(const QString& chemElement,
                                              int spectrumIndex) const
 {
@@ -210,6 +215,34 @@ bool ZSpectrumArray::zp_appendSpectrum(const ZRawSpectrum& rawSpectrum)
 
     delete ioHandler;
     return res;
+}
+//===============================================
+bool ZSpectrumArray::zp_appendNewChemElement()
+{
+    QString chemElement = "Element #";
+    int nextElementIndex = zv_chemElementList.zp_chemElementCount() + 1;
+    while(zv_chemElementList.zp_containsElement(chemElement+QString::number(nextElementIndex)))
+    {
+        nextElementIndex++;
+    }
+
+    return zv_chemElementList.zp_appendElement(chemElement+QString::number(nextElementIndex));
+}
+//===============================================
+bool ZSpectrumArray::zp_removeChemElement(int chemElementIndex)
+{
+    if(chemElementIndex < 0 || chemElementIndex >= zv_chemElementList.zp_chemElementCount())
+    {
+        return false;
+    }
+
+    QString chemElement = zv_chemElementList.zp_chemElementName(chemElementIndex);
+    if(chemElement.isEmpty())
+    {
+        return false;
+    }
+
+    return zv_chemElementList.zp_removeElement(chemElement);
 }
 //===============================================
 void ZSpectrumArray::zh_createConnections()

@@ -28,7 +28,13 @@ int ZJointSpectraModel::columnCount(const QModelIndex & parent) const
     {
         return 0;
     }
-    return zv_dataManager->zp_columnCount();
+
+    int columnC = zv_dataManager->zp_columnCount();
+#ifdef DBG
+        qDebug() << "COLUMN COUNT" << columnC;
+#endif
+
+    return columnC; // zv_dataManager->zp_columnCount();
 }
 //==================================================================
 int ZJointSpectraModel::rowCount(const QModelIndex & parent) const
@@ -90,7 +96,13 @@ QVariant ZJointSpectraModel::headerData(int section, Qt::Orientation orientation
     {
         if(orientation == Qt::Horizontal)
         {
-            return QVariant(zv_dataManager->zp_columnName(section));
+            QString hn = zv_dataManager->zp_columnName(section);
+
+#ifdef DBG
+        qDebug() << "COLUMN NAME" << section << hn;
+#endif
+
+            return hn; //QVariant(zv_dataManager->zp_columnName(section));
         }
         else
         {
@@ -151,35 +163,29 @@ void ZJointSpectraModel::zh_onDataManagerOperation(ZJointSpectraDataManager::Ope
     }
     else if(type == ZJointSpectraDataManager::OT_INSERT_COLUMN)
     {
-        beginInsertColumns(QModelIndex(), first, last);
 #ifdef DBG
-        qDebug() << "OT_INSERT_COLUMN" << first << last;
+        qDebug() << "OT_INSERT_COLUMN";
 #endif
-
+        beginInsertColumns(QModelIndex(), first, last);
     }
     else if(type == ZJointSpectraDataManager::OT_END_INSERT_COLUMN)
     {
-        endInsertColumns();
 #ifdef DBG
         qDebug() << "OT_END_INSERT_COLUMN";
 #endif
-
+        endInsertColumns();
     }
     else if(type == ZJointSpectraDataManager::OT_REMOVE_COLUMN)
     {
         beginRemoveColumns(QModelIndex(), first, last);
-
-#ifdef DBG
-        qDebug() << "OT_REMOVE_COLUMN" << first << last;
-#endif
     }
     else if(type == ZJointSpectraDataManager::OT_END_REMOVE_COLUMN)
     {
         endRemoveColumns();
-#ifdef DBG
-        qDebug() << "OT_END_REMOVE_COLUMN";
-#endif
-
+    }
+    else if(type == ZJointSpectraDataManager::OT_COLUMN_HEADER_CHANGED)
+    {
+        emit headerDataChanged(Qt::Horizontal, first, last);
     }
 }
 //==================================================================

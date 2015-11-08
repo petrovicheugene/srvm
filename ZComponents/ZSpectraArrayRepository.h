@@ -38,7 +38,8 @@ public:
                                    CEOT_REMOVE_CHEM_ELEMENT,
                                    CEOT_END_REMOVE_CHEM_ELEMENT,
                                    CEOT_CHEM_ELEMENT_CHANGED,
-                                   CEOT_CHEM_ELEMENT_VISIBLE_CHANGED
+                                   CEOT_CHEM_ELEMENT_VISIBILITY_CHANGE,
+                                   CEOT_END_CHEM_ELEMENT_VISIBILITY_CHANGE
                                   };
 
 
@@ -46,6 +47,7 @@ public:
     void zp_appendActionsToMenu(QMenu *menu) const;
     QList<QAction*> zp_arrayActions() const;
     QList<QAction*>zp_spectrumActions() const;
+    QList<QAction*>zp_chemElementActions() const;
 
     void zp_connectToFileActionManager(ZFileActionManager*);
 
@@ -54,6 +56,7 @@ public:
 
     int zp_arrayCount() const;
     QString zp_arrayName(int arrayIndex) const;
+    bool zp_setSpectrumArrayName(int arrayIndex, const QString&);
 
     int zp_spectrumCount(int arrayIndex) const;
     QString zp_spectrumName(int arrayIndex, int spectrumIndex) const;
@@ -73,6 +76,8 @@ public:
                                  int spectrumIndex, int visibleChemElementIndex) const;
     bool zp_setChemConcentration(int arrayIndex,
                                  int spectrumIndex, int visibleChemElementIndex, const QString &concentration);
+    bool zp_setChemElementName(int arrayIndex, int chemElementIndex, const QString&);
+
 signals:
 
     void zg_message(QString) const;
@@ -83,16 +88,20 @@ signals:
     void zg_currentFile(bool dirty, QString fileName) const;
 
     void zg_setCurrentArrayIndex(int arrayIndex);
+    void zg_setCurrentChemElementIndex(int chemElementIndex);
+
     void zg_requestCurrentArrayIndex(int& arrayIndex);
     void zg_requestSelectedSpectrumIndexList(QList<int>&);
-    void zg_saveSpectraArrayList(QString, QList<ZRawSpectrumArray>) const;
+    void zg_requestSelectedChemElementIndexList(QList<int>&);
 
+    void zg_startCurrentArrayEdition();
+    void zg_startCurrentChemElementEdition();
+
+    void zg_saveSpectraArrayList(QString, QList<ZRawSpectrumArray>) const;
     void zg_initSpectraAppending(int);
 
 public slots:
 
-    void zp_appendArrays(QString path, QList<ZRawSpectrumArray>);
-    void zp_appendSpectraToArray(int, QStringList);
     void zp_getArrayCount(int&) const;
     void zp_getSpectrumCount(int arrayIndex, int&) const;
     void zp_getArrayName(int arrayIndex, QString&) const;
@@ -100,10 +109,17 @@ public slots:
 
 private slots:
 
+    void zp_appendArrays(QString path, QList<ZRawSpectrumArray>);
+    void zp_appendSpectraToArray(int, QStringList);
+    void zh_onSpectrumArraySaving(QString);
+
     void zh_onAppendArrayAction();
     void zh_onRemoveArrayAction();
     void zh_onAppendSpectraToArrayAction();
     void zh_onRemoveSpectrumFromArrayAction();
+    void zh_onAppendChemElementAction();
+    void zh_onRemoveChemElementAction();
+
     void zh_onChemElementOperation(ZChemElementList::OperationType, int, int);
     void zh_createRawArrayListAndStartSaving(QString filePath) const;
 
@@ -111,13 +127,16 @@ private:
 
     // VARS
     QList<ZSpectrumArray*> zv_arrayList;
-    QString zv_path;
+    QString zv_arrayFilePath;
     bool zv_dirty;
 
     QAction* zv_appendArrayAction;
     QAction* zv_removeArrayAction;
     QAction* zv_appendSpectrumToArrayAction;
     QAction* zv_removeSpectrumFromArrayAction;
+    QAction* zv_appendChemElementAction;
+    QAction* zv_removeChemElementAction;
+
 
     // FUNCS
     void zh_createActions();
@@ -126,9 +145,11 @@ private:
 
     void zh_removeArray(int);
     void zh_removeSpectrum(int, int);
+    void zh_removeChemicalElement(int, int);
     int zh_chemElementIndex(int arrayIndex, const QString& chemElement);
     QList<ZRawSpectrumArray> zh_createRawArrayList() const;
     //  void zp_saveArrayListToFile();
+
 
 };
 //==================================================================

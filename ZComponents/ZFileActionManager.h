@@ -28,6 +28,8 @@ signals:
     void zg_spectrumFileListToOpen(int, QStringList) const;
     void zg_calibrationFileListToOpen(QStringList) const;
 
+    void zg_spectrumArraySaved(QString) const;
+
 public slots:
 
     void zp_defineSpectrumFilesAndInitAppending(int arrayIndex);

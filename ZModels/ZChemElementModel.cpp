@@ -13,6 +13,7 @@ Qt::ItemFlags	ZChemElementModel::flags(const QModelIndex & index) const
     Qt::ItemFlags flags;
     flags |= Qt::ItemIsEnabled
             | Qt::ItemIsSelectable
+            | Qt::ItemIsEditable
             |Qt::ItemIsUserCheckable;
     return flags;
 }
@@ -86,6 +87,18 @@ bool	ZChemElementModel::setData(const QModelIndex & index, const QVariant & valu
             bool visibility = state == Qt::Checked ? true : false;
             return zv_dataManager->zp_setVisible(visibility, index.row());
 
+        }
+        return false;
+    }
+    else if(role == Qt::EditRole)
+    {
+        if(index.column() == 0)
+        {
+            if(!value.canConvert<QString>())
+            {
+                return false;
+            }
+            return zv_dataManager->zp_setChemElementName(index.row(), value.toString());
         }
         return false;
     }

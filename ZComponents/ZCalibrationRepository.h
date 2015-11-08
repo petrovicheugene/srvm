@@ -17,7 +17,10 @@ public:
     explicit ZCalibrationRepository(QObject *parent = 0);
 
     // VARS
-    enum OperationType {OT_INSERT_CALIBRATIONS,
+    enum OperationType {OT_CALIBRATION_VISIBILITY_CHANGE,
+        OT_END_CALIBRATION_VISIBILITY_CHANGE,
+                        OT_CALIBRATION_CHANGED,
+                        OT_INSERT_CALIBRATIONS,
                         OT_END_INSERT_CALIBRATIONS,
                         OT_REMOVE_CALIBRATIONS,
                         OT_END_REMOVE_CALIBRATIONS,
@@ -35,10 +38,12 @@ public:
     void zp_clear();
 
     int zp_calibrationCount() const;
+    int zp_visibleCalibrationCount() const;
     QString zp_calibrationName(int calibrationIndex) const;
+    QString zp_visibleCalibrationName(int visibleCalibrationIndex) const;
 
-    bool zp_isChecked(int row);
-    void zp_setChecked(int row, bool checked);
+    bool zp_calibrationIsVisible(int row);
+    void zp_setVisible(int row, bool checked);
 
     bool zp_isDirty(int row);
 
@@ -82,7 +87,6 @@ private:
     bool zh_createNewCalibration(const QString&);
     bool zh_appendCalibrationToList(ZAbstractCalibration*);
     void zh_actionAvailabilityControl(int current);
-
 
 };
 //======================================================
