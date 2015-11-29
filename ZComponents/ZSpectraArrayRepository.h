@@ -60,7 +60,15 @@ public:
 
     int zp_spectrumCount(int arrayIndex) const;
     QString zp_spectrumName(int arrayIndex, int spectrumIndex) const;
-    QList<int> zp_spectrum(int arrayIndex, int spectrumIndex) const;
+    QColor zp_spectrumColor(int arrayIndex, int spectrumIndex) const;
+    bool zp_isSpectrumVisible(int arrayIndex, int spectrumIndex) const;
+    bool zp_setSpectrumVisible(int arrayIndex, int spectrumIndex, bool visible);
+
+    ZAbstractSpectrum * zp_spectrum(int arrayIndex, int spectrumIndex) const;
+    QList<int> zp_spectrumData(int arrayIndex, int spectrumIndex) const;
+    int zp_arrayChannelCount(int arrayIndex);
+    int zp_arrayMaxIntensity(int arrayIndex);
+
 
     int zp_chemElementCount(int arrayIndex) const;
     int zp_visibleChemElementCount(int arrayIndex) const;

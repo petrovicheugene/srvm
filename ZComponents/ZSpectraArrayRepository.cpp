@@ -1,6 +1,6 @@
 //==================================================================
 #include "ZSpectraArrayRepository.h"
-#include "glVariables.h"
+#include "globalVariables.h"
 #include "ZFileActionManager.h"
 
 #include <QMessageBox>
@@ -290,10 +290,85 @@ QString ZSpectraArrayRepository::zp_spectrumName(int arrayIndex, int spectrumInd
 
     return zv_arrayList.value(arrayIndex)->zp_spectrumFileName(spectrumIndex);
 }
-//==================================================================
-QList<int> ZSpectraArrayRepository::zp_spectrum(int arrayIndex, int spectrumIndex) const
+//======================================================
+QColor ZSpectraArrayRepository::zp_spectrumColor(int arrayIndex, int spectrumIndex) const
 {
-    return zv_arrayList.value(arrayIndex)->zp_spectrumIntensityArray(spectrumIndex);
+    if(arrayIndex < 0 || arrayIndex >= zv_arrayList.count() )
+    {
+        return QColor();
+    }
+
+    if(spectrumIndex < 0 || spectrumIndex >= zv_arrayList.value(arrayIndex)->zp_spectrumCount())
+    {
+        return QColor();
+    }
+
+    return zv_arrayList.value(arrayIndex)->zp_spectrumColor(spectrumIndex);
+}
+//======================================================
+bool ZSpectraArrayRepository::zp_isSpectrumVisible(int arrayIndex, int spectrumIndex) const
+{
+    if(arrayIndex < 0 || arrayIndex >= zv_arrayList.count() )
+    {
+        return false;
+    }
+
+    return zv_arrayList.value(arrayIndex)->zp_isSpectrumVisible(spectrumIndex);
+}
+//======================================================
+bool  ZSpectraArrayRepository::zp_setSpectrumVisible(int arrayIndex, int spectrumIndex, bool visible)
+{
+    if(arrayIndex < 0 || arrayIndex >= zv_arrayList.count() )
+    {
+        return false;
+    }
+
+    bool res = zv_arrayList.value(arrayIndex)->zp_setSpectrumVisible(spectrumIndex, visible);
+    if(res)
+    {
+        emit zg_currentSpectrumOperation(SOT_DATA_CHANGED, arrayIndex, spectrumIndex, spectrumIndex);
+    }
+    return res;
+}
+//==================================================================
+ZAbstractSpectrum* ZSpectraArrayRepository::zp_spectrum(int arrayIndex, int spectrumIndex) const
+{
+    if(arrayIndex < 0 || arrayIndex >= zv_arrayList.count() )
+    {
+        return 0;
+    }
+
+    return zv_arrayList.value(arrayIndex)->zp_spectrum(spectrumIndex);
+}
+//==================================================================
+QList<int> ZSpectraArrayRepository::zp_spectrumData(int arrayIndex, int spectrumIndex) const
+{
+    if(arrayIndex < 0 || arrayIndex >= zv_arrayList.count() )
+    {
+        return QList<int>();
+    }
+
+    return zv_arrayList.value(arrayIndex)->zp_spectrumData(spectrumIndex);
+}
+//==================================================================
+int ZSpectraArrayRepository::zp_arrayChannelCount(int arrayIndex)
+{
+    if(arrayIndex < 0 || arrayIndex >= zv_arrayList.count() )
+    {
+        return 0;
+    }
+
+    return zv_arrayList.value(arrayIndex)->zp_maxChannelCount();
+}
+//==================================================================
+int ZSpectraArrayRepository::zp_arrayMaxIntensity(int arrayIndex)
+{
+    if(arrayIndex < 0 || arrayIndex >= zv_arrayList.count() )
+    {
+        return 0;
+    }
+
+    return zv_arrayList.value(arrayIndex)->zp_maxIntensity();
 }
 //==================================================================
 void ZSpectraArrayRepository::zp_appendArrays(QString path, QList<ZRawSpectrumArray> rawArrayList)
@@ -583,7 +658,7 @@ void ZSpectraArrayRepository::zh_onRemoveSpectrumFromArrayAction()
 
     if(selectedSpectrumList.isEmpty())
     {
-        QString string = tr("There is no a spectrum to remove!");
+        QString string = tr("There is no spectra to remove!");
         QMessageBox::critical(0, tr("Spectra removing"), string, QMessageBox::Ok);
         return;
     }
@@ -634,7 +709,7 @@ void ZSpectraArrayRepository::zh_onRemoveChemElementAction()
 
     if(selectedChemElementList.isEmpty())
     {
-        QString string = tr("There is no a chemical element to remove!");
+        QString string = tr("There is no chemical elements to remove!");
         QMessageBox::critical(0, tr("Chemical element removing"), string, QMessageBox::Ok);
         return;
     }

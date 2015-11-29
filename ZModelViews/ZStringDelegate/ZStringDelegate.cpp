@@ -4,10 +4,10 @@
 #include <QDebug>
 #include <QPainter>
 //=====================================================
-ZStringDelegate::ZStringDelegate(bool fillEmptinessFlag, QObject *parent) :
+ZStringDelegate::ZStringDelegate(QObject *parent) :
     QStyledItemDelegate(parent)
 {
-    mv_fillEmptinessFlag = fillEmptinessFlag;
+    //mv_fillEmptinessFlag = fillEmptinessFlag;
 }
 //=====================================================
 QWidget* ZStringDelegate::createEditor(QWidget* parent, const QStyleOptionViewItem& option, const QModelIndex& index) const
@@ -43,27 +43,27 @@ void	ZStringDelegate::setEditorData(QWidget* editor, const QModelIndex& index) c
     }
 
     QString str = vData.toString();
-    if(mv_fillEmptinessFlag && str == "---")
-    {
-        str = "";
-    }
+//    if(mv_fillEmptinessFlag && str == "---")
+//    {
+//        str = "";
+//    }
 
     lineEditor->setText(str);
 }
 //=====================================================
 void	ZStringDelegate::setModelData(QWidget* editor, QAbstractItemModel* model, const QModelIndex& index) const
 {
-    if(mv_fillEmptinessFlag)
-    {
-        QLineEdit* lineEditor = qobject_cast<QLineEdit*>(editor);
-        if(lineEditor != 0 )
-        {
-            if(lineEditor->text().isEmpty())
-            {
-                lineEditor->setText("---");
-            }
-        }
-    }
+//    if(mv_fillEmptinessFlag)
+//    {
+//        QLineEdit* lineEditor = qobject_cast<QLineEdit*>(editor);
+//        if(lineEditor != 0 )
+//        {
+//            if(lineEditor->text().isEmpty())
+//            {
+//                lineEditor->setText("---");
+//            }
+//        }
+//    }
 
     QStyledItemDelegate::setModelData(editor, model, index);
 }
@@ -78,8 +78,8 @@ void	ZStringDelegate::updateEditorGeometry(QWidget* editor, const QStyleOptionVi
     QStyledItemDelegate::updateEditorGeometry(editor, option, index);
 }
 //=====================================================
-void ZStringDelegate::mf_setFillEmptiness(bool flag)
-{
-    mv_fillEmptinessFlag = flag;
-}
+//void ZStringDelegate::mf_setFillEmptiness(bool flag)
+//{
+//    mv_fillEmptinessFlag = flag;
+//}
 //=====================================================

@@ -1,8 +1,9 @@
 //==============================================================
 #include "ZSpectrumArrayWidget.h"
-#include "glVariables.h"
+#include "globalVariables.h"
 #include "ZArrayModel.h"
 #include "ZStringDelegate.h"
+#include "ZVisibilityStringDelegate.h"
 
 #include <QTableView>
 #include <QHBoxLayout>
@@ -33,9 +34,10 @@ void ZSpectrumArrayWidget::zh_createComponents()
 void ZSpectrumArrayWidget::zp_setModel(ZArrayModel *model)
 {
     zv_table->setModel(model);
-    zv_table->setItemDelegate(new ZStringDelegate(false, zv_table));
-    zv_table->horizontalHeader()->setSectionResizeMode(0, QHeaderView::Stretch);
+    zv_table->setItemDelegate(new ZStringDelegate(zv_table));
 
+    zv_table->horizontalHeader()->setSectionResizeMode(0, QHeaderView::Stretch);
+    zv_table->setAlternatingRowColors(true);
     connect(zv_table->selectionModel(), &QItemSelectionModel::currentRowChanged,
             this, &ZSpectrumArrayWidget::zh_onCurrentArrayChanged);
     connect(model, &ZArrayModel::zg_checkCurrentArray,

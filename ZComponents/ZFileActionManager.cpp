@@ -7,7 +7,7 @@
 #include "ZAbstractCalibrationIOHandler.h"
 #include "ZXMLCalibrationIOHandler.h"
 #include "ZSpeIOHandler.h"
-#include "glVariables.h"
+#include "globalVariables.h"
 
 #include <QMenu>
 #include <QFileDialog>

@@ -1,12 +1,14 @@
 //==========================================================
 #include "MainWindow.h"
-#include "glVariables.h"
+#include "globalVariables.h"
 // components
 #include "ZFileActionManager.h"
 #include "ZSpectraArrayRepository.h"
 #include "ZJointSpectraDataManager.h"
 #include "ZCalibrationRepository.h"
 #include "ZChemElementDataManager.h"
+#include "ZPlotterDataManager.h"
+
 // views
 #include "ZWidgetWithSidebar.h"
 #include "ZSpectrumArrayWidget.h"
@@ -55,6 +57,7 @@ MainWindow::MainWindow(QWidget *parent)
     zv_jointSpectraModel = 0;
     zv_chemElementModel = 0;
     zv_calibrationModel = 0;
+    zv_plotterDataManager = 0;
 
     zh_createActions();
     zh_createComponents();
@@ -185,6 +188,7 @@ void MainWindow::zh_createComponents()
     zv_jointSpectraModel = new ZJointSpectraModel(this);
     zv_chemElementModel = new ZChemElementModel(this);
     zv_calibrationModel = new ZCalibrationModel(this);
+    zv_plotterDataManager = new ZPlotterDataManager(this);
 
     statusBar();
 }
@@ -252,22 +256,27 @@ void MainWindow::zh_createConnections()
     zv_calibrationTableWidget->zp_setModel(zv_calibrationModel);
     zv_chemElementWidget->zp_setModel(zv_chemElementModel);
 
+    // current array changing connection
     connect(zv_spectrumArrayWidget, &ZSpectrumArrayWidget::zg_currentArrayChanged,
             zv_jointSpectraDataManager, &ZJointSpectraDataManager::zp_currentArrayChanged);
     connect(zv_spectrumArrayWidget, &ZSpectrumArrayWidget::zg_currentArrayChanged,
             zv_chemElementDataManager, &ZChemElementDataManager::zp_currentArrayChanged);
+    connect(zv_spectrumArrayWidget, &ZSpectrumArrayWidget::zg_currentArrayChanged,
+            zv_plotterDataManager, &ZPlotterDataManager::zp_currentArrayChanged);
 
 
     // File Action Manager <-> other components
     zv_calibrationRepository->zp_connectToFileManager(zv_fileActionManager);
     zv_spectraArrayRepository->zp_connectToFileActionManager(zv_fileActionManager);
 
-    // spectra repository <-> spectra model and array model
+    // spectra repository <-> spectra model and array model and plotter model
     // spectra
     zv_arrayModel->zp_setSpectraArrayRepository(zv_spectraArrayRepository);
     zv_jointSpectraDataManager->zp_setSpectraArrayRepository(zv_spectraArrayRepository);
     zv_jointSpectraDataManager->zp_setCalibrationRepository(zv_calibrationRepository);
     zv_jointSpectraModel->zp_setDataManager(zv_jointSpectraDataManager);
+    // plotter
+    zv_plotterDataManager->zp_setSpectraArrayRepository(zv_spectraArrayRepository);
     // chem element
     zv_chemElementDataManager->zp_setSpectraArrayRepository(zv_spectraArrayRepository);
     zv_chemElementModel->zp_setChemElementDataManager(zv_chemElementDataManager);

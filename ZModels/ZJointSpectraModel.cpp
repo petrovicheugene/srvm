@@ -1,6 +1,6 @@
 //==================================================================
 #include "ZJointSpectraModel.h"
-#include "glVariables.h"
+#include "globalVariables.h"
 
 #include <QFont>
 #include <QColor>
@@ -15,10 +15,11 @@ Qt::ItemFlags	ZJointSpectraModel::flags(const QModelIndex & index) const
     Qt::ItemFlags flags;
     flags |= Qt::ItemIsEnabled | Qt::ItemIsSelectable;
 
-    if(zv_dataManager->zp_isColumnChemElementColumn(index.column()))
+    if(zv_dataManager->zp_isColumnChemElement(index.column()))
     {
         flags |= Qt::ItemIsEditable;
     }
+
     return flags;
 }
 //==================================================================
@@ -29,12 +30,7 @@ int ZJointSpectraModel::columnCount(const QModelIndex & parent) const
         return 0;
     }
 
-    int columnC = zv_dataManager->zp_columnCount();
-#ifdef DBG
-        qDebug() << "COLUMN COUNT" << columnC;
-#endif
-
-    return columnC; // zv_dataManager->zp_columnCount();
+    return zv_dataManager->zp_columnCount();
 }
 //==================================================================
 int ZJointSpectraModel::rowCount(const QModelIndex & parent) const
@@ -60,6 +56,21 @@ QVariant ZJointSpectraModel::data(const QModelIndex & index, int role) const
     {
         return zv_dataManager->zp_data(index);
     }
+    if(role == Qt::DecorationRole)
+    {
+        if(index.column() == 0)
+        {
+            return QVariant(zv_dataManager->zp_spectrumColor(index.row()));
+        }
+    }
+
+    if(role == VisibleRole)
+    {
+        if(index.column() == 0)
+        {
+            return QVariant(zv_dataManager->zp_isSpectrumVisible(index.row()));
+        }
+    }
 
     return QVariant();
 }
@@ -82,6 +93,15 @@ bool	ZJointSpectraModel::setData(const QModelIndex & index, const QVariant & val
         }
     }
 
+    if(role == VisibleRole)
+    {
+        if(index.column() == 0 && value.canConvert<bool>())
+        {
+            bool visible = value.toBool();
+            return zv_dataManager->zp_setSpectrumVisible(index.row(), visible);
+        }
+    }
+
     return false;
 }
 //==================================================================
@@ -96,13 +116,7 @@ QVariant ZJointSpectraModel::headerData(int section, Qt::Orientation orientation
     {
         if(orientation == Qt::Horizontal)
         {
-            QString hn = zv_dataManager->zp_columnName(section);
-
-#ifdef DBG
-        qDebug() << "COLUMN NAME" << section << hn;
-#endif
-
-            return hn; //QVariant(zv_dataManager->zp_columnName(section));
+            return QVariant(zv_dataManager->zp_columnName(section));
         }
         else
         {
@@ -137,6 +151,11 @@ void ZJointSpectraModel::zp_setDataManager(ZJointSpectraDataManager* dataManager
 //==================================================================
 void ZJointSpectraModel::zh_onDataManagerOperation(ZJointSpectraDataManager::OperationType type, int first, int last)
 {
+    if(!zv_dataManager)
+    {
+        return;
+    }
+
     if(type == ZJointSpectraDataManager::OT_RESET_DATA)
     {
         beginResetModel();
@@ -163,16 +182,10 @@ void ZJointSpectraModel::zh_onDataManagerOperation(ZJointSpectraDataManager::Ope
     }
     else if(type == ZJointSpectraDataManager::OT_INSERT_COLUMN)
     {
-#ifdef DBG
-        qDebug() << "OT_INSERT_COLUMN";
-#endif
         beginInsertColumns(QModelIndex(), first, last);
     }
     else if(type == ZJointSpectraDataManager::OT_END_INSERT_COLUMN)
     {
-#ifdef DBG
-        qDebug() << "OT_END_INSERT_COLUMN";
-#endif
         endInsertColumns();
     }
     else if(type == ZJointSpectraDataManager::OT_REMOVE_COLUMN)
@@ -186,6 +199,13 @@ void ZJointSpectraModel::zh_onDataManagerOperation(ZJointSpectraDataManager::Ope
     else if(type == ZJointSpectraDataManager::OT_COLUMN_HEADER_CHANGED)
     {
         emit headerDataChanged(Qt::Horizontal, first, last);
+    }
+    else if(type == ZJointSpectraDataManager::OT_SEPECTRUM_DATA_CHANGED)
+    {
+        QModelIndex leftTop = index(first, 0);
+        QModelIndex rightBottom = index(last, zv_dataManager->zp_spectrumDataColumnCount() - 1);
+
+        emit dataChanged(leftTop, rightBottom);
     }
 }
 //==================================================================

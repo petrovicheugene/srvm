@@ -1,7 +1,9 @@
 //=============================================================
 #include "ZJointSpectraTableWidget.h"
-#include "glVariables.h"
+#include "globalVariables.h"
 #include "ZNumericDelegate.h"
+#include "ZSpectrumTableDelegate.h"
+#include "ZVisibilityStringDelegate.h"
 #include "ZJointSpectraModel.h"
 
 #include <QTableView>
@@ -52,6 +54,11 @@ void ZJointSpectrumTableWidget::zp_setModel(ZJointSpectraModel* model)
     connect(numericDelegate, &ZNumericDelegate::editNext,
             this, &ZJointSpectrumTableWidget::zp_editNext);
     zv_table->setItemDelegate(numericDelegate);
+    ZSpectrumTableDelegate* spectrumDelegate = new ZSpectrumTableDelegate(zv_table);
+    zv_table->setItemDelegateForColumn(0, new ZVisibilityStringDelegate(zv_table));
+    zv_table->setItemDelegateForColumn(1, spectrumDelegate);
+
+    zv_table->setAlternatingRowColors(true);
 }
 //==============================================================
 void ZJointSpectrumTableWidget::zp_appendButtonActions(QList<QAction*> actionList)

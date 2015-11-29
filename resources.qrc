@@ -19,5 +19,34 @@
         <file>ARemove3Green.png</file>
         <file>CRemove3Blue.png</file>
         <file>SRemove3Purple.png</file>
+        <file>Cursor.bmp</file>
+        <file>CursorBlack.bmp</file>
+        <file>CursorBlueGray.bmp</file>
+        <file>CursorMask.bmp</file>
+        <file>CursorNavy.bmp</file>
+        <file>CursorOrange.bmp</file>
+        <file>CursorRed.bmp</file>
+        <file>littleCrossBlack.bmp</file>
+        <file>littleCrossBlueGray.bmp</file>
+        <file>littleCrossMask.bmp</file>
+        <file>littleCrossNavy.bmp</file>
+        <file>littleCrossOrange.bmp</file>
+        <file>littleCrossRed.bmp</file>
+        <file>littleCrossWhite.bmp</file>
+        <file>RoundScalingBlack.bmp</file>
+        <file>RoundScalingMask.bmp</file>
+        <file>RoundScalingNavy.bmp</file>
+        <file>RoundScalingOrange.bmp</file>
+        <file>RoundScalingRed.bmp</file>
+        <file>RoundScalingWhite.bmp</file>
+        <file>ScalingCur.bmp</file>
+        <file>thinCrossBlack.bmp</file>
+        <file>thinCrossBlueGray.bmp</file>
+        <file>thinCrossMask.bmp</file>
+        <file>thinCrossNavy.bmp</file>
+        <file>thinCrossOrange.bmp</file>
+        <file>thinCrossRed.bmp</file>
+        <file>thinCrossWhite.bmp</file>
+        <file>eyeSignBlack.png</file>
     </qresource>
 </RCC>

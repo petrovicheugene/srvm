@@ -3,7 +3,7 @@
 #define ZXMLCALIBRATIONARRAYIOHANDLER_H
 //==========================================================
 #include "ZAbstractCalibrationIOHandler.h"
-#include "glVariables.h"
+#include "globalVariables.h"
 //==========================================================
 class QXmlStreamReader;
 //==========================================================

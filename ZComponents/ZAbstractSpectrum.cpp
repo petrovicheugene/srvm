@@ -3,11 +3,15 @@
 #include <QFileInfo>
 
 //==========================================================
-ZAbstractSpectrum::ZAbstractSpectrum(const QList<int> &intensityList, const QString& path, QObject *parent)  : QObject(parent)
+ZAbstractSpectrum::ZAbstractSpectrum(const QList<int> &intensityList,
+                                     const QString& path, QColor color, QObject *parent)
+    : QObject(parent)
 {
+    zv_visible = true;
     zv_path = path;
-    QFileInfo fileInfo(path);
+    zv_color = color;
 
+    QFileInfo fileInfo(path);
     QString suffix = fileInfo.suffix();
     if(suffix == "spe")
     {
@@ -19,7 +23,16 @@ ZAbstractSpectrum::ZAbstractSpectrum(const QList<int> &intensityList, const QStr
     }
 
     zv_name = fileInfo.fileName();
-    zv_intensityList = intensityList;
+    zv_spectrumData = intensityList;
+    zv_channelCount = intensityList.count();
+    zv_maxIntensity = 0;
+    for(int i = 0; i < zv_channelCount; i++)
+    {
+        if(zv_maxIntensity < intensityList.value(i))
+        {
+            zv_maxIntensity = intensityList.value(i);
+        }
+    }
 }
 //==========================================================
 ZAbstractSpectrum::~ZAbstractSpectrum()
@@ -31,6 +44,16 @@ ZAbstractSpectrum::~ZAbstractSpectrum()
 ZAbstractSpectrum::SpectrumType ZAbstractSpectrum::zp_type() const
 {
     return zv_type;
+}
+//==========================================================
+bool ZAbstractSpectrum::zp_isSpectrumVisible() const
+{
+    return zv_visible;
+}
+//==========================================================
+void ZAbstractSpectrum::zp_setSpectrumVisible(bool visible)
+{
+    zv_visible = visible;
 }
 //==========================================================
 void ZAbstractSpectrum::zp_insertConcentration(const QString& chemElement, const QString& concentration)
@@ -60,13 +83,20 @@ bool ZAbstractSpectrum::zp_setConcentration(const QString& chemElement,
     {
         return false;
     }
+
+    if(zv_concentrationMap.contains(chemElement)
+            && ( zv_concentrationMap.value(chemElement) == concentration))
+    {
+        return false;
+    }
+
     zv_concentrationMap.insert(chemElement, concentration);
     return true;
 }
 //==========================================================
-QList<int> ZAbstractSpectrum::zp_spectrumIntensityArray()
+QList<int> ZAbstractSpectrum::zp_spectrumData()
 {
-    return zv_intensityList;
+    return zv_spectrumData;
 }
 //==========================================================
 QString ZAbstractSpectrum::zp_name() const
@@ -77,5 +107,68 @@ QString ZAbstractSpectrum::zp_name() const
 QString ZAbstractSpectrum::zp_path() const
 {
     return zv_path;
+}
+//==========================================================
+int ZAbstractSpectrum::zp_intensityInWindow(int startChannel, int lastChannel, bool* ok)
+{
+    if(startChannel < 0)
+    {
+        startChannel = 0;
+    }
+    else if(startChannel > zv_spectrumData.count())
+    {
+        startChannel = zv_spectrumData.count() - 1;
+    }
+
+    if(lastChannel < 0)
+    {
+        lastChannel = 0;
+    }
+    else if(lastChannel > zv_spectrumData.count())
+    {
+        lastChannel = zv_spectrumData.count() - 1;
+    }
+
+    if(startChannel == lastChannel)
+    {
+        if(ok != 0)
+        {
+            *ok = false;
+        }
+        return 0;
+    }
+
+    if(startChannel > lastChannel)
+    {
+        qSwap(startChannel, lastChannel);
+    }
+
+    int intensity = 0;
+    for(int c = startChannel; c <= lastChannel; c++)
+    {
+        intensity += zv_spectrumData.value(c);
+    }
+
+    if(ok != 0)
+    {
+        *ok = true;
+    }
+
+    return intensity;
+}
+//==========================================================
+int ZAbstractSpectrum::zp_channelCount()
+{
+    return zv_channelCount;
+}
+//==========================================================
+int ZAbstractSpectrum::zp_maxIntensity()
+{
+    return zv_maxIntensity;
+}
+//==========================================================
+QColor ZAbstractSpectrum::zp_color()
+{
+    return zv_color;
 }
 //==========================================================

@@ -38,12 +38,22 @@ public:
                                  int spectrumIndex, const QString& concentration);
 
     QString zp_spectrumFileName(int index) const;
-    QList<int> zp_spectrumIntensityArray(int index) const;
+    QColor zp_spectrumColor(int index) const;
+    QList<int> zp_spectrumData(int index) const;
+    bool zp_isSpectrumVisible(int index) const;
+    bool zp_setSpectrumVisible(int index, bool visible);
+
     bool zp_removeSpectrum(int);
     void zp_clearArray();
     bool zp_appendSpectrum(const ZRawSpectrum& rawSpectrum);
     bool zp_appendNewChemElement();
     bool zp_removeChemElement(int);
+
+    ZAbstractSpectrum* zp_spectrum(int index) const;
+
+    int zp_maxIntensity();
+    int zp_maxChannelCount();
+
 
 signals:
 
@@ -56,10 +66,14 @@ private:
     QString zv_arrayName;
     QList<ZAbstractSpectrum*> zv_spectrumList;
     ZChemElementList zv_chemElementList;
+    // max parameters
+    int zv_maxArrayChannelCount;
+    int zv_maxArrayIntensity;
 
     // FUNCS
 
     void zh_createConnections();
+    void zh_recalcArrayMaxParameters();
 
 private slots:
 

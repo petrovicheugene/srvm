@@ -1,6 +1,6 @@
 //===============================================
 #include "MainWindow.h"
-#include "glVariables.h"
+#include "globalVariables.h"
 
 #include <QApplication>
 #include <QTranslator>

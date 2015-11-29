@@ -1,6 +1,6 @@
 //======================================================
 #include "ZCalibrationRepository.h"
-#include "glVariables.h"
+#include "globalVariables.h"
 #include "ZXMLCalibrationIOHandler.h"
 #include "ZSDCalibrationIOHandler.h"
 #include "ZSDCalibration.h"
@@ -130,21 +130,22 @@ bool ZCalibrationRepository::zp_calibrationIsVisible(int row)
     return zv_caibrationList.value(row)->zp_isVisible();
 }
 //======================================================
-void ZCalibrationRepository::zp_setVisible(int row, bool visibility)
+bool ZCalibrationRepository::zp_setVisible(int row, bool visibility)
 {
     if(row < 0 || row >= zv_caibrationList.count())
     {
-        return;
+        return false;
     }
 
     if(visibility == zv_caibrationList.at(row)->zp_isVisible())
     {
-        return;
+        return false;
     }
 
     emit zg_currentOperation(OT_CALIBRATION_VISIBILITY_CHANGE, row, row);
     zv_caibrationList[row]->zp_setVisible(visibility);
     emit zg_currentOperation(OT_END_CALIBRATION_VISIBILITY_CHANGE, row, row);
+    return true;
 }
 //======================================================
 bool ZCalibrationRepository::zp_isDirty(int row)
@@ -157,7 +158,7 @@ bool ZCalibrationRepository::zp_isDirty(int row)
     return zv_caibrationList.value(row)->zp_isDirty();
 }
 //======================================================
-QString ZCalibrationRepository::zp_suffix(int row)
+QString ZCalibrationRepository::zp_fileSuffix(int row)
 {
     if(row < 0 || row >= zv_caibrationList.count())
     {
@@ -165,6 +166,21 @@ QString ZCalibrationRepository::zp_suffix(int row)
     }
 
     return zv_caibrationList.value(row)->zp_suffix();
+}
+//======================================================
+double ZCalibrationRepository::zp_calculateConcentration(int row, ZAbstractSpectrum* const spectrum, bool* ok) const
+{
+    if(row < 0 || row >= zv_caibrationList.count()
+            || spectrum == 0)
+    {
+        if(ok != 0)
+        {
+            *ok = false;
+        }
+        return 0;
+    }
+
+    return zv_caibrationList.at(row)->zp_calcConcentration(spectrum, ok);
 }
 //======================================================
 void ZCalibrationRepository::zp_appendCalibrationsToArray(const QStringList& fileNameList)

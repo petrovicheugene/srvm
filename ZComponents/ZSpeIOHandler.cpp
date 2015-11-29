@@ -1,6 +1,6 @@
 //===========================================================
 #include "ZSpeIOHandler.h"
-#include "glVariables.h"
+#include "globalVariables.h"
 #include <QFileInfo>
 #include <QFile>
 #include <QTextStream>
@@ -87,7 +87,7 @@ bool ZSpeIOHandler::zp_getSpectrumFromFile(QFile& file, ZAbstractSpectrum*& spec
         lineNumber++;
     }
 
-    spectrum = new ZSpeSpectrum(intensityList, file.fileName(), zv_spectrumParent);
+    spectrum = new ZSpeSpectrum(intensityList, file.fileName(), QColor(), zv_spectrumParent);
     return true;
 }
 //===========================================================

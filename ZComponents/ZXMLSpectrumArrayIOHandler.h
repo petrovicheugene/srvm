@@ -3,7 +3,7 @@
 #define ZXMLARRAYIOHANDLER_H
 //============================================================
 #include "ZAbstractSpectrumArrayIOHandler.h"
-#include "glVariables.h"
+#include "globalVariables.h"
 //============================================================
 class QXmlStreamReader;
 //============================================================

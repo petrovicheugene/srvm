@@ -15,7 +15,7 @@ RC_ICONS = "SDC1.ico"
 
 VER_MAJ=0
 VER_MIN=0
-VER_PAT=1
+VER_PAT=2
 VER_RELEASE=a
 
 EXE_BASE_NAME=SDCalibrator
@@ -59,7 +59,9 @@ INCLUDEPATH += ZPlotter \
     ZComponents \
     ZDialogs \
     ZModelViews/ZNumericDelegate \
-    ZModelViews/ZStringDelegate
+    ZModelViews/ZStringDelegate \
+    ZModelViews/ZSpectrumTableDelegate \
+    ZModelViews/ZVisibilityStringDelegate
 
 SOURCES += main.cpp \
     MainWindow.cpp \
@@ -83,7 +85,6 @@ SOURCES += main.cpp \
     ZWidgets/ZMessagePanel.cpp \
     ZWidgets/ZHelpBrowser.cpp \
     ZWidgets/ZWidgetWithSidebar.cpp \
-    ZPlotter/ZPlotter.cpp \
     ZComponents/ZSpectraArrayRepository.cpp \
     ZComponents/ZAbstractSpectrumArrayIOHandler.cpp \
     ZComponents/ZXMLSpectrumArrayIOHandler.cpp \
@@ -100,10 +101,23 @@ SOURCES += main.cpp \
     ZComponents/ZChemElementDataManager.cpp \
     ZModelViews/ZNumericDelegate/ZNumericDelegate.cpp \
     ZModelViews/ZNumericDelegate/ZNumericEditor.cpp \
-    ZModelViews/ZStringDelegate/ZStringDelegate.cpp
+    ZModelViews/ZStringDelegate/ZStringDelegate.cpp \
+    ZModelViews/ZSpectrumTableDelegate/ZSpectrumTableDelegate.cpp \
+    ZModelViews/ZSpectrumTableDelegate/ZPrimitivePlot.cpp \
+    ZModelViews/ZVisibilityStringDelegate/ZVisibilityStringDelegate.cpp \
+    ZComponents/ZPlotterDataManager.cpp \
+    ZComponents/ZAdvancedAction.cpp \
+    ZPlotter/ZDashBoard.cpp \
+    ZPlotter/ZPlotGraphicsScene.cpp \
+    ZPlotter/ZPlotGraphicsView.cpp \
+    ZPlotter/ZPlotter.cpp \
+    ZPlotter/ZRulersAndGridManager.cpp \
+    ZPlotter/ZRulerWidget.cpp \
+    ZPlotter/ZSpectrumGraphicsItem.cpp \
+    ZPlotter/ZWindowGraphicsItem.cpp
 
 
-HEADERS  += glVariables.h \
+HEADERS  += \
     MainWindow.h \
     ZComponents/ZSpectrumArray.h \
     ZComponents/ZFileActionManager.h \
@@ -125,7 +139,6 @@ HEADERS  += glVariables.h \
     ZWidgets/ZMessagePanel.h \
     ZWidgets/ZHelpBrowser.h \
     ZWidgets/ZWidgetWithSidebar.h \
-    ZPlotter/ZPlotter.h \
     ZComponents/ZSpectraArrayRepository.h \
     ZComponents/ZRawSpectrumArray.h \
     ZComponents/ZAbstractSpectrumArrayIOHandler.h \
@@ -143,7 +156,23 @@ HEADERS  += glVariables.h \
     ZComponents/ZChemElementDataManager.h \
     ZModelViews/ZNumericDelegate/ZNumericDelegate.h \
     ZModelViews/ZNumericDelegate/ZNumericEditor.h \
-    ZModelViews/ZStringDelegate/ZStringDelegate.h
+    ZModelViews/ZStringDelegate/ZStringDelegate.h \
+    ZModelViews/ZSpectrumTableDelegate/ZSpectrumTableDelegate.h \
+    ZModelViews/ZSpectrumTableDelegate/ZPrimitivePlot.h \
+    ZModelViews/ZVisibilityStringDelegate/ZVisibilityStringDelegate.h \
+    ZComponents/ZSpectrumPaintData.h \
+    globalVariables.h \
+    ZComponents/ZPlotterDataManager.h \
+    ZComponents/ZAdvancedAction.h \
+    ZPlotter/ZDashBoard.h \
+    ZPlotter/ZGraphicsItemUserTypes.h \
+    ZPlotter/ZPlotGraphicsScene.h \
+    ZPlotter/ZPlotGraphicsView.h \
+    ZPlotter/ZPlotter.h \
+    ZPlotter/ZRulersAndGridManager.h \
+    ZPlotter/ZRulerWidget.h \
+    ZPlotter/ZSpectrumGraphicsItem.h \
+    ZPlotter/ZWindowGraphicsItem.h
 
 
 RESOURCES += \

@@ -1,6 +1,6 @@
 //==================================================
 #include "ZMessagePanel.h"
-#include "glVariables.h"
+#include "globalVariables.h"
 
 #include <QTextEdit>
 #include <QPushButton>

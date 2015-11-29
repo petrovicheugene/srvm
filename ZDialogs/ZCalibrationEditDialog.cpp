@@ -1,7 +1,7 @@
 //===========================================================
 #include "ZCalibrationEditDialog.h"
 #include "ZAbstractCalibration.h"
-#include "glVariables.h"
+#include "globalVariables.h"
 
 #include <QHBoxLayout>
 #include <QVBoxLayout>
@@ -92,7 +92,7 @@ void ZCalibrationEditDialog::zh_createConnections()
 //===========================================================
 void ZCalibrationEditDialog::zh_fillComboBox(QString currentSuffix)
 {
-    foreach(QString suffix, ZAbstractCalibration::suffixMap.values())
+    foreach(QString suffix, ZAbstractCalibration::fileSuffixMap.values())
     {
         if(suffix.isEmpty())
         {

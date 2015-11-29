@@ -1,8 +1,9 @@
 //=========================================================
 #include "ZAbstractCalibration.h"
+#include "ZAbstractSpectrum.h"
 #include <QFileInfo>
 //=========================================================
-const QMap<ZAbstractCalibration::CalibrationType, QString> ZAbstractCalibration::suffixMap(ZAbstractCalibration::zp_createSuffixMap());
+const QMap<ZAbstractCalibration::CalibrationType, QString> ZAbstractCalibration::fileSuffixMap(ZAbstractCalibration::zp_createSuffixMap());
 //=========================================================
 QMap<ZAbstractCalibration::CalibrationType, QString> ZAbstractCalibration::zp_createSuffixMap()
 {
@@ -21,13 +22,13 @@ ZAbstractCalibration::ZAbstractCalibration(const QString& path, QObject *parent)
     {
         QString suffix = fileInfo.suffix();
 
-        if(!suffixMap.values().contains(suffix))
+        if(!fileSuffixMap.values().contains(suffix))
         {
             zv_type = CT_NA;
         }
         else
         {
-            zv_type = suffixMap.key(suffix);
+            zv_type = fileSuffixMap.key(suffix);
         }
 
         zv_baseName = fileInfo.baseName();
@@ -50,7 +51,7 @@ ZAbstractCalibration::~ZAbstractCalibration()
 //=========================================================
 QString ZAbstractCalibration::zp_name() const
 {
-    QString name = zv_baseName+"."+suffixMap.value(zv_type);
+    QString name = zv_baseName+"."+fileSuffixMap.value(zv_type);
     return name;
 }
 //=========================================================
@@ -104,7 +105,7 @@ void ZAbstractCalibration::zp_setVisible(bool visibility)
     if(visibility != zv_visibility)
     {
         zv_visibility = visibility;
-        emit zg_checkedChanged(zv_visibility);
+        emit zg_visibilityChanged(zv_visibility);
     }
 }
 //=========================================================
@@ -115,7 +116,7 @@ bool ZAbstractCalibration::zp_isDirty() const
 //=========================================================
 QString ZAbstractCalibration::zp_suffix() const
 {
-    QString suffix = suffixMap.value(zv_type);
+    QString suffix = fileSuffixMap.value(zv_type);
     return suffix;
 }
 //=========================================================

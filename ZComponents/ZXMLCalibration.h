@@ -15,6 +15,7 @@ public:
     explicit ZXMLCalibration(const QString& path, QObject* parent = 0);
     virtual ~ZXMLCalibration();
 
+    double zp_calcConcentration(ZAbstractSpectrum* const spectrum, bool *ok = 0) override;
 
 };
 //==========================================================

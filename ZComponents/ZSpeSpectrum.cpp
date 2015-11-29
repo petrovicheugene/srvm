@@ -6,8 +6,8 @@
 //    zv_type = ST_SPE;
 //}
 //===================================================
-ZSpeSpectrum::ZSpeSpectrum(const QList<int>& intensityList, const QString& name, QObject *parent)
-    : ZAbstractSpectrum(intensityList, name, parent)
+ZSpeSpectrum::ZSpeSpectrum(const QList<int>& intensityList, const QString& name, QColor color, QObject *parent)
+    : ZAbstractSpectrum(intensityList, name, color, parent)
 {
 
 }

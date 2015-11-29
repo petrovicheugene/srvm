@@ -1,6 +1,7 @@
 //==============================================================
 #include "ZChemElementWidget.h"
 #include "ZStringDelegate.h"
+#include "ZVisibilityStringDelegate.h"
 
 #include <QTableView>
 #include <QHBoxLayout>
@@ -30,8 +31,11 @@ void ZChemElementWidget::zh_createComponents()
 void ZChemElementWidget::zp_setModel(QAbstractItemModel* model)
 {
     zv_table->setModel(model);
-    zv_table->setItemDelegate(new ZStringDelegate(false, zv_table));
+    zv_table->setItemDelegate(new ZStringDelegate(zv_table));
+    zv_table->setItemDelegateForColumn(0, new ZVisibilityStringDelegate(zv_table));
     zv_table->horizontalHeader()->setSectionResizeMode(0, QHeaderView::Stretch);
+    zv_table->setAlternatingRowColors(true);
+
     connect(zv_table->selectionModel(), &QItemSelectionModel::currentChanged,
             this, &ZChemElementWidget::zh_onCurrentElementChanged);
 }

@@ -1,5 +1,7 @@
 //==================================================================
 #include "ZChemElementModel.h"
+#include "globalVariables.h"
+
 #include <QFont>
 #include <QColor>
 //==================================================================
@@ -13,8 +15,8 @@ Qt::ItemFlags	ZChemElementModel::flags(const QModelIndex & index) const
     Qt::ItemFlags flags;
     flags |= Qt::ItemIsEnabled
             | Qt::ItemIsSelectable
-            | Qt::ItemIsEditable
-            |Qt::ItemIsUserCheckable;
+            | Qt::ItemIsEditable;
+         //   |Qt::ItemIsUserCheckable;
     return flags;
 }
 //==================================================================
@@ -50,14 +52,31 @@ QVariant ZChemElementModel::data(const QModelIndex & index, int role) const
         return QVariant();
     }
 
-    if(role == Qt::CheckStateRole)
+//    if(role == Qt::CheckStateRole)
+//    {
+//        if(index.column() == 0)
+//        {
+//            bool visible = zv_dataManager->zp_chemElementIsVisible(index.row());
+//            return visible ? Qt::Checked : Qt::Unchecked;
+//        }
+//        return QVariant();
+//    }
+
+    if(role == VisibleRole)
     {
         if(index.column() == 0)
         {
-            bool visible = zv_dataManager->zp_chemElementIsVisible(index.row());
-            return visible ? Qt::Checked : Qt::Unchecked;
+            return QVariant(zv_dataManager->zp_chemElementIsVisible(index.row()));
         }
-        return QVariant();
+    }
+
+
+    if(role == Qt::DecorationRole)
+    {
+        if(index.column() == 0)
+        {
+            return QVariant(QColor(Qt::transparent));
+        }
     }
 
     return QVariant();
@@ -73,20 +92,17 @@ bool	ZChemElementModel::setData(const QModelIndex & index, const QVariant & valu
         return false;
     }
 
-    if(role == Qt::CheckStateRole)
+    if(role == VisibleRole)
     {
         if(index.column() == 0)
         {
-            if(!value.canConvert<int>())
+            if(!value.canConvert<bool>())
             {
                 return false;
             }
 
-            Qt::CheckState state = static_cast<Qt::CheckState>(value.toInt());
-
-            bool visibility = state == Qt::Checked ? true : false;
-            return zv_dataManager->zp_setVisible(visibility, index.row());
-
+            bool visibility = value.toBool();
+            return zv_dataManager->zp_setVisible(index.row(), visibility);
         }
         return false;
     }
@@ -150,7 +166,7 @@ void ZChemElementModel::zp_setChemElementDataManager(ZChemElementDataManager *da
 }
 //==================================================================
 void ZChemElementModel::zh_onRepositoryOperation(ZChemElementDataManager::OperationType type,
-                                                          int first, int last)
+                                                 int first, int last)
 {
     if(type == ZChemElementDataManager::OT_RESET_DATA)
     {

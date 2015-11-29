@@ -1,8 +1,9 @@
 //==================================================================
 #include "ZCalibrationModel.h"
+#include "globalVariables.h"
+
 #include <QFont>
 #include <QColor>
-
 //==================================================================
 ZCalibrationModel::ZCalibrationModel(QObject *parent) : QAbstractTableModel(parent)
 {
@@ -15,10 +16,10 @@ Qt::ItemFlags	ZCalibrationModel::flags(const QModelIndex & index) const
     flags |= Qt::ItemIsEnabled
             | Qt::ItemIsSelectable;
 
-    if(index.column() == 0)
-    {
-        flags |= Qt::ItemIsUserCheckable;
-    }
+//    if(index.column() == 0)
+//    {
+//        flags |= Qt::ItemIsUserCheckable;
+//    }
     return flags;
 }
 //==================================================================
@@ -53,26 +54,17 @@ QVariant ZCalibrationModel::data(const QModelIndex & index, int role) const
         {
             return QVariant(zv_calibrationRepository->zp_calibrationName(index.row()));
         }
-//        else if(index.column() == 1)
-//        {
-//            return QVariant(zv_calibrationRepository->zp_suffix(index.row()));
-//        }
     }
-    else if(role == Qt::CheckStateRole)
+
+    if(role == VisibleRole)
     {
         if(index.column() == 0)
         {
-            if(zv_calibrationRepository->zp_calibrationIsVisible(index.row()))
-            {
-                return QVariant(Qt::Checked);
-            }
-            else
-            {
-                return QVariant(Qt::Unchecked);
-            }
+            return QVariant(zv_calibrationRepository->zp_calibrationIsVisible(index.row()));
         }
     }
-    else if(role == Qt::ForegroundRole)
+
+    if(role == Qt::ForegroundRole)
     {
         if(zv_calibrationRepository->zp_isDirty(index.row()))
         {
@@ -81,6 +73,14 @@ QVariant ZCalibrationModel::data(const QModelIndex & index, int role) const
         else
         {
             return QVariant();
+        }
+    }
+
+    if(role == Qt::DecorationRole)
+    {
+        if(index.column() == 0)
+        {
+            return QVariant(QColor(Qt::transparent));
         }
     }
 
@@ -104,17 +104,17 @@ bool	ZCalibrationModel::setData(const QModelIndex & index, const QVariant & valu
             return false;
         }
     }
-    else if(role == Qt::CheckStateRole)
+    else if(role == VisibleRole)
     {
         if(index.column() == 0)
         {
-            if(value.isNull() || !value.canConvert<int>())
+            if(!value.canConvert<bool>())
             {
                 return false;
             }
-            Qt::CheckState checkState = static_cast<Qt::CheckState>(value.toInt());
-            zv_calibrationRepository->zp_setVisible(index.row(), checkState == Qt::Checked);
-            return true;
+
+            bool visibility = value.toBool();
+            return zv_calibrationRepository->zp_setVisible(index.row(), visibility);
         }
     }
 

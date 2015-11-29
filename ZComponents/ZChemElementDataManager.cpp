@@ -1,6 +1,6 @@
 //=========================================================
 #include "ZChemElementDataManager.h"
-#include "glVariables.h"
+#include "globalVariables.h"
 //=========================================================
 ZChemElementDataManager::ZChemElementDataManager(QObject *parent) : QObject(parent)
 {
@@ -61,7 +61,7 @@ QString ZChemElementDataManager::zp_columnName(int columnIndex) const
     return QString();
 }
 //=========================================================
-bool ZChemElementDataManager::zp_setVisible(bool visible, int row) const
+bool ZChemElementDataManager::zp_setVisible(int row, bool visible) const
 {
     if(zv_repositiry == 0)
     {
@@ -83,6 +83,10 @@ bool ZChemElementDataManager::zp_setChemElementName(int chemElementIndex, const 
 //=========================================================
 void ZChemElementDataManager::zp_currentArrayChanged(int current, int previous)
 {
+    if(zv_currentArrayIndex == current)
+    {
+        return;
+    }
     emit zg_currentOperation(OT_RESET_DATA, -1, -1);
     zv_currentArrayIndex = current;
     emit zg_currentOperation(OT_END_RESET_DATA, -1, -1);

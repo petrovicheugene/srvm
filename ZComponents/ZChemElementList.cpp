@@ -1,6 +1,6 @@
 //=====================================================
 #include "ZChemElementList.h"
-#include "glVariables.h"
+#include "globalVariables.h"
 //=====================================================
 ZChemElementList::ZChemElementList(QObject *parent) : QObject(parent)
 {

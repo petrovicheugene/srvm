@@ -43,11 +43,13 @@ public:
     QString zp_visibleCalibrationName(int visibleCalibrationIndex) const;
 
     bool zp_calibrationIsVisible(int row);
-    void zp_setVisible(int row, bool checked);
+    bool zp_setVisible(int row, bool checked);
 
     bool zp_isDirty(int row);
 
-    QString zp_suffix(int row);
+    QString zp_fileSuffix(int row);
+
+    double zp_calculateConcentration(int row, ZAbstractSpectrum* const, bool *ok = 0) const;
 
 signals:
 

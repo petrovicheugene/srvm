@@ -1,5 +1,7 @@
 //==============================================================
 #include "ZCalibrationTableWidget.h"
+#include "ZVisibilityStringDelegate.h"
+
 #include <QTableView>
 #include <QHBoxLayout>
 #include <QVBoxLayout>
@@ -35,9 +37,12 @@ void zh_onCurrentArrayChanged(const QModelIndex & current, const QModelIndex & p
 void ZCalibrationTableWidget::zp_setModel(QAbstractItemModel* model)
 {
     zv_table->setModel(model);
+    zv_table->setItemDelegateForColumn(0, new ZVisibilityStringDelegate(zv_table));
     zv_table->horizontalHeader()->setSectionResizeMode(0, QHeaderView::Stretch);
     // zv_table->horizontalHeader()->setSectionResizeMode(1, QHeaderView::ResizeToContents);
     zv_table->setSelectionBehavior(QAbstractItemView::SelectRows);
+    zv_table->setAlternatingRowColors(true);
+
     connect(zv_table->selectionModel(), &QItemSelectionModel::currentChanged,
             this, &ZCalibrationTableWidget::zh_onCurrentCalibrationChanged);
 

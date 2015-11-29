@@ -11,7 +11,7 @@ class ZStringDelegate : public QStyledItemDelegate
 {
     Q_OBJECT
 public:
-    explicit ZStringDelegate(bool fillEmptinessFlag = false, QObject *parent = 0);
+    explicit ZStringDelegate(QObject *parent = 0);
 
     virtual QWidget * createEditor(QWidget* parent, const QStyleOptionViewItem& option, const QModelIndex& index) const;
     virtual void	paint(QPainter* painter, const QStyleOptionViewItem& option, const QModelIndex& index) const;
@@ -20,10 +20,10 @@ public:
     virtual QSize	sizeHint(const QStyleOptionViewItem& option, const QModelIndex& index) const;
     virtual void	updateEditorGeometry(QWidget* editor, const QStyleOptionViewItem& option, const QModelIndex& index) const;
 
-    void mf_setFillEmptiness(bool flag);
+    //☺void mf_setFillEmptiness(bool flag);
 
 private:
-    bool mv_fillEmptinessFlag;
+    //bool mv_fillEmptinessFlag;
 
 signals:
 

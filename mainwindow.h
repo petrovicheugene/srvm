@@ -20,10 +20,13 @@ class ZArrayModel;
 class ZJointSpectraModel;
 class ZChemElementModel;
 class ZCalibrationModel;
+
 class ZSpectraArrayRepository;
+class ZCalibrationRepository;
+
 class ZJointSpectraDataManager;
 class ZChemElementDataManager;
-class ZCalibrationRepository;
+class ZPlotterDataManager;
 
 //==========================================================
 class MainWindow : public QMainWindow
@@ -80,6 +83,7 @@ private:
     ZJointSpectraDataManager* zv_jointSpectraDataManager;
     ZCalibrationRepository* zv_calibrationRepository;
     ZChemElementDataManager* zv_chemElementDataManager;
+    ZPlotterDataManager* zv_plotterDataManager;
 
     // FUNCS
     void closeEvent(QCloseEvent* e);

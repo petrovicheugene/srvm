@@ -14,6 +14,9 @@ public:
     explicit ZSDCalibration(const QString& path, QObject *parent = 0);
     virtual ~ZSDCalibration();
 
+
+    double zp_calcConcentration(ZAbstractSpectrum* const spectrum, bool *ok = 0) override;
+
 };
 //=================================================
 #endif // ZSDCALIBRATION_H

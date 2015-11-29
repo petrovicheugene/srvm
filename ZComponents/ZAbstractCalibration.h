@@ -5,7 +5,7 @@
 #include <QObject>
 #include <QMap>
 //=========================================================
-
+class ZAbstractSpectrum;
 //=========================================================
 class ZAbstractCalibration : public QObject
 {
@@ -23,7 +23,7 @@ public:
     static QMap<ZAbstractCalibration::CalibrationType, QString> zp_createSuffixMap();
 
     // continue VARS
-    static const QMap<ZAbstractCalibration::CalibrationType, QString> suffixMap;
+    static const QMap<ZAbstractCalibration::CalibrationType, QString> fileSuffixMap;
 
     // FUNCS
     QString zp_name() const;
@@ -40,12 +40,16 @@ public:
     bool zp_isDirty() const;
     QString zp_suffix() const;
 
+    virtual double zp_calcConcentration(ZAbstractSpectrum* const, bool *ok = 0) = 0;
+
 signals:
 
-    void zg_checkedChanged(bool) const;
+    void zg_visibilityChanged(bool) const;
     void zg_dirtyChanged(bool) const;
 
 public slots:
+
+
 
 protected:
 
