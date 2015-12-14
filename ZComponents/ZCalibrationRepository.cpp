@@ -59,8 +59,10 @@ void ZCalibrationRepository::zp_clear()
     if(!zv_caibrationList.isEmpty())
     {
         emit zg_currentOperation(OT_REMOVE_CALIBRATIONS, 0, zv_caibrationList.count() - 1);
-        qDeleteAll(zv_caibrationList);
-        zv_caibrationList.clear();
+        for(int i = zv_caibrationList.count()-1; i >= 0; i-- )
+        {
+            delete zv_caibrationList.takeAt(i);
+        }
         emit zg_currentOperation(OT_END_REMOVE_CALIBRATIONS, 0, 0);
     }
 }
@@ -168,7 +170,7 @@ QString ZCalibrationRepository::zp_fileSuffix(int row)
     return zv_caibrationList.value(row)->zp_suffix();
 }
 //======================================================
-double ZCalibrationRepository::zp_calculateConcentration(int row, ZAbstractSpectrum* const spectrum, bool* ok) const
+double ZCalibrationRepository::zp_calculateConcentration(int row, const ZAbstractSpectrum* const spectrum, bool* ok) const
 {
     if(row < 0 || row >= zv_caibrationList.count()
             || spectrum == 0)

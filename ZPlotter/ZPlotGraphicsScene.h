@@ -13,10 +13,9 @@ public:
     explicit ZPlotGraphicsScene(QObject *parent = 0);
     explicit ZPlotGraphicsScene(const QRectF & sceneRect, QObject * parent = 0);
     explicit ZPlotGraphicsScene(qreal x, qreal y, qreal width, qreal height, QObject * parent = 0);
-
+    ~ZPlotGraphicsScene();
     void zp_addItem(QGraphicsItem * item);
     void 	zp_removeItem(QGraphicsItem * item);
-
 
 protected:
 

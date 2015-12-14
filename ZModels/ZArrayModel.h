@@ -15,6 +15,8 @@ public:
 
     // override FUNCS
     virtual Qt::ItemFlags	flags(const QModelIndex & index) const;
+    QModelIndex index(int row, int column, const QModelIndex &parent) const;
+
     virtual int	columnCount(const QModelIndex & parent = QModelIndex()) const;
     virtual int	rowCount(const QModelIndex & parent = QModelIndex()) const;
 
@@ -23,7 +25,7 @@ public:
     virtual QVariant	headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const;
 
     // FUNCS
-    void zp_setSpectraArrayRepository(ZSpectraArrayRepository*);
+    void zp_connectToSpectraArrayRepository(ZSpectraArrayRepository*);
 
 public slots:
 

@@ -2,19 +2,23 @@
 #include "ZRulersAndGridManager.h"
 #include "ZPlotGraphicsView.h"
 #include "ZRulerWidget.h"
+#include "ZPlotter.h"
+#include "globalVariables.h"
 
 #include <QPoint>
 #include <QPointF>
 #include <QDebug>
 
 //========================================================
-ZRulersAndGridManager::ZRulersAndGridManager(QObject *parent) : QObject(parent)
+ZRulersAndGridManager::ZRulersAndGridManager(ZPlotter *parent) : QObject(parent)
 {
     zv_markIntervalList << 1 << 2 << 5 << 10;
     zv_plotView = 0;
     zv_rulerWidget = 0;
     zv_minimalVerticalScaleInterval = 1.0;
     zv_minimalHorizontalScaleInterval = 1.0;
+    zv_minimalScratchVpInterval = 10;
+    zv_plotter = parent;
 }
 //========================================================
 //QList<qreal> ZRulersAndGridManager::zp_XMarkGridList() const
@@ -49,10 +53,10 @@ void ZRulersAndGridManager::zp_setPlotGraphicsView(ZPlotGraphicsView* plotView)
 void ZRulersAndGridManager::zp_setRulerWidget(ZRulerWidget* rulerWidget)
 {
     zv_rulerWidget = rulerWidget;
-//    zv_rulerWidget->zp_setHorizontalGridMaps(&zv_XScratchGridMap);
-//    zv_rulerWidget->zp_setHorizontalMarkMaps(&zv_XMarkGridMap);
-//    zv_rulerWidget->zp_setVerticalGridMaps(&zv_YScratchGridMap);
-//    zv_rulerWidget->zp_setVerticalMarkMaps(&zv_YMarkGridMap);
+    //    zv_rulerWidget->zp_setHorizontalGridMaps(&zv_XScratchGridMap);
+    //    zv_rulerWidget->zp_setHorizontalMarkMaps(&zv_XMarkGridMap);
+    //    zv_rulerWidget->zp_setVerticalGridMaps(&zv_YScratchGridMap);
+    //    zv_rulerWidget->zp_setVerticalMarkMaps(&zv_YMarkGridMap);
 
     zv_rulerWidget->zp_setHorizontalRulePointList(&zv_XRulePointList);
     zv_rulerWidget->zp_setVerticalRulePointList(&zv_YRulePointList);
@@ -109,21 +113,38 @@ void ZRulersAndGridManager::zp_recalcRulesAndGrid()
         return;
     }
 
+    qreal distortionFactor;
+    qreal distortionCorrectionFactor;
+    zv_plotter->zp_verticalDistortionFactors(distortionFactor, distortionCorrectionFactor);
+
     if(zv_viewportGlobalRect == viewportGlobalRect
             && zv_viewportSceneRect == viewportSceneRect
-            && zv_globalZeroPoint == globalZeroPoint)
+            && zv_globalZeroPoint == globalZeroPoint
+            && zv_distortionFactor == distortionFactor
+            && zv_distortionCorrectionFactor == distortionCorrectionFactor)
     {
         // coordinates are not changed
         return;
     }
 
+    zv_distortionFactor = distortionFactor;
+    zv_distortionCorrectionFactor = distortionCorrectionFactor;
     zv_viewportGlobalRect = viewportGlobalRect;
     zv_viewportSceneRect = viewportSceneRect;
     zv_globalZeroPoint = globalZeroPoint;
     zh_recalcRectsForPaint();
 
+    // bottom rule haven't be distorted
     zh_recalcBottomRule();
-    zh_recalcLeftRule();
+
+    if(distortionFactor == 0 || distortionFactor == 1 || distortionCorrectionFactor == 0)
+    {
+        zh_recalcLeftRule();
+    }
+    else
+    {
+        zh_recalcDistortedLeftRule(distortionFactor, distortionCorrectionFactor);
+    }
 
     zv_rulerWidget->update();
 }
@@ -191,7 +212,7 @@ void ZRulersAndGridManager::zh_recalcBottomRule()
                     QPoint vp_scratchIntervalPos = zv_plotView->mapFromScene(QPointF(newScScratchInterval, zv_viewportSceneRect.top()));
                     int firstSratchXPos = zv_plotView->viewport()->mapToGlobal(vp_scratchIntervalPos).x();
                     int newVpScratchInterval = qAbs(firstSratchXPos - zv_globalZeroPoint.x());
-                    if(newVpScratchInterval < 10 || newScScratchInterval < zv_minimalHorizontalScaleInterval)
+                    if(newVpScratchInterval < zv_minimalScratchVpInterval || newScScratchInterval < zv_minimalHorizontalScaleInterval)
                     {
                         newScScratchInterval = newScMarkInterval;
                     }
@@ -211,7 +232,7 @@ void ZRulersAndGridManager::zh_recalcBottomRule()
                     QPoint vp_scratchIntervalPos = zv_plotView->mapFromScene(QPointF(newScScratchInterval, zv_viewportSceneRect.top()));
                     int firstSratchXPos = zv_plotView->viewport()->mapToGlobal(vp_scratchIntervalPos).x();
                     int newVpScratchInterval = qAbs(firstSratchXPos - zv_globalZeroPoint.x());
-                    if(newVpScratchInterval < 10 || newScScratchInterval < zv_minimalHorizontalScaleInterval)
+                    if(newVpScratchInterval < zv_minimalScratchVpInterval || newScScratchInterval < zv_minimalHorizontalScaleInterval)
                     {
                         newScScratchInterval = newScMarkInterval;
                     }
@@ -227,7 +248,7 @@ void ZRulersAndGridManager::zh_recalcBottomRule()
                 QPoint vp_scratchIntervalPos = zv_plotView->mapFromScene(QPointF(newScScratchInterval, zv_viewportSceneRect.top()));
                 int firstSratchXPos = zv_plotView->viewport()->mapToGlobal(vp_scratchIntervalPos).x();
                 int newVpScratchInterval = qAbs(firstSratchXPos - zv_globalZeroPoint.x());
-                if(newVpScratchInterval < 10 || newScScratchInterval < zv_minimalHorizontalScaleInterval)
+                if(newVpScratchInterval < zv_minimalScratchVpInterval || newScScratchInterval < zv_minimalHorizontalScaleInterval)
                 {
                     newScScratchInterval = newScMarkInterval;
                 }
@@ -240,12 +261,9 @@ void ZRulersAndGridManager::zh_recalcBottomRule()
         // k = (vp-max - vp-min) / (sc-max - sc-min)
         // a = vp-min - sc-min*k
 
-        qreal k;
-        qreal a;
-
-        k = ((qreal)zv_viewportGlobalRect.right() - (qreal)zv_viewportGlobalRect.left())
+        zv_K = ((qreal)zv_viewportGlobalRect.right() - (qreal)zv_viewportGlobalRect.left())
                 / (zv_viewportSceneRect.right() - zv_viewportSceneRect.left());
-        a = (qreal)zv_viewportGlobalRect.left() - zv_viewportSceneRect.left()*k;
+        zv_A = (qreal)zv_viewportGlobalRect.left() - zv_viewportSceneRect.left()*zv_K;
 
 
         int markScratchesInterval;
@@ -317,7 +335,7 @@ void ZRulersAndGridManager::zh_recalcBottomRule()
                 markType = RulePoint::MT_SCRATCH;
             }
 
-            qreal vp = sc*k + a;
+            qreal vp = sc*zv_K + zv_A;
             rulePoint = RulePoint(vp, sc, markType);
             zv_XRulePointList.append(rulePoint);
         }
@@ -355,7 +373,7 @@ void ZRulersAndGridManager::zh_recalcBottomRule()
                 markType = RulePoint::MT_SCRATCH;
             }
 
-            qreal vp = sc*k + a;
+            qreal vp = sc*zv_K + zv_A;
             rulePoint = RulePoint(vp, sc, markType);
             zv_XRulePointList.append(rulePoint);
         }
@@ -364,27 +382,30 @@ void ZRulersAndGridManager::zh_recalcBottomRule()
 //========================================================
 void ZRulersAndGridManager::zh_recalcLeftRule()
 {
+    // cleaning
     zv_YRulePointList.clear();
+
 
     if(zv_viewportGlobalRect.top() != zv_viewportGlobalRect.bottom()
             && zv_viewportSceneRect.top() != zv_viewportSceneRect.bottom()
             && zv_rulerWidget != 0)
     {
-        int maxVpMarkInterval = zv_rulerWidget->zp_maxMarkHeight() * 3 ;
-        qreal maxScMarkInterval = zv_plotView->mapToScene(QPoint(0, maxVpMarkInterval)).y()
+
+        zv_minVpMarkInterval = zv_rulerWidget->zp_maxMarkHeight() * 3 ;
+        qreal minScMarkInterval = zv_plotView->mapToScene(QPoint(0, zv_minVpMarkInterval)).y()
                 - zv_plotView->mapToScene(QPoint(0,0)).y();
 
         // new mark and scratch interval calculation
         qreal newScMarkInterval;
         qreal newScScratchInterval;
 
-        if(maxScMarkInterval < zv_minimalVerticalScaleInterval)
+        if(minScMarkInterval < zv_minimalVerticalScaleInterval)
         {
             newScMarkInterval = zv_minimalVerticalScaleInterval;
         }
         else
         {
-            QString maxScMarkIntervalString = QString::number(maxScMarkInterval, 'E', 1);
+            QString maxScMarkIntervalString = QString::number(minScMarkInterval, 'E', 1);
             QStringList intervalPartList = maxScMarkIntervalString.split('E');
             QString integralPart = intervalPartList.value(0, QString());
 
@@ -392,7 +413,7 @@ void ZRulersAndGridManager::zh_recalcLeftRule()
             double nIntegralPart = qAbs(integralPart.toDouble(&ok));
             if(!ok)
             {
-                newScMarkInterval = maxScMarkInterval;
+                newScMarkInterval = minScMarkInterval;
             }
 
             for(int i = 0; i < zv_markIntervalList.count(); i++)
@@ -408,7 +429,7 @@ void ZRulersAndGridManager::zh_recalcLeftRule()
                 newScMarkInterval = maxScMarkIntervalString.toDouble(&ok);
                 if(!ok || newScMarkInterval < zv_minimalHorizontalScaleInterval)
                 {
-                    newScMarkInterval = maxScMarkInterval;
+                    newScMarkInterval = minScMarkInterval;
                 }
 
                 break;
@@ -426,7 +447,7 @@ void ZRulersAndGridManager::zh_recalcLeftRule()
                     QPoint vp_scratchIntervalPos = zv_plotView->mapFromScene(QPointF(zv_viewportSceneRect.left(), newScScratchInterval));
                     int firstSratchYPos = zv_plotView->viewport()->mapToGlobal(vp_scratchIntervalPos).y();
                     int newVpScratchInterval = qAbs(firstSratchYPos - zv_globalZeroPoint.y());
-                    if(newVpScratchInterval < 10 || newScScratchInterval < zv_minimalVerticalScaleInterval)
+                    if(newVpScratchInterval < zv_minimalScratchVpInterval || newScScratchInterval < zv_minimalVerticalScaleInterval)
                     {
                         newScScratchInterval = newScMarkInterval;
                     }
@@ -446,7 +467,7 @@ void ZRulersAndGridManager::zh_recalcLeftRule()
                     QPoint vp_scratchIntervalPos = zv_plotView->mapFromScene(QPointF(zv_viewportSceneRect.left(), newScScratchInterval));
                     int firstSratchYPos = zv_plotView->viewport()->mapToGlobal(vp_scratchIntervalPos).y();
                     int newVpScratchInterval = qAbs(firstSratchYPos - zv_globalZeroPoint.y());
-                    if(newVpScratchInterval < 10 || newScScratchInterval < zv_minimalVerticalScaleInterval)
+                    if(newVpScratchInterval < zv_minimalScratchVpInterval || newScScratchInterval < zv_minimalVerticalScaleInterval)
                     {
                         newScScratchInterval = newScMarkInterval;
                     }
@@ -462,7 +483,7 @@ void ZRulersAndGridManager::zh_recalcLeftRule()
                 QPoint vp_scratchIntervalPos = zv_plotView->mapFromScene(QPointF(zv_viewportSceneRect.left(), newScScratchInterval));
                 int firstSratchYPos = zv_plotView->viewport()->mapToGlobal(vp_scratchIntervalPos).y();
                 int newVpScratchInterval = qAbs(firstSratchYPos - zv_globalZeroPoint.y());
-                if(newVpScratchInterval < 10 || newScScratchInterval < zv_minimalVerticalScaleInterval)
+                if(newVpScratchInterval < zv_minimalScratchVpInterval || newScScratchInterval < zv_minimalVerticalScaleInterval)
                 {
                     newScScratchInterval = newScMarkInterval;
                 }
@@ -474,13 +495,11 @@ void ZRulersAndGridManager::zh_recalcLeftRule()
         // k = (vp-max - vp-min) / (sc-max - sc-min)
         // a = vp-min - sc-min*k
 
-        qreal k;
-        qreal a;
-
-        k = ((qreal)zv_viewportGlobalRect.bottom() - (qreal)zv_viewportGlobalRect.top())
+        zv_K = ((qreal)zv_viewportGlobalRect.bottom() - (qreal)zv_viewportGlobalRect.top())
                 / (zv_viewportSceneRect.bottom() - zv_viewportSceneRect.top());
-        a = (qreal)zv_viewportGlobalRect.top() - zv_viewportSceneRect.top()*k;
+        zv_A = (qreal)zv_viewportGlobalRect.top() - zv_viewportSceneRect.top()*zv_K;
 
+        // defining empty mark interval
         int markScratchesInterval;
         if(newScScratchInterval > 0)
         {
@@ -551,7 +570,7 @@ void ZRulersAndGridManager::zh_recalcLeftRule()
                 markType = RulePoint::MT_SCRATCH;
             }
 
-            qreal vp = sc*k + a;
+            qreal vp = sc*zv_K + zv_A;
             rulePoint = RulePoint(vp, sc, markType);
             zv_YRulePointList.append(rulePoint);
         }
@@ -589,11 +608,307 @@ void ZRulersAndGridManager::zh_recalcLeftRule()
                 markType = RulePoint::MT_SCRATCH;
             }
 
-            qreal vp = sc*k + a;
+            qreal vp = sc*zv_K + zv_A;
             rulePoint = RulePoint(vp, sc, markType);
             zv_YRulePointList.append(rulePoint);
         }
     }
+}
+//========================================================
+void ZRulersAndGridManager::zh_recalcDistortedLeftRule(qreal distortionFactor, qreal distortionCorrectionFactor)
+{
+    zv_YRulePointList.clear();
+
+    zv_distortionFactor = distortionFactor;
+    zv_distortionCorrectionFactor = distortionCorrectionFactor;
+
+    if(zv_viewportGlobalRect.top() != zv_viewportGlobalRect.bottom()
+            && zv_viewportSceneRect.top() != zv_viewportSceneRect.bottom()
+            && zv_rulerWidget != 0)
+    {
+        zv_minVpMarkInterval = zv_rulerWidget->zp_maxMarkHeight() * 3 ;
+
+        // vp-coord = sc-coord*k + a
+        // sc-coord = (vp-coord - a) / k
+        // solution:
+        // k = (vp-max - vp-min) / (sc-max - sc-min)
+        // a = vp-min - sc-min*k
+
+        // sc-coord = value^distortionFactor * distortionCorrectionFactor
+        //
+
+        zv_K = ((qreal)zv_viewportGlobalRect.bottom() - (qreal)zv_viewportGlobalRect.top())
+                / (zv_viewportSceneRect.bottom() - zv_viewportSceneRect.top());
+        zv_A = (qreal)zv_viewportGlobalRect.top() - zv_viewportSceneRect.top()*zv_K;
+
+        RulePoint rulePoint;
+        RulePoint::MarkType markType;
+
+
+        qreal currentMarkValue = 0;
+        qreal currentMarkScPos = 0;
+        qreal currentMarkVpPos = zv_A;
+
+        //
+        zv_displayedTopYValue = pow((qAbs(zv_viewportSceneRect.top()) / zv_distortionCorrectionFactor), 1/zv_distortionFactor);
+        if(zv_viewportSceneRect.top() < 0)
+        {
+            zv_displayedTopYValue *= -1;
+        }
+        zv_displayedBottomYValue = pow(qAbs((zv_viewportSceneRect.bottom()) / zv_distortionCorrectionFactor), 1/zv_distortionFactor);
+        if(zv_viewportSceneRect.bottom() < 0)
+        {
+            zv_displayedBottomYValue *= -1;
+        }
+
+        qreal prevMarkValue;
+        while(currentMarkValue >= zv_displayedTopYValue)
+        {
+            if(currentMarkValue <= zv_displayedBottomYValue)
+            {
+                markType = RulePoint::MT_MARK;
+                //qreal vp = *k + a;
+                rulePoint = RulePoint(currentMarkVpPos, currentMarkScPos, currentMarkValue, markType);
+                zv_YRulePointList.append(rulePoint);
+            }
+
+            prevMarkValue = currentMarkValue;
+
+            // next min passible current value
+            currentMarkVpPos = currentMarkVpPos - zv_minVpMarkInterval;
+            currentMarkScPos = (currentMarkVpPos - zv_A) / zv_K;
+            currentMarkValue = pow((qAbs(currentMarkScPos) / zv_distortionCorrectionFactor), 1/zv_distortionFactor);
+            // next to the min passible value tenfold value
+            qreal p = 0.0;
+            for(;;p+=1.0 )
+            {
+                if(currentMarkValue <= pow(10.0, p))
+                {
+                    currentMarkValue = pow(10.0, p);
+                    break;
+                }
+            }
+
+            if(currentMarkScPos < 0)
+            {
+                currentMarkValue *= -1;
+            }
+
+            // back recalculation
+            currentMarkScPos = pow(qAbs(currentMarkValue), zv_distortionFactor) * zv_distortionCorrectionFactor;
+            if(currentMarkValue < 0)
+            {
+                currentMarkScPos *= -1;
+            }
+            currentMarkVpPos = currentMarkScPos * zv_K + zv_A;
+
+            // sratches defining (they may be marks if interval will allow)
+
+            zh_divideDistortedVerticalInterval(p, currentMarkValue, currentMarkVpPos, prevMarkValue);
+        }
+
+
+        // from zero to bottom
+        currentMarkValue = zv_minVpMarkInterval;
+        currentMarkScPos = pow(qAbs(currentMarkValue), zv_distortionFactor) * zv_distortionCorrectionFactor;
+        currentMarkVpPos = currentMarkScPos * zv_K + zv_A;
+
+
+        while(currentMarkValue <= zv_displayedBottomYValue)
+        {
+            if(currentMarkValue >= zv_displayedTopYValue)
+            {
+                markType = RulePoint::MT_MARK;
+                //qreal vp = *k + a;
+                rulePoint = RulePoint(currentMarkVpPos, currentMarkScPos, currentMarkValue, markType);
+                zv_YRulePointList.append(rulePoint);
+            }
+
+            prevMarkValue = currentMarkValue;
+
+            // next min passible current value
+            currentMarkVpPos = currentMarkVpPos + zv_minVpMarkInterval;
+            currentMarkScPos = (currentMarkVpPos - zv_A) / zv_K;
+            currentMarkValue = pow((qAbs(currentMarkScPos) / zv_distortionCorrectionFactor), 1/zv_distortionFactor);
+            // next to the min passible value tenfold value
+            qreal p = 0.0;
+            for(;;p+=1.0 )
+            {
+                if(currentMarkValue <= pow(10.0, p))
+                {
+                    currentMarkValue = pow(10.0, p);
+                    break;
+                }
+            }
+
+//            if(currentMarkScPos < 0)
+//            {
+//                currentMarkValue *= -1;
+//            }
+
+            // back recalculation
+            currentMarkScPos = pow(qAbs(currentMarkValue), zv_distortionFactor) * zv_distortionCorrectionFactor;
+//            if(currentMarkValue < 0)
+//            {
+//                currentMarkScPos *= -1;
+//            }
+            currentMarkVpPos = currentMarkScPos * zv_K + zv_A;
+
+            // sratches defining (they may be marks if interval will allow)
+
+            zh_divideDistortedVerticalInterval(p, currentMarkValue, currentMarkVpPos, prevMarkValue);
+        }
+    }
+}
+//========================================================
+bool ZRulersAndGridManager::zh_divideDistortedVerticalInterval(qreal p, qreal currentMarkValue,
+                                                               qreal currentMarkVpPos, qreal prevMarkValue)
+{
+    qreal scratchValue;
+    qreal scratchScPos;
+    qreal scratchVpPos;
+    RulePoint rulePoint;
+    RulePoint::MarkType markType;
+
+    //    if(qAbs(currentMarkValue) <= pow(10, p-1.0))
+    //    {
+    //        continue;
+    //    }
+    // top scratch value
+    scratchValue = qAbs(currentMarkValue) - pow(10, p-1.0);
+    if(currentMarkValue < 0)
+    {
+        scratchValue *= -1;
+    }
+    // top scratch coords
+    scratchScPos = pow(qAbs(scratchValue), zv_distortionFactor) * zv_distortionCorrectionFactor;
+    if(scratchValue < 0)
+    {
+        scratchScPos *= -1;
+    }
+    scratchVpPos = scratchScPos * zv_K + zv_A;
+
+    // if vp interval is big scratches become marks
+    bool scratchIsMark = false;
+    bool divideCurrentInterval = false;
+    qreal prevScratchValue;
+    qreal prevScratchVpPos;
+
+    if(qAbs(scratchVpPos - currentMarkVpPos) >= zv_minVpMarkInterval)
+    {
+        scratchIsMark = true;
+    }
+    else
+    {
+        scratchIsMark = false;
+    }
+
+    if(qAbs(scratchVpPos - currentMarkVpPos) >= zv_minimalScratchVpInterval && scratchIsMark)
+    {
+        divideCurrentInterval = zh_divideDistortedVerticalInterval(p - 1, currentMarkValue,
+                                                                   currentMarkVpPos, scratchValue);
+    }
+
+    if(qAbs(scratchVpPos - currentMarkVpPos) >= zv_minimalScratchVpInterval
+            && qAbs(scratchValue - currentMarkValue) >= zv_minimalVerticalScaleInterval)
+    {
+        int scratchCount = 0;
+        while(qAbs(scratchValue) > qAbs(prevMarkValue))
+        {
+            if(scratchValue >=  zv_displayedTopYValue && scratchValue <= zv_displayedBottomYValue)
+            {
+                if(scratchIsMark)
+                {
+                    markType = RulePoint::MT_MARK;
+                }
+                else if(scratchCount == 4)
+                {
+                    markType = RulePoint::MT_MARK;
+                }
+                else
+                {
+                    markType = RulePoint::MT_SCRATCH;
+                }
+
+                //qreal vp = *k + a;
+                rulePoint = RulePoint(scratchVpPos, scratchScPos, scratchValue, markType);
+                zv_YRulePointList.append(rulePoint);
+            }
+
+            // next scratch to below
+            prevScratchValue = scratchValue;
+            prevScratchVpPos = scratchVpPos;
+
+            scratchValue = qAbs(scratchValue) - pow(10, p-1.0);
+            if(prevScratchValue < 0)
+            {
+                scratchValue *= -1;
+            }
+            //scratchValue = scratchValue + pow(10, p-1.0);
+            scratchScPos = pow(qAbs(scratchValue), zv_distortionFactor) * zv_distortionCorrectionFactor;
+            if(scratchValue < 0)
+            {
+                scratchScPos *= -1;
+            }
+            scratchVpPos = scratchScPos * zv_K + zv_A;
+
+            if(divideCurrentInterval && scratchIsMark)
+            {
+                zh_divideDistortedVerticalInterval(p - 1, prevScratchValue,
+                                                   prevScratchVpPos, scratchValue);
+            }
+            scratchCount++;
+        }
+        return true;
+    }
+    else
+    {
+        // trying to divide to half
+        scratchValue = qAbs(currentMarkValue) - (pow(10, p-1.0) * 5);
+        if(currentMarkValue < 0)
+        {
+            scratchValue *= -1;
+        }
+        // top scratch coords
+        scratchScPos = pow(qAbs(scratchValue), zv_distortionFactor) * zv_distortionCorrectionFactor;
+        if(scratchValue < 0)
+        {
+            scratchScPos *= -1;
+        }
+        scratchVpPos = scratchScPos * zv_K + zv_A;
+
+        bool scratchIsMark;
+        if(qAbs(scratchVpPos - currentMarkVpPos) >= zv_minVpMarkInterval)
+        {
+            scratchIsMark = true;
+        }
+        else
+        {
+            scratchIsMark = false;
+        }
+
+        if(qAbs(scratchVpPos - currentMarkVpPos) >= zv_minimalScratchVpInterval
+                && qAbs(scratchValue - currentMarkValue) >= zv_minimalVerticalScaleInterval)
+        {
+            if(scratchValue >=  zv_displayedTopYValue && scratchValue <= zv_displayedBottomYValue)
+            {
+                if(scratchIsMark)
+                {
+                    markType = RulePoint::MT_MARK;
+                }
+                else
+                {
+                    markType = RulePoint::MT_EMPTY_MARK;
+                }
+
+                //qreal vp = *k + a;
+                rulePoint = RulePoint(scratchVpPos, scratchScPos, scratchValue, markType);
+                zv_YRulePointList.append(rulePoint);
+            }
+            return true;
+        }
+    }
+    return false;
 }
 //========================================================
 void ZRulersAndGridManager::zh_recalcRectsForPaint()

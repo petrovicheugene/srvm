@@ -14,6 +14,7 @@
 #include <QList>
 #include <QMap>
 #include <QColor>
+#include <QPainterPath>
 //==========================================================
 // Inheritage: ADD  SpectrumType !!!
 //==========================================================
@@ -38,13 +39,16 @@ public:
     QStringList zp_chemElementList() const;
     QString zp_concentration(const QString& chemElement) const;
     bool zp_setConcentration(const QString& chemElement, const QString& concentration);
-    QList<int> zp_spectrumData();
-    virtual ZAbstractSpectrumAuxData zp_auxData() const = 0;
-    int zp_intensityInWindow(int startChannel, int lastChannel, bool *ok = 0);
+    QList<int> zp_spectrumData() const;
+    virtual const ZAbstractSpectrumAuxData* zp_auxData() const = 0;
+    int zp_intensityInWindow(int startChannel, int lastChannel, bool *ok = 0) const;
 
-    int zp_channelCount();
-    int zp_maxIntensity();
-    QColor zp_color();
+    int zp_channelCount() const;
+    int zp_maxIntensity() const;
+    QColor zp_color() const;
+    void zp_setColor(QColor);
+    qint64 zp_spectrumId() const;
+    QPainterPath zp_spectrumPainterPath() const;
 
 protected:
 
@@ -53,12 +57,22 @@ protected:
     QString zv_name;
     QString zv_path;
     QList<int> zv_spectrumData;
+
+    QPainterPath zv_spectrumPaintPath;
+
     QMap<QString, QString> zv_concentrationMap;
     bool zv_visible;
     QColor zv_color;
+    qint64 zv_spectrumId;
 
     int zv_channelCount;
     int zv_maxIntensity;
+
+    static qint64 zv_lastSpectrumId;
+
+
+    // FUNCS
+    void zh_recalcSpectrumPainterPath();
 
 };
 //==========================================================

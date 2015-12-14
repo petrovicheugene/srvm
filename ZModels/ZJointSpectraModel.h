@@ -21,7 +21,7 @@ public:
     virtual QVariant	headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const;
 
     // FUNCS
-    void zp_setDataManager(ZJointSpectraDataManager* dataManager);
+    void zp_connectToSpectraDataManager(ZJointSpectraDataManager* dataManager);
 
 public slots:
 

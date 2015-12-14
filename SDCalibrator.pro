@@ -8,7 +8,6 @@ QT       += xml
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
-
 #PRO VARS
 #Application version
 RC_ICONS = "SDC1.ico"
@@ -107,14 +106,14 @@ SOURCES += main.cpp \
     ZModelViews/ZVisibilityStringDelegate/ZVisibilityStringDelegate.cpp \
     ZComponents/ZPlotterDataManager.cpp \
     ZComponents/ZAdvancedAction.cpp \
-    ZPlotter/ZDashBoard.cpp \
     ZPlotter/ZPlotGraphicsScene.cpp \
     ZPlotter/ZPlotGraphicsView.cpp \
     ZPlotter/ZPlotter.cpp \
     ZPlotter/ZRulersAndGridManager.cpp \
     ZPlotter/ZRulerWidget.cpp \
     ZPlotter/ZSpectrumGraphicsItem.cpp \
-    ZPlotter/ZWindowGraphicsItem.cpp
+    ZPlotter/ZWindowGraphicsItem.cpp \
+    ZPlotter/ZHorizontalDashBoard.cpp
 
 
 HEADERS  += \
@@ -164,7 +163,6 @@ HEADERS  += \
     globalVariables.h \
     ZComponents/ZPlotterDataManager.h \
     ZComponents/ZAdvancedAction.h \
-    ZPlotter/ZDashBoard.h \
     ZPlotter/ZGraphicsItemUserTypes.h \
     ZPlotter/ZPlotGraphicsScene.h \
     ZPlotter/ZPlotGraphicsView.h \
@@ -172,7 +170,8 @@ HEADERS  += \
     ZPlotter/ZRulersAndGridManager.h \
     ZPlotter/ZRulerWidget.h \
     ZPlotter/ZSpectrumGraphicsItem.h \
-    ZPlotter/ZWindowGraphicsItem.h
+    ZPlotter/ZWindowGraphicsItem.h \
+    ZPlotter/ZHorizontalDashBoard.h
 
 
 RESOURCES += \

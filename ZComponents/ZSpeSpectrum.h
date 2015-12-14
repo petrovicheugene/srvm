@@ -12,17 +12,19 @@ class ZSpeSpectrum : public ZAbstractSpectrum
 public:
 
     // explicit ZSpeSpectrum(QObject* parent);
-    explicit ZSpeSpectrum(const QList<int> &intensityList, const QString& path, QColor color, QObject* parent);
+    explicit ZSpeSpectrum(const QList<int> &intensityList, const ZSpeAuxData& speAuxdata,
+                          const QString& path, QColor color, QObject* parent);
     virtual ~ZSpeSpectrum();
 
-    ZAbstractSpectrumAuxData zp_auxData() const override;
+    const ZAbstractSpectrumAuxData *zp_auxData() const override;
+    QStringList zp_isEnergyCalibrationSuitable(const QString&,
+                                        qreal K0, qreal K1, qreal K2);
 
 private:
 
     // VARS
+
     ZSpeAuxData zv_auxData;
-
-
 //    int zv_deviceNumber;
 //    QDate zv_date;
 //    QTime zv_time;

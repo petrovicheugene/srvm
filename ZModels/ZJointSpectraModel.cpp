@@ -139,7 +139,7 @@ QVariant ZJointSpectraModel::headerData(int section, Qt::Orientation orientation
     return QVariant();
 }
 //==================================================================
-void ZJointSpectraModel::zp_setDataManager(ZJointSpectraDataManager* dataManager)
+void ZJointSpectraModel::zp_connectToSpectraDataManager(ZJointSpectraDataManager* dataManager)
 {
     beginResetModel();
     zv_dataManager = dataManager;

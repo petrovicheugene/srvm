@@ -18,8 +18,8 @@ public:
     explicit ZAbstractSpectrumIOHandler(QObject* spectrumParent, QObject *parent = 0);
     virtual ~ZAbstractSpectrumIOHandler();
 
-    virtual bool zp_getSpectrumFromFile(const QString& path, ZAbstractSpectrum*&) const = 0;
-    virtual bool zp_getSpectrumFromFile(QFile& file, ZAbstractSpectrum*&) const = 0;
+    virtual bool zp_getSpectrumFromFile(const QString& path, QColor, ZAbstractSpectrum*&) const = 0;
+    virtual bool zp_getSpectrumFromFile(QFile& file, QColor, ZAbstractSpectrum*&) const = 0;
     // virtual bool zp_getSpectrumFromFile(QFile& file, ZSpectrumArray&) const = 0;
 
 signals:

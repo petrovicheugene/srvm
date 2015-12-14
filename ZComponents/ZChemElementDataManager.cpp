@@ -5,10 +5,11 @@
 ZChemElementDataManager::ZChemElementDataManager(QObject *parent) : QObject(parent)
 {
     zv_currentArrayIndex = -1;
+    zv_currentArrayId = -1;
     zv_repositiry = 0;
 }
 //=========================================================
-void ZChemElementDataManager::zp_setSpectraArrayRepository(ZSpectraArrayRepository* repository)
+void ZChemElementDataManager::zp_connectToSpectraArrayRepository(ZSpectraArrayRepository* repository)
 {
     zv_repositiry = repository;
     // array repository <-> array model
@@ -81,14 +82,20 @@ bool ZChemElementDataManager::zp_setChemElementName(int chemElementIndex, const 
     return zv_repositiry->zp_setChemElementName(zv_currentArrayIndex, chemElementIndex, chemElementName);
 }
 //=========================================================
-void ZChemElementDataManager::zp_currentArrayChanged(int current, int previous)
+void ZChemElementDataManager::zp_currentArrayChanged(qint64 currentArrayId, int currentArrayIndex)
 {
-    if(zv_currentArrayIndex == current)
+    if(zv_currentArrayIndex == currentArrayIndex && zv_currentArrayId == currentArrayId)
     {
         return;
     }
+
+#ifdef DBG
+    qDebug() << "ChemElementDataManager" << currentArrayId << currentArrayIndex;
+#endif
+
     emit zg_currentOperation(OT_RESET_DATA, -1, -1);
-    zv_currentArrayIndex = current;
+    zv_currentArrayIndex = currentArrayIndex;
+    zv_currentArrayId = currentArrayId;
     emit zg_currentOperation(OT_END_RESET_DATA, -1, -1);
 }
 //=========================================================

@@ -3,6 +3,7 @@
 #define ZPLOTTER_H
 //====================================================
 #include <QWidget>
+#include <QGraphicsItem>
 //====================================================
 class ZMarkLine;
 class ZVerticalMarkLine;
@@ -13,7 +14,7 @@ class ZPlotGraphicsScene;
 class QScrollBar;
 class ZRulersAndGridManager;
 class ZRulerWidget;
-class ZDashBoard;
+class ZHorizontalDashBoard;
 //====================================================
 class ZPlotter : public QWidget
 {
@@ -21,14 +22,15 @@ class ZPlotter : public QWidget
 public:
     explicit ZPlotter(QWidget *parent = 0);
 
-    ZPlotGraphicsScene* zp_plotScene();
+    // ZPlotGraphicsScene* zp_plotScene();
 
     bool zp_setMinimalVerticalScaleInterval(qreal);
     qreal zp_minimalVerticalScaleInterval();
     bool zp_setMinimalHorizontalScaleInterval(qreal);
     qreal zp_minimalHorizontalScaleInterval();
 
-    bool zp_setLeftMarkFontSize(int size);
+    // rule control
+    bool zp_setLeftMarkFontSize(int size) ;
     bool zp_setRightMarkFontSize(int size);
     bool zp_setTopMarkFontSize(int size);
     bool zp_setBottomMarkFontSize(int size);
@@ -48,6 +50,40 @@ public:
     bool zp_setTopMarkPrecision(int);
     bool zp_setBottomMarkPrecision(int);
 
+    // rule control
+    void zp_setHorizontalMarkRecalcFactors(const QString &label, qreal K0, qreal K1, qreal K2);
+    void zp_setVerticalMarkRecalcFactors(const QString &label, qreal K0, qreal K1, qreal K2);
+
+    void zp_setLeftMarkRecalcMetrix(const QString&label, bool labelVisibility, qreal K0, qreal K1, qreal K2);
+    void zp_setRightMarkRecalcMetrix(const QString&label, bool labelVisibility, qreal K0, qreal K1, qreal K2);
+    void zp_setTopMarkRecalcMetrix(const QString&label, bool labelVisibility, qreal K0, qreal K1, qreal K2);
+    void zp_setBottomMarkRecalcMetrix(const QString& label, bool labelVisibility,qreal K0, qreal K1, qreal K2);
+
+    void zp_setLeftMarkRecalcFlag(bool flag);
+    void zp_setRightMarkRecalcFlag(bool flag);
+    void zp_setTopMarkRecalcFlag(bool flag);
+    void zp_setBottomMarkRecalcFlag(bool flag);
+
+    void zp_setTopRuleLabel(const QString &label);
+    void zp_setBottomRuleLabel(const QString &label);
+    void zp_setLeftRuleLabel(const QString &label);
+    void zp_setRightRuleLabel(const QString &label);
+
+    // ***
+    void zp_clearItemsForType(int type);
+    void zp_addItem(QGraphicsItem * item);
+    void zp_removeItem(QGraphicsItem * item);
+    QList<QGraphicsItem*> zp_itemListForType(int type) const;
+
+    void zp_appendButtonsToDashboard(QList<QAction*>&,
+                                     Qt::AlignmentFlag align,
+                                     int extraSperatorSpacing = 0);
+
+    void zp_setVerticalAbsMax(qreal);
+    qreal zp_verticalAbsMax() const;
+    void zp_setAutoDefineVerticalAbsMax(bool);
+    void zp_verticalDistortionFactors(qreal& distortionFactor, qreal& distortionCorrectionFactor);
+
 signals:
 
 public slots:
@@ -57,11 +93,21 @@ public slots:
     void zp_setTopRuleVisible(bool visible);
     void zp_setBottomRuleVisible(bool visible);
 
+    void zp_setTopRuleLabelVisible(bool visible);
+    void zp_setBottomRuleLabelVisible(bool visible);
+    void zp_setLeftRuleLabelVisible(bool visible);
+    void zp_setRightRuleLabelVisible(bool visible);
+
+    void zp_fitInBoundingRect();
 protected:
 
     // FUNCS
     void resizeEvent(QResizeEvent* event);
     bool eventFilter(QObject *obj, QEvent *event);
+
+private slots:
+
+    void zh_verticalDistortionChanged(int);
 
 private:
 
@@ -71,7 +117,21 @@ private:
     ZRulerWidget* zv_rulerWidget;
     ZPlotGraphicsView* zv_plotView;
     ZPlotGraphicsScene* zv_plotScene;
-    ZDashBoard* zv_dashBoard;
+    ZHorizontalDashBoard* zv_dashBoard;
+
+    qreal zv_verticalAbsMax;
+    bool zv_autoDefineVerticalAbsMax;
+    qreal zv_verticalDistortionFactor;
+    qreal zv_verticalDistortionCorrectionFactor;
+    // recalc when max or log base are changed
+    //
+    //
+    // zv_verticalDistortionCorrectionFactor =  max / max^zv_verticalDistortionFactor
+    //
+    //
+
+    //  Y_log = Y^zv_verticalDistortionFactor * zv_verticalDistortionCorrectionFactor
+
 
     // scrollbar
     QScrollBar* zv_verticalScrollBar;
@@ -86,6 +146,8 @@ private:
     void zh_updateScrollBarsVisible();
 
     void zh_scrollBarVisibleControl(int min , int max);
+    bool zh_recalcVerticalDistortionFactors(qreal distortionValue);
+    void zh_recalcRulesAndItemCoordinates();
 
 };
 //====================================================

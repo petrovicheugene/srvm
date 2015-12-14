@@ -4,12 +4,85 @@
 #include "ZSpeIOHandler.h"
 #include <QFileInfo>
 #include <QFile>
+#include <QMessageBox>
+////===============================================
+QList<QColor> ZSpectrumArray::zv_colorList = ZSpectrumArray::zp_createColorList();
+qint64 ZSpectrumArray::zv_lastArrayId = 0;
 //===============================================
 ZSpectrumArray::ZSpectrumArray(const QString& name, QObject* parent)  : QObject(parent)
 {
     zv_arrayName = name;
+    zv_colorIndex = 0;
+
+    zv_energyK0 = 0;
+    zv_energyK1 = 0;
+    zv_energyK2 = 0;
+    zv_energyUnit = QString();
+
+    zv_arrayId = zv_lastArrayId++;
     zh_createConnections();
     zh_recalcArrayMaxParameters();
+}
+//===============================================
+ZSpectrumArray::~ZSpectrumArray()
+{
+    zp_clearArray();
+    zv_chemElementList.zp_clearList();
+}
+//===============================================
+bool ZSpectrumArray::checkColor(QColor color)
+{
+    if(!color.isValid() || zv_colorList.contains(color))
+    {
+        return false;
+    }
+
+    //    if(color.red() == 255 &&  color.green() < 10 && color.blue() < 10  ||
+    //            color.red() < 10 &&  color.green() == 255 && color.blue() < 10  ||
+    //            color.red() < 10 &&  color.green() < 10 && color.blue() == 255  )
+    //    {
+    //        return false;
+    //    }
+
+    int colorSumm = color.red() + color.green() + color.blue();
+    int averageVol = colorSumm / 3;
+
+    if(colorSumm > 450)
+    {
+        return false;
+    }
+
+    if(abs(averageVol - color.red()) + abs(averageVol - color.green()) + abs(averageVol - color.blue()) < 90)
+    {
+        return false;
+    }
+
+    return true;
+}
+//===============================================
+QList<QColor> ZSpectrumArray::zp_createColorList()
+{
+    int red;
+    int green;
+    int blue;
+    QColor color;
+
+    QList<QColor> colorList;
+
+    while(colorList.count() < 1500)
+    {
+        qsrand(QDateTime::currentMSecsSinceEpoch());
+        red = ((qrand() % 24) * 10) + 15;
+        green = ((qrand() % 24) * 10) + 15;
+        blue = ((qrand() % 24) * 10) +15;
+
+        color = QColor(red, green, blue);
+        if(ZSpectrumArray::checkColor(color))
+        {
+            colorList << color;
+        }
+    }
+    return colorList;
 }
 //===============================================
 QString ZSpectrumArray::zp_arrayName() const
@@ -120,7 +193,7 @@ QString ZSpectrumArray::zp_chemConcentration(const QString& chemElement,
         return QString();
     }
 
-    return zv_spectrumList.value(spectrumIndex)->zp_concentration(chemElement);
+    return zv_spectrumList.at(spectrumIndex)->zp_concentration(chemElement);
 }
 //===============================================
 bool ZSpectrumArray::zp_setChemConcentration(const QString& chemElement,
@@ -135,13 +208,36 @@ bool ZSpectrumArray::zp_setChemConcentration(const QString& chemElement,
     return zv_spectrumList.at(spectrumIndex)->zp_setConcentration(chemElement, concentration);
 }
 //===============================================
+bool ZSpectrumArray::zp_energyCalibration(qreal& K0, qreal& K1, qreal& K2, QString& energyUnit)
+{
+    if(!zp_isEnergyCalibrationValid())
+    {
+        return false;
+    }
+
+    K0 = zv_energyK0;
+    K1 = zv_energyK1;
+    K2 = zv_energyK2;
+    energyUnit = zv_energyUnit;
+    return true;
+}
+//===============================================
 QString ZSpectrumArray::zp_spectrumFileName(int index) const
 {
     if(index < 0 || index >= zv_spectrumList.count())
     {
         return QString();
     }
-    return zv_spectrumList.value(index)->zp_name();
+    return zv_spectrumList.at(index)->zp_name();
+}
+//===============================================
+qint64 ZSpectrumArray::zp_spectrumId(int index) const
+{
+    if(index < 0 || index >= zv_spectrumList.count())
+    {
+        return -1;
+    }
+    return zv_spectrumList.at(index)->zp_spectrumId();
 }
 //===============================================
 QColor ZSpectrumArray::zp_spectrumColor(int index) const
@@ -150,7 +246,7 @@ QColor ZSpectrumArray::zp_spectrumColor(int index) const
     {
         return QColor();
     }
-    return zv_spectrumList.value(index)->zp_color();
+    return zv_spectrumList.at(index)->zp_color();
 }
 //===============================================
 QList<int> ZSpectrumArray::zp_spectrumData(int index) const
@@ -159,7 +255,7 @@ QList<int> ZSpectrumArray::zp_spectrumData(int index) const
     {
         return QList<int>();
     }
-    return zv_spectrumList.value(index)->zp_spectrumData();
+    return zv_spectrumList.at(index)->zp_spectrumData();
 }
 //===============================================
 bool ZSpectrumArray::zp_isSpectrumVisible(int index) const
@@ -169,7 +265,7 @@ bool ZSpectrumArray::zp_isSpectrumVisible(int index) const
         return false;
     }
 
-    return zv_spectrumList.value(index)->zp_isSpectrumVisible();
+    return zv_spectrumList.at(index)->zp_isSpectrumVisible();
 }
 //===============================================
 bool ZSpectrumArray::zp_setSpectrumVisible(int index, bool visible)
@@ -189,19 +285,47 @@ bool ZSpectrumArray::zp_removeSpectrum(int index)
     {
         return false;
     }
+    emit zg_spectrumOperation(OT_REMOVE_SPECTRA, index, index);
     delete zv_spectrumList.takeAt(index);
+    emit zg_spectrumOperation(OT_END_REMOVE_SPECTRA, index, index);
+
     zh_recalcArrayMaxParameters();
+    if(zv_spectrumList.count() < 1 )
+    {
+        zv_energyUnit = QString();
+        zv_energyK0 = 0;
+        zv_energyK1 = 0;
+        zv_energyK2 = 0;
+        emit zg_energyCalibrationChanged(zv_arrayId);
+    }
     return true;
 }
 //===============================================
 void ZSpectrumArray::zp_clearArray()
 {
-    qDeleteAll(zv_spectrumList);
-    zv_spectrumList.clear();
-    zh_recalcArrayMaxParameters();
+    if(!zv_spectrumList.isEmpty())
+    {
+        int lastSpectrumIndex = zv_spectrumList.count() - 1;
+        emit zg_spectrumOperation(OT_REMOVE_SPECTRA, 0, lastSpectrumIndex);
+//        qDeleteAll(zv_spectrumList);
+//        zv_spectrumList.clear();
+        for(int i = zv_spectrumList.count()-1; i >= 0; i-- )
+        {
+            delete zv_spectrumList.takeAt(i);
+        }
+
+        emit zg_spectrumOperation(OT_END_REMOVE_SPECTRA,  0, lastSpectrumIndex);
+
+        zh_recalcArrayMaxParameters();
+    }
 }
 //===============================================
-bool ZSpectrumArray::zp_appendSpectrum(const ZRawSpectrum& rawSpectrum)
+void ZSpectrumArray::zp_clearChemElements()
+{
+    zv_chemElementList.zp_clearList();
+}
+//===============================================
+bool ZSpectrumArray::zp_appendSpectrum(const ZRawSpectrum& rawSpectrum, bool last, bool& dontAsk)
 {
     QFileInfo fileInfo(rawSpectrum.path);
     ZAbstractSpectrumIOHandler* ioHandler;
@@ -225,21 +349,104 @@ bool ZSpectrumArray::zp_appendSpectrum(const ZRawSpectrum& rawSpectrum)
     }
 
     ZAbstractSpectrum* abstractSpectrum;
-    bool res = ioHandler->zp_getSpectrumFromFile(rawSpectrum.path, abstractSpectrum);
+    bool res = ioHandler->zp_getSpectrumFromFile(rawSpectrum.path, zv_colorList.value(zv_colorIndex), abstractSpectrum);
     if(res)
     {
         ZSpeSpectrum* speSpectrum = qobject_cast<ZSpeSpectrum*>(abstractSpectrum);
-        zv_spectrumList.append(speSpectrum);
 
-        QMap<QString, QString>::const_iterator it;
-
-        for(it = rawSpectrum.concentrationMap.begin(); it != rawSpectrum.concentrationMap.end(); it++)
+        if(zp_isEnergyCalibrationValid() && !dontAsk)
         {
-            speSpectrum->zp_insertConcentration(it.key(), it.value());
-            if(!zv_chemElementList.zp_containsElement(it.key()))
+            QStringList inconsistenciesList = speSpectrum->zp_isEnergyCalibrationSuitable(zv_energyUnit, zv_energyK0, zv_energyK1, zv_energyK2);
+            if(!inconsistenciesList.isEmpty())
             {
-                // TODO signals column number increased
-                zv_chemElementList.zp_appendElement(it.key());
+                // QString question = tr("Energy calibration in spectrum %1% is different to calibration that have other spectra in the array.\r\n").arg(rawSpectrum.path);
+                QString question = tr("The following inconsistencies have been found: \r\n");
+                for(int i = 0; i < inconsistenciesList.count(); i++)
+                {
+                    question += "- "+inconsistenciesList.value(i);
+                    if(i < inconsistenciesList.count() - 1)
+                    {
+                        question += ";";
+                    }
+                    else
+                    {
+                        question += ".";
+                    }
+                    question += "\r\n";
+                }
+                question += "Do you want to continue loading?";
+
+                QMessageBox msgBox;
+                msgBox.setText(tr("Energy calibration in spectrum %1% is different to calibration that have other spectra in the array.\r\n").arg(rawSpectrum.path));
+                msgBox.setInformativeText(question);
+
+                if(last)
+                {
+                    msgBox.setStandardButtons(QMessageBox::Yes | QMessageBox::No);
+                }
+                else
+                {
+                    msgBox.setStandardButtons(QMessageBox::Yes | QMessageBox::No | QMessageBox::YesToAll | QMessageBox::NoToAll);
+                }
+                msgBox.setDefaultButton(QMessageBox::Yes );
+                int ret = msgBox.exec();
+
+                switch (ret)
+                {
+                case QMessageBox::Yes:
+                    res = true;
+                    break;
+                case QMessageBox::YesToAll:
+                    dontAsk = true;
+                    res = true;
+                    break;
+                case QMessageBox::No:
+                    res = false;
+                    break;
+                case QMessageBox::NoToAll:
+                default:
+                    dontAsk = true;
+                    res = false;
+                    // should never be reached
+                    break;
+                }
+            }
+        }
+
+        if(res)
+        {
+            if(zv_spectrumList.count() < 1)
+            {
+                // first spectrum. storing energy calibration
+
+                const ZSpeAuxData* auxData = static_cast<const ZSpeAuxData*>(speSpectrum->zp_auxData());
+                zv_energyUnit = auxData->zp_energyUnit();
+                zv_energyK0 = auxData->zp_energyK0();
+                zv_energyK1 = auxData->zp_energyK1();
+                zv_energyK2 = auxData->zp_energyK2();
+                emit zg_energyCalibrationChanged(zv_arrayId);
+            }
+
+            int spectrumIndex = zv_spectrumList.count();
+            emit zg_spectrumOperation(OT_INSERT_SPECTRA, spectrumIndex, spectrumIndex);
+            zv_spectrumList.append(speSpectrum);
+            emit zg_spectrumOperation(OT_END_INSERT_SPECTRA, spectrumIndex, spectrumIndex);
+            // color index increment
+            if(++zv_colorIndex >= zv_colorList.count())
+            {
+                zv_colorIndex = 0;
+            }
+
+            QMap<QString, QString>::const_iterator it;
+
+            for(it = rawSpectrum.concentrationMap.begin(); it != rawSpectrum.concentrationMap.end(); it++)
+            {
+                speSpectrum->zp_insertConcentration(it.key(), it.value());
+                if(!zv_chemElementList.zp_containsElement(it.key()))
+                {
+                    // TODO signals column number increased
+                    zv_chemElementList.zp_appendElement(it.key());
+                }
             }
         }
     }
@@ -277,14 +484,25 @@ bool ZSpectrumArray::zp_removeChemElement(int chemElementIndex)
     return zv_chemElementList.zp_removeElement(chemElement);
 }
 //===============================================
-ZAbstractSpectrum* ZSpectrumArray::zp_spectrum(int index) const
+const ZAbstractSpectrum* ZSpectrumArray::zp_spectrum(int index) const
 {
     if(index < 0 || index >= zv_spectrumList.count())
     {
         return 0;
     }
 
-    return zv_spectrumList.value(index);
+    return zv_spectrumList.at(index);
+}
+//===============================================
+QList<ZAbstractSpectrum*> ZSpectrumArray::zp_spectrumList() const
+{
+    QList<ZAbstractSpectrum*> spectrumList;
+
+    for(int s = 0; s < zv_spectrumList.count(); s++)
+    {
+        spectrumList << zv_spectrumList.value(s);
+    }
+    return spectrumList;
 }
 //===============================================
 int ZSpectrumArray::zp_maxIntensity()
@@ -295,6 +513,16 @@ int ZSpectrumArray::zp_maxIntensity()
 int ZSpectrumArray::zp_maxChannelCount()
 {
     return zv_maxArrayChannelCount;
+}
+//===============================================
+bool ZSpectrumArray::zp_isEnergyCalibrationValid()
+{
+    return !(zv_energyK1 == 0 && zv_energyK2 == 0);
+}
+//===============================================
+qint64 ZSpectrumArray::zp_arrayId()
+{
+    return zv_arrayId;
 }
 //===============================================
 void ZSpectrumArray::zh_createConnections()
@@ -308,22 +536,22 @@ void ZSpectrumArray::zh_recalcArrayMaxParameters()
     zv_maxArrayChannelCount = 0;
     zv_maxArrayIntensity = 0;
 
-    if(zv_spectrumList.count() <= 0 )
+    if(!zv_spectrumList.isEmpty())
     {
-        return;
-    }
-
-    for(int s = 0; s < zv_spectrumList.count(); s++)
-    {
-        if(zv_maxArrayChannelCount < zv_spectrumList.value(s)->zp_channelCount())
+        for(int s = 0; s < zv_spectrumList.count(); s++)
         {
-            zv_maxArrayChannelCount = zv_spectrumList.value(s)->zp_channelCount();
-        }
+            if(zv_maxArrayChannelCount < zv_spectrumList.at(s)->zp_channelCount())
+            {
+                zv_maxArrayChannelCount = zv_spectrumList.at(s)->zp_channelCount();
+            }
 
-        if(zv_maxArrayIntensity < zv_spectrumList.value(s)->zp_maxIntensity())
-        {
-            zv_maxArrayIntensity = zv_spectrumList.value(s)->zp_maxIntensity();
+            if(zv_maxArrayIntensity < zv_spectrumList.at(s)->zp_maxIntensity())
+            {
+                zv_maxArrayIntensity = zv_spectrumList.at(s)->zp_maxIntensity();
+            }
         }
     }
+
+     emit zg_arrayMaxParametersChanged(zv_arrayId,  zv_maxArrayIntensity,  zv_maxArrayChannelCount);
 }
 //===============================================

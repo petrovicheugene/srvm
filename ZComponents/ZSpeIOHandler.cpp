@@ -18,7 +18,7 @@ ZSpeIOHandler::~ZSpeIOHandler()
 
 }
 //===========================================================
-bool ZSpeIOHandler::zp_getSpectrumFromFile(const QString& path, ZAbstractSpectrum*& spectrum) const
+bool ZSpeIOHandler::zp_getSpectrumFromFile(const QString& path, QColor color, ZAbstractSpectrum*& spectrum) const
 {
     QFileInfo fileInfo(path);
     if(!fileInfo.exists() || !fileInfo.isFile())
@@ -44,10 +44,10 @@ bool ZSpeIOHandler::zp_getSpectrumFromFile(const QString& path, ZAbstractSpectru
         return false;
     }
 
-    return zp_getSpectrumFromFile(file, spectrum);
+    return zp_getSpectrumFromFile(file, color, spectrum);
 }
 //===========================================================
-bool ZSpeIOHandler::zp_getSpectrumFromFile(QFile& file, ZAbstractSpectrum*& spectrum) const
+bool ZSpeIOHandler::zp_getSpectrumFromFile(QFile& file, QColor color, ZAbstractSpectrum*& spectrum) const
 {
     if(!file.isOpen())
     {
@@ -67,6 +67,7 @@ bool ZSpeIOHandler::zp_getSpectrumFromFile(QFile& file, ZAbstractSpectrum*& spec
     QTextStream ts(&file);
     int lineNumber = 0;
     QList<int> intensityList;
+    ZSpeAuxData speAuxData;
     bool ok;
     while (!ts.atEnd())
     {
@@ -80,6 +81,57 @@ bool ZSpeIOHandler::zp_getSpectrumFromFile(QFile& file, ZAbstractSpectrum*& spec
             }
             intensityList.append(intensity);
         }
+        else // auxData
+        {
+            if(lineNumber == 1)
+            {
+                speAuxData.zp_setDate(line);
+            }
+            else if(lineNumber == 2)
+            {
+                speAuxData.zp_setTime(line);
+            }
+            else if(lineNumber == 3)
+            {
+                speAuxData.zp_setExposition(line);
+            }
+            else if(lineNumber == 4)
+            {
+                speAuxData.zp_setAliveTime(line);
+            }
+            else if(lineNumber == 10)
+            {
+                speAuxData.zp_setEnergyUnit(line);
+            }
+            else if(lineNumber == 11)
+            {
+                speAuxData.zp_setEnergyK0(line);
+            }
+            else if(lineNumber == 12)
+            {
+                speAuxData.zp_setEnergyK1(line);
+            }
+            else if(lineNumber == 13)
+            {
+                speAuxData.zp_setEnergyK2(line);
+            }
+            else if(lineNumber == 14)
+            {
+                speAuxData.zp_setPeakWidth(line);
+            }
+            else if(lineNumber == 15)
+            {
+                speAuxData.zp_setPeakWidthK0(line);
+            }
+            else if(lineNumber == 16)
+            {
+                speAuxData.zp_setPeakWidthK1(line);
+            }
+            else if(lineNumber == 17)
+            {
+                speAuxData.zp_setPeakWidthK2(line);
+            }
+        }
 
 //#ifdef DBG
 //        qDebug() << "LN"<< lineNumber << line;
@@ -87,7 +139,7 @@ bool ZSpeIOHandler::zp_getSpectrumFromFile(QFile& file, ZAbstractSpectrum*& spec
         lineNumber++;
     }
 
-    spectrum = new ZSpeSpectrum(intensityList, file.fileName(), QColor(), zv_spectrumParent);
+    spectrum = new ZSpeSpectrum(intensityList, speAuxData, file.fileName(), color, zv_spectrumParent);
     return true;
 }
 //===========================================================

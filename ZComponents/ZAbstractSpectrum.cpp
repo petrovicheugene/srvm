@@ -3,6 +3,8 @@
 #include <QFileInfo>
 
 //==========================================================
+qint64 ZAbstractSpectrum::zv_lastSpectrumId = 0;
+//==========================================================
 ZAbstractSpectrum::ZAbstractSpectrum(const QList<int> &intensityList,
                                      const QString& path, QColor color, QObject *parent)
     : QObject(parent)
@@ -10,6 +12,7 @@ ZAbstractSpectrum::ZAbstractSpectrum(const QList<int> &intensityList,
     zv_visible = true;
     zv_path = path;
     zv_color = color;
+    zv_spectrumId = zv_lastSpectrumId++;
 
     QFileInfo fileInfo(path);
     QString suffix = fileInfo.suffix();
@@ -33,13 +36,14 @@ ZAbstractSpectrum::ZAbstractSpectrum(const QList<int> &intensityList,
             zv_maxIntensity = intensityList.value(i);
         }
     }
+
+    // zh_recalcSpectrumPainterPath();
 }
 //==========================================================
 ZAbstractSpectrum::~ZAbstractSpectrum()
 {
 
 }
-
 //==========================================================
 ZAbstractSpectrum::SpectrumType ZAbstractSpectrum::zp_type() const
 {
@@ -94,7 +98,7 @@ bool ZAbstractSpectrum::zp_setConcentration(const QString& chemElement,
     return true;
 }
 //==========================================================
-QList<int> ZAbstractSpectrum::zp_spectrumData()
+QList<int> ZAbstractSpectrum::zp_spectrumData() const
 {
     return zv_spectrumData;
 }
@@ -109,7 +113,7 @@ QString ZAbstractSpectrum::zp_path() const
     return zv_path;
 }
 //==========================================================
-int ZAbstractSpectrum::zp_intensityInWindow(int startChannel, int lastChannel, bool* ok)
+int ZAbstractSpectrum::zp_intensityInWindow(int startChannel, int lastChannel, bool* ok) const
 {
     if(startChannel < 0)
     {
@@ -157,18 +161,55 @@ int ZAbstractSpectrum::zp_intensityInWindow(int startChannel, int lastChannel, b
     return intensity;
 }
 //==========================================================
-int ZAbstractSpectrum::zp_channelCount()
+int ZAbstractSpectrum::zp_channelCount() const
 {
     return zv_channelCount;
 }
 //==========================================================
-int ZAbstractSpectrum::zp_maxIntensity()
+int ZAbstractSpectrum::zp_maxIntensity() const
 {
     return zv_maxIntensity;
 }
 //==========================================================
-QColor ZAbstractSpectrum::zp_color()
+QColor ZAbstractSpectrum::zp_color() const
 {
     return zv_color;
+}
+//==========================================================
+void ZAbstractSpectrum::zp_setColor(QColor color)
+{
+    zv_color = color;
+}
+//==========================================================
+qint64 ZAbstractSpectrum::zp_spectrumId() const
+{
+    return zv_spectrumId;
+}
+//==========================================================
+QPainterPath ZAbstractSpectrum::zp_spectrumPainterPath() const
+{
+    return zv_spectrumPaintPath;
+}
+//==========================================================
+void ZAbstractSpectrum::zh_recalcSpectrumPainterPath()
+{
+    QPointF point(0.0, 0.0);
+    QPainterPath newShape;
+    newShape.moveTo(point);
+
+    qreal scValue = 0.0;
+    for(int i = 0; i < zv_spectrumData.count(); i++)
+    {
+        scValue = (qreal)(zv_spectrumData.value(i));
+        point = QPointF((qreal)i,  scValue*-1);
+        newShape.lineTo(point);
+        point = QPointF((qreal)(i+1),  scValue*-1);
+        newShape.lineTo(point);
+    }
+
+    // last point
+    point = QPointF((qreal)(zv_spectrumData.count() - 1),  0);
+    newShape.lineTo(point);
+    zv_spectrumPaintPath = newShape;
 }
 //==========================================================

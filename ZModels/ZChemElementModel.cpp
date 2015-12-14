@@ -154,7 +154,7 @@ QVariant ZChemElementModel::headerData(int section, Qt::Orientation orientation,
     return QVariant();
 }
 //==================================================================
-void ZChemElementModel::zp_setChemElementDataManager(ZChemElementDataManager *dataManager)
+void ZChemElementModel::zp_connectToChemElementDataManager(ZChemElementDataManager *dataManager)
 {
     beginResetModel();
     zv_dataManager = dataManager;

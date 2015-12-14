@@ -8,7 +8,7 @@
 //=============================================================
 class QWheelEvent;
 class QRubberBand;
-class ZDashBoard;
+class ZHorizontalDashBoard;
 //=============================================================
 class ZPlotGraphicsView : public QGraphicsView
 {
@@ -63,6 +63,7 @@ private:
     bool zv_drawGridFlag;
 
     qreal zv_minSideSizeOfVisibleScene;
+    int zv_rubberBandSideMinSize;
     QList<RulePoint> * zv_XRuleList;
     QList<RulePoint> * zv_YRuleList;
 

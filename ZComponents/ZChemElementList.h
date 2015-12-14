@@ -7,16 +7,16 @@
 #include <QList>
 
 //=====================================================
-class ZChemElement
+class ZChemElementItem
 {
 public:
-    ZChemElement()
+    ZChemElementItem()
     {
         element = QString();
         visibility = true;
     }
 
-    ZChemElement(const QString& name)
+    ZChemElementItem(const QString& name)
     {
         element = name;
         visibility = true;
@@ -43,6 +43,7 @@ public:
 
     bool zp_appendElement(const QString&);
     bool zp_removeElement(const QString&);
+    void zp_clearList();
 
     QStringList zp_chemElementList() const;
     bool zp_containsElement(const QString&) const;
@@ -70,7 +71,7 @@ public slots:
 private:
 
     // VARS
-    QList<ZChemElement> zv_elementList;
+    QList<ZChemElementItem> zv_elementList;
 };
 //=====================================================
 #endif // ZCHEMELEMENTLIST_H

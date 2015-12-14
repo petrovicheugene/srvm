@@ -16,7 +16,7 @@ bool ZChemElementList::zp_appendElement(const QString& element)
 
     int index = zv_elementList.count();
     emit zg_operationType(OT_INSERT_CHEM_ELEMENT, index, index);
-    zv_elementList.append(ZChemElement(element));
+    zv_elementList.append(ZChemElementItem(element));
     emit zg_operationType(OT_END_INSERT_CHEM_ELEMENT, index, index);
     return true;
 }
@@ -34,6 +34,17 @@ bool ZChemElementList::zp_removeElement(const QString& element)
     emit zg_operationType(OT_END_REMOVE_CHEM_ELEMENT, elementIndex, elementIndex);
 
     return true;
+}
+//=====================================================
+void ZChemElementList::zp_clearList()
+{
+    if(!zv_elementList.isEmpty())
+    {
+        int lastElementIndex = zv_elementList.count() - 1;
+        emit zg_operationType(OT_REMOVE_CHEM_ELEMENT, 0, lastElementIndex);
+        zv_elementList.clear();
+        emit zg_operationType(OT_END_REMOVE_CHEM_ELEMENT, 0, lastElementIndex);
+    }
 }
 //=====================================================
 QStringList ZChemElementList::zp_chemElementList() const
@@ -112,6 +123,10 @@ int ZChemElementList::zp_chemElementCount() const
 int ZChemElementList::zp_visibleElementCount() const
 {
     int visible = 0;
+//    if(zv_elementList.isEmpty())
+//    {
+//        return visible;
+//    }
     for(int i = 0; i < zv_elementList.count(); i++)
     {
         if(zv_elementList.value(i).visibility)

@@ -24,6 +24,12 @@ ZPlotGraphicsScene::ZPlotGraphicsScene(qreal x, qreal y, qreal width, qreal heig
      zh_createConnections();
 }
 //====================================================
+ZPlotGraphicsScene::~ZPlotGraphicsScene()
+{
+//    QList<QGraphicsItem*> itemList = items();
+//    qDeleteAll(itemList);
+}
+//====================================================
 void ZPlotGraphicsScene::zp_addItem(QGraphicsItem * item)
 {
     if(item->type() == WindowItemType)
@@ -32,6 +38,7 @@ void ZPlotGraphicsScene::zp_addItem(QGraphicsItem * item)
         windowItem->zp_fitInSceneRect(this->sceneRect());
         zv_windowItemList << windowItem;
     }
+
     QGraphicsScene::addItem(item);
 }
 //====================================================

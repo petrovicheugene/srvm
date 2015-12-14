@@ -42,7 +42,6 @@ void ZSpectrumArrayWidget::zp_setModel(ZArrayModel *model)
             this, &ZSpectrumArrayWidget::zh_onCurrentArrayChanged);
     connect(model, &ZArrayModel::zg_checkCurrentArray,
             this, &ZSpectrumArrayWidget::zh_checkCurrentArray);
-
 }
 //==============================================================
 void ZSpectrumArrayWidget::zp_appendButtonActions(QList<QAction*> actionList)
@@ -67,10 +66,31 @@ void ZSpectrumArrayWidget::zp_setCurrentArrayIndex(int arrayIndex)
         return;
     }
 
+    QModelIndex previousIndex = zv_table->currentIndex();
     QModelIndex index = zv_table->model()->index(arrayIndex, 0, QModelIndex());
     if(index.isValid())
     {
         zv_table->setCurrentIndex(index);
+        int currentRow;
+        if(index.isValid())
+        {
+            currentRow = index.row();
+        }
+        else
+        {
+            currentRow = -1;
+        }
+        int previousRow;
+        if(previousIndex.isValid())
+        {
+            previousRow = previousIndex.row();
+        }
+        else
+        {
+            previousRow = -1;
+        }
+
+        emit zg_currentArrayChanged(currentRow, previousRow);
     }
 }
 //==============================================================
@@ -120,6 +140,29 @@ void ZSpectrumArrayWidget::zh_checkCurrentArray()
 //==============================================================
 void ZSpectrumArrayWidget::zh_onCurrentArrayChanged(const QModelIndex & current, const QModelIndex & previous)
 {
-    emit zg_currentArrayChanged(current.row(), previous.row());
+#ifdef DBG
+    qDebug() << "CurrentArrayChanged" << current.row() << previous.row();
+#endif
+
+    int currentRow;
+    if(current.isValid())
+    {
+        currentRow = current.row();
+    }
+    else
+    {
+        currentRow = -1;
+    }
+    int previousRow;
+    if(previous.isValid())
+    {
+        previousRow = previous.row();
+    }
+    else
+    {
+        previousRow = -1;
+    }
+
+    emit zg_currentArrayChanged(currentRow, previousRow);
 }
 //==============================================================

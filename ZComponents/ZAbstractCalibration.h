@@ -40,7 +40,7 @@ public:
     bool zp_isDirty() const;
     QString zp_suffix() const;
 
-    virtual double zp_calcConcentration(ZAbstractSpectrum* const, bool *ok = 0) = 0;
+    virtual double zp_calcConcentration(const ZAbstractSpectrum* const, bool *ok = 0) = 0;
 
 signals:
 

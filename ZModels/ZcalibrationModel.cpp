@@ -158,7 +158,7 @@ QVariant ZCalibrationModel::headerData(int section, Qt::Orientation orientation,
     return QVariant();
 }
 //==================================================================
-void ZCalibrationModel::zp_setCalibrationRepository(ZCalibrationRepository* repository)
+void ZCalibrationModel::zp_connectToCalibrationRepository(ZCalibrationRepository* repository)
 {
     beginResetModel();
 

@@ -12,7 +12,7 @@ ZXMLCalibration::~ZXMLCalibration()
 
 }
 //==========================================================
-double ZXMLCalibration::zp_calcConcentration(ZAbstractSpectrum* const spectrum, bool *ok)
+double ZXMLCalibration::zp_calcConcentration(const ZAbstractSpectrum* const spectrum, bool *ok)
 {
     if(spectrum == 0)
     {

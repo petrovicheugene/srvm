@@ -27,7 +27,7 @@ public:
                        OT_DATA_CHANGED};
     // FUNCS
 
-    void zp_setSpectraArrayRepository(ZSpectraArrayRepository*);
+    void zp_connectToSpectraArrayRepository(ZSpectraArrayRepository*);
 
     int zp_rowCount() const;
     int zp_columnCount() const;
@@ -45,11 +45,12 @@ signals:
 
 public slots:
 
-    void zp_currentArrayChanged(int, int);
+    void zp_currentArrayChanged(qint64, int);
 
 private:
 
     // VARS
+    qint64 zv_currentArrayId;
     int zv_currentArrayIndex;
     ZSpectraArrayRepository* zv_repositiry;
 

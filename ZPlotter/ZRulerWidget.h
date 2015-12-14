@@ -21,8 +21,12 @@ public:
          visibility = true;
          scratchRect = QRect();
          markRect = QRect();
-         markOffset = 3;
-         recalcMarkLabel = false;
+         ruleLabelRect = QRect();
+         markOffsetFromScratch = 3;
+         recalcMarkLabel = true;
+         ruleLabelVisibility = true;
+         ruleLabel = QString();
+
          K0 = 0.0;
          K1 = 1.0;
          K2 = 0.0;
@@ -45,8 +49,12 @@ public:
     bool visibility;
     QRect scratchRect;
     QRect markRect;
-    int markOffset;
+    QRect ruleLabelRect;
+    int markOffsetFromScratch;
     bool recalcMarkLabel;
+    bool ruleLabelVisibility;
+    QString ruleLabel;
+
     // recalc marks factors
     qreal K0; // free member
     qreal K1;
@@ -90,37 +98,39 @@ public:
     bool zp_setTopMarkPrecision(int precision);
     bool zp_setBottomMarkPrecision(int precision);
 
-    void zp_setLeftMarkRecalcFactors(qreal K0, qreal K1, qreal K2);
-    void zp_setRightMarkRecalcFactors(qreal K0, qreal K1, qreal K2);
-    void zp_setTopMarkRecalcFactors(qreal K0, qreal K1, qreal K2);
-    void zp_setBottomMarkRecalcFactors(qreal K0, qreal K1, qreal K2);
+    void zp_setLeftMarkRecalcMetrix(const QString&, bool labelVisibility,qreal K0, qreal K1, qreal K2);
+    void zp_setRightMarkRecalcMetrix(const QString&, bool labelVisibility,qreal K0, qreal K1, qreal K2);
+    void zp_setTopMarkRecalcMetrix(const QString&, bool labelVisibility,qreal K0, qreal K1, qreal K2);
+    void zp_setBottomMarkRecalcMetrix(const QString&, bool labelVisibility,qreal K0, qreal K1, qreal K2);
 
     void zp_setLeftMarkRecalcFlag(bool flag);
     void zp_setRightMarkRecalcFlag(bool flag);
     void zp_setTopMarkRecalcFlag(bool flag);
     void zp_setBottomMarkRecalcFlag(bool flag);
 
-    void zp_setHorizontalMarkRecalcFactors(qreal K0, qreal K1, qreal K2);
-    void zp_setVerticalMarkRecalcFactors(qreal K0, qreal K1, qreal K2);
-
-
+    void zp_setHorizontalMarkRecalcFactors(const QString &label, qreal K0, qreal K1, qreal K2);
+    void zp_setVerticalMarkRecalcFactors(const QString &label, qreal K0, qreal K1, qreal K2);
 
     void zp_setTopRuleVisibility(bool visibility);
     void zp_setBottomRuleVisibility(bool visibility);
     void zp_setLeftRuleVisibility(bool visibility);
     void zp_setRightRuleVisibility(bool visibility);
 
+    void zp_setTopRuleLabel(const QString &label);
+    void zp_setBottomRuleLabel(const QString &label);
+    void zp_setLeftRuleLabel(const QString &label);
+    void zp_setRightRuleLabel(const QString &label);
 
-
+    void zp_setTopRuleLabelVisible(bool visible);
+    void zp_setBottomRuleLabelVisible(bool visible);
+    void zp_setLeftRuleLabelVisible(bool visible);
+    void zp_setRightRuleLabelVisible(bool visible);
 
     void zp_setHorizontalRulePointList(QList<RulePoint> *);
     void zp_setVerticalRulePointList(QList<RulePoint> *);
 
     int zp_maxMarkWidth();
     int zp_maxMarkHeight();
-
-
-
 
 signals:
 
@@ -152,12 +162,10 @@ protected:
     void resizeEvent(QResizeEvent* event);
     void paintEvent(QPaintEvent* event);
 
-    void zh_paintLeftRule1(QPainter* painter);
-    void zh_paintRightRule1(QPainter* painter);
-    void zh_paintTopRule1(QPainter* painter);
-    void zh_paintBottomRule1(QPainter* painter);
-
-
+    void zh_paintLeftRule(QPainter* painter);
+    void zh_paintRightRule(QPainter* painter);
+    void zh_paintTopRule(QPainter* painter);
+    void zh_paintBottomRule(QPainter* painter);
 
     void zh_recalcRuleSizes();
 };

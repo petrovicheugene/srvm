@@ -15,6 +15,17 @@ Qt::ItemFlags	ZArrayModel::flags(const QModelIndex & index) const
     return flags;
 }
 //==================================================================
+QModelIndex ZArrayModel::index(int row, int column, const QModelIndex &parent) const
+{
+    if(zv_repositiry == 0 || row < 0 || row >= zv_repositiry->zp_arrayCount()
+            || column != 0)
+    {
+        return QModelIndex();
+    }
+
+    return createIndex(row, column);
+}
+//==================================================================
 int ZArrayModel::columnCount(const QModelIndex & parent) const
 {
     return 1;
@@ -107,7 +118,7 @@ QVariant ZArrayModel::headerData(int section, Qt::Orientation orientation, int r
     return QVariant();
 }
 //==================================================================
-void ZArrayModel::zp_setSpectraArrayRepository(ZSpectraArrayRepository* repository)
+void ZArrayModel::zp_connectToSpectraArrayRepository(ZSpectraArrayRepository* repository)
 {
     beginResetModel();
     zv_repositiry = repository;

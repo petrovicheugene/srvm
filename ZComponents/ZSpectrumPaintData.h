@@ -11,6 +11,7 @@ struct ZSpectrumPaintData
     QList<int> spectrumData;
     int maxChannel;
     int maxIntensity;
+    QColor color;
 
 };
 Q_DECLARE_METATYPE(ZSpectrumPaintData)

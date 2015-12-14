@@ -15,7 +15,7 @@ public:
     virtual ~ZSDCalibration();
 
 
-    double zp_calcConcentration(ZAbstractSpectrum* const spectrum, bool *ok = 0) override;
+    double zp_calcConcentration(const ZAbstractSpectrum* const spectrum, bool *ok = 0) override;
 
 };
 //=================================================

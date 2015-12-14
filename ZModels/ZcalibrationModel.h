@@ -22,7 +22,7 @@ public:
     virtual QVariant	headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const;
 
     // FUNCS
-    void zp_setCalibrationRepository(ZCalibrationRepository* repository);
+    void zp_connectToCalibrationRepository(ZCalibrationRepository* repository);
 
 
 signals:

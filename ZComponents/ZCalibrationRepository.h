@@ -49,7 +49,7 @@ public:
 
     QString zp_fileSuffix(int row);
 
-    double zp_calculateConcentration(int row, ZAbstractSpectrum* const, bool *ok = 0) const;
+    double zp_calculateConcentration(int row, const ZAbstractSpectrum* const, bool *ok = 0) const;
 
 signals:
 

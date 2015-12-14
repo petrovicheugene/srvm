@@ -28,8 +28,8 @@ public:
                         OT_COLUMN_HEADER_CHANGED,
                         OT_SEPECTRUM_DATA_CHANGED};
     // FUNCS
-    void zp_setSpectraArrayRepository(ZSpectraArrayRepository*);
-    void zp_setCalibrationRepository(ZCalibrationRepository*);
+    void zp_connectToSpectraArrayRepository(ZSpectraArrayRepository*);
+    void zp_connectToCalibrationRepository(ZCalibrationRepository*);
 
     int zp_rowCount() const;
     int zp_columnCount();
@@ -49,7 +49,7 @@ signals:
 
 public slots:
 
-    void zp_currentArrayChanged(int, int);
+    void zp_currentArrayChanged(qint64, int);
 
 private slots:
 
@@ -58,7 +58,6 @@ private slots:
 
     void zh_onRepositoryChemElementOperation(ZSpectraArrayRepository::ChemElementOperationType,
                                              int arrayIndex, int first, int last);
-
     void zh_onRepositoryCalibrationOperation(ZCalibrationRepository::OperationType, int, int);
 
 private:
@@ -69,6 +68,7 @@ private:
     int zv_concentrationPrecision;
 
     int zv_currentArrayIndex;
+    qint64 zv_currentArrayId;
     ZSpectraArrayRepository* zv_spectrumArrayRepositiry;
     ZCalibrationRepository* zv_calibrationRepository;
     QString zv_currentChemElement;
@@ -77,17 +77,11 @@ private:
     int zv_visibleCalibrationCount;
     QMap<QString, QStringList> zv_calculatedConcentrationMap; // QMap<CalibName, QPair<specIndex, Concentration>>
 
-    // logical window coordinates
-//    int zv_maxArrayChannelCount;
-//    int zv_maxArrayIntensity;
-
     // FUNCS
     int zh_convertChemElementIndexToVisibleChemElementIndex(int arrayIndex, int originalIndex);
     void zh_defineColumnCounts();
     void zh_calculateConcentrationsForCalibration();
-//    void zh_recalcLogicalWindowCoordinates();
 
 };
-
 //==================================================================
 #endif // ZSPECTRAJOINTDATAMANAGER_H
