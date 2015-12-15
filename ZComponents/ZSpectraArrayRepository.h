@@ -99,7 +99,7 @@ signals:
     void zg_currentChemElementOperation(ChemElementOperationType, int, int, int) const;
 
     void zg_currentFile(bool dirty, QString fileName) const;
-    void zg_arrayFileLoaded();
+    void zg_fitPlotInBoundingRect();
 
     void zg_setCurrentArrayIndex(int arrayIndex);
     void zg_setCurrentChemElementIndex(int chemElementIndex);
@@ -118,6 +118,7 @@ signals:
 
     void zg_energyCalibrationChanged(qint64 arrayId);
     void zg_arrayMaxParametersChanged(qint64 arrayId, int intensity, int channels);
+    void zg_requestIsPlotScaled(bool& isScaled);
 
 public slots:
 

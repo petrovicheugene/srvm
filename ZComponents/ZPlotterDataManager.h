@@ -53,6 +53,7 @@ private slots:
     void zh_switchRuleMetrix(bool toggled);
     void zh_changeEnergyCalibrationOnRule(qint64 arrayId);
     void zh_onArrayMaxParametersChanged(int arrayId, int maxIntensity, int channelCount);
+    void zh_definePlotScaling(bool& plotIsScaled);
 
 };
 //===========================================================

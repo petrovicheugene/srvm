@@ -311,7 +311,7 @@ void MainWindow::zh_createConnections()
     connect(zv_spectraArrayRepository, &ZSpectraArrayRepository::zg_requestCurrentArrayIndex,
             zv_spectrumArrayWidget, &ZSpectrumArrayWidget::zp_currentArrayIndex);
 
-    connect(zv_spectraArrayRepository, &ZSpectraArrayRepository::zg_arrayFileLoaded,
+    connect(zv_spectraArrayRepository, &ZSpectraArrayRepository::zg_fitPlotInBoundingRect,
             zv_plotter, &ZPlotter::zp_fitInBoundingRect);
 
 

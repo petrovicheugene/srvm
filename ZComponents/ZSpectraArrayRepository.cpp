@@ -469,7 +469,7 @@ void ZSpectraArrayRepository::zp_appendArrays(QString path, QList<ZRawSpectrumAr
 
     }
     emit zg_currentFile(zv_dirty, zv_arrayFilePath);
-    emit zg_arrayFileLoaded();
+    emit zg_fitPlotInBoundingRect();
 }
 //==================================================================
 void ZSpectraArrayRepository::zp_appendSpectraToArray(int arrayIndex, QStringList fileNameList)
@@ -519,6 +519,19 @@ void ZSpectraArrayRepository::zp_appendSpectraToArray(int arrayIndex, QStringLis
         QString msg = tr("%1 spectra loaded", "", 3).arg(QString::number(loaded));
         emit zg_message(msg);
         zv_dirty = true;
+        if(spectraStartCount < 1)
+        {
+            emit zg_fitPlotInBoundingRect();
+        }
+        else
+        {
+            bool plotIsScaled;
+            emit zg_requestIsPlotScaled(plotIsScaled);
+            if(!plotIsScaled)
+            {
+                emit zg_fitPlotInBoundingRect();
+            }
+        }
         emit zg_currentFile(zv_dirty, zv_arrayFilePath);
     }
 }
@@ -554,6 +567,7 @@ void ZSpectraArrayRepository::zh_createArray(const ZRawSpectrumArray& rawArray)
         }
     }
 
+    emit zg_fitPlotInBoundingRect();
     emit zg_currentArrayOperation(AOT_END_INSERT_ARRAYS, nextArrayIndex, nextArrayIndex);
 }
 //==================================================================
@@ -792,6 +806,14 @@ void ZSpectraArrayRepository::zh_onRemoveSpectrumFromArrayAction()
     {
         zh_removeSpectrum(currentArrayIndex, selectedSpectrumList.value(i));
     }
+
+    bool plotIsScaled;
+    emit zg_requestIsPlotScaled(plotIsScaled);
+    if(!plotIsScaled)
+    {
+        emit zg_fitPlotInBoundingRect();
+    }
+
 }
 //==================================================================
 void ZSpectraArrayRepository::zh_onAppendChemElementAction()

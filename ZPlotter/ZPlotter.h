@@ -84,6 +84,7 @@ public:
     void zp_setAutoDefineVerticalAbsMax(bool);
     void zp_verticalDistortionFactors(qreal& distortionFactor, qreal& distortionCorrectionFactor);
 
+    bool zp_isPlotScaled();
 signals:
 
 public slots:

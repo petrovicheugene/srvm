@@ -82,88 +82,71 @@ bool ZPlotGraphicsView::zp_viewPortCoordinates(QRect& globalRect, QRectF& sceneR
 //=============================================================
 void ZPlotGraphicsView::zp_scale(Qt::Orientation orientation, bool increase)
 {
-    zv_sceneCenterPos = mapToScene(viewport()->rect().center());
+    //zv_sceneCenterPos = mapToScene(viewport()->rect().center());
 
-    double scaleRate;
+    QRectF oldDisplayedSceneRect = mapToScene(viewport()->rect().adjusted(2,-1,-2,1)).boundingRect();
+    //QRectF oldDisplayedSceneRect = mapToScene(viewport()->rect()).boundingRect();
+    QRectF displayedSceneRect = oldDisplayedSceneRect;
+    QRectF sceneItemBoundingRect = scene()->itemsBoundingRect();
+
+    qreal scaleRate;
     if(increase)
     {
-        scaleRate = 0.9;
+        scaleRate = 0.1;
     }
     else
     {
-        scaleRate = 1.1;
+        scaleRate = -0.1;
     }
 
-    // new view rect
-    QRectF oldVisibleSceneRect = mapToScene(viewport()->rect().adjusted(1,1,-1,-1)).boundingRect();
-    QRectF newVisibleSceneRect = oldVisibleSceneRect;
-
-    if(orientation == Qt::Vertical )
-    {
-        newVisibleSceneRect.setHeight(newVisibleSceneRect.height() * scaleRate);
-    }
-    else
-    {
-        newVisibleSceneRect.setWidth(newVisibleSceneRect.width() * scaleRate);
-    }
-
-    QRectF sceneRect = scene()->sceneRect();
-    // fitting visible rect size if it is larger then scene size
-    if(newVisibleSceneRect.width() > sceneRect.width())
-    {
-        newVisibleSceneRect.setWidth(sceneRect.width());
-    }
-
-    if(newVisibleSceneRect.height() > sceneRect.height())
-    {
-        newVisibleSceneRect.setHeight(sceneRect.height());
-    }
-
-    // fitting rect position if it lap over scene rect margins
     if(orientation == Qt::Vertical)
     {
-        if(newVisibleSceneRect.top() < sceneRect.top())
+        if(increase)
         {
-            newVisibleSceneRect.moveTop(sceneRect.top());
+            displayedSceneRect.setTop(displayedSceneRect.top() + displayedSceneRect.height() * scaleRate);
         }
-
-        if(newVisibleSceneRect.bottom() > sceneRect.bottom())
+        else
         {
-            newVisibleSceneRect.moveBottom(sceneRect.bottom());
+            displayedSceneRect.setTop(displayedSceneRect.top() + displayedSceneRect.height() * scaleRate/2);
+            // displayedSceneRect.setBottom(displayedSceneRect.bottom() - displayedSceneRect.height() * scaleRate/2);
         }
-
-        if(newVisibleSceneRect.height() < zv_minSideSizeOfVisibleScene)
-        {
-            newVisibleSceneRect.setHeight(zv_minSideSizeOfVisibleScene);
-        }
-    }
-
-    if(orientation == Qt::Horizontal)
+     }
+    else
     {
-        if(newVisibleSceneRect.left() < sceneRect.left())
-        {
-            newVisibleSceneRect.moveLeft(sceneRect.left());
-        }
-
-        if(newVisibleSceneRect.right() > sceneRect.right())
-        {
-            newVisibleSceneRect.moveRight(sceneRect.right());
-        }
-
-        if(newVisibleSceneRect.width() < zv_minSideSizeOfVisibleScene)
-        {
-            newVisibleSceneRect.setWidth(zv_minSideSizeOfVisibleScene);
-        }
+        displayedSceneRect.setRight(displayedSceneRect.right() - displayedSceneRect.width() * scaleRate);
+        displayedSceneRect.setLeft(displayedSceneRect.left() + displayedSceneRect.width() * scaleRate);
     }
 
-    if(oldVisibleSceneRect.size() == newVisibleSceneRect.size())
+    if(displayedSceneRect.top() < sceneItemBoundingRect.top())
+    {
+        displayedSceneRect.setTop(sceneItemBoundingRect.top());
+    }
+    if(displayedSceneRect.bottom() > sceneItemBoundingRect.bottom())
+    {
+        displayedSceneRect.setBottom(sceneItemBoundingRect.bottom());
+    }
+    if(displayedSceneRect.left() < sceneItemBoundingRect.left())
+    {
+        displayedSceneRect.setLeft(sceneItemBoundingRect.left());
+    }
+    if(displayedSceneRect.right() > sceneItemBoundingRect.right())
+    {
+        displayedSceneRect.setRight(sceneItemBoundingRect.right());
+    }
+
+    if(orientation == Qt::Horizontal && (displayedSceneRect.width() <= zv_minSideSizeOfVisibleScene
+            || displayedSceneRect.width() > sceneItemBoundingRect.width()))
     {
         return;
     }
 
-    newVisibleSceneRect.moveCenter(zv_sceneCenterPos);
-    newVisibleSceneRect = newVisibleSceneRect.normalized();
-    fitInView(newVisibleSceneRect.normalized());
+    if(orientation == Qt::Vertical && (displayedSceneRect.height() <= zv_minSideSizeOfVisibleScene
+            || displayedSceneRect.height() > sceneItemBoundingRect.height()))
+    {
+        return;
+    }
+
+    fitInView(displayedSceneRect.normalized());
 }
 //=============================================================
 void ZPlotGraphicsView::zp_setGridHidden(bool hideGrid)
@@ -174,7 +157,8 @@ void ZPlotGraphicsView::zp_setGridHidden(bool hideGrid)
 //=============================================================
 QRectF ZPlotGraphicsView::zp_currentVisibleSceneRect() const
 {
-    QRect rect = viewport()->rect().adjusted(1,1,-1,-1);
+    // QRect rect = viewport()->rect().adjusted(1,1,-1,-1);
+    QRect rect = viewport()->rect().adjusted(2,-1,-2,1);
     QPointF sceneTopLeft = mapToScene(rect.topLeft());
     QPointF scenebottomRight = mapToScene(rect.bottomRight());
 
@@ -190,7 +174,8 @@ void ZPlotGraphicsView::wheelEvent(QWheelEvent * event)
     }
 
     zv_sceneMousePos = mapToScene(event->pos());
-    QRectF oldDisplayedSceneRect = mapToScene(viewport()->rect().adjusted(1,1,-1,-1)).boundingRect();
+    QRectF oldDisplayedSceneRect = mapToScene(viewport()->rect().adjusted(2,-1,-2,1)).boundingRect();
+    //QRectF oldDisplayedSceneRect = mapToScene(viewport()->rect()).boundingRect();
     QRectF displayedSceneRect = oldDisplayedSceneRect;
     qreal rightPartFactor = 0.1 *(displayedSceneRect.right() - zv_sceneMousePos.x())
             / (displayedSceneRect.right() - displayedSceneRect.left());
@@ -249,8 +234,6 @@ void ZPlotGraphicsView::wheelEvent(QWheelEvent * event)
     fitInView(displayedSceneRect.normalized());
     zv_sceneCenterPos = mapToScene(viewport()->rect()).boundingRect().center();
     zv_sceneMousePos = mapToScene(event->pos());
-
-    return;
 }
 //=============================================================
 void ZPlotGraphicsView::mousePressEvent(QMouseEvent* event)

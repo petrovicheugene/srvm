@@ -34,6 +34,9 @@ void ZPlotterDataManager::zp_connectToSpectraArrayRepository(ZSpectraArrayReposi
             this, &ZPlotterDataManager::zh_changeEnergyCalibrationOnRule);
     connect(repository, &ZSpectraArrayRepository::zg_arrayMaxParametersChanged,
             this, &ZPlotterDataManager::zh_onArrayMaxParametersChanged);
+    connect(repository, &ZSpectraArrayRepository::zg_requestIsPlotScaled,
+            this, &ZPlotterDataManager::zh_definePlotScaling);
+
 }
 //===========================================================
 void ZPlotterDataManager::zp_connectToPlotter(ZPlotter* plotter)
@@ -234,11 +237,19 @@ void ZPlotterDataManager::zh_changeEnergyCalibrationOnRule(qint64 arrayId)
 //===========================================================
 void ZPlotterDataManager::zh_onArrayMaxParametersChanged(int arrayId, int maxIntensity, int channelCount)
 {
+#ifdef DBG
+    qDebug() << "zh_onArrayMaxParametersChanged";
+#endif
     if(arrayId != zv_currentArrayId || zv_plotter == 0)
     {
         return;
     }
 
     zv_plotter->zp_setVerticalAbsMax((qreal)maxIntensity);
+}
+//===========================================================
+void ZPlotterDataManager::zh_definePlotScaling(bool& plotIsScaled)
+{
+    plotIsScaled = zv_plotter->zp_isPlotScaled();
 }
 //===========================================================

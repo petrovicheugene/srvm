@@ -2,6 +2,8 @@
 #include "ZSpectrumArray.h"
 #include "ZSpeSpectrum.h"
 #include "ZSpeIOHandler.h"
+#include "globalVariables.h"
+
 #include <QFileInfo>
 #include <QFile>
 #include <QMessageBox>
@@ -307,8 +309,8 @@ void ZSpectrumArray::zp_clearArray()
     {
         int lastSpectrumIndex = zv_spectrumList.count() - 1;
         emit zg_spectrumOperation(OT_REMOVE_SPECTRA, 0, lastSpectrumIndex);
-//        qDeleteAll(zv_spectrumList);
-//        zv_spectrumList.clear();
+        //        qDeleteAll(zv_spectrumList);
+        //        zv_spectrumList.clear();
         for(int i = zv_spectrumList.count()-1; i >= 0; i-- )
         {
             delete zv_spectrumList.takeAt(i);
@@ -377,7 +379,7 @@ bool ZSpectrumArray::zp_appendSpectrum(const ZRawSpectrum& rawSpectrum, bool las
                 question += "Do you want to continue loading?";
 
                 QMessageBox msgBox;
-                msgBox.setText(tr("Energy calibration in spectrum %1% is different to calibration that have other spectra in the array.\r\n").arg(rawSpectrum.path));
+                msgBox.setText(tr("Energy calibration in spectrum \"%1\" is different to calibration that have other spectra in the array.\r\n").arg(rawSpectrum.path));
                 msgBox.setInformativeText(question);
 
                 if(last)
@@ -552,6 +554,6 @@ void ZSpectrumArray::zh_recalcArrayMaxParameters()
         }
     }
 
-     emit zg_arrayMaxParametersChanged(zv_arrayId,  zv_maxArrayIntensity,  zv_maxArrayChannelCount);
+    emit zg_arrayMaxParametersChanged(zv_arrayId,  zv_maxArrayIntensity,  zv_maxArrayChannelCount);
 }
 //===============================================
