@@ -1,61 +1,38 @@
 //=========================================================
-#include "ZAbstractCalibration.h"
+#include "ZCalibration.h"
 #include "ZAbstractSpectrum.h"
 #include <QFileInfo>
 //=========================================================
-const QMap<ZAbstractCalibration::CalibrationType, QString> ZAbstractCalibration::fileSuffixMap(ZAbstractCalibration::zp_createSuffixMap());
-//=========================================================
-QMap<ZAbstractCalibration::CalibrationType, QString> ZAbstractCalibration::zp_createSuffixMap()
-{
-    QMap<ZAbstractCalibration::CalibrationType, QString> map;
-    map.insert(ZAbstractCalibration::CT_NA, QString());
-    map.insert(ZAbstractCalibration::CT_SD, QString("clbr"));
-    map.insert(ZAbstractCalibration::CT_XML, QString("clbx"));
-    return map;
-}
-//=========================================================
-ZAbstractCalibration::ZAbstractCalibration(const QString& path, QObject *parent) : QObject(parent)
+ZCalibration::ZCalibration(const QString& path, QObject *parent) : QObject(parent)
 {
     zv_visibility = false;
     QFileInfo fileInfo(path);
     if(!fileInfo.absoluteFilePath().isEmpty())
     {
-        QString suffix = fileInfo.suffix();
-
-        if(!fileSuffixMap.values().contains(suffix))
-        {
-            zv_type = CT_NA;
-        }
-        else
-        {
-            zv_type = fileSuffixMap.key(suffix);
-        }
-
         zv_baseName = fileInfo.baseName();
         zv_path = fileInfo.absolutePath();
         zv_dirty = false;
     }
     else
     {
-        zv_type = CT_NA;
         zv_path = QString();
         zv_baseName = QString();
         zv_dirty = true;
     }
 }
 //=========================================================
-ZAbstractCalibration::~ZAbstractCalibration()
+ZCalibration::~ZCalibration()
 {
 
 }
 //=========================================================
-QString ZAbstractCalibration::zp_name() const
+QString ZCalibration::zp_name() const
 {
-    QString name = zv_baseName+"."+fileSuffixMap.value(zv_type);
+    QString name;
     return name;
 }
 //=========================================================
-void ZAbstractCalibration::zp_setBaseName(const QString& name)
+void ZCalibration::zp_setBaseName(const QString& name)
 {
     if(name == zv_baseName || name.isEmpty())
     {
@@ -66,12 +43,12 @@ void ZAbstractCalibration::zp_setBaseName(const QString& name)
     zv_dirty = false;
 }
 //=========================================================
-QString ZAbstractCalibration::zp_path() const
+QString ZCalibration::zp_path() const
 {
     return zv_path;
 }
 //=========================================================
-void ZAbstractCalibration::zp_setPath(const QString& path)
+void ZCalibration::zp_setPath(const QString& path)
 {
     if(path == zv_path || path.isEmpty())
     {
@@ -90,17 +67,12 @@ void ZAbstractCalibration::zp_setPath(const QString& path)
 
 }
 //=========================================================
-ZAbstractCalibration::CalibrationType ZAbstractCalibration::zp_type() const
-{
-    return zv_type;
-}
-//=========================================================
-bool ZAbstractCalibration::zp_isVisible() const
+bool ZCalibration::zp_isVisible() const
 {
     return zv_visibility;
 }
 //=========================================================
-void ZAbstractCalibration::zp_setVisible(bool visibility)
+void ZCalibration::zp_setVisible(bool visibility)
 {
     if(visibility != zv_visibility)
     {
@@ -109,14 +81,23 @@ void ZAbstractCalibration::zp_setVisible(bool visibility)
     }
 }
 //=========================================================
-bool ZAbstractCalibration::zp_isDirty() const
+bool ZCalibration::zp_isDirty() const
 {
     return zv_dirty;
 }
 //=========================================================
-QString ZAbstractCalibration::zp_suffix() const
+double ZCalibration::zp_calcConcentration(const ZAbstractSpectrum* const spectrum, bool *ok)
 {
-    QString suffix = fileSuffixMap.value(zv_type);
-    return suffix;
+    if(spectrum == 0)
+    {
+        if(ok != 0)
+        {
+            *ok = false;
+            return 0;
+        }
+    }
+
+    * ok = true;
+    return 0;
 }
 //=========================================================

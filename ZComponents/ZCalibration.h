@@ -7,23 +7,16 @@
 //=========================================================
 class ZAbstractSpectrum;
 //=========================================================
-class ZAbstractCalibration : public QObject
+class ZCalibration : public QObject
 {
     Q_OBJECT
 
 public:
 
-    explicit ZAbstractCalibration(const QString& path, QObject *parent = 0);
-    virtual ~ZAbstractCalibration();
+    explicit ZCalibration(const QString& path, QObject *parent = 0);
+    virtual ~ZCalibration();
 
     // VARS
-    enum CalibrationType {CT_NA, CT_SD, CT_XML};
-
-    // Static Func
-    static QMap<ZAbstractCalibration::CalibrationType, QString> zp_createSuffixMap();
-
-    // continue VARS
-    static const QMap<ZAbstractCalibration::CalibrationType, QString> fileSuffixMap;
 
     // FUNCS
     QString zp_name() const;
@@ -32,15 +25,12 @@ public:
     QString zp_path() const;
     void zp_setPath(const QString&);
 
-    CalibrationType zp_type() const;
-
     bool zp_isVisible() const;
     void zp_setVisible(bool);
 
     bool zp_isDirty() const;
-    QString zp_suffix() const;
 
-    virtual double zp_calcConcentration(const ZAbstractSpectrum* const, bool *ok = 0) = 0;
+    double zp_calcConcentration(const ZAbstractSpectrum* const, bool *ok = 0);
 
 signals:
 
@@ -54,7 +44,6 @@ public slots:
 protected:
 
     // VARS
-    CalibrationType zv_type;
     QString zv_baseName;
     QString zv_path;
 

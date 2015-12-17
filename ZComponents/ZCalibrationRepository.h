@@ -5,7 +5,7 @@
 #include <QObject>
 #include <QList>
 #include <QMenu>
-#include "ZAbstractCalibration.h"
+#include "ZCalibration.h"
 //======================================================
 class QAction;
 class ZFileActionManager;
@@ -47,7 +47,7 @@ public:
 
     bool zp_isDirty(int row);
 
-    QString zp_fileSuffix(int row);
+    //QString zp_fileSuffix(int row);
 
     double zp_calculateConcentration(int row, const ZAbstractSpectrum* const, bool *ok = 0) const;
 
@@ -73,7 +73,7 @@ private slots:
 private:
 
     // VARS
-    QList<ZAbstractCalibration*> zv_caibrationList;
+    QList<ZCalibration*> zv_caibrationList;
     QAction* zv_newCalibrationAction;
     QAction* zv_openCalibrationsAction;
     QAction* zv_editCalibrationsAction;
@@ -86,7 +86,7 @@ private:
     void zh_removeCalibration(int);
     bool zh_createCalibrationFromFile(const QString&);
     bool zh_createNewCalibration(const QString&);
-    bool zh_appendCalibrationToList(ZAbstractCalibration*);
+    bool zh_appendCalibrationToList(ZCalibration*);
     void zh_actionAvailabilityControl(int current);
 
 };

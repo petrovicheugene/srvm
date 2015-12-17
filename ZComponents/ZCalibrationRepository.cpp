@@ -2,11 +2,8 @@
 #include "ZCalibrationRepository.h"
 #include "globalVariables.h"
 #include "ZXMLCalibrationIOHandler.h"
-#include "ZSDCalibrationIOHandler.h"
-#include "ZSDCalibration.h"
-#include "ZXMLCalibration.h"
+#include "ZCalibration.h"
 #include "ZFileActionManager.h"
-#include "ZCalibrationEditDialog.h"
 
 #include <QMessageBox>
 #include <QFileInfo>
@@ -160,15 +157,15 @@ bool ZCalibrationRepository::zp_isDirty(int row)
     return zv_caibrationList.value(row)->zp_isDirty();
 }
 //======================================================
-QString ZCalibrationRepository::zp_fileSuffix(int row)
-{
-    if(row < 0 || row >= zv_caibrationList.count())
-    {
-        return QString();
-    }
+//QString ZCalibrationRepository::zp_fileSuffix(int row)
+//{
+//    if(row < 0 || row >= zv_caibrationList.count())
+//    {
+//        return QString();
+//    }
 
-    return zv_caibrationList.value(row)->zp_suffix();
-}
+//    return zv_caibrationList.value(row)->zp_suffix();
+//}
 //======================================================
 double ZCalibrationRepository::zp_calculateConcentration(int row, const ZAbstractSpectrum* const spectrum, bool* ok) const
 {
@@ -200,30 +197,30 @@ void ZCalibrationRepository::zp_onCurrentCalibrationChanged(int current, int pre
 //======================================================
 void ZCalibrationRepository::zh_onNewCalibrationAction()
 {
-    ZCalibrationEditDialog dialog;
-    if(!dialog.exec())
-    {
-        return;
-    }
+//    ZCalibrationEditDialog dialog;
+//    if(!dialog.exec())
+//    {
+//        return;
+//    }
 
-    zh_createNewCalibration(dialog.zp_calibrationFullName());
+//    zh_createNewCalibration(dialog.zp_calibrationFullName());
 }
 //======================================================
 void ZCalibrationRepository::zh_onEditCalibrationsAction()
 {
-    int currentCalibrationIndex = -1;
-    emit zg_requestCurrentCalibrationIndex(currentCalibrationIndex);
-    if(currentCalibrationIndex < 0
-            || currentCalibrationIndex >= zv_caibrationList.count())
-    {
-        return;
-    }
+//    int currentCalibrationIndex = -1;
+//    emit zg_requestCurrentCalibrationIndex(currentCalibrationIndex);
+//    if(currentCalibrationIndex < 0
+//            || currentCalibrationIndex >= zv_caibrationList.count())
+//    {
+//        return;
+//    }
 
-    ZCalibrationEditDialog dialog;
-    if(!dialog.exec())
-    {
-        return;
-    }
+//    ZCalibrationEditDialog dialog;
+//    if(!dialog.exec())
+//    {
+//        return;
+//    }
 }
 //======================================================
 void ZCalibrationRepository::zh_onRemoveCalibrationsAction()
@@ -259,7 +256,6 @@ void ZCalibrationRepository::zh_removeCalibration(int index)
 bool ZCalibrationRepository::zh_createCalibrationFromFile(const QString& fileName)
 {
     QFileInfo fileInfo(fileName);
-    ZAbstractCalibrationIOHandler* ioHandler;
     QString suffix = fileInfo.suffix();
 
     if(!fileInfo.exists() || !fileInfo.isFile())
@@ -268,22 +264,15 @@ bool ZCalibrationRepository::zh_createCalibrationFromFile(const QString& fileNam
         emit zg_message(error);
         return false;
     }
-    else if(suffix == "clbr")
-    {
-        ioHandler = new ZSDCalibrationIOHandler(this, this);
-    }
-    else if(suffix == "clbx")
-    {
-        ioHandler = new ZXMLCalibrationIOHandler(this, this);
-    }
-    else
+    else if(suffix != "clbx" && suffix != "xml")
     {
         QString error = QObject::tr("Cannot handle file of type \"%1\"!").arg(suffix);
         emit zg_message(error);
         return false;
     }
 
-    ZAbstractCalibration* calibration;
+    ZXMLCalibrationIOHandler* ioHandler = new ZXMLCalibrationIOHandler(this, this);
+    ZCalibration* calibration;
     bool res = ioHandler->zp_getCalibrationFromFile(fileName, calibration);
 
     if(res)
@@ -310,14 +299,10 @@ bool ZCalibrationRepository::zh_createNewCalibration(const QString& name)
         return false;
     }
 
-    ZAbstractCalibration* calibration;
-    if(suffix == "clbr")
+    ZCalibration* calibration;
+    if(suffix == "clbx" || suffix == "xml")
     {
-        calibration = new ZSDCalibration(name, this);
-    }
-    else if(suffix == "clbx")
-    {
-        calibration = new ZXMLCalibration(name, this);
+        calibration = new ZCalibration(name, this);
     }
     else
     {
@@ -328,7 +313,7 @@ bool ZCalibrationRepository::zh_createNewCalibration(const QString& name)
     return zh_appendCalibrationToList(calibration);
 }
 //======================================================
-bool ZCalibrationRepository::zh_appendCalibrationToList(ZAbstractCalibration* calibration)
+bool ZCalibrationRepository::zh_appendCalibrationToList(ZCalibration* calibration)
 {
     if(!calibration)
     {

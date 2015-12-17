@@ -1,14 +1,14 @@
 //==========================================================
 #include "ZXMLCalibrationIOHandler.h"
-#include "ZXMLCalibration.h"
+#include "ZCalibration.h"
 #include <QFileInfo>
 #include <QXmlStreamReader>
 
 //==========================================================
 ZXMLCalibrationIOHandler::ZXMLCalibrationIOHandler(QObject *calibrationParent,QObject *parent)
-    : ZAbstractCalibrationIOHandler(calibrationParent, parent)
+    : QObject(parent)
 {
-
+    zv_calibrationParent = calibrationParent;
 }
 //==========================================================
 ZXMLCalibrationIOHandler::~ZXMLCalibrationIOHandler()
@@ -17,14 +17,14 @@ ZXMLCalibrationIOHandler::~ZXMLCalibrationIOHandler()
 }
 //==========================================================
 bool ZXMLCalibrationIOHandler::zp_getCalibrationFromFile(const QString& fileName,
-                                                              ZAbstractCalibration*& calibration)
+                                                              ZCalibration*& calibration)
 {
-    calibration = new ZXMLCalibration(fileName, zv_calibrationParent);
+    calibration = new ZCalibration(fileName, zv_calibrationParent);
     return true;
 }
 //==========================================================
 bool ZXMLCalibrationIOHandler::zp_getCalibrationFromFile(QFile & file,
-                                                              ZAbstractCalibration*& calibration)
+                                                              ZCalibration*& calibration)
 {
     if(!(file.openMode() & QIODevice::ReadOnly))
     {

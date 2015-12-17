@@ -2,20 +2,26 @@
 #ifndef ZXMLARRAYIOHANDLER_H
 #define ZXMLARRAYIOHANDLER_H
 //============================================================
-#include "ZAbstractSpectrumArrayIOHandler.h"
+#include <QObject>
+#include <QFile>
+#include "ZRawSpectrumArray.h"
 #include "globalVariables.h"
 //============================================================
 class QXmlStreamReader;
 //============================================================
-class ZXMLSpectrumArrayIOHandler : public ZAbstractSpectrumArrayIOHandler
+class ZXMLSpectrumArrayIOHandler : public QObject
 {
     Q_OBJECT
 public:
     explicit ZXMLSpectrumArrayIOHandler(QObject* parent = 0);
     virtual ~ZXMLSpectrumArrayIOHandler();
 
-    virtual bool zp_readSpectrumArray (QFile&, QList<ZRawSpectrumArray>&) const override;
-    virtual bool zp_writeSpectrumArray(QFile&, const QList<ZRawSpectrumArray>&) const override;
+    bool zp_readSpectrumArray (QFile&, QList<ZRawSpectrumArray>&) const;
+    bool zp_writeSpectrumArray(QFile&, const QList<ZRawSpectrumArray>&) const;
+
+signals:
+
+    void zg_message(QString) const;
 
 private:
 

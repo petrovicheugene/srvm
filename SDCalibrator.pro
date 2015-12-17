@@ -85,16 +85,9 @@ SOURCES += main.cpp \
     ZWidgets/ZHelpBrowser.cpp \
     ZWidgets/ZWidgetWithSidebar.cpp \
     ZComponents/ZSpectraArrayRepository.cpp \
-    ZComponents/ZAbstractSpectrumArrayIOHandler.cpp \
     ZComponents/ZXMLSpectrumArrayIOHandler.cpp \
-    ZComponents/ZAbstractCalibrationIOHandler.cpp \
     ZComponents/ZXMLCalibrationIOHandler.cpp \
-    ZComponents/ZSDCalibrationIOHandler.cpp \
     ZComponents/ZCalibrationRepository.cpp \
-    ZComponents/ZAbstractCalibration.cpp \
-    ZComponents/ZSDCalibration.cpp \
-    ZComponents/ZXMLCalibration.cpp \
-    ZDialogs/ZCalibrationEditDialog.cpp \
     ZComponents/ZJointSpectraDataManager.cpp \
     ZComponents/ZChemElementList.cpp \
     ZComponents/ZChemElementDataManager.cpp \
@@ -113,7 +106,8 @@ SOURCES += main.cpp \
     ZPlotter/ZRulerWidget.cpp \
     ZPlotter/ZSpectrumGraphicsItem.cpp \
     ZPlotter/ZWindowGraphicsItem.cpp \
-    ZPlotter/ZHorizontalDashBoard.cpp
+    ZPlotter/ZHorizontalDashBoard.cpp \
+    ZComponents/ZCalibration.cpp
 
 
 HEADERS  += \
@@ -140,16 +134,9 @@ HEADERS  += \
     ZWidgets/ZWidgetWithSidebar.h \
     ZComponents/ZSpectraArrayRepository.h \
     ZComponents/ZRawSpectrumArray.h \
-    ZComponents/ZAbstractSpectrumArrayIOHandler.h \
     ZComponents/ZXMLSpectrumArrayIOHandler.h \
-    ZComponents/ZAbstractCalibrationIOHandler.h \
     ZComponents/ZXMLCalibrationIOHandler.h \
-    ZComponents/ZSDCalibrationIOHandler.h \
     ZComponents/ZCalibrationRepository.h \
-    ZComponents/ZAbstractCalibration.h \
-    ZComponents/ZSDCalibration.h \
-    ZComponents/ZXMLCalibration.h \
-    ZDialogs/ZCalibrationEditDialog.h \
     ZComponents/ZJointSpectraDataManager.h \
     ZComponents/ZChemElementList.h \
     ZComponents/ZChemElementDataManager.h \
@@ -171,7 +158,8 @@ HEADERS  += \
     ZPlotter/ZRulerWidget.h \
     ZPlotter/ZSpectrumGraphicsItem.h \
     ZPlotter/ZWindowGraphicsItem.h \
-    ZPlotter/ZHorizontalDashBoard.h
+    ZPlotter/ZHorizontalDashBoard.h \
+    ZComponents/ZCalibration.h
 
 
 RESOURCES += \

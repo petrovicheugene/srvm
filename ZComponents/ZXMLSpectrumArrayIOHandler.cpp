@@ -3,7 +3,7 @@
 #include <QXmlStreamReader>
 #include <QFileInfo>
 //============================================================
-ZXMLSpectrumArrayIOHandler::ZXMLSpectrumArrayIOHandler(QObject *parent) : ZAbstractSpectrumArrayIOHandler(parent)
+ZXMLSpectrumArrayIOHandler::ZXMLSpectrumArrayIOHandler(QObject *parent) : QObject(parent)
 {
 
 }

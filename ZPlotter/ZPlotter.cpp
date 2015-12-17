@@ -431,17 +431,10 @@ void ZPlotter::zp_setVerticalAbsMax(qreal max)
     }
     zv_verticalAbsMax = qAbs(max);
 
-#ifdef DBG
-    qDebug() << "Vert Max" << zv_verticalAbsMax;
-#endif
-
-    if(zh_recalcVerticalDistortionFactors(zv_dashBoard->zp_distortionValue()));
+    if(zh_recalcVerticalDistortionFactors(zv_dashBoard->zp_distortionValue()))
     {
         zh_recalcRulesAndItemCoordinates();
     }
-
-    // zh_recalcLogarithmVerticalRecalcFactor();
-    // zh_recalcItemLogarithmCoordinates();
 }
 //====================================================
 qreal ZPlotter::zp_verticalAbsMax() const
