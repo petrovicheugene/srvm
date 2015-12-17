@@ -18,7 +18,7 @@ public:
 
     // VARS
     enum OperationType {OT_CALIBRATION_VISIBILITY_CHANGE,
-        OT_END_CALIBRATION_VISIBILITY_CHANGE,
+                        OT_END_CALIBRATION_VISIBILITY_CHANGE,
                         OT_CALIBRATION_CHANGED,
                         OT_INSERT_CALIBRATIONS,
                         OT_END_INSERT_CALIBRATIONS,
@@ -79,7 +79,6 @@ private:
     QAction* zv_editCalibrationsAction;
     QAction* zv_removeCalibrationAction;
 
-    // FUNCS
     // FUNCS
     void zh_createActions();
     void zh_createConnections();
