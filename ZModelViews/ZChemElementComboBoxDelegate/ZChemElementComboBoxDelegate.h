@@ -26,6 +26,11 @@ signals:
 
 public slots:
 
+private:
+
+    // VARS
+    QString zv_notDefinedString;
+    QString zv_notDefinedDisplayString;
 };
 //==================================================
 #endif // ZCOMBOBOXDELEGATE_H

@@ -26,7 +26,6 @@ void ZCalibrationTableWidget::zh_createComponents()
 
     zv_buttonLayout = new QHBoxLayout(this);
     mainLayout->addLayout(zv_buttonLayout);
-
 }
 //==============================================================
 void zh_onCurrentArrayChanged(const QModelIndex & current, const QModelIndex & previous)

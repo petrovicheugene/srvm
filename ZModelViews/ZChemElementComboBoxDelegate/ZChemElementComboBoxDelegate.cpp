@@ -7,7 +7,8 @@
 ZChemElementComboBoxDelegate::ZChemElementComboBoxDelegate(QObject *parent) :
     QStyledItemDelegate(parent)
 {
-
+    zv_notDefinedString = QString("Not defined");
+    zv_notDefinedDisplayString = tr("Not defined");
 }
 //==================================================
 QWidget* ZChemElementComboBoxDelegate::createEditor(QWidget* parent,
@@ -17,13 +18,13 @@ QWidget* ZChemElementComboBoxDelegate::createEditor(QWidget* parent,
     QComboBox* editor = new QComboBox(parent);
     QStringList chemElementList;
     emit zg_requestChemElementList(chemElementList);
-    editor->addItem(QString("not defined"));
+    editor->addItem(zv_notDefinedDisplayString);
 
     QVariant vData = index.model()->data(index, Qt::DisplayRole);
     if(vData.isValid() && !vData.isNull() && vData.canConvert<QString>())
     {
         QString currentChemElement = vData.toString();
-        if(!chemElementList.contains(currentChemElement))
+        if(!chemElementList.contains(currentChemElement) && currentChemElement != zv_notDefinedString)
         {
             editor->addItem(currentChemElement);
         }
@@ -58,7 +59,12 @@ void ZChemElementComboBoxDelegate::setModelData(QWidget *editor,
                                                 const QModelIndex &index) const
 {
     QComboBox *comboBox = static_cast<QComboBox*>(editor);
-    model->setData(index, comboBox->currentText(), Qt::EditRole);
+    QString currentText = comboBox->currentText();
+    if(currentText == zv_notDefinedDisplayString)
+    {
+        currentText = zv_notDefinedString;
+    }
+     model->setData(index, currentText, Qt::EditRole);
 }
 //================================================
 void ZChemElementComboBoxDelegate::updateEditorGeometry(QWidget *editor,
@@ -79,7 +85,16 @@ void ZChemElementComboBoxDelegate::paint(QPainter *painter,
         return;
     }
     QStyleOptionViewItemV4 myOption = option;
-    myOption.text = vData.toString();
+
+    QString dataString = vData.toString();
+    if(dataString == zv_notDefinedString)
+    {
+        myOption.text = zv_notDefinedDisplayString;
+    }
+    else
+    {
+        myOption.text = dataString;
+    }
     QApplication::style()->drawControl(QStyle::CE_ItemViewItem, &myOption, painter);
 }
 //================================================

@@ -9,11 +9,12 @@ class ZSpectrumArrayWidget;
 class ZJointSpectrumTableWidget;
 class ZChemElementWidget;
 class ZCalibrationTableWidget;
+class ZJointCalibrationWindowtableWidget;
 class ZWidgetWithSidebar;
 class ZMessagePanel;
 
 class QAction;
-class QSplitter;
+class QFrame;
 class ZPlotter;
 
 class ZArrayModel;
@@ -27,7 +28,6 @@ class ZCalibrationRepository;
 class ZJointSpectraDataManager;
 class ZChemElementDataManager;
 class ZPlotterDataManager;
-
 //==========================================================
 class MainWindow : public QMainWindow
 {
@@ -64,6 +64,7 @@ private:
     ZJointSpectrumTableWidget* zv_spectrumTableWidget;
     ZChemElementWidget* zv_chemElementWidget;
     ZCalibrationTableWidget* zv_calibrationTableWidget;
+    ZJointCalibrationWindowtableWidget* zv_jointCalibrationWindowtableWidget;
 
     ZMessagePanel* zv_messagePanel;
     ZPlotter* zv_plotter;
@@ -86,7 +87,7 @@ private:
     void closeEvent(QCloseEvent* e);
     void zh_createActions();
     void zh_createComponents();
-
+    QFrame* zh_setWidgetToFrame(QWidget*);
     void zh_createMenu();
     void zh_createToolbar();
     void zh_createConnections();

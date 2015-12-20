@@ -15,6 +15,7 @@
 #include "ZJointSpectraTableWidget.h"
 #include "ZChemElementWidget.h"
 #include "ZCalibrationTableWidget.h"
+#include "ZJointCalibrationWindowtableWidget.h"
 #include "ZPlotter.h"
 #include "ZMessagePanel.h"
 // models
@@ -105,13 +106,8 @@ void MainWindow::zh_createComponents()
     // CENTRAL WIDGET
     // Plotter
     zv_plotter = new ZPlotter(this);
-    QFrame* frameWidget = new QFrame(this);
-    QVBoxLayout* plotterLayout = new QVBoxLayout(frameWidget);
-    frameWidget->setLayout(plotterLayout);
-    frameWidget->setFrameStyle(QFrame::StyledPanel | QFrame::Plain);
-    frameWidget->setLineWidth(1);
-    plotterLayout->addWidget(zv_plotter);
-    setCentralWidget(frameWidget);
+    QFrame* frame = zh_setWidgetToFrame(zv_plotter);
+    setCentralWidget(frame);
 
     // DOCKS
     // Spectrum array dock
@@ -139,10 +135,10 @@ void MainWindow::zh_createComponents()
     zv_dockList << zv_chemElementArrayDock;
     addDockWidget(Qt::LeftDockWidgetArea, zv_chemElementArrayDock);
 
-    // zv_calibrationSidebarWidget = new ZWidgetWithSidebar("CALIBRATION_SIDEBAR_WIDGET", this);
     zv_chemElementWidget = new ZChemElementWidget(this);
+    frame = zh_setWidgetToFrame(zv_chemElementWidget);
     // setting to dock
-    zv_chemElementArrayDock->setWidget(zv_chemElementWidget);
+    zv_chemElementArrayDock->setWidget(frame);
 
     // Calibration View
     zv_calibrationDock= new QDockWidget(this);
@@ -151,9 +147,18 @@ void MainWindow::zh_createComponents()
     zv_dockList << zv_calibrationDock;
     addDockWidget(Qt::LeftDockWidgetArea, zv_calibrationDock);
 
+    zv_calibrationSidebarWidget = new ZWidgetWithSidebar("CALIBRATION_SIDEBAR_WIDGET", this);
+    zv_calibrationSidebarWidget->setFrameStyle(QFrame::StyledPanel | QFrame::Plain);
+    zv_calibrationSidebarWidget->setLineWidth(1);
+
     zv_calibrationTableWidget = new ZCalibrationTableWidget(this);
+    zv_jointCalibrationWindowtableWidget = new ZJointCalibrationWindowtableWidget(this);
+
+    zv_calibrationSidebarWidget->zp_setSidebarWidget(zv_calibrationTableWidget);
+    zv_calibrationSidebarWidget->zp_setMainWidget(zv_jointCalibrationWindowtableWidget);
+
     // setting to dock
-    zv_calibrationDock->setWidget(zv_calibrationTableWidget);
+    zv_calibrationDock->setWidget(zv_calibrationSidebarWidget);
 
     // Message Panel
     zv_messagePanelDock = new QDockWidget(this);
@@ -163,8 +168,9 @@ void MainWindow::zh_createComponents()
     addDockWidget(Qt::LeftDockWidgetArea, zv_messagePanelDock);
 
     zv_messagePanel = new ZMessagePanel(this);
+    frame = zh_setWidgetToFrame(zv_messagePanel);
     // setting to dock
-    zv_messagePanelDock->setWidget(zv_messagePanel);
+    zv_messagePanelDock->setWidget(frame);
 
     // tabblifying docks by default
     // this->tabifyDockWidget(zv_messagePanelDock, zv_calibrationArrayDock);
@@ -184,6 +190,18 @@ void MainWindow::zh_createComponents()
     zv_plotterDataManager = new ZPlotterDataManager(this);
 
     statusBar();
+}
+//==========================================================
+QFrame* MainWindow::zh_setWidgetToFrame(QWidget* widget)
+{
+    QFrame* frame = new QFrame();
+    QVBoxLayout* frameLayout = new QVBoxLayout(frame);
+    frame->setLayout(frameLayout);
+    frame->setFrameStyle(QFrame::StyledPanel | QFrame::Plain);
+    frame->setLineWidth(1);
+
+    frameLayout->addWidget(widget);
+    return frame;
 }
 //==========================================================
 void MainWindow::zh_createMenu()
