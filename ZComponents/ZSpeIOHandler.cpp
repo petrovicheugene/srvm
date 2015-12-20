@@ -132,19 +132,10 @@ bool ZSpeIOHandler::zp_getSpectrumFromFile(QFile& file, QColor color, ZAbstractS
                 speAuxData.zp_setPeakWidthK2(line);
             }
         }
-
-//#ifdef DBG
-//        qDebug() << "LN"<< lineNumber << line;
-//#endif
         lineNumber++;
     }
 
     spectrum = new ZSpeSpectrum(intensityList, speAuxData, file.fileName(), color, zv_spectrumParent);
     return true;
 }
-//===========================================================
-//bool ZSpeIOHandler::zp_getSpectrumFromFile(QFile& file, ZSpectrumArray&) const
-//{
-
-//}
 //===========================================================

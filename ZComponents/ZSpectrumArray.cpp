@@ -14,7 +14,7 @@ qint64 ZSpectrumArray::zv_lastArrayId = 0;
 ZSpectrumArray::ZSpectrumArray(const QString& name, QObject* parent)  : QObject(parent)
 {
     zv_arrayName = name;
-    zv_colorIndex = 0;
+    zv_lastColorIndex = 0;
 
     zv_energyK0 = 0;
     zv_energyK1 = 0;
@@ -351,7 +351,7 @@ bool ZSpectrumArray::zp_appendSpectrum(const ZRawSpectrum& rawSpectrum, bool las
     }
 
     ZAbstractSpectrum* abstractSpectrum;
-    bool res = ioHandler->zp_getSpectrumFromFile(rawSpectrum.path, zv_colorList.value(zv_colorIndex), abstractSpectrum);
+    bool res = ioHandler->zp_getSpectrumFromFile(rawSpectrum.path, zv_colorList.value(zv_lastColorIndex), abstractSpectrum);
     if(res)
     {
         ZSpeSpectrum* speSpectrum = qobject_cast<ZSpeSpectrum*>(abstractSpectrum);
@@ -434,9 +434,9 @@ bool ZSpectrumArray::zp_appendSpectrum(const ZRawSpectrum& rawSpectrum, bool las
             zv_spectrumList.append(speSpectrum);
             emit zg_spectrumOperation(OT_END_INSERT_SPECTRA, spectrumIndex, spectrumIndex);
             // color index increment
-            if(++zv_colorIndex >= zv_colorList.count())
+            if(++zv_lastColorIndex >= zv_colorList.count())
             {
-                zv_colorIndex = 0;
+                zv_lastColorIndex = 0;
             }
 
             QMap<QString, QString>::const_iterator it;

@@ -152,15 +152,15 @@ void MainWindow::zh_createComponents()
     zv_chemElementArrayDock->setWidget(zv_chemElementWidget);
 
     // Calibration View
-    zv_calibrationArrayDock= new QDockWidget(this);
-    zv_calibrationArrayDock->setObjectName("CALIBRATION_ARRAY_DOCK");
-    zv_calibrationArrayDock->setWindowTitle(tr("Calibrations"));
-    zv_dockList << zv_calibrationArrayDock;
-    addDockWidget(Qt::LeftDockWidgetArea, zv_calibrationArrayDock);
+    zv_calibrationDock= new QDockWidget(this);
+    zv_calibrationDock->setObjectName("CALIBRATION_DOCK");
+    zv_calibrationDock->setWindowTitle(tr("Calibrations"));
+    zv_dockList << zv_calibrationDock;
+    addDockWidget(Qt::LeftDockWidgetArea, zv_calibrationDock);
 
     zv_calibrationTableWidget = new ZCalibrationTableWidget(this);
     // setting to dock
-    zv_calibrationArrayDock->setWidget(zv_calibrationTableWidget);
+    zv_calibrationDock->setWidget(zv_calibrationTableWidget);
 
     // Message Panel
     zv_messagePanelDock = new QDockWidget(this);
@@ -319,15 +319,19 @@ void MainWindow::zh_createConnections()
     connect(zv_spectraArrayRepository, &ZSpectraArrayRepository::zg_requestSelectedSpectrumIndexList,
             zv_spectrumTableWidget, &ZJointSpectrumTableWidget::zp_selectedSpectrumIndexList);
 
-    // calibration repository <-> chemical element view
+    // spectra repository <-> chemical element view
     connect(zv_spectraArrayRepository, &ZSpectraArrayRepository::zg_requestSelectedChemElementIndexList,
             zv_chemElementWidget, &ZChemElementWidget::zp_selectedChemElementIndexList);
+
+    // calibration view <-> zv_spectraArrayRepository
+    connect(zv_calibrationTableWidget, &ZCalibrationTableWidget::zg_requestChemElementList,
+            zv_spectraArrayRepository, &ZSpectraArrayRepository::zp_chemElementListForCurrentArray);
 
 
     // calibration repository <-> calibration model
     zv_calibrationModel->zp_connectToCalibrationRepository(zv_calibrationRepository);
 
-    // calibration repository <-> calibration view
+    // calibration repository
     zv_calibrationTableWidget->zp_appendButtonActions(zv_calibrationRepository->zp_arrayActions());
     connect(zv_calibrationRepository, &ZCalibrationRepository::zg_requestSelectedCalibrationIndexList,
             zv_calibrationTableWidget, &ZCalibrationTableWidget::zp_selectedCalibrationIndexList);
@@ -335,6 +339,11 @@ void MainWindow::zh_createConnections()
             zv_calibrationTableWidget, &ZCalibrationTableWidget::zp_currentCalibrationIndex);
     connect(zv_calibrationTableWidget, &ZCalibrationTableWidget::zg_currentCalibrationChanged,
             zv_calibrationRepository, &ZCalibrationRepository::zp_onCurrentCalibrationChanged);
+    connect(zv_calibrationRepository, &ZCalibrationRepository::zg_setCurrentCalibrationIndex,
+            zv_calibrationTableWidget, &ZCalibrationTableWidget::zp_setCurrentCalibrationIndex);
+    connect(zv_calibrationRepository, &ZCalibrationRepository::zg_startCurrentCalibrationEdition,
+            zv_calibrationTableWidget, &ZCalibrationTableWidget::zp_startCurrentCalibrationEdition);
+
 
 }
 //==========================================================

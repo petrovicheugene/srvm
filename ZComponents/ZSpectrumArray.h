@@ -23,9 +23,6 @@ public:
                         OT_CHANGED};
 
 
-    static QList<QColor> zp_createColorList();
-    static bool checkColor(QColor color);
-
 
     QString zp_arrayName() const;
     void zp_setArrayName(const QString&);
@@ -100,13 +97,17 @@ private:
     QString zv_energyUnit;
 
     // spectrum color
-    int zv_colorIndex;
+    int zv_lastColorIndex;
     static QList<QColor> zv_colorList;
 
 
     // FUNCS
     void zh_createConnections();
     void zh_recalcArrayMaxParameters();
+
+    static QList<QColor> zp_createColorList();
+    static bool checkColor(QColor color);
+
 
 private slots:
 

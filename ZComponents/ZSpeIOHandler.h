@@ -26,7 +26,6 @@ private:
 
 
     // VARS
-    QObject* zv_spectrumParent;
     const int zv_intensityStartLine = 20;
 
     // FUNCS

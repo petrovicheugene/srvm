@@ -127,6 +127,7 @@ public slots:
     void zp_getArrayName(int arrayIndex, QString&) const;
     void zp_getSpectrumName(int arrayIndex, int spectrumIndex, QString&) const;
     void zp_currentArrayChanged(int current, int previous);
+    void zp_chemElementListForCurrentArray(QStringList& chemElementList);
 
 private slots:
 

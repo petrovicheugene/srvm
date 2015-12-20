@@ -40,9 +40,14 @@ public:
     int zp_calibrationCount() const;
     int zp_visibleCalibrationCount() const;
     QString zp_calibrationName(int calibrationIndex) const;
+    bool zp_setCalibrationName(int row, const QString&);
     QString zp_visibleCalibrationName(int visibleCalibrationIndex) const;
 
+    QString zp_calibrationChemicalElement(int row) const;
+    bool zp_setCalibrationChemicalElement(int row, const QString&);
+
     bool zp_calibrationIsVisible(int row);
+    QColor zp_calibrationColor(int row);
     bool zp_setVisible(int row, bool checked);
 
     bool zp_isDirty(int row);
@@ -58,6 +63,9 @@ signals:
     void zg_requestSelectedCalibrationIndexList(QList<int>&);
     void zg_requestCurrentCalibrationIndex(int&);
     void zg_openCalibrationsActionTriggered() const;
+
+    void zg_setCurrentCalibrationIndex(int calibrationIndex);
+    void zg_startCurrentCalibrationEdition();
 
 public slots:
 
@@ -79,6 +87,7 @@ private:
     QAction* zv_editCalibrationsAction;
     QAction* zv_removeCalibrationAction;
 
+    QString zv_defaultCalibrationName;
     // FUNCS
     void zh_createActions();
     void zh_createConnections();

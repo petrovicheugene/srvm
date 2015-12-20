@@ -54,14 +54,14 @@ private:
 
     // docks
     QList<QDockWidget*> zv_dockList;
-    QDockWidget* zv_calibrationArrayDock;
+    QDockWidget* zv_calibrationDock;
     QDockWidget* zv_chemElementArrayDock;
 
     QDockWidget* zv_messagePanelDock;
 
     // views
     ZWidgetWithSidebar* zv_spectraSidebarWidget;
-    // ZWidgetWithSidebar* zv_calibrationSidebarWidget;
+    ZWidgetWithSidebar* zv_calibrationSidebarWidget;
 
     ZSpectrumArrayWidget* zv_spectrumArrayWidget;
     ZJointSpectrumTableWidget* zv_spectrumTableWidget;

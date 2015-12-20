@@ -695,6 +695,13 @@ void ZSpectraArrayRepository::zp_currentArrayChanged(int current, int previous)
     emit zg_currentArrayId(arrayId, current);
 }
 //==================================================================
+void ZSpectraArrayRepository::zp_chemElementListForCurrentArray(QStringList& chemElementList)
+{
+    int currentArray;
+    emit zg_requestCurrentArrayIndex(currentArray);
+    chemElementList = zp_chemElementList(currentArray);
+}
+//==================================================================
 void ZSpectraArrayRepository::zh_onSpectrumArraySaving(QString filePath)
 {
     zv_arrayFilePath = filePath;
@@ -813,7 +820,6 @@ void ZSpectraArrayRepository::zh_onRemoveSpectrumFromArrayAction()
     {
         emit zg_fitPlotInBoundingRect();
     }
-
 }
 //==================================================================
 void ZSpectraArrayRepository::zh_onAppendChemElementAction()
