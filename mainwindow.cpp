@@ -47,7 +47,6 @@ MainWindow::MainWindow(QWidget *parent)
 
     //    QPalette palette = QPalette(Qt::darkBlue);
     //    this->setPalette(palette);
-    zv_centralSplitter = 0;
     zv_fileActionManager = 0;
     zv_spectraArrayRepository = 0;
     zv_jointSpectraDataManager = 0;
@@ -104,27 +103,6 @@ void MainWindow::zh_createActions()
 void MainWindow::zh_createComponents()
 {
     // CENTRAL WIDGET
-    // Central widget
-    QWidget* centralWidget = new QWidget(this);
-    QVBoxLayout* cwLayout = new QVBoxLayout(this);
-    cwLayout->setMargin(2);
-    centralWidget->setLayout(cwLayout);
-    zv_centralSplitter = new QSplitter(Qt::Vertical, this);
-    cwLayout->addWidget(zv_centralSplitter);
-    setCentralWidget(centralWidget);
-
-    // Spectrum Array View - central widget
-    zv_spectraSidebarWidget = new ZWidgetWithSidebar(tr("Spectra"), "SPECTRUM_SIDEBAR_WIDGET", this);
-    zv_spectraSidebarWidget->setFrameStyle(QFrame::StyledPanel | QFrame::Plain);
-    zv_spectraSidebarWidget->setLineWidth(1);
-    zv_spectrumArrayWidget = new ZSpectrumArrayWidget(this);
-    zv_spectrumTableWidget = new ZJointSpectrumTableWidget(this);
-
-    zv_spectraSidebarWidget->zp_setSidebarWidget(zv_spectrumArrayWidget);
-    zv_spectraSidebarWidget->zp_setMainWidget(zv_spectrumTableWidget);
-    // put into central widget
-    zv_centralSplitter->addWidget(zv_spectraSidebarWidget);
-
     // Plotter
     zv_plotter = new ZPlotter(this);
     QFrame* frameWidget = new QFrame(this);
@@ -133,12 +111,27 @@ void MainWindow::zh_createComponents()
     frameWidget->setFrameStyle(QFrame::StyledPanel | QFrame::Plain);
     frameWidget->setLineWidth(1);
     plotterLayout->addWidget(zv_plotter);
-    zv_centralSplitter->addWidget(frameWidget);
-
-    zv_centralSplitter->setCollapsible(0, false);
-    zv_centralSplitter->setCollapsible(0, false);
+    setCentralWidget(frameWidget);
 
     // DOCKS
+    // Spectrum array dock
+    zv_spectrumArrayDock = new QDockWidget(this);
+    zv_spectrumArrayDock->setObjectName("SPECTRUM_ARRAY_DOCK");
+    zv_spectrumArrayDock->setWindowTitle(tr("Spectra"));
+    zv_dockList << zv_spectrumArrayDock;
+    addDockWidget(Qt::TopDockWidgetArea, zv_spectrumArrayDock);
+
+    zv_spectraSidebarWidget = new ZWidgetWithSidebar("SPECTRUM_SIDEBAR_WIDGET", this);
+    zv_spectraSidebarWidget->setFrameStyle(QFrame::StyledPanel | QFrame::Plain);
+    zv_spectraSidebarWidget->setLineWidth(1);
+    zv_spectrumArrayWidget = new ZSpectrumArrayWidget(this);
+    zv_spectrumTableWidget = new ZJointSpectrumTableWidget(this);
+
+    zv_spectraSidebarWidget->zp_setSidebarWidget(zv_spectrumArrayWidget);
+    zv_spectraSidebarWidget->zp_setMainWidget(zv_spectrumTableWidget);
+    // setting to dock
+    zv_spectrumArrayDock->setWidget(zv_spectraSidebarWidget);
+
     // Chem Element Array View
     zv_chemElementArrayDock = new QDockWidget(this);
     zv_chemElementArrayDock->setObjectName("CHEMELEMENT_ARRAY_DOCK");
@@ -407,15 +400,6 @@ void MainWindow::zh_restoreSettings()
         restoreState(vData.toByteArray());
     }
 
-    if(zv_centralSplitter)
-    {
-        vData = settings.value("centralSplitterState");
-        if(vData.isValid() && !vData.isNull() && vData.canConvert<QByteArray>())
-        {
-            zv_centralSplitter->restoreState(vData.toByteArray());
-        }
-    }
-
     settings.endGroup(); // Common
     settings.endGroup(); // glAppVersion
 }
@@ -430,11 +414,6 @@ void MainWindow::zh_saveSettings()
     settings.setValue("appState", saveState());
 
     // central widget
-    if(zv_centralSplitter)
-    {
-        settings.setValue("centralSplitterState", zv_centralSplitter->saveState());
-    }
-
     settings.endGroup(); // Common
     settings.endGroup(); // glAppVersion
 

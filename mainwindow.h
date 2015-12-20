@@ -49,14 +49,11 @@ private:
     QAction* zv_aboutAction;
     QAction* zv_helpAction;
 
-    // central widget
-    QSplitter* zv_centralSplitter;
-
     // docks
     QList<QDockWidget*> zv_dockList;
+    QDockWidget* zv_spectrumArrayDock;
     QDockWidget* zv_calibrationDock;
     QDockWidget* zv_chemElementArrayDock;
-
     QDockWidget* zv_messagePanelDock;
 
     // views
@@ -89,9 +86,11 @@ private:
     void closeEvent(QCloseEvent* e);
     void zh_createActions();
     void zh_createComponents();
+
     void zh_createMenu();
     void zh_createToolbar();
     void zh_createConnections();
+
     void zh_appendActionsToMenu(QMenu* menu);
     void zh_restoreSettings();
     void zh_saveSettings();
@@ -100,7 +99,6 @@ private slots:
 
     void zh_onAboutAction();
     void zh_onHelpAction();
-
 
 };
 //==========================================================
