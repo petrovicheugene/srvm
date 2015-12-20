@@ -27,7 +27,7 @@ public:
                        OT_DATA_CHANGED};
     // FUNCS
 
-    void zp_connectToSpectraArrayRepository(ZSpectraArrayRepository*);
+    void zp_connectToSpectraArrayRepository(ZSpectrumArrayRepository*);
 
     int zp_rowCount() const;
     int zp_columnCount() const;
@@ -52,11 +52,11 @@ private:
     // VARS
     qint64 zv_currentArrayId;
     int zv_currentArrayIndex;
-    ZSpectraArrayRepository* zv_repositiry;
+    ZSpectrumArrayRepository* zv_repositiry;
 
 private slots:
 
-    void zh_onRepositoryChemElementOperation(ZSpectraArrayRepository::ChemElementOperationType,
+    void zh_onRepositoryChemElementOperation(ZSpectrumArrayRepository::ChemElementOperationType,
                                              int arrayIndex, int first, int last);
 
 

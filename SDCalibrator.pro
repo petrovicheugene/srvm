@@ -110,7 +110,9 @@ SOURCES += main.cpp \
     ZPlotter/ZWindowGraphicsItem.cpp \
     ZPlotter/ZHorizontalDashBoard.cpp \
     ZComponents/ZCalibration.cpp \
-    ZModelViews/ZJointCalibrationWindowtableWidget.cpp
+    ZModels/ZJointCalibrationWindowModel.cpp \
+    ZComponents/ZJointCalibrationWindowDataManager.cpp \
+    ZModelViews/ZJointCalibrationWindowTableWidget.cpp
 
 
 HEADERS  += \
@@ -164,7 +166,9 @@ HEADERS  += \
     ZPlotter/ZWindowGraphicsItem.h \
     ZPlotter/ZHorizontalDashBoard.h \
     ZComponents/ZCalibration.h \
-    ZModelViews/ZJointCalibrationWindowtableWidget.h
+    ZModels/ZJointCalibrationWindowModel.h \
+    ZComponents/ZJointCalibrationWindowDataManager.h \
+    ZModelViews/ZJointCalibrationWindowTableWidget.h
 
 
 RESOURCES += \

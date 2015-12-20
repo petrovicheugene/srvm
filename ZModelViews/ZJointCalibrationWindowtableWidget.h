@@ -9,11 +9,14 @@ class QHBoxLayout;
 class QAction;
 
 //==============================================================
-class ZJointCalibrationWindowtableWidget : public QWidget
+class ZJointCalibrationWindowTableWidget : public QWidget
 {
     Q_OBJECT
 public:
-    explicit ZJointCalibrationWindowtableWidget(QWidget *parent = 0);
+    explicit ZJointCalibrationWindowTableWidget(QWidget *parent = 0);
+
+    // FUNCS
+    void zp_setModel(ZJointSpectraModel* model);
 
 signals:
 

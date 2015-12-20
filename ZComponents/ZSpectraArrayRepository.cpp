@@ -7,7 +7,7 @@
 #include <QFileInfo>
 #include <QtAlgorithms>
 //==================================================================
-ZSpectraArrayRepository::ZSpectraArrayRepository(QObject *parent) : QObject(parent)
+ZSpectrumArrayRepository::ZSpectrumArrayRepository(QObject *parent) : QObject(parent)
 {
     zv_arrayFilePath = QString();
     zv_dirty = false;
@@ -16,7 +16,7 @@ ZSpectraArrayRepository::ZSpectraArrayRepository(QObject *parent) : QObject(pare
     zh_createConnections();
 }
 //==================================================================
-void ZSpectraArrayRepository::zp_appendActionsToMenu(QMenu* menu) const
+void ZSpectrumArrayRepository::zp_appendActionsToMenu(QMenu* menu) const
 {
     if(menu->objectName() == "Edit")
     {
@@ -29,7 +29,7 @@ void ZSpectraArrayRepository::zp_appendActionsToMenu(QMenu* menu) const
     }
 }
 //==================================================================
-QList<QAction*> ZSpectraArrayRepository::zp_arrayActions() const
+QList<QAction*> ZSpectrumArrayRepository::zp_arrayActions() const
 {
     QList<QAction*> actionList;
     actionList << zv_appendArrayAction;
@@ -37,7 +37,7 @@ QList<QAction*> ZSpectraArrayRepository::zp_arrayActions() const
     return actionList;
 }
 //==================================================================
-QList<QAction*> ZSpectraArrayRepository::zp_spectrumActions() const
+QList<QAction*> ZSpectrumArrayRepository::zp_spectrumActions() const
 {
     QList<QAction*> actionList;
     actionList << zv_appendSpectrumToArrayAction;
@@ -45,7 +45,7 @@ QList<QAction*> ZSpectraArrayRepository::zp_spectrumActions() const
     return actionList;
 }
 //==================================================================
-QList<QAction*> ZSpectraArrayRepository::zp_chemElementActions() const
+QList<QAction*> ZSpectrumArrayRepository::zp_chemElementActions() const
 {
     QList<QAction*> actionList;
     actionList << zv_appendChemElementAction;
@@ -53,29 +53,29 @@ QList<QAction*> ZSpectraArrayRepository::zp_chemElementActions() const
     return actionList;
 }
 //==================================================================
-void ZSpectraArrayRepository::zp_connectToFileActionManager(ZFileActionManager* manager)
+void ZSpectrumArrayRepository::zp_connectToFileActionManager(ZFileActionManager* manager)
 {
     connect(manager, &ZFileActionManager::zg_spectrumRawArrayList,
-            this, &ZSpectraArrayRepository::zp_appendArrays);
+            this, &ZSpectrumArrayRepository::zp_appendArrays);
     connect(manager, &ZFileActionManager::zg_spectrumFileListToOpen,
-            this, &ZSpectraArrayRepository::zp_appendSpectraToArray);
+            this, &ZSpectrumArrayRepository::zp_appendSpectraToArray);
     connect(manager, &ZFileActionManager::zg_spectrumArraySaved,
-            this, &ZSpectraArrayRepository::zh_onSpectrumArraySaving);
+            this, &ZSpectrumArrayRepository::zh_onSpectrumArraySaving);
 
-    connect(this, &ZSpectraArrayRepository::zg_initSpectraAppending,
+    connect(this, &ZSpectrumArrayRepository::zg_initSpectraAppending,
             manager, &ZFileActionManager::zp_defineSpectrumFilesAndInitAppending);
     connect(manager, &ZFileActionManager::zg_requestRawArrayListAndInitSaving,
-            this, &ZSpectraArrayRepository::zh_createRawArrayListAndStartSaving);
-    connect(this, &ZSpectraArrayRepository::zg_saveSpectraArrayList,
+            this, &ZSpectrumArrayRepository::zh_createRawArrayListAndStartSaving);
+    connect(this, &ZSpectrumArrayRepository::zg_saveSpectraArrayList,
             manager, &ZFileActionManager::zp_saveSpectraArrayList);
 }
 //==================================================================
-bool ZSpectraArrayRepository::zp_isEmpty() const
+bool ZSpectrumArrayRepository::zp_isEmpty() const
 {
     return zv_arrayList.isEmpty();
 }
 //==================================================================
-void ZSpectraArrayRepository::zp_clear()
+void ZSpectrumArrayRepository::zp_clear()
 {
     if(!zv_arrayList.isEmpty())
     {
@@ -90,12 +90,12 @@ void ZSpectraArrayRepository::zp_clear()
     zv_arrayFilePath.clear();
 }
 //==================================================================
-int ZSpectraArrayRepository::zp_arrayCount() const
+int ZSpectrumArrayRepository::zp_arrayCount() const
 {
     return zv_arrayList.count();
 }
 //==================================================================
-int ZSpectraArrayRepository::zp_spectrumCount(int arrayIndex) const
+int ZSpectrumArrayRepository::zp_spectrumCount(int arrayIndex) const
 {
     if(arrayIndex < 0 || arrayIndex >= zv_arrayList.count())
     {
@@ -105,7 +105,7 @@ int ZSpectraArrayRepository::zp_spectrumCount(int arrayIndex) const
     return zv_arrayList.value(arrayIndex)->zp_spectrumCount();
 }
 //==================================================================
-int ZSpectraArrayRepository::zp_numberVisibleChemElementsBeforeIndex(int arrayIndex, int index) const
+int ZSpectrumArrayRepository::zp_numberVisibleChemElementsBeforeIndex(int arrayIndex, int index) const
 {
     if(arrayIndex < 0 || arrayIndex >= zv_arrayList.count())
     {
@@ -115,7 +115,7 @@ int ZSpectraArrayRepository::zp_numberVisibleChemElementsBeforeIndex(int arrayIn
     return zv_arrayList.value(arrayIndex)->zp_numberVisibleChemElementsBeforeIndex(index);
 }
 //==================================================================
-int ZSpectraArrayRepository::zp_chemElementCount(int arrayIndex) const
+int ZSpectrumArrayRepository::zp_chemElementCount(int arrayIndex) const
 {
     if(arrayIndex < 0 || arrayIndex >= zv_arrayList.count())
     {
@@ -125,7 +125,7 @@ int ZSpectraArrayRepository::zp_chemElementCount(int arrayIndex) const
     return zv_arrayList.value(arrayIndex)->zp_chemElementCount();
 }
 //==================================================================
-int ZSpectraArrayRepository::zp_visibleChemElementCount(int arrayIndex) const
+int ZSpectrumArrayRepository::zp_visibleChemElementCount(int arrayIndex) const
 {
     if(arrayIndex < 0 || arrayIndex >= zv_arrayList.count())
     {
@@ -135,7 +135,7 @@ int ZSpectraArrayRepository::zp_visibleChemElementCount(int arrayIndex) const
     return zv_arrayList.value(arrayIndex)->zp_visibleChemElementCount();
 }
 //==================================================================
-QStringList ZSpectraArrayRepository::zp_chemElementList(int arrayIndex) const
+QStringList ZSpectrumArrayRepository::zp_chemElementList(int arrayIndex) const
 {
     if(arrayIndex < 0 || arrayIndex >= zv_arrayList.count())
     {
@@ -145,7 +145,7 @@ QStringList ZSpectraArrayRepository::zp_chemElementList(int arrayIndex) const
     return zv_arrayList.value(arrayIndex)->zp_chemElementList();
 }
 //==================================================================
-QString ZSpectraArrayRepository::zp_visibleChemElementName(int arrayIndex, int visibleIndex) const
+QString ZSpectrumArrayRepository::zp_visibleChemElementName(int arrayIndex, int visibleIndex) const
 {
     if(arrayIndex < 0 || arrayIndex >= zv_arrayList.count()
             || visibleIndex < 0)
@@ -156,7 +156,7 @@ QString ZSpectraArrayRepository::zp_visibleChemElementName(int arrayIndex, int v
     return zv_arrayList.value(arrayIndex)->zp_visibleChemElementName(visibleIndex);
 }
 //==================================================================
-QString ZSpectraArrayRepository::zp_chemElementName(int arrayIndex, int row) const
+QString ZSpectrumArrayRepository::zp_chemElementName(int arrayIndex, int row) const
 {
     if(arrayIndex < 0 || arrayIndex >= zv_arrayList.count()
             || row < 0)
@@ -167,7 +167,7 @@ QString ZSpectraArrayRepository::zp_chemElementName(int arrayIndex, int row) con
     return zv_arrayList.value(arrayIndex)->zp_chemElementName(row);
 }
 //==================================================================
-QString ZSpectraArrayRepository::zp_chemConcentration(int arrayIndex,
+QString ZSpectrumArrayRepository::zp_chemConcentration(int arrayIndex,
                                                       int spectrumIndex, int visibleChemElementIndex) const
 {
     if(arrayIndex < 0 || arrayIndex >= zv_arrayList.count())
@@ -189,7 +189,7 @@ QString ZSpectraArrayRepository::zp_chemConcentration(int arrayIndex,
     return zv_arrayList.value(arrayIndex)->zp_chemConcentration(chemElement, spectrumIndex);
 }
 //==================================================================
-bool ZSpectraArrayRepository::zp_setChemConcentration(int arrayIndex, int spectrumIndex,
+bool ZSpectrumArrayRepository::zp_setChemConcentration(int arrayIndex, int spectrumIndex,
                                                       int visibleChemElementIndex, const QString& concentration)
 {
     if(arrayIndex < 0 || arrayIndex >= zv_arrayList.count())
@@ -221,7 +221,7 @@ bool ZSpectraArrayRepository::zp_setChemConcentration(int arrayIndex, int spectr
     return res;
 }
 //==================================================================
-bool ZSpectraArrayRepository::zp_setChemElementName(int arrayIndex, int chemElementIndex, const QString& chemElementName)
+bool ZSpectrumArrayRepository::zp_setChemElementName(int arrayIndex, int chemElementIndex, const QString& chemElementName)
 {
     if(arrayIndex < 0 || arrayIndex >= zv_arrayList.count())
     {
@@ -231,7 +231,7 @@ bool ZSpectraArrayRepository::zp_setChemElementName(int arrayIndex, int chemElem
     return zv_arrayList.at(arrayIndex)->zp_setChemElementName(chemElementIndex, chemElementName);
 }
 //==================================================================
-bool ZSpectraArrayRepository::zp_energyCalibration(int arrayIndex, qreal& K0, qreal& K1, qreal& K2, QString& energyUnit)
+bool ZSpectrumArrayRepository::zp_energyCalibration(int arrayIndex, qreal& K0, qreal& K1, qreal& K2, QString& energyUnit)
 {
     if(arrayIndex < 0 || arrayIndex >= zv_arrayList.count())
     {
@@ -241,7 +241,7 @@ bool ZSpectraArrayRepository::zp_energyCalibration(int arrayIndex, qreal& K0, qr
     return zv_arrayList.at(arrayIndex)->zp_energyCalibration(K0, K1, K2, energyUnit);
 }
 //==================================================================
-bool ZSpectraArrayRepository::zp_energyCalibrationForArrayId(qint64 arrayId, qreal& K0, qreal& K1, qreal& K2, QString& energyUnit)
+bool ZSpectrumArrayRepository::zp_energyCalibrationForArrayId(qint64 arrayId, qreal& K0, qreal& K1, qreal& K2, QString& energyUnit)
 {
     for(int i = 0; i < zv_arrayList.count(); i++)
     {
@@ -253,7 +253,7 @@ bool ZSpectraArrayRepository::zp_energyCalibrationForArrayId(qint64 arrayId, qre
     return false;
 }
 //==================================================================
-qint64 ZSpectraArrayRepository::zp_arrayIdForArrayIndex(int arrayIndex)
+qint64 ZSpectrumArrayRepository::zp_arrayIdForArrayIndex(int arrayIndex)
 {
     if(arrayIndex < 0 || arrayIndex >= zv_arrayList.count())
     {
@@ -263,7 +263,7 @@ qint64 ZSpectraArrayRepository::zp_arrayIdForArrayIndex(int arrayIndex)
     return zv_arrayList.at(arrayIndex)->zp_arrayId();
 }
 //==================================================================
-bool ZSpectraArrayRepository::zp_chemElementIsVisible(int arrayIndex, int row) const
+bool ZSpectrumArrayRepository::zp_chemElementIsVisible(int arrayIndex, int row) const
 {
     if(arrayIndex < 0 || arrayIndex >= zv_arrayList.count()
             || row < 0)
@@ -274,7 +274,7 @@ bool ZSpectraArrayRepository::zp_chemElementIsVisible(int arrayIndex, int row) c
     return zv_arrayList.value(arrayIndex)->zp_chemElementIsVisible(row);
 }
 //==================================================================
-bool ZSpectraArrayRepository::zp_setChemElementVisible(int arrayIndex, int row, bool visible) const
+bool ZSpectrumArrayRepository::zp_setChemElementVisible(int arrayIndex, int row, bool visible) const
 {
     if(arrayIndex < 0 || arrayIndex >= zv_arrayList.count()
             || row < 0)
@@ -286,7 +286,7 @@ bool ZSpectraArrayRepository::zp_setChemElementVisible(int arrayIndex, int row, 
 
 }
 //==================================================================
-QString ZSpectraArrayRepository::zp_arrayName(int arrayIndex) const
+QString ZSpectrumArrayRepository::zp_arrayName(int arrayIndex) const
 {
     if(arrayIndex < 0 || arrayIndex >= zv_arrayList.count())
     {
@@ -296,7 +296,7 @@ QString ZSpectraArrayRepository::zp_arrayName(int arrayIndex) const
     return zv_arrayList.value(arrayIndex)->zp_arrayName();
 }
 //==================================================================
-bool ZSpectraArrayRepository::zp_setSpectrumArrayName(int arrayIndex, const QString& name)
+bool ZSpectrumArrayRepository::zp_setSpectrumArrayName(int arrayIndex, const QString& name)
 {
     if(arrayIndex < 0 || arrayIndex >= zv_arrayList.count() || name.isEmpty())
     {
@@ -311,7 +311,7 @@ bool ZSpectraArrayRepository::zp_setSpectrumArrayName(int arrayIndex, const QStr
     return true;
 }
 //==================================================================
-QString ZSpectraArrayRepository::zp_spectrumName(int arrayIndex, int spectrumIndex) const
+QString ZSpectrumArrayRepository::zp_spectrumName(int arrayIndex, int spectrumIndex) const
 {
     if(arrayIndex < 0 || arrayIndex >= zv_arrayList.count() )
     {
@@ -321,7 +321,7 @@ QString ZSpectraArrayRepository::zp_spectrumName(int arrayIndex, int spectrumInd
     return zv_arrayList.value(arrayIndex)->zp_spectrumFileName(spectrumIndex);
 }
 //======================================================
-qint64 ZSpectraArrayRepository::zp_spectrumId(int arrayIndex, int spectrumIndex) const
+qint64 ZSpectrumArrayRepository::zp_spectrumId(int arrayIndex, int spectrumIndex) const
 {
     if(arrayIndex < 0 || arrayIndex >= zv_arrayList.count() )
     {
@@ -331,7 +331,7 @@ qint64 ZSpectraArrayRepository::zp_spectrumId(int arrayIndex, int spectrumIndex)
     return zv_arrayList.value(arrayIndex)->zp_spectrumId(spectrumIndex);
 }
 //======================================================
-QColor ZSpectraArrayRepository::zp_spectrumColor(int arrayIndex, int spectrumIndex) const
+QColor ZSpectrumArrayRepository::zp_spectrumColor(int arrayIndex, int spectrumIndex) const
 {
     if(arrayIndex < 0 || arrayIndex >= zv_arrayList.count() )
     {
@@ -341,7 +341,7 @@ QColor ZSpectraArrayRepository::zp_spectrumColor(int arrayIndex, int spectrumInd
     return zv_arrayList.value(arrayIndex)->zp_spectrumColor(spectrumIndex);
 }
 //======================================================
-bool ZSpectraArrayRepository::zp_isSpectrumVisible(int arrayIndex, int spectrumIndex) const
+bool ZSpectrumArrayRepository::zp_isSpectrumVisible(int arrayIndex, int spectrumIndex) const
 {
     if(arrayIndex < 0 || arrayIndex >= zv_arrayList.count() )
     {
@@ -351,7 +351,7 @@ bool ZSpectraArrayRepository::zp_isSpectrumVisible(int arrayIndex, int spectrumI
     return zv_arrayList.value(arrayIndex)->zp_isSpectrumVisible(spectrumIndex);
 }
 //======================================================
-bool  ZSpectraArrayRepository::zp_setSpectrumVisible(int arrayIndex, int spectrumIndex, bool visible)
+bool  ZSpectrumArrayRepository::zp_setSpectrumVisible(int arrayIndex, int spectrumIndex, bool visible)
 {
     if(arrayIndex < 0 || arrayIndex >= zv_arrayList.count() )
     {
@@ -366,7 +366,7 @@ bool  ZSpectraArrayRepository::zp_setSpectrumVisible(int arrayIndex, int spectru
     return res;
 }
 //==================================================================
-const ZAbstractSpectrum* ZSpectraArrayRepository::zp_spectrum(int arrayIndex, int spectrumIndex) const
+const ZAbstractSpectrum* ZSpectrumArrayRepository::zp_spectrum(int arrayIndex, int spectrumIndex) const
 {
     if(arrayIndex < 0 || arrayIndex >= zv_arrayList.count() )
     {
@@ -376,7 +376,7 @@ const ZAbstractSpectrum* ZSpectraArrayRepository::zp_spectrum(int arrayIndex, in
     return zv_arrayList.value(arrayIndex)->zp_spectrum(spectrumIndex);
 }
 //==================================================================
-QList<ZAbstractSpectrum*> ZSpectraArrayRepository::zp_spectrumListForArray(int arrayIndex) const
+QList<ZAbstractSpectrum*> ZSpectrumArrayRepository::zp_spectrumListForArray(int arrayIndex) const
 {
     if(arrayIndex < 0 || arrayIndex >= zv_arrayList.count() )
     {
@@ -386,7 +386,7 @@ QList<ZAbstractSpectrum*> ZSpectraArrayRepository::zp_spectrumListForArray(int a
     return zv_arrayList.value(arrayIndex)->zp_spectrumList();
 }
 //==================================================================
-QList<int> ZSpectraArrayRepository::zp_spectrumData(int arrayIndex, int spectrumIndex) const
+QList<int> ZSpectrumArrayRepository::zp_spectrumData(int arrayIndex, int spectrumIndex) const
 {
     if(arrayIndex < 0 || arrayIndex >= zv_arrayList.count() )
     {
@@ -396,7 +396,7 @@ QList<int> ZSpectraArrayRepository::zp_spectrumData(int arrayIndex, int spectrum
     return zv_arrayList.at(arrayIndex)->zp_spectrumData(spectrumIndex);
 }
 //==================================================================
-int ZSpectraArrayRepository::zp_arrayChannelCount(int arrayIndex)
+int ZSpectrumArrayRepository::zp_arrayChannelCount(int arrayIndex)
 {
     if(arrayIndex < 0 || arrayIndex >= zv_arrayList.count() )
     {
@@ -406,7 +406,7 @@ int ZSpectraArrayRepository::zp_arrayChannelCount(int arrayIndex)
     return zv_arrayList.value(arrayIndex)->zp_maxChannelCount();
 }
 //==================================================================
-int ZSpectraArrayRepository::zp_arrayMaxIntensity(int arrayIndex)
+int ZSpectrumArrayRepository::zp_arrayMaxIntensity(int arrayIndex)
 {
     if(arrayIndex < 0 || arrayIndex >= zv_arrayList.count() )
     {
@@ -416,7 +416,7 @@ int ZSpectraArrayRepository::zp_arrayMaxIntensity(int arrayIndex)
     return zv_arrayList.value(arrayIndex)->zp_maxIntensity();
 }
 //==================================================================
-void ZSpectraArrayRepository::zp_appendArrays(QString path, QList<ZRawSpectrumArray> rawArrayList)
+void ZSpectrumArrayRepository::zp_appendArrays(QString path, QList<ZRawSpectrumArray> rawArrayList)
 {
     bool changePath = true;
     if(path == zv_arrayFilePath || (zv_arrayFilePath.isEmpty() && !zv_dirty))
@@ -472,7 +472,7 @@ void ZSpectraArrayRepository::zp_appendArrays(QString path, QList<ZRawSpectrumAr
     emit zg_fitPlotInBoundingRect();
 }
 //==================================================================
-void ZSpectraArrayRepository::zp_appendSpectraToArray(int arrayIndex, QStringList fileNameList)
+void ZSpectrumArrayRepository::zp_appendSpectraToArray(int arrayIndex, QStringList fileNameList)
 {
     if(arrayIndex < 0 || arrayIndex >= zv_arrayList.count())
     {
@@ -536,7 +536,7 @@ void ZSpectraArrayRepository::zp_appendSpectraToArray(int arrayIndex, QStringLis
     }
 }
 //==================================================================
-void ZSpectraArrayRepository::zh_createArray(const ZRawSpectrumArray& rawArray)
+void ZSpectrumArrayRepository::zh_createArray(const ZRawSpectrumArray& rawArray)
 {
     int nextArrayIndex = zv_arrayList.count();
     emit zg_currentArrayOperation(AOT_INSERT_ARRAYS, nextArrayIndex, nextArrayIndex);
@@ -545,15 +545,15 @@ void ZSpectraArrayRepository::zh_createArray(const ZRawSpectrumArray& rawArray)
     zv_arrayList << array;
 
     connect(array, &ZSpectrumArray::zg_message,
-            this, &ZSpectraArrayRepository::zg_message);
+            this, &ZSpectrumArrayRepository::zg_message);
     connect(array, &ZSpectrumArray::zg_chemElementOperation,
-            this, &ZSpectraArrayRepository::zh_onChemElementOperation);
+            this, &ZSpectrumArrayRepository::zh_onChemElementOperation);
     connect(array, &ZSpectrumArray::zg_spectrumOperation,
-            this, &ZSpectraArrayRepository::zh_onSpectrumOperation);
+            this, &ZSpectrumArrayRepository::zh_onSpectrumOperation);
     connect(array, &ZSpectrumArray::zg_energyCalibrationChanged,
-            this, &ZSpectraArrayRepository::zg_energyCalibrationChanged);
+            this, &ZSpectrumArrayRepository::zg_energyCalibrationChanged);
     connect(array, &ZSpectrumArray::zg_arrayMaxParametersChanged,
-            this, &ZSpectraArrayRepository::zg_arrayMaxParametersChanged);
+            this, &ZSpectrumArrayRepository::zg_arrayMaxParametersChanged);
 
     bool dontAsk = false;
     for(int s = 0; s < rawArray.spectrumList.count(); s++)
@@ -571,7 +571,7 @@ void ZSpectraArrayRepository::zh_createArray(const ZRawSpectrumArray& rawArray)
     emit zg_currentArrayOperation(AOT_END_INSERT_ARRAYS, nextArrayIndex, nextArrayIndex);
 }
 //==================================================================
-void ZSpectraArrayRepository::zh_removeArray(int arrayIndex)
+void ZSpectrumArrayRepository::zh_removeArray(int arrayIndex)
 {
     int nextCurrentIndex;
     if(arrayIndex == zv_arrayList.count() - 1 && zv_arrayList.count() > 1)
@@ -596,7 +596,7 @@ void ZSpectraArrayRepository::zh_removeArray(int arrayIndex)
     emit zg_setCurrentArrayIndex(nextCurrentIndex);
 }
 //==================================================================
-void ZSpectraArrayRepository::zh_removeSpectrum(int arrayIndex, int spectrumIndex)
+void ZSpectrumArrayRepository::zh_removeSpectrum(int arrayIndex, int spectrumIndex)
 {
     if(arrayIndex < 0 || arrayIndex >= zv_arrayList.count())
     {
@@ -613,7 +613,7 @@ void ZSpectraArrayRepository::zh_removeSpectrum(int arrayIndex, int spectrumInde
     // emit zg_currentSpectrumOperation(SOT_END_REMOVE_SPECTRA, arrayIndex, spectrumIndex, spectrumIndex);
 }
 //==================================================================
-void ZSpectraArrayRepository::zh_removeChemicalElement(int arrayIndex, int elementIndex)
+void ZSpectrumArrayRepository::zh_removeChemicalElement(int arrayIndex, int elementIndex)
 {
     if(arrayIndex < 0 || arrayIndex >= zv_arrayList.count())
     {
@@ -632,12 +632,12 @@ void ZSpectraArrayRepository::zh_removeChemicalElement(int arrayIndex, int eleme
     }
 }
 //==================================================================
-void ZSpectraArrayRepository::zp_getArrayCount(int& arrayCount) const
+void ZSpectrumArrayRepository::zp_getArrayCount(int& arrayCount) const
 {
     arrayCount = zv_arrayList.count();
 }
 //==================================================================
-void ZSpectraArrayRepository::zp_getSpectrumCount(int arrayIndex, int& spectrumCount) const
+void ZSpectrumArrayRepository::zp_getSpectrumCount(int arrayIndex, int& spectrumCount) const
 {
     if(arrayIndex < 0 || arrayIndex >= zv_arrayList.count())
     {
@@ -648,7 +648,7 @@ void ZSpectraArrayRepository::zp_getSpectrumCount(int arrayIndex, int& spectrumC
     spectrumCount = zv_arrayList.value(arrayIndex)->zp_spectrumCount();
 }
 //==================================================================
-void ZSpectraArrayRepository::zp_getArrayName(int arrayIndex, QString& arrayName) const
+void ZSpectrumArrayRepository::zp_getArrayName(int arrayIndex, QString& arrayName) const
 {
     if(arrayIndex < 0 || arrayIndex >= zv_arrayList.count())
     {
@@ -659,7 +659,7 @@ void ZSpectraArrayRepository::zp_getArrayName(int arrayIndex, QString& arrayName
     arrayName = zv_arrayList.value(arrayIndex)->zp_arrayName();
 }
 //==================================================================
-void ZSpectraArrayRepository::zp_getSpectrumName(int arrayIndex, int spectrumIndex, QString& spectrumName) const
+void ZSpectrumArrayRepository::zp_getSpectrumName(int arrayIndex, int spectrumIndex, QString& spectrumName) const
 {
     if(arrayIndex < 0 || arrayIndex >= zv_arrayList.count() )
     {
@@ -676,7 +676,7 @@ void ZSpectraArrayRepository::zp_getSpectrumName(int arrayIndex, int spectrumInd
     spectrumName = zv_arrayList.value(arrayIndex)->zp_spectrumFileName(spectrumIndex);
 }
 //==================================================================
-void ZSpectraArrayRepository::zp_currentArrayChanged(int current, int previous)
+void ZSpectrumArrayRepository::zp_currentArrayChanged(int current, int previous)
 {
     qint64 arrayId;
     if(current < 0 || current >= zv_arrayList.count() )
@@ -695,21 +695,21 @@ void ZSpectraArrayRepository::zp_currentArrayChanged(int current, int previous)
     emit zg_currentArrayId(arrayId, current);
 }
 //==================================================================
-void ZSpectraArrayRepository::zp_chemElementListForCurrentArray(QStringList& chemElementList)
+void ZSpectrumArrayRepository::zp_chemElementListForCurrentArray(QStringList& chemElementList)
 {
     int currentArray;
     emit zg_requestCurrentArrayIndex(currentArray);
     chemElementList = zp_chemElementList(currentArray);
 }
 //==================================================================
-void ZSpectraArrayRepository::zh_onSpectrumArraySaving(QString filePath)
+void ZSpectrumArrayRepository::zh_onSpectrumArraySaving(QString filePath)
 {
     zv_arrayFilePath = filePath;
     zv_dirty = false;
     emit zg_currentFile(zv_dirty, zv_arrayFilePath);
 }
 //==================================================================
-void ZSpectraArrayRepository::zh_onAppendArrayAction()
+void ZSpectrumArrayRepository::zh_onAppendArrayAction()
 {
     ZRawSpectrumArray rawArray;
     // new array name
@@ -742,7 +742,7 @@ void ZSpectraArrayRepository::zh_onAppendArrayAction()
     emit zg_startCurrentArrayEdition();
 }
 //==================================================================
-void ZSpectraArrayRepository::zh_onRemoveArrayAction()
+void ZSpectrumArrayRepository::zh_onRemoveArrayAction()
 {
     int currentArrayIndex = -1;
     emit zg_requestCurrentArrayIndex(currentArrayIndex);
@@ -761,7 +761,7 @@ void ZSpectraArrayRepository::zh_onRemoveArrayAction()
     }
 }
 //==================================================================
-void ZSpectraArrayRepository::zh_onAppendSpectraToArrayAction()
+void ZSpectrumArrayRepository::zh_onAppendSpectraToArrayAction()
 {
     if(zv_arrayList.count() < 1)
     {
@@ -783,7 +783,7 @@ void ZSpectraArrayRepository::zh_onAppendSpectraToArrayAction()
 
 }
 //==================================================================
-void ZSpectraArrayRepository::zh_onRemoveSpectrumFromArrayAction()
+void ZSpectrumArrayRepository::zh_onRemoveSpectrumFromArrayAction()
 {
     QList<int> selectedSpectrumList;
     emit zg_requestSelectedSpectrumIndexList(selectedSpectrumList);
@@ -822,7 +822,7 @@ void ZSpectraArrayRepository::zh_onRemoveSpectrumFromArrayAction()
     }
 }
 //==================================================================
-void ZSpectraArrayRepository::zh_onAppendChemElementAction()
+void ZSpectrumArrayRepository::zh_onAppendChemElementAction()
 {
     int currentArrayIndex = -1;
     emit zg_requestCurrentArrayIndex(currentArrayIndex);
@@ -841,7 +841,7 @@ void ZSpectraArrayRepository::zh_onAppendChemElementAction()
 
 }
 //==================================================================
-void ZSpectraArrayRepository::zh_onRemoveChemElementAction()
+void ZSpectrumArrayRepository::zh_onRemoveChemElementAction()
 {
     QList<int> selectedChemElementList;
     emit zg_requestSelectedChemElementIndexList(selectedChemElementList);
@@ -874,7 +874,7 @@ void ZSpectraArrayRepository::zh_onRemoveChemElementAction()
     }
 }
 //==================================================================
-void ZSpectraArrayRepository::zh_onChemElementOperation(ZChemElementList::OperationType type, int first, int last)
+void ZSpectrumArrayRepository::zh_onChemElementOperation(ZChemElementList::OperationType type, int first, int last)
 {
     QObject* signalSender = sender();
     if(signalSender == 0)
@@ -926,7 +926,7 @@ void ZSpectraArrayRepository::zh_onChemElementOperation(ZChemElementList::Operat
     }
 }
 //==================================================================
-void ZSpectraArrayRepository::zh_createRawArrayListAndStartSaving(QString filePath) const
+void ZSpectrumArrayRepository::zh_createRawArrayListAndStartSaving(QString filePath) const
 {
     if(filePath.isEmpty())
     {
@@ -939,7 +939,7 @@ void ZSpectraArrayRepository::zh_createRawArrayListAndStartSaving(QString filePa
     // TODO signal from fileActionManager with saved filePath. zv_path have to be canged
 }
 //==================================================================
-void ZSpectraArrayRepository::zh_onSpectrumOperation(ZSpectrumArray::OperationType type, int first, int last)
+void ZSpectrumArrayRepository::zh_onSpectrumOperation(ZSpectrumArray::OperationType type, int first, int last)
 {
     if(!sender())
     {
@@ -974,7 +974,7 @@ void ZSpectraArrayRepository::zh_onSpectrumOperation(ZSpectrumArray::OperationTy
     }
 }
 //==================================================================
-QList<ZRawSpectrumArray> ZSpectraArrayRepository::zh_createRawArrayList() const
+QList<ZRawSpectrumArray> ZSpectrumArrayRepository::zh_createRawArrayList() const
 {
     QList<ZRawSpectrumArray> rawSpectrumArrayList;
     for(int a = 0; a < zv_arrayList.count(); a++)
@@ -986,7 +986,7 @@ QList<ZRawSpectrumArray> ZSpectraArrayRepository::zh_createRawArrayList() const
     return rawSpectrumArrayList;
 }
 //==================================================================
-void ZSpectraArrayRepository::zh_createActions()
+void ZSpectrumArrayRepository::zh_createActions()
 {
     zv_appendArrayAction = new QAction(this);
     zv_appendArrayAction->setIcon(QIcon(":/images/addGreen.png"));
@@ -1020,23 +1020,23 @@ void ZSpectraArrayRepository::zh_createActions()
 
 }
 //==================================================================
-void ZSpectraArrayRepository::zh_createConnections()
+void ZSpectrumArrayRepository::zh_createConnections()
 {
     connect(zv_appendArrayAction, &QAction::triggered,
-            this, &ZSpectraArrayRepository::zh_onAppendArrayAction);
+            this, &ZSpectrumArrayRepository::zh_onAppendArrayAction);
     connect(zv_removeArrayAction, &QAction::triggered,
-            this, &ZSpectraArrayRepository::zh_onRemoveArrayAction);
+            this, &ZSpectrumArrayRepository::zh_onRemoveArrayAction);
     connect(zv_appendSpectrumToArrayAction, &QAction::triggered,
-            this, &ZSpectraArrayRepository::zh_onAppendSpectraToArrayAction);
+            this, &ZSpectrumArrayRepository::zh_onAppendSpectraToArrayAction);
     connect(zv_removeSpectrumFromArrayAction, &QAction::triggered,
-            this, &ZSpectraArrayRepository::zh_onRemoveSpectrumFromArrayAction);
+            this, &ZSpectrumArrayRepository::zh_onRemoveSpectrumFromArrayAction);
     connect(zv_appendChemElementAction, &QAction::triggered,
-            this, &ZSpectraArrayRepository::zh_onAppendChemElementAction);
+            this, &ZSpectrumArrayRepository::zh_onAppendChemElementAction);
     connect(zv_removeChemElementAction, &QAction::triggered,
-            this, &ZSpectraArrayRepository::zh_onRemoveChemElementAction);
+            this, &ZSpectrumArrayRepository::zh_onRemoveChemElementAction);
 }
 //==================================================================
-int ZSpectraArrayRepository::zh_chemElementIndex(int arrayIndex, const QString& chemElement)
+int ZSpectrumArrayRepository::zh_chemElementIndex(int arrayIndex, const QString& chemElement)
 {
     if(arrayIndex < 0 || arrayIndex >= zv_arrayList.count())
     {

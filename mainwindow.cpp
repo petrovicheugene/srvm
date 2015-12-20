@@ -5,6 +5,7 @@
 #include "ZFileActionManager.h"
 #include "ZSpectraArrayRepository.h"
 #include "ZJointSpectraDataManager.h"
+#include "ZJointCalibrationWindowDataManager.h"
 #include "ZCalibrationRepository.h"
 #include "ZChemElementDataManager.h"
 #include "ZPlotterDataManager.h"
@@ -15,12 +16,13 @@
 #include "ZJointSpectraTableWidget.h"
 #include "ZChemElementWidget.h"
 #include "ZCalibrationTableWidget.h"
-#include "ZJointCalibrationWindowtableWidget.h"
+#include "ZJointCalibrationWindowTableWidget.h"
 #include "ZPlotter.h"
 #include "ZMessagePanel.h"
 // models
 #include "ZArrayModel.h"
 #include "ZCalibrationModel.h"
+#include "ZJointCalibrationWindowModel.h"
 #include "ZChemElementModel.h"
 #include "ZJointSpectraModel.h"
 // qt
@@ -49,15 +51,17 @@ MainWindow::MainWindow(QWidget *parent)
     //    QPalette palette = QPalette(Qt::darkBlue);
     //    this->setPalette(palette);
     zv_fileActionManager = 0;
-    zv_spectraArrayRepository = 0;
+    zv_spectrumArrayRepository = 0;
     zv_jointSpectraDataManager = 0;
     zv_chemElementDataManager = 0;
+    zv_jointCalibrationWindowDataManager = 0;
+    zv_plotterDataManager = 0;
 
     zv_arrayModel = 0;
     zv_jointSpectraModel = 0;
     zv_chemElementModel = 0;
     zv_calibrationModel = 0;
-    zv_plotterDataManager = 0;
+    zv_jointCalibrationWindowModel = 0;
 
     zh_createActions();
     zh_createComponents();
@@ -152,7 +156,7 @@ void MainWindow::zh_createComponents()
     zv_calibrationSidebarWidget->setLineWidth(1);
 
     zv_calibrationTableWidget = new ZCalibrationTableWidget(this);
-    zv_jointCalibrationWindowtableWidget = new ZJointCalibrationWindowtableWidget(this);
+    zv_jointCalibrationWindowtableWidget = new ZJointCalibrationWindowTableWidget(this);
 
     zv_calibrationSidebarWidget->zp_setSidebarWidget(zv_calibrationTableWidget);
     zv_calibrationSidebarWidget->zp_setMainWidget(zv_jointCalibrationWindowtableWidget);
@@ -177,16 +181,18 @@ void MainWindow::zh_createComponents()
 
     // Components
     zv_fileActionManager = new ZFileActionManager(this);
-    zv_spectraArrayRepository = new ZSpectraArrayRepository(this);
+    zv_spectrumArrayRepository = new ZSpectrumArrayRepository(this);
     zv_jointSpectraDataManager = new ZJointSpectraDataManager(this);
     zv_chemElementDataManager = new ZChemElementDataManager(this);
     zv_calibrationRepository = new ZCalibrationRepository(this);
+    zv_jointCalibrationWindowDataManager = new ZJointCalibrationWindowDataManager(this);
 
     // Models
     zv_arrayModel = new ZArrayModel(this);
     zv_jointSpectraModel = new ZJointSpectraModel(this);
     zv_chemElementModel = new ZChemElementModel(this);
     zv_calibrationModel = new ZCalibrationModel(this);
+    zv_jointCalibrationWindowModel = new ZJointCalibrationWindowModel(this);
     zv_plotterDataManager = new ZPlotterDataManager(this);
 
     statusBar();
@@ -217,7 +223,7 @@ void MainWindow::zh_createMenu()
     menu = menuBar()->addMenu(tr("Edit"));
     // menu->setCursor(Qt::PointingHandCursor);
     menu->setObjectName("Edit");
-    zv_spectraArrayRepository->zp_appendActionsToMenu(menu);
+    zv_spectrumArrayRepository->zp_appendActionsToMenu(menu);
     zh_appendActionsToMenu(menu);
 
     // View
@@ -266,6 +272,7 @@ void MainWindow::zh_createConnections()
     zv_spectrumTableWidget->zp_setModel(zv_jointSpectraModel);
     zv_calibrationTableWidget->zp_setModel(zv_calibrationModel);
     zv_chemElementWidget->zp_setModel(zv_chemElementModel);
+    zv_jointCalibrationWindowtableWidget->zp_setModel(zv_jointCalibrationWindowModel);
 
     // current array changing connection
     //    connect(zv_spectrumArrayWidget, &ZSpectrumArrayWidget::zg_currentArrayChanged,
@@ -274,73 +281,81 @@ void MainWindow::zh_createConnections()
     //            zv_chemElementDataManager, &ZChemElementDataManager::zp_currentArrayChanged);
     //    connect(zv_spectrumArrayWidget, &ZSpectrumArrayWidget::zg_currentArrayChanged,
     //            zv_plotterDataManager, &ZPlotterDataManager::zp_currentArrayChanged);
-    connect(zv_spectraArrayRepository, &ZSpectraArrayRepository::zg_currentArrayId,
+    connect(zv_spectrumArrayRepository, &ZSpectrumArrayRepository::zg_currentArrayId,
             zv_jointSpectraDataManager, &ZJointSpectraDataManager::zp_currentArrayChanged);
-    connect(zv_spectraArrayRepository, &ZSpectraArrayRepository::zg_currentArrayId,
+    connect(zv_spectrumArrayRepository, &ZSpectrumArrayRepository::zg_currentArrayId,
             zv_chemElementDataManager, &ZChemElementDataManager::zp_currentArrayChanged);
-    connect(zv_spectraArrayRepository, &ZSpectraArrayRepository::zg_currentArrayId,
+    connect(zv_spectrumArrayRepository, &ZSpectrumArrayRepository::zg_currentArrayId,
             zv_plotterDataManager, &ZPlotterDataManager::zp_currentArrayChanged);
 
     connect(zv_spectrumArrayWidget, &ZSpectrumArrayWidget::zg_currentArrayChanged,
-            zv_spectraArrayRepository, &ZSpectraArrayRepository::zp_currentArrayChanged);
+            zv_spectrumArrayRepository, &ZSpectrumArrayRepository::zp_currentArrayChanged);
 
 
     // File Action Manager <-> other components
     zv_calibrationRepository->zp_connectToFileManager(zv_fileActionManager);
-    zv_spectraArrayRepository->zp_connectToFileActionManager(zv_fileActionManager);
+    zv_spectrumArrayRepository->zp_connectToFileActionManager(zv_fileActionManager);
 
     // spectra repository <-> spectra model and array model and plotter model
     // spectra
-    zv_arrayModel->zp_connectToSpectraArrayRepository(zv_spectraArrayRepository);
-    zv_jointSpectraDataManager->zp_connectToSpectraArrayRepository(zv_spectraArrayRepository);
+    zv_arrayModel->zp_connectToSpectraArrayRepository(zv_spectrumArrayRepository);
+    zv_jointSpectraDataManager->zp_connectToSpectraArrayRepository(zv_spectrumArrayRepository);
     zv_jointSpectraDataManager->zp_connectToCalibrationRepository(zv_calibrationRepository);
     zv_jointSpectraModel->zp_connectToSpectraDataManager(zv_jointSpectraDataManager);
     // plotter
-    zv_plotterDataManager->zp_connectToSpectraArrayRepository(zv_spectraArrayRepository);
+    zv_plotterDataManager->zp_connectToSpectraArrayRepository(zv_spectrumArrayRepository);
     zv_plotterDataManager->zp_connectToPlotter(zv_plotter);
     // chem element
-    zv_chemElementDataManager->zp_connectToSpectraArrayRepository(zv_spectraArrayRepository);
+    zv_chemElementDataManager->zp_connectToSpectraArrayRepository(zv_spectrumArrayRepository);
     zv_chemElementModel->zp_connectToChemElementDataManager(zv_chemElementDataManager);
 
     // spectra repository <-> array view
-    zv_spectrumArrayWidget->zp_appendButtonActions(zv_spectraArrayRepository->zp_arrayActions());
-    zv_spectrumTableWidget->zp_appendButtonActions(zv_spectraArrayRepository->zp_spectrumActions());
-    zv_chemElementWidget->zp_appendButtonActions(zv_spectraArrayRepository->zp_chemElementActions());
+    zv_spectrumArrayWidget->zp_appendButtonActions(zv_spectrumArrayRepository->zp_arrayActions());
+    zv_spectrumTableWidget->zp_appendButtonActions(zv_spectrumArrayRepository->zp_spectrumActions());
+    zv_chemElementWidget->zp_appendButtonActions(zv_spectrumArrayRepository->zp_chemElementActions());
 
-    connect(zv_spectraArrayRepository, &ZSpectraArrayRepository::zg_currentFile,
+    connect(zv_spectrumArrayRepository, &ZSpectrumArrayRepository::zg_currentFile,
             zv_spectraSidebarWidget, &ZWidgetWithSidebar::zp_setInfoLabelText);
-    connect(zv_spectraArrayRepository, &ZSpectraArrayRepository::zg_setCurrentArrayIndex,
+    connect(zv_spectrumArrayRepository, &ZSpectrumArrayRepository::zg_setCurrentArrayIndex,
             zv_spectrumArrayWidget, &ZSpectrumArrayWidget::zp_setCurrentArrayIndex);
-    connect(zv_spectraArrayRepository, &ZSpectraArrayRepository::zg_startCurrentArrayEdition,
+    connect(zv_spectrumArrayRepository, &ZSpectrumArrayRepository::zg_startCurrentArrayEdition,
             zv_spectrumArrayWidget, &ZSpectrumArrayWidget::zp_startCurrentArrayEdition);
 
-    connect(zv_spectraArrayRepository, &ZSpectraArrayRepository::zg_setCurrentChemElementIndex,
+    connect(zv_spectrumArrayRepository, &ZSpectrumArrayRepository::zg_setCurrentChemElementIndex,
             zv_chemElementWidget, &ZChemElementWidget::zp_setCurrentChemElementIndex);
-    connect(zv_spectraArrayRepository, &ZSpectraArrayRepository::zg_startCurrentChemElementEdition,
+    connect(zv_spectrumArrayRepository, &ZSpectrumArrayRepository::zg_startCurrentChemElementEdition,
             zv_chemElementWidget, &ZChemElementWidget::zp_startCurrentChemElementEdition);
 
-    connect(zv_spectraArrayRepository, &ZSpectraArrayRepository::zg_requestCurrentArrayIndex,
+    connect(zv_spectrumArrayRepository, &ZSpectrumArrayRepository::zg_requestCurrentArrayIndex,
             zv_spectrumArrayWidget, &ZSpectrumArrayWidget::zp_currentArrayIndex);
 
-    connect(zv_spectraArrayRepository, &ZSpectraArrayRepository::zg_fitPlotInBoundingRect,
+    connect(zv_spectrumArrayRepository, &ZSpectrumArrayRepository::zg_fitPlotInBoundingRect,
             zv_plotter, &ZPlotter::zp_fitInBoundingRect);
 
 
     // spectra repository <-> joint spectrum view
-    connect(zv_spectraArrayRepository, &ZSpectraArrayRepository::zg_requestSelectedSpectrumIndexList,
+    connect(zv_spectrumArrayRepository, &ZSpectrumArrayRepository::zg_requestSelectedSpectrumIndexList,
             zv_spectrumTableWidget, &ZJointSpectrumTableWidget::zp_selectedSpectrumIndexList);
 
     // spectra repository <-> chemical element view
-    connect(zv_spectraArrayRepository, &ZSpectraArrayRepository::zg_requestSelectedChemElementIndexList,
+    connect(zv_spectrumArrayRepository, &ZSpectrumArrayRepository::zg_requestSelectedChemElementIndexList,
             zv_chemElementWidget, &ZChemElementWidget::zp_selectedChemElementIndexList);
 
     // calibration view <-> zv_spectraArrayRepository
     connect(zv_calibrationTableWidget, &ZCalibrationTableWidget::zg_requestChemElementList,
-            zv_spectraArrayRepository, &ZSpectraArrayRepository::zp_chemElementListForCurrentArray);
+            zv_spectrumArrayRepository, &ZSpectrumArrayRepository::zp_chemElementListForCurrentArray);
 
 
     // calibration repository <-> calibration model
     zv_calibrationModel->zp_connectToCalibrationRepository(zv_calibrationRepository);
+
+    // joint calibration window data manager <-> to repositories
+    zv_jointCalibrationWindowDataManager->zp_connectToCalibrationRepository(zv_calibrationRepository);
+    zv_jointCalibrationWindowDataManager->zp_connectToSpectraArrayRepository(zv_spectrumArrayRepository);
+
+    // calibration window model to <-> joint calibration window data manager
+    zv_jointCalibrationWindowModel->zp_connectToJointCalibrationWindowDataManager(zv_jointCalibrationWindowDataManager);
+
 
     // calibration repository
     zv_calibrationTableWidget->zp_appendButtonActions(zv_calibrationRepository->zp_arrayActions());
@@ -354,6 +369,8 @@ void MainWindow::zh_createConnections()
             zv_calibrationTableWidget, &ZCalibrationTableWidget::zp_setCurrentCalibrationIndex);
     connect(zv_calibrationRepository, &ZCalibrationRepository::zg_startCurrentCalibrationEdition,
             zv_calibrationTableWidget, &ZCalibrationTableWidget::zp_startCurrentCalibrationEdition);
+
+
 
 
 }

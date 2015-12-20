@@ -16,7 +16,7 @@ public:
     explicit ZPlotterDataManager(QObject *parent = 0);
 
     // FUNCS
-    void zp_connectToSpectraArrayRepository(ZSpectraArrayRepository*);
+    void zp_connectToSpectraArrayRepository(ZSpectrumArrayRepository*);
     void zp_connectToPlotter(ZPlotter* plotter);
 
 signals:
@@ -32,7 +32,7 @@ private:
     QAction* zv_switchRuleMetrixAction;
     int zv_currentArrayIndex;
     qint64 zv_currentArrayId;
-    ZSpectraArrayRepository* zv_spectrumArrayRepositiry;
+    ZSpectrumArrayRepository* zv_spectrumArrayRepositiry;
     ZPlotter* zv_plotter;
 
     QString zv_verticalRuleLabel;
@@ -48,7 +48,7 @@ private:
 
 private slots:
 
-    void zh_onRepositoryArrayOperation(ZSpectraArrayRepository::SpectrumOperationType type,
+    void zh_onRepositoryArrayOperation(ZSpectrumArrayRepository::SpectrumOperationType type,
                                        int arrayIndex, int first, int last);
     void zh_switchRuleMetrix(bool toggled);
     void zh_changeEnergyCalibrationOnRule(qint64 arrayId);

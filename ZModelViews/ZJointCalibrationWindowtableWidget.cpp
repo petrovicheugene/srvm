@@ -1,16 +1,29 @@
 //==============================================================
-#include "ZJointCalibrationWindowtableWidget.h"
+#include "ZJointCalibrationWindowTableWidget.h"
 
 #include <QTableView>
 #include <QHBoxLayout>
 #include <QVBoxLayout>
 //==============================================================
-ZJointCalibrationWindowtableWidget::ZJointCalibrationWindowtableWidget(QWidget *parent) : QWidget(parent)
+ZJointCalibrationWindowTableWidget::ZJointCalibrationWindowTableWidget(QWidget *parent) : QWidget(parent)
 {
     zh_createComponents();
 }
 //==============================================================
-void ZJointCalibrationWindowtableWidget::zh_createComponents()
+void ZJointCalibrationWindowTableWidget::zp_setModel(ZJointSpectraModel* model)
+{
+    zv_table->setModel(model);
+//    ZNumericDelegate* numericDelegate = new ZNumericDelegate(zv_table);
+//    connect(numericDelegate, &ZNumericDelegate::editNext,
+//            this, &ZJointSpectrumTableWidget::zp_editNext);
+//    zv_table->setItemDelegate(numericDelegate);
+//    ZSpectrumTableDelegate* spectrumDelegate = new ZSpectrumTableDelegate(zv_table);
+//    zv_table->setItemDelegateForColumn(0, new ZVisibilityStringDelegate(zv_table));
+//    zv_table->setItemDelegateForColumn(1, spectrumDelegate);
+    zv_table->setAlternatingRowColors(true);
+}
+//==============================================================
+void ZJointCalibrationWindowTableWidget::zh_createComponents()
 {
     QVBoxLayout* mainLayout = new QVBoxLayout(this);
     setLayout(mainLayout);

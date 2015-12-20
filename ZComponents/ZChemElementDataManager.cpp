@@ -9,11 +9,11 @@ ZChemElementDataManager::ZChemElementDataManager(QObject *parent) : QObject(pare
     zv_repositiry = 0;
 }
 //=========================================================
-void ZChemElementDataManager::zp_connectToSpectraArrayRepository(ZSpectraArrayRepository* repository)
+void ZChemElementDataManager::zp_connectToSpectraArrayRepository(ZSpectrumArrayRepository* repository)
 {
     zv_repositiry = repository;
     // array repository <-> array model
-    connect(repository, &ZSpectraArrayRepository::zg_currentChemElementOperation,
+    connect(repository, &ZSpectrumArrayRepository::zg_currentChemElementOperation,
             this, &ZChemElementDataManager::zh_onRepositoryChemElementOperation);
 }
 //=========================================================
@@ -99,7 +99,7 @@ void ZChemElementDataManager::zp_currentArrayChanged(qint64 currentArrayId, int 
     emit zg_currentOperation(OT_END_RESET_DATA, -1, -1);
 }
 //=========================================================
-void ZChemElementDataManager::zh_onRepositoryChemElementOperation(ZSpectraArrayRepository::ChemElementOperationType type,
+void ZChemElementDataManager::zh_onRepositoryChemElementOperation(ZSpectrumArrayRepository::ChemElementOperationType type,
                                                                   int arrayIndex, int first, int last)
 {
     if(zv_currentArrayIndex != arrayIndex)
@@ -107,24 +107,24 @@ void ZChemElementDataManager::zh_onRepositoryChemElementOperation(ZSpectraArrayR
         return;
     }
 
-    if(type == ZSpectraArrayRepository::CEOT_INSERT_CHEM_ELEMENT)
+    if(type == ZSpectrumArrayRepository::CEOT_INSERT_CHEM_ELEMENT)
     {
         emit zg_currentOperation(OT_INSERT_ROW, first, last);
     }
-    else if(type == ZSpectraArrayRepository::CEOT_END_INSERT_CHEM_ELEMENT)
+    else if(type == ZSpectrumArrayRepository::CEOT_END_INSERT_CHEM_ELEMENT)
     {
         emit zg_currentOperation(OT_END_INSERT_ROW, first, last);
     }
-    else if(type == ZSpectraArrayRepository::CEOT_REMOVE_CHEM_ELEMENT)
+    else if(type == ZSpectrumArrayRepository::CEOT_REMOVE_CHEM_ELEMENT)
     {
         emit zg_currentOperation(OT_REMOVE_ROW, first, last);
     }
-    else if(type == ZSpectraArrayRepository::CEOT_END_REMOVE_CHEM_ELEMENT)
+    else if(type == ZSpectrumArrayRepository::CEOT_END_REMOVE_CHEM_ELEMENT)
     {
         emit zg_currentOperation(OT_END_REMOVE_ROW, first, last);
     }
-    else if(type == ZSpectraArrayRepository::CEOT_CHEM_ELEMENT_CHANGED ||
-            type == ZSpectraArrayRepository::CEOT_END_CHEM_ELEMENT_VISIBILITY_CHANGE)
+    else if(type == ZSpectrumArrayRepository::CEOT_CHEM_ELEMENT_CHANGED ||
+            type == ZSpectrumArrayRepository::CEOT_END_CHEM_ELEMENT_VISIBILITY_CHANGE)
     {
         emit zg_currentOperation(OT_DATA_CHANGED, first, last);
     }

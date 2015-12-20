@@ -12,11 +12,11 @@
 class QAction;
 class ZFileActionManager;
 //==================================================================
-class ZSpectraArrayRepository : public QObject
+class ZSpectrumArrayRepository : public QObject
 {
     Q_OBJECT
 public:
-    explicit ZSpectraArrayRepository(QObject *parent = 0);
+    explicit ZSpectrumArrayRepository(QObject *parent = 0);
 
     // VARS
     enum ArrayOperationType {AOT_INSERT_ARRAYS,
