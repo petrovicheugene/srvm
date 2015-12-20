@@ -4,10 +4,10 @@
 //==============================================================
 #include <QWidget>
 //==============================================================
+class ZJointCalibrationWindowModel;
 class QTableView;
 class QHBoxLayout;
 class QAction;
-
 //==============================================================
 class ZJointCalibrationWindowTableWidget : public QWidget
 {
@@ -16,7 +16,7 @@ public:
     explicit ZJointCalibrationWindowTableWidget(QWidget *parent = 0);
 
     // FUNCS
-    void zp_setModel(ZJointSpectraModel* model);
+    void zp_setModel(ZJointCalibrationWindowModel* model);
 
 signals:
 

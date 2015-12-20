@@ -1,5 +1,6 @@
 //==============================================================
 #include "ZJointCalibrationWindowTableWidget.h"
+#include "ZJointCalibrationWindowModel.h"
 
 #include <QTableView>
 #include <QHBoxLayout>
@@ -10,7 +11,7 @@ ZJointCalibrationWindowTableWidget::ZJointCalibrationWindowTableWidget(QWidget *
     zh_createComponents();
 }
 //==============================================================
-void ZJointCalibrationWindowTableWidget::zp_setModel(ZJointSpectraModel* model)
+void ZJointCalibrationWindowTableWidget::zp_setModel(ZJointCalibrationWindowModel* model)
 {
     zv_table->setModel(model);
 //    ZNumericDelegate* numericDelegate = new ZNumericDelegate(zv_table);
