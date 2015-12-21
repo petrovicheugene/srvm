@@ -118,31 +118,31 @@ QVariant ZArrayModel::headerData(int section, Qt::Orientation orientation, int r
     return QVariant();
 }
 //==================================================================
-void ZArrayModel::zp_connectToSpectraArrayRepository(ZSpectraArrayRepository* repository)
+void ZArrayModel::zp_connectToSpectraArrayRepository(ZSpectrumArrayRepository* repository)
 {
     beginResetModel();
     zv_repositiry = repository;
     // array repository <-> array model
-    connect(repository, &ZSpectraArrayRepository::zg_currentArrayOperation,
+    connect(repository, &ZSpectrumArrayRepository::zg_currentArrayOperation,
             this, &ZArrayModel::zh_onRepositoryOperation);
     endResetModel();
 }
 //==================================================================
-void ZArrayModel::zh_onRepositoryOperation(ZSpectraArrayRepository::ArrayOperationType type, int first, int last)
+void ZArrayModel::zh_onRepositoryOperation(ZSpectrumArrayRepository::ArrayOperationType type, int first, int last)
 {
-    if(type == ZSpectraArrayRepository::AOT_INSERT_ARRAYS)
+    if(type == ZSpectrumArrayRepository::AOT_INSERT_ARRAYS)
     {
         beginInsertRows(QModelIndex(), first, last);
     }
-    else if(type == ZSpectraArrayRepository::AOT_END_INSERT_ARRAYS)
+    else if(type == ZSpectrumArrayRepository::AOT_END_INSERT_ARRAYS)
     {
         endInsertRows();
     }
-    else if(type == ZSpectraArrayRepository::AOT_REMOVE_ARRAYS)
+    else if(type == ZSpectrumArrayRepository::AOT_REMOVE_ARRAYS)
     {
         beginRemoveRows(QModelIndex(), first, last);
     }
-    else if(type == ZSpectraArrayRepository::AOT_END_REMOVE_ARRAYS)
+    else if(type == ZSpectrumArrayRepository::AOT_END_REMOVE_ARRAYS)
     {
         endRemoveRows();
     }

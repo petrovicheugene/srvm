@@ -16,16 +16,16 @@ Qt::ItemFlags	ZCalibrationModel::flags(const QModelIndex & index) const
     flags |= Qt::ItemIsEnabled
             | Qt::ItemIsSelectable;
 
-//    if(index.column() == 0)
-//    {
-//        flags |= Qt::ItemIsUserCheckable;
-//    }
+    if(index.column() <= 1)
+    {
+        flags |= Qt::ItemIsEditable;
+    }
     return flags;
 }
 //==================================================================
 int ZCalibrationModel::columnCount(const QModelIndex & parent) const
 {
-    return 1;
+    return 2;
 }
 //==================================================================
 int ZCalibrationModel::rowCount(const QModelIndex & parent) const
@@ -36,14 +36,13 @@ int ZCalibrationModel::rowCount(const QModelIndex & parent) const
     }
 
     return zv_calibrationRepository->zp_calibrationCount();
-
 }
 //==================================================================
 QVariant ZCalibrationModel::data(const QModelIndex & index, int role) const
 {
     if(!zv_calibrationRepository || !index.isValid()
             || index.row() < 0 || index.row() >=  zv_calibrationRepository->zp_calibrationCount()
-            || index.column() < 0 || index.column() >= zv_calibrationRepository->zp_calibrationCount())
+            || index.column() < 0 || index.column() >= columnCount())
     {
         return QVariant();
     }
@@ -53,6 +52,11 @@ QVariant ZCalibrationModel::data(const QModelIndex & index, int role) const
         if(index.column() == 0)
         {
             return QVariant(zv_calibrationRepository->zp_calibrationName(index.row()));
+        }
+
+        if(index.column() == 1)
+        {
+            return QVariant(zv_calibrationRepository->zp_calibrationChemicalElement(index.row()));
         }
     }
 
@@ -80,7 +84,7 @@ QVariant ZCalibrationModel::data(const QModelIndex & index, int role) const
     {
         if(index.column() == 0)
         {
-            return QVariant(QColor(Qt::transparent));
+            return QVariant(zv_calibrationRepository->zp_calibrationColor(index.row()));
         }
     }
 
@@ -91,18 +95,29 @@ bool	ZCalibrationModel::setData(const QModelIndex & index, const QVariant & valu
 {
     if(!zv_calibrationRepository || !index.isValid()
             || index.row() < 0 || index.row() >=  zv_calibrationRepository->zp_calibrationCount()
-            || index.column() < 0 || index.column() >= zv_calibrationRepository->zp_calibrationCount()
+            || index.column() < 0 || index.column() >= columnCount()
             || !value.isValid())
     {
         return false;
     }
 
-    if(role == Qt::DisplayRole)
+    if(role == Qt::EditRole)
     {
-        if(index.column() == 0 )
+        if(!value.canConvert<QString>())
         {
             return false;
         }
+
+        if(index.column() == 0 )
+        {
+            return zv_calibrationRepository->zp_setCalibrationName(index.row(), value.toString());
+        }
+
+        if(index.column() == 1 )
+        {
+            return zv_calibrationRepository->zp_setCalibrationChemicalElement(index.row(), value.toString());
+        }
+        return false;
     }
     else if(role == VisibleRole)
     {
@@ -131,11 +146,10 @@ QVariant ZCalibrationModel::headerData(int section, Qt::Orientation orientation,
             {
                 return QVariant(tr("Calibration"));
             }
-//            if(section == 1)
-//            {
-//                return QVariant(tr("Type"));
-//            }
-
+            if(section == 1)
+            {
+                return QVariant(tr("Chem. element"));
+            }
         }
         else
         {

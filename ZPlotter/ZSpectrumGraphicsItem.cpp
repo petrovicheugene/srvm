@@ -40,7 +40,11 @@ ZSpectrumGraphicsItem::ZSpectrumGraphicsItem(const ZAbstractSpectrum *spectrum,
     }
 
     zv_distortionCorrectionFactor = distortionCorrectionFactor;
-    zp_updateSpectrumData1(spectrum);
+
+    GraphicsItemFlags flags = this->flags();
+    flags |= ItemIsFocusable | ItemIsSelectable;
+    setFlags(flags);
+    zp_updateSpectrumData(spectrum);
 }
 //======================================================
 QRectF ZSpectrumGraphicsItem::boundingRect() const
@@ -81,18 +85,7 @@ qint64 ZSpectrumGraphicsItem::zp_spectrumId()
     return zv_spectrumId;
 }
 //======================================================
-void ZSpectrumGraphicsItem::zp_updateSpectrumData(const ZAbstractSpectrum* spectrum)
-{
-    zv_spectrumData = spectrum->zp_spectrumData();
-    zv_color = spectrum->zp_color();
-    zv_spectrumPainterPath = spectrum->zp_spectrumPainterPath();
-    zv_boundingRect = zv_spectrumPainterPath.boundingRect();
-    zv_spectrumId = spectrum->zp_spectrumId();
-    setVisible(spectrum->zp_isSpectrumVisible());
-    update(zv_boundingRect);
-}
-//======================================================
-void ZSpectrumGraphicsItem::zp_updateSpectrumData1(const ZAbstractSpectrum *spectrum)
+void ZSpectrumGraphicsItem::zp_updateSpectrumData(const ZAbstractSpectrum *spectrum)
 {
     zv_spectrumData = spectrum->zp_spectrumData();
     zv_color = spectrum->zp_color();
@@ -164,6 +157,33 @@ void ZSpectrumGraphicsItem::zp_setDistortion(qreal distortionFactor, qreal disto
 //======================================================
 void ZSpectrumGraphicsItem::mouseReleaseEvent(QGraphicsSceneMouseEvent * event)
 {
+#ifdef DBG
+    qDebug() << "RELEASE";
+#endif
     QGraphicsItem::mouseReleaseEvent(event);
+}
+//======================================================
+void ZSpectrumGraphicsItem::mousePressEvent(QGraphicsSceneMouseEvent *event)
+{
+#ifdef DBG
+    qDebug() << "PRESS";
+#endif
+    QGraphicsItem::mousePressEvent(event);
+}
+//======================================================
+void ZSpectrumGraphicsItem::focusInEvent(QFocusEvent *event)
+{
+#ifdef DBG
+    qDebug() << "FOCUS IN";
+#endif
+    QGraphicsItem::focusInEvent(event);
+}
+//======================================================
+void ZSpectrumGraphicsItem::focusOutEvent(QFocusEvent *event)
+{
+#ifdef DBG
+    qDebug() << "FOCUS OUT";
+#endif
+    QGraphicsItem::focusOutEvent(event);
 }
 //======================================================

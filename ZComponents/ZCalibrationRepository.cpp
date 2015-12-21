@@ -2,19 +2,18 @@
 #include "ZCalibrationRepository.h"
 #include "globalVariables.h"
 #include "ZXMLCalibrationIOHandler.h"
-#include "ZSDCalibrationIOHandler.h"
-#include "ZSDCalibration.h"
-#include "ZXMLCalibration.h"
+#include "ZCalibration.h"
 #include "ZFileActionManager.h"
-#include "ZCalibrationEditDialog.h"
 
 #include <QMessageBox>
 #include <QFileInfo>
 #include <QFile>
 #include <QtAlgorithms>
+
 //======================================================
 ZCalibrationRepository::ZCalibrationRepository(QObject *parent) : QObject(parent)
 {
+    zv_defaultCalibrationName = tr("Calibration #");
     zh_createActions();
     zh_createConnections();
     zh_actionAvailabilityControl(-1);
@@ -46,6 +45,14 @@ QList<QAction*> ZCalibrationRepository::zp_arrayActions() const
     actionList << zv_openCalibrationsAction;
     actionList << zv_editCalibrationsAction;
     actionList << zv_removeCalibrationAction;
+    return actionList;
+}
+//==================================================================
+QList<QAction*> ZCalibrationRepository::zp_windowActions() const
+{
+    QList<QAction*> actionList;
+    actionList << zv_newWindowAction;
+    actionList << zv_removeWindowAction;
     return actionList;
 }
 //==================================================================
@@ -97,6 +104,23 @@ QString ZCalibrationRepository::zp_calibrationName(int calibrationIndex) const
     return zv_caibrationList.value(calibrationIndex)->zp_name();
 }
 //======================================================
+bool ZCalibrationRepository::zp_setCalibrationName(int row, const QString& name)
+{
+    if(row < 0 || row >= zv_caibrationList.count())
+    {
+        return false;
+    }
+
+    if(name.isEmpty() || name == zv_caibrationList.value(row)->zp_name())
+    {
+        return false;
+    }
+
+    zv_caibrationList[row]->zp_setBaseName(name);
+    emit zg_currentOperation(OT_CALIBRATION_CHANGED, row, row);
+    return true;
+}
+//======================================================
 QString ZCalibrationRepository::zp_visibleCalibrationName(int visibleCalibrationIndex) const
 {
     if(visibleCalibrationIndex < 0 || visibleCalibrationIndex >= zp_visibleCalibrationCount())
@@ -122,6 +146,33 @@ QString ZCalibrationRepository::zp_visibleCalibrationName(int visibleCalibration
     return QString();
 }
 //======================================================
+QString ZCalibrationRepository::zp_calibrationChemicalElement(int row) const
+{
+    if(row < 0 || row >= zv_caibrationList.count())
+    {
+        return QString();
+    }
+
+    return zv_caibrationList.at(row)->zp_chemElement();
+}
+//======================================================
+bool ZCalibrationRepository::zp_setCalibrationChemicalElement(int row, const QString& chemElement)
+{
+    if(row < 0 || row >= zv_caibrationList.count())
+    {
+        return false;
+    }
+
+    if(chemElement.isEmpty() || chemElement == zv_caibrationList.at(row)->zp_chemElement())
+    {
+        return false;
+    }
+
+    zv_caibrationList[row]->zp_setChemElement(chemElement);
+    emit zg_currentOperation(OT_CALIBRATION_CHANGED, row, row);
+    return true;
+}
+//======================================================
 bool ZCalibrationRepository::zp_calibrationIsVisible(int row)
 {
     if(row < 0 || row >= zv_caibrationList.count())
@@ -130,6 +181,16 @@ bool ZCalibrationRepository::zp_calibrationIsVisible(int row)
     }
 
     return zv_caibrationList.value(row)->zp_isVisible();
+}
+//======================================================
+QColor ZCalibrationRepository::zp_calibrationColor(int row)
+{
+    if(row < 0 || row >= zv_caibrationList.count())
+    {
+        return QColor();
+    }
+
+    return zv_caibrationList.value(row)->zp_color();
 }
 //======================================================
 bool ZCalibrationRepository::zp_setVisible(int row, bool visibility)
@@ -160,15 +221,15 @@ bool ZCalibrationRepository::zp_isDirty(int row)
     return zv_caibrationList.value(row)->zp_isDirty();
 }
 //======================================================
-QString ZCalibrationRepository::zp_fileSuffix(int row)
-{
-    if(row < 0 || row >= zv_caibrationList.count())
-    {
-        return QString();
-    }
+//QString ZCalibrationRepository::zp_fileSuffix(int row)
+//{
+//    if(row < 0 || row >= zv_caibrationList.count())
+//    {
+//        return QString();
+//    }
 
-    return zv_caibrationList.value(row)->zp_suffix();
-}
+//    return zv_caibrationList.value(row)->zp_suffix();
+//}
 //======================================================
 double ZCalibrationRepository::zp_calculateConcentration(int row, const ZAbstractSpectrum* const spectrum, bool* ok) const
 {
@@ -187,9 +248,15 @@ double ZCalibrationRepository::zp_calculateConcentration(int row, const ZAbstrac
 //======================================================
 void ZCalibrationRepository::zp_appendCalibrationsToArray(const QStringList& fileNameList)
 {
+    bool res = false;
     foreach(QString fileName, fileNameList)
     {
-        zh_createCalibrationFromFile(fileName);
+        res = res || zh_createCalibrationFromFile(fileName);
+    }
+
+    if(res)
+    {
+        emit zg_setCurrentCalibrationIndex(zv_caibrationList.count() - 1);
     }
 }
 //======================================================
@@ -200,30 +267,50 @@ void ZCalibrationRepository::zp_onCurrentCalibrationChanged(int current, int pre
 //======================================================
 void ZCalibrationRepository::zh_onNewCalibrationAction()
 {
-    ZCalibrationEditDialog dialog;
-    if(!dialog.exec())
+    // new Calibration Name
+    int maxCalibrationNumber = 1;
+    for(int i = 0; i < zv_caibrationList.count(); i++)
     {
-        return;
+        QString name = zv_caibrationList.at(i)->zp_name();
+        if(name.startsWith(zv_defaultCalibrationName))
+        {
+            QString digitalPart = name.mid(zv_defaultCalibrationName.count());
+            bool ok;
+            int number = digitalPart.toInt(&ok);
+            if(!ok)
+            {
+                continue;
+            }
+            if(number >= maxCalibrationNumber)
+            {
+                maxCalibrationNumber = ++number;
+            }
+        }
     }
 
-    zh_createNewCalibration(dialog.zp_calibrationFullName());
+    QString calibrationName = zv_defaultCalibrationName + QString::number(maxCalibrationNumber);
+    if(zh_createNewCalibration(calibrationName))
+    {
+        emit zg_setCurrentCalibrationIndex(zv_caibrationList.count() - 1);
+        emit zg_startCurrentCalibrationEdition();
+    }
 }
 //======================================================
 void ZCalibrationRepository::zh_onEditCalibrationsAction()
 {
-    int currentCalibrationIndex = -1;
-    emit zg_requestCurrentCalibrationIndex(currentCalibrationIndex);
-    if(currentCalibrationIndex < 0
-            || currentCalibrationIndex >= zv_caibrationList.count())
-    {
-        return;
-    }
+//    int currentCalibrationIndex = -1;
+//    emit zg_requestCurrentCalibrationIndex(currentCalibrationIndex);
+//    if(currentCalibrationIndex < 0
+//            || currentCalibrationIndex >= zv_caibrationList.count())
+//    {
+//        return;
+//    }
 
-    ZCalibrationEditDialog dialog;
-    if(!dialog.exec())
-    {
-        return;
-    }
+//    ZCalibrationEditDialog dialog;
+//    if(!dialog.exec())
+//    {
+//        return;
+//    }
 }
 //======================================================
 void ZCalibrationRepository::zh_onRemoveCalibrationsAction()
@@ -259,7 +346,6 @@ void ZCalibrationRepository::zh_removeCalibration(int index)
 bool ZCalibrationRepository::zh_createCalibrationFromFile(const QString& fileName)
 {
     QFileInfo fileInfo(fileName);
-    ZAbstractCalibrationIOHandler* ioHandler;
     QString suffix = fileInfo.suffix();
 
     if(!fileInfo.exists() || !fileInfo.isFile())
@@ -268,22 +354,15 @@ bool ZCalibrationRepository::zh_createCalibrationFromFile(const QString& fileNam
         emit zg_message(error);
         return false;
     }
-    else if(suffix == "clbr")
-    {
-        ioHandler = new ZSDCalibrationIOHandler(this, this);
-    }
-    else if(suffix == "clbx")
-    {
-        ioHandler = new ZXMLCalibrationIOHandler(this, this);
-    }
-    else
+    else if(suffix != "clbx" && suffix != "xml")
     {
         QString error = QObject::tr("Cannot handle file of type \"%1\"!").arg(suffix);
         emit zg_message(error);
         return false;
     }
 
-    ZAbstractCalibration* calibration;
+    ZXMLCalibrationIOHandler* ioHandler = new ZXMLCalibrationIOHandler(this, this);
+    ZCalibration* calibration;
     bool res = ioHandler->zp_getCalibrationFromFile(fileName, calibration);
 
     if(res)
@@ -302,33 +381,13 @@ bool ZCalibrationRepository::zh_createNewCalibration(const QString& name)
     {
         return false;
     }
-    QFileInfo fileInfo(name);
-    QString suffix = fileInfo.suffix();
 
-    if(fileInfo.baseName().isEmpty() || suffix.isEmpty() )
-    {
-        return false;
-    }
-
-    ZAbstractCalibration* calibration;
-    if(suffix == "clbr")
-    {
-        calibration = new ZSDCalibration(name, this);
-    }
-    else if(suffix == "clbx")
-    {
-        calibration = new ZXMLCalibration(name, this);
-    }
-    else
-    {
-        return false;
-    }
-
+    ZCalibration* calibration = new ZCalibration(name, this);
     calibration->zp_setVisible(true);
     return zh_appendCalibrationToList(calibration);
 }
 //======================================================
-bool ZCalibrationRepository::zh_appendCalibrationToList(ZAbstractCalibration* calibration)
+bool ZCalibrationRepository::zh_appendCalibrationToList(ZCalibration* calibration)
 {
     if(!calibration)
     {
@@ -350,6 +409,7 @@ void ZCalibrationRepository::zh_actionAvailabilityControl(int current)
 //======================================================
 void ZCalibrationRepository::zh_createActions()
 {
+    // calibration actions
     zv_newCalibrationAction = new QAction(this);
     zv_newCalibrationAction->setIcon(QIcon(":/images/addGreen.png"));
     zv_newCalibrationAction->setText(tr("Append a new calibration"));
@@ -369,6 +429,17 @@ void ZCalibrationRepository::zh_createActions()
     zv_removeCalibrationAction->setIcon(QIcon(":/images/CRemove3Blue.png"));
     zv_removeCalibrationAction->setText(tr("Remove selected calibrations"));
     zv_removeCalibrationAction->setToolTip(tr("Remove selected calibrations from the list"));
+
+    // window actions
+    zv_newWindowAction = new QAction(this);
+    zv_newWindowAction->setIcon(QIcon(":/images/CRemove3Blue.png"));
+    zv_newWindowAction->setText(tr("Remove selected calibrations"));
+    zv_newWindowAction->setToolTip(tr("Remove selected calibrations from the list"));
+
+    zv_removeWindowAction = new QAction(this);
+    zv_removeWindowAction->setIcon(QIcon(":/images/CRemove3Blue.png"));
+    zv_removeWindowAction->setText(tr("Remove selected calibrations"));
+    zv_removeWindowAction->setToolTip(tr("Remove selected calibrations from the list"));
 
 }
 //======================================================

@@ -28,11 +28,11 @@ public:
                         OT_COLUMN_HEADER_CHANGED,
                         OT_SEPECTRUM_DATA_CHANGED};
     // FUNCS
-    void zp_connectToSpectraArrayRepository(ZSpectraArrayRepository*);
+    void zp_connectToSpectraArrayRepository(ZSpectrumArrayRepository*);
     void zp_connectToCalibrationRepository(ZCalibrationRepository*);
 
     int zp_rowCount() const;
-    int zp_columnCount();
+    int zp_columnCount() const;
     int zp_visibleChemElementCount() const;
     bool zp_isColumnChemElement(int column) const;
     QVariant zp_data(QModelIndex index) const;
@@ -53,10 +53,10 @@ public slots:
 
 private slots:
 
-    void zh_onRepositoryArrayOperation(ZSpectraArrayRepository::SpectrumOperationType,
+    void zh_onRepositoryArrayOperation(ZSpectrumArrayRepository::SpectrumOperationType,
                                        int arrayIndex, int first, int last);
 
-    void zh_onRepositoryChemElementOperation(ZSpectraArrayRepository::ChemElementOperationType,
+    void zh_onRepositoryChemElementOperation(ZSpectrumArrayRepository::ChemElementOperationType,
                                              int arrayIndex, int first, int last);
     void zh_onRepositoryCalibrationOperation(ZCalibrationRepository::OperationType, int, int);
 
@@ -69,7 +69,7 @@ private:
 
     int zv_currentArrayIndex;
     qint64 zv_currentArrayId;
-    ZSpectraArrayRepository* zv_spectrumArrayRepositiry;
+    ZSpectrumArrayRepository* zv_spectrumArrayRepositiry;
     ZCalibrationRepository* zv_calibrationRepository;
     QString zv_currentChemElement;
 

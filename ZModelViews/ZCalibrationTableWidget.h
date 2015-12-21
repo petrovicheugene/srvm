@@ -22,12 +22,16 @@ public:
 signals:
 
     void zg_currentCalibrationChanged(int current, int previous);
+    void zg_requestChemElementList(QStringList&);
 
 public slots:
 
     void zp_selectedCalibrationIndexList(QList<int>& selectedList);
     void zp_currentCalibrationIndex(int&);
     
+    void zp_setCurrentCalibrationIndex(int);
+    void zp_startCurrentCalibrationEdition();
+
 private:
 
     // VARS
@@ -40,7 +44,6 @@ private:
 private slots:
 
     void zh_onCurrentCalibrationChanged(const QModelIndex & current, const QModelIndex & previous);
-
 };
 //==============================================================
 #endif // ZCALIBRATIONTABLEWIDGET_H

@@ -145,6 +145,7 @@ private:
     void zh_createConnections();
     void zh_connectScrollBars();
     void zh_updateScrollBarsVisible();
+    void zh_updateSceneRectPerPixel();
 
     void zh_scrollBarVisibleControl(int min , int max);
     bool zh_recalcVerticalDistortionFactors(qreal distortionValue);

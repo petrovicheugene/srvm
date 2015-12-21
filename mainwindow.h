@@ -9,25 +9,27 @@ class ZSpectrumArrayWidget;
 class ZJointSpectrumTableWidget;
 class ZChemElementWidget;
 class ZCalibrationTableWidget;
+class ZJointCalibrationWindowTableWidget;
 class ZWidgetWithSidebar;
 class ZMessagePanel;
 
 class QAction;
-class QSplitter;
+class QFrame;
 class ZPlotter;
 
 class ZArrayModel;
 class ZJointSpectraModel;
 class ZChemElementModel;
 class ZCalibrationModel;
+class ZJointCalibrationWindowModel;
 
-class ZSpectraArrayRepository;
+class ZSpectrumArrayRepository;
 class ZCalibrationRepository;
 
 class ZJointSpectraDataManager;
 class ZChemElementDataManager;
+class ZJointCalibrationWindowDataManager;
 class ZPlotterDataManager;
-
 //==========================================================
 class MainWindow : public QMainWindow
 {
@@ -49,24 +51,22 @@ private:
     QAction* zv_aboutAction;
     QAction* zv_helpAction;
 
-    // central widget
-    QSplitter* zv_centralSplitter;
-
     // docks
     QList<QDockWidget*> zv_dockList;
-    QDockWidget* zv_calibrationArrayDock;
+    QDockWidget* zv_spectrumArrayDock;
+    QDockWidget* zv_calibrationDock;
     QDockWidget* zv_chemElementArrayDock;
-
     QDockWidget* zv_messagePanelDock;
 
     // views
     ZWidgetWithSidebar* zv_spectraSidebarWidget;
-    // ZWidgetWithSidebar* zv_calibrationSidebarWidget;
+    ZWidgetWithSidebar* zv_calibrationSidebarWidget;
 
     ZSpectrumArrayWidget* zv_spectrumArrayWidget;
     ZJointSpectrumTableWidget* zv_spectrumTableWidget;
     ZChemElementWidget* zv_chemElementWidget;
     ZCalibrationTableWidget* zv_calibrationTableWidget;
+    ZJointCalibrationWindowTableWidget* zv_jointCalibrationWindowtableWidget;
 
     ZMessagePanel* zv_messagePanel;
     ZPlotter* zv_plotter;
@@ -76,12 +76,14 @@ private:
     ZJointSpectraModel* zv_jointSpectraModel;
     ZChemElementModel* zv_chemElementModel;
     ZCalibrationModel* zv_calibrationModel;
+    ZJointCalibrationWindowModel* zv_jointCalibrationWindowModel;
 
     // components
     ZFileActionManager* zv_fileActionManager;
-    ZSpectraArrayRepository* zv_spectraArrayRepository;
+    ZSpectrumArrayRepository* zv_spectrumArrayRepository;
     ZJointSpectraDataManager* zv_jointSpectraDataManager;
     ZCalibrationRepository* zv_calibrationRepository;
+    ZJointCalibrationWindowDataManager* zv_jointCalibrationWindowDataManager;
     ZChemElementDataManager* zv_chemElementDataManager;
     ZPlotterDataManager* zv_plotterDataManager;
 
@@ -89,9 +91,11 @@ private:
     void closeEvent(QCloseEvent* e);
     void zh_createActions();
     void zh_createComponents();
+    QFrame* zh_setWidgetToFrame(QWidget*);
     void zh_createMenu();
     void zh_createToolbar();
     void zh_createConnections();
+
     void zh_appendActionsToMenu(QMenu* menu);
     void zh_restoreSettings();
     void zh_saveSettings();
@@ -100,7 +104,6 @@ private slots:
 
     void zh_onAboutAction();
     void zh_onHelpAction();
-
 
 };
 //==========================================================

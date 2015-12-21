@@ -24,17 +24,17 @@ ZPlotterDataManager::ZPlotterDataManager(QObject *parent) : QObject(parent)
     zh_createConnections();
 }
 //===========================================================
-void ZPlotterDataManager::zp_connectToSpectraArrayRepository(ZSpectraArrayRepository* repository)
+void ZPlotterDataManager::zp_connectToSpectraArrayRepository(ZSpectrumArrayRepository* repository)
 {
     zv_spectrumArrayRepositiry = repository;
     // array repository <->  model
-    connect(repository, &ZSpectraArrayRepository::zg_currentSpectrumOperation,
+    connect(repository, &ZSpectrumArrayRepository::zg_currentSpectrumOperation,
             this, &ZPlotterDataManager::zh_onRepositoryArrayOperation);
-    connect(repository, &ZSpectraArrayRepository::zg_energyCalibrationChanged,
+    connect(repository, &ZSpectrumArrayRepository::zg_energyCalibrationChanged,
             this, &ZPlotterDataManager::zh_changeEnergyCalibrationOnRule);
-    connect(repository, &ZSpectraArrayRepository::zg_arrayMaxParametersChanged,
+    connect(repository, &ZSpectrumArrayRepository::zg_arrayMaxParametersChanged,
             this, &ZPlotterDataManager::zh_onArrayMaxParametersChanged);
-    connect(repository, &ZSpectraArrayRepository::zg_requestIsPlotScaled,
+    connect(repository, &ZSpectrumArrayRepository::zg_requestIsPlotScaled,
             this, &ZPlotterDataManager::zh_definePlotScaling);
 
 }
@@ -107,7 +107,7 @@ void ZPlotterDataManager::zh_createConnections()
             this, &ZPlotterDataManager::zh_switchRuleMetrix);
 }
 //===========================================================
-void ZPlotterDataManager::zh_onRepositoryArrayOperation(ZSpectraArrayRepository::SpectrumOperationType type,
+void ZPlotterDataManager::zh_onRepositoryArrayOperation(ZSpectrumArrayRepository::SpectrumOperationType type,
                                                         int arrayIndex, int first, int last)
 {
     if(zv_currentArrayIndex != arrayIndex || zv_plotter == 0)
@@ -115,11 +115,11 @@ void ZPlotterDataManager::zh_onRepositoryArrayOperation(ZSpectraArrayRepository:
         return;
     }
 
-    if(type == ZSpectraArrayRepository::SOT_INSERT_SPECTRA)
+    if(type == ZSpectrumArrayRepository::SOT_INSERT_SPECTRA)
     {
 
     }
-    else if(type == ZSpectraArrayRepository::SOT_END_INSERT_SPECTRA)
+    else if(type == ZSpectrumArrayRepository::SOT_END_INSERT_SPECTRA)
     {
         qreal distortionFactor;
         qreal distortionCorrectionFactor;
@@ -138,7 +138,7 @@ void ZPlotterDataManager::zh_onRepositoryArrayOperation(ZSpectraArrayRepository:
             }
         }
     }
-    else if(type == ZSpectraArrayRepository::SOT_REMOVE_SPECTRA)
+    else if(type == ZSpectrumArrayRepository::SOT_REMOVE_SPECTRA)
     {
         // spectrum is searching by id
         for(int i = first; i <= last; i++ )
@@ -160,11 +160,11 @@ void ZPlotterDataManager::zh_onRepositoryArrayOperation(ZSpectraArrayRepository:
             }
         }
     }
-    else if(type == ZSpectraArrayRepository::SOT_END_REMOVE_SPECTRA)
+    else if(type == ZSpectrumArrayRepository::SOT_END_REMOVE_SPECTRA)
     {
 
     }
-    else if(type == ZSpectraArrayRepository::SOT_DATA_CHANGED)
+    else if(type == ZSpectrumArrayRepository::SOT_DATA_CHANGED)
     {
         for(int i = first; i <= last; i++ )
         {
@@ -184,7 +184,7 @@ void ZPlotterDataManager::zh_onRepositoryArrayOperation(ZSpectraArrayRepository:
                 }
                 if(spectrumItem->zp_spectrumId() == spectrumId)
                 {
-                    spectrumItem->zp_updateSpectrumData1(spectrum);
+                    spectrumItem->zp_updateSpectrumData(spectrum);
                     break;
                 }
             }

@@ -60,7 +60,8 @@ INCLUDEPATH += ZPlotter \
     ZModelViews/ZNumericDelegate \
     ZModelViews/ZStringDelegate \
     ZModelViews/ZSpectrumTableDelegate \
-    ZModelViews/ZVisibilityStringDelegate
+    ZModelViews/ZVisibilityStringDelegate \
+    ZModelViews/ZChemElementComboBoxDelegate
 
 SOURCES += main.cpp \
     MainWindow.cpp \
@@ -85,16 +86,9 @@ SOURCES += main.cpp \
     ZWidgets/ZHelpBrowser.cpp \
     ZWidgets/ZWidgetWithSidebar.cpp \
     ZComponents/ZSpectraArrayRepository.cpp \
-    ZComponents/ZAbstractSpectrumArrayIOHandler.cpp \
     ZComponents/ZXMLSpectrumArrayIOHandler.cpp \
-    ZComponents/ZAbstractCalibrationIOHandler.cpp \
     ZComponents/ZXMLCalibrationIOHandler.cpp \
-    ZComponents/ZSDCalibrationIOHandler.cpp \
     ZComponents/ZCalibrationRepository.cpp \
-    ZComponents/ZAbstractCalibration.cpp \
-    ZComponents/ZSDCalibration.cpp \
-    ZComponents/ZXMLCalibration.cpp \
-    ZDialogs/ZCalibrationEditDialog.cpp \
     ZComponents/ZJointSpectraDataManager.cpp \
     ZComponents/ZChemElementList.cpp \
     ZComponents/ZChemElementDataManager.cpp \
@@ -104,6 +98,7 @@ SOURCES += main.cpp \
     ZModelViews/ZSpectrumTableDelegate/ZSpectrumTableDelegate.cpp \
     ZModelViews/ZSpectrumTableDelegate/ZPrimitivePlot.cpp \
     ZModelViews/ZVisibilityStringDelegate/ZVisibilityStringDelegate.cpp \
+    ZModelViews/ZChemElementComboBoxDelegate/ZChemElementComboBoxDelegate.cpp \
     ZComponents/ZPlotterDataManager.cpp \
     ZComponents/ZAdvancedAction.cpp \
     ZPlotter/ZPlotGraphicsScene.cpp \
@@ -113,7 +108,11 @@ SOURCES += main.cpp \
     ZPlotter/ZRulerWidget.cpp \
     ZPlotter/ZSpectrumGraphicsItem.cpp \
     ZPlotter/ZWindowGraphicsItem.cpp \
-    ZPlotter/ZHorizontalDashBoard.cpp
+    ZPlotter/ZHorizontalDashBoard.cpp \
+    ZComponents/ZCalibration.cpp \
+    ZModels/ZJointCalibrationWindowModel.cpp \
+    ZComponents/ZJointCalibrationWindowDataManager.cpp \
+    ZModelViews/ZJointCalibrationWindowTableWidget.cpp
 
 
 HEADERS  += \
@@ -140,16 +139,9 @@ HEADERS  += \
     ZWidgets/ZWidgetWithSidebar.h \
     ZComponents/ZSpectraArrayRepository.h \
     ZComponents/ZRawSpectrumArray.h \
-    ZComponents/ZAbstractSpectrumArrayIOHandler.h \
     ZComponents/ZXMLSpectrumArrayIOHandler.h \
-    ZComponents/ZAbstractCalibrationIOHandler.h \
     ZComponents/ZXMLCalibrationIOHandler.h \
-    ZComponents/ZSDCalibrationIOHandler.h \
     ZComponents/ZCalibrationRepository.h \
-    ZComponents/ZAbstractCalibration.h \
-    ZComponents/ZSDCalibration.h \
-    ZComponents/ZXMLCalibration.h \
-    ZDialogs/ZCalibrationEditDialog.h \
     ZComponents/ZJointSpectraDataManager.h \
     ZComponents/ZChemElementList.h \
     ZComponents/ZChemElementDataManager.h \
@@ -159,6 +151,7 @@ HEADERS  += \
     ZModelViews/ZSpectrumTableDelegate/ZSpectrumTableDelegate.h \
     ZModelViews/ZSpectrumTableDelegate/ZPrimitivePlot.h \
     ZModelViews/ZVisibilityStringDelegate/ZVisibilityStringDelegate.h \
+    ZModelViews/ZChemElementComboBoxDelegate/ZChemElementComboBoxDelegate.h \
     ZComponents/ZSpectrumPaintData.h \
     globalVariables.h \
     ZComponents/ZPlotterDataManager.h \
@@ -171,7 +164,11 @@ HEADERS  += \
     ZPlotter/ZRulerWidget.h \
     ZPlotter/ZSpectrumGraphicsItem.h \
     ZPlotter/ZWindowGraphicsItem.h \
-    ZPlotter/ZHorizontalDashBoard.h
+    ZPlotter/ZHorizontalDashBoard.h \
+    ZComponents/ZCalibration.h \
+    ZModels/ZJointCalibrationWindowModel.h \
+    ZComponents/ZJointCalibrationWindowDataManager.h \
+    ZModelViews/ZJointCalibrationWindowTableWidget.h
 
 
 RESOURCES += \

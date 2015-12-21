@@ -16,13 +16,13 @@ ZJointSpectraDataManager::ZJointSpectraDataManager(QObject *parent) : QObject(pa
     zv_concentrationPrecision = 6;
 }
 //==================================================================
-void ZJointSpectraDataManager::zp_connectToSpectraArrayRepository(ZSpectraArrayRepository* repository)
+void ZJointSpectraDataManager::zp_connectToSpectraArrayRepository(ZSpectrumArrayRepository* repository)
 {
     zv_spectrumArrayRepositiry = repository;
     // array repository <-> array model
-    connect(repository, &ZSpectraArrayRepository::zg_currentSpectrumOperation,
+    connect(repository, &ZSpectrumArrayRepository::zg_currentSpectrumOperation,
             this, &ZJointSpectraDataManager::zh_onRepositoryArrayOperation);
-    connect(repository, &ZSpectraArrayRepository::zg_currentChemElementOperation,
+    connect(repository, &ZSpectrumArrayRepository::zg_currentChemElementOperation,
             this, &ZJointSpectraDataManager::zh_onRepositoryChemElementOperation);
 }
 //==================================================================
@@ -44,7 +44,7 @@ int ZJointSpectraDataManager::zp_rowCount() const
     return zv_spectrumArrayRepositiry->zp_spectrumCount(zv_currentArrayIndex);
 }
 //==================================================================
-int ZJointSpectraDataManager::zp_columnCount()
+int ZJointSpectraDataManager::zp_columnCount() const
 {
     return zv_spectrumDataColumnCount + zv_visibleChemElementCount + zv_visibleCalibrationCount;
 }
@@ -250,7 +250,7 @@ void ZJointSpectraDataManager::zp_currentArrayChanged(qint64 currentArrayId, int
     emit zg_currentOperation(OT_END_RESET_DATA, -1, -1);
 }
 //==================================================================
-void ZJointSpectraDataManager::zh_onRepositoryArrayOperation(ZSpectraArrayRepository::SpectrumOperationType type,
+void ZJointSpectraDataManager::zh_onRepositoryArrayOperation(ZSpectrumArrayRepository::SpectrumOperationType type,
                                                              int arrayIndex, int first, int last)
 {
     zh_defineColumnCounts();
@@ -259,29 +259,29 @@ void ZJointSpectraDataManager::zh_onRepositoryArrayOperation(ZSpectraArrayReposi
         return;
     }
 
-    if(type == ZSpectraArrayRepository::SOT_INSERT_SPECTRA)
+    if(type == ZSpectrumArrayRepository::SOT_INSERT_SPECTRA)
     {
         emit zg_currentOperation(OT_INSERT_ROW, first, last);
     }
-    else if(type == ZSpectraArrayRepository::SOT_END_INSERT_SPECTRA)
+    else if(type == ZSpectrumArrayRepository::SOT_END_INSERT_SPECTRA)
     {
         emit zg_currentOperation(OT_END_INSERT_ROW, first, last);
     }
-    else if(type == ZSpectraArrayRepository::SOT_REMOVE_SPECTRA)
+    else if(type == ZSpectrumArrayRepository::SOT_REMOVE_SPECTRA)
     {
         emit zg_currentOperation(OT_REMOVE_ROW, first, last);
     }
-    else if(type == ZSpectraArrayRepository::SOT_END_REMOVE_SPECTRA)
+    else if(type == ZSpectrumArrayRepository::SOT_END_REMOVE_SPECTRA)
     {
         emit zg_currentOperation(OT_END_REMOVE_ROW, first, last);
     }
-    else if(type == ZSpectraArrayRepository::SOT_DATA_CHANGED)
+    else if(type == ZSpectrumArrayRepository::SOT_DATA_CHANGED)
     {
         emit zg_currentOperation(OT_SEPECTRUM_DATA_CHANGED, first, last);
     }
 }
 //==================================================================
-void ZJointSpectraDataManager::zh_onRepositoryChemElementOperation(ZSpectraArrayRepository::ChemElementOperationType type,
+void ZJointSpectraDataManager::zh_onRepositoryChemElementOperation(ZSpectrumArrayRepository::ChemElementOperationType type,
                                                                    int arrayIndex, int first, int last)
 {
     zh_defineColumnCounts();
@@ -303,27 +303,27 @@ void ZJointSpectraDataManager::zh_onRepositoryChemElementOperation(ZSpectraArray
     visibleFirst += zv_spectrumDataColumnCount;
     visibleLast += zv_spectrumDataColumnCount;
 
-    if(type == ZSpectraArrayRepository::CEOT_INSERT_CHEM_ELEMENT)
+    if(type == ZSpectrumArrayRepository::CEOT_INSERT_CHEM_ELEMENT)
     {
         emit zg_currentOperation(OT_INSERT_COLUMN, visibleFirst, visibleLast);
     }
-    else if(type == ZSpectraArrayRepository::CEOT_END_INSERT_CHEM_ELEMENT)
+    else if(type == ZSpectrumArrayRepository::CEOT_END_INSERT_CHEM_ELEMENT)
     {
         emit zg_currentOperation(OT_END_INSERT_COLUMN, visibleFirst, visibleLast);
     }
-    else if(type == ZSpectraArrayRepository::CEOT_REMOVE_CHEM_ELEMENT)
+    else if(type == ZSpectrumArrayRepository::CEOT_REMOVE_CHEM_ELEMENT)
     {
         emit zg_currentOperation(OT_REMOVE_COLUMN, visibleFirst, visibleLast);
     }
-    else if(type == ZSpectraArrayRepository::CEOT_END_REMOVE_CHEM_ELEMENT)
+    else if(type == ZSpectrumArrayRepository::CEOT_END_REMOVE_CHEM_ELEMENT)
     {
         emit zg_currentOperation(OT_END_REMOVE_COLUMN, visibleFirst, visibleLast);
     }
-    else if(type == ZSpectraArrayRepository::CEOT_CHEM_ELEMENT_CHANGED)
+    else if(type == ZSpectrumArrayRepository::CEOT_CHEM_ELEMENT_CHANGED)
     {
         emit zg_currentOperation(OT_COLUMN_HEADER_CHANGED, visibleFirst, visibleLast);
     }
-    else if(type == ZSpectraArrayRepository::CEOT_CHEM_ELEMENT_VISIBILITY_CHANGE)
+    else if(type == ZSpectrumArrayRepository::CEOT_CHEM_ELEMENT_VISIBILITY_CHANGE)
     {
         bool visible = zv_spectrumArrayRepositiry->zp_chemElementIsVisible(zv_currentArrayIndex, first);
         if(!visible)
@@ -335,7 +335,7 @@ void ZJointSpectraDataManager::zh_onRepositoryChemElementOperation(ZSpectraArray
             emit zg_currentOperation(OT_REMOVE_COLUMN, visibleFirst, visibleLast);
         }
     }
-    else if(type == ZSpectraArrayRepository::CEOT_END_CHEM_ELEMENT_VISIBILITY_CHANGE)
+    else if(type == ZSpectrumArrayRepository::CEOT_END_CHEM_ELEMENT_VISIBILITY_CHANGE)
     {
         bool visible = zv_spectrumArrayRepositiry->zp_chemElementIsVisible(zv_currentArrayIndex, first);
         if(visible)

@@ -12,11 +12,11 @@
 class QAction;
 class ZFileActionManager;
 //==================================================================
-class ZSpectraArrayRepository : public QObject
+class ZSpectrumArrayRepository : public QObject
 {
     Q_OBJECT
 public:
-    explicit ZSpectraArrayRepository(QObject *parent = 0);
+    explicit ZSpectrumArrayRepository(QObject *parent = 0);
 
     // VARS
     enum ArrayOperationType {AOT_INSERT_ARRAYS,
@@ -127,6 +127,7 @@ public slots:
     void zp_getArrayName(int arrayIndex, QString&) const;
     void zp_getSpectrumName(int arrayIndex, int spectrumIndex, QString&) const;
     void zp_currentArrayChanged(int current, int previous);
+    void zp_chemElementListForCurrentArray(QStringList& chemElementList);
 
 private slots:
 

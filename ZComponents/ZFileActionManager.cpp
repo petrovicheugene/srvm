@@ -1,10 +1,8 @@
 //======================================================
 #include "ZFileActionManager.h"
-#include "ZAbstractSpectrumArrayIOHandler.h"
 #include "ZXMLSpectrumArrayIOHandler.h"
 #include "ZSpectrumArray.h"
 #include "ZAbstractSpectrumIOHandler.h"
-#include "ZAbstractCalibrationIOHandler.h"
 #include "ZXMLCalibrationIOHandler.h"
 #include "ZSpeIOHandler.h"
 #include "globalVariables.h"
@@ -114,7 +112,7 @@ bool ZFileActionManager::zh_defineCalibrationArrayFileName(QStringList& fileName
     // opening
     fileNames = QFileDialog::getOpenFileNames(0, tr("Select file to open"),
                                               zv_calibrationFolderPath,
-                                              tr("SD Calibration files(*.clbr);;XML Calibration files(*.clbx);;XML files(*.xml);;All files(*.*)"));
+                                              tr("XML Calibration files(*.clbx);;XML files(*.xml);;All files(*.*)"));
     if(fileNames.count() <= 0 )
     {
         return false;
@@ -154,7 +152,7 @@ bool ZFileActionManager::zh_checkFile(const QString& fileName) const
 bool ZFileActionManager::zh_getRawSpectrumArrayFromFile(const QString& fileName, QList<ZRawSpectrumArray>& rawArray)
 {
     QFileInfo fileInfo(fileName);
-    ZAbstractSpectrumArrayIOHandler* ioHandler;
+
 
     // ioHandler subclass definition
     // here is an ability to using the other classes, that handle files of different formats
@@ -165,11 +163,7 @@ bool ZFileActionManager::zh_getRawSpectrumArrayFromFile(const QString& fileName,
         emit zg_message(msg);
         return false;
     }
-    else if(fileInfo.suffix() == "xml" || fileInfo.suffix() == "spar")
-    {
-        ioHandler = new ZXMLSpectrumArrayIOHandler(this);
-    }
-    else // other suffixes
+    else if(fileInfo.suffix() != "xml" && fileInfo.suffix() != "spar")
     {
         QString msg = tr("Error handling file \"%1\"! Cannot handle \"%2\" files.").arg(fileName, fileInfo.suffix());
         QMessageBox::critical(0, tr("File handling error"), msg);
@@ -177,6 +171,7 @@ bool ZFileActionManager::zh_getRawSpectrumArrayFromFile(const QString& fileName,
         return false;
     }
 
+    ZXMLSpectrumArrayIOHandler* ioHandler = new ZXMLSpectrumArrayIOHandler(this);
     // file opening
     QFile file(fileName);
     if(!file.open(QIODevice::ReadOnly))
@@ -198,7 +193,7 @@ bool ZFileActionManager::zh_getRawSpectrumArrayFromFile(const QString& fileName,
     zv_spectrumArrayFolderPath = fileInfo.absolutePath();
 
     // ability of message receiving
-    connect(ioHandler, &ZAbstractSpectrumArrayIOHandler::zg_message,
+    connect(ioHandler, &ZXMLSpectrumArrayIOHandler::zg_message,
             this, &ZFileActionManager::zg_message);
 
     // array loading
@@ -334,15 +329,7 @@ void ZFileActionManager::zp_saveSpectraArrayList(QString filePath, QList<ZRawSpe
     }
 
     QFileInfo fileInfo(filePath);
-    ZAbstractSpectrumArrayIOHandler* ioHandler;
-
-    // ioHandler subclass definition
-    // here is an ability to using the other classes, that handle files of different formats
-    if(fileInfo.suffix() == "xml" || fileInfo.suffix() == "spar")
-    {
-        ioHandler = new ZXMLSpectrumArrayIOHandler(this);
-    }
-    else // other suffixes
+    if(fileInfo.suffix() != "xml" && fileInfo.suffix() != "spar")
     {
         QString msg = tr("Error handling file \"%1\"! Cannot handle \"%2\" files.").arg(filePath, fileInfo.suffix());
         QMessageBox::critical(0, tr("File handling error"), msg);
@@ -350,6 +337,7 @@ void ZFileActionManager::zp_saveSpectraArrayList(QString filePath, QList<ZRawSpe
         return;
     }
 
+    ZXMLSpectrumArrayIOHandler* ioHandler = new ZXMLSpectrumArrayIOHandler(this);
     // file opening
     QFile file(filePath);
     if(!file.open(QIODevice::WriteOnly))
@@ -371,7 +359,7 @@ void ZFileActionManager::zp_saveSpectraArrayList(QString filePath, QList<ZRawSpe
     zv_spectrumArrayFolderPath = fileInfo.absolutePath();
 
     // ability of message receiving
-    connect(ioHandler, &ZAbstractSpectrumArrayIOHandler::zg_message,
+    connect(ioHandler, &ZXMLSpectrumArrayIOHandler::zg_message,
             this, &ZFileActionManager::zg_message);
 
     // array loading

@@ -6,7 +6,6 @@
 #include "ZAbstractSpectrum.h"
 //===========================================================
 
-
 //===========================================================
 class ZSpeIOHandler : public ZAbstractSpectrumIOHandler
 {
@@ -15,13 +14,16 @@ public:
     explicit ZSpeIOHandler(QObject* spectrumParent, QObject* parent = 0);
     virtual ~ZSpeIOHandler();
 
-    virtual bool zp_getSpectrumFromFile(const QString& path, QColor, ZAbstractSpectrum*&) const override;
-    virtual bool zp_getSpectrumFromFile(QFile& file, QColor, ZAbstractSpectrum *&) const override;
+    bool zp_getSpectrumFromFile(const QString& path, QColor, ZAbstractSpectrum*&) const;
+    bool zp_getSpectrumFromFile(QFile& file, QColor, ZAbstractSpectrum *&) const;
     //virtual bool zp_getSpectrumFromFile(QFile& file, ZSpectrumArray&) const override;
 
 signals:
+
     void zg_message(QString) const;
+
 private:
+
 
     // VARS
     const int zv_intensityStartLine = 20;

@@ -25,7 +25,7 @@ public:
     virtual QVariant	headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const;
 
     // FUNCS
-    void zp_connectToSpectraArrayRepository(ZSpectraArrayRepository*);
+    void zp_connectToSpectraArrayRepository(ZSpectrumArrayRepository*);
 
 public slots:
 
@@ -36,11 +36,11 @@ signals:
 private:
 
     // VARS
-    ZSpectraArrayRepository* zv_repositiry;
+    ZSpectrumArrayRepository* zv_repositiry;
 
 private slots:
 
-    void zh_onRepositoryOperation(ZSpectraArrayRepository::ArrayOperationType type, int first, int last);
+    void zh_onRepositoryOperation(ZSpectrumArrayRepository::ArrayOperationType type, int first, int last);
 
  };
 //==================================================================
