@@ -44,7 +44,7 @@ int ZJointSpectraDataManager::zp_rowCount() const
     return zv_spectrumArrayRepositiry->zp_spectrumCount(zv_currentArrayIndex);
 }
 //==================================================================
-int ZJointSpectraDataManager::zp_columnCount()
+int ZJointSpectraDataManager::zp_columnCount() const
 {
     return zv_spectrumDataColumnCount + zv_visibleChemElementCount + zv_visibleCalibrationCount;
 }

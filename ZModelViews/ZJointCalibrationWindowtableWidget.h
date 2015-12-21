@@ -17,6 +17,7 @@ public:
 
     // FUNCS
     void zp_setModel(ZJointCalibrationWindowModel* model);
+    void zp_appendButtonActions(QList<QAction*>);
 
 signals:
 

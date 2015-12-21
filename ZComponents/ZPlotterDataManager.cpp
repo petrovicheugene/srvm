@@ -184,7 +184,7 @@ void ZPlotterDataManager::zh_onRepositoryArrayOperation(ZSpectrumArrayRepository
                 }
                 if(spectrumItem->zp_spectrumId() == spectrumId)
                 {
-                    spectrumItem->zp_updateSpectrumData1(spectrum);
+                    spectrumItem->zp_updateSpectrumData(spectrum);
                     break;
                 }
             }

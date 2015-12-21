@@ -32,7 +32,7 @@ public:
     void zp_connectToCalibrationRepository(ZCalibrationRepository*);
 
     int zp_rowCount() const;
-    int zp_columnCount();
+    int zp_columnCount() const;
     int zp_visibleChemElementCount() const;
     bool zp_isColumnChemElement(int column) const;
     QVariant zp_data(QModelIndex index) const;

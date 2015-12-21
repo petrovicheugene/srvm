@@ -18,6 +18,10 @@ public:
     void zp_connectToSpectraArrayRepository(ZSpectrumArrayRepository*);
     void zp_connectToCalibrationRepository(ZCalibrationRepository*);
 
+    int zp_rowCount() const;
+    int zp_columnCount() const;
+    QString zp_columnName(int) const;
+
 
 signals:
 

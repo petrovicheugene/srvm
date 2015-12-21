@@ -48,6 +48,14 @@ QList<QAction*> ZCalibrationRepository::zp_arrayActions() const
     return actionList;
 }
 //==================================================================
+QList<QAction*> ZCalibrationRepository::zp_windowActions() const
+{
+    QList<QAction*> actionList;
+    actionList << zv_newWindowAction;
+    actionList << zv_removeWindowAction;
+    return actionList;
+}
+//==================================================================
 bool ZCalibrationRepository::zp_isEmpty() const
 {
     return zv_caibrationList.isEmpty();
@@ -401,6 +409,7 @@ void ZCalibrationRepository::zh_actionAvailabilityControl(int current)
 //======================================================
 void ZCalibrationRepository::zh_createActions()
 {
+    // calibration actions
     zv_newCalibrationAction = new QAction(this);
     zv_newCalibrationAction->setIcon(QIcon(":/images/addGreen.png"));
     zv_newCalibrationAction->setText(tr("Append a new calibration"));
@@ -420,6 +429,17 @@ void ZCalibrationRepository::zh_createActions()
     zv_removeCalibrationAction->setIcon(QIcon(":/images/CRemove3Blue.png"));
     zv_removeCalibrationAction->setText(tr("Remove selected calibrations"));
     zv_removeCalibrationAction->setToolTip(tr("Remove selected calibrations from the list"));
+
+    // window actions
+    zv_newWindowAction = new QAction(this);
+    zv_newWindowAction->setIcon(QIcon(":/images/CRemove3Blue.png"));
+    zv_newWindowAction->setText(tr("Remove selected calibrations"));
+    zv_newWindowAction->setToolTip(tr("Remove selected calibrations from the list"));
+
+    zv_removeWindowAction = new QAction(this);
+    zv_removeWindowAction->setIcon(QIcon(":/images/CRemove3Blue.png"));
+    zv_removeWindowAction->setText(tr("Remove selected calibrations"));
+    zv_removeWindowAction->setToolTip(tr("Remove selected calibrations from the list"));
 
 }
 //======================================================

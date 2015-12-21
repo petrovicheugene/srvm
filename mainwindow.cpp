@@ -264,6 +264,8 @@ void MainWindow::zh_createConnections()
     connect(this, &MainWindow::zg_saveSettings,
             zv_spectraSidebarWidget, &ZWidgetWithSidebar::zp_saveSettings);
     connect(this, &MainWindow::zg_saveSettings,
+            zv_calibrationSidebarWidget, &ZWidgetWithSidebar::zp_saveSettings);
+    connect(this, &MainWindow::zg_saveSettings,
             zv_fileActionManager, &ZFileActionManager::zp_saveSettings);
 
 
@@ -359,6 +361,7 @@ void MainWindow::zh_createConnections()
 
     // calibration repository
     zv_calibrationTableWidget->zp_appendButtonActions(zv_calibrationRepository->zp_arrayActions());
+    zv_jointCalibrationWindowtableWidget->zp_appendButtonActions(zv_calibrationRepository->zp_windowActions());
     connect(zv_calibrationRepository, &ZCalibrationRepository::zg_requestSelectedCalibrationIndexList,
             zv_calibrationTableWidget, &ZCalibrationTableWidget::zp_selectedCalibrationIndexList);
     connect(zv_calibrationRepository, &ZCalibrationRepository::zg_requestCurrentCalibrationIndex,

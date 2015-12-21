@@ -24,7 +24,6 @@ public:
     void zp_setSpectrumData(const QList<int>&);
     qint64 zp_spectrumId();
     void zp_updateSpectrumData(const ZAbstractSpectrum *);
-    void zp_updateSpectrumData1(const ZAbstractSpectrum *);
 
     void zp_setDistortion(qreal distortionFactor, qreal distortionCorrectionFactor);
 
@@ -32,6 +31,9 @@ protected:
 
     // FUNCS
     void mouseReleaseEvent(QGraphicsSceneMouseEvent * event);
+    void mousePressEvent(QGraphicsSceneMouseEvent *event);
+    void focusInEvent(QFocusEvent *event);
+    void focusOutEvent(QFocusEvent *event);
 
 private:
 
@@ -50,6 +52,8 @@ private:
 
     // y' = y^zv_logFactor * zv_k
     // max = max^logFactor * zv_k
+
+    static QSizeF zv_
 
     // FUNCS
 

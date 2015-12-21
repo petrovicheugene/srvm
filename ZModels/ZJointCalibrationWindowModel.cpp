@@ -22,25 +22,22 @@ Qt::ItemFlags	ZJointCalibrationWindowModel::flags(const QModelIndex & index) con
 //==================================================================
 int ZJointCalibrationWindowModel::columnCount(const QModelIndex & parent) const
 {
-    return 2;
-//    if(!zv_dataManager)
-//    {
-//        return 0;
-//    }
+    if(!zv_dataManager)
+    {
+        return 0;
+    }
 
-//    return zv_dataManager->zp_columnCount();
+    return zv_dataManager->zp_columnCount();
 }
 //==================================================================
 int ZJointCalibrationWindowModel::rowCount(const QModelIndex & parent) const
 {
-    return 2;
-//    if(!zv_dataManager)
-//    {
-//        return 0;
-//    }
+    if(!zv_dataManager)
+    {
+        return 0;
+    }
 
-//    return zv_dataManager->zp_rowCount();
-
+    return zv_dataManager->zp_rowCount();
 }
 //==================================================================
 QVariant ZJointCalibrationWindowModel::data(const QModelIndex & index, int role) const
@@ -107,34 +104,34 @@ bool	ZJointCalibrationWindowModel::setData(const QModelIndex & index, const QVar
 //==================================================================
 QVariant ZJointCalibrationWindowModel::headerData(int section, Qt::Orientation orientation, int role) const
 {
-//    if(!zv_dataManager)
-//    {
-//        return QVariant();
-//    }
+    if(!zv_dataManager)
+    {
+        return QVariant();
+    }
 
-//    if(role == Qt::DisplayRole)
-//    {
-//        if(orientation == Qt::Horizontal)
-//        {
-//            return QVariant(zv_dataManager->zp_columnName(section));
-//        }
-//        else
-//        {
-//            return QVariant(QString::number(section + 1));
-//        }
-//    }
+    if(role == Qt::DisplayRole)
+    {
+        if(orientation == Qt::Horizontal)
+        {
+            return QVariant(zv_dataManager->zp_columnName(section));
+        }
+        else
+        {
+            return QVariant(QString::number(section + 1));
+        }
+    }
 
-//    if(role == Qt::FontRole)
-//    {
-//        QFont font = QAbstractItemModel::headerData(section, orientation, role).value<QFont>();
-//        font.setBold(true);
-//        return QVariant(font);
-//    }
+    if(role == Qt::FontRole)
+    {
+        QFont font = QAbstractItemModel::headerData(section, orientation, role).value<QFont>();
+        font.setBold(true);
+        return QVariant(font);
+    }
 
-//    if(role == Qt::ForegroundRole)
-//    {
-//        return QVariant(QColor(Qt::darkGreen));
-//    }
+    if(role == Qt::ForegroundRole)
+    {
+        return QVariant(QColor(Qt::darkGreen));
+    }
 
     return QVariant();
 }

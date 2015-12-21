@@ -33,6 +33,7 @@ public:
 
     void zp_appendActionsToMenu(QMenu *menu) const;
     QList<QAction*> zp_arrayActions() const;
+    QList<QAction*> zp_windowActions() const;
 
     bool zp_isEmpty() const;
     void zp_clear();
@@ -86,6 +87,10 @@ private:
     QAction* zv_openCalibrationsAction;
     QAction* zv_editCalibrationsAction;
     QAction* zv_removeCalibrationAction;
+
+    QAction* zv_newWindowAction;
+    QAction* zv_removeWindowAction;
+
 
     QString zv_defaultCalibrationName;
     // FUNCS
