@@ -53,8 +53,6 @@ private:
     // y' = y^zv_logFactor * zv_k
     // max = max^logFactor * zv_k
 
-    static QSizeF zv_
-
     // FUNCS
 
     void zh_calculatePainterPath();

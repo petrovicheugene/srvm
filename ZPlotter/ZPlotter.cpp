@@ -578,7 +578,6 @@ bool ZPlotter::eventFilter(QObject *obj, QEvent *event)
         zv_mouseButtonDown = false;
         zv_userResizesWidget = false;
         zv_plotView->zp_setScaleViewWhenResizeFlag(false);
-        zh_updateSceneRectPerPixel();
         zh_updateScrollBarsVisible();
         return QObject::eventFilter(obj, event);
     }
@@ -675,21 +674,6 @@ void ZPlotter::zh_updateScrollBarsVisible()
 
     zv_verticalScrollBar->setHidden(zv_verticalScrollBar->maximum() == 0
                                     && zv_verticalScrollBar->minimum() == 0);
-}
-//====================================================
-void ZPlotter::zh_updateSceneRectSizeForPixel()
-{
-    QRect viewportGlobalRect;
-    QRectF viewportSceneRect;
-    QPoint globalZeroPoint;
-    QSizeF sceneRectSizeForPixel;
-    if(!zv_plotView->zp_viewPortCoordinates(viewportGlobalRect,viewportSceneRect, globalZeroPoint))
-    {
-        qreal width = viewportSceneRect.width() / viewportGlobalRect.width();
-        qreal height = viewportSceneRect.height() / viewportGlobalRect.height();
-        sceneRectSizeForPixel = QSizeF(width, height);
-
-    }
 }
 //====================================================
 void ZPlotter::zh_scrollBarVisibleControl(int min , int max)
