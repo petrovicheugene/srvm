@@ -10,6 +10,7 @@ int ZCalibration::zv_lastColorIndex = 0;
 ZCalibration::ZCalibration(const QString& name, QObject *parent) : QObject(parent)
 {
     zv_visibility = false;
+    zv_defaultWindowName = tr("Peak #");
     QFileInfo fileInfo(name);
     if(!fileInfo.absoluteFilePath().isEmpty())
     {
@@ -137,6 +138,113 @@ double ZCalibration::zp_calcConcentration(const ZAbstractSpectrum* const spectru
     return 0;
 }
 //=========================================================
+void ZCalibration::zp_createNewSpectrumWindow()
+{
+    int nextWindowIndex = zv_spectrumWindowList.count();
+    QString nextName = zv_defaultWindowName + QString::number(++nextWindowIndex);
+
+    while(zh_isWindowExist(nextName))
+    {
+        nextName = zv_defaultWindowName + QString::number(++nextWindowIndex);
+    }
+
+    int windowNewIndex = zv_spectrumWindowList.count();
+    emit zg_windowOperation(WOT_INSERT_WINDOWS, windowNewIndex, windowNewIndex);
+    zv_spectrumWindowList.append(ZCalibrationWindow(nextName));
+    emit zg_windowOperation(WOT_END_INSERT_WINDOWS, windowNewIndex, windowNewIndex);
+}
+//=========================================================
+bool ZCalibration::zh_isWindowExist(const QString& windowName)
+{
+    for(int i = 0; i < zv_spectrumWindowList.count(); i++)
+    {
+        if(zv_spectrumWindowList.at(i).zp_name() == windowName)
+        {
+            return true;
+        }
+    }
+
+    return false;
+}
+//=========================================================
+bool ZCalibration::zp_isSpectrumWindowVisible(int windowIndex)
+{
+    if(windowIndex < 0 || windowIndex >= zv_spectrumWindowList.count())
+    {
+        return false;
+    }
+
+    return zv_spectrumWindowList.at(windowIndex).zp_isWindowVisible();
+}
+//=========================================================
+int ZCalibration::zp_spectrumWindowCount()
+{
+    return zv_spectrumWindowList.count();
+}
+//=========================================================
+QString ZCalibration::zp_spectrumWindowName(int windowIndex)
+{
+    if(windowIndex < 0 || windowIndex >= zv_spectrumWindowList.count())
+    {
+        return QString();
+    }
+
+    return zv_spectrumWindowList.at(windowIndex).zp_name();
+}
+//=========================================================
+ZCalibrationWindow::WindowType ZCalibration::zp_spectrumWindowType(int windowIndex)
+{
+    if(windowIndex < 0 || windowIndex >= zv_spectrumWindowList.count())
+    {
+        return ZCalibrationWindow::WT_NOT_DEFINED;
+    }
+
+    return zv_spectrumWindowList.at(windowIndex).zp_type();
+}
+//=========================================================
+int ZCalibration::zp_spectrumWindowFirstChannel(int windowIndex)
+{
+    if(windowIndex < 0 || windowIndex >= zv_spectrumWindowList.count())
+    {
+        return 0;
+    }
+
+    return zv_spectrumWindowList.at(windowIndex).zp_firstChannel();
+}
+//=========================================================
+int ZCalibration::zp_spectrumWindowLastChannel(int windowIndex)
+{
+    if(windowIndex < 0 || windowIndex >= zv_spectrumWindowList.count())
+    {
+        return 0;
+    }
+
+    return zv_spectrumWindowList.at(windowIndex).zp_lastChannel();
+}
+//=========================================================
+qint64 ZCalibration::zp_spectrumWindowId(int windowIndex)
+{
+    if(windowIndex < 0 || windowIndex >= zv_spectrumWindowList.count())
+    {
+        return 0.0;
+    }
+
+    return zv_spectrumWindowList.at(windowIndex).zp_windowId();
+}
+//=========================================================
+bool ZCalibration::zp_removeSpectrumWindow(int windowIndex)
+{
+    if(windowIndex < 0 || windowIndex >= zv_spectrumWindowList.count())
+    {
+        return false;
+    }
+
+    emit zg_windowOperation(WOT_REMOVE_WINDOWS, windowIndex, windowIndex);
+    zv_spectrumWindowList.removeAt(windowIndex);
+    emit zg_windowOperation(WOT_END_REMOVE_WINDOWS, windowIndex, windowIndex);
+    return true;
+}
+//=========================================================
 bool ZCalibration::checkColor(QColor color)
 {
     if(!color.isValid() || zv_colorList.contains(color))
@@ -166,7 +274,6 @@ bool ZCalibration::checkColor(QColor color)
 
     return true;
 }
-
 //======================================================
 QList<QColor> ZCalibration::zp_createColorList()
 {

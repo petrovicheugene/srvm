@@ -24,12 +24,15 @@ void ZJointSpectraDataManager::zp_connectToSpectraArrayRepository(ZSpectrumArray
             this, &ZJointSpectraDataManager::zh_onRepositoryArrayOperation);
     connect(repository, &ZSpectrumArrayRepository::zg_currentChemElementOperation,
             this, &ZJointSpectraDataManager::zh_onRepositoryChemElementOperation);
+    connect(repository, &ZSpectrumArrayRepository::zg_currentArrayId,
+            this, &ZJointSpectraDataManager::zh_currentSpectrumArrayChanged);
+
 }
 //==================================================================
 void ZJointSpectraDataManager::zp_connectToCalibrationRepository(ZCalibrationRepository* repository)
 {
     zv_calibrationRepository = repository;
-    connect(repository, &ZCalibrationRepository::zg_currentOperation,
+    connect(repository, &ZCalibrationRepository::zg_currentCalibrationOperation,
             this, &ZJointSpectraDataManager::zh_onRepositoryCalibrationOperation);
 
 }
@@ -231,16 +234,12 @@ int ZJointSpectraDataManager::zp_spectrumDataColumnCount()
     return zv_spectrumDataColumnCount;
 }
 //==================================================================
-void ZJointSpectraDataManager::zp_currentArrayChanged(qint64 currentArrayId, int currentArrayIndex)
+void ZJointSpectraDataManager::zh_currentSpectrumArrayChanged(qint64 currentArrayId, int currentArrayIndex)
 {
     if(zv_currentArrayIndex == currentArrayIndex && zv_currentArrayId == currentArrayId)
     {
         return;
     }
-
-#ifdef DBG
-    qDebug() << "Joint Man" << currentArrayId << currentArrayIndex;
-#endif
 
     emit zg_currentOperation(OT_RESET_DATA, -1, -1);
     zv_currentArrayIndex = currentArrayIndex;
@@ -349,35 +348,35 @@ void ZJointSpectraDataManager::zh_onRepositoryChemElementOperation(ZSpectrumArra
     }
 }
 //==================================================================
-void ZJointSpectraDataManager::zh_onRepositoryCalibrationOperation(ZCalibrationRepository::OperationType type, int first, int last)
+void ZJointSpectraDataManager::zh_onRepositoryCalibrationOperation(ZCalibrationRepository::CalibrationOperationType type, int first, int last)
 {
     zh_defineColumnCounts();
     int visibleFirst = zv_spectrumDataColumnCount + zv_visibleChemElementCount;
     int visibleLast = visibleFirst + (last - first);
 
-    if(type == ZCalibrationRepository::OT_INSERT_CALIBRATIONS)
+    if(type == ZCalibrationRepository::COT_INSERT_CALIBRATIONS)
     {
         emit zg_currentOperation(OT_INSERT_COLUMN, visibleFirst, visibleLast);
     }
-    else if(type == ZCalibrationRepository::OT_END_INSERT_CALIBRATIONS)
+    else if(type == ZCalibrationRepository::COT_END_INSERT_CALIBRATIONS)
     {
         emit zg_currentOperation(OT_END_INSERT_COLUMN, visibleFirst, visibleLast);
     }
-    else if(type == ZCalibrationRepository::OT_REMOVE_CALIBRATIONS)
+    else if(type == ZCalibrationRepository::COT_REMOVE_CALIBRATIONS)
     {
         emit zg_currentOperation(OT_REMOVE_COLUMN, visibleFirst, visibleLast);
     }
-    else if(type == ZCalibrationRepository::OT_END_REMOVE_CALIBRATIONS)
+    else if(type == ZCalibrationRepository::COT_END_REMOVE_CALIBRATIONS)
     {
         emit zg_currentOperation(OT_END_REMOVE_COLUMN, visibleFirst, visibleLast);
     }
-    else if(type == ZCalibrationRepository::OT_CALIBRATION_CHANGED)
+    else if(type == ZCalibrationRepository::COT_CALIBRATION_CHANGED)
     {
         emit zg_currentOperation(OT_COLUMN_HEADER_CHANGED, visibleFirst, visibleLast);
     }
-    else if(type == ZCalibrationRepository::OT_CALIBRATION_VISIBILITY_CHANGE)
+    else if(type == ZCalibrationRepository::COT_CALIBRATION_VISIBILITY_CHANGE)
     {
-        bool visible = zv_calibrationRepository->zp_calibrationIsVisible(first);
+        bool visible = zv_calibrationRepository->zp_isCalibrationVisible(first);
         if(!visible)
         {
             emit zg_currentOperation(OT_INSERT_COLUMN, visibleFirst, visibleLast);
@@ -387,9 +386,9 @@ void ZJointSpectraDataManager::zh_onRepositoryCalibrationOperation(ZCalibrationR
             emit zg_currentOperation(OT_REMOVE_COLUMN, visibleFirst, visibleLast);
         }
     }
-    else if(type == ZCalibrationRepository::OT_END_CALIBRATION_VISIBILITY_CHANGE)
+    else if(type == ZCalibrationRepository::COT_END_CALIBRATION_VISIBILITY_CHANGE)
     {
-        bool visible = zv_calibrationRepository->zp_calibrationIsVisible(first);
+        bool visible = zv_calibrationRepository->zp_isCalibrationVisible(first);
         if(visible)
         {
             emit zg_currentOperation(OT_END_INSERT_COLUMN, visibleFirst, visibleLast);

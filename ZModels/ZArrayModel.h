@@ -3,7 +3,7 @@
 #define ZARRAYMODEL_H
 //==================================================================
 #include <QAbstractTableModel>
-#include "ZSpectraArrayRepository.h"
+#include "ZSpectrumArrayRepository.h"
 
 //==================================================================
 //==================================================================

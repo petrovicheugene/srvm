@@ -2,6 +2,8 @@
 #include "ZCalibrationTableWidget.h"
 #include "ZVisibilityStringDelegate.h"
 #include "ZChemElementComboBoxDelegate.h"
+#include "ZCalibrationRepository.h"
+
 #include <QTableView>
 #include <QHBoxLayout>
 #include <QVBoxLayout>
@@ -65,6 +67,23 @@ void ZCalibrationTableWidget::zp_appendButtonActions(QList<QAction*> actionList)
                 actionList[a], &QAction::trigger);
         zv_buttonLayout->addWidget(button);
     }
+}
+//==============================================================
+void ZCalibrationTableWidget::zp_connectToCalibrationRepository(ZCalibrationRepository* repository)
+{
+    this->zp_appendButtonActions(repository->zp_arrayActions());
+
+    connect(repository, &ZCalibrationRepository::zg_requestSelectedCalibrationIndexList,
+            this, &ZCalibrationTableWidget::zp_selectedCalibrationIndexList);
+    connect(repository, &ZCalibrationRepository::zg_requestCurrentCalibrationIndex,
+            this, &ZCalibrationTableWidget::zp_currentCalibrationIndex);
+    connect(this, &ZCalibrationTableWidget::zg_currentCalibrationChanged,
+            repository, &ZCalibrationRepository::zp_onCurrentCalibrationChanged);
+    connect(repository, &ZCalibrationRepository::zg_setCurrentCalibrationIndex,
+            this, &ZCalibrationTableWidget::zp_setCurrentCalibrationIndex);
+    connect(repository, &ZCalibrationRepository::zg_startCurrentCalibrationEdition,
+            this, &ZCalibrationTableWidget::zp_startCurrentCalibrationEdition);
+
 }
 //==============================================================
 void ZCalibrationTableWidget::zp_selectedCalibrationIndexList(QList<int>& selectedList)

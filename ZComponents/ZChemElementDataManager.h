@@ -3,7 +3,7 @@
 #define ZJOINTCHEMELEMENTDATAMANAGER_H
 //=========================================================
 #include <QObject>
-#include "ZSpectraArrayRepository.h"
+#include "ZSpectrumArrayRepository.h"
 #include <QModelIndex>
 //=========================================================
 

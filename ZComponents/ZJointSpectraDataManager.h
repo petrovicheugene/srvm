@@ -6,7 +6,7 @@
 #include <QModelIndex>
 #include <QMap>
 #include <QList>
-#include "ZSpectraArrayRepository.h"
+#include "ZSpectrumArrayRepository.h"
 #include "ZCalibrationRepository.h"
 //==================================================================
 class ZJointSpectraDataManager : public QObject
@@ -49,7 +49,6 @@ signals:
 
 public slots:
 
-    void zp_currentArrayChanged(qint64, int);
 
 private slots:
 
@@ -58,7 +57,8 @@ private slots:
 
     void zh_onRepositoryChemElementOperation(ZSpectrumArrayRepository::ChemElementOperationType,
                                              int arrayIndex, int first, int last);
-    void zh_onRepositoryCalibrationOperation(ZCalibrationRepository::OperationType, int, int);
+    void zh_onRepositoryCalibrationOperation(ZCalibrationRepository::CalibrationOperationType, int, int);
+    void zh_currentSpectrumArrayChanged(qint64, int);
 
 private:
 

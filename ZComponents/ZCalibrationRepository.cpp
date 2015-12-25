@@ -43,7 +43,6 @@ QList<QAction*> ZCalibrationRepository::zp_arrayActions() const
     QList<QAction*> actionList;
     actionList << zv_newCalibrationAction;
     actionList << zv_openCalibrationsAction;
-    actionList << zv_editCalibrationsAction;
     actionList << zv_removeCalibrationAction;
     return actionList;
 }
@@ -65,12 +64,12 @@ void ZCalibrationRepository::zp_clear()
 {
     if(!zv_caibrationList.isEmpty())
     {
-        emit zg_currentOperation(OT_REMOVE_CALIBRATIONS, 0, zv_caibrationList.count() - 1);
+        emit zg_currentCalibrationOperation(COT_REMOVE_CALIBRATIONS, 0, zv_caibrationList.count() - 1);
         for(int i = zv_caibrationList.count()-1; i >= 0; i-- )
         {
             delete zv_caibrationList.takeAt(i);
         }
-        emit zg_currentOperation(OT_END_REMOVE_CALIBRATIONS, 0, 0);
+        emit zg_currentCalibrationOperation(COT_END_REMOVE_CALIBRATIONS, 0, 0);
     }
 }
 //======================================================
@@ -104,6 +103,16 @@ QString ZCalibrationRepository::zp_calibrationName(int calibrationIndex) const
     return zv_caibrationList.value(calibrationIndex)->zp_name();
 }
 //======================================================
+qint64 ZCalibrationRepository::zp_calibrationIdForCalibrationIndex(int calibrationIndex) const
+{
+    if(calibrationIndex < 0 || calibrationIndex >= zv_caibrationList.count())
+    {
+        return -1;
+    }
+
+    return zv_caibrationList.at(calibrationIndex)->zp_calibrationId();
+}
+//======================================================
 bool ZCalibrationRepository::zp_setCalibrationName(int row, const QString& name)
 {
     if(row < 0 || row >= zv_caibrationList.count())
@@ -117,7 +126,7 @@ bool ZCalibrationRepository::zp_setCalibrationName(int row, const QString& name)
     }
 
     zv_caibrationList[row]->zp_setBaseName(name);
-    emit zg_currentOperation(OT_CALIBRATION_CHANGED, row, row);
+    emit zg_currentCalibrationOperation(COT_CALIBRATION_CHANGED, row, row);
     return true;
 }
 //======================================================
@@ -169,11 +178,11 @@ bool ZCalibrationRepository::zp_setCalibrationChemicalElement(int row, const QSt
     }
 
     zv_caibrationList[row]->zp_setChemElement(chemElement);
-    emit zg_currentOperation(OT_CALIBRATION_CHANGED, row, row);
+    emit zg_currentCalibrationOperation(COT_CALIBRATION_CHANGED, row, row);
     return true;
 }
 //======================================================
-bool ZCalibrationRepository::zp_calibrationIsVisible(int row)
+bool ZCalibrationRepository::zp_isCalibrationVisible(int row)
 {
     if(row < 0 || row >= zv_caibrationList.count())
     {
@@ -205,9 +214,9 @@ bool ZCalibrationRepository::zp_setVisible(int row, bool visibility)
         return false;
     }
 
-    emit zg_currentOperation(OT_CALIBRATION_VISIBILITY_CHANGE, row, row);
+    emit zg_currentCalibrationOperation(COT_CALIBRATION_VISIBILITY_CHANGE, row, row);
     zv_caibrationList[row]->zp_setVisible(visibility);
-    emit zg_currentOperation(OT_END_CALIBRATION_VISIBILITY_CHANGE, row, row);
+    emit zg_currentCalibrationOperation(COT_END_CALIBRATION_VISIBILITY_CHANGE, row, row);
     return true;
 }
 //======================================================
@@ -230,6 +239,127 @@ bool ZCalibrationRepository::zp_isDirty(int row)
 
 //    return zv_caibrationList.value(row)->zp_suffix();
 //}
+//======================================================
+bool ZCalibrationRepository::zp_isSpectrumWindowVisible(qreal calibrationId, int windowIndex) const
+{
+    if(windowIndex < 0 || calibrationId < 0 )
+    {
+        return false;
+    }
+
+    for(int c = 0; c < zv_caibrationList.count(); c++)
+    {
+        if(zv_caibrationList.at(c)->zp_calibrationId() != calibrationId)
+        {
+            continue;
+        }
+
+        zv_caibrationList.at(c)->zp_isSpectrumWindowVisible(windowIndex);
+    }
+
+    return false;
+}
+//======================================================
+int ZCalibrationRepository::zp_spectrumWindowCount(qreal calibrationId) const
+{
+    if(calibrationId < 0)
+    {
+        return 0;
+    }
+
+    for(int c = 0; c < zv_caibrationList.count(); c++)
+    {
+        if(zv_caibrationList.at(c)->zp_calibrationId() != calibrationId)
+        {
+            continue;
+        }
+
+        return zv_caibrationList.at(c)->zp_spectrumWindowCount();
+    }
+
+    return 0;
+}
+//======================================================
+QString ZCalibrationRepository::zp_spectrumWindowName(qint64 calibrationId, int windowIndex) const
+{
+    if(calibrationId < 0)
+    {
+        return 0;
+    }
+
+    for(int c = 0; c < zv_caibrationList.count(); c++)
+    {
+        if(zv_caibrationList.at(c)->zp_calibrationId() != calibrationId)
+        {
+            continue;
+        }
+
+        return zv_caibrationList.at(c)->zp_spectrumWindowName(windowIndex);
+    }
+
+    return 0;
+}
+//======================================================
+ZCalibrationWindow::WindowType ZCalibrationRepository::zp_spectrumWindowType(qint64 calibrationId, int windowIndex) const
+{
+    if(calibrationId < 0)
+    {
+        return ZCalibrationWindow::WT_NOT_DEFINED;
+    }
+
+    for(int c = 0; c < zv_caibrationList.count(); c++)
+    {
+        if(zv_caibrationList.at(c)->zp_calibrationId() != calibrationId)
+        {
+            continue;
+        }
+
+        return zv_caibrationList.at(c)->zp_spectrumWindowType(windowIndex);
+    }
+
+    return ZCalibrationWindow::WT_NOT_DEFINED;
+}
+//======================================================
+int ZCalibrationRepository::zp_spectrumWindowFirstChannel(qint64 calibrationId, int windowIndex) const
+{
+    if(calibrationId < 0)
+    {
+        return 0;
+    }
+
+    for(int c = 0; c < zv_caibrationList.count(); c++)
+    {
+        if(zv_caibrationList.at(c)->zp_calibrationId() != calibrationId)
+        {
+            continue;
+        }
+
+        return zv_caibrationList.at(c)->zp_spectrumWindowFirstChannel(windowIndex);
+    }
+
+    return 0;
+}
+//======================================================
+int ZCalibrationRepository::zp_spectrumWindowLastChannel(qint64 calibrationId, int windowIndex) const
+{
+    if(calibrationId < 0)
+    {
+        return 0;
+    }
+
+    for(int c = 0; c < zv_caibrationList.count(); c++)
+    {
+        if(zv_caibrationList.at(c)->zp_calibrationId() != calibrationId)
+        {
+            continue;
+        }
+
+        return zv_caibrationList.at(c)->zp_spectrumWindowLastChannel(windowIndex);
+    }
+
+    return 0;
+
+}
 //======================================================
 double ZCalibrationRepository::zp_calculateConcentration(int row, const ZAbstractSpectrum* const spectrum, bool* ok) const
 {
@@ -263,6 +393,17 @@ void ZCalibrationRepository::zp_appendCalibrationsToArray(const QStringList& fil
 void ZCalibrationRepository::zp_onCurrentCalibrationChanged(int current, int previous)
 {
     zh_actionAvailabilityControl(current);
+    qint64 calibrationId;
+    if(current < 0 || current >= zv_caibrationList.count() )
+    {
+        calibrationId = -1;
+    }
+    else
+    {
+        calibrationId = zv_caibrationList.at(current)->zp_calibrationId();
+    }
+
+    emit zg_currentCalibration(calibrationId, current);
 }
 //======================================================
 void ZCalibrationRepository::zh_onNewCalibrationAction()
@@ -296,23 +437,6 @@ void ZCalibrationRepository::zh_onNewCalibrationAction()
     }
 }
 //======================================================
-void ZCalibrationRepository::zh_onEditCalibrationsAction()
-{
-//    int currentCalibrationIndex = -1;
-//    emit zg_requestCurrentCalibrationIndex(currentCalibrationIndex);
-//    if(currentCalibrationIndex < 0
-//            || currentCalibrationIndex >= zv_caibrationList.count())
-//    {
-//        return;
-//    }
-
-//    ZCalibrationEditDialog dialog;
-//    if(!dialog.exec())
-//    {
-//        return;
-//    }
-}
-//======================================================
 void ZCalibrationRepository::zh_onRemoveCalibrationsAction()
 {
     QList<int> selectedCalibrationIndexList;
@@ -330,6 +454,109 @@ void ZCalibrationRepository::zh_onRemoveCalibrationsAction()
     }
 }
 //======================================================
+void ZCalibrationRepository::zh_onNewWindowAction()
+{
+    int currentCalibrationIndex;
+    emit zg_requestCurrentCalibrationIndex(currentCalibrationIndex);
+
+    if(currentCalibrationIndex < 0 || currentCalibrationIndex >= zv_caibrationList.count())
+    {
+        return;
+    }
+
+    zv_caibrationList.at(currentCalibrationIndex)->zp_createNewSpectrumWindow();
+
+}
+//======================================================
+void ZCalibrationRepository::zh_onRemoveWindowAction()
+{
+    int currentCalibrationIndex;
+    emit zg_requestCurrentCalibrationIndex(currentCalibrationIndex);
+
+    if(currentCalibrationIndex < 0 || currentCalibrationIndex >= zv_caibrationList.count())
+    {
+        return;
+    }
+
+    QList<int> selectedWindowList;
+    emit zg_requestSelectedWindowIndexList(selectedWindowList);
+    if(selectedWindowList.isEmpty())
+    {
+        QString string = tr("There is no window to remove!");
+        QMessageBox::critical(0, tr("Window removing"), string, QMessageBox::Ok);
+        return;
+    }
+
+    QString question = tr("Do you want to remove the selected windows from the list?");
+    if(QMessageBox::question(0, tr("Window removing"), question, QMessageBox::Yes, QMessageBox::No)
+            == QMessageBox::No)
+    {
+        return;
+    }
+
+    qSort(selectedWindowList);
+    for(int i = selectedWindowList.count() - 1; i >= 0; i--)
+    {
+        zh_removeSpectrumWindow(currentCalibrationIndex, selectedWindowList.value(i));
+    }
+}
+//======================================================
+void ZCalibrationRepository::zh_removeSpectrumWindow(int currentCalibrationIndex, int spectrumWindowIndex)
+{
+    if(currentCalibrationIndex < 0 || currentCalibrationIndex >= zv_caibrationList.count())
+    {
+        return;
+    }
+
+    if(spectrumWindowIndex < 0 || spectrumWindowIndex >= zv_caibrationList.at(currentCalibrationIndex)->zp_spectrumWindowCount())
+    {
+        return;
+    }
+
+    zv_caibrationList[currentCalibrationIndex]->zp_removeSpectrumWindow(spectrumWindowIndex);
+}
+//======================================================
+void ZCalibrationRepository::zh_onWindowOperation(ZCalibration::WindowOperationType type, int first, int last)
+{
+    if(!sender())
+    {
+        return;
+    }
+
+    ZCalibration* calibration = static_cast<ZCalibration*>(sender());
+    for(int calibrationIndex = 0; calibrationIndex < zv_caibrationList.count(); calibrationIndex++)
+    {
+        if(zv_caibrationList.at(calibrationIndex) != calibration)
+        {
+            continue;
+        }
+
+        if(type == ZCalibration::WOT_INSERT_WINDOWS)
+        {
+            emit zg_currentWindowOperation(WOT_INSERT_WINDOWS, calibrationIndex, first, last);
+        }
+        else if(type == ZCalibration::WOT_END_INSERT_WINDOWS)
+        {
+            emit zg_currentWindowOperation(WOT_END_INSERT_WINDOWS, calibrationIndex, first, last);
+        }
+        else if(type == ZCalibration::WOT_REMOVE_WINDOWS)
+        {
+            emit zg_currentWindowOperation(WOT_REMOVE_WINDOWS, calibrationIndex, first, last);
+        }
+        else if(type == ZCalibration::WOT_END_REMOVE_WINDOWS)
+        {
+            emit zg_currentWindowOperation(WOT_END_REMOVE_WINDOWS, calibrationIndex, first, last);
+        }
+        else if(type == ZCalibration::WOT_CHANGED)
+        {
+            emit zg_currentWindowOperation(WOT_WINDOW_CHANGED, calibrationIndex, first, last);
+        }
+
+        break;
+    }
+
+}
+//======================================================
 void ZCalibrationRepository::zh_removeCalibration(int index)
 {
     if(index < 0 || index >= zv_caibrationList.count())
@@ -337,9 +564,9 @@ void ZCalibrationRepository::zh_removeCalibration(int index)
         return;
     }
 
-    emit zg_currentOperation(OT_REMOVE_CALIBRATIONS, index, index);
+    emit zg_currentCalibrationOperation(COT_REMOVE_CALIBRATIONS, index, index);
     delete zv_caibrationList.takeAt(index);
-    emit zg_currentOperation(OT_END_REMOVE_CALIBRATIONS, index, index);
+    emit zg_currentCalibrationOperation(COT_END_REMOVE_CALIBRATIONS, index, index);
 
 }
 //======================================================
@@ -394,16 +621,27 @@ bool ZCalibrationRepository::zh_appendCalibrationToList(ZCalibration* calibratio
         return false;
     }
 
+    connect(calibration, &ZCalibration::zg_windowOperation,
+            this, &ZCalibrationRepository::zh_onWindowOperation);
+
+//    connect(calibration, &ZCalibration::zg_message,
+//            this, &ZCalibrationRepository::zh_onCalibrationOperation);
+//    connect(calibration, &ZCalibration::zg_visibilityChanged,
+//            this, &ZCalibrationRepository::zh_onCalibrationOperation);
+//    connect(calibration, &ZCalibration::zg_dirtyChanged,
+//            this, &ZCalibrationRepository::zh_onCalibrationOperation);
+
+
+
     int insertIndex = zv_caibrationList.count();
-    emit zg_currentOperation(OT_INSERT_CALIBRATIONS, insertIndex, insertIndex);
+    emit zg_currentCalibrationOperation(COT_INSERT_CALIBRATIONS, insertIndex, insertIndex);
     zv_caibrationList << calibration;
-    emit zg_currentOperation(OT_END_INSERT_CALIBRATIONS, -1, -1);
+    emit zg_currentCalibrationOperation(COT_END_INSERT_CALIBRATIONS, -1, -1);
     return true;
 }
 //======================================================
 void ZCalibrationRepository::zh_actionAvailabilityControl(int current)
 {
-    zv_editCalibrationsAction->setDisabled(current < 0);
     zv_removeCalibrationAction->setDisabled(current < 0);
 }
 //======================================================
@@ -419,11 +657,6 @@ void ZCalibrationRepository::zh_createActions()
     zv_openCalibrationsAction->setIcon(QIcon(":/images/addGreen.png"));
     zv_openCalibrationsAction->setText(tr("Open calibrations"));
     zv_openCalibrationsAction->setToolTip(tr("Append a new calibration to the list"));
-
-    zv_editCalibrationsAction  = new QAction(this);
-    zv_editCalibrationsAction->setIcon(QIcon(":/images/addGreen.png"));
-    zv_editCalibrationsAction->setText(tr("Edit calibrations"));
-    zv_editCalibrationsAction->setToolTip(tr("Edit selected calibration"));
 
     zv_removeCalibrationAction = new QAction(this);
     zv_removeCalibrationAction->setIcon(QIcon(":/images/CRemove3Blue.png"));
@@ -449,9 +682,13 @@ void ZCalibrationRepository::zh_createConnections()
             this, &ZCalibrationRepository::zh_onNewCalibrationAction);
     connect(zv_openCalibrationsAction, &QAction::triggered,
             this, &ZCalibrationRepository::zg_openCalibrationsActionTriggered);
-    connect(zv_editCalibrationsAction, &QAction::triggered,
-            this, &ZCalibrationRepository::zh_onEditCalibrationsAction);
     connect(zv_removeCalibrationAction, &QAction::triggered,
             this, &ZCalibrationRepository::zh_onRemoveCalibrationsAction);
+
+    connect(zv_newWindowAction, &QAction::triggered,
+            this, &ZCalibrationRepository::zh_onNewWindowAction);
+    connect(zv_removeWindowAction, &QAction::triggered,
+            this, &ZCalibrationRepository::zh_onRemoveWindowAction);
+
 }
 //======================================================

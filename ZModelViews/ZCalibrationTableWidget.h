@@ -8,6 +8,7 @@ class QTableView;
 class QAbstractItemModel;
 class QHBoxLayout;
 class QAction;
+class ZCalibrationRepository;
 //==============================================================
 class ZCalibrationTableWidget : public QWidget
 {
@@ -18,6 +19,7 @@ public:
      // FUNCS
     void zp_setModel(QAbstractItemModel* model);
     void zp_appendButtonActions(QList<QAction*>);
+    void zp_connectToCalibrationRepository(ZCalibrationRepository*);
 
 signals:
 

@@ -9,7 +9,7 @@ class ZSpectrumArrayWidget;
 class ZJointSpectrumTableWidget;
 class ZChemElementWidget;
 class ZCalibrationTableWidget;
-class ZJointCalibrationWindowTableWidget;
+class ZCalibrationWindowTableWidget;
 class ZWidgetWithSidebar;
 class ZMessagePanel;
 
@@ -21,14 +21,14 @@ class ZArrayModel;
 class ZJointSpectraModel;
 class ZChemElementModel;
 class ZCalibrationModel;
-class ZJointCalibrationWindowModel;
+class ZCalibrationWindowModel;
 
 class ZSpectrumArrayRepository;
 class ZCalibrationRepository;
 
 class ZJointSpectraDataManager;
 class ZChemElementDataManager;
-class ZJointCalibrationWindowDataManager;
+class ZCalibrationWindowDataManager;
 class ZPlotterDataManager;
 //==========================================================
 class MainWindow : public QMainWindow
@@ -66,7 +66,7 @@ private:
     ZJointSpectrumTableWidget* zv_spectrumTableWidget;
     ZChemElementWidget* zv_chemElementWidget;
     ZCalibrationTableWidget* zv_calibrationTableWidget;
-    ZJointCalibrationWindowTableWidget* zv_jointCalibrationWindowtableWidget;
+    ZCalibrationWindowTableWidget* zv_jointCalibrationWindowTableWidget;
 
     ZMessagePanel* zv_messagePanel;
     ZPlotter* zv_plotter;
@@ -76,14 +76,14 @@ private:
     ZJointSpectraModel* zv_jointSpectraModel;
     ZChemElementModel* zv_chemElementModel;
     ZCalibrationModel* zv_calibrationModel;
-    ZJointCalibrationWindowModel* zv_jointCalibrationWindowModel;
+    ZCalibrationWindowModel* zv_jointCalibrationWindowModel;
 
     // components
     ZFileActionManager* zv_fileActionManager;
     ZSpectrumArrayRepository* zv_spectrumArrayRepository;
     ZJointSpectraDataManager* zv_jointSpectraDataManager;
     ZCalibrationRepository* zv_calibrationRepository;
-    ZJointCalibrationWindowDataManager* zv_jointCalibrationWindowDataManager;
+    ZCalibrationWindowDataManager* zv_jointCalibrationWindowDataManager;
     ZChemElementDataManager* zv_chemElementDataManager;
     ZPlotterDataManager* zv_plotterDataManager;
 

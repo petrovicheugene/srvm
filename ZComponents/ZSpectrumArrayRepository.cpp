@@ -1,5 +1,5 @@
 //==================================================================
-#include "ZSpectraArrayRepository.h"
+#include "ZSpectrumArrayRepository.h"
 #include "globalVariables.h"
 #include "ZFileActionManager.h"
 
@@ -571,7 +571,7 @@ void ZSpectrumArrayRepository::zh_createArray(const ZRawSpectrumArray& rawArray)
     emit zg_currentArrayOperation(AOT_END_INSERT_ARRAYS, nextArrayIndex, nextArrayIndex);
 }
 //==================================================================
-void ZSpectrumArrayRepository::zh_removeArray(int arrayIndex)
+bool ZSpectrumArrayRepository::zh_removeArray(int arrayIndex)
 {
     int nextCurrentIndex;
     if(arrayIndex == zv_arrayList.count() - 1 && zv_arrayList.count() > 1)
@@ -590,27 +590,23 @@ void ZSpectrumArrayRepository::zh_removeArray(int arrayIndex)
     emit zg_currentArrayOperation(AOT_REMOVE_ARRAYS, arrayIndex, arrayIndex);
     delete zv_arrayList.takeAt(arrayIndex);
     emit zg_currentArrayOperation(AOT_END_REMOVE_ARRAYS, arrayIndex, arrayIndex);
-#ifdef DBG
-    qDebug() << "Repo Remove array: Next Array" << nextCurrentIndex;
-#endif
     emit zg_setCurrentArrayIndex(nextCurrentIndex);
+    return true;
 }
 //==================================================================
-void ZSpectrumArrayRepository::zh_removeSpectrum(int arrayIndex, int spectrumIndex)
+bool ZSpectrumArrayRepository::zh_removeSpectrum(int arrayIndex, int spectrumIndex)
 {
     if(arrayIndex < 0 || arrayIndex >= zv_arrayList.count())
     {
-        return;
+        return false;
     }
 
     if(spectrumIndex < 0 || spectrumIndex >= zv_arrayList.at(arrayIndex)->zp_spectrumCount())
     {
-        return;
+        return false;
     }
 
-    // emit zg_currentSpectrumOperation(SOT_REMOVE_SPECTRA, arrayIndex, spectrumIndex, spectrumIndex);
-    zv_arrayList[arrayIndex]->zp_removeSpectrum(spectrumIndex);
-    // emit zg_currentSpectrumOperation(SOT_END_REMOVE_SPECTRA, arrayIndex, spectrumIndex, spectrumIndex);
+    return zv_arrayList[arrayIndex]->zp_removeSpectrum(spectrumIndex);
 }
 //==================================================================
 void ZSpectrumArrayRepository::zh_removeChemicalElement(int arrayIndex, int elementIndex)
@@ -687,10 +683,6 @@ void ZSpectrumArrayRepository::zp_currentArrayChanged(int current, int previous)
     {
         arrayId = zv_arrayList.at(current)->zp_arrayId();
     }
-
-#ifdef DBG
-    qDebug() << "Repo Current Ch" << current << arrayId;
-#endif
 
     emit zg_currentArrayId(arrayId, current);
 }

@@ -15,6 +15,8 @@ void ZChemElementDataManager::zp_connectToSpectraArrayRepository(ZSpectrumArrayR
     // array repository <-> array model
     connect(repository, &ZSpectrumArrayRepository::zg_currentChemElementOperation,
             this, &ZChemElementDataManager::zh_onRepositoryChemElementOperation);
+    connect(repository, &ZSpectrumArrayRepository::zg_currentArrayId,
+            this, &ZChemElementDataManager::zp_currentArrayChanged);
 }
 //=========================================================
 int ZChemElementDataManager::zp_rowCount() const

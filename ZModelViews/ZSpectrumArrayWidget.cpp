@@ -4,6 +4,7 @@
 #include "ZArrayModel.h"
 #include "ZStringDelegate.h"
 #include "ZVisibilityStringDelegate.h"
+#include "ZSpectrumArrayRepository.h"
 
 #include <QTableView>
 #include <QHBoxLayout>
@@ -57,6 +58,22 @@ void ZSpectrumArrayWidget::zp_appendButtonActions(QList<QAction*> actionList)
                 actionList[a], &QAction::trigger);
         zv_buttonLayout->addWidget(button);
     }
+}
+//==============================================================
+void ZSpectrumArrayWidget::zp_connectToSpectrumArrayRepository(ZSpectrumArrayRepository* repository)
+{
+    zp_appendButtonActions(repository->zp_arrayActions());
+
+    connect(repository, &ZSpectrumArrayRepository::zg_setCurrentArrayIndex,
+            this, &ZSpectrumArrayWidget::zp_setCurrentArrayIndex);
+    connect(repository, &ZSpectrumArrayRepository::zg_startCurrentArrayEdition,
+            this, &ZSpectrumArrayWidget::zp_startCurrentArrayEdition);
+    connect(repository, &ZSpectrumArrayRepository::zg_requestCurrentArrayIndex,
+            this, &ZSpectrumArrayWidget::zp_currentArrayIndex);
+    connect(this, &ZSpectrumArrayWidget::zg_currentArrayChanged,
+            repository, &ZSpectrumArrayRepository::zp_currentArrayChanged);
+
+
 }
 //==============================================================
 void ZSpectrumArrayWidget::zp_setCurrentArrayIndex(int arrayIndex)

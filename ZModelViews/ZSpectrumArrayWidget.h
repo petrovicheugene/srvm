@@ -8,6 +8,7 @@ class QTableView;
 class ZArrayModel;
 class QAction;
 class QHBoxLayout;
+class ZSpectrumArrayRepository;
 //==============================================================
 class ZSpectrumArrayWidget : public QWidget
 {
@@ -18,6 +19,8 @@ public:
     // FUNCS
    void zp_setModel(ZArrayModel* model);
    void zp_appendButtonActions(QList<QAction*>);
+
+   void zp_connectToSpectrumArrayRepository(ZSpectrumArrayRepository*);
 
 signals:
 

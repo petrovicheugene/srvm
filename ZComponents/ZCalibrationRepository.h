@@ -17,16 +17,30 @@ public:
     explicit ZCalibrationRepository(QObject *parent = 0);
 
     // VARS
-    enum OperationType {OT_CALIBRATION_VISIBILITY_CHANGE,
-                        OT_END_CALIBRATION_VISIBILITY_CHANGE,
-                        OT_CALIBRATION_CHANGED,
-                        OT_INSERT_CALIBRATIONS,
-                        OT_END_INSERT_CALIBRATIONS,
-                        OT_REMOVE_CALIBRATIONS,
-                        OT_END_REMOVE_CALIBRATIONS,
-                        OT_BEGIN_RESET,
-                        OT_END_RESET
+    enum CalibrationOperationType {COT_CALIBRATION_VISIBILITY_CHANGE,
+                        COT_END_CALIBRATION_VISIBILITY_CHANGE,
+                        COT_CALIBRATION_CHANGED,
+                        COT_INSERT_CALIBRATIONS,
+                        COT_END_INSERT_CALIBRATIONS,
+                        COT_REMOVE_CALIBRATIONS,
+                        COT_END_REMOVE_CALIBRATIONS,
+                        COT_BEGIN_RESET,
+                        COT_END_RESET
                        };
+
+    enum WindowOperationType {WOT_WINDOW_VISIBILITY_CHANGE,
+                        WOT_END_WINDOW_VISIBILITY_CHANGE,
+                        WOT_WINDOW_CHANGED,
+                        WOT_INSERT_WINDOWS,
+                        WOT_END_INSERT_WINDOWS,
+                        WOT_REMOVE_WINDOWS,
+                        WOT_END_REMOVE_WINDOWS,
+                        WOT_BEGIN_RESET,
+                        WOT_END_RESET
+                       };
+
+
+
 
     // FUNCS
     void zp_connectToFileManager(ZFileActionManager*);
@@ -41,32 +55,46 @@ public:
     int zp_calibrationCount() const;
     int zp_visibleCalibrationCount() const;
     QString zp_calibrationName(int calibrationIndex) const;
+    qint64 zp_calibrationIdForCalibrationIndex(int calibrationIndex) const;
     bool zp_setCalibrationName(int row, const QString&);
     QString zp_visibleCalibrationName(int visibleCalibrationIndex) const;
 
     QString zp_calibrationChemicalElement(int row) const;
     bool zp_setCalibrationChemicalElement(int row, const QString&);
 
-    bool zp_calibrationIsVisible(int row);
+    bool zp_isCalibrationVisible(int row);
     QColor zp_calibrationColor(int row);
     bool zp_setVisible(int row, bool checked);
 
     bool zp_isDirty(int row);
 
-    //QString zp_fileSuffix(int row);
+    // Windows
+    bool zp_isSpectrumWindowVisible(qreal, int) const;
+    int zp_spectrumWindowCount(qreal) const;
+    QString zp_spectrumWindowName(qint64 calibrationId, int windowIndex) const;
+    ZCalibrationWindow::WindowType zp_spectrumWindowType(qint64 calibrationId, int windowIndex) const;
+    int zp_spectrumWindowFirstChannel(qint64 calibrationId, int windowIndex) const;
+    int zp_spectrumWindowLastChannel(qint64 calibrationId, int windowIndex) const;
 
     double zp_calculateConcentration(int row, const ZAbstractSpectrum* const, bool *ok = 0) const;
 
 signals:
 
     void zg_message(QString) const;
-    void zg_currentOperation(OperationType, int, int);
+    void zg_currentCalibrationOperation(CalibrationOperationType, int, int) const;
+    void zg_currentWindowOperation(WindowOperationType, int, int, int) const;
+
     void zg_requestSelectedCalibrationIndexList(QList<int>&);
     void zg_requestCurrentCalibrationIndex(int&);
     void zg_openCalibrationsActionTriggered() const;
 
     void zg_setCurrentCalibrationIndex(int calibrationIndex);
     void zg_startCurrentCalibrationEdition();
+    void zg_currentCalibration(qreal calibrationId, int current);
+
+    void zg_requestCurrentWindowIndex(int&) const;
+    void zg_requestSelectedWindowIndexList(QList<int>&) const;
+
 
 public slots:
 
@@ -76,8 +104,10 @@ public slots:
 private slots:
 
     void zh_onNewCalibrationAction();
-    void zh_onEditCalibrationsAction();
     void zh_onRemoveCalibrationsAction();
+    void zh_onNewWindowAction();
+    void zh_onRemoveWindowAction();
+    void zh_onWindowOperation(ZCalibration::WindowOperationType type, int first, int last);
 
 private:
 
@@ -85,14 +115,13 @@ private:
     QList<ZCalibration*> zv_caibrationList;
     QAction* zv_newCalibrationAction;
     QAction* zv_openCalibrationsAction;
-    QAction* zv_editCalibrationsAction;
     QAction* zv_removeCalibrationAction;
 
     QAction* zv_newWindowAction;
     QAction* zv_removeWindowAction;
 
-
     QString zv_defaultCalibrationName;
+
     // FUNCS
     void zh_createActions();
     void zh_createConnections();
@@ -102,6 +131,8 @@ private:
     bool zh_createNewCalibration(const QString&);
     bool zh_appendCalibrationToList(ZCalibration*);
     void zh_actionAvailabilityControl(int current);
+
+    void zh_removeSpectrumWindow(int currentCalibrationIndex, int spectrumWindowIndex);
 
 };
 //======================================================

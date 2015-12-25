@@ -36,6 +36,8 @@ void ZPlotterDataManager::zp_connectToSpectraArrayRepository(ZSpectrumArrayRepos
             this, &ZPlotterDataManager::zh_onArrayMaxParametersChanged);
     connect(repository, &ZSpectrumArrayRepository::zg_requestIsPlotScaled,
             this, &ZPlotterDataManager::zh_definePlotScaling);
+    connect(repository, &ZSpectrumArrayRepository::zg_currentArrayId,
+            this, &ZPlotterDataManager::zp_currentArrayChanged);
 
 }
 //===========================================================

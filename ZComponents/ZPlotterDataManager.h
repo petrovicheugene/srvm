@@ -4,7 +4,7 @@
 //===========================================================
 #include <QObject>
 #include <QGraphicsItem>
-#include "ZSpectraArrayRepository.h"
+#include "ZSpectrumArrayRepository.h"
 
 //===========================================================
 class ZPlotter;

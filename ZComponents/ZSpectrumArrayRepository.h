@@ -166,8 +166,8 @@ private:
     void zh_createConnections();
     void zh_createArray(const ZRawSpectrumArray&);
 
-    void zh_removeArray(int);
-    void zh_removeSpectrum(int, int);
+    bool zh_removeArray(int);
+    bool zh_removeSpectrum(int, int);
     void zh_removeChemicalElement(int, int);
     int zh_chemElementIndex(int arrayIndex, const QString& chemElement);
     QList<ZRawSpectrumArray> zh_createRawArrayList() const;

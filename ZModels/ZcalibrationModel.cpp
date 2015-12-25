@@ -64,7 +64,7 @@ QVariant ZCalibrationModel::data(const QModelIndex & index, int role) const
     {
         if(index.column() == 0)
         {
-            return QVariant(zv_calibrationRepository->zp_calibrationIsVisible(index.row()));
+            return QVariant(zv_calibrationRepository->zp_isCalibrationVisible(index.row()));
         }
     }
 
@@ -177,35 +177,35 @@ void ZCalibrationModel::zp_connectToCalibrationRepository(ZCalibrationRepository
     beginResetModel();
 
     zv_calibrationRepository = repository;
-    connect(zv_calibrationRepository, &ZCalibrationRepository::zg_currentOperation,
+    connect(zv_calibrationRepository, &ZCalibrationRepository::zg_currentCalibrationOperation,
             this, &ZCalibrationModel::zh_onCalibrationRepositoryOperation);
 
     endResetModel();
 }
 //==================================================================
-void ZCalibrationModel::zh_onCalibrationRepositoryOperation(ZCalibrationRepository::OperationType type, int first, int last)
+void ZCalibrationModel::zh_onCalibrationRepositoryOperation(ZCalibrationRepository::CalibrationOperationType type, int first, int last)
 {
-    if(type == ZCalibrationRepository::OT_BEGIN_RESET)
+    if(type == ZCalibrationRepository::COT_BEGIN_RESET)
     {
         beginResetModel();
     }
-    else if(type == ZCalibrationRepository::OT_END_RESET)
+    else if(type == ZCalibrationRepository::COT_END_RESET)
     {
         endResetModel();
     }
-    else if(type == ZCalibrationRepository::OT_INSERT_CALIBRATIONS)
+    else if(type == ZCalibrationRepository::COT_INSERT_CALIBRATIONS)
     {
         beginInsertRows(QModelIndex(), first, last);
     }
-    else if(type == ZCalibrationRepository::OT_END_INSERT_CALIBRATIONS)
+    else if(type == ZCalibrationRepository::COT_END_INSERT_CALIBRATIONS)
     {
         endInsertRows();
     }
-    else if(type == ZCalibrationRepository::OT_REMOVE_CALIBRATIONS)
+    else if(type == ZCalibrationRepository::COT_REMOVE_CALIBRATIONS)
     {
         beginRemoveRows(QModelIndex(), first, last);
     }
-    else if(type == ZCalibrationRepository::OT_END_REMOVE_CALIBRATIONS)
+    else if(type == ZCalibrationRepository::COT_END_REMOVE_CALIBRATIONS)
     {
         endRemoveRows();
     }
