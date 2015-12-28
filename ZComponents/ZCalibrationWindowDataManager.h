@@ -35,9 +35,10 @@ public:
     int zp_columnCount() const;
     QString zp_columnName(int) const;
     QVariant zp_data(QModelIndex index) const;
+    bool zp_setData(QModelIndex index, QVariant data);
     QColor zp_windowColor(int) const;
     bool zp_isWindowVisible(int) const;
-    bool zp_setWindowVisible(int, bool);
+    bool zp_setWindowVisible(int windowIndex, bool visibility);
 
 signals:
 

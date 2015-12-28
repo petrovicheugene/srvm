@@ -376,13 +376,6 @@ void ZPlotter::zp_addItem(QGraphicsItem * item)
     {
         zp_setVerticalAbsMax(itemBoundingSceneRect.top());
     }
-
-    // zh_recalcItemLogarithmCoordinates();
-
-    if(zv_horizontalScrollBar->isHidden() && zv_verticalScrollBar->isHidden())
-    {
-        zv_plotView->fitInView(itemBoundingSceneRect);
-    }
 }
 //====================================================
 void ZPlotter::zp_removeItem(QGraphicsItem * item)
@@ -406,6 +399,16 @@ QList<QGraphicsItem*> ZPlotter::zp_itemListForType(int type) const
     }
 
     return itemList;
+}
+//====================================================
+int ZPlotter::zp_itemCount() const
+{
+    if(zv_plotScene == 0)
+    {
+        return 0;
+    }
+
+    return zv_plotScene->items().count();
 }
 //====================================================
 void ZPlotter::zp_appendButtonsToDashboard(QList<QAction*>& actionList,
@@ -449,14 +452,14 @@ void ZPlotter::zp_setAutoDefineVerticalAbsMax(bool flag)
 //====================================================
 void ZPlotter::zp_verticalDistortionFactors(qreal& distortionFactor, qreal& distortionCorrectionFactor)
 {
-     distortionFactor = zv_verticalDistortionFactor;
-     distortionCorrectionFactor = zv_verticalDistortionCorrectionFactor;
+    distortionFactor = zv_verticalDistortionFactor;
+    distortionCorrectionFactor = zv_verticalDistortionCorrectionFactor;
 }
 //====================================================
 bool ZPlotter::zp_isPlotScaled()
 {
     return zv_horizontalScrollBar->isVisible()
-    && zv_verticalScrollBar->isVisible();
+            && zv_verticalScrollBar->isVisible();
 }
 //====================================================
 void ZPlotter::zp_setLeftRuleVisible(bool visible)
@@ -531,6 +534,11 @@ void ZPlotter::zp_setRightRuleLabelVisible(bool visible)
     zv_rulerWidget->zp_setRightRuleLabelVisible(visible);
 }
 //====================================================
+void ZPlotter::zp_currentVisibleSceneRect(QRectF& sceneRect)
+{
+    zv_plotView->zp_viewPortSceneRect(sceneRect);
+}
+//====================================================
 void ZPlotter::zp_fitInBoundingRect()
 {
     if(!zv_plotView || !zv_plotScene)
@@ -549,7 +557,7 @@ void ZPlotter::zp_fitInBoundingRect()
         rectToFit = zv_plotScene->sceneRect();
     }
     zv_plotView->fitInView(rectToFit);
-    //zv_plotView->fitInView(zv_plotScene->itemsBoundingRect());
+    //zv_plotView->ensureVisible(rectToFit);
 }
 //====================================================
 void ZPlotter::resizeEvent(QResizeEvent* event)
@@ -688,7 +696,7 @@ void ZPlotter::zh_scrollBarVisibleControl(int min , int max)
 //====================================================
 bool ZPlotter::zh_recalcVerticalDistortionFactors(qreal distortionValue)
 {
-     if(zv_verticalAbsMax == 0)
+    if(zv_verticalAbsMax == 0)
     {
         return false;
     }

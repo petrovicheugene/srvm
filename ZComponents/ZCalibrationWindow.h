@@ -16,29 +16,33 @@ public:
 
     ZCalibrationWindow();
     ZCalibrationWindow(const QString&,  WindowType = WT_NOT_DEFINED );
+    ZCalibrationWindow(const QString&,  WindowType, int firstChannel, int lastChannel);
+
 
     bool zp_isWindowVisible() const;
-    void zp_setWindowVisible(bool);
+    bool zp_setWindowVisible(bool);
 
-    QString zp_name() const;
-    bool zp_setName(const QString&);
+    QString zp_windowName() const;
+    bool zp_setWindowName(const QString&);
 
     int zp_firstChannel() const;
     int zp_lastChannel() const;
 
+    bool zp_setWindowFirstChannel(int channel);
+    bool zp_setWindowLastChannel(int channel);
+
     bool  zp_setWindowMarginChannels(int, int);
 
     WindowType zp_type() const;
-    void zp_setType(WindowType);
+    bool zp_setWindowType(WindowType);
 
     qint64 zp_windowId() const;
-
     static QString zp_typeName(WindowType);
-
+    static WindowType zp_typeForName(const QString& );
 private:
 
 
-    QString zv_name;
+    QString zv_windowName;
     int zv_firstChannel;
     int zv_lastChannel;
     WindowType zv_type;

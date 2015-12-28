@@ -10,6 +10,7 @@ class ZAbstractSpectrum;
 class ZSpectrumGraphicsItem : public QGraphicsItem
 {
 public:
+
     ZSpectrumGraphicsItem(const ZAbstractSpectrum* spectrum,
                           qreal boundingRectTopFactor,
                           qreal distortionFactor,
@@ -17,8 +18,8 @@ public:
                           QGraphicsItem * parent = 0);
     QRectF boundingRect() const override;
     void paint(QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget = 0) override;
-    QPainterPath shape() const;
-    int	 type() const;
+    QPainterPath shape() const override;
+    int type() const override;
 
     //
     void zp_setSpectrumData(const QList<int>&);

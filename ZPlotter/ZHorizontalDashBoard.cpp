@@ -236,6 +236,7 @@ void ZHorizontalDashBoard::zh_fitViewInScene() const
         rectToFit = zv_plotGraphicsScene->sceneRect();
     }
     zv_plotGraphicsView->fitInView(rectToFit);
+    //zv_plotGraphicsView->ensureVisible(rectToFit, 2, 2);
 }
 //===========================================================
 void ZHorizontalDashBoard::zh_hideGrid(bool toggled) const

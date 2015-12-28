@@ -74,6 +74,7 @@ public:
     void zp_addItem(QGraphicsItem * item);
     void zp_removeItem(QGraphicsItem * item);
     QList<QGraphicsItem*> zp_itemListForType(int type) const;
+    int zp_itemCount() const;
 
     void zp_appendButtonsToDashboard(QList<QAction*>&,
                                      Qt::AlignmentFlag align,
@@ -85,6 +86,7 @@ public:
     void zp_verticalDistortionFactors(qreal& distortionFactor, qreal& distortionCorrectionFactor);
 
     bool zp_isPlotScaled();
+
 signals:
 
 public slots:
@@ -98,6 +100,8 @@ public slots:
     void zp_setBottomRuleLabelVisible(bool visible);
     void zp_setLeftRuleLabelVisible(bool visible);
     void zp_setRightRuleLabelVisible(bool visible);
+
+    void zp_currentVisibleSceneRect(QRectF& sceneRect);
 
     void zp_fitInBoundingRect();
 protected:

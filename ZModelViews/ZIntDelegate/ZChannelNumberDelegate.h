@@ -4,11 +4,11 @@
 //====================================
 #include <QStyledItemDelegate>
 //====================================
-class ZIntDelegate : public QStyledItemDelegate
+class ZChannelNumberDelegate : public QStyledItemDelegate
 {
     Q_OBJECT
 public:
-    explicit ZIntDelegate(QObject *parent = 0);
+    explicit ZChannelNumberDelegate(QObject *parent = 0);
 
     QWidget * createEditor(QWidget* parent, const QStyleOptionViewItem & option, const QModelIndex & index ) const;
     virtual void	setEditorData(QWidget * editor, const QModelIndex & index) const;

@@ -44,13 +44,20 @@ public:
     double zp_calcConcentration(const ZAbstractSpectrum* const, bool *ok = 0);
 
     // windows
-    void zp_createNewSpectrumWindow();
-    bool zp_isSpectrumWindowVisible(int windowIndex);
-    int zp_spectrumWindowCount();
-    QString zp_spectrumWindowName(int windowIndex);
-    ZCalibrationWindow::WindowType zp_spectrumWindowType(int windowIndex);
-    int zp_spectrumWindowFirstChannel(int windowIndex);
-    int zp_spectrumWindowLastChannel(int windowIndex);
+    void zp_createNewCalibrationWindow(int firstChannel = 0, int lastChannel = 0);
+    bool zp_isCalibrationWindowVisible(int windowIndex);
+    bool zp_setCalibrationWindowVisible(int windowIndex, bool visibility);
+    int zp_calibrationWindowCount();
+    QString zp_calibrationWindowName(int windowIndex);
+    bool zp_setCalibrationWindowName(int windowIndex, const QString&);
+    ZCalibrationWindow::WindowType zp_calibrationWindowType(int windowIndex);
+    bool zp_setCalibrationWindowType(int windowIndex, ZCalibrationWindow::WindowType type);
+
+    int zp_calibrationWindowFirstChannel(int windowIndex);
+    bool zp_setCalibrationWindowFirstChannel(int windowIndex, int channel);
+    int zp_calibrationWindowLastChannel(int windowIndex);
+    bool zp_setCalibrationWindowLastChannel(int windowIndex, int channel);
+
     qint64 zp_spectrumWindowId(int windowIndex);
     bool zp_removeSpectrumWindow(int);
 

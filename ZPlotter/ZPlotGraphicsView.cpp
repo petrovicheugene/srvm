@@ -80,73 +80,127 @@ bool ZPlotGraphicsView::zp_viewPortCoordinates(QRect& globalRect, QRectF& sceneR
     return true;
 }
 //=============================================================
+bool ZPlotGraphicsView::zp_viewPortSceneRect(QRectF&sceneRect)
+{
+    if(!scene())
+    {
+        return false;
+    }
+
+    sceneRect = mapToScene(viewport()->rect().adjusted(1,1,-1,-1)).boundingRect();
+    return true;
+}
+//=============================================================
 void ZPlotGraphicsView::zp_scale(Qt::Orientation orientation, bool increase)
 {
     //zv_sceneCenterPos = mapToScene(viewport()->rect().center());
 
     QRectF oldDisplayedSceneRect = mapToScene(viewport()->rect().adjusted(2,-1,-2,1)).boundingRect();
-    //QRectF oldDisplayedSceneRect = mapToScene(viewport()->rect()).boundingRect();
-    QRectF displayedSceneRect = oldDisplayedSceneRect;
     QRectF sceneItemBoundingRect = scene()->itemsBoundingRect();
 
     qreal scaleRate;
-    if(increase)
-    {
-        scaleRate = 0.1;
-    }
-    else
-    {
-        scaleRate = -0.1;
-    }
+    //    if(increase)
+    //    {
+
+    //        scaleRate = 1.1;
+    //    }
+    //    else
+    //    {
+    //        scaleRate = 0.9;
+    //    }
 
     if(orientation == Qt::Vertical)
     {
         if(increase)
         {
-            displayedSceneRect.setTop(displayedSceneRect.top() + displayedSceneRect.height() * scaleRate);
+            scaleRate = zv_minSideSizeOfVisibleScene / oldDisplayedSceneRect.height();
+            if(scaleRate < 0.9)
+            {
+                scaleRate = 0.9;
+            }
         }
         else
         {
-            displayedSceneRect.setTop(displayedSceneRect.top() + displayedSceneRect.height() * scaleRate/2);
-            // displayedSceneRect.setBottom(displayedSceneRect.bottom() - displayedSceneRect.height() * scaleRate/2);
+            scaleRate = sceneItemBoundingRect.height() / oldDisplayedSceneRect.height();
+            if(scaleRate > 1.1)
+            {
+                scaleRate = 1.1;
+            }
         }
-     }
+        scale(1, scaleRate);
+    }
     else
     {
-        displayedSceneRect.setRight(displayedSceneRect.right() - displayedSceneRect.width() * scaleRate);
-        displayedSceneRect.setLeft(displayedSceneRect.left() + displayedSceneRect.width() * scaleRate);
+        // scale(1, scaleRate);
     }
 
-    if(displayedSceneRect.top() < sceneItemBoundingRect.top())
-    {
-        displayedSceneRect.setTop(sceneItemBoundingRect.top());
-    }
-    if(displayedSceneRect.bottom() > sceneItemBoundingRect.bottom())
-    {
-        displayedSceneRect.setBottom(sceneItemBoundingRect.bottom());
-    }
-    if(displayedSceneRect.left() < sceneItemBoundingRect.left())
-    {
-        displayedSceneRect.setLeft(sceneItemBoundingRect.left());
-    }
-    if(displayedSceneRect.right() > sceneItemBoundingRect.right())
-    {
-        displayedSceneRect.setRight(sceneItemBoundingRect.right());
-    }
 
-    if(orientation == Qt::Horizontal && (displayedSceneRect.width() <= zv_minSideSizeOfVisibleScene
-            || displayedSceneRect.width() > sceneItemBoundingRect.width()))
-    {
-        return;
-    }
 
-    if(orientation == Qt::Vertical && (displayedSceneRect.height() <= zv_minSideSizeOfVisibleScene
-            || displayedSceneRect.height() > sceneItemBoundingRect.height()))
-    {
-        return;
-    }
+    //    QRectF oldDisplayedSceneRect = mapToScene(viewport()->rect().adjusted(2,-1,-2,1)).boundingRect();
+    //    //QRectF oldDisplayedSceneRect = mapToScene(viewport()->rect()).boundingRect();
+    //    QRectF displayedSceneRect = oldDisplayedSceneRect;
+    //    QRectF sceneItemBoundingRect = scene()->itemsBoundingRect();
 
-    fitInView(displayedSceneRect.normalized());
+    //    qreal scaleRate;
+    //    if(increase)
+    //    {
+    //        scaleRate = 0.1;
+    //    }
+    //    else
+    //    {
+    //        scaleRate = -0.1;
+    //    }
+
+    //    if(orientation == Qt::Vertical)
+    //    {
+    //        if(increase)
+    //        {
+    //            displayedSceneRect.setTop(displayedSceneRect.top() + displayedSceneRect.height() * scaleRate);
+    //        }
+    //        else
+    //        {
+    //            displayedSceneRect.setTop(displayedSceneRect.top() + displayedSceneRect.height() * scaleRate/2);
+    //            // displayedSceneRect.setBottom(displayedSceneRect.bottom() - displayedSceneRect.height() * scaleRate/2);
+    //        }
+
+    ////        if(displayedSceneRect.top() < sceneItemBoundingRect.top())
+    ////        {
+    ////            displayedSceneRect.setTop(sceneItemBoundingRect.top());
+    ////        }
+    ////        if(displayedSceneRect.bottom() > sceneItemBoundingRect.bottom())
+    ////        {
+    ////            displayedSceneRect.setBottom(sceneItemBoundingRect.bottom());
+    ////        }
+    //    }
+    //    else
+    //    {
+    //        displayedSceneRect.setRight(displayedSceneRect.right() - displayedSceneRect.width() * scaleRate);
+    //        displayedSceneRect.setLeft(displayedSceneRect.left() + displayedSceneRect.width() * scaleRate);
+
+    ////        if(displayedSceneRect.left() < sceneItemBoundingRect.left())
+    ////        {
+    ////            displayedSceneRect.setLeft(sceneItemBoundingRect.left());
+    ////        }
+    ////        if(displayedSceneRect.right() > sceneItemBoundingRect.right())
+    ////        {
+    ////            displayedSceneRect.setRight(sceneItemBoundingRect.right());
+    ////        }
+    //    }
+
+    //    if(orientation == Qt::Horizontal && (displayedSceneRect.width() <= zv_minSideSizeOfVisibleScene
+    //                                         || displayedSceneRect.width() > sceneItemBoundingRect.width()))
+    //    {
+    //        return;
+    //    }
+
+    //    if(orientation == Qt::Vertical && (displayedSceneRect.height() <= zv_minSideSizeOfVisibleScene
+    //                                       || displayedSceneRect.height() > sceneItemBoundingRect.height()))
+    //    {
+    //        return;
+    //    }
+
+    //    fitInView(displayedSceneRect.normalized());
+    //    //ensureVisible(displayedSceneRect.normalized(), 2, 2);
 }
 //=============================================================
 void ZPlotGraphicsView::zp_setGridHidden(bool hideGrid)
@@ -232,6 +286,7 @@ void ZPlotGraphicsView::wheelEvent(QWheelEvent * event)
 
 
     fitInView(displayedSceneRect.normalized());
+    //ensureVisible(displayedSceneRect.normalized(), 2, 2);
     zv_sceneCenterPos = mapToScene(viewport()->rect()).boundingRect().center();
     zv_sceneMousePos = mapToScene(event->pos());
 }
@@ -306,6 +361,7 @@ void ZPlotGraphicsView::mouseReleaseEvent(QMouseEvent* event)
             newSceneRect.moveCenter(newSceneCenter);
         }
         fitInView(newSceneRect);
+        //ensureVisible(newSceneRect, 2, 2);
     }
     zv_plotMode = PM_REGULAR;
     QGraphicsView::mouseReleaseEvent(event);
@@ -315,6 +371,7 @@ void ZPlotGraphicsView::mouseMoveEvent(QMouseEvent* event)
 {
     if(zv_plotMode == PM_PAD_DRAGGING)
     {
+
         QPointF newSceneMousePos = mapToScene(event->pos());
         qreal deltaX = zv_sceneMousePos.x() - newSceneMousePos.x();
         qreal deltaY = zv_sceneMousePos.y() - newSceneMousePos.y();

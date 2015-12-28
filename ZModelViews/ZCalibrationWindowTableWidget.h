@@ -5,16 +5,16 @@
 #include <QWidget>
 //==============================================================
 class ZCalibrationWindowModel;
-class ZIntDelegate;
+class ZChannelNumberDelegate;
 class QTableView;
 class QHBoxLayout;
 class QAction;
 //==============================================================
-class ZJointCalibrationWindowTableWidget : public QWidget
+class ZCalibrationWindowTableWidget : public QWidget
 {
     Q_OBJECT
 public:
-    explicit ZJointCalibrationWindowTableWidget(QWidget *parent = 0);
+    explicit ZCalibrationWindowTableWidget(QWidget *parent = 0);
 
     // FUNCS
     void zp_setModel(ZCalibrationWindowModel* model);
@@ -30,7 +30,7 @@ public slots:
 private:
     // VARS
     QTableView* zv_table;
-    ZIntDelegate* zv_channelDelegate;
+    ZChannelNumberDelegate* zv_channelDelegate;
     QHBoxLayout* zv_buttonLayout;
     const int zv_defaultChannelCount = 2048;
 

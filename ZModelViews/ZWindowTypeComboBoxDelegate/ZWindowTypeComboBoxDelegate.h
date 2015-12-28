@@ -22,15 +22,11 @@ protected:
 
 signals:
 
-    void zg_requestChemElementList(QStringList&) const;
 
 public slots:
 
 private:
 
-    // VARS
-    QString zv_notDefinedString;
-    QString zv_notDefinedDisplayString;
-};
+ };
 //==================================================
 #endif // ZWINDOWTYPECOMBOBOXDELEGATE_H

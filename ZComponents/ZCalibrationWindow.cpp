@@ -19,7 +19,7 @@ QMap<ZCalibrationWindow::WindowType, QString> ZCalibrationWindow::zh_intTypeName
 //====================================================
 ZCalibrationWindow::ZCalibrationWindow()
 {
-    zv_name = QString();
+    zv_windowName = QString();
     zv_firstChannel = 0;
     zv_lastChannel = 0;
 
@@ -30,11 +30,26 @@ ZCalibrationWindow::ZCalibrationWindow()
 //====================================================
 ZCalibrationWindow::ZCalibrationWindow(const QString& name,  WindowType type)
 {
-    zv_name = name;
+    zv_windowName = name;
     zv_type = type;
 
     zv_firstChannel = 0;
     zv_lastChannel = 0;
+    zv_visible = true;
+    zv_windowId = zv_lastWindowId++;
+}
+//====================================================
+ZCalibrationWindow::ZCalibrationWindow(const QString& name,  WindowType type, int firstChannel, int lastChannel)
+{
+    zv_windowName = name;
+    zv_type = type;
+
+    if(firstChannel > lastChannel)
+    {
+        qSwap(firstChannel, lastChannel);
+    }
+    zv_firstChannel = firstChannel;
+    zv_lastChannel = lastChannel;
     zv_visible = true;
     zv_windowId = zv_lastWindowId++;
 }
@@ -44,23 +59,29 @@ bool ZCalibrationWindow::zp_isWindowVisible() const
     return zv_visible;
 }
 //====================================================
-void ZCalibrationWindow::zp_setWindowVisible(bool visible)
+bool ZCalibrationWindow::zp_setWindowVisible(bool visible)
 {
-    zv_visible = visible;
-}
-//====================================================
-QString ZCalibrationWindow::zp_name() const
-{
-    return zv_name;
-}
-//====================================================
-bool ZCalibrationWindow::zp_setName(const QString& name)
-{
-    if(name.isEmpty())
+    if(zv_visible == visible)
     {
         return false;
     }
-    zv_name = name;
+
+    zv_visible = visible;
+    return true;
+}
+//====================================================
+QString ZCalibrationWindow::zp_windowName() const
+{
+    return zv_windowName;
+}
+//====================================================
+bool ZCalibrationWindow::zp_setWindowName(const QString& name)
+{
+    if(name.isEmpty() || name == zv_windowName)
+    {
+        return false;
+    }
+    zv_windowName = name;
     return true;
 }
 //====================================================
@@ -72,6 +93,26 @@ int ZCalibrationWindow::zp_firstChannel() const
 int ZCalibrationWindow::zp_lastChannel() const
 {
     return zv_lastChannel;
+}
+//====================================================
+bool ZCalibrationWindow::zp_setWindowFirstChannel(int channel)
+{
+    if(zv_firstChannel == channel || channel < 0 || channel > zv_lastChannel)
+    {
+        return false;
+    }
+    zv_firstChannel = channel;
+    return true;
+}
+//====================================================
+bool ZCalibrationWindow::zp_setWindowLastChannel(int channel)
+{
+    if(zv_lastChannel == channel || channel < 0 || channel < zv_firstChannel)
+    {
+        return false;
+    }
+    zv_lastChannel = channel;
+    return true;
 }
 //====================================================
 bool ZCalibrationWindow::zp_setWindowMarginChannels(int first, int last)
@@ -91,9 +132,15 @@ ZCalibrationWindow::WindowType ZCalibrationWindow::zp_type() const
     return zv_type;
 }
 //====================================================
-void ZCalibrationWindow::zp_setType(ZCalibrationWindow::WindowType type)
+bool ZCalibrationWindow::zp_setWindowType(ZCalibrationWindow::WindowType type)
 {
+    if(zv_type == type)
+    {
+        return false;
+    }
+
     zv_type = type;
+    return true;
 }
 //====================================================
 qint64 ZCalibrationWindow::zp_windowId() const
@@ -103,7 +150,20 @@ qint64 ZCalibrationWindow::zp_windowId() const
 //====================================================
 QString ZCalibrationWindow::zp_typeName(WindowType type)
 {
+    if(!zv_typeNameMap.keys().contains(type))
+    {
+        return QString();
+    }
     return zv_typeNameMap.value(type);
 }
 //====================================================
+ZCalibrationWindow::WindowType ZCalibrationWindow::zp_typeForName(const QString& typeName)
+{
+    if(!zv_typeNameMap.values().contains(typeName))
+    {
+        return ZCalibrationWindow::WT_NOT_DEFINED;
+    }
 
+    return zv_typeNameMap.key(typeName);
+}
+//====================================================

@@ -26,6 +26,7 @@ public:
     void zp_setHorizontalRulePointList(QList<RulePoint> *);
     void zp_setVerticalRulePointList(QList<RulePoint> *);
     bool zp_viewPortCoordinates(QRect&globalRect, QRectF&sceneRect, QPoint &nullGlobalPoint);
+    bool zp_viewPortSceneRect(QRectF&sceneRect);
 
     void zp_scale(Qt::Orientation orientation, bool increase);
     void zp_setGridHidden(bool);

@@ -4,7 +4,7 @@
 #include "ZGraphicsItemUserTypes.h"
 #include "ZSpectrumGraphicsItem.h"
 #include "ZWindowGraphicsItem.h"
-
+#include "ZDefaultRectGraphicsItem.h"
 #include "globalVariables.h"
 //===========================================================
 ZPlotterDataManager::ZPlotterDataManager(QObject *parent) : QObject(parent)
@@ -63,6 +63,12 @@ void ZPlotterDataManager::zp_connectToPlotter(ZPlotter* plotter)
     zv_plotter->zp_setBottomMarkRecalcFlag(false);
     zv_plotter->zp_setBottomRuleLabel(zv_horizontalRuleLabel);
     zv_plotter->zp_setBottomRuleLabelVisible(true);
+
+    if(zv_plotter->zp_itemCount() <= 0)
+    {
+        ZDefaultRectGraphicsItem* defaultItem = new ZDefaultRectGraphicsItem(zv_defaultSceneRect);
+        zv_plotter->zp_addItem(defaultItem);
+    }
 }
 //===========================================================
 void ZPlotterDataManager::zp_currentArrayChanged(qint64 currentArrayId, int currentArrayIndex)
@@ -78,13 +84,17 @@ void ZPlotterDataManager::zp_currentArrayChanged(qint64 currentArrayId, int curr
     zv_plotter->zp_clearItemsForType(SpectrumItemType);
 
     qreal verticalMax = (qreal)zv_spectrumArrayRepositiry->zp_arrayMaxIntensity(zv_currentArrayIndex);
-    zv_plotter->zp_setVerticalAbsMax(verticalMax * zv_boundingRectTopFactor);
+    //qreal horizontalMax = (qreal)zv_spectrumArrayRepositiry->zp_arrayChannelCount(zv_currentArrayIndex);
+    zv_plotter->zp_setVerticalAbsMax(verticalMax);
+
+    //zh_setMaxParametersToDefaultItem(verticalMax, horizontalMax);
 
     QList<ZAbstractSpectrum*> spectrumList = zv_spectrumArrayRepositiry->zp_spectrumListForArray(zv_currentArrayIndex);
     ZSpectrumGraphicsItem* spectrumItem;
     qreal distortionFactor;
     qreal distortionCorrectionFactor;
     zv_plotter->zp_verticalDistortionFactors(distortionFactor, distortionCorrectionFactor);
+    bool isPlotScaled = zv_plotter->zp_isPlotScaled();
     for(int i = 0; i < spectrumList.count(); i++)
     {
         spectrumItem = new ZSpectrumGraphicsItem(spectrumList.at(i),
@@ -95,6 +105,11 @@ void ZPlotterDataManager::zp_currentArrayChanged(qint64 currentArrayId, int curr
     }
 
     zh_changeEnergyCalibrationOnRule(zv_currentArrayId);
+    if(!isPlotScaled)
+    {
+        zv_plotter->zp_fitInBoundingRect();
+    }
+
 }
 //===========================================================
 void ZPlotterDataManager::zh_createComponents()
@@ -126,6 +141,7 @@ void ZPlotterDataManager::zh_onRepositoryArrayOperation(ZSpectrumArrayRepository
         qreal distortionFactor;
         qreal distortionCorrectionFactor;
         zv_plotter->zp_verticalDistortionFactors(distortionFactor, distortionCorrectionFactor);
+        bool isPlotScaled = zv_plotter->zp_isPlotScaled();
 
         for(int s = first; s <= last; s++ )
         {
@@ -138,6 +154,11 @@ void ZPlotterDataManager::zh_onRepositoryArrayOperation(ZSpectrumArrayRepository
                                                                                 distortionCorrectionFactor);
                 zv_plotter->zp_addItem(spectrumItem);
             }
+        }
+
+        if(!isPlotScaled)
+        {
+            zv_plotter->zp_fitInBoundingRect();
         }
     }
     else if(type == ZSpectrumArrayRepository::SOT_REMOVE_SPECTRA)
@@ -239,15 +260,36 @@ void ZPlotterDataManager::zh_changeEnergyCalibrationOnRule(qint64 arrayId)
 //===========================================================
 void ZPlotterDataManager::zh_onArrayMaxParametersChanged(int arrayId, int maxIntensity, int channelCount)
 {
-#ifdef DBG
-    qDebug() << "zh_onArrayMaxParametersChanged";
-#endif
     if(arrayId != zv_currentArrayId || zv_plotter == 0)
     {
         return;
     }
 
     zv_plotter->zp_setVerticalAbsMax((qreal)maxIntensity);
+    //zh_setMaxParametersToDefaultItem((qreal)maxIntensity, (qreal)channelCount);
+}
+//===========================================================
+void ZPlotterDataManager::zh_setMaxParametersToDefaultItem(qreal maxY, qreal maxX)
+{
+    QList<QGraphicsItem*>defaultItemList = zv_plotter->zp_itemListForType(DefaultRectItemType);
+    if(defaultItemList.isEmpty())
+    {
+        return;
+    }
+
+    ZDefaultRectGraphicsItem* defaultItem = qgraphicsitem_cast<ZDefaultRectGraphicsItem*>(defaultItemList[0]);
+    if(!defaultItem)
+    {
+        return;
+    }
+
+    QRectF rect = QRectF(QPointF(0.0, qAbs(maxY)*-1.0), QPointF(maxX, 0.0));
+    if(rect.isEmpty())
+    {
+        return;
+    }
+
+    defaultItem->zp_setSceneRect(rect);
 }
 //===========================================================
 void ZPlotterDataManager::zh_definePlotScaling(bool& plotIsScaled)

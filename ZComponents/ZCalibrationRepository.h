@@ -69,12 +69,21 @@ public:
     bool zp_isDirty(int row);
 
     // Windows
-    bool zp_isSpectrumWindowVisible(qreal, int) const;
-    int zp_spectrumWindowCount(qreal) const;
-    QString zp_spectrumWindowName(qint64 calibrationId, int windowIndex) const;
-    ZCalibrationWindow::WindowType zp_spectrumWindowType(qint64 calibrationId, int windowIndex) const;
-    int zp_spectrumWindowFirstChannel(qint64 calibrationId, int windowIndex) const;
-    int zp_spectrumWindowLastChannel(qint64 calibrationId, int windowIndex) const;
+    bool zp_isCalibrationWindowVisible(qreal, int) const;
+    bool zp_setCalibrationWindowVisible(qreal, int windowIndex, bool visibility);
+    int zp_calibrationWindowCount(qreal) const;
+    QString zp_calibrationWindowName(qint64 calibrationId, int windowIndex) const;
+    bool zp_setCalibrationWindowName(qint64 calibrationId, int windowIndex, const QString&);
+    ZCalibrationWindow::WindowType zp_calibrationWindowType(qint64 calibrationId, int windowIndex) const;
+    bool zp_setCalibrationWindowType(qint64 calibrationId, int windowIndex, ZCalibrationWindow::WindowType);
+    int zp_calibrationWindowFirstChannel(qint64 calibrationId, int windowIndex) const;
+    int zp_calibrationWindowLastChannel(qint64 calibrationId, int windowIndex) const;
+
+    bool zp_setCalibrationWindowFirstChannel(qint64 calibrationId, int windowIndex, int channel);
+    bool zp_setCalibrationWindowLastChannel(qint64 calibrationId, int windowIndex, int channel);
+
+
+    QColor zp_calibrationWindowColor(qint64 calibrationId, int windowIndex) const;
 
     double zp_calculateConcentration(int row, const ZAbstractSpectrum* const, bool *ok = 0) const;
 
@@ -94,7 +103,7 @@ signals:
 
     void zg_requestCurrentWindowIndex(int&) const;
     void zg_requestSelectedWindowIndexList(QList<int>&) const;
-
+    void zg_requestCurrentVisibleSceneRect(QRectF& sceneRect);
 
 public slots:
 
@@ -132,7 +141,7 @@ private:
     bool zh_appendCalibrationToList(ZCalibration*);
     void zh_actionAvailabilityControl(int current);
 
-    void zh_removeSpectrumWindow(int currentCalibrationIndex, int spectrumWindowIndex);
+    void zh_removeCalibrationWindow(int currentCalibrationIndex, int spectrumWindowIndex);
 
 };
 //======================================================

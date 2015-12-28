@@ -138,7 +138,7 @@ double ZCalibration::zp_calcConcentration(const ZAbstractSpectrum* const spectru
     return 0;
 }
 //=========================================================
-void ZCalibration::zp_createNewSpectrumWindow()
+void ZCalibration::zp_createNewCalibrationWindow(int firstChannel, int lastChannel)
 {
     int nextWindowIndex = zv_spectrumWindowList.count();
     QString nextName = zv_defaultWindowName + QString::number(++nextWindowIndex);
@@ -150,7 +150,8 @@ void ZCalibration::zp_createNewSpectrumWindow()
 
     int windowNewIndex = zv_spectrumWindowList.count();
     emit zg_windowOperation(WOT_INSERT_WINDOWS, windowNewIndex, windowNewIndex);
-    zv_spectrumWindowList.append(ZCalibrationWindow(nextName));
+    zv_spectrumWindowList.append(ZCalibrationWindow(nextName, ZCalibrationWindow::WT_NOT_DEFINED,
+                                                    firstChannel, lastChannel));
     emit zg_windowOperation(WOT_END_INSERT_WINDOWS, windowNewIndex, windowNewIndex);
 }
 //=========================================================
@@ -158,7 +159,7 @@ bool ZCalibration::zh_isWindowExist(const QString& windowName)
 {
     for(int i = 0; i < zv_spectrumWindowList.count(); i++)
     {
-        if(zv_spectrumWindowList.at(i).zp_name() == windowName)
+        if(zv_spectrumWindowList.at(i).zp_windowName() == windowName)
         {
             return true;
         }
@@ -167,7 +168,7 @@ bool ZCalibration::zh_isWindowExist(const QString& windowName)
     return false;
 }
 //=========================================================
-bool ZCalibration::zp_isSpectrumWindowVisible(int windowIndex)
+bool ZCalibration::zp_isCalibrationWindowVisible(int windowIndex)
 {
     if(windowIndex < 0 || windowIndex >= zv_spectrumWindowList.count())
     {
@@ -177,22 +178,52 @@ bool ZCalibration::zp_isSpectrumWindowVisible(int windowIndex)
     return zv_spectrumWindowList.at(windowIndex).zp_isWindowVisible();
 }
 //=========================================================
-int ZCalibration::zp_spectrumWindowCount()
+bool ZCalibration::zp_setCalibrationWindowVisible(int windowIndex, bool visibility)
+{
+    if(windowIndex < 0 || windowIndex >= zv_spectrumWindowList.count())
+    {
+        return false;
+    }
+
+    bool res = zv_spectrumWindowList[windowIndex].zp_setWindowVisible(visibility);
+    if(res)
+    {
+        emit zg_windowOperation(WOT_CHANGED, windowIndex, windowIndex);
+    }
+    return res;
+}
+//=========================================================
+int ZCalibration::zp_calibrationWindowCount()
 {
     return zv_spectrumWindowList.count();
 }
 //=========================================================
-QString ZCalibration::zp_spectrumWindowName(int windowIndex)
+QString ZCalibration::zp_calibrationWindowName(int windowIndex)
 {
     if(windowIndex < 0 || windowIndex >= zv_spectrumWindowList.count())
     {
         return QString();
     }
 
-    return zv_spectrumWindowList.at(windowIndex).zp_name();
+    return zv_spectrumWindowList.at(windowIndex).zp_windowName();
 }
 //=========================================================
-ZCalibrationWindow::WindowType ZCalibration::zp_spectrumWindowType(int windowIndex)
+bool ZCalibration::zp_setCalibrationWindowName(int windowIndex, const QString& name)
+{
+    if(windowIndex < 0 || windowIndex >= zv_spectrumWindowList.count())
+    {
+        return false;
+    }
+
+    bool res = zv_spectrumWindowList[windowIndex].zp_setWindowName(name);
+    if(res)
+    {
+        emit zg_windowOperation(WOT_CHANGED, windowIndex, windowIndex);
+    }
+    return res;
+}
+//=========================================================
+ZCalibrationWindow::WindowType ZCalibration::zp_calibrationWindowType(int windowIndex)
 {
     if(windowIndex < 0 || windowIndex >= zv_spectrumWindowList.count())
     {
@@ -202,7 +233,22 @@ ZCalibrationWindow::WindowType ZCalibration::zp_spectrumWindowType(int windowInd
     return zv_spectrumWindowList.at(windowIndex).zp_type();
 }
 //=========================================================
-int ZCalibration::zp_spectrumWindowFirstChannel(int windowIndex)
+bool ZCalibration::zp_setCalibrationWindowType(int windowIndex, ZCalibrationWindow::WindowType type)
+{
+    if(windowIndex < 0 || windowIndex >= zv_spectrumWindowList.count())
+    {
+        return false;
+    }
+
+    bool res = zv_spectrumWindowList[windowIndex].zp_setWindowType(type);
+    if(res)
+    {
+        emit zg_windowOperation(WOT_CHANGED, windowIndex, windowIndex);
+    }
+    return res;
+}
+//=========================================================
+int ZCalibration::zp_calibrationWindowFirstChannel(int windowIndex)
 {
     if(windowIndex < 0 || windowIndex >= zv_spectrumWindowList.count())
     {
@@ -212,7 +258,22 @@ int ZCalibration::zp_spectrumWindowFirstChannel(int windowIndex)
     return zv_spectrumWindowList.at(windowIndex).zp_firstChannel();
 }
 //=========================================================
-int ZCalibration::zp_spectrumWindowLastChannel(int windowIndex)
+bool ZCalibration::zp_setCalibrationWindowFirstChannel(int windowIndex, int channel)
+{
+    if(windowIndex < 0 || windowIndex >= zv_spectrumWindowList.count())
+    {
+        return 0;
+    }
+
+    bool res = zv_spectrumWindowList[windowIndex].zp_setWindowFirstChannel(channel);
+    if(res)
+    {
+        emit zg_windowOperation(WOT_CHANGED, windowIndex, windowIndex);
+    }
+    return res;
+}
+//=========================================================
+int ZCalibration::zp_calibrationWindowLastChannel(int windowIndex)
 {
     if(windowIndex < 0 || windowIndex >= zv_spectrumWindowList.count())
     {
@@ -220,6 +281,21 @@ int ZCalibration::zp_spectrumWindowLastChannel(int windowIndex)
     }
 
     return zv_spectrumWindowList.at(windowIndex).zp_lastChannel();
+}
+//=========================================================
+bool ZCalibration::zp_setCalibrationWindowLastChannel(int windowIndex, int channel)
+{
+    if(windowIndex < 0 || windowIndex >= zv_spectrumWindowList.count())
+    {
+        return 0;
+    }
+
+    bool res = zv_spectrumWindowList[windowIndex].zp_setWindowLastChannel(channel);
+    if(res)
+    {
+        emit zg_windowOperation(WOT_CHANGED, windowIndex, windowIndex);
+    }
+    return res;
 }
 //=========================================================
 qint64 ZCalibration::zp_spectrumWindowId(int windowIndex)

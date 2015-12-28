@@ -42,14 +42,16 @@ void ZPlotGraphicsScene::zp_addItem(QGraphicsItem * item)
     QGraphicsScene::addItem(item);
 }
 //====================================================
-void 	ZPlotGraphicsScene::zp_removeItem(QGraphicsItem * item)
+void ZPlotGraphicsScene::zp_removeItem(QGraphicsItem * item)
 {
     if(item->type() == WindowItemType)
     {
         ZWindowGraphicsItem* windowItem = qgraphicsitem_cast<ZWindowGraphicsItem*>(item);
         zv_windowItemList.removeAt(zv_windowItemList.indexOf(windowItem));
     }
+
     QGraphicsScene::removeItem(item);
+    delete item;
 }
 //====================================================
 void ZPlotGraphicsScene::zh_createConnections()

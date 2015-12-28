@@ -36,7 +36,7 @@ int ZCalibrationWindowDataManager::zp_rowCount() const
         return 0;
     }
 
-    return zv_calibrationRepository->zp_spectrumWindowCount(zv_currentCalibrationId);
+    return zv_calibrationRepository->zp_calibrationWindowCount(zv_currentCalibrationId);
 }
 //=============================================================================
 int ZCalibrationWindowDataManager::zp_columnCount() const
@@ -78,7 +78,7 @@ void ZCalibrationWindowDataManager::zh_currentCalibrationChanged(qreal calibrati
 }
 //=============================================================================
 void ZCalibrationWindowDataManager::zh_onRepositoryWindowOperation(ZCalibrationRepository::WindowOperationType type,
-                                                                        int calibrationIndex, int first, int last)
+                                                                   int calibrationIndex, int first, int last)
 {
 #ifdef DBG
     qDebug() << "WINDOW OPERATION";
@@ -169,31 +169,82 @@ QVariant ZCalibrationWindowDataManager::zp_data(QModelIndex index) const
         return QVariant();
     }
 
-
     if(index.column() == 0)
     {
-        return QVariant(zv_calibrationRepository->zp_spectrumWindowName(zv_currentCalibrationId, index.row()));
+        return QVariant(zv_calibrationRepository->zp_calibrationWindowName(zv_currentCalibrationId, index.row()));
     }
     if(index.column() == 1)
     {
-        ZCalibrationWindow::WindowType type = zv_calibrationRepository->zp_spectrumWindowType(zv_currentCalibrationId, index.row());
+        ZCalibrationWindow::WindowType type = zv_calibrationRepository->zp_calibrationWindowType(zv_currentCalibrationId, index.row());
         return QVariant(ZCalibrationWindow::zp_typeName(type));
     }
     if(index.column() == 2)
     {
-        return QVariant(zv_calibrationRepository->zp_spectrumWindowFirstChannel(zv_currentCalibrationId, index.row()));
+        return QVariant(zv_calibrationRepository->zp_calibrationWindowFirstChannel(zv_currentCalibrationId, index.row()));
     }
     if(index.column() == 3)
     {
-        return QVariant(zv_calibrationRepository->zp_spectrumWindowLastChannel(zv_currentCalibrationId, index.row()));
+        return QVariant(zv_calibrationRepository->zp_calibrationWindowLastChannel(zv_currentCalibrationId, index.row()));
     }
 
     return QVariant();
 }
 //=============================================================================
-QColor ZCalibrationWindowDataManager::zp_windowColor(int) const
+bool ZCalibrationWindowDataManager::zp_setData(QModelIndex index, QVariant data)
 {
-    return QColor();
+    if(!zv_calibrationRepository || !index.isValid() || !data.isValid())
+    {
+        return false;
+    }
+
+    if(index.column() == 0)
+    {
+        if(!data.canConvert<QString>())
+        {
+            return false;
+        }
+        return zv_calibrationRepository->zp_setCalibrationWindowName(zv_currentCalibrationId, index.row(), data.toString());
+    }
+    if(index.column() == 1)
+    {
+        if(!data.canConvert<QString>())
+        {
+            return false;
+        }
+
+        ZCalibrationWindow::WindowType type = ZCalibrationWindow::zp_typeForName(data.toString());
+        return zv_calibrationRepository->zp_setCalibrationWindowType(zv_currentCalibrationId, index.row(), type);
+    }
+    if(index.column() == 2)
+    {
+        if(!data.canConvert<int>())
+        {
+            return false;
+        }
+
+        return zv_calibrationRepository->zp_setCalibrationWindowFirstChannel(zv_currentCalibrationId, index.row(), data.toInt());
+    }
+    if(index.column() == 3)
+    {
+        if(!data.canConvert<int>())
+        {
+            return false;
+        }
+
+        return zv_calibrationRepository->zp_setCalibrationWindowLastChannel(zv_currentCalibrationId, index.row(), data.toInt());
+    }
+
+    return false;
+}
+//=============================================================================
+QColor ZCalibrationWindowDataManager::zp_windowColor(int windowIndex) const
+{
+    if(!zv_calibrationRepository || windowIndex < 0 )
+    {
+        return QColor();
+    }
+
+    return zv_calibrationRepository->zp_calibrationWindowColor(zv_currentCalibrationId, windowIndex);
 }
 //=============================================================================
 bool ZCalibrationWindowDataManager::zp_isWindowVisible(int windowIndex) const
@@ -203,12 +254,18 @@ bool ZCalibrationWindowDataManager::zp_isWindowVisible(int windowIndex) const
         return false;
     }
 
-    return zv_calibrationRepository->zp_isSpectrumWindowVisible(zv_currentCalibrationId, windowIndex);
+    return zv_calibrationRepository->zp_isCalibrationWindowVisible(zv_currentCalibrationId, windowIndex);
 }
 //=============================================================================
-bool ZCalibrationWindowDataManager::zp_setWindowVisible(int, bool)
+bool ZCalibrationWindowDataManager::zp_setWindowVisible(int windowIndex, bool visibility)
 {
-    return false;
+    if(!zv_calibrationRepository || windowIndex < 0 )
+    {
+        return false;
+    }
+
+    return zv_calibrationRepository->zp_setCalibrationWindowVisible(zv_currentCalibrationId, windowIndex, visibility);
+
 }
 //=============================================================================
 

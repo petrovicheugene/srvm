@@ -100,7 +100,6 @@ SOURCES += main.cpp \
     ZModelViews/ZSpectrumTableDelegate/ZPrimitivePlot.cpp \
     ZModelViews/ZVisibilityStringDelegate/ZVisibilityStringDelegate.cpp \
     ZModelViews/ZChemElementComboBoxDelegate/ZChemElementComboBoxDelegate.cpp \
-    ZModelViews/ZIntDelegate/ZIntDelegate.cpp \
     ZModelViews/ZWindowTypeComboBoxDelegate/ZWindowTypeComboBoxDelegate.cpp \
     ZComponents/ZPlotterDataManager.cpp \
     ZComponents/ZAdvancedAction.cpp \
@@ -117,7 +116,9 @@ SOURCES += main.cpp \
     ZModels/ZCalibrationWindowModel.cpp \
     ZComponents/ZCalibrationWindowDataManager.cpp \
     ZComponents/ZCalibrationWindow.cpp \
-    ZModelViews/ZCalibrationWindowTableWidget.cpp
+    ZModelViews/ZCalibrationWindowTableWidget.cpp \
+    ZPlotter/ZDefaultRectGraphicsItem.cpp \
+    ZModelViews/ZIntDelegate/ZChannelNumberDelegate.cpp
 
 
 HEADERS  += \
@@ -156,7 +157,6 @@ HEADERS  += \
     ZModelViews/ZSpectrumTableDelegate/ZPrimitivePlot.h \
     ZModelViews/ZVisibilityStringDelegate/ZVisibilityStringDelegate.h \
     ZModelViews/ZChemElementComboBoxDelegate/ZChemElementComboBoxDelegate.h \
-    ZModelViews/ZIntDelegate/ZIntDelegate.h \
     ZModelViews/ZWindowTypeComboBoxDelegate/ZWindowTypeComboBoxDelegate.h \
     ZComponents/ZSpectrumPaintData.h \
     globalVariables.h \
@@ -176,7 +176,9 @@ HEADERS  += \
     ZModels/ZCalibrationWindowModel.h \
     ZComponents/ZCalibrationWindowDataManager.h \
     ZComponents/ZCalibrationWindow.h \
-    ZModelViews/ZCalibrationWindowTableWidget.h
+    ZModelViews/ZCalibrationWindowTableWidget.h \
+    ZPlotter/ZDefaultRectGraphicsItem.h \
+    ZModelViews/ZIntDelegate/ZChannelNumberDelegate.h
 
 
 RESOURCES += \

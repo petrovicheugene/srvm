@@ -40,6 +40,7 @@ private:
     QString zv_horizontalRecalcedRuleLabel;
 
     qreal zv_boundingRectTopFactor;
+    QRectF zv_defaultSceneRect = QRectF(QPointF(0.0,-100.0), QPointF(2048.0, 0.0));
     //QList<QGraphicsItem*> zv_spectrumGraphicsItemList;
 
     // FUNCS
@@ -53,6 +54,7 @@ private slots:
     void zh_switchRuleMetrix(bool toggled);
     void zh_changeEnergyCalibrationOnRule(qint64 arrayId);
     void zh_onArrayMaxParametersChanged(int arrayId, int maxIntensity, int channelCount);
+    void zh_setMaxParametersToDefaultItem(qreal, qreal);
     void zh_definePlotScaling(bool& plotIsScaled);
 
 };

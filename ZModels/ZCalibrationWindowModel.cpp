@@ -13,10 +13,10 @@ Qt::ItemFlags	ZCalibrationWindowModel::flags(const QModelIndex & index) const
     Qt::ItemFlags flags;
     flags |= Qt::ItemIsEnabled | Qt::ItemIsSelectable;
 
-//    if(zv_dataManager->zp_isColumnChemElement(index.column()))
-//    {
-        flags |= Qt::ItemIsEditable;
-//    }
+    //    if(zv_dataManager->zp_isColumnChemElement(index.column()))
+    //    {
+    flags |= Qt::ItemIsEditable;
+    //    }
 
     return flags;
 }
@@ -54,6 +54,7 @@ QVariant ZCalibrationWindowModel::data(const QModelIndex & index, int role) cons
     {
         return zv_dataManager->zp_data(index);
     }
+
     if(role == Qt::DecorationRole)
     {
         if(index.column() == 0)
@@ -75,30 +76,27 @@ QVariant ZCalibrationWindowModel::data(const QModelIndex & index, int role) cons
 //==================================================================
 bool	ZCalibrationWindowModel::setData(const QModelIndex & index, const QVariant & value, int role)
 {
-//    if(!zv_dataManager || !index.isValid()
-//            || index.row() < 0 || index.row() >=  rowCount()
-//            || index.column() < 0 || index.column() >= columnCount()
-//            || !value.isValid())
-//    {
-//        return false;
-//    }
+    if(!zv_dataManager || !index.isValid()
+            || index.row() < 0 || index.row() >=  rowCount()
+            || index.column() < 0 || index.column() >= columnCount()
+            || !value.isValid())
+    {
+        return false;
+    }
 
-//    if(role == Qt::EditRole)
-//    {
-//        if(value.canConvert<QString>())
-//        {
-//            return zv_dataManager->zp_setChemConcentration(index.row(), index.column(), value.toString());
-//        }
-//    }
+    if(role == Qt::EditRole)
+    {
+        return zv_dataManager->zp_setData(index, value);
+    }
 
-//    if(role == VisibleRole)
-//    {
-//        if(index.column() == 0 && value.canConvert<bool>())
-//        {
-//            bool visible = value.toBool();
-//            return zv_dataManager->zp_setSpectrumVisible(index.row(), visible);
-//        }
-//    }
+    if(role == VisibleRole)
+    {
+        if(index.column() == 0 && value.canConvert<bool>())
+        {
+            bool visible = value.toBool();
+            return zv_dataManager->zp_setWindowVisible(index.row(), visible);
+        }
+    }
 
     return false;
 }
@@ -145,8 +143,8 @@ void ZCalibrationWindowModel::zp_connectToJointCalibrationWindowDataManager(ZCal
     connect(dataManager, &ZCalibrationWindowDataManager::zg_currentOperation,
             this, &ZCalibrationWindowModel::zh_onDataManagerOperation);
 
-//    connect(dataManager, &ZJointCalibrationWindowDataManager::zg_currentOperation,
-//            this, &ZJointCalibrationWindowModel::zh_onDataManagerOperation);
+    //    connect(dataManager, &ZJointCalibrationWindowDataManager::zg_currentOperation,
+    //            this, &ZJointCalibrationWindowModel::zh_onDataManagerOperation);
 
     endResetModel();
 }

@@ -63,12 +63,22 @@ MainWindow::MainWindow(QWidget *parent)
     zv_calibrationModel = 0;
     zv_jointCalibrationWindowModel = 0;
 
+    zv_plotter = 0;
+
+
     zh_createActions();
     zh_createComponents();
     zh_createMenu();
     zh_createToolbar();
     zh_createConnections();
     zh_restoreSettings();
+
+    // plotter starting settings
+    if(zv_plotter != 0)
+    {
+        QMetaObject::invokeMethod(zv_plotter, "zp_fitInBoundingRect",
+                                  Qt::QueuedConnection);
+    }
 }
 //==========================================================
 MainWindow::~MainWindow()
@@ -323,6 +333,11 @@ void MainWindow::zh_createConnections()
     // calibration repository <-> calibration model
     zv_calibrationModel->zp_connectToCalibrationRepository(zv_calibrationRepository);
 
+    // calibration repository <-> plotter
+    connect(zv_calibrationRepository, &ZCalibrationRepository::zg_requestCurrentVisibleSceneRect,
+            zv_plotter, &ZPlotter::zp_currentVisibleSceneRect);
+
+
     // joint calibration window data manager <-> to repositories
     zv_jointCalibrationWindowDataManager->zp_connectToCalibrationRepository(zv_calibrationRepository);
     zv_jointCalibrationWindowDataManager->zp_connectToSpectraArrayRepository(zv_spectrumArrayRepository);
@@ -403,6 +418,7 @@ void MainWindow::zh_restoreSettings()
 
     settings.endGroup(); // Common
     settings.endGroup(); // glAppVersion
+
 }
 //==========================================================
 void MainWindow::zh_saveSettings()
