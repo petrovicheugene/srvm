@@ -601,6 +601,18 @@ void ZPlotter::zh_verticalDistortionChanged(int distortionValue)
     }
 }
 //====================================================
+void ZPlotter::zh_scrollBarVisible(Qt::Orientation orientation, bool& visible)
+{
+   if(orientation == Qt::Vertical)
+   {
+      visible = zv_verticalScrollBar->isVisible();
+   }
+   else
+   {
+      visible = zv_horizontalScrollBar->isVisible();
+   }
+}
+//====================================================
 void ZPlotter::zh_createComponents()
 {
     zv_verticalScrollBar = new QScrollBar(Qt::Vertical, this);
@@ -665,6 +677,8 @@ void ZPlotter::zh_createConnections()
     zv_dashBoard->zp_setPlotGraphicsScene(zv_plotScene);
     connect(zv_dashBoard, &ZHorizontalDashBoard::zg_distortionFactorChanged,
             this, &ZPlotter::zh_verticalDistortionChanged);
+    connect(zv_plotView, &ZPlotGraphicsView::zg_requestForScrollBarVisible,
+            this, &ZPlotter::zh_scrollBarVisible);
 }
 //====================================================
 void ZPlotter::zh_connectScrollBars()

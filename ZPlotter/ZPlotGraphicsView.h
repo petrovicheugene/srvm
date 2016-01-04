@@ -33,6 +33,7 @@ public:
 
 signals:
 
+   void zg_requestForScrollBarVisible(Qt::Orientation, bool&);
 
 protected:
 

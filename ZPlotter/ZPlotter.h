@@ -113,6 +113,7 @@ protected:
 private slots:
 
     void zh_verticalDistortionChanged(int);
+    void zh_scrollBarVisible(Qt::Orientation, bool&);
 
 private:
 

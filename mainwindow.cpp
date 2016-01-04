@@ -159,7 +159,7 @@ void MainWindow::zh_createComponents()
     zv_calibrationDock->setObjectName("CALIBRATION_DOCK");
     zv_calibrationDock->setWindowTitle(tr("Calibrations"));
     zv_dockList << zv_calibrationDock;
-    addDockWidget(Qt::LeftDockWidgetArea, zv_calibrationDock);
+    addDockWidget(Qt::TopDockWidgetArea, zv_calibrationDock);
 
     zv_calibrationSidebarWidget = new ZWidgetWithSidebar("CALIBRATION_SIDEBAR_WIDGET", this);
     zv_calibrationSidebarWidget->setFrameStyle(QFrame::StyledPanel | QFrame::Plain);
