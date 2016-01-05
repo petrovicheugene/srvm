@@ -102,8 +102,6 @@ void ZPlotGraphicsView::zp_scale(Qt::Orientation orientation, bool increase)
       if(increase)
       {
          scaleRate = oldDisplayedSceneRect.height() / zv_minSideSizeOfVisibleScene;
-         qDebug() << "Before" << scaleRate;
-
          if(scaleRate > 1.1)
          {
             scaleRate = 1.1;
@@ -112,14 +110,10 @@ void ZPlotGraphicsView::zp_scale(Qt::Orientation orientation, bool increase)
          {
             scaleRate = 1.0;
          }
-         qDebug() << "After" << scaleRate;
-
       }
       else
       {
          scaleRate = oldDisplayedSceneRect.height() / sceneItemBoundingRect.height();
-         qDebug() << "Before" << scaleRate;
-
          if(scaleRate < 0.9)
          {
             scaleRate = 0.9;
@@ -128,7 +122,6 @@ void ZPlotGraphicsView::zp_scale(Qt::Orientation orientation, bool increase)
          {
             scaleRate = 1.0;
          }
-         qDebug() << "After" << scaleRate;
       }
 
       scale(1, scaleRate);
@@ -318,7 +311,6 @@ void ZPlotGraphicsView::wheelEvent(QWheelEvent * event)
       displayedSceneRect.setLeft(oldDisplayedSceneRect.left());
       displayedSceneRect.setRight(oldDisplayedSceneRect.right());
    }
-
 
    fitInView(displayedSceneRect.normalized());
    //ensureVisible(displayedSceneRect.normalized(), 2, 2);
