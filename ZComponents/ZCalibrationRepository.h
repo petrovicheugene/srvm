@@ -69,9 +69,11 @@ public:
     bool zp_isDirty(int row);
 
     // Windows
-    bool zp_isCalibrationWindowVisible(qreal, int) const;
+    bool zp_isCalibrationWindowVisible(qint64, int) const;
+    bool zp_isCalibrationWindowVisible(qint64) const;
     bool zp_setCalibrationWindowVisible(qreal, int windowIndex, bool visibility);
-    int zp_calibrationWindowCount(qreal) const;
+
+    int zp_calibrationWindowCount(qint64) const;
     QString zp_calibrationWindowName(qint64 calibrationId, int windowIndex) const;
     bool zp_setCalibrationWindowName(qint64 calibrationId, int windowIndex, const QString&);
     ZCalibrationWindow::WindowType zp_calibrationWindowType(qint64 calibrationId, int windowIndex) const;
@@ -84,14 +86,15 @@ public:
 
 
     QColor zp_calibrationWindowColor(qint64 calibrationId, int windowIndex) const;
-
+    qint64 zp_calibrationWindowId(qint64 calibrationId, int windowIndex) const;
+    const ZCalibrationWindow* zp_calibrationWindow(qint64 calibrationId, int windowIndex) const;
     double zp_calculateConcentration(int row, const ZAbstractSpectrum* const, bool *ok = 0) const;
 
 signals:
 
     void zg_message(QString) const;
-    void zg_currentCalibrationOperation(CalibrationOperationType, int, int) const;
-    void zg_currentWindowOperation(WindowOperationType, int, int, int) const;
+    void zg_calibrationOperation(CalibrationOperationType, int, int) const;
+    void zg_calibrationWindowOperation(WindowOperationType, int, int, int) const;
 
     void zg_requestSelectedCalibrationIndexList(QList<int>&);
     void zg_requestCurrentCalibrationIndex(int&);
@@ -99,7 +102,10 @@ signals:
 
     void zg_setCurrentCalibrationIndex(int calibrationIndex);
     void zg_startCurrentCalibrationEdition();
-    void zg_currentCalibration(qreal calibrationId, int current);
+    void zg_currentCalibrationChanged(qint64 calibrationId, int current);
+
+    void zg_currentCalibrationWindowChanged(qint64 currentWindowId, int currentWindowIndex,
+                                            qint64 previousWindowId, int previousWindowIndex);
 
     void zg_requestCurrentWindowIndex(int&) const;
     void zg_requestSelectedWindowIndexList(QList<int>&) const;
@@ -109,6 +115,7 @@ public slots:
 
     void zp_appendCalibrationsToArray(const QStringList&fileNameList);
     void zp_onCurrentCalibrationChanged(int current, int previous);
+    void zp_onCurrentCalibrationWindowChanged(int current, int previous);
 
 private slots:
 

@@ -8,6 +8,10 @@
 #include "ZCalibrationWindow.h"
 //=========================================================
 class ZAbstractSpectrum;
+class ZSimplePredictor;
+class ZQuadraticPredictor;
+class ZMixedPredictor;
+class ZCustomPredictor;
 //=========================================================
 class ZCalibration : public QObject
 {
@@ -45,20 +49,22 @@ public:
 
     // windows
     void zp_createNewCalibrationWindow(int firstChannel = 0, int lastChannel = 0);
-    bool zp_isCalibrationWindowVisible(int windowIndex);
+    bool zp_isCalibrationWindowVisible(int windowIndex) const;
     bool zp_setCalibrationWindowVisible(int windowIndex, bool visibility);
-    int zp_calibrationWindowCount();
-    QString zp_calibrationWindowName(int windowIndex);
+    int zp_calibrationWindowCount() const;
+    QString zp_calibrationWindowName(int windowIndex) const;
+    const ZCalibrationWindow* zp_calibrationWindow(int windowIndex) const;
+
     bool zp_setCalibrationWindowName(int windowIndex, const QString&);
-    ZCalibrationWindow::WindowType zp_calibrationWindowType(int windowIndex);
+    ZCalibrationWindow::WindowType zp_calibrationWindowType(int windowIndex) const;
     bool zp_setCalibrationWindowType(int windowIndex, ZCalibrationWindow::WindowType type);
 
-    int zp_calibrationWindowFirstChannel(int windowIndex);
+    int zp_calibrationWindowFirstChannel(int windowIndex) const;
     bool zp_setCalibrationWindowFirstChannel(int windowIndex, int channel);
-    int zp_calibrationWindowLastChannel(int windowIndex);
+    int zp_calibrationWindowLastChannel(int windowIndex) const;
     bool zp_setCalibrationWindowLastChannel(int windowIndex, int channel);
 
-    qint64 zp_spectrumWindowId(int windowIndex);
+    qint64 zp_calibrationWindowId(int windowIndex) const;
     bool zp_removeSpectrumWindow(int);
 
 signals:
@@ -84,7 +90,12 @@ private:
     bool zv_dirty;
     QString zv_defaultWindowName;
 
-    QList<ZCalibrationWindow> zv_spectrumWindowList;
+    QList<ZCalibrationWindow*> zv_spectrumWindowList;
+
+    QList<ZSimplePredictor*> zv_simplePredictorList;
+    QList<ZQuadraticPredictor*> zv_quadraticPredictorList;
+    QList<ZMixedPredictor*> zv_mixedPredictorList;
+    QList<ZCustomPredictor*> zv_customPredictorList;
 
     // FUNCS
     bool zh_isWindowExist(const QString&);

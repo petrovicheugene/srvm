@@ -6,6 +6,7 @@
 //==============================================================
 class ZCalibrationWindowModel;
 class ZChannelNumberDelegate;
+class ZCalibrationRepository;
 class QTableView;
 class QHBoxLayout;
 class QAction;
@@ -20,7 +21,11 @@ public:
     void zp_setModel(ZCalibrationWindowModel* model);
     void zp_appendButtonActions(QList<QAction*>);
 
+    void zp_connectToCalibrationRepository(ZCalibrationRepository*);
+
 signals:
+
+    void zg_currentCalibrationWindowChanged(int, int);
 
 public slots:
 
@@ -36,6 +41,10 @@ private:
 
     // FUNCS
     void zh_createComponents();
+
+private slots:
+    void zh_onCurrentCalibrationWindowChanged(const QModelIndex & current,
+                                     const QModelIndex & previous);
 
 };
 //==============================================================

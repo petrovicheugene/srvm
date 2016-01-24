@@ -4,7 +4,7 @@
 #include "ZChannelNumberDelegate.h"
 #include "ZVisibilityStringDelegate.h"
 #include "ZWindowTypeComboBoxDelegate.h"
-
+#include "ZCalibrationRepository.h"
 #include <QTableView>
 #include <QHBoxLayout>
 #include <QVBoxLayout>
@@ -31,6 +31,9 @@ void ZCalibrationWindowTableWidget::zp_setModel(ZCalibrationWindowModel* model)
     zv_table->setItemDelegateForColumn(3, zv_channelDelegate);
 
     zv_table->setAlternatingRowColors(true);
+    connect(zv_table->selectionModel(), &QItemSelectionModel::currentRowChanged,
+            this, &ZCalibrationWindowTableWidget::zh_onCurrentCalibrationWindowChanged);
+
 }
 //==============================================================
 void ZCalibrationWindowTableWidget::zp_appendButtonActions(QList<QAction*> actionList)
@@ -46,6 +49,15 @@ void ZCalibrationWindowTableWidget::zp_appendButtonActions(QList<QAction*> actio
                 actionList[a], &QAction::trigger);
         zv_buttonLayout->addWidget(button);
     }
+}
+//=============================================================
+void ZCalibrationWindowTableWidget::zp_connectToCalibrationRepository(ZCalibrationRepository* repository)
+{
+   connect(this, &ZCalibrationWindowTableWidget::zg_currentCalibrationWindowChanged,
+           repository, &ZCalibrationRepository::zp_onCurrentCalibrationWindowChanged);
+   connect(repository, &ZCalibrationRepository::zg_requestSelectedWindowIndexList,
+           this, &ZCalibrationWindowTableWidget::zp_selectedSpectrumWindowIndexList);
+
 }
 //=============================================================
 void ZCalibrationWindowTableWidget::zp_selectedSpectrumWindowIndexList(QList<int>& selectedSpectrumList)
@@ -94,4 +106,28 @@ void ZCalibrationWindowTableWidget::zh_createComponents()
 
 }
 //==============================================================
+void ZCalibrationWindowTableWidget::zh_onCurrentCalibrationWindowChanged(const QModelIndex & current,
+                                 const QModelIndex & previous)
+{
+   int currentRow;
+   if(current.isValid())
+   {
+       currentRow = current.row();
+   }
+   else
+   {
+       currentRow = -1;
+   }
+   int previousRow;
+   if(previous.isValid())
+   {
+       previousRow = previous.row();
+   }
+   else
+   {
+       previousRow = -1;
+   }
 
+   emit zg_currentCalibrationWindowChanged(currentRow, previousRow);
+}
+//==============================================================

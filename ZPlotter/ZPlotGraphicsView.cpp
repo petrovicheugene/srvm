@@ -9,7 +9,7 @@
 #include <QWheelEvent>
 #include <QMouseEvent>
 #include <QScrollBar>
-#include <QDebug>
+#include <QPixmap>
 //=============================================================
 ZPlotGraphicsView::ZPlotGraphicsView(QWidget* parent) : QGraphicsView(parent)
 {
@@ -23,6 +23,8 @@ ZPlotGraphicsView::ZPlotGraphicsView(QWidget* parent) : QGraphicsView(parent)
    zv_rulersAndGreedManager = 0;
    zv_minSideSizeOfVisibleScene = 15;
    zv_rubberBandSideMinSize = 5;
+   zv_colorPickUpAuxCoverageSize = 1;
+   zv_gridColor = viewport()->palette().color(QPalette::Mid);
 
    zv_XRuleList = 0;
    zv_YRuleList = 0;
@@ -47,7 +49,6 @@ void ZPlotGraphicsView::zp_connectToRulersAndGridManager(ZRulersAndGridManager* 
 {
    zv_rulersAndGreedManager = manager;
    zv_rulersAndGreedManager->zp_setPlotGraphicsView(this);
-
 }
 //=============================================================
 void ZPlotGraphicsView::zp_setHorizontalRulePointList(QList<RulePoint> * XRuleList)
@@ -237,6 +238,41 @@ void ZPlotGraphicsView::zp_setGridHidden(bool hideGrid)
    viewport()->update();
 }
 //=============================================================
+bool ZPlotGraphicsView::zp_setColorPickUpAuxCoverageSize(int size)
+{
+   if(size < 0)
+   {
+      return false;
+   }
+   zv_colorPickUpAuxCoverageSize = size;
+   return true;
+}
+//=============================================================
+int ZPlotGraphicsView::zp_colorPickUpAuxCoverageSize() const
+{
+   return zv_colorPickUpAuxCoverageSize;
+}
+//=============================================================
+bool ZPlotGraphicsView::zp_setRubberBandSideMinSize(int size)
+{
+   if(size < 0)
+   {
+      return false;
+   }
+   zv_rubberBandSideMinSize = size;
+   return true;
+}
+//=============================================================
+int ZPlotGraphicsView::zp_rubberBandSideMinSize() const
+{
+   return zv_rubberBandSideMinSize;
+}
+//=============================================================
+QColor ZPlotGraphicsView::zp_gridColor() const
+{
+   return zv_gridColor;
+}
+//=============================================================
 QRectF ZPlotGraphicsView::zp_currentVisibleSceneRect() const
 {
    // QRect rect = viewport()->rect().adjusted(1,1,-1,-1);
@@ -323,15 +359,16 @@ void ZPlotGraphicsView::mousePressEvent(QMouseEvent* event)
    if(event->button() == Qt::LeftButton)
    {
       // pad moving
-      QGraphicsItem* item = itemAt(event->pos());
-      if(!item || !(item->flags() & QGraphicsItem::ItemIsMovable))
-      {
-         zv_plotMode = PM_PAD_DRAGGING;
-         qApp->setOverrideCursor(Qt::ClosedHandCursor);
+//      QGraphicsItem* item = itemAt(event->pos());
+//      if(!item || !(item->flags() & QGraphicsItem::ItemIsMovable))
+//      if(!zh_findSpectrumInCursorArea(event->pos()))
+//      {
+         //zv_plotMode = PM_PAD_DRAGGING;
          zv_sceneCenterPos = mapToScene(viewport()->rect()).boundingRect().center();
          zv_sceneMousePos = mapToScene(event->pos());
+         zv_mousePressStartViewPos = event->pos();
          return;
-      }
+     // }
    }
    else if(event->button() == Qt::RightButton)
    {
@@ -345,7 +382,7 @@ void ZPlotGraphicsView::mouseReleaseEvent(QMouseEvent* event)
 {
    if(zv_plotMode == PM_PAD_DRAGGING)
    {
-      qApp->restoreOverrideCursor();
+
    }
    else if(zv_plotMode == PM_RUBBER_BAND)
    {
@@ -390,6 +427,12 @@ void ZPlotGraphicsView::mouseReleaseEvent(QMouseEvent* event)
       fitInView(newSceneRect);
       //ensureVisible(newSceneRect, 2, 2);
    }
+   else if(zv_plotMode == PM_REGULAR && zv_mousePressStartViewPos == event->pos())
+   {
+      emit zg_cursorAreaImage(zh_grabCursorArea(event->pos()));
+   }
+
+   qApp->restoreOverrideCursor();
    zv_plotMode = PM_REGULAR;
    QGraphicsView::mouseReleaseEvent(event);
 }
@@ -398,7 +441,6 @@ void ZPlotGraphicsView::mouseMoveEvent(QMouseEvent* event)
 {
    if(zv_plotMode == PM_PAD_DRAGGING)
    {
-
       QPointF newSceneMousePos = mapToScene(event->pos());
       qreal deltaX = zv_sceneMousePos.x() - newSceneMousePos.x();
       qreal deltaY = zv_sceneMousePos.y() - newSceneMousePos.y();
@@ -443,6 +485,26 @@ void ZPlotGraphicsView::mouseMoveEvent(QMouseEvent* event)
          }
       }
    }
+   else if(zv_plotMode == PM_REGULAR && event->buttons() == Qt::LeftButton)
+   {
+      if(zv_mousePressStartViewPos != event->pos())
+      {
+         qApp->setOverrideCursor(Qt::ClosedHandCursor);
+         zv_plotMode = PM_PAD_DRAGGING;
+         QPointF newSceneMousePos = mapToScene(event->pos());
+         qreal deltaX = zv_sceneMousePos.x() - newSceneMousePos.x();
+         qreal deltaY = zv_sceneMousePos.y() - newSceneMousePos.y();
+         QPointF newSceneCenter(zv_sceneCenterPos.x() + deltaX, zv_sceneCenterPos.y() + deltaY);
+         centerOn(newSceneCenter);
+         zv_sceneCenterPos = mapToScene(viewport()->rect()).boundingRect().center();
+         zv_sceneMousePos = mapToScene(event->pos());
+         return;
+      }
+
+      //qDebug() <<
+
+   }
+
    QGraphicsView::mouseMoveEvent(event);
 }
 //=============================================================
@@ -502,12 +564,12 @@ void ZPlotGraphicsView::drawBackground(QPainter * painter, const QRectF & rect)
             QPen pen;
             if(zv_XRuleList->value(i).markType == RulePoint::MT_SCRATCH)
             {
-               pen = QPen(QBrush(viewport()->palette().color(QPalette::Mid)), 1, Qt::DotLine);
+               pen = QPen(QBrush(zv_gridColor), 1, Qt::DotLine);
                pen.setCosmetic(true);
             }
             else
             {
-               pen = QPen(QBrush(viewport()->palette().color(QPalette::Mid)), 1, Qt::DashLine);
+               pen = QPen(QBrush(zv_gridColor), 1, Qt::DashLine);
                pen.setCosmetic(true);
             }
             painter->setPen(pen);
@@ -526,12 +588,12 @@ void ZPlotGraphicsView::drawBackground(QPainter * painter, const QRectF & rect)
             QPen pen;
             if(zv_YRuleList->value(i).markType == RulePoint::MT_SCRATCH)
             {
-               pen = QPen(QBrush(viewport()->palette().color(QPalette::Mid)), 1, Qt::DotLine);
+               pen = QPen(QBrush(zv_gridColor), 1, Qt::DotLine);
                pen.setCosmetic(true);
             }
             else
             {
-               pen = QPen(QBrush(viewport()->palette().color(QPalette::Mid)), 1, Qt::DashLine);
+               pen = QPen(QBrush(zv_gridColor), 1, Qt::DashLine);
                pen.setCosmetic(true);
             }
             painter->setPen(pen);
@@ -550,5 +612,18 @@ void ZPlotGraphicsView::drawBackground(QPainter * painter, const QRectF & rect)
 void ZPlotGraphicsView::zh_createConnections()
 {
 
+}
+//=============================================================
+QImage ZPlotGraphicsView::zh_grabCursorArea(QPoint mousePos)
+{
+   int rectSide = zv_colorPickUpAuxCoverageSize*2 + 1; // 1 - central pixel
+   QPoint topLeft;
+   topLeft.setY(mousePos.y() - zv_colorPickUpAuxCoverageSize);
+   topLeft.setX(mousePos.x() - zv_colorPickUpAuxCoverageSize);
+
+   QRect rect = QRect(topLeft.x(), topLeft.y(), rectSide, rectSide);
+   QImage grabbedArea = grab(rect).toImage();
+
+   return grabbedArea;
 }
 //=============================================================

@@ -66,7 +66,7 @@ private:
     ZJointSpectrumTableWidget* zv_spectrumTableWidget;
     ZChemElementWidget* zv_chemElementWidget;
     ZCalibrationTableWidget* zv_calibrationTableWidget;
-    ZCalibrationWindowTableWidget* zv_jointCalibrationWindowTableWidget;
+    ZCalibrationWindowTableWidget* zv_calibrationWindowTableWidget;
 
     ZMessagePanel* zv_messagePanel;
     ZPlotter* zv_plotter;

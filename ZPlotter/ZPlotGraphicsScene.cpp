@@ -32,12 +32,12 @@ ZPlotGraphicsScene::~ZPlotGraphicsScene()
 //====================================================
 void ZPlotGraphicsScene::zp_addItem(QGraphicsItem * item)
 {
-    if(item->type() == WindowItemType)
-    {
-        ZWindowGraphicsItem* windowItem = qgraphicsitem_cast<ZWindowGraphicsItem*>(item);
-        windowItem->zp_fitInSceneRect(this->sceneRect());
-        zv_windowItemList << windowItem;
-    }
+//    if(item->type() == WindowItemType)
+//    {
+//        ZWindowGraphicsItem* windowItem = qgraphicsitem_cast<ZWindowGraphicsItem*>(item);
+//        windowItem->zp_fitInSceneRect(this->sceneRect());
+//        zv_windowItemList << windowItem;
+//    }
 
     QGraphicsScene::addItem(item);
 }
@@ -63,9 +63,9 @@ void ZPlotGraphicsScene::zh_createConnections()
 void ZPlotGraphicsScene::zh_onSceneRectChange(const QRectF& rect)
 {
     // fitting window items in scene trect
-    foreach(ZWindowGraphicsItem* windowItem, zv_windowItemList)
-    {
-        windowItem->zp_fitInSceneRect(rect);
-    }
+//    foreach(ZWindowGraphicsItem* windowItem, zv_windowItemList)
+//    {
+//        windowItem->zp_fitInSceneRect(rect);
+//    }
 }
 //====================================================

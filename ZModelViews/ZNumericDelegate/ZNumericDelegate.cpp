@@ -17,7 +17,7 @@ ZNumericDelegate::ZNumericDelegate(QWidget *parent) :
     m_editorMin = (double)std::numeric_limits<long>::min();
     m_editorMax = (double)std::numeric_limits<long>::max();
     m_inheritFontBoldFlag = true;
-
+    m_fontBoldFlag = false;
 }
 //=========================================------------------------------------------
 QWidget* ZNumericDelegate::	createEditor ( QWidget * parent, const QStyleOptionViewItem & option, const QModelIndex & index ) const

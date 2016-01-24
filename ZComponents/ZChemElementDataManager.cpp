@@ -13,9 +13,9 @@ void ZChemElementDataManager::zp_connectToSpectraArrayRepository(ZSpectrumArrayR
 {
     zv_repositiry = repository;
     // array repository <-> array model
-    connect(repository, &ZSpectrumArrayRepository::zg_currentChemElementOperation,
+    connect(repository, &ZSpectrumArrayRepository::zg_chemElementOperation,
             this, &ZChemElementDataManager::zh_onRepositoryChemElementOperation);
-    connect(repository, &ZSpectrumArrayRepository::zg_currentArrayId,
+    connect(repository, &ZSpectrumArrayRepository::zg_currentArrayIdChanged,
             this, &ZChemElementDataManager::zp_currentArrayChanged);
 }
 //=========================================================

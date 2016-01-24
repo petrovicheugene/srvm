@@ -2,11 +2,13 @@
 #ifndef ZCALIBRATIONWINDOW_H
 #define ZCALIBRATIONWINDOW_H
 //====================================================
+#include <QObject>
 #include <QString>
 #include <QMap>
 //====================================================
-class ZCalibrationWindow
+class ZCalibrationWindow : public QObject
 {
+   Q_OBJECT
 public:
     enum WindowType{WT_NOT_DEFINED,
                     WT_BASE_PEAK,
@@ -14,10 +16,13 @@ public:
                     WT_COHERENT,
                     WT_INCOHERENT};
 
-    ZCalibrationWindow();
-    ZCalibrationWindow(const QString&,  WindowType = WT_NOT_DEFINED );
-    ZCalibrationWindow(const QString&,  WindowType, int firstChannel, int lastChannel);
-
+    explicit ZCalibrationWindow(QObject* parent);
+    // explicit ZCalibrationWindow(const QString&,  WindowType = WT_NOT_DEFINED );
+    explicit ZCalibrationWindow(const QString&,
+                                WindowType,
+                                int firstChannel,
+                                int lastChannel,
+                                QObject* parent);
 
     bool zp_isWindowVisible() const;
     bool zp_setWindowVisible(bool);

@@ -31,9 +31,18 @@ public:
     void zp_scale(Qt::Orientation orientation, bool increase);
     void zp_setGridHidden(bool);
 
+    bool zp_setColorPickUpAuxCoverageSize(int);
+    int zp_colorPickUpAuxCoverageSize() const;
+
+    bool zp_setRubberBandSideMinSize(int);
+    int zp_rubberBandSideMinSize() const;
+
+    QColor zp_gridColor() const;
+
 signals:
 
    void zg_requestForScrollBarVisible(Qt::Orientation, bool&);
+   void zg_cursorAreaImage(QImage);
 
 protected:
 
@@ -69,9 +78,11 @@ private:
     QList<RulePoint> * zv_XRuleList;
     QList<RulePoint> * zv_YRuleList;
 
+    int zv_colorPickUpAuxCoverageSize;
+    QColor zv_gridColor;
     // FUNCS
     void zh_createConnections();
-
+    QImage zh_grabCursorArea(QPoint);
 };
 //=============================================================
 #endif // ZGRAPHICSVIEWPLOT_H

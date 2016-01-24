@@ -45,7 +45,8 @@ private:
 
 private slots:
 
-    void zh_onCurrentArrayChanged(const QModelIndex & current, const QModelIndex & previous);
+    void zh_onCurrentArrayChanged(const QModelIndex & current,
+                                  const QModelIndex & previous);
 
 };
 //==============================================================

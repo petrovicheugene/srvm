@@ -177,7 +177,7 @@ void ZCalibrationModel::zp_connectToCalibrationRepository(ZCalibrationRepository
     beginResetModel();
 
     zv_calibrationRepository = repository;
-    connect(zv_calibrationRepository, &ZCalibrationRepository::zg_currentCalibrationOperation,
+    connect(zv_calibrationRepository, &ZCalibrationRepository::zg_calibrationOperation,
             this, &ZCalibrationModel::zh_onCalibrationRepositoryOperation);
 
     endResetModel();

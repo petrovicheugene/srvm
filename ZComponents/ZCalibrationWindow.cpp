@@ -1,6 +1,5 @@
 //====================================================
 #include "ZCalibrationWindow.h"
-#include <QObject>
 //====================================================
 qint64 ZCalibrationWindow::zv_lastWindowId = 0;
 QMap<ZCalibrationWindow::WindowType, QString> ZCalibrationWindow::zv_typeNameMap = ZCalibrationWindow::zh_intTypeNameMap();
@@ -17,7 +16,7 @@ QMap<ZCalibrationWindow::WindowType, QString> ZCalibrationWindow::zh_intTypeName
     return map;
 }
 //====================================================
-ZCalibrationWindow::ZCalibrationWindow()
+ZCalibrationWindow::ZCalibrationWindow(QObject* parent) : QObject(parent)
 {
     zv_windowName = QString();
     zv_firstChannel = 0;
@@ -28,18 +27,22 @@ ZCalibrationWindow::ZCalibrationWindow()
     zv_windowId = zv_lastWindowId++;
 }
 //====================================================
-ZCalibrationWindow::ZCalibrationWindow(const QString& name,  WindowType type)
-{
-    zv_windowName = name;
-    zv_type = type;
+//ZCalibrationWindow::ZCalibrationWindow(const QString& name,  WindowType type)
+//{
+//    zv_windowName = name;
+//    zv_type = type;
 
-    zv_firstChannel = 0;
-    zv_lastChannel = 0;
-    zv_visible = true;
-    zv_windowId = zv_lastWindowId++;
-}
+//    zv_firstChannel = 0;
+//    zv_lastChannel = 0;
+//    zv_visible = true;
+//    zv_windowId = zv_lastWindowId++;
+//}
 //====================================================
-ZCalibrationWindow::ZCalibrationWindow(const QString& name,  WindowType type, int firstChannel, int lastChannel)
+ZCalibrationWindow::ZCalibrationWindow(const QString& name,
+                                       WindowType type,
+                                       int firstChannel,
+                                       int lastChannel,
+                                       QObject *parent) : QObject(parent)
 {
     zv_windowName = name;
     zv_type = type;
@@ -117,11 +120,15 @@ bool ZCalibrationWindow::zp_setWindowLastChannel(int channel)
 //====================================================
 bool ZCalibrationWindow::zp_setWindowMarginChannels(int first, int last)
 {
-    if(first == last || (first == zv_firstChannel && last == zv_lastChannel))
+    if(first == zv_firstChannel && last == zv_lastChannel)
     {
         return false;
     }
 
+    if(first > last)
+    {
+       qSwap(first, last);
+    }
     zv_firstChannel = first;
     zv_lastChannel = last;
     return true;

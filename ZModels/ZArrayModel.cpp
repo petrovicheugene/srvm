@@ -123,7 +123,7 @@ void ZArrayModel::zp_connectToSpectraArrayRepository(ZSpectrumArrayRepository* r
     beginResetModel();
     zv_repositiry = repository;
     // array repository <-> array model
-    connect(repository, &ZSpectrumArrayRepository::zg_currentArrayOperation,
+    connect(repository, &ZSpectrumArrayRepository::zg_spectrumArrayOperation,
             this, &ZArrayModel::zh_onRepositoryOperation);
     endResetModel();
 }

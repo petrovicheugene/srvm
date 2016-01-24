@@ -118,7 +118,12 @@ SOURCES += main.cpp \
     ZComponents/ZCalibrationWindow.cpp \
     ZModelViews/ZCalibrationWindowTableWidget.cpp \
     ZPlotter/ZDefaultRectGraphicsItem.cpp \
-    ZModelViews/ZIntDelegate/ZChannelNumberDelegate.cpp
+    ZModelViews/ZIntDelegate/ZChannelNumberDelegate.cpp \
+    ZComponents/ZAbstractPredictor.cpp \
+    ZComponents/ZSimplePredictor.cpp \
+    ZComponents/ZQuadraticPredictor.cpp \
+    ZComponents/ZMixedPredictor.cpp \
+    ZComponents/ZCustomPredictor.cpp
 
 
 HEADERS  += \
@@ -178,7 +183,13 @@ HEADERS  += \
     ZComponents/ZCalibrationWindow.h \
     ZModelViews/ZCalibrationWindowTableWidget.h \
     ZPlotter/ZDefaultRectGraphicsItem.h \
-    ZModelViews/ZIntDelegate/ZChannelNumberDelegate.h
+    ZModelViews/ZIntDelegate/ZChannelNumberDelegate.h \
+    ZPlotter/ZPlotterDefaulVariables.h \
+    ZComponents/ZAbstractPredictor.h \
+    ZComponents/ZSimplePredictor.h \
+    ZComponents/ZQuadraticPredictor.h \
+    ZComponents/ZMixedPredictor.h \
+    ZComponents/ZCustomPredictor.h
 
 
 RESOURCES += \

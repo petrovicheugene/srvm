@@ -20,11 +20,11 @@ void ZJointSpectraDataManager::zp_connectToSpectraArrayRepository(ZSpectrumArray
 {
     zv_spectrumArrayRepositiry = repository;
     // array repository <-> array model
-    connect(repository, &ZSpectrumArrayRepository::zg_currentSpectrumOperation,
+    connect(repository, &ZSpectrumArrayRepository::zg_spectrumOperation,
             this, &ZJointSpectraDataManager::zh_onRepositoryArrayOperation);
-    connect(repository, &ZSpectrumArrayRepository::zg_currentChemElementOperation,
+    connect(repository, &ZSpectrumArrayRepository::zg_chemElementOperation,
             this, &ZJointSpectraDataManager::zh_onRepositoryChemElementOperation);
-    connect(repository, &ZSpectrumArrayRepository::zg_currentArrayId,
+    connect(repository, &ZSpectrumArrayRepository::zg_currentArrayIdChanged,
             this, &ZJointSpectraDataManager::zh_currentSpectrumArrayChanged);
 
 }
@@ -32,7 +32,7 @@ void ZJointSpectraDataManager::zp_connectToSpectraArrayRepository(ZSpectrumArray
 void ZJointSpectraDataManager::zp_connectToCalibrationRepository(ZCalibrationRepository* repository)
 {
     zv_calibrationRepository = repository;
-    connect(repository, &ZCalibrationRepository::zg_currentCalibrationOperation,
+    connect(repository, &ZCalibrationRepository::zg_calibrationOperation,
             this, &ZJointSpectraDataManager::zh_onRepositoryCalibrationOperation);
 
 }

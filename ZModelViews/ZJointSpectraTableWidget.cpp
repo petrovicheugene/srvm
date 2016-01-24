@@ -5,6 +5,7 @@
 #include "ZSpectrumTableDelegate.h"
 #include "ZVisibilityStringDelegate.h"
 #include "ZJointSpectraModel.h"
+#include "ZSpectrumArrayRepository.h"
 
 #include <QTableView>
 #include <QHBoxLayout>
@@ -52,12 +53,15 @@ void ZJointSpectrumTableWidget::zp_setModel(ZJointSpectraModel* model)
     zv_table->setModel(model);
     ZNumericDelegate* numericDelegate = new ZNumericDelegate(zv_table);
     connect(numericDelegate, &ZNumericDelegate::editNext,
-            this, &ZJointSpectrumTableWidget::zp_editNext);
+            this, &ZJointSpectrumTableWidget::zh_editNext);
     zv_table->setItemDelegate(numericDelegate);
     ZSpectrumTableDelegate* spectrumDelegate = new ZSpectrumTableDelegate(zv_table);
     zv_table->setItemDelegateForColumn(0, new ZVisibilityStringDelegate(zv_table));
     zv_table->setItemDelegateForColumn(1, spectrumDelegate);
     zv_table->setAlternatingRowColors(true);
+
+    connect(zv_table->selectionModel(), &QItemSelectionModel::currentRowChanged,
+            this, &ZJointSpectrumTableWidget::zh_onCurrentSpectrumChanged);
 }
 //==============================================================
 void ZJointSpectrumTableWidget::zp_appendButtonActions(QList<QAction*> actionList)
@@ -75,7 +79,14 @@ void ZJointSpectrumTableWidget::zp_appendButtonActions(QList<QAction*> actionLis
     }
 }
 //==============================================================
-void ZJointSpectrumTableWidget::zp_editNext(QModelIndex editedIndex)
+void ZJointSpectrumTableWidget::zp_connectToSpectrumArrayRepository(ZSpectrumArrayRepository* repository)
+{
+   connect(this, &ZJointSpectrumTableWidget::zg_currentSpectrumChanged,
+           repository, &ZSpectrumArrayRepository::zp_currentSpectrumChanged);
+
+}
+//==============================================================
+void ZJointSpectrumTableWidget::zh_editNext(QModelIndex editedIndex)
 {
     if(!editedIndex.isValid() || editedIndex.row() < 0)
     {
@@ -98,5 +109,30 @@ void ZJointSpectrumTableWidget::zp_editNext(QModelIndex editedIndex)
 
     zv_table->setCurrentIndex(nextIndex);
     zv_table->edit(nextIndex);
+}
+//==============================================================
+void ZJointSpectrumTableWidget::zh_onCurrentSpectrumChanged(const QModelIndex & current,
+                                                            const QModelIndex & previous)
+{
+    int currentRow;
+    if(current.isValid())
+    {
+        currentRow = current.row();
+    }
+    else
+    {
+        currentRow = -1;
+    }
+    int previousRow;
+    if(previous.isValid())
+    {
+        previousRow = previous.row();
+    }
+    else
+    {
+        previousRow = -1;
+    }
+
+    emit zg_currentSpectrumChanged(currentRow, previousRow);
 }
 //==============================================================

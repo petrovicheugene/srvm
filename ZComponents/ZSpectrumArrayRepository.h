@@ -65,6 +65,9 @@ public:
     bool zp_isSpectrumVisible(int arrayIndex, int spectrumIndex) const;
     bool zp_setSpectrumVisible(int arrayIndex, int spectrumIndex, bool visible);
 
+    bool zp_isSpectrumVisible(qint64 arrayId, qint64 spectrumId) const;
+    bool zp_setSpectrumVisible(qint64 arrayId, qint64 spectrumId, bool visible);
+
     const ZAbstractSpectrum * zp_spectrum(int arrayIndex, int spectrumIndex) const;
     QList<ZAbstractSpectrum*> zp_spectrumListForArray(int arrayIndex) const;
     QList<int> zp_spectrumData(int arrayIndex, int spectrumIndex) const;
@@ -94,9 +97,9 @@ public:
 signals:
 
     void zg_message(QString) const;
-    void zg_currentArrayOperation(ArrayOperationType, int, int) const;
-    void zg_currentSpectrumOperation(SpectrumOperationType, int, int, int) const;
-    void zg_currentChemElementOperation(ChemElementOperationType, int, int, int) const;
+    void zg_spectrumArrayOperation(ArrayOperationType, int, int) const;
+    void zg_spectrumOperation(SpectrumOperationType, int, int, int) const;
+    void zg_chemElementOperation(ChemElementOperationType, int, int, int) const;
 
     void zg_currentFile(bool dirty, QString fileName) const;
     void zg_fitPlotInBoundingRect();
@@ -114,7 +117,9 @@ signals:
     void zg_saveSpectraArrayList(QString, QList<ZRawSpectrumArray>) const;
     void zg_initSpectraAppending(int);
 
-    void zg_currentArrayId(qint64 arrayId, int arrayIndex);
+    void zg_currentArrayIdChanged(qint64 arrayId, int arrayIndex);
+    void zg_currentSpectrumChanged(qint64 currentSpectrumId, int currentSpectrumIndex,
+                              qint64 previousSpectrumId, int previousSpectrumIndex);
 
     void zg_energyCalibrationChanged(qint64 arrayId);
     void zg_arrayMaxParametersChanged(qint64 arrayId, int intensity, int channels);
@@ -127,6 +132,7 @@ public slots:
     void zp_getArrayName(int arrayIndex, QString&) const;
     void zp_getSpectrumName(int arrayIndex, int spectrumIndex, QString&) const;
     void zp_currentArrayChanged(int current, int previous);
+    void zp_currentSpectrumChanged(int currentSpectrumIndex, int previousSpectrumIndex);
     void zp_chemElementListForCurrentArray(QStringList& chemElementList);
 
 private slots:

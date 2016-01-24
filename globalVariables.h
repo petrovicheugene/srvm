@@ -17,6 +17,5 @@ extern const QString glAppCompany;
 extern const QString glAppCopyright;
 extern const QString glAppCompanyURL;
 
-
 #endif // GLVARIABLES_H
 //================================

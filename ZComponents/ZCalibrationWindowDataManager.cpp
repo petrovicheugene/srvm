@@ -13,7 +13,7 @@ ZCalibrationWindowDataManager::ZCalibrationWindowDataManager(QObject *parent) : 
 void ZCalibrationWindowDataManager::zp_connectToSpectraArrayRepository(ZSpectrumArrayRepository* repository)
 {
     zv_spectrumArrayRepositiry = repository;
-    connect(zv_spectrumArrayRepositiry, &ZSpectrumArrayRepository::zg_currentArrayId,
+    connect(zv_spectrumArrayRepositiry, &ZSpectrumArrayRepository::zg_currentArrayIdChanged,
             this, &ZCalibrationWindowDataManager::zh_currentSpectrumArrayChanged);
     connect(zv_spectrumArrayRepositiry, &ZSpectrumArrayRepository::zg_arrayMaxParametersChanged,
             this, &ZCalibrationWindowDataManager::zh_onArrayMaxParametersChanged);
@@ -23,9 +23,9 @@ void ZCalibrationWindowDataManager::zp_connectToSpectraArrayRepository(ZSpectrum
 void ZCalibrationWindowDataManager::zp_connectToCalibrationRepository(ZCalibrationRepository* repository)
 {
     zv_calibrationRepository = repository;
-    connect(repository, &ZCalibrationRepository::zg_currentWindowOperation,
+    connect(repository, &ZCalibrationRepository::zg_calibrationWindowOperation,
             this, &ZCalibrationWindowDataManager::zh_onRepositoryWindowOperation);
-    connect(repository, &ZCalibrationRepository::zg_currentCalibration,
+    connect(repository, &ZCalibrationRepository::zg_currentCalibrationChanged,
             this, &ZCalibrationWindowDataManager::zh_currentCalibrationChanged);
 }
 //=============================================================================
