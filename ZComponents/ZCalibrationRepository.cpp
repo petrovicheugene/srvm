@@ -762,7 +762,7 @@ void ZCalibrationRepository::zh_onWindowOperation(ZCalibration::WindowOperationT
             continue;
         }
 
-        if(type == ZCalibration::WOT_INSERT_WINDOWS)
+        if(type == ZCalibration::WOT_BRGIN_INSERT_WINDOWS)
         {
             emit zg_calibrationWindowOperation(WOT_INSERT_WINDOWS, calibrationIndex, first, last);
         }
@@ -770,7 +770,7 @@ void ZCalibrationRepository::zh_onWindowOperation(ZCalibration::WindowOperationT
         {
             emit zg_calibrationWindowOperation(WOT_END_INSERT_WINDOWS, calibrationIndex, first, last);
         }
-        else if(type == ZCalibration::WOT_REMOVE_WINDOWS)
+        else if(type == ZCalibration::WOT_BEGIN_REMOVE_WINDOWS)
         {
             emit zg_calibrationWindowOperation(WOT_REMOVE_WINDOWS, calibrationIndex, first, last);
         }
@@ -778,7 +778,7 @@ void ZCalibrationRepository::zh_onWindowOperation(ZCalibration::WindowOperationT
         {
             emit zg_calibrationWindowOperation(WOT_END_REMOVE_WINDOWS, calibrationIndex, first, last);
         }
-        else if(type == ZCalibration::WOT_CHANGED)
+        else if(type == ZCalibration::WOT_WINDOW_CHANGED)
         {
             emit zg_calibrationWindowOperation(WOT_WINDOW_CHANGED, calibrationIndex, first, last);
         }

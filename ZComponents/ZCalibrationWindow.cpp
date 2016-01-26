@@ -1,5 +1,7 @@
 //====================================================
 #include "ZCalibrationWindow.h"
+#include "ZAbstractPredictor.h"
+#include <QPointer>
 //====================================================
 qint64 ZCalibrationWindow::zv_lastWindowId = 0;
 QMap<ZCalibrationWindow::WindowType, QString> ZCalibrationWindow::zv_typeNameMap = ZCalibrationWindow::zh_intTypeNameMap();

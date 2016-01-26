@@ -4,11 +4,24 @@
 //===================================================================
 #include "ZAbstractPredictor.h"
 //===================================================================
+class ZCalibrationWindow;
+//===================================================================
 class ZQuadraticPredictor : public ZAbstractPredictor
 {
    Q_OBJECT
 public:
-   explicit ZQuadraticPredictor(QObject* parent = 0);
+   explicit ZQuadraticPredictor(const ZCalibrationWindow &window,
+                                ZCalibration *parent);
+
+   // FUNCS
+   qreal zp_calcValue() override;
+   QString zp_predictorName() override;
+
+private:
+
+   // VARS
+
+
 };
 //===================================================================
 #endif // ZQUADRATICPREDICTOR_H

@@ -6,8 +6,14 @@
 //===================================================================
 class ZCustomPredictor : public ZAbstractPredictor
 {
+   Q_OBJECT
 public:
-   ZCustomPredictor();
+   explicit ZCustomPredictor(ZCalibration* parent);
+
+   // FUNCS
+   qreal zp_calcValue() override;
+   QString zp_predictorName() override;
+
 };
 //===================================================================
 #endif // ZCUSTOMPREDICTOR_H

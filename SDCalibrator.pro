@@ -123,7 +123,8 @@ SOURCES += main.cpp \
     ZComponents/ZSimplePredictor.cpp \
     ZComponents/ZQuadraticPredictor.cpp \
     ZComponents/ZMixedPredictor.cpp \
-    ZComponents/ZCustomPredictor.cpp
+    ZComponents/ZCustomPredictor.cpp \
+    ZComponents/ZPredictorNormalizator.cpp
 
 
 HEADERS  += \
@@ -189,7 +190,8 @@ HEADERS  += \
     ZComponents/ZSimplePredictor.h \
     ZComponents/ZQuadraticPredictor.h \
     ZComponents/ZMixedPredictor.h \
-    ZComponents/ZCustomPredictor.h
+    ZComponents/ZCustomPredictor.h \
+    ZComponents/ZPredictorNormalizator.h
 
 
 RESOURCES += \

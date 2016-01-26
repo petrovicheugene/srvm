@@ -5,8 +5,10 @@
 #include "ZQuadraticPredictor.h"
 #include "ZMixedPredictor.h"
 #include "ZCustomPredictor.h"
+#include "ZPredictorNormalizator.h"
 
 #include <QFileInfo>
+#include <QPointer>
 //=========================================================
 QList<QColor> ZCalibration::zv_colorList = ZCalibration::zp_createColorList();
 qint64 ZCalibration::zv_lastCalibrationId = 0;
@@ -159,9 +161,33 @@ void ZCalibration::zp_createNewCalibrationWindow(int firstChannel, int lastChann
                                                                    firstChannel,
                                                                    lastChannel,
                                                                    this);
-    emit zg_windowOperation(WOT_INSERT_WINDOWS, windowNewIndex, windowNewIndex);
+
+    emit zg_windowOperation(WOT_BRGIN_INSERT_WINDOWS, windowNewIndex, windowNewIndex);
     zv_spectrumWindowList.append(calibrationWindow);
     emit zg_windowOperation(WOT_END_INSERT_WINDOWS, windowNewIndex, windowNewIndex);
+
+    zh_createPredictorsForWindow(calibrationWindow);
+}
+//=========================================================
+void ZCalibration::zh_createPredictorsForWindow(ZCalibrationWindow* window)
+{
+
+
+}
+//=========================================================
+void ZCalibration::zp_isNormalizerValid(bool& validFlag) const
+{
+   zv_predictorNormalizator->zp_isValid(validFlag);
+}
+//=========================================================
+void ZCalibration::zp_normalizerValue(qreal& value) const
+{
+   zv_predictorNormalizator->zp_value(value);
+}
+//=========================================================
+void ZCalibration::zh_removePredictor(ZAbstractPredictor* predictor)
+{
+
 }
 //=========================================================
 bool ZCalibration::zh_isWindowExist(const QString& windowName)
@@ -197,7 +223,7 @@ bool ZCalibration::zp_setCalibrationWindowVisible(int windowIndex, bool visibili
     bool res = zv_spectrumWindowList[windowIndex]->zp_setWindowVisible(visibility);
     if(res)
     {
-        emit zg_windowOperation(WOT_CHANGED, windowIndex, windowIndex);
+        emit zg_windowOperation(WOT_WINDOW_CHANGED, windowIndex, windowIndex);
     }
     return res;
 }
@@ -237,7 +263,7 @@ bool ZCalibration::zp_setCalibrationWindowName(int windowIndex, const QString& n
     bool res = zv_spectrumWindowList[windowIndex]->zp_setWindowName(name);
     if(res)
     {
-        emit zg_windowOperation(WOT_CHANGED, windowIndex, windowIndex);
+        emit zg_windowOperation(WOT_WINDOW_CHANGED, windowIndex, windowIndex);
     }
     return res;
 }
@@ -262,7 +288,7 @@ bool ZCalibration::zp_setCalibrationWindowType(int windowIndex, ZCalibrationWind
     bool res = zv_spectrumWindowList[windowIndex]->zp_setWindowType(type);
     if(res)
     {
-        emit zg_windowOperation(WOT_CHANGED, windowIndex, windowIndex);
+        emit zg_windowOperation(WOT_WINDOW_CHANGED, windowIndex, windowIndex);
     }
     return res;
 }
@@ -287,7 +313,7 @@ bool ZCalibration::zp_setCalibrationWindowFirstChannel(int windowIndex, int chan
     bool res = zv_spectrumWindowList[windowIndex]->zp_setWindowFirstChannel(channel);
     if(res)
     {
-        emit zg_windowOperation(WOT_CHANGED, windowIndex, windowIndex);
+        emit zg_windowOperation(WOT_WINDOW_CHANGED, windowIndex, windowIndex);
     }
     return res;
 }
@@ -312,7 +338,7 @@ bool ZCalibration::zp_setCalibrationWindowLastChannel(int windowIndex, int chann
     bool res = zv_spectrumWindowList[windowIndex]->zp_setWindowLastChannel(channel);
     if(res)
     {
-        emit zg_windowOperation(WOT_CHANGED, windowIndex, windowIndex);
+        emit zg_windowOperation(WOT_WINDOW_CHANGED, windowIndex, windowIndex);
     }
     return res;
 }
@@ -334,10 +360,21 @@ bool ZCalibration::zp_removeSpectrumWindow(int windowIndex)
         return false;
     }
 
-    emit zg_windowOperation(WOT_REMOVE_WINDOWS, windowIndex, windowIndex);
+    emit zg_windowOperation(WOT_BEGIN_REMOVE_WINDOWS, windowIndex, windowIndex);
     delete zv_spectrumWindowList.takeAt(windowIndex);
     emit zg_windowOperation(WOT_END_REMOVE_WINDOWS, windowIndex, windowIndex);
+
     return true;
+}
+//=========================================================
+void ZCalibration::zp_connectPredictorToCalibration(const ZAbstractPredictor* predictor)
+{
+   if(predictor == 0)
+   {
+      return;
+   }
+   connect(predictor, &ZAbstractPredictor::zg_requestForDelete,
+           this, &ZCalibration::zh_removePredictor);
 }
 //=========================================================
 bool ZCalibration::checkColor(QColor color)
