@@ -6,6 +6,7 @@
 #include <QMap>
 #include <QColor>
 #include "ZCalibrationWindow.h"
+#include "ZAbstractPredictor.h"
 //=========================================================
 class ZAbstractSpectrum;
 class ZSimplePredictor;
@@ -110,12 +111,7 @@ private:
    QString zv_defaultWindowName;
 
    QList<ZCalibrationWindow*> zv_spectrumWindowList;
-
-   QList<QPointer<ZSimplePredictor> > zv_simplePredictorPointerList;
-   QList<QPointer<ZQuadraticPredictor> >zv_quadraticPredictorPointerList;
-   QList<QPointer<ZMixedPredictor> >zv_mixedPredictorPointerList;
-   QList<QPointer<ZCustomPredictor> > zv_customPredictorPointerList;
-
+   QList<ZAbstractPredictor*> zv_predictorList;
    ZPredictorNormalizer* zv_predictorNormalizator;
 
    // FUNCS

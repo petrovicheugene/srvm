@@ -1,12 +1,19 @@
 //============================================================
 #include "ZAbstractPredictor.h"
 #include "ZCalibrationWindow.h"
+#include "ZCalibration.h"
+
 #include <QPointer>
 //============================================================
 ZAbstractPredictor::ZAbstractPredictor(ZCalibration *parent) : QObject(parent)
 {
    zh_connectToCalibration(parent);
-
+   zv_type = PT_NOT_DEFINED;
+}
+//============================================================
+ZAbstractPredictor::PredictorType ZAbstractPredictor::zp_predictorType()
+{
+   return zv_type;
 }
 //============================================================
 void ZAbstractPredictor::zh_connectToNormalizer(ZPredictorNormalizer* normalizer)

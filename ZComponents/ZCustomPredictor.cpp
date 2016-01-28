@@ -3,7 +3,7 @@
 //===================================================================
 ZCustomPredictor::ZCustomPredictor(ZCalibration *parent) : ZAbstractPredictor(parent)
 {
-
+   zv_type = PT_CUSTOM;
 }
 //===================================================================
 qreal ZCustomPredictor::zp_calcValue()

@@ -5,7 +5,7 @@
 ZSimplePredictor::ZSimplePredictor(const ZCalibrationWindow &window,
                                    ZCalibration *parent) : ZAbstractPredictor(parent)
 {
-
+   zv_type = PT_SIMPLE;
 }
 //===================================================================
 qreal ZSimplePredictor::zp_calcValue()
