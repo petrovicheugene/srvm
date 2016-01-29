@@ -12,8 +12,13 @@ class ZWidgetWithSidebar : public QFrame
 {
     Q_OBJECT
 public:
-    explicit ZWidgetWithSidebar(const QString& objectName, QWidget *parent = 0);
-    explicit ZWidgetWithSidebar(const QString& title, const QString& objectName, QWidget *parent = 0);
+    explicit ZWidgetWithSidebar(const QString& objectName,
+                                bool sideBarIsOnLeft,
+                                QWidget *parent);
+    explicit ZWidgetWithSidebar(const QString& title,
+                                const QString& objectName,
+                                bool sideBarIsOnLeft,
+                                QWidget *parent);
 
     bool zp_setMainWidget(QWidget*);
     bool zp_setSidebarWidget(QWidget*);

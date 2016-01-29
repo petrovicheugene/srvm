@@ -17,7 +17,6 @@ void ZCalibrationWindowDataManager::zp_connectToSpectraArrayRepository(ZSpectrum
             this, &ZCalibrationWindowDataManager::zh_currentSpectrumArrayChanged);
     connect(zv_spectrumArrayRepositiry, &ZSpectrumArrayRepository::zg_arrayMaxParametersChanged,
             this, &ZCalibrationWindowDataManager::zh_onArrayMaxParametersChanged);
-
 }
 //=============================================================================
 void ZCalibrationWindowDataManager::zp_connectToCalibrationRepository(ZCalibrationRepository* repository)

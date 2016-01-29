@@ -1,19 +1,19 @@
 //===================================================================
-#include "ZMixedPredictor.h"
+#include "ZCrossProductPredictor.h"
 //===================================================================
-ZMixedPredictor::ZMixedPredictor(const ZCalibrationWindow& window1,
+ZCrossProductPredictor::ZCrossProductPredictor(const ZCalibrationWindow& window1,
                                  const ZCalibrationWindow& window2,
                                  ZCalibration *parent) : ZAbstractPredictor(parent)
 {
    zv_type = PT_MIXED;
 }
 //===================================================================
-qreal ZMixedPredictor::zp_calcValue()
+qreal ZCrossProductPredictor::zp_calcValue()
 {
    return 0;
 }
 //===================================================================
-QString ZMixedPredictor::zp_predictorName()
+QString ZCrossProductPredictor::zp_predictorName()
 {
    return QString();
 }

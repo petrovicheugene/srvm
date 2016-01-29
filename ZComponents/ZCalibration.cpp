@@ -3,7 +3,7 @@
 #include "ZAbstractSpectrum.h"
 #include "ZSimplePredictor.h"
 #include "ZQuadraticPredictor.h"
-#include "ZMixedPredictor.h"
+#include "ZCrossProductPredictor.h"
 #include "ZCustomPredictor.h"
 #include "ZPredictorNormalizator.h"
 

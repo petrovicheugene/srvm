@@ -119,6 +119,15 @@ int ZHorizontalDashBoard::zp_distortionValue()
     return zv_distortionSlider->value();
 }
 //===========================================================
+void ZHorizontalDashBoard::zp_setDistortionSliderVisible(bool visible)
+{
+   if(zv_distortionSlider == 0)
+   {
+      return;
+   }
+   zv_distortionSlider->setVisible(visible);
+}
+//===========================================================
 void ZHorizontalDashBoard::timerEvent(QTimerEvent* event)
 {
     zh_killTimer();

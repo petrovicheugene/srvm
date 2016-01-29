@@ -23,6 +23,9 @@ public:
                                      int extraSperatorSpacing = 0);
 
     int zp_distortionValue();
+
+    void zp_setDistortionSliderVisible(bool visible);
+
 signals:
 
     void zg_distortionFactorChanged(int);

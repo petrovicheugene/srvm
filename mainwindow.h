@@ -10,6 +10,8 @@ class ZJointSpectrumTableWidget;
 class ZChemElementWidget;
 class ZCalibrationTableWidget;
 class ZCalibrationWindowTableWidget;
+class ZPredictorTableWidget;
+class ZPredictorCorrelationPlotterWidget;
 class ZWidgetWithSidebar;
 class ZMessagePanel;
 
@@ -22,6 +24,7 @@ class ZJointSpectraModel;
 class ZChemElementModel;
 class ZCalibrationModel;
 class ZCalibrationWindowModel;
+class ZPredictorTableModel;
 
 class ZSpectrumArrayRepository;
 class ZCalibrationRepository;
@@ -30,6 +33,8 @@ class ZJointSpectraDataManager;
 class ZChemElementDataManager;
 class ZCalibrationWindowDataManager;
 class ZPlotterDataManager;
+class ZPredictorCorrelationPlotterManager;
+class ZPredictorTableManager;
 //==========================================================
 class MainWindow : public QMainWindow
 {
@@ -55,18 +60,23 @@ private:
     QList<QDockWidget*> zv_dockList;
     QDockWidget* zv_spectrumArrayDock;
     QDockWidget* zv_calibrationDock;
+    QDockWidget* zv_predictorTableDock;
     QDockWidget* zv_chemElementArrayDock;
     QDockWidget* zv_messagePanelDock;
 
     // views
     ZWidgetWithSidebar* zv_spectraSidebarWidget;
     ZWidgetWithSidebar* zv_calibrationSidebarWidget;
+    ZWidgetWithSidebar* zv_predictorTableSidebarWidget;
 
     ZSpectrumArrayWidget* zv_spectrumArrayWidget;
     ZJointSpectrumTableWidget* zv_spectrumTableWidget;
     ZChemElementWidget* zv_chemElementWidget;
     ZCalibrationTableWidget* zv_calibrationTableWidget;
     ZCalibrationWindowTableWidget* zv_calibrationWindowTableWidget;
+
+    ZPredictorTableWidget* zv_predictorTableWidget;
+    ZPredictorCorrelationPlotterWidget* zv_predictorCorrelationPlottterWidget;
 
     ZMessagePanel* zv_messagePanel;
     ZPlotter* zv_plotter;
@@ -77,6 +87,7 @@ private:
     ZChemElementModel* zv_chemElementModel;
     ZCalibrationModel* zv_calibrationModel;
     ZCalibrationWindowModel* zv_jointCalibrationWindowModel;
+    ZPredictorTableModel* zv_predictorTableModel;
 
     // components
     ZFileActionManager* zv_fileActionManager;
@@ -86,6 +97,8 @@ private:
     ZCalibrationWindowDataManager* zv_jointCalibrationWindowDataManager;
     ZChemElementDataManager* zv_chemElementDataManager;
     ZPlotterDataManager* zv_plotterDataManager;
+    ZPredictorCorrelationPlotterManager* zv_predictorCorrelationPlotterManager;
+    ZPredictorTableManager* zv_predictorTableManager;
 
     // FUNCS
     void closeEvent(QCloseEvent* e);

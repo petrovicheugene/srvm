@@ -6,9 +6,10 @@
 #include <QModelIndex>
 //=============================================================
 class QTableView;
-class ZJointSpectraModel;
 class QAction;
 class QHBoxLayout;
+
+class ZJointSpectraModel;
 class ZSpectrumArrayRepository;
 //=============================================================
 class ZJointSpectrumTableWidget : public QWidget

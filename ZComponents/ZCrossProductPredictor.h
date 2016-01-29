@@ -1,16 +1,16 @@
 //===================================================================
-#ifndef ZMIXEDPREDICTOR_H
-#define ZMIXEDPREDICTOR_H
+#ifndef ZCrossProductPredictor_H
+#define ZCrossProductPredictor_H
 //===================================================================
 #include "ZAbstractPredictor.h"
 //===================================================================
 class ZCalibrationWindow;
 //===================================================================
-class ZMixedPredictor : public ZAbstractPredictor
+class ZCrossProductPredictor : public ZAbstractPredictor
 {
    Q_OBJECT
 public:
-   explicit ZMixedPredictor(const ZCalibrationWindow &window1,
+   explicit ZCrossProductPredictor(const ZCalibrationWindow &window1,
                             const ZCalibrationWindow &window2,
                             ZCalibration *parent);
 
@@ -24,4 +24,4 @@ private:
 
 };
 //===================================================================
-#endif // ZMIXEDPREDICTOR_H
+#endif // ZCrossProductPredictor_H

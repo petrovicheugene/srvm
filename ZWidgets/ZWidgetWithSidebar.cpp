@@ -10,7 +10,9 @@
 #include <QLabel>
 #include <QSettings>
 //=======================================================
-ZWidgetWithSidebar::ZWidgetWithSidebar(const QString &objectName, QWidget *parent) : QFrame(parent)
+ZWidgetWithSidebar::ZWidgetWithSidebar(const QString &objectName,
+                                       bool sideBarIsOnLeft,
+                                       QWidget *parent) : QFrame(parent)
 {
     zv_sideBarWidget = 0;
     zv_mainWidget = 0;
@@ -21,7 +23,10 @@ ZWidgetWithSidebar::ZWidgetWithSidebar(const QString &objectName, QWidget *paren
 
 }
 //=======================================================
-ZWidgetWithSidebar::ZWidgetWithSidebar(const QString &title, const QString &objectName, QWidget *parent) : QFrame(parent)
+ZWidgetWithSidebar::ZWidgetWithSidebar(const QString &title,
+                                       const QString &objectName,
+                                       bool sideBarIsOnLeft,
+                                       QWidget *parent) : QFrame(parent)
 {
     zv_sideBarWidget = 0;
     zv_mainWidget = 0;

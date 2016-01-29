@@ -11,7 +11,7 @@
 class ZAbstractSpectrum;
 class ZSimplePredictor;
 class ZQuadraticPredictor;
-class ZMixedPredictor;
+class ZCrossProductPredictor;
 class ZCustomPredictor;
 class ZPredictorNormalizer;
 //=========================================================

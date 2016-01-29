@@ -122,9 +122,14 @@ SOURCES += main.cpp \
     ZComponents/ZAbstractPredictor.cpp \
     ZComponents/ZSimplePredictor.cpp \
     ZComponents/ZQuadraticPredictor.cpp \
-    ZComponents/ZMixedPredictor.cpp \
+    ZComponents/ZCrossProductPredictor.cpp \
     ZComponents/ZCustomPredictor.cpp \
-    ZComponents/ZPredictorNormalizator.cpp
+    ZComponents/ZPredictorNormalizator.cpp \
+    ZComponents/ZPredictorCorrelationPlotterManager.cpp \
+    ZModelViews/ZPredictorCorrelationPlotterWidget.cpp \
+    ZComponents/ZPredictorTableManager.cpp \
+    ZModels/ZPredictorTableModel.cpp \
+    ZModelViews/ZPredictorTableWidget.cpp
 
 
 HEADERS  += \
@@ -189,9 +194,14 @@ HEADERS  += \
     ZComponents/ZAbstractPredictor.h \
     ZComponents/ZSimplePredictor.h \
     ZComponents/ZQuadraticPredictor.h \
-    ZComponents/ZMixedPredictor.h \
+    ZComponents/ZCrossProductPredictor.h \
     ZComponents/ZCustomPredictor.h \
-    ZComponents/ZPredictorNormalizator.h
+    ZComponents/ZPredictorNormalizator.h \
+    ZComponents/ZPredictorCorrelationPlotterManager.h \
+    ZModelViews/ZPredictorCorrelationPlotterWidget.h \
+    ZComponents/ZPredictorTableManager.h \
+    ZModels/ZPredictorTableModel.h \
+    ZModelViews/ZPredictorTableWidget.h
 
 
 RESOURCES += \

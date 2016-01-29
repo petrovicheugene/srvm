@@ -565,6 +565,15 @@ void ZPlotter::zp_setRightRuleLabelVisible(bool visible)
    zv_rulerWidget->zp_setRightRuleLabelVisible(visible);
 }
 //====================================================
+void ZPlotter::zp_setDistortionSliderVisible(bool visible)
+{
+   if(!zv_dashBoard)
+   {
+      return;
+   }
+   zv_dashBoard->zp_setDistortionSliderVisible(visible);
+}
+//====================================================
 void ZPlotter::zp_currentVisibleSceneRect(QRectF& sceneRect)
 {
    zv_plotView->zp_viewPortSceneRect(sceneRect);

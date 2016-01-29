@@ -107,6 +107,8 @@ public slots:
    void zp_setLeftRuleLabelVisible(bool visible);
    void zp_setRightRuleLabelVisible(bool visible);
 
+   void zp_setDistortionSliderVisible(bool visible);
+
    void zp_currentVisibleSceneRect(QRectF& sceneRect);
    void zp_fitInBoundingRect();
 
