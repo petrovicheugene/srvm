@@ -208,6 +208,26 @@ bool ZJointSpectraDataManager::zp_setSpectrumVisible(int spectrumIndex, bool vis
     return zv_spectrumArrayRepositiry->zp_setSpectrumVisible(zv_currentArrayIndex, spectrumIndex, visible);
 }
 //==================================================================
+bool ZJointSpectraDataManager::zp_isSpectrumChecked(int spectrumIndex) const
+{
+    if(!zv_spectrumArrayRepositiry || zv_currentArrayIndex < 0 )
+    {
+        return false;
+    }
+
+    return zv_spectrumArrayRepositiry->zp_isSpectrumChecked(zv_currentArrayIndex, spectrumIndex);
+}
+//==================================================================
+bool ZJointSpectraDataManager::zp_setSpectrumChecked(int spectrumIndex, bool checked)
+{
+    if(!zv_spectrumArrayRepositiry || zv_currentArrayIndex < 0 )
+    {
+        return false;
+    }
+
+    return zv_spectrumArrayRepositiry->zp_setSpectrumChecked(zv_currentArrayIndex, spectrumIndex, checked);
+}
+//==================================================================
 bool ZJointSpectraDataManager::zp_setChemConcentration(int row, int column, const QString& consentration)
 {
     if(!zv_spectrumArrayRepositiry || !zp_isColumnChemElement(column)

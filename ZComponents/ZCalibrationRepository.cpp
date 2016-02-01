@@ -298,200 +298,265 @@ bool ZCalibrationRepository::zp_setCalibrationWindowVisible(qreal calibrationId,
 //======================================================
 int ZCalibrationRepository::zp_calibrationWindowCount(qint64 calibrationId) const
 {
-    if(calibrationId < 0)
+    const ZCalibration* calibration = zh_calibrationForId(calibrationId);
+    if(calibration)
     {
-        return 0;
+        return calibration->zp_calibrationWindowCount();
     }
 
-    for(int c = 0; c < zv_caibrationList.count(); c++)
-    {
-        if(zv_caibrationList.at(c)->zp_calibrationId() != calibrationId)
-        {
-            continue;
-        }
 
-        return zv_caibrationList.at(c)->zp_calibrationWindowCount();
-    }
+//    if(calibrationId < 0)
+//    {
+//        return 0;
+//    }
+
+//    for(int c = 0; c < zv_caibrationList.count(); c++)
+//    {
+//        if(zv_caibrationList.at(c)->zp_calibrationId() != calibrationId)
+//        {
+//            continue;
+//        }
+
+//        return zv_caibrationList.at(c)->zp_calibrationWindowCount();
+//    }
 
     return 0;
 }
 //======================================================
 QString ZCalibrationRepository::zp_calibrationWindowName(qint64 calibrationId, int windowIndex) const
 {
-    if(calibrationId < 0)
+    const ZCalibration* calibration = zh_calibrationForId(calibrationId);
+    if(calibration)
     {
-        return 0;
+        return calibration->zp_calibrationWindowName(windowIndex);
     }
 
-    for(int c = 0; c < zv_caibrationList.count(); c++)
-    {
-        if(zv_caibrationList.at(c)->zp_calibrationId() != calibrationId)
-        {
-            continue;
-        }
 
-        return zv_caibrationList.at(c)->zp_calibrationWindowName(windowIndex);
-    }
+//    if(calibrationId < 0)
+//    {
+//        return 0;
+//    }
+
+//    for(int c = 0; c < zv_caibrationList.count(); c++)
+//    {
+//        if(zv_caibrationList.at(c)->zp_calibrationId() != calibrationId)
+//        {
+//            continue;
+//        }
+
+//        return zv_caibrationList.at(c)->zp_calibrationWindowName(windowIndex);
+//    }
 
     return 0;
 }
 //======================================================
 bool ZCalibrationRepository::zp_setCalibrationWindowName(qint64 calibrationId, int windowIndex, const QString& name)
 {
-    if(calibrationId < 0)
+    ZCalibration* calibration = zh_calibrationForId(calibrationId);
+    if(calibration)
     {
-        return false;
+        return calibration->zp_setCalibrationWindowName(windowIndex, name);
     }
 
-    for(int c = 0; c < zv_caibrationList.count(); c++)
-    {
-        if(zv_caibrationList.at(c)->zp_calibrationId() != calibrationId)
-        {
-            continue;
-        }
 
-        return zv_caibrationList.at(c)->zp_setCalibrationWindowName(windowIndex, name);
-    }
+//    if(calibrationId < 0)
+//    {
+//        return false;
+//    }
+
+//    for(int c = 0; c < zv_caibrationList.count(); c++)
+//    {
+//        if(zv_caibrationList.at(c)->zp_calibrationId() != calibrationId)
+//        {
+//            continue;
+//        }
+
+//        return zv_caibrationList.at(c)->zp_setCalibrationWindowName(windowIndex, name);
+//    }
 
     return false;
 }
 //======================================================
 ZCalibrationWindow::WindowType ZCalibrationRepository::zp_calibrationWindowType(qint64 calibrationId, int windowIndex) const
 {
-    if(calibrationId < 0)
+    const ZCalibration* calibration = zh_calibrationForId(calibrationId);
+    if(calibration)
     {
-        return ZCalibrationWindow::WT_NOT_DEFINED;
+        return calibration->zp_calibrationWindowType(windowIndex);
     }
 
-    for(int c = 0; c < zv_caibrationList.count(); c++)
-    {
-        if(zv_caibrationList.at(c)->zp_calibrationId() != calibrationId)
-        {
-            continue;
-        }
 
-        return zv_caibrationList.at(c)->zp_calibrationWindowType(windowIndex);
-    }
+//    if(calibrationId < 0)
+//    {
+//        return ZCalibrationWindow::WT_NOT_DEFINED;
+//    }
+
+//    for(int c = 0; c < zv_caibrationList.count(); c++)
+//    {
+//        if(zv_caibrationList.at(c)->zp_calibrationId() != calibrationId)
+//        {
+//            continue;
+//        }
+
+//        return zv_caibrationList.at(c)->zp_calibrationWindowType(windowIndex);
+//    }
 
     return ZCalibrationWindow::WT_NOT_DEFINED;
 }
 //======================================================
 bool ZCalibrationRepository::zp_setCalibrationWindowType(qint64 calibrationId, int windowIndex, ZCalibrationWindow::WindowType type)
 {
-    if(calibrationId < 0)
+    ZCalibration* calibration = zh_calibrationForId(calibrationId);
+    if(calibration)
     {
-        return false;
+        return calibration->zp_setCalibrationWindowType(windowIndex, type);
     }
 
-    for(int c = 0; c < zv_caibrationList.count(); c++)
-    {
-        if(zv_caibrationList.at(c)->zp_calibrationId() != calibrationId)
-        {
-            continue;
-        }
+//    if(calibrationId < 0)
+//    {
+//        return false;
+//    }
 
-        return zv_caibrationList.at(c)->zp_setCalibrationWindowType(windowIndex, type);
-    }
+//    for(int c = 0; c < zv_caibrationList.count(); c++)
+//    {
+//        if(zv_caibrationList.at(c)->zp_calibrationId() != calibrationId)
+//        {
+//            continue;
+//        }
+
+//        return zv_caibrationList.at(c)->zp_setCalibrationWindowType(windowIndex, type);
+//    }
 
     return false;
 }
 //======================================================
 int ZCalibrationRepository::zp_calibrationWindowFirstChannel(qint64 calibrationId, int windowIndex) const
 {
-    if(calibrationId < 0)
+    const ZCalibration* calibration = zh_calibrationForId(calibrationId);
+    if(calibration)
     {
-        return 0;
+        return calibration->zp_calibrationWindowFirstChannel(windowIndex);
     }
 
-    for(int c = 0; c < zv_caibrationList.count(); c++)
-    {
-        if(zv_caibrationList.at(c)->zp_calibrationId() != calibrationId)
-        {
-            continue;
-        }
+//    if(calibrationId < 0)
+//    {
+//        return 0;
+//    }
 
-        return zv_caibrationList.at(c)->zp_calibrationWindowFirstChannel(windowIndex);
-    }
+//    for(int c = 0; c < zv_caibrationList.count(); c++)
+//    {
+//        if(zv_caibrationList.at(c)->zp_calibrationId() != calibrationId)
+//        {
+//            continue;
+//        }
+
+//        return zv_caibrationList.at(c)->zp_calibrationWindowFirstChannel(windowIndex);
+//    }
 
     return 0;
 }
 //======================================================
 int ZCalibrationRepository::zp_calibrationWindowLastChannel(qint64 calibrationId, int windowIndex) const
 {
-    if(calibrationId < 0)
+    const ZCalibration* calibration = zh_calibrationForId(calibrationId);
+    if(calibration)
     {
-        return 0;
+        return calibration->zp_calibrationWindowLastChannel(windowIndex);
     }
 
-    for(int c = 0; c < zv_caibrationList.count(); c++)
-    {
-        if(zv_caibrationList.at(c)->zp_calibrationId() != calibrationId)
-        {
-            continue;
-        }
+//    if(calibrationId < 0)
+//    {
+//        return 0;
+//    }
 
-        return zv_caibrationList.at(c)->zp_calibrationWindowLastChannel(windowIndex);
-    }
+//    for(int c = 0; c < zv_caibrationList.count(); c++)
+//    {
+//        if(zv_caibrationList.at(c)->zp_calibrationId() != calibrationId)
+//        {
+//            continue;
+//        }
+
+//        return zv_caibrationList.at(c)->zp_calibrationWindowLastChannel(windowIndex);
+//    }
 
     return 0;
 }
 //======================================================
 bool ZCalibrationRepository::zp_setCalibrationWindowFirstChannel(qint64 calibrationId, int windowIndex, int channel)
 {
-    if(calibrationId < 0)
+    ZCalibration* calibration = zh_calibrationForId(calibrationId);
+    if(calibration)
     {
-        return false;
+        return calibration->zp_setCalibrationWindowFirstChannel(windowIndex, channel);
     }
 
-    for(int c = 0; c < zv_caibrationList.count(); c++)
-    {
-        if(zv_caibrationList.at(c)->zp_calibrationId() != calibrationId)
-        {
-            continue;
-        }
+//    if(calibrationId < 0)
+//    {
+//        return false;
+//    }
 
-        return zv_caibrationList.at(c)->zp_setCalibrationWindowFirstChannel(windowIndex, channel);
-    }
+//    for(int c = 0; c < zv_caibrationList.count(); c++)
+//    {
+//        if(zv_caibrationList.at(c)->zp_calibrationId() != calibrationId)
+//        {
+//            continue;
+//        }
+
+//        return zv_caibrationList.at(c)->zp_setCalibrationWindowFirstChannel(windowIndex, channel);
+//    }
 
     return false;
 }
 //======================================================
 bool ZCalibrationRepository::zp_setCalibrationWindowLastChannel(qint64 calibrationId, int windowIndex, int channel)
 {
-    if(calibrationId < 0)
+    ZCalibration* calibration = zh_calibrationForId(calibrationId);
+    if(calibration)
     {
-        return false;
+        return calibration->zp_setCalibrationWindowLastChannel(windowIndex, channel);
     }
 
-    for(int c = 0; c < zv_caibrationList.count(); c++)
-    {
-        if(zv_caibrationList.at(c)->zp_calibrationId() != calibrationId)
-        {
-            continue;
-        }
+//    if(calibrationId < 0)
+//    {
+//        return false;
+//    }
 
-        return zv_caibrationList.at(c)->zp_setCalibrationWindowLastChannel(windowIndex, channel);
-    }
+//    for(int c = 0; c < zv_caibrationList.count(); c++)
+//    {
+//        if(zv_caibrationList.at(c)->zp_calibrationId() != calibrationId)
+//        {
+//            continue;
+//        }
+
+//        return zv_caibrationList.at(c)->zp_setCalibrationWindowLastChannel(windowIndex, channel);
+//    }
 
     return false;
 }
 //======================================================
 QColor ZCalibrationRepository::zp_calibrationWindowColor(qint64 calibrationId, int windowIndex) const
 {
-    if(calibrationId < 0)
+    const ZCalibration* calibration = zh_calibrationForId(calibrationId);
+    if(calibration)
     {
-        return QColor();
+        return calibration->zp_color();
     }
 
-    for(int c = 0; c < zv_caibrationList.count(); c++)
-    {
-        if(zv_caibrationList.at(c)->zp_calibrationId() != calibrationId)
-        {
-            continue;
-        }
 
-        return zv_caibrationList.at(c)->zp_color();
-    }
+//    if(calibrationId < 0)
+//    {
+//        return QColor();
+//    }
+
+//    for(int c = 0; c < zv_caibrationList.count(); c++)
+//    {
+//        if(zv_caibrationList.at(c)->zp_calibrationId() != calibrationId)
+//        {
+//            continue;
+//        }
+
+//        return zv_caibrationList.at(c)->zp_color();
+//    }
 
     return QColor();
 }
@@ -499,20 +564,26 @@ QColor ZCalibrationRepository::zp_calibrationWindowColor(qint64 calibrationId, i
 qint64 ZCalibrationRepository::zp_calibrationWindowId(qint64 calibrationId,
                                                       int windowIndex) const
 {
-   if(calibrationId < 0)
-   {
-       return -1;
-   }
+    const ZCalibration* calibration = zh_calibrationForId(calibrationId);
+    if(calibration)
+    {
+        return calibration->zp_calibrationWindowId(windowIndex);
+    }
 
-   for(int c = 0; c < zv_caibrationList.count(); c++)
-   {
-       if(zv_caibrationList.at(c)->zp_calibrationId() != calibrationId)
-       {
-           continue;
-       }
+//   if(calibrationId < 0)
+//   {
+//       return -1;
+//   }
 
-       return zv_caibrationList.at(c)->zp_calibrationWindowId(windowIndex);
-   }
+//   for(int c = 0; c < zv_caibrationList.count(); c++)
+//   {
+//       if(zv_caibrationList.at(c)->zp_calibrationId() != calibrationId)
+//       {
+//           continue;
+//       }
+
+//       return zv_caibrationList.at(c)->zp_calibrationWindowId(windowIndex);
+//   }
 
    return -1;
 }
@@ -520,19 +591,26 @@ qint64 ZCalibrationRepository::zp_calibrationWindowId(qint64 calibrationId,
 const ZCalibrationWindow* ZCalibrationRepository::zp_calibrationWindow(qint64 calibrationId,
                                                                        int windowIndex) const
 {
-   if(calibrationId < 0)
-   {
-       return 0;
-   }
-   for(int c = 0; c < zv_caibrationList.count(); c++)
-   {
-       if(zv_caibrationList.at(c)->zp_calibrationId() != calibrationId)
-       {
-           continue;
-       }
+    const ZCalibration* calibration = zh_calibrationForId(calibrationId);
+    if(calibration)
+    {
+        return calibration->zp_calibrationWindow(windowIndex);
+    }
 
-       return zv_caibrationList.at(c)->zp_calibrationWindow(windowIndex);
-   }
+//   if(calibrationId < 0)
+//   {
+//       return 0;
+//   }
+
+//   for(int c = 0; c < zv_caibrationList.count(); c++)
+//   {
+//       if(zv_caibrationList.at(c)->zp_calibrationId() != calibrationId)
+//       {
+//           continue;
+//       }
+
+//       return zv_caibrationList.at(c)->zp_calibrationWindow(windowIndex);
+//   }
 
    return 0;
 }
@@ -550,6 +628,44 @@ double ZCalibrationRepository::zp_calculateConcentration(int row, const ZAbstrac
     }
 
     return zv_caibrationList.at(row)->zp_calcConcentration(spectrum, ok);
+}
+//======================================================
+int ZCalibrationRepository::zp_predictorCount(qint64 calibrationId) const
+{
+    const ZCalibration* calibration = zh_calibrationForId(calibrationId);
+    if(calibration)
+    {
+        return calibration->zp_predictorCount();
+    }
+
+//    if(calibrationId < 0)
+//    {
+//        return 0;
+//    }
+
+//    for(int c = 0; c < zv_caibrationList.count(); c++)
+//    {
+//        if(zv_caibrationList.at(c)->zp_calibrationId() != calibrationId)
+//        {
+//            continue;
+//        }
+
+//        return zv_caibrationList.at(c)->zp_predictorCount();
+//    }
+
+    return 0;
+}
+//======================================================
+QString ZCalibrationRepository::zp_predictorName(qint64 calibrationId, int predictorIndex) const
+{
+    const ZCalibration* calibration = zh_calibrationForId(calibrationId);
+    if(calibration)
+    {
+        return calibration->zp_predictorName(predictorIndex);
+    }
+
+    return QString();
+
 }
 //======================================================
 void ZCalibrationRepository::zp_appendCalibrationsToArray(const QStringList& fileNameList)
@@ -785,7 +901,46 @@ void ZCalibrationRepository::zh_onWindowOperation(ZCalibration::WindowOperationT
 
         break;
     }
+}
+//======================================================
+void ZCalibrationRepository::zh_onPredictorOperation(ZCalibration::PredictorOperationType type, int first, int last)
+{
+    if(!sender())
+    {
+        return;
+    }
 
+    ZCalibration* calibration = static_cast<ZCalibration*>(sender());
+    for(int calibrationIndex = 0; calibrationIndex < zv_caibrationList.count(); calibrationIndex++)
+    {
+        if(zv_caibrationList.at(calibrationIndex) != calibration)
+        {
+            continue;
+        }
+
+        if(type == ZCalibration::POT_BEGIN_INSERT_PREDICTOR)
+        {
+            emit zg_predictorOperation(POT_BEGIN_INSERT_PREDICTOR, calibrationIndex, first, last);
+        }
+        else if(type == ZCalibration::POT_END_INSERT_PREDICTOR)
+        {
+            emit zg_predictorOperation(POT_END_INSERT_PREDICTOR, calibrationIndex, first, last);
+        }
+        else if(type == ZCalibration::POT_BEGIN_REMOVE_PREDICTOR)
+        {
+            emit zg_predictorOperation(POT_BEGIN_REMOVE_PREDICTOR, calibrationIndex, first, last);
+        }
+        else if(type == ZCalibration::POT_END_REMOVE_PREDICTOR)
+        {
+            emit zg_predictorOperation(POT_END_REMOVE_PREDICTOR, calibrationIndex, first, last);
+        }
+        else if(type == ZCalibration::POT_PREDICTOR_CHANGED)
+        {
+            emit zg_predictorOperation(POT_PREDICTOR_CHANGED, calibrationIndex, first, last);
+        }
+
+        break;
+    }
 }
 //======================================================
 void ZCalibrationRepository::zh_removeCalibration(int index)
@@ -852,12 +1007,17 @@ bool ZCalibrationRepository::zh_appendCalibrationToList(ZCalibration* calibratio
         return false;
     }
 
+    connect(calibration, &ZCalibration::zg_message,
+                this, &ZCalibrationRepository::zg_message);
+
+
     connect(calibration, &ZCalibration::zg_windowOperation,
             this, &ZCalibrationRepository::zh_onWindowOperation);
+    connect(calibration, &ZCalibration::zg_predictorOperation,
+            this, &ZCalibrationRepository::zh_onPredictorOperation);
 
-    //    connect(calibration, &ZCalibration::zg_message,
-    //            this, &ZCalibrationRepository::zh_onCalibrationOperation);
-    //    connect(calibration, &ZCalibration::zg_visibilityChanged,
+
+     //    connect(calibration, &ZCalibration::zg_visibilityChanged,
     //            this, &ZCalibrationRepository::zh_onCalibrationOperation);
     //    connect(calibration, &ZCalibration::zg_dirtyChanged,
     //            this, &ZCalibrationRepository::zh_onCalibrationOperation);
@@ -921,5 +1081,25 @@ void ZCalibrationRepository::zh_createConnections()
     connect(zv_removeWindowAction, &QAction::triggered,
             this, &ZCalibrationRepository::zh_onRemoveWindowAction);
 
+}
+//======================================================
+ZCalibration* ZCalibrationRepository::zh_calibrationForId(qint64 calibrationId) const
+{
+    if(calibrationId < 0)
+    {
+        return 0;
+    }
+
+    for(int c = 0; c < zv_caibrationList.count(); c++)
+    {
+        if(zv_caibrationList.at(c)->zp_calibrationId() != calibrationId)
+        {
+            continue;
+        }
+
+        return zv_caibrationList.value(c);
+    }
+
+    return 0;
 }
 //======================================================

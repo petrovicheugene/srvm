@@ -10,17 +10,20 @@ class ZQuadraticPredictor : public ZAbstractPredictor
 {
    Q_OBJECT
 public:
-   explicit ZQuadraticPredictor(const ZCalibrationWindow &window,
+   explicit ZQuadraticPredictor(const ZCalibrationWindow* window,
                                 ZCalibration *parent);
 
    // FUNCS
    qreal zp_calcValue() override;
-   QString zp_predictorName() override;
 
 private:
 
    // VARS
 
+
+   // FUNCS
+
+   void zh_connectToWindow(const ZCalibrationWindow* window);
 
 };
 //===================================================================

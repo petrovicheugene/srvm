@@ -34,7 +34,7 @@ int ZPredictorTableModel::rowCount(const QModelIndex & parent) const
 //==================================================================
 QVariant	ZPredictorTableModel::data(const QModelIndex & index, int role) const
 {
-   if(/*!zv_dataManager ||*/ !index.isValid()
+   if(!zv_dataManager || !index.isValid()
          || index.row() < 0 || index.row() >=  rowCount()
          || index.column() < 0 || index.column() >= columnCount())
    {
@@ -43,12 +43,7 @@ QVariant	ZPredictorTableModel::data(const QModelIndex & index, int role) const
 
    if(role == Qt::DisplayRole)
    {
-      // test ->
-      QString str = QString::number(index.row()) + " - " +
-            QString::number(index.row());
-      return str;
-      // test <-
-      //return zv_dataManager->zp_data(index);
+      return zv_dataManager->zp_data(index);
    }
 
    if(role == Qt::DecorationRole)
@@ -79,15 +74,7 @@ QVariant	ZPredictorTableModel::headerData(int section, Qt::Orientation orientati
 {
    if(role == Qt::DisplayRole)
    {
-      if(orientation == Qt::Horizontal)
-      {
-         return QVariant("Col " + QString::number(section + 1));
-         //return QVariant(zv_dataManager->zp_columnName(section));
-      }
-      else
-      {
-         return QVariant(QString::number(section + 1));
-      }
+       return QVariant(zv_dataManager->zp_columnName(orientation, section));
    }
 
    return QVariant();

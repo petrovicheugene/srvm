@@ -16,6 +16,11 @@ ZAbstractPredictor::PredictorType ZAbstractPredictor::zp_predictorType()
    return zv_type;
 }
 //============================================================
+QString ZAbstractPredictor::zp_predictorName()
+{
+    return zv_name;
+}
+//============================================================
 void ZAbstractPredictor::zh_connectToNormalizer(ZPredictorNormalizer* normalizer)
 {
    connect(normalizer, &ZPredictorNormalizer::zg_normalizerChanged,
@@ -43,5 +48,10 @@ void ZAbstractPredictor::zh_connectToCalibration(ZCalibration* calibration)
 void ZAbstractPredictor::zh_normalizerChanged()
 {
    emit zg_predictorChanged();
+}
+//============================================================
+void ZAbstractPredictor::zh_onWindowDestroying()
+{
+    emit zg_requestForDelete(this);
 }
 //============================================================

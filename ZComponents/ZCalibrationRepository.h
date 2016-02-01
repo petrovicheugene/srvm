@@ -28,9 +28,7 @@ public:
                         COT_END_RESET
                        };
 
-    enum WindowOperationType {WOT_WINDOW_VISIBILITY_CHANGE,
-                        WOT_END_WINDOW_VISIBILITY_CHANGE,
-                        WOT_WINDOW_CHANGED,
+    enum WindowOperationType {WOT_WINDOW_CHANGED,
                         WOT_INSERT_WINDOWS,
                         WOT_END_INSERT_WINDOWS,
                         WOT_REMOVE_WINDOWS,
@@ -39,6 +37,14 @@ public:
                         WOT_END_RESET
                        };
 
+    enum PredictorOperationType {POT_PREDICTOR_CHANGED,
+                        POT_BEGIN_INSERT_PREDICTOR,
+                        POT_END_INSERT_PREDICTOR,
+                        POT_BEGIN_REMOVE_PREDICTOR,
+                        POT_END_REMOVE_PREDICTOR,
+                        POT_BEGIN_RESET,
+                        POT_END_RESET
+                       };
 
 
 
@@ -90,11 +96,17 @@ public:
     const ZCalibrationWindow* zp_calibrationWindow(qint64 calibrationId, int windowIndex) const;
     double zp_calculateConcentration(int row, const ZAbstractSpectrum* const, bool *ok = 0) const;
 
+
+    // predictors
+    int zp_predictorCount(qint64) const;
+    QString zp_predictorName(qint64, int) const;
+
 signals:
 
     void zg_message(QString) const;
     void zg_calibrationOperation(CalibrationOperationType, int, int) const;
     void zg_calibrationWindowOperation(WindowOperationType, int, int, int) const;
+    void zg_predictorOperation(PredictorOperationType, int, int, int) const;
 
     void zg_requestSelectedCalibrationIndexList(QList<int>&);
     void zg_requestCurrentCalibrationIndex(int&);
@@ -124,6 +136,7 @@ private slots:
     void zh_onNewWindowAction();
     void zh_onRemoveWindowAction();
     void zh_onWindowOperation(ZCalibration::WindowOperationType type, int first, int last);
+    void zh_onPredictorOperation(ZCalibration::PredictorOperationType type, int first, int last);
 
 private:
 
@@ -149,6 +162,7 @@ private:
     void zh_actionAvailabilityControl(int current);
 
     void zh_removeCalibrationWindow(int currentCalibrationIndex, int spectrumWindowIndex);
+    ZCalibration* zh_calibrationForId(qint64) const;
 
 };
 //======================================================

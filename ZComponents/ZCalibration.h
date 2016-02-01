@@ -76,7 +76,10 @@ public:
    qint64 zp_calibrationWindowId(int windowIndex) const;
    bool zp_removeSpectrumWindow(int);
 
+   // predictors
    void zp_connectPredictorToCalibration(const ZAbstractPredictor*);
+   int zp_predictorCount() const;
+   QString zp_predictorName(int predictorIndex) const;
 
 signals:
 
@@ -85,7 +88,7 @@ signals:
    void zg_visibilityChanged(bool) const;
    void zg_dirtyChanged(bool) const;
 
-   void zg_predictorOperation()const;
+   void zg_predictorOperation(ZCalibration::PredictorOperationType, int first, int last)const;
    void zg_normalizerChanged() const;
 
 public slots:

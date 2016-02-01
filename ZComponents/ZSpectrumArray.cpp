@@ -281,6 +281,32 @@ bool ZSpectrumArray::zp_setSpectrumVisible(int index, bool visible)
     return true;
 }
 //===============================================
+bool ZSpectrumArray::zp_isSpectrumChecked(int index) const
+{
+    if(index < 0 || index >= zv_spectrumList.count())
+    {
+        return false;
+    }
+
+    return zv_spectrumList.at(index)->zp_isSpectrumChecked();
+}
+//===============================================
+bool ZSpectrumArray::zp_setSpectrumChecked(int index, bool checked)
+{
+    if(index < 0 || index >= zv_spectrumList.count())
+    {
+        return false;
+    }
+
+    bool res = zv_spectrumList.at(index)->zp_setSpectrumChecked(checked);
+    if(res)
+    {
+        emit zg_spectrumOperation(OT_CHANGED, index, index);
+        zh_calcAverageConcentrations();
+    }
+    return res;
+}
+//===============================================
 bool ZSpectrumArray::zp_removeSpectrum(int index)
 {
     if(index < 0 || index >= zv_spectrumList.count())
@@ -555,5 +581,10 @@ void ZSpectrumArray::zh_recalcArrayMaxParameters()
     }
 
     emit zg_arrayMaxParametersChanged(zv_arrayId,  zv_maxArrayIntensity,  zv_maxArrayChannelCount);
+}
+//===============================================
+void ZSpectrumArray::zh_calcAverageConcentrations()
+{
+    // TODO average concentration in speArray calculation
 }
 //===============================================

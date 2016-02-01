@@ -40,6 +40,9 @@ public:
     QColor zp_spectrumColor(int) const;
     bool zp_isSpectrumVisible(int) const;
     bool zp_setSpectrumVisible(int, bool);
+    bool zp_isSpectrumChecked(int) const;
+    bool zp_setSpectrumChecked(int, bool);
+
     bool zp_setChemConcentration(int row, int column, const QString& consentration);
     int zp_spectrumDataColumnCount();
 

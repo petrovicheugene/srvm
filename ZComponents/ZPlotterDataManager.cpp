@@ -392,14 +392,6 @@ void ZPlotterDataManager::zh_onRepositoryCalibrationWindowOperation(ZCalibration
    {
 
    }
-   else if(type == ZCalibrationRepository::WOT_WINDOW_VISIBILITY_CHANGE)
-   {
-
-   }
-   else if(type == ZCalibrationRepository::WOT_END_WINDOW_VISIBILITY_CHANGE)
-   {
-
-   }
    else if(type == ZCalibrationRepository::WOT_WINDOW_CHANGED)
    {
       qint64 calibrationId;

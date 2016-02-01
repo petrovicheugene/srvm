@@ -53,6 +53,9 @@ public:
     bool zp_isSpectrumVisible(int index) const;
     bool zp_setSpectrumVisible(int index, bool visible);
 
+    bool zp_isSpectrumChecked(int index) const;
+    bool zp_setSpectrumChecked(int index, bool checked);
+
     bool zp_removeSpectrum(int);
     void zp_clearArray();
     void zp_clearChemElements();
@@ -77,6 +80,7 @@ signals:
     void zg_spectrumOperation(ZSpectrumArray::OperationType, int first, int last) const;
     void zg_energyCalibrationChanged(qint64 arrayId);
     void zg_arrayMaxParametersChanged(qint64 arrayId, int intensity, int channels);
+    void zg_averageConcentrationChanged(qint64 arrayId);
 
 private:
 
@@ -104,6 +108,7 @@ private:
     // FUNCS
     void zh_createConnections();
     void zh_recalcArrayMaxParameters();
+    void zh_calcAverageConcentrations();
 
     static QList<QColor> zp_createColorList();
     static bool checkColor(QColor color);

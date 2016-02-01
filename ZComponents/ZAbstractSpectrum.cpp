@@ -60,6 +60,22 @@ void ZAbstractSpectrum::zp_setSpectrumVisible(bool visible)
     zv_visible = visible;
 }
 //==========================================================
+bool ZAbstractSpectrum::zp_isSpectrumChecked() const
+{
+    return zv_checked;
+}
+//==========================================================
+bool ZAbstractSpectrum::zp_setSpectrumChecked(bool checked)
+{
+    if(zv_checked == checked)
+    {
+        return false;
+    }
+
+    zv_checked = checked;
+    return true;
+}
+//==========================================================
 void ZAbstractSpectrum::zp_insertConcentration(const QString& chemElement, const QString& concentration)
 {
     zv_concentrationMap.insert(chemElement, concentration);

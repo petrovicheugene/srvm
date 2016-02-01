@@ -35,6 +35,9 @@ public:
     bool zp_isSpectrumVisible() const;
     void zp_setSpectrumVisible(bool);
 
+    bool zp_isSpectrumChecked() const;
+    bool zp_setSpectrumChecked(bool);
+
     void zp_insertConcentration(const QString& chemElement, const QString& concentration);
     QStringList zp_chemElementList() const;
     QString zp_concentration(const QString& chemElement) const;
@@ -62,6 +65,7 @@ protected:
 
     QMap<QString, QString> zv_concentrationMap;
     bool zv_visible;
+    bool zv_checked;
     QColor zv_color;
     qint64 zv_spectrumId;
 

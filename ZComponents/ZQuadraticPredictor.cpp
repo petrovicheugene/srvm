@@ -1,20 +1,27 @@
 //===================================================================
 #include "ZQuadraticPredictor.h"
+#include "ZCalibrationWindow.h"
 //===================================================================
-ZQuadraticPredictor::ZQuadraticPredictor(const ZCalibrationWindow& window,
+ZQuadraticPredictor::ZQuadraticPredictor(const ZCalibrationWindow *window,
                                          ZCalibration *parent) :
-   ZAbstractPredictor(parent)
+    ZAbstractPredictor(parent)
 {
-   zv_type = PT_QUADRATIC;
+    zv_type = PT_QUADRATIC;
+    zv_name = "(" + window->zp_windowName() + ")" + QChar(0x00B2);
+
+    zh_connectToWindow(window);
+
 }
 //===================================================================
 qreal ZQuadraticPredictor::zp_calcValue()
 {
-   return 0;
+    return 0;
 }
 //===================================================================
-QString ZQuadraticPredictor::zp_predictorName()
+void ZQuadraticPredictor::zh_connectToWindow(const ZCalibrationWindow* window)
 {
-   return QString();
+    connect(window, &ZCalibrationWindow::destroyed,
+            this, &ZQuadraticPredictor::zh_onWindowDestroying);
 }
 //===================================================================
+

@@ -18,15 +18,15 @@ public:
    explicit ZAbstractPredictor(ZCalibration*);
 
    // VARS
-   enum PredictorType {PT_NOT_DEFINED = 0,
-                       PT_SIMPLE = 1,
-                       PT_QUADRATIC = 2,
-                       PT_MIXED = 3,
-                       PT_CUSTOM = 4};
+   enum PredictorType {PT_NOT_DEFINED,
+                       PT_SIMPLE,
+                       PT_QUADRATIC,
+                       PT_MIXED,
+                       PT_CUSTOM};
 
    // FUNCS
    virtual qreal zp_calcValue() = 0;
-   virtual QString zp_predictorName() = 0;
+   virtual QString zp_predictorName();
    virtual ZAbstractPredictor::PredictorType zp_predictorType();
 
 signals:
@@ -39,10 +39,10 @@ signals:
 public slots:
 
 
-private slots:
+protected slots:
 
    void zh_normalizerChanged();
-
+   void zh_onWindowDestroying();
 
 protected:
 
@@ -50,6 +50,7 @@ protected:
    PredictorType zv_type;
    qreal zv_K;
 
+   QString zv_name;
    // FUNCS
    void zh_connectToNormalizer(ZPredictorNormalizer *);
    void zh_connectToCalibration(ZCalibration* calibration);

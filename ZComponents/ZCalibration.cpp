@@ -171,7 +171,36 @@ void ZCalibration::zp_createNewCalibrationWindow(int firstChannel, int lastChann
 //=========================================================
 void ZCalibration::zh_createPredictorsForWindow(ZCalibrationWindow* window)
 {
+    // creation
+    ZSimplePredictor* simplePredictor = new ZSimplePredictor(window, this);
+    ZQuadraticPredictor* quadraticPredictor = new ZQuadraticPredictor(window, this);
 
+    // indexes by default (if list of predictors is empty)
+    int quadraticIndex = 1;
+    int simpleIndex = 0;
+
+    // indexes to insertion before
+    for(int i = 0; i < zv_predictorList.count(); i++)
+    {
+        if(zv_predictorList.at(i)->zp_predictorType() == ZAbstractPredictor::PT_SIMPLE)
+        {
+            simpleIndex = i + 1;
+        }
+
+        if(zv_predictorList.at(i)->zp_predictorType() == ZAbstractPredictor::PT_QUADRATIC)
+        {
+            quadraticIndex = i + 1;
+        }
+    }
+
+    // insertion
+    emit zg_predictorOperation(POT_BEGIN_INSERT_PREDICTOR, quadraticIndex, quadraticIndex);
+    zv_predictorList.insert(quadraticIndex, quadraticPredictor );
+    emit zg_predictorOperation(POT_END_INSERT_PREDICTOR, quadraticIndex, quadraticIndex);
+
+    emit zg_predictorOperation(POT_BEGIN_INSERT_PREDICTOR, simpleIndex, simpleIndex);
+    zv_predictorList.insert(simpleIndex, simplePredictor);
+    emit zg_predictorOperation(POT_END_INSERT_PREDICTOR, simpleIndex, simpleIndex);
 
 }
 //=========================================================
@@ -187,7 +216,18 @@ void ZCalibration::zp_normalizerValue(qreal& value) const
 //=========================================================
 void ZCalibration::zh_removePredictor(ZAbstractPredictor* predictor)
 {
+    for(int i = 0; i < zv_predictorList.count(); i ++)
+    {
+        if(zv_predictorList.at(i) == predictor)
+        {
+            emit zg_predictorOperation(POT_BEGIN_REMOVE_PREDICTOR, i, i);
+            zv_predictorList.removeAt(i);
+            emit zg_predictorOperation(POT_END_REMOVE_PREDICTOR, i, i);
 
+            predictor->deleteLater();
+            return;
+        }
+    }
 }
 //=========================================================
 bool ZCalibration::zh_isWindowExist(const QString& windowName)
@@ -375,6 +415,21 @@ void ZCalibration::zp_connectPredictorToCalibration(const ZAbstractPredictor* pr
    }
    connect(predictor, &ZAbstractPredictor::zg_requestForDelete,
            this, &ZCalibration::zh_removePredictor);
+}
+//=========================================================
+int ZCalibration::zp_predictorCount() const
+{
+    return zv_predictorList.count();
+}
+//=========================================================
+QString ZCalibration::zp_predictorName(int predictorIndex) const
+{
+    if(predictorIndex < 0 || predictorIndex >= zv_predictorList.count() )
+    {
+        return QString();
+    }
+
+    return zv_predictorList.at(predictorIndex)->zp_predictorName();
 }
 //=========================================================
 bool ZCalibration::checkColor(QColor color)

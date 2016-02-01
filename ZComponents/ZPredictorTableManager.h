@@ -3,6 +3,8 @@
 #define ZPREDICTORTABLEMANAGER_H
 //==================================================================
 #include <QObject>
+#include <QModelIndex>
+
 #include "ZCalibrationRepository.h"
 
 //==================================================================
@@ -33,6 +35,10 @@ public:
    int zp_rowCount() const;
    int zp_columnCount() const;
 
+   QVariant zp_data(QModelIndex index) const;
+   QString zp_columnName(Qt::Orientation orientation, int) const;
+
+
 signals:
 
    void zg_currentOperation(OperationType, int, int) const;
@@ -43,7 +49,7 @@ public slots:
 private slots:
 
    void zh_currentCalibrationChanged(qreal calibrationId, int calibrationIndex);
-
+   void zh_onRepositoryPredictorOperation(ZCalibrationRepository::PredictorOperationType, int, int, int);
 
 private:
 
@@ -51,7 +57,9 @@ private:
     ZCalibrationRepository* zv_calibrationRepository;
     qint64 zv_currentCalibrationId;
 
+    qreal zv_averageChemConcentration;
 
+    // FUNCS
 
 
 

@@ -15,7 +15,11 @@ Qt::ItemFlags	ZJointSpectraModel::flags(const QModelIndex & index) const
     Qt::ItemFlags flags;
     flags |= Qt::ItemIsEnabled | Qt::ItemIsSelectable;
 
-    if(zv_dataManager->zp_isColumnChemElement(index.column()))
+    if(index.column() == 0)
+    {
+         flags |= Qt::ItemIsUserCheckable;
+    }
+    else if(zv_dataManager->zp_isColumnChemElement(index.column()))
     {
         flags |= Qt::ItemIsEditable;
     }
@@ -58,7 +62,7 @@ QVariant ZJointSpectraModel::data(const QModelIndex & index, int role) const
     }
     if(role == Qt::DecorationRole)
     {
-        if(index.column() == 0)
+        if(index.column() == 1)
         {
             return QVariant(zv_dataManager->zp_spectrumColor(index.row()));
         }
@@ -66,9 +70,24 @@ QVariant ZJointSpectraModel::data(const QModelIndex & index, int role) const
 
     if(role == VisibleRole)
     {
-        if(index.column() == 0)
+        if(index.column() == 1)
         {
             return QVariant(zv_dataManager->zp_isSpectrumVisible(index.row()));
+        }
+    }
+
+    if(role == Qt::CheckStateRole)
+    {
+        if(index.column() == 0)
+        {
+            if(zv_dataManager->zp_isSpectrumChecked(index.row()))
+            {
+                return QVariant(Qt::Checked);
+            }
+            else
+            {
+                return QVariant(Qt::Unchecked);
+            }
         }
     }
 
@@ -95,10 +114,20 @@ bool	ZJointSpectraModel::setData(const QModelIndex & index, const QVariant & val
 
     if(role == VisibleRole)
     {
-        if(index.column() == 0 && value.canConvert<bool>())
+        if(index.column() == 1 && value.canConvert<bool>())
         {
             bool visible = value.toBool();
             return zv_dataManager->zp_setSpectrumVisible(index.row(), visible);
+        }
+    }
+
+    if(role == Qt::CheckStateRole)
+    {
+        if(index.column() == 0 && value.canConvert<int>())
+        {
+            Qt::CheckState checkState = static_cast<Qt::CheckState>(value.toInt());
+            bool checked = checkState == Qt::Checked ? true : false;
+            return zv_dataManager->zp_setSpectrumChecked(index.row(), checked);
         }
     }
 

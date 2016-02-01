@@ -79,10 +79,6 @@ void ZCalibrationWindowDataManager::zh_currentCalibrationChanged(qreal calibrati
 void ZCalibrationWindowDataManager::zh_onRepositoryWindowOperation(ZCalibrationRepository::WindowOperationType type,
                                                                    int calibrationIndex, int first, int last)
 {
-#ifdef DBG
-    qDebug() << "WINDOW OPERATION";
-#endif
-
     if(zv_calibrationRepository == 0)
     {
         return;

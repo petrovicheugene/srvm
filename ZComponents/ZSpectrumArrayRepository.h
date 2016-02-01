@@ -68,6 +68,10 @@ public:
     bool zp_isSpectrumVisible(qint64 arrayId, qint64 spectrumId) const;
     bool zp_setSpectrumVisible(qint64 arrayId, qint64 spectrumId, bool visible);
 
+    bool zp_isSpectrumChecked(qint64 arrayId, qint64 spectrumId) const;
+    bool zp_setSpectrumChecked(qint64 arrayId, qint64 spectrumId, bool checked);
+
+
     const ZAbstractSpectrum * zp_spectrum(int arrayIndex, int spectrumIndex) const;
     QList<ZAbstractSpectrum*> zp_spectrumListForArray(int arrayIndex) const;
     QList<int> zp_spectrumData(int arrayIndex, int spectrumIndex) const;

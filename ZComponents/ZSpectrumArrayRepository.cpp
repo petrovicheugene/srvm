@@ -412,6 +412,52 @@ bool ZSpectrumArrayRepository::zp_setSpectrumVisible(qint64 arrayId, qint64 spec
    return false;
 }
 //==================================================================
+bool ZSpectrumArrayRepository::zp_isSpectrumChecked(qint64 arrayId, qint64 spectrumId) const
+{
+    for(int i = 0; i < zv_arrayList.count(); i++)
+    {
+       if(zv_arrayList.at(i)->zp_arrayId() != arrayId)
+       {
+          continue;
+       }
+
+       for(int s = 0; s < zv_arrayList.at(i)->zp_spectrumCount(); s++)
+       {
+          if(zv_arrayList.at(i)->zp_spectrumId(s) != spectrumId)
+          {
+             continue;
+          }
+
+          return zv_arrayList.at(i)->zp_isSpectrumChecked(s);
+       }
+       return false;
+    }
+    return false;
+}
+//==================================================================
+bool ZSpectrumArrayRepository::zp_setSpectrumChecked(qint64 arrayId, qint64 spectrumId, bool checked)
+{
+    for(int i = 0; i < zv_arrayList.count(); i++)
+    {
+       if(zv_arrayList.at(i)->zp_arrayId() != arrayId)
+       {
+          continue;
+       }
+
+       for(int s = 0; s < zv_arrayList.at(i)->zp_spectrumCount(); s++)
+       {
+          if(zv_arrayList.at(i)->zp_spectrumId(s) != spectrumId)
+          {
+             continue;
+          }
+
+          return zv_arrayList.at(i)->zp_setSpectrumChecked(s, checked);
+       }
+       return false;
+    }
+    return false;
+}
+//==================================================================
 const ZAbstractSpectrum* ZSpectrumArrayRepository::zp_spectrum(int arrayIndex, int spectrumIndex) const
 {
    if(arrayIndex < 0 || arrayIndex >= zv_arrayList.count() )
