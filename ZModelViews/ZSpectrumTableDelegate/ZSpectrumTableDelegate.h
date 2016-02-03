@@ -27,6 +27,14 @@ private:
     // QWidget* zv_baseWidget;
     ZPrimitivePlot* zv_plot;
 
+    // FUNCS
+    bool editorEvent ( QEvent * event,
+                       QAbstractItemModel * model,
+                       const QStyleOptionViewItem & option,
+                       const QModelIndex & index );
+
+    bool eventFilter(QObject *object, QEvent *event);
+
 };
 //======================================================================
 #endif // ZSPECTRUMTABLEDELEGATE_H

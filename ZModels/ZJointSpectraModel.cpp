@@ -60,6 +60,7 @@ QVariant ZJointSpectraModel::data(const QModelIndex & index, int role) const
     {
         return zv_dataManager->zp_data(index);
     }
+
     if(role == Qt::DecorationRole)
     {
         if(index.column() == 1)
