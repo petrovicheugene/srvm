@@ -8,6 +8,7 @@
 #include <QPainter>
 #include <QMouseEvent>
 #include <QAbstractItemView>
+#include <QTableView>
 //==========================================================
 ZVisibilityStringDelegate::ZVisibilityStringDelegate(QObject *parent) :
     QStyledItemDelegate(parent)
@@ -164,3 +165,68 @@ bool ZVisibilityStringDelegate::editorEvent ( QEvent * event,
     return true;
 }
 //==========================================================
+bool ZVisibilityStringDelegate::eventFilter(QObject *object, QEvent *event)
+{
+    if(event->type() == QEvent::MouseButtonPress || event->type() == QEvent::MouseButtonDblClick)
+    {
+        QMouseEvent* mouseEvent = static_cast<QMouseEvent*>(event);
+        //
+        QTableView* itemView = qobject_cast<QTableView*>(parent());
+        if(itemView == 0)
+        {
+            return false;
+        }
+
+        if(itemView->viewport() != object)
+        {
+            return false;
+        }
+
+        QPoint mousePoint = mouseEvent->pos();
+        QModelIndex itemIndex = itemView->indexAt(mousePoint);
+
+        if(!itemIndex.isValid())
+        {
+            return false;
+        }
+
+        if(itemView->itemDelegateForColumn(itemIndex.column()) != this)
+        {
+            return false;
+        }
+
+        QRect itemRect = itemView->visualRect(itemIndex);
+        QStyleOptionViewItemV4 newOption;
+        newOption.initFrom(itemView);
+        newOption.widget = itemView;
+
+        if (itemView->iconSize().isValid())
+        {
+            newOption.decorationSize = itemView->iconSize();
+        }
+        else
+        {
+            int pm = itemView->style()->pixelMetric(QStyle::PM_SmallIconSize, 0, itemView);
+            newOption.decorationSize = QSize(pm, pm);
+        }
+
+        newOption.decorationAlignment = Qt::AlignCenter;
+        initStyleOption(&newOption, itemIndex);
+        newOption.rect = itemRect;
+
+        QRect decorationRect = itemView->style()->subElementRect(QStyle::SE_ItemViewItemDecoration, &newOption);
+
+        if(!decorationRect.contains(mousePoint))
+        {
+            return false;
+        }
+
+        // mouse position is in decoration rect
+        // MouseButtonPress or MouseButtonDblClick (making item current) - banned
+        // visible will be switched by mouseButtonRelease
+        return true;
+    }
+
+    return false;
+}
+//======================================================================

@@ -84,6 +84,9 @@ public:
     QStringList zp_chemElementList(int arrayIndex) const;
     QString zp_visibleChemElementName(int arrayIndex, int visibleIndex) const;
     QString zp_chemElementName(int arrayIndex, int row) const;
+    qint64 zp_visibleChemElementId(int arrayIndex, int visibleIndex) const;
+    qint64 zp_chemElementId(int arrayIndex, int row) const;
+
 
     bool zp_chemElementIsVisible(int arrayIndex, int row) const;
     bool zp_setChemElementVisible(int arrayIndex, int row, bool visible) const;
@@ -179,7 +182,7 @@ private:
     bool zh_removeArray(int);
     bool zh_removeSpectrum(int, int);
     void zh_removeChemicalElement(int, int);
-    int zh_chemElementIndex(int arrayIndex, const QString& chemElement);
+    int zh_chemElementIndexForId(int arrayIndex, qint64 chemElementId);
     QList<ZRawSpectrumArray> zh_createRawArrayList() const;
     //  void zp_saveArrayListToFile();
 

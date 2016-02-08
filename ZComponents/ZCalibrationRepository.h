@@ -37,11 +37,11 @@ public:
                         WOT_END_RESET
                        };
 
-    enum PredictorOperationType {POT_PREDICTOR_CHANGED,
-                        POT_BEGIN_INSERT_PREDICTOR,
-                        POT_END_INSERT_PREDICTOR,
-                        POT_BEGIN_REMOVE_PREDICTOR,
-                        POT_END_REMOVE_PREDICTOR,
+    enum TermOperationType {POT_TERM_CHANGED,
+                        POT_BEGIN_INSERT_TERM,
+                        POT_END_INSERT_TERM,
+                        POT_BEGIN_REMOVE_TERM,
+                        POT_END_REMOVE_TERM,
                         POT_BEGIN_RESET,
                         POT_END_RESET
                        };
@@ -66,6 +66,7 @@ public:
     QString zp_visibleCalibrationName(int visibleCalibrationIndex) const;
 
     QString zp_calibrationChemicalElement(int row) const;
+    QString zp_calibrationChemicalElementForId(qint64 id) const;
     bool zp_setCalibrationChemicalElement(int row, const QString&);
 
     bool zp_isCalibrationVisible(int row);
@@ -97,16 +98,16 @@ public:
     double zp_calculateConcentration(int row, const ZAbstractSpectrum* const, bool *ok = 0) const;
 
 
-    // predictors
-    int zp_predictorCount(qint64) const;
-    QString zp_predictorName(qint64, int) const;
+    // terms
+    int zp_termCount(qint64) const;
+    QString zp_termName(qint64, int) const;
 
 signals:
 
     void zg_message(QString) const;
     void zg_calibrationOperation(CalibrationOperationType, int, int) const;
     void zg_calibrationWindowOperation(WindowOperationType, int, int, int) const;
-    void zg_predictorOperation(PredictorOperationType, int, int, int) const;
+    void zg_termOperation(TermOperationType, int, int, int) const;
 
     void zg_requestSelectedCalibrationIndexList(QList<int>&);
     void zg_requestCurrentCalibrationIndex(int&);
@@ -136,7 +137,7 @@ private slots:
     void zh_onNewWindowAction();
     void zh_onRemoveWindowAction();
     void zh_onWindowOperation(ZCalibration::WindowOperationType type, int first, int last);
-    void zh_onPredictorOperation(ZCalibration::PredictorOperationType type, int first, int last);
+    void zh_onTermOperation(ZCalibration::TremOperationType type, int first, int last);
 
 private:
 

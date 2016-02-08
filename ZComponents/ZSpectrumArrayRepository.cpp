@@ -167,6 +167,28 @@ QString ZSpectrumArrayRepository::zp_chemElementName(int arrayIndex, int row) co
    return zv_arrayList.value(arrayIndex)->zp_chemElementName(row);
 }
 //==================================================================
+qint64 ZSpectrumArrayRepository::zp_visibleChemElementId(int arrayIndex, int visibleIndex) const
+{
+    if(arrayIndex < 0 || arrayIndex >= zv_arrayList.count()
+          || visibleIndex < 0)
+    {
+       return -1;
+    }
+
+    return zv_arrayList.value(arrayIndex)->zp_visibleChemElementId(visibleIndex);
+}
+//==================================================================
+qint64 ZSpectrumArrayRepository::zp_chemElementId(int arrayIndex, int row) const
+{
+    if(arrayIndex < 0 || arrayIndex >= zv_arrayList.count()
+          || row < 0)
+    {
+       return -1;
+    }
+
+    return zv_arrayList.value(arrayIndex)->zp_chemElementId(row);
+}
+//==================================================================
 QString ZSpectrumArrayRepository::zp_chemConcentration(int arrayIndex,
                                                        int spectrumIndex, int visibleChemElementIndex) const
 {
@@ -185,8 +207,9 @@ QString ZSpectrumArrayRepository::zp_chemConcentration(int arrayIndex,
       return QString();
    }
 
-   QString chemElement = zp_visibleChemElementName(arrayIndex, visibleChemElementIndex);
-   return zv_arrayList.value(arrayIndex)->zp_chemConcentration(chemElement, spectrumIndex);
+   qint64 chemElementId = zp_visibleChemElementId(arrayIndex, visibleChemElementIndex);
+
+   return zv_arrayList.value(arrayIndex)->zp_chemConcentration(chemElementId, spectrumIndex);
 }
 //==================================================================
 bool ZSpectrumArrayRepository::zp_setChemConcentration(int arrayIndex, int spectrumIndex,
@@ -207,11 +230,11 @@ bool ZSpectrumArrayRepository::zp_setChemConcentration(int arrayIndex, int spect
       return false;
    }
 
-   QString chemElement = zp_visibleChemElementName(arrayIndex, visibleChemElementIndex);
-   bool res = zv_arrayList.value(arrayIndex)->zp_setChemConcentration(chemElement, spectrumIndex, concentration);
+   qint64 chemElementId = zp_visibleChemElementId(arrayIndex, visibleChemElementIndex);
+   bool res = zv_arrayList.value(arrayIndex)->zp_setChemConcentration(chemElementId, spectrumIndex, concentration);
    if(res)
    {
-      int chemElementIndex = zh_chemElementIndex(arrayIndex, chemElement);
+      int chemElementIndex = zh_chemElementIndexForId(arrayIndex, chemElementId);
       emit zg_chemElementOperation(CEOT_CHEM_ELEMENT_CHANGED,
                                           arrayIndex, chemElementIndex, chemElementIndex);
       zv_dirty = true;
@@ -1157,14 +1180,14 @@ void ZSpectrumArrayRepository::zh_createConnections()
            this, &ZSpectrumArrayRepository::zh_onRemoveChemElementAction);
 }
 //==================================================================
-int ZSpectrumArrayRepository::zh_chemElementIndex(int arrayIndex, const QString& chemElement)
+int ZSpectrumArrayRepository::zh_chemElementIndexForId(int arrayIndex, qint64 chemElementId)
 {
    if(arrayIndex < 0 || arrayIndex >= zv_arrayList.count())
    {
       return -1;
    }
 
-   return zv_arrayList.value(arrayIndex)->zp_chemElementCount();
+   return zv_arrayList.value(arrayIndex)->zp_chemElementIndexForId(chemElementId);
 }
 //==================================================================
 

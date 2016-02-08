@@ -23,6 +23,7 @@ public:
                        const QStyleOptionViewItem & option,
                        const QModelIndex & index );
 
+    bool eventFilter(QObject *object, QEvent *event);
 
 };
 //==========================================================

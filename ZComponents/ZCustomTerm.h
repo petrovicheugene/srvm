@@ -1,19 +1,19 @@
 //===================================================================
-#ifndef ZCUSTOMPREDICTOR_H
-#define ZCUSTOMPREDICTOR_H
+#ifndef ZCUSTOMTERM_H
+#define ZCUSTOMTERM_H
 //===================================================================
-#include "ZAbstractPredictor.h"
+#include "ZAbstractTerm.h"
 //===================================================================
-class ZCustomPredictor : public ZAbstractPredictor
+class ZCustomTerm : public ZAbstractTerm
 {
    Q_OBJECT
 public:
-   explicit ZCustomPredictor(ZCalibration* parent);
+   explicit ZCustomTerm(ZCalibration* parent);
 
    // FUNCS
    qreal zp_calcValue() override;
-   QString zp_predictorName() override;
+   QString zp_termName() override;
 
 };
 //===================================================================
-#endif // ZCUSTOMPREDICTOR_H
+#endif // ZCUSTOMTERM_H

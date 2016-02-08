@@ -1,23 +1,23 @@
 //==============================================================
-#include "ZPredictorCorrelationPlotterWidget.h"
+#include "ZCalculationPlotterWidget.h"
 #include "ZPlotter.h"
 #include <QHBoxLayout>
 #include <QVBoxLayout>
 #include <QFrame>
 
 //==============================================================
-ZPredictorCorrelationPlotterWidget::ZPredictorCorrelationPlotterWidget(QWidget *parent) : QWidget(parent)
+ZCalculationPlotterWidget::ZCalculationPlotterWidget(QWidget *parent) : QWidget(parent)
 {
    zh_createComponents();
    zh_createConnections();
 }
 //==============================================================
-ZPlotter* ZPredictorCorrelationPlotterWidget::zp_plotter()
+ZPlotter* ZCalculationPlotterWidget::zp_plotter()
 {
    return zv_plotter;
 }
 //==============================================================
-void ZPredictorCorrelationPlotterWidget::zh_createComponents()
+void ZCalculationPlotterWidget::zh_createComponents()
 {
     QVBoxLayout* mainLayout = new QVBoxLayout(this);
     setLayout(mainLayout);
@@ -34,7 +34,7 @@ void ZPredictorCorrelationPlotterWidget::zh_createComponents()
 
 }
 //==============================================================
-void ZPredictorCorrelationPlotterWidget::zh_createConnections()
+void ZCalculationPlotterWidget::zh_createConnections()
 {
 
 }

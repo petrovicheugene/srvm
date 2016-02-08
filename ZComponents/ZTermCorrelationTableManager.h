@@ -1,6 +1,6 @@
 //==================================================================
-#ifndef ZPREDICTORTABLEMANAGER_H
-#define ZPREDICTORTABLEMANAGER_H
+#ifndef ZTERMTABLEMANAGER_H
+#define ZTERMTABLEMANAGER_H
 //==================================================================
 #include <QObject>
 #include <QModelIndex>
@@ -10,11 +10,11 @@
 //==================================================================
 
 //==================================================================
-class ZPredictorTableManager : public QObject
+class ZTermCorrelationTableManager : public QObject
 {
    Q_OBJECT
 public:
-   explicit ZPredictorTableManager(QObject *parent = 0);
+   explicit ZTermCorrelationTableManager(QObject *parent = 0);
 
    enum OperationType {OT_RESET_DATA,
                        OT_END_RESET_DATA,
@@ -36,7 +36,7 @@ public:
    int zp_columnCount() const;
 
    QVariant zp_data(QModelIndex index) const;
-   QString zp_columnName(Qt::Orientation orientation, int) const;
+   QString zp_columnName(int) const;
 
 
 signals:
@@ -49,15 +49,15 @@ public slots:
 private slots:
 
    void zh_currentCalibrationChanged(qreal calibrationId, int calibrationIndex);
-   void zh_onRepositoryPredictorOperation(ZCalibrationRepository::PredictorOperationType, int, int, int);
+   void zh_onRepositoryTermOperation(ZCalibrationRepository::TermOperationType, int, int, int);
 
 private:
 
     // VARS
     ZCalibrationRepository* zv_calibrationRepository;
     qint64 zv_currentCalibrationId;
-
     qreal zv_averageChemConcentration;
+    const int zv_firstNonTermColumnCount = 2;
 
     // FUNCS
 
@@ -65,4 +65,4 @@ private:
 
 };
 //==================================================================
-#endif // ZPREDICTORTABLEMANAGER_H
+#endif // ZTERMTABLEMANAGER_H

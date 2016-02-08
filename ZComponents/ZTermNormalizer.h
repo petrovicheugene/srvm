@@ -1,14 +1,14 @@
 //======================================================================
-#ifndef ZPREDICTORNORMALIZATOR_H
-#define ZPREDICTORNORMALIZATOR_H
+#ifndef ZTERMNORMALIZATOR_H
+#define ZTERMNORMALIZATOR_H
 //======================================================================
 #include <QObject>
 //======================================================================
-class ZPredictorNormalizer : public QObject
+class ZTermNormalizer : public QObject
 {
    Q_OBJECT
 public:
-   explicit ZPredictorNormalizer(QObject *parent = 0);
+   explicit ZTermNormalizer(QObject *parent = 0);
 
 signals:
 
@@ -20,4 +20,4 @@ public slots:
    void zp_value(qreal&) const;
 };
 //======================================================================
-#endif // ZPREDICTORNORMALIZATOR_H
+#endif // ZTERMNORMALIZATOR_H

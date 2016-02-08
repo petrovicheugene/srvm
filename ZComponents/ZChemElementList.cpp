@@ -2,9 +2,29 @@
 #include "ZChemElementList.h"
 #include "globalVariables.h"
 //=====================================================
+qint64 ZChemElementItem::zv_lastId = 0;
+
+//=====================================================
 ZChemElementList::ZChemElementList(QObject *parent) : QObject(parent)
 {
 
+}
+//=====================================================
+bool ZChemElementList::zp_appendElement(const QString& element, qint64& chemElementId)
+{
+    if(zp_containsElement(element))
+    {
+        chemElementId = -1;
+        return false;
+    }
+
+    int index = zv_elementList.count();
+    ZChemElementItem chemElementItem(element);
+    chemElementId = chemElementItem.zp_chemElementId();
+    emit zg_operationType(OT_INSERT_CHEM_ELEMENT, index, index);
+    zv_elementList.append(chemElementItem);
+    emit zg_operationType(OT_END_INSERT_CHEM_ELEMENT, index, index);
+    return true;
 }
 //=====================================================
 bool ZChemElementList::zp_appendElement(const QString& element)
@@ -15,8 +35,9 @@ bool ZChemElementList::zp_appendElement(const QString& element)
     }
 
     int index = zv_elementList.count();
+    ZChemElementItem chemElementItem(element);
     emit zg_operationType(OT_INSERT_CHEM_ELEMENT, index, index);
-    zv_elementList.append(ZChemElementItem(element));
+    zv_elementList.append(chemElementItem);
     emit zg_operationType(OT_END_INSERT_CHEM_ELEMENT, index, index);
     return true;
 }
@@ -71,6 +92,19 @@ bool ZChemElementList::zp_containsElement(const QString& element) const
     return false;
 }
 //=====================================================
+bool ZChemElementList::zp_containsElementId(qint64 chemElementId) const
+{
+    for(int i = 0; i < zv_elementList.count(); i++)
+    {
+        if(zv_elementList.value(i).zp_chemElementId() == chemElementId)
+        {
+            return true;
+        }
+    }
+
+    return false;
+}
+//=====================================================
 bool ZChemElementList::zp_isElementVisible(const QString& element) const
 {
     int elementIndex = zp_findElement(element);
@@ -92,14 +126,55 @@ bool ZChemElementList::zp_setChemElementVisible(const QString& element, bool vis
     }
 
     return zp_setChemElementVisible(elementIndex, visible);
-    //    if(zv_elementList[elementIndex].visibility == visible)
-    //    {
-    //        return false;
-    //    }
+}
+//=====================================================
+bool ZChemElementList::zp_setAverageValue(const QString& element, qreal averageValue)
+{
+    int elementIndex = zp_findElement(element);
+    if(elementIndex < 0)
+    {
+        return false;
+    }
 
-    //    zv_elementList[elementIndex].visibility = visible;
-    //    emit zg_operationType(OT_CHANGED, elementIndex, elementIndex);
-    //    return true;
+    return zp_setAverageValue(elementIndex, averageValue);
+}
+//=====================================================
+qreal ZChemElementList::zp_averageValue(const QString& element) const
+{
+    int elementIndex = zp_findElement(element);
+    if(elementIndex < 0)
+    {
+        return 0;
+    }
+
+    return zp_averageValue(elementIndex);
+}
+//=====================================================
+bool ZChemElementList::zp_setAverageValue(int index, qreal averageValue)
+{
+    if(index < 0 || index >= zv_elementList.count())
+    {
+        return false;
+    }
+
+    if(zv_elementList.value(index).averageConcentrationValue == averageValue)
+    {
+        return false;
+    }
+
+    zv_elementList[index].averageConcentrationValue = averageValue;
+    emit zg_operationType(OT_AVERAGE_VALUE_CHANGED, index, index);
+    return true;
+}
+//=====================================================
+qreal ZChemElementList::zp_averageValue(int index) const
+{
+    if(index < 0 || index >= zv_elementList.count())
+    {
+        return 0;
+    }
+
+    return zv_elementList.value(index).averageConcentrationValue;
 }
 //=====================================================
 int ZChemElementList::zp_findElement(const QString& element) const
@@ -123,10 +198,6 @@ int ZChemElementList::zp_chemElementCount() const
 int ZChemElementList::zp_visibleElementCount() const
 {
     int visible = 0;
-//    if(zv_elementList.isEmpty())
-//    {
-//        return visible;
-//    }
     for(int i = 0; i < zv_elementList.count(); i++)
     {
         if(zv_elementList.value(i).visibility)
@@ -166,6 +237,11 @@ int ZChemElementList::zp_numberVisibleChemElementsBeforeIndex(int index) const
     return visible;
 }
 //=====================================================
+bool ZChemElementList::zp_isEmpty() const
+{
+    return zv_elementList.isEmpty();
+}
+//=====================================================
 QString ZChemElementList::zp_visibleChemElementName(int visibleIndex) const
 {
     if(visibleIndex < 0 || visibleIndex >= zp_visibleElementCount())
@@ -187,6 +263,39 @@ QString ZChemElementList::zp_visibleChemElementName(int visibleIndex) const
     }
 
     return QString();
+}
+//=====================================================
+qint64 ZChemElementList::zp_visibleChemElementId(int visibleIndex) const
+{
+    if(visibleIndex < 0 || visibleIndex >= zp_visibleElementCount())
+    {
+        return -1;
+    }
+
+    int visible = 0;
+    for(int i = 0; i < zv_elementList.count(); i++)
+    {
+        if(zv_elementList.value(i).visibility)
+        {
+            if(visible == visibleIndex)
+            {
+                return zv_elementList.value(i).zp_chemElementId();
+            }
+            visible++;
+        }
+    }
+
+    return -1;
+}
+//=====================================================
+qint64 ZChemElementList::zp_chemElementId(int index) const
+{
+    if(index < 0 || index >= zv_elementList.count())
+    {
+        return -1;
+    }
+
+    return zv_elementList.value(index).zp_chemElementId();
 }
 //=====================================================
 QString ZChemElementList::zp_chemElementName(int index) const

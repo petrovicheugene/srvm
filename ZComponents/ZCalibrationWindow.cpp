@@ -1,6 +1,6 @@
 //====================================================
 #include "ZCalibrationWindow.h"
-#include "ZAbstractPredictor.h"
+#include "ZAbstractTerm.h"
 #include <QPointer>
 //====================================================
 qint64 ZCalibrationWindow::zv_lastWindowId = 0;

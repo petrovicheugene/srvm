@@ -1,17 +1,17 @@
 //===================================================================
-#include "ZCustomPredictor.h"
+#include "ZCustomTerm.h"
 //===================================================================
-ZCustomPredictor::ZCustomPredictor(ZCalibration *parent) : ZAbstractPredictor(parent)
+ZCustomTerm::ZCustomTerm(ZCalibration *parent) : ZAbstractTerm(parent)
 {
    zv_type = PT_CUSTOM;
 }
 //===================================================================
-qreal ZCustomPredictor::zp_calcValue()
+qreal ZCustomTerm::zp_calcValue()
 {
    return 0;
 }
 //===================================================================
-QString ZCustomPredictor::zp_predictorName()
+QString ZCustomTerm::zp_termName()
 {
    return QString();
 }

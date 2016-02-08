@@ -223,7 +223,6 @@ bool ZSpectrumTableDelegate::eventFilter(QObject *object, QEvent *event)
             return false;
         }
 
-
         QRect itemRect = itemView->visualRect(itemIndex);
         QStyleOptionViewItemV4 newOption;
         newOption.initFrom(itemView);

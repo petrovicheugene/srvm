@@ -1,24 +1,24 @@
 //============================================================
-#ifndef ZABSTRACTPREDICTOR_H
-#define ZABSTRACTPREDICTOR_H
+#ifndef ZABSTRACTTERM_H
+#define ZABSTRACTTERM_H
 //============================================================
 #include <QObject>
-#include "ZPredictorNormalizator.h"
+#include "ZTermNormalizer.h"
 //============================================================
 class ZAbstractSpectrum;
 class ZCalibrationWindow;
-class ZPredictorNormalizer;
+class ZTermNormalizer;
 class ZCalibration;
 
 //============================================================
-class ZAbstractPredictor : public QObject
+class ZAbstractTerm : public QObject
 {
    Q_OBJECT
 public:
-   explicit ZAbstractPredictor(ZCalibration*);
+   explicit ZAbstractTerm(ZCalibration*);
 
    // VARS
-   enum PredictorType {PT_NOT_DEFINED,
+   enum TermType {PT_NOT_DEFINED,
                        PT_SIMPLE,
                        PT_QUADRATIC,
                        PT_MIXED,
@@ -26,15 +26,15 @@ public:
 
    // FUNCS
    virtual qreal zp_calcValue() = 0;
-   virtual QString zp_predictorName();
-   virtual ZAbstractPredictor::PredictorType zp_predictorType();
+   virtual QString zp_termName();
+   virtual ZAbstractTerm::TermType zp_termType();
 
 signals:
 
    void zg_isNormalizerValid(bool&);
    void zg_normalizerValue(qreal&);
-   void zg_predictorChanged();
-   void zg_requestForDelete(ZAbstractPredictor*);
+   void zg_termChanged();
+   void zg_requestForDelete(ZAbstractTerm*);
 
 public slots:
 
@@ -47,13 +47,13 @@ protected slots:
 protected:
 
    // VARS
-   PredictorType zv_type;
+   TermType zv_type;
    qreal zv_K;
 
    QString zv_name;
    // FUNCS
-   void zh_connectToNormalizer(ZPredictorNormalizer *);
+   void zh_connectToNormalizer(ZTermNormalizer *);
    void zh_connectToCalibration(ZCalibration* calibration);
 };
 //============================================================
-#endif // ZABSTRACTPREDICTOR_H
+#endif // ZABSTRACTTERM_H

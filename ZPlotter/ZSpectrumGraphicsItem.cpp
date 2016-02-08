@@ -49,6 +49,8 @@ ZSpectrumGraphicsItem::ZSpectrumGraphicsItem(const ZAbstractSpectrum *spectrum,
    GraphicsItemFlags flags = this->flags();
    flags |= ItemIsFocusable | ItemIsSelectable;
    setFlags(flags);
+   setZValue(gl_defaultSpectrumZValue);
+
    zp_updateSpectrumData(spectrum);
    zp_updateCurrentSpectrum(true);
 }
@@ -191,12 +193,12 @@ void ZSpectrumGraphicsItem::zp_updateCurrentSpectrum(bool visible)
    }
    else
    {
-      if(zValue() != gl_defaultSpectrumZValue)
-      {
+//      if(zValue() != gl_defaultSpectrumZValue)
+//      {
          setZValue(gl_defaultSpectrumZValue);
          zv_paintColor = zv_color;
          setVisible(visible);
-      }
+//      }
    }
 }
 //======================================================

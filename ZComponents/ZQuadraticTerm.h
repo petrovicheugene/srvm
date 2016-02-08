@@ -1,16 +1,16 @@
 //===================================================================
-#ifndef ZQUADRATICPREDICTOR_H
-#define ZQUADRATICPREDICTOR_H
+#ifndef ZQUADRATICTERM_H
+#define ZQUADRATICTERM_H
 //===================================================================
-#include "ZAbstractPredictor.h"
+#include "ZAbstractTerm.h"
 //===================================================================
 class ZCalibrationWindow;
 //===================================================================
-class ZQuadraticPredictor : public ZAbstractPredictor
+class ZQuadraticTerm : public ZAbstractTerm
 {
    Q_OBJECT
 public:
-   explicit ZQuadraticPredictor(const ZCalibrationWindow* window,
+   explicit ZQuadraticTerm(const ZCalibrationWindow* window,
                                 ZCalibration *parent);
 
    // FUNCS
@@ -27,4 +27,4 @@ private:
 
 };
 //===================================================================
-#endif // ZQUADRATICPREDICTOR_H
+#endif // ZQUADRATICTERM_H

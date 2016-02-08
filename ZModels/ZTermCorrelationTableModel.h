@@ -1,18 +1,18 @@
 //===========================================================
-#ifndef ZPREDICTORTABLEMODEL_H
-#define ZPREDICTORTABLEMODEL_H
+#ifndef ZTERMCORRELATIONTABLEMODEL_H
+#define ZTERMCORRELATIONTABLEMODEL_H
 //===========================================================
 #include <QAbstractTableModel>
-#include "ZPredictorTableManager.h"
+#include "ZTermCorrelationTableManager.h"
 
 //===========================================================
-class ZPredictorTableManager;
+class ZTermCorrelationTableManager;
 //===========================================================
-class ZPredictorTableModel : public QAbstractTableModel
+class ZTermCorrelationTableModel : public QAbstractTableModel
 {
    Q_OBJECT
 public:
-   explicit ZPredictorTableModel(QObject* parent = 0);
+   explicit ZTermCorrelationTableModel(QObject* parent = 0);
 
    virtual Qt::ItemFlags	flags(const QModelIndex & index) const;
    virtual int columnCount(const QModelIndex & parent = QModelIndex()) const;
@@ -22,17 +22,17 @@ public:
    virtual bool	setData(const QModelIndex & index, const QVariant & value, int role = Qt::EditRole);
    virtual QVariant	headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const;
 
-   void zp_connectToPredicorTableManager(ZPredictorTableManager* dataManager);
+   void zp_connectToPredicorTableManager(ZTermCorrelationTableManager* dataManager);
 
 private slots:
 
-    void zh_onDataManagerOperation(ZPredictorTableManager::OperationType type, int first, int last);
+    void zh_onDataManagerOperation(ZTermCorrelationTableManager::OperationType type, int first, int last);
 
 private:
 
     // VARS
-    ZPredictorTableManager* zv_dataManager;
+    ZTermCorrelationTableManager* zv_dataManager;
 
 };
 //===========================================================
-#endif // ZPREDICTORTABLEMODEL_H
+#endif // ZTERMCORRELATIONTABLEMODEL_H

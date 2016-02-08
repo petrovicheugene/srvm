@@ -1,11 +1,11 @@
 //=========================================================
 #include "ZCalibration.h"
 #include "ZAbstractSpectrum.h"
-#include "ZSimplePredictor.h"
-#include "ZQuadraticPredictor.h"
-#include "ZCrossProductPredictor.h"
-#include "ZCustomPredictor.h"
-#include "ZPredictorNormalizator.h"
+#include "ZSimpleTerm.h"
+#include "ZQuadraticTerm.h"
+#include "ZCrossProductTerm.h"
+#include "ZCustomTerm.h"
+#include "ZTermNormalizer.h"
 
 #include <QFileInfo>
 #include <QPointer>
@@ -166,65 +166,65 @@ void ZCalibration::zp_createNewCalibrationWindow(int firstChannel, int lastChann
     zv_spectrumWindowList.append(calibrationWindow);
     emit zg_windowOperation(WOT_END_INSERT_WINDOWS, windowNewIndex, windowNewIndex);
 
-    zh_createPredictorsForWindow(calibrationWindow);
+    zh_createTermsForWindow(calibrationWindow);
 }
 //=========================================================
-void ZCalibration::zh_createPredictorsForWindow(ZCalibrationWindow* window)
+void ZCalibration::zh_createTermsForWindow(ZCalibrationWindow* window)
 {
     // creation
-    ZSimplePredictor* simplePredictor = new ZSimplePredictor(window, this);
-    ZQuadraticPredictor* quadraticPredictor = new ZQuadraticPredictor(window, this);
+    ZSimpleTerm* simpleTerm = new ZSimpleTerm(window, this);
+    ZQuadraticTerm* quadraticTerm = new ZQuadraticTerm(window, this);
 
-    // indexes by default (if list of predictors is empty)
+    // indexes by default (if list of terms is empty)
     int quadraticIndex = 1;
     int simpleIndex = 0;
 
     // indexes to insertion before
-    for(int i = 0; i < zv_predictorList.count(); i++)
+    for(int i = 0; i < zv_termList.count(); i++)
     {
-        if(zv_predictorList.at(i)->zp_predictorType() == ZAbstractPredictor::PT_SIMPLE)
+        if(zv_termList.at(i)->zp_termType() == ZAbstractTerm::PT_SIMPLE)
         {
             simpleIndex = i + 1;
         }
 
-        if(zv_predictorList.at(i)->zp_predictorType() == ZAbstractPredictor::PT_QUADRATIC)
+        if(zv_termList.at(i)->zp_termType() == ZAbstractTerm::PT_QUADRATIC)
         {
             quadraticIndex = i + 1;
         }
     }
 
     // insertion
-    emit zg_predictorOperation(POT_BEGIN_INSERT_PREDICTOR, quadraticIndex, quadraticIndex);
-    zv_predictorList.insert(quadraticIndex, quadraticPredictor );
-    emit zg_predictorOperation(POT_END_INSERT_PREDICTOR, quadraticIndex, quadraticIndex);
+    emit zg_termOperation(POT_BEGIN_INSERT_TERM, quadraticIndex, quadraticIndex);
+    zv_termList.insert(quadraticIndex, quadraticTerm );
+    emit zg_termOperation(POT_END_INSERT_TERM, quadraticIndex, quadraticIndex);
 
-    emit zg_predictorOperation(POT_BEGIN_INSERT_PREDICTOR, simpleIndex, simpleIndex);
-    zv_predictorList.insert(simpleIndex, simplePredictor);
-    emit zg_predictorOperation(POT_END_INSERT_PREDICTOR, simpleIndex, simpleIndex);
+    emit zg_termOperation(POT_BEGIN_INSERT_TERM, simpleIndex, simpleIndex);
+    zv_termList.insert(simpleIndex, simpleTerm);
+    emit zg_termOperation(POT_END_INSERT_TERM, simpleIndex, simpleIndex);
 
 }
 //=========================================================
 void ZCalibration::zp_isNormalizerValid(bool& validFlag) const
 {
-   zv_predictorNormalizator->zp_isValid(validFlag);
+   zv_termNormalizator->zp_isValid(validFlag);
 }
 //=========================================================
 void ZCalibration::zp_normalizerValue(qreal& value) const
 {
-   zv_predictorNormalizator->zp_value(value);
+   zv_termNormalizator->zp_value(value);
 }
 //=========================================================
-void ZCalibration::zh_removePredictor(ZAbstractPredictor* predictor)
+void ZCalibration::zh_removeTerm(ZAbstractTerm* term)
 {
-    for(int i = 0; i < zv_predictorList.count(); i ++)
+    for(int i = 0; i < zv_termList.count(); i ++)
     {
-        if(zv_predictorList.at(i) == predictor)
+        if(zv_termList.at(i) == term)
         {
-            emit zg_predictorOperation(POT_BEGIN_REMOVE_PREDICTOR, i, i);
-            zv_predictorList.removeAt(i);
-            emit zg_predictorOperation(POT_END_REMOVE_PREDICTOR, i, i);
+            emit zg_termOperation(POT_BEGIN_REMOVE_TERM, i, i);
+            zv_termList.removeAt(i);
+            emit zg_termOperation(POT_END_REMOVE_TERM, i, i);
 
-            predictor->deleteLater();
+            term->deleteLater();
             return;
         }
     }
@@ -407,29 +407,29 @@ bool ZCalibration::zp_removeSpectrumWindow(int windowIndex)
     return true;
 }
 //=========================================================
-void ZCalibration::zp_connectPredictorToCalibration(const ZAbstractPredictor* predictor)
+void ZCalibration::zp_connectTermToCalibration(const ZAbstractTerm* term)
 {
-   if(predictor == 0)
+   if(term == 0)
    {
       return;
    }
-   connect(predictor, &ZAbstractPredictor::zg_requestForDelete,
-           this, &ZCalibration::zh_removePredictor);
+   connect(term, &ZAbstractTerm::zg_requestForDelete,
+           this, &ZCalibration::zh_removeTerm);
 }
 //=========================================================
-int ZCalibration::zp_predictorCount() const
+int ZCalibration::zp_termCount() const
 {
-    return zv_predictorList.count();
+    return zv_termList.count();
 }
 //=========================================================
-QString ZCalibration::zp_predictorName(int predictorIndex) const
+QString ZCalibration::zp_termName(int termIndex) const
 {
-    if(predictorIndex < 0 || predictorIndex >= zv_predictorList.count() )
+    if(termIndex < 0 || termIndex >= zv_termList.count() )
     {
         return QString();
     }
 
-    return zv_predictorList.at(predictorIndex)->zp_predictorName();
+    return zv_termList.at(termIndex)->zp_termName();
 }
 //=========================================================
 bool ZCalibration::checkColor(QColor color)

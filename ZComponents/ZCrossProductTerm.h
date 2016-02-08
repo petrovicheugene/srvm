@@ -1,30 +1,27 @@
 //===================================================================
-#ifndef ZSIMPLEPREDICTOR_H
-#define ZSIMPLEPREDICTOR_H
+#ifndef ZCROSSPRODUCTTERM_H
+#define ZCROSSPRODUCTTERM_H
 //===================================================================
-#include "ZAbstractPredictor.h"
+#include "ZAbstractTerm.h"
 //===================================================================
 class ZCalibrationWindow;
 //===================================================================
-class ZSimplePredictor : public ZAbstractPredictor
+class ZCrossProductTerm : public ZAbstractTerm
 {
    Q_OBJECT
 public:
-   explicit ZSimplePredictor(const ZCalibrationWindow* window,
-                             ZCalibration *parent);
+   explicit ZCrossProductTerm(const ZCalibrationWindow &window1,
+                            const ZCalibrationWindow &window2,
+                            ZCalibration *parent);
 
    // FUNCS
    qreal zp_calcValue() override;
+   QString zp_termName() override;
 
 private:
 
    // VARS
 
-
-   // FUNCS
-
-   void zh_connectToWindow(const ZCalibrationWindow* window);
-
 };
 //===================================================================
-#endif // ZSIMPLEPREDICTOR_H
+#endif // ZCROSSPRODUCTTERM_H

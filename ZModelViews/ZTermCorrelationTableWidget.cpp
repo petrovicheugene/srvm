@@ -1,6 +1,6 @@
 //=============================================================
-#include "ZPredictorTableWidget.h"
-#include "ZPredictorTableModel.h"
+#include "ZTermCorrelationTableWidget.h"
+#include "ZTermCorrelationTableModel.h"
 
 #include <QTableView>
 #include <QHBoxLayout>
@@ -8,13 +8,13 @@
 #include <QPushButton>
 #include <QAction>
 //=============================================================
-ZPredictorTableWidget::ZPredictorTableWidget(QWidget *parent) : QWidget(parent)
+ZTermCorrelationTableWidget::ZTermCorrelationTableWidget(QWidget *parent) : QWidget(parent)
 {
    zh_createComponents();
    zh_createConnections();
 }
 //=============================================================
-void ZPredictorTableWidget::zp_setModel(ZPredictorTableModel* model)
+void ZTermCorrelationTableWidget::zp_setModel(ZTermCorrelationTableModel* model)
 {
     zv_table->setModel(model);
 //    ZNumericDelegate* numericDelegate = new ZNumericDelegate(zv_table);
@@ -30,7 +30,7 @@ void ZPredictorTableWidget::zp_setModel(ZPredictorTableModel* model)
 //            this, &ZJointSpectrumTableWidget::zh_onCurrentSpectrumChanged);
 }
 //=============================================================
-void ZPredictorTableWidget::zp_appendButtonActions(QList<QAction*> actionList)
+void ZTermCorrelationTableWidget::zp_appendButtonActions(QList<QAction*> actionList)
 {
     zv_buttonLayout->addStretch();
     for(int a = 0; a < actionList.count(); a++)
@@ -45,7 +45,7 @@ void ZPredictorTableWidget::zp_appendButtonActions(QList<QAction*> actionList)
     }
 }
 //=============================================================
-void ZPredictorTableWidget::zh_createComponents()
+void ZTermCorrelationTableWidget::zh_createComponents()
 {
     QVBoxLayout* mainLayout = new QVBoxLayout(this);
     setLayout(mainLayout);
@@ -57,7 +57,7 @@ void ZPredictorTableWidget::zh_createComponents()
     mainLayout->addLayout(zv_buttonLayout);
 }
 //=============================================================
-void ZPredictorTableWidget::zh_createConnections()
+void ZTermCorrelationTableWidget::zh_createConnections()
 {
 
 }

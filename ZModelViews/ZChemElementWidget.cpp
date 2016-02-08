@@ -32,7 +32,9 @@ void ZChemElementWidget::zp_setModel(QAbstractItemModel* model)
 {
     zv_table->setModel(model);
     zv_table->setItemDelegate(new ZStringDelegate(zv_table));
-    zv_table->setItemDelegateForColumn(0, new ZVisibilityStringDelegate(zv_table));
+    ZVisibilityStringDelegate* visibilityStringDelegate = new ZVisibilityStringDelegate(zv_table);
+    zv_table->viewport()->installEventFilter(visibilityStringDelegate);
+    zv_table->setItemDelegateForColumn(0, visibilityStringDelegate);
     zv_table->horizontalHeader()->setSectionResizeMode(0, QHeaderView::Stretch);
     zv_table->setAlternatingRowColors(true);
 

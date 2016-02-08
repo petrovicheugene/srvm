@@ -6,7 +6,7 @@
 #include <QString>
 #include <QMap>
 //====================================================
-class ZAbstractPredictor;
+class ZAbstractTerm;
 //====================================================
 class ZCalibrationWindow : public QObject
 {

@@ -119,17 +119,17 @@ SOURCES += main.cpp \
     ZModelViews/ZCalibrationWindowTableWidget.cpp \
     ZPlotter/ZDefaultRectGraphicsItem.cpp \
     ZModelViews/ZIntDelegate/ZChannelNumberDelegate.cpp \
-    ZComponents/ZAbstractPredictor.cpp \
-    ZComponents/ZSimplePredictor.cpp \
-    ZComponents/ZQuadraticPredictor.cpp \
-    ZComponents/ZCrossProductPredictor.cpp \
-    ZComponents/ZCustomPredictor.cpp \
-    ZComponents/ZPredictorNormalizator.cpp \
-    ZComponents/ZPredictorCorrelationPlotterManager.cpp \
-    ZModelViews/ZPredictorCorrelationPlotterWidget.cpp \
-    ZComponents/ZPredictorTableManager.cpp \
-    ZModels/ZPredictorTableModel.cpp \
-    ZModelViews/ZPredictorTableWidget.cpp
+    ZModelViews/ZTermCorrelationTableWidget.cpp \
+    ZModels/ZTermCorrelationTableModel.cpp \
+    ZComponents/ZAbstractTerm.cpp \
+    ZComponents/ZTermCorrelationTableManager.cpp \
+    ZComponents/ZTermNormalizator.cpp \
+    ZComponents/ZCalculationPlotterManager.cpp \
+    ZModelViews/ZCalculationPlotterWidget.cpp \
+    ZComponents/ZSimpleTerm.cpp \
+    ZComponents/ZQuadraticTerm.cpp \
+    ZComponents/ZCustomTerm.cpp \
+    ZComponents/ZCrossProductTerm.cpp
 
 
 HEADERS  += \
@@ -191,17 +191,17 @@ HEADERS  += \
     ZPlotter/ZDefaultRectGraphicsItem.h \
     ZModelViews/ZIntDelegate/ZChannelNumberDelegate.h \
     ZPlotter/ZPlotterDefaulVariables.h \
-    ZComponents/ZAbstractPredictor.h \
-    ZComponents/ZSimplePredictor.h \
-    ZComponents/ZQuadraticPredictor.h \
-    ZComponents/ZCrossProductPredictor.h \
-    ZComponents/ZCustomPredictor.h \
-    ZComponents/ZPredictorNormalizator.h \
-    ZComponents/ZPredictorCorrelationPlotterManager.h \
-    ZModelViews/ZPredictorCorrelationPlotterWidget.h \
-    ZComponents/ZPredictorTableManager.h \
-    ZModels/ZPredictorTableModel.h \
-    ZModelViews/ZPredictorTableWidget.h
+    ZModelViews/ZTermCorrelationTableWidget.h \
+    ZModels/ZTermCorrelationTableModel.h \
+    ZComponents/ZTermCorrelationTableManager.h \
+    ZComponents/ZAbstractTerm.h \
+    ZComponents/ZTermNormalizer.h \
+    ZComponents/ZCalculationPlotterManager.h \
+    ZModelViews/ZCalculationPlotterWidget.h \
+    ZComponents/ZCrossProductTerm.h \
+    ZComponents/ZCustomTerm.h \
+    ZComponents/ZQuadraticTerm.h \
+    ZComponents/ZSimpleTerm.h
 
 
 RESOURCES += \

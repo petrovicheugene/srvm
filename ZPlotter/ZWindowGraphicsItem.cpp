@@ -129,19 +129,30 @@ void ZWindowGraphicsItem::zp_updateCurrentWindow(bool visible)
    }
    else
    {
-      if(zValue() != gl_defaultWindowZValue)
-      {
+//      if(zValue() != gl_defaultWindowZValue)
+//      {
          setZValue(gl_defaultWindowZValue);
          zv_lineColor = zv_color;
          zv_brushColor = zv_color;
          zv_brushColor.setAlpha(zv_alphaCannelValue);
-      }
+         setVisible(visible);
+//      }
    }
 }
 //======================================================
 void ZWindowGraphicsItem::zp_updateWindowHeight()
 {
    zh_recalcShapeAndBoundingRect();
+}
+//======================================================
+void ZWindowGraphicsItem::zp_setVisible(bool visible)
+{
+    if(zv_windowId == zv_currentWindowId && visible == false)
+    {
+        return;
+    }
+
+    setVisible(visible);
 }
 //======================================================
 void ZWindowGraphicsItem::mouseReleaseEvent(QGraphicsSceneMouseEvent * event)

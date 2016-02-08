@@ -1,6 +1,6 @@
 //========================================================
-#ifndef ZPREDICTORTABLEWIDGET_H
-#define ZPREDICTORTABLEWIDGET_H
+#ifndef ZTERMCORRELATIONTABLEWIDGET_H
+#define ZTERMCORRELATIONTABLEWIDGET_H
 //========================================================
 #include <QWidget>
 //========================================================
@@ -8,16 +8,16 @@ class QTableView;
 class QAction;
 class QHBoxLayout;
 
-class ZPredictorTableModel;
+class ZTermCorrelationTableModel;
 //========================================================
-class ZPredictorTableWidget : public QWidget
+class ZTermCorrelationTableWidget : public QWidget
 {
    Q_OBJECT
 public:
-   explicit ZPredictorTableWidget(QWidget *parent = 0);
+   explicit ZTermCorrelationTableWidget(QWidget *parent = 0);
 
    // FUNCS
-   void zp_setModel(ZPredictorTableModel* model);
+   void zp_setModel(ZTermCorrelationTableModel* model);
    void zp_appendButtonActions(QList<QAction*>);
 
 signals:
@@ -39,4 +39,4 @@ private:
 
 };
 //========================================================
-#endif // ZPREDICTORTABLEWIDGET_H
+#endif // ZTERMCORRELATIONTABLEWIDGET_H

@@ -32,6 +32,8 @@ public:
    void zp_updateCurrentWindow(bool);
    void zp_updateWindowHeight();
 
+   void zp_setVisible(bool visible);
+
 protected:
 
    // FUNCS
@@ -58,6 +60,9 @@ private:
    QPainterPath zv_paintRect;
    QPainterPath zv_marginsPainterPath;
    QRectF zv_boundingRect;
+
+
+   // FUNCS
 
 };
 //======================================================

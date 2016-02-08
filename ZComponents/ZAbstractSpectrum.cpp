@@ -76,41 +76,36 @@ bool ZAbstractSpectrum::zp_setSpectrumChecked(bool checked)
     return true;
 }
 //==========================================================
-void ZAbstractSpectrum::zp_insertConcentration(const QString& chemElement, const QString& concentration)
+void ZAbstractSpectrum::zp_insertConcentration(qint64 chemElementId, const QString& concentration)
 {
-    zv_concentrationMap.insert(chemElement, concentration);
+    zv_concentrationMap.insert(chemElementId, concentration);
 }
 //==========================================================
-QStringList ZAbstractSpectrum::zp_chemElementList() const
+QString ZAbstractSpectrum::zp_concentration(qint64 chemElementId) const
 {
-    return zv_concentrationMap.keys();
-}
-//==========================================================
-QString ZAbstractSpectrum::zp_concentration(const QString& chemElement) const
-{
-    if(!zv_concentrationMap.keys().contains(chemElement))
+    if(!zv_concentrationMap.keys().contains(chemElementId))
     {
         return QString();
     }
 
-    return zv_concentrationMap.value(chemElement);
+    return zv_concentrationMap.value(chemElementId);
 }
 //==========================================================
-bool ZAbstractSpectrum::zp_setConcentration(const QString& chemElement,
+bool ZAbstractSpectrum::zp_setConcentration(qint64 chemElementId,
                                             const QString& concentration)
 {
-    if(chemElement.isEmpty())
+    if(chemElementId < 0)
     {
         return false;
     }
 
-    if(zv_concentrationMap.contains(chemElement)
-            && ( zv_concentrationMap.value(chemElement) == concentration))
+    if(zv_concentrationMap.contains(chemElementId)
+            && ( zv_concentrationMap.value(chemElementId) == concentration))
     {
         return false;
     }
 
-    zv_concentrationMap.insert(chemElement, concentration);
+    zv_concentrationMap.insert(chemElementId, concentration);
     return true;
 }
 //==========================================================

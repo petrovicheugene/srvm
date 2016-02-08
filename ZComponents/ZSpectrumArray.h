@@ -30,19 +30,23 @@ public:
     int zp_spectrumCount() const;
 
     int zp_chemElementCount() const;
-    int zp_chemElementIndex(const QString& chemElement) const;
+    int zp_chemElementIndexForName(const QString& chemElement) const;
+    int zp_chemElementIndexForId(qint64 chemElementId) const;
     int zp_numberVisibleChemElementsBeforeIndex(int index) const;
     int zp_visibleChemElementCount() const;
     QStringList zp_chemElementList() const;
     QString zp_visibleChemElementName(int visibleIndex) const;
     QString zp_chemElementName(int index) const;
+    qint64 zp_visibleChemElementId(int visibleIndex) const;
+    qint64 zp_chemElementId(int index) const;
+
     bool zp_chemElementIsVisible(int index) const;
     bool zp_setChemElementVisible(int row, bool visible);
     bool zp_setChemElementName(int row, const QString&);
 
-    QString zp_chemConcentration(const QString& chemElement,
+    QString zp_chemConcentration(qint64 chemElementId,
                                  int spectrumIndex) const;
-    bool zp_setChemConcentration(const QString& chemElement,
+    bool zp_setChemConcentration(qint64 chemElementId,
                                  int spectrumIndex, const QString& concentration);
     bool zp_energyCalibration(qreal& K0, qreal& K1, qreal& K2, QString& energyUnit);
 
@@ -108,6 +112,7 @@ private:
     // FUNCS
     void zh_createConnections();
     void zh_recalcArrayMaxParameters();
+    bool zh_calcAverageConcentration(qint64 chemElementId);
     void zh_calcAverageConcentrations();
 
     static QList<QColor> zp_createColorList();

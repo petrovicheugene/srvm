@@ -3,7 +3,6 @@
 #include "globalVariables.h"
 #include "ZNumericDelegate.h"
 #include "ZSpectrumTableDelegate.h"
-#include "ZVisibilityStringDelegate.h"
 #include "ZJointSpectraModel.h"
 #include "ZSpectrumArrayRepository.h"
 
@@ -58,7 +57,6 @@ void ZJointSpectrumTableWidget::zp_setModel(ZJointSpectraModel* model)
     ZSpectrumTableDelegate* spectrumDelegate = new ZSpectrumTableDelegate(zv_table);
     // tracking mouse event to prevent current event setting when visible changed
     zv_table->viewport()->installEventFilter(spectrumDelegate);
-    // zv_table->setItemDelegateForColumn(0, new ZVisibilityStringDelegate(zv_table));
     zv_table->setItemDelegateForColumn(1, spectrumDelegate);
     zv_table->setAlternatingRowColors(true);
 

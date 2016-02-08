@@ -9,8 +9,8 @@
 #include "ZCalibrationRepository.h"
 #include "ZChemElementDataManager.h"
 #include "ZPlotterDataManager.h"
-#include "ZPredictorCorrelationPlotterManager.h"
-#include "ZPredictorTableManager.h"
+#include "ZCalculationPlotterManager.h"
+#include "ZTermCorrelationTableManager.h"
 
 // views
 #include "ZWidgetWithSidebar.h"
@@ -19,8 +19,8 @@
 #include "ZChemElementWidget.h"
 #include "ZCalibrationTableWidget.h"
 #include "ZCalibrationWindowTableWidget.h"
-#include "ZPredictorCorrelationPlotterWidget.h"
-#include "ZPredictorTableWidget.h"
+#include "ZCalculationPlotterWidget.h"
+#include "ZTermCorrelationTableWidget.h"
 #include "ZPlotter.h"
 #include "ZMessagePanel.h"
 // models
@@ -29,7 +29,7 @@
 #include "ZCalibrationWindowModel.h"
 #include "ZChemElementModel.h"
 #include "ZJointSpectraModel.h"
-#include "ZPredictorTableModel.h"
+#include "ZTermCorrelationTableModel.h"
 
 // qt
 #include <QHBoxLayout>
@@ -63,15 +63,15 @@ MainWindow::MainWindow(QWidget *parent)
    zv_chemElementDataManager = 0;
    zv_jointCalibrationWindowDataManager = 0;
    zv_plotterDataManager = 0;
-   zv_predictorCorrelationPlotterManager = 0;
-   zv_predictorTableManager = 0;
+   zv_calculationPlotterManager = 0;
+   zv_termCorrelationTableManager = 0;
 
    zv_arrayModel = 0;
    zv_jointSpectraModel = 0;
    zv_chemElementModel = 0;
    zv_calibrationModel = 0;
    zv_jointCalibrationWindowModel = 0;
-   zv_predictorTableModel = 0;
+   zv_termCorrelationTableModel = 0;
    zv_plotter = 0;
 
    zh_createActions();
@@ -182,25 +182,25 @@ void MainWindow::zh_createComponents()
    // setting to dock
    zv_calibrationDock->setWidget(zv_calibrationSidebarWidget);
 
-   // Predictor Table View
-   zv_predictorTableDock= new QDockWidget(this);
-   zv_predictorTableDock->setObjectName("PREDICTOR_TABLE_DOCK");
-   zv_predictorTableDock->setWindowTitle(tr("Predictors"));
-   zv_dockList << zv_predictorTableDock;
-   addDockWidget(Qt::TopDockWidgetArea, zv_predictorTableDock);
+   // Term Correlation Table View
+   zv_termCorrelationTableDock= new QDockWidget(this);
+   zv_termCorrelationTableDock->setObjectName("TERM_CORRELATION_TABLE_DOCK");
+   zv_termCorrelationTableDock->setWindowTitle(tr("Terms"));
+   zv_dockList << zv_termCorrelationTableDock;
+   addDockWidget(Qt::TopDockWidgetArea, zv_termCorrelationTableDock);
 
-   zv_predictorTableSidebarWidget = new ZWidgetWithSidebar("PREDICTOR_TABLE_WIDGET", false, this);
-   zv_predictorTableSidebarWidget->setFrameStyle(QFrame::StyledPanel | QFrame::Plain);
-   zv_predictorTableSidebarWidget->setLineWidth(1);
+   zv_termCorrelationTableSidebarWidget = new ZWidgetWithSidebar("TERM_CORRELATION_TABLE_WIDGET", false, this);
+   zv_termCorrelationTableSidebarWidget->setFrameStyle(QFrame::StyledPanel | QFrame::Plain);
+   zv_termCorrelationTableSidebarWidget->setLineWidth(1);
 
-   zv_predictorTableWidget = new ZPredictorTableWidget(this);
-   zv_predictorCorrelationPlottterWidget = new ZPredictorCorrelationPlotterWidget(this);
+   zv_termCorrelationTableWidget = new ZTermCorrelationTableWidget(this);
+   zv_calculationPlotterWidget = new ZCalculationPlotterWidget(this);
 
-   zv_predictorTableSidebarWidget->zp_setSidebarWidget(zv_predictorCorrelationPlottterWidget);
-   zv_predictorTableSidebarWidget->zp_setMainWidget(zv_predictorTableWidget);
+   zv_termCorrelationTableSidebarWidget->zp_setSidebarWidget(zv_calculationPlotterWidget);
+   zv_termCorrelationTableSidebarWidget->zp_setMainWidget(zv_termCorrelationTableWidget);
 
    // setting to dock
-   zv_predictorTableDock->setWidget(zv_predictorTableSidebarWidget);
+   zv_termCorrelationTableDock->setWidget(zv_termCorrelationTableSidebarWidget);
 
 
    // Message Panel
@@ -226,8 +226,8 @@ void MainWindow::zh_createComponents()
    zv_calibrationRepository = new ZCalibrationRepository(this);
    zv_jointCalibrationWindowDataManager = new ZCalibrationWindowDataManager(this);
    zv_plotterDataManager = new ZPlotterDataManager(this);
-   zv_predictorCorrelationPlotterManager = new ZPredictorCorrelationPlotterManager(this);
-   zv_predictorTableManager = new ZPredictorTableManager(this);
+   zv_calculationPlotterManager = new ZCalculationPlotterManager(this);
+   zv_termCorrelationTableManager = new ZTermCorrelationTableManager(this);
 
    // Models
    zv_arrayModel = new ZArrayModel(this);
@@ -235,7 +235,7 @@ void MainWindow::zh_createComponents()
    zv_chemElementModel = new ZChemElementModel(this);
    zv_calibrationModel = new ZCalibrationModel(this);
    zv_jointCalibrationWindowModel = new ZCalibrationWindowModel(this);
-   zv_predictorTableModel = new ZPredictorTableModel(this);
+   zv_termCorrelationTableModel = new ZTermCorrelationTableModel(this);
 
    statusBar();
 }
@@ -308,6 +308,9 @@ void MainWindow::zh_createConnections()
    connect(this, &MainWindow::zg_saveSettings,
            zv_calibrationSidebarWidget, &ZWidgetWithSidebar::zp_saveSettings);
    connect(this, &MainWindow::zg_saveSettings,
+           zv_termCorrelationTableSidebarWidget, &ZWidgetWithSidebar::zp_saveSettings);
+
+   connect(this, &MainWindow::zg_saveSettings,
            zv_fileActionManager, &ZFileActionManager::zp_saveSettings);
 
    // views set models
@@ -316,7 +319,7 @@ void MainWindow::zh_createConnections()
    zv_calibrationTableWidget->zp_setModel(zv_calibrationModel);
    zv_chemElementWidget->zp_setModel(zv_chemElementModel);
    zv_calibrationWindowTableWidget->zp_setModel(zv_jointCalibrationWindowModel);
-   zv_predictorTableWidget->zp_setModel(zv_predictorTableModel);
+   zv_termCorrelationTableWidget->zp_setModel(zv_termCorrelationTableModel);
 
    // File Action Manager <-> other components
    zv_calibrationRepository->zp_connectToFileManager(zv_fileActionManager);
@@ -388,11 +391,11 @@ void MainWindow::zh_createConnections()
    connect(zv_jointCalibrationWindowDataManager, &ZCalibrationWindowDataManager::zg_setChannelMinMax,
            zv_calibrationWindowTableWidget, &ZCalibrationWindowTableWidget::zp_setChannelNumberMinMax);
 
-   // predictor correlation table and plotter
+   // term correlation table and calculation plotter
 
-   zv_predictorCorrelationPlotterManager->zp_connectToPlotter(zv_predictorCorrelationPlottterWidget->zp_plotter());
-   zv_predictorTableModel->zp_connectToPredicorTableManager(zv_predictorTableManager);
-   zv_predictorTableManager->zp_connectToCalibrationRepository(zv_calibrationRepository);
+   zv_calculationPlotterManager->zp_connectToPlotter(zv_calculationPlotterWidget->zp_plotter());
+   zv_termCorrelationTableModel->zp_connectToPredicorTableManager(zv_termCorrelationTableManager);
+   zv_termCorrelationTableManager->zp_connectToCalibrationRepository(zv_calibrationRepository);
 
 }
 //==========================================================

@@ -6,14 +6,14 @@
 #include <QMap>
 #include <QColor>
 #include "ZCalibrationWindow.h"
-#include "ZAbstractPredictor.h"
+#include "ZAbstractTerm.h"
 //=========================================================
 class ZAbstractSpectrum;
-class ZSimplePredictor;
-class ZQuadraticPredictor;
-class ZCrossProductPredictor;
-class ZCustomPredictor;
-class ZPredictorNormalizer;
+class ZSimpleTerm;
+class ZQuadraticTerm;
+class ZCrossProductTerm;
+class ZCustomTerm;
+class ZTermNormalizer;
 //=========================================================
 class ZCalibration : public QObject
 {
@@ -32,11 +32,11 @@ public:
                              WOT_WINDOW_CHANGED};
 
 
-   enum PredictorOperationType {POT_BEGIN_INSERT_PREDICTOR,
-                                POT_END_INSERT_PREDICTOR,
-                                POT_BEGIN_REMOVE_PREDICTOR,
-                                POT_END_REMOVE_PREDICTOR,
-                                POT_PREDICTOR_CHANGED};
+   enum TremOperationType {POT_BEGIN_INSERT_TERM,
+                                POT_END_INSERT_TERM,
+                                POT_BEGIN_REMOVE_TERM,
+                                POT_END_REMOVE_TERM,
+                                POT_TERM_CHANGED};
 
    // FUNCS
    QString zp_name() const;
@@ -76,10 +76,10 @@ public:
    qint64 zp_calibrationWindowId(int windowIndex) const;
    bool zp_removeSpectrumWindow(int);
 
-   // predictors
-   void zp_connectPredictorToCalibration(const ZAbstractPredictor*);
-   int zp_predictorCount() const;
-   QString zp_predictorName(int predictorIndex) const;
+   // terms
+   void zp_connectTermToCalibration(const ZAbstractTerm*);
+   int zp_termCount() const;
+   QString zp_termName(int termIndex) const;
 
 signals:
 
@@ -88,7 +88,7 @@ signals:
    void zg_visibilityChanged(bool) const;
    void zg_dirtyChanged(bool) const;
 
-   void zg_predictorOperation(ZCalibration::PredictorOperationType, int first, int last)const;
+   void zg_termOperation(ZCalibration::TremOperationType, int first, int last)const;
    void zg_normalizerChanged() const;
 
 public slots:
@@ -98,7 +98,7 @@ public slots:
 
 private slots:
 
-   void zh_removePredictor(ZAbstractPredictor*);
+   void zh_removeTerm(ZAbstractTerm*);
 
 private:
 
@@ -114,12 +114,12 @@ private:
    QString zv_defaultWindowName;
 
    QList<ZCalibrationWindow*> zv_spectrumWindowList;
-   QList<ZAbstractPredictor*> zv_predictorList;
-   ZPredictorNormalizer* zv_predictorNormalizator;
+   QList<ZAbstractTerm*> zv_termList;
+   ZTermNormalizer* zv_termNormalizator;
 
    // FUNCS
    bool zh_isWindowExist(const QString&);
-   void zh_createPredictorsForWindow(ZCalibrationWindow*);
+   void zh_createTermsForWindow(ZCalibrationWindow*);
 
    // STATIC
    // VARS

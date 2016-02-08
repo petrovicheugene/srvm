@@ -38,10 +38,9 @@ public:
     bool zp_isSpectrumChecked() const;
     bool zp_setSpectrumChecked(bool);
 
-    void zp_insertConcentration(const QString& chemElement, const QString& concentration);
-    QStringList zp_chemElementList() const;
-    QString zp_concentration(const QString& chemElement) const;
-    bool zp_setConcentration(const QString& chemElement, const QString& concentration);
+    void zp_insertConcentration(qint64 chemElementId, const QString& concentration);
+    QString zp_concentration(qint64 chemElementId) const;
+    bool zp_setConcentration(qint64 chemElementId, const QString& concentration);
     QList<int> zp_spectrumData() const;
     virtual const ZAbstractSpectrumAuxData* zp_auxData() const = 0;
     int zp_intensityInWindow(int startChannel, int lastChannel, bool *ok = 0) const;
@@ -63,7 +62,7 @@ protected:
 
     QPainterPath zv_spectrumPaintPath;
 
-    QMap<QString, QString> zv_concentrationMap;
+    QMap<qint64, QString> zv_concentrationMap;
     bool zv_visible;
     bool zv_checked;
     QColor zv_color;

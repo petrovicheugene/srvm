@@ -1,17 +1,17 @@
 //======================================================================
-#include "ZPredictorNormalizator.h"
+#include "ZTermNormalizer.h"
 //======================================================================
-ZPredictorNormalizer::ZPredictorNormalizer(QObject *parent) : QObject(parent)
+ZTermNormalizer::ZTermNormalizer(QObject *parent) : QObject(parent)
 {
 
 }
 //======================================================================
-void ZPredictorNormalizer::zp_isValid(bool& validFlag) const
+void ZTermNormalizer::zp_isValid(bool& validFlag) const
 {
    validFlag = false;
 }
 //======================================================================
-void ZPredictorNormalizer::zp_value(qreal& value) const
+void ZTermNormalizer::zp_value(qreal& value) const
 {
    value = 1;
 }

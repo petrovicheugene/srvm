@@ -1,16 +1,16 @@
 //=====================================================================
-#ifndef ZPREDICTORCORRELATIONPLOTTERMANAGER_H
-#define ZPREDICTORCORRELATIONPLOTTERMANAGER_H
+#ifndef ZCALCULATIONPLOTTERMANAGER_H
+#define ZCALCULATIONPLOTTERMANAGER_H
 //=====================================================================
 #include <QObject>
 //=====================================================================
 class ZPlotter;
 //=====================================================================
-class ZPredictorCorrelationPlotterManager : public QObject
+class ZCalculationPlotterManager : public QObject
 {
    Q_OBJECT
 public:
-   explicit ZPredictorCorrelationPlotterManager(QObject *parent = 0);
+   explicit ZCalculationPlotterManager(QObject *parent = 0);
 
    // FUNCS
    void zp_connectToPlotter(ZPlotter* plotter);
@@ -29,4 +29,4 @@ private:
 
 };
 //=====================================================================
-#endif // ZPREDICTORCORRELATIONPLOTTERMANAGER_H
+#endif // ZCALCULATIONPLOTTERMANAGER_H
