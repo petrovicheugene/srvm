@@ -158,10 +158,6 @@ void ZSpectrumArrayWidget::zh_checkCurrentArray()
 void ZSpectrumArrayWidget::zh_onCurrentArrayChanged(const QModelIndex & current,
                                                     const QModelIndex & previous)
 {
-#ifdef DBG
-    qDebug() << "CurrentArrayChanged" << current.row() << previous.row();
-#endif
-
     int currentRow;
     if(current.isValid())
     {

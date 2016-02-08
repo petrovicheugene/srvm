@@ -16,17 +16,17 @@ class ZTermCorrelationTableManager : public QObject
 public:
    explicit ZTermCorrelationTableManager(QObject *parent = 0);
 
-   enum OperationType {OT_RESET_DATA,
-                       OT_END_RESET_DATA,
-                       OT_INSERT_ROW,
-                       OT_END_INSERT_ROW,
-                       OT_REMOVE_ROW,
-                       OT_END_REMOVE_ROW,
-                       OT_INSERT_COLUMN,
-                       OT_END_INSERT_COLUMN,
-                       OT_REMOVE_COLUMN,
-                       OT_END_REMOVE_COLUMN,
-                       OT_DATA_CHANGED};
+   enum OperationType {TOT_BEGIN_RESET,
+                       TOT_END_RESET,
+                       TOT_BEGIN_INSERT_ROW,
+                       TOT_END_INSERT_ROW,
+                       TOT_BEGIN_REMOVE_ROW,
+                       TOT_END_REMOVE_ROW,
+                       TOT_BEGIN_INSERT_COLUMN,
+                       TOT_END_INSERT_COLUMN,
+                       TOT_BEGIN_REMOVE_COLUMN,
+                       TOT_END_REMOVE_COLUMN,
+                       TOT_DATA_CHANGED};
 
    // FUNCS
    void zp_connectToCalibrationRepository(ZCalibrationRepository*);
@@ -58,7 +58,8 @@ private:
     qint64 zv_currentCalibrationId;
     qreal zv_averageChemConcentration;
     const int zv_firstNonTermColumnCount = 2;
-
+    const QString zv_defaultChemElementString = tr("No chemical");
+    int zv_columnCountCorrector;
     // FUNCS
 
 

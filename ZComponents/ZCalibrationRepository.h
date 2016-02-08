@@ -37,13 +37,13 @@ public:
                         WOT_END_RESET
                        };
 
-    enum TermOperationType {POT_TERM_CHANGED,
-                        POT_BEGIN_INSERT_TERM,
-                        POT_END_INSERT_TERM,
-                        POT_BEGIN_REMOVE_TERM,
-                        POT_END_REMOVE_TERM,
-                        POT_BEGIN_RESET,
-                        POT_END_RESET
+    enum TermOperationType {TOT_TERM_CHANGED,
+                        TOT_BEGIN_INSERT_TERM,
+                        TOT_END_INSERT_TERM,
+                        TOT_BEGIN_REMOVE_TERM,
+                        TOT_END_REMOVE_TERM,
+                        TOT_BEGIN_RESET,
+                        TOT_END_RESET
                        };
 
 

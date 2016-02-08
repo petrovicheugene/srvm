@@ -1,5 +1,6 @@
 //==================================================================
 #include "ZTermCorrelationTableModel.h"
+#include "globalVariables.h"
 //==================================================================
 ZTermCorrelationTableModel::ZTermCorrelationTableModel(QObject *parent) :
    QAbstractTableModel(parent)
@@ -20,6 +21,7 @@ int ZTermCorrelationTableModel::columnCount(const QModelIndex & parent) const
    {
       return 0;
    }
+   // zv_columnToRemoveNumber used only while column removing
    return zv_dataManager->zp_columnCount();
 }
 //==================================================================
@@ -30,7 +32,8 @@ int ZTermCorrelationTableModel::rowCount(const QModelIndex & parent) const
       return 0;
    }
 
-   return zv_dataManager->zp_rowCount();}
+   return zv_dataManager->zp_rowCount();;
+}
 //==================================================================
 QVariant	ZTermCorrelationTableModel::data(const QModelIndex & index, int role) const
 {
@@ -109,47 +112,47 @@ void ZTermCorrelationTableModel::zh_onDataManagerOperation(ZTermCorrelationTable
         return;
     }
 
-    if(type == ZTermCorrelationTableManager::OT_RESET_DATA)
+    if(type == ZTermCorrelationTableManager::TOT_BEGIN_RESET)
     {
         beginResetModel();
     }
-    else if(type == ZTermCorrelationTableManager::OT_END_RESET_DATA)
+    else if(type == ZTermCorrelationTableManager::TOT_END_RESET)
     {
         endResetModel();
     }
-    else if(type == ZTermCorrelationTableManager::OT_INSERT_ROW)
+    else if(type == ZTermCorrelationTableManager::TOT_BEGIN_INSERT_ROW)
     {
         beginInsertRows(QModelIndex(), first, last);
     }
-    else if(type == ZTermCorrelationTableManager::OT_END_INSERT_ROW)
+    else if(type == ZTermCorrelationTableManager::TOT_END_INSERT_ROW)
     {
         endInsertRows();
     }
-    else if(type == ZTermCorrelationTableManager::OT_REMOVE_ROW)
+    else if(type == ZTermCorrelationTableManager::TOT_BEGIN_REMOVE_ROW)
     {
         beginRemoveRows(QModelIndex(), first, last);
     }
-    else if(type == ZTermCorrelationTableManager::OT_END_REMOVE_ROW)
+    else if(type == ZTermCorrelationTableManager::TOT_END_REMOVE_ROW)
     {
         endRemoveRows();
     }
-    else if(type == ZTermCorrelationTableManager::OT_INSERT_COLUMN)
+    else if(type == ZTermCorrelationTableManager::TOT_BEGIN_INSERT_COLUMN)
     {
         beginInsertColumns(QModelIndex(), first, last);
     }
-    else if(type == ZTermCorrelationTableManager::OT_END_INSERT_COLUMN)
+    else if(type == ZTermCorrelationTableManager::TOT_END_INSERT_COLUMN)
     {
         endInsertColumns();
     }
-    else if(type == ZTermCorrelationTableManager::OT_REMOVE_COLUMN)
+    else if(type == ZTermCorrelationTableManager::TOT_BEGIN_REMOVE_COLUMN)
     {
         beginRemoveColumns(QModelIndex(), first, last);
     }
-    else if(type == ZTermCorrelationTableManager::OT_END_REMOVE_COLUMN)
+    else if(type == ZTermCorrelationTableManager::TOT_END_REMOVE_COLUMN)
     {
         endRemoveColumns();
     }
-    else if(type == ZTermCorrelationTableManager::OT_DATA_CHANGED)
+    else if(type == ZTermCorrelationTableManager::TOT_DATA_CHANGED)
     {
         QModelIndex leftTop = index(first, 0);
         QModelIndex rightBottom = index(last, zv_dataManager->zp_columnCount() - 1);

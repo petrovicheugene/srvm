@@ -7,6 +7,7 @@ ZTermCorrelationTableManager::ZTermCorrelationTableManager(QObject *parent) : QO
 {
     zv_calibrationRepository = 0;
     zv_currentCalibrationId = -1;
+    zv_columnCountCorrector = 0;
 }
 //=============================================================================
 void ZTermCorrelationTableManager::zp_connectToCalibrationRepository(ZCalibrationRepository* repository)
@@ -35,7 +36,7 @@ int ZTermCorrelationTableManager::zp_columnCount() const
         return 0;
     }
 
-    return zv_calibrationRepository->zp_termCount(zv_currentCalibrationId) + 2; // 2 - term column and chem conc column
+    return zv_calibrationRepository->zp_termCount(zv_currentCalibrationId) + 2 + zv_columnCountCorrector; // 2 - term column and chem conc column
 }
 //=============================================================================
 QVariant ZTermCorrelationTableManager::zp_data(QModelIndex index) const
@@ -89,8 +90,7 @@ QVariant ZTermCorrelationTableManager::zp_data(QModelIndex index) const
 QString ZTermCorrelationTableManager::zp_columnName(int columnIndex) const
 {
 
-    if(zv_currentCalibrationId < 0 || zv_calibrationRepository == 0
-            || columnIndex < 0 || columnIndex >= zv_calibrationRepository->zp_termCount(zv_currentCalibrationId) + zv_firstNonTermColumnCount)
+    if(columnIndex < 0 || columnIndex >= zv_calibrationRepository->zp_termCount(zv_currentCalibrationId) + zv_firstNonTermColumnCount)
     {
         return QString();
     }
@@ -101,15 +101,25 @@ QString ZTermCorrelationTableManager::zp_columnName(int columnIndex) const
     }
     else if(columnIndex == 1)
     {
+        if(zv_currentCalibrationId < 0 || zv_calibrationRepository == 0)
+        {
+            return zv_defaultChemElementString;
+        }
+
         QString chemElementString = zv_calibrationRepository->zp_calibrationChemicalElementForId(zv_currentCalibrationId);
         if(chemElementString.isEmpty())
         {
-            chemElementString = tr("No Chem Element");
+            return zv_defaultChemElementString;
         }
+
         return chemElementString;
     }
     else
     {
+        if(zv_currentCalibrationId < 0 || zv_calibrationRepository == 0)
+        {
+            return QString();
+        }
         return zv_calibrationRepository->zp_termName(zv_currentCalibrationId, columnIndex - zv_firstNonTermColumnCount);
     }
 
@@ -172,13 +182,13 @@ void ZTermCorrelationTableManager::zh_currentCalibrationChanged(qreal calibratio
 
     zv_currentCalibrationId = calibrationId;
 
-    emit zg_currentOperation(OT_RESET_DATA, -1, -1);
+    emit zg_currentOperation(TOT_BEGIN_RESET, -1, -1);
 
-    emit zg_currentOperation(OT_END_RESET_DATA, -1, -1);
+    emit zg_currentOperation(TOT_END_RESET, -1, -1);
 }
 //=============================================================================
 void ZTermCorrelationTableManager::zh_onRepositoryTermOperation(ZCalibrationRepository::TermOperationType type,
-                                                               int calibrationIndex, int first, int last)
+                                                                int calibrationIndex, int first, int last)
 {
     if(zv_calibrationRepository == 0)
     {
@@ -191,33 +201,43 @@ void ZTermCorrelationTableManager::zh_onRepositoryTermOperation(ZCalibrationRepo
         return;
     }
 
-    //    if(type == ZCalibrationRepository::POT_BEGIN_RESET)
-    //    {
-    //        emit zg_currentOperation(OT_RESET_DATA, first, last);
-    //    }
-    //    else if(type == ZCalibrationRepository::POT_END_RESET)
-    //    {
-    //        emit zg_currentOperation(OT_END_RESET_DATA, first, last);
-    //    }
-    //    else if(type == ZCalibrationRepository::POT_BEGIN_INSERT_TERM)
-    //    {
-    //        emit zg_currentOperation(OT_INSERT_ROW, first, last);
-    //    }
-    //    else if(type == ZCalibrationRepository::POT_END_INSERT_TERM)
-    //    {
-    //        emit zg_currentOperation(OT_END_INSERT_ROW, first, last);
-    //    }
-    //    else if(type == ZCalibrationRepository::POT_BEGIN_REMOVE_TERM)
-    //    {
-    //        emit zg_currentOperation(OT_REMOVE_ROW, first, last);
-    //    }
-    //    else if(type == ZCalibrationRepository::POT_END_REMOVE_TERM)
-    //    {
-    //        emit zg_currentOperation(OT_END_REMOVE_ROW, first, last);
-    //    }
-    //    else if(type == ZCalibrationRepository::POT_TERM_CHANGED)
-    //    {
-    //        emit zg_currentOperation(OT_DATA_CHANGED, first, last);
-    //    }
+    if(type == ZCalibrationRepository::TOT_BEGIN_RESET)
+    {
+        emit zg_currentOperation(TOT_BEGIN_RESET, first, last);
+    }
+    else if(type == ZCalibrationRepository::TOT_END_RESET)
+    {
+        emit zg_currentOperation(TOT_END_RESET, first, last);
+    }
+    else if(type == ZCalibrationRepository::TOT_BEGIN_INSERT_TERM)
+    {
+        emit zg_currentOperation(TOT_BEGIN_INSERT_ROW, first, last);
+        //emit zg_currentOperation(TOT_BEGIN_INSERT_COLUMN, first + zv_firstNonTermColumnCount, last + zv_firstNonTermColumnCount);
+    }
+    else if(type == ZCalibrationRepository::TOT_END_INSERT_TERM)
+    {
+        zv_columnCountCorrector = (last - first + 1) * -1;
+        emit zg_currentOperation(TOT_END_INSERT_ROW, first, last);
+        emit zg_currentOperation(TOT_BEGIN_INSERT_COLUMN, first + zv_firstNonTermColumnCount, last + zv_firstNonTermColumnCount);
+        zv_columnCountCorrector = 0;
+        emit zg_currentOperation(TOT_END_INSERT_COLUMN, first + zv_firstNonTermColumnCount, last + zv_firstNonTermColumnCount);
+    }
+    else if(type == ZCalibrationRepository::TOT_BEGIN_REMOVE_TERM)
+    {
+        emit zg_currentOperation(TOT_BEGIN_REMOVE_ROW, first, last);
+        // emit zg_currentOperation(TOT_BEGIN_REMOVE_COLUMN, first + zv_firstNonTermColumnCount, last + zv_firstNonTermColumnCount);
+    }
+    else if(type == ZCalibrationRepository::TOT_END_REMOVE_TERM)
+    {
+        zv_columnCountCorrector = last - first + 1;
+        emit zg_currentOperation(TOT_END_REMOVE_ROW, first, last);
+        emit zg_currentOperation(TOT_BEGIN_REMOVE_COLUMN, first + zv_firstNonTermColumnCount, last + zv_firstNonTermColumnCount);
+        zv_columnCountCorrector = 0;
+        emit zg_currentOperation(TOT_END_REMOVE_COLUMN, first + zv_firstNonTermColumnCount, last + zv_firstNonTermColumnCount);
+    }
+    else if(type == ZCalibrationRepository::TOT_TERM_CHANGED)
+    {
+        emit zg_currentOperation(TOT_DATA_CHANGED, first, last);
+    }
 }
 //=============================================================================

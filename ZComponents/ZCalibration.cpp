@@ -194,13 +194,13 @@ void ZCalibration::zh_createTermsForWindow(ZCalibrationWindow* window)
     }
 
     // insertion
-    emit zg_termOperation(POT_BEGIN_INSERT_TERM, quadraticIndex, quadraticIndex);
+    emit zg_termOperation(TOT_BEGIN_INSERT_TERM, quadraticIndex, quadraticIndex);
     zv_termList.insert(quadraticIndex, quadraticTerm );
-    emit zg_termOperation(POT_END_INSERT_TERM, quadraticIndex, quadraticIndex);
+    emit zg_termOperation(TOT_END_INSERT_TERM, quadraticIndex, quadraticIndex);
 
-    emit zg_termOperation(POT_BEGIN_INSERT_TERM, simpleIndex, simpleIndex);
+    emit zg_termOperation(TOT_BEGIN_INSERT_TERM, simpleIndex, simpleIndex);
     zv_termList.insert(simpleIndex, simpleTerm);
-    emit zg_termOperation(POT_END_INSERT_TERM, simpleIndex, simpleIndex);
+    emit zg_termOperation(TOT_END_INSERT_TERM, simpleIndex, simpleIndex);
 
 }
 //=========================================================
@@ -220,11 +220,10 @@ void ZCalibration::zh_removeTerm(ZAbstractTerm* term)
     {
         if(zv_termList.at(i) == term)
         {
-            emit zg_termOperation(POT_BEGIN_REMOVE_TERM, i, i);
-            zv_termList.removeAt(i);
-            emit zg_termOperation(POT_END_REMOVE_TERM, i, i);
+            emit zg_termOperation(TOT_BEGIN_REMOVE_TERM, i, i);
+            delete zv_termList.takeAt(i);
+            emit zg_termOperation(TOT_END_REMOVE_TERM, i, i);
 
-            term->deleteLater();
             return;
         }
     }

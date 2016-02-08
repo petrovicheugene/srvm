@@ -126,13 +126,16 @@ bool ZVisibilityStringDelegate::editorEvent ( QEvent * event,
                                               const QStyleOptionViewItem & option,
                                               const QModelIndex & index )
 {
+#ifdef DBG
+    qDebug() << "EDITOR EVENT";
+#endif
     if(!index.isValid() || model == 0 || event->type() != QEvent::MouseButtonRelease)
     {
         return false;
     }
 
     QMouseEvent* mouseEvent = static_cast<QMouseEvent*>(event);
-    if(!mouseEvent || mouseEvent->type() != QMouseEvent::MouseButtonRelease)
+    if(!mouseEvent)
     {
         return false;
     }
@@ -161,7 +164,6 @@ bool ZVisibilityStringDelegate::editorEvent ( QEvent * event,
 
     bool visible = vData.toBool();
     model->setData(index, QVariant(!visible), VisibleRole);
-
     return true;
 }
 //==========================================================
@@ -216,15 +218,15 @@ bool ZVisibilityStringDelegate::eventFilter(QObject *object, QEvent *event)
 
         QRect decorationRect = itemView->style()->subElementRect(QStyle::SE_ItemViewItemDecoration, &newOption);
 
-        if(!decorationRect.contains(mousePoint))
+        if(decorationRect.contains(mousePoint))
         {
-            return false;
+            // mouse position is in decoration rect
+            // MouseButtonPress or MouseButtonDblClick (making item current) - banned
+            // visible will be switched by mouseButtonRelease
+
+            return true;
         }
 
-        // mouse position is in decoration rect
-        // MouseButtonPress or MouseButtonDblClick (making item current) - banned
-        // visible will be switched by mouseButtonRelease
-        return true;
     }
 
     return false;

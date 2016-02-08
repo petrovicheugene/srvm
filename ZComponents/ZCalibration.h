@@ -32,11 +32,11 @@ public:
                              WOT_WINDOW_CHANGED};
 
 
-   enum TremOperationType {POT_BEGIN_INSERT_TERM,
-                                POT_END_INSERT_TERM,
-                                POT_BEGIN_REMOVE_TERM,
-                                POT_END_REMOVE_TERM,
-                                POT_TERM_CHANGED};
+   enum TremOperationType {TOT_BEGIN_INSERT_TERM,
+                                TOT_END_INSERT_TERM,
+                                TOT_BEGIN_REMOVE_TERM,
+                                TOT_END_REMOVE_TERM,
+                                TOT_TERM_CHANGED};
 
    // FUNCS
    QString zp_name() const;

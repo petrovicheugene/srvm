@@ -936,25 +936,25 @@ void ZCalibrationRepository::zh_onTermOperation(ZCalibration::TremOperationType 
             continue;
         }
 
-        if(type == ZCalibration::POT_BEGIN_INSERT_TERM)
+        if(type == ZCalibration::TOT_BEGIN_INSERT_TERM)
         {
-            emit zg_termOperation(POT_BEGIN_INSERT_TERM, calibrationIndex, first, last);
+            emit zg_termOperation(TOT_BEGIN_INSERT_TERM, calibrationIndex, first, last);
         }
-        else if(type == ZCalibration::POT_END_INSERT_TERM)
+        else if(type == ZCalibration::TOT_END_INSERT_TERM)
         {
-            emit zg_termOperation(POT_END_INSERT_TERM, calibrationIndex, first, last);
+            emit zg_termOperation(TOT_END_INSERT_TERM, calibrationIndex, first, last);
         }
-        else if(type == ZCalibration::POT_BEGIN_REMOVE_TERM)
+        else if(type == ZCalibration::TOT_BEGIN_REMOVE_TERM)
         {
-            emit zg_termOperation(POT_BEGIN_REMOVE_TERM, calibrationIndex, first, last);
+            emit zg_termOperation(TOT_BEGIN_REMOVE_TERM, calibrationIndex, first, last);
         }
-        else if(type == ZCalibration::POT_END_REMOVE_TERM)
+        else if(type == ZCalibration::TOT_END_REMOVE_TERM)
         {
-            emit zg_termOperation(POT_END_REMOVE_TERM, calibrationIndex, first, last);
+            emit zg_termOperation(TOT_END_REMOVE_TERM, calibrationIndex, first, last);
         }
-        else if(type == ZCalibration::POT_TERM_CHANGED)
+        else if(type == ZCalibration::TOT_TERM_CHANGED)
         {
-            emit zg_termOperation(POT_TERM_CHANGED, calibrationIndex, first, last);
+            emit zg_termOperation(TOT_TERM_CHANGED, calibrationIndex, first, last);
         }
 
         break;
