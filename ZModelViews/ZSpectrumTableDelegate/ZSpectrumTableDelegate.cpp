@@ -156,13 +156,19 @@ bool ZSpectrumTableDelegate::editorEvent ( QEvent * event,
 {
     if(!index.isValid() || model == 0 || event->type() != QEvent::MouseButtonRelease)
     {
-        return false;
+        return QStyledItemDelegate::editorEvent(event,
+                                                model,
+                                                option,
+                                                index);
     }
 
     QMouseEvent* mouseEvent = static_cast<QMouseEvent*>(event);
     if(!mouseEvent || mouseEvent->type() != QMouseEvent::MouseButtonRelease)
     {
-        return false;
+        return QStyledItemDelegate::editorEvent(event,
+                                                model,
+                                                option,
+                                                index);
     }
 
     QStyleOptionViewItem newOption(option);
@@ -170,7 +176,10 @@ bool ZSpectrumTableDelegate::editorEvent ( QEvent * event,
     const QAbstractItemView* itemView = qobject_cast<const QAbstractItemView*>(newOption.widget);
     if(!itemView)
     {
-        return false;
+        return QStyledItemDelegate::editorEvent(event,
+                                                model,
+                                                option,
+                                                index);
     }
 
     QStyle *style = itemView->style();
@@ -178,13 +187,19 @@ bool ZSpectrumTableDelegate::editorEvent ( QEvent * event,
     QPoint mousePos = mouseEvent->pos();
     if(!decorationRect.contains(mousePos))
     {
-        return false;
+        return QStyledItemDelegate::editorEvent(event,
+                                                model,
+                                                option,
+                                                index);
     }
 
     QVariant vData = index.data(VisibleRole);
     if(!vData.isValid() || vData.isNull() || !vData.canConvert<bool>())
     {
-        return false;
+        return QStyledItemDelegate::editorEvent(event,
+                                                model,
+                                                option,
+                                                index);
     }
 
     bool visible = vData.toBool();
@@ -202,12 +217,12 @@ bool ZSpectrumTableDelegate::eventFilter(QObject *object, QEvent *event)
         QTableView* itemView = qobject_cast<QTableView*>(parent());
         if(itemView == 0)
         {
-            return false;
+            return QStyledItemDelegate::eventFilter(object, event);
         }
 
         if(itemView->viewport() != object)
         {
-            return false;
+            return QStyledItemDelegate::eventFilter(object, event);
         }
 
         QPoint mousePoint = mouseEvent->pos();
@@ -215,12 +230,12 @@ bool ZSpectrumTableDelegate::eventFilter(QObject *object, QEvent *event)
 
         if(!itemIndex.isValid())
         {
-            return false;
+            return QStyledItemDelegate::eventFilter(object, event);
         }
 
         if(itemView->itemDelegateForColumn(itemIndex.column()) != this)
         {
-            return false;
+            return QStyledItemDelegate::eventFilter(object, event);
         }
 
         QRect itemRect = itemView->visualRect(itemIndex);
@@ -246,7 +261,7 @@ bool ZSpectrumTableDelegate::eventFilter(QObject *object, QEvent *event)
 
         if(!decorationRect.contains(mousePoint))
         {
-            return false;
+            return QStyledItemDelegate::eventFilter(object, event);
         }
 
         // mouse position is in decoration rect
@@ -255,6 +270,6 @@ bool ZSpectrumTableDelegate::eventFilter(QObject *object, QEvent *event)
         return true;
     }
 
-    return false;
+    return QStyledItemDelegate::eventFilter(object, event);
 }
 //======================================================================

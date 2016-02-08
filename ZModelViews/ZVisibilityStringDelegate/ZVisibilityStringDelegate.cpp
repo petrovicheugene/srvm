@@ -131,13 +131,19 @@ bool ZVisibilityStringDelegate::editorEvent ( QEvent * event,
 #endif
     if(!index.isValid() || model == 0 || event->type() != QEvent::MouseButtonRelease)
     {
-        return false;
+        return QStyledItemDelegate::editorEvent(event,
+                                                model,
+                                                option,
+                                                index);
     }
 
     QMouseEvent* mouseEvent = static_cast<QMouseEvent*>(event);
     if(!mouseEvent)
     {
-        return false;
+        return QStyledItemDelegate::editorEvent(event,
+                                                model,
+                                                option,
+                                                index);
     }
 
     QStyleOptionViewItem newOption(option);
@@ -145,7 +151,10 @@ bool ZVisibilityStringDelegate::editorEvent ( QEvent * event,
     const QAbstractItemView* itemView = qobject_cast<const QAbstractItemView*>(newOption.widget);
     if(!itemView)
     {
-        return false;
+        return QStyledItemDelegate::editorEvent(event,
+                                                model,
+                                                option,
+                                                index);
     }
 
     QStyle *style = itemView->style();
@@ -153,13 +162,19 @@ bool ZVisibilityStringDelegate::editorEvent ( QEvent * event,
     QPoint mousePos = mouseEvent->pos();
     if(!decorationRect.contains(mousePos))
     {
-        return false;
+        return QStyledItemDelegate::editorEvent(event,
+                                                model,
+                                                option,
+                                                index);
     }
 
     QVariant vData = index.data(VisibleRole);
     if(!vData.isValid() || vData.isNull() || !vData.canConvert<bool>())
     {
-        return false;
+        return QStyledItemDelegate::editorEvent(event,
+                                                model,
+                                                option,
+                                                index);
     }
 
     bool visible = vData.toBool();
@@ -172,16 +187,15 @@ bool ZVisibilityStringDelegate::eventFilter(QObject *object, QEvent *event)
     if(event->type() == QEvent::MouseButtonPress || event->type() == QEvent::MouseButtonDblClick)
     {
         QMouseEvent* mouseEvent = static_cast<QMouseEvent*>(event);
-        //
         QTableView* itemView = qobject_cast<QTableView*>(parent());
         if(itemView == 0)
         {
-            return false;
+            return QStyledItemDelegate::eventFilter(object, event);
         }
 
         if(itemView->viewport() != object)
         {
-            return false;
+            return QStyledItemDelegate::eventFilter(object, event);
         }
 
         QPoint mousePoint = mouseEvent->pos();
@@ -189,12 +203,12 @@ bool ZVisibilityStringDelegate::eventFilter(QObject *object, QEvent *event)
 
         if(!itemIndex.isValid())
         {
-            return false;
+            return QStyledItemDelegate::eventFilter(object, event);
         }
 
         if(itemView->itemDelegateForColumn(itemIndex.column()) != this)
         {
-            return false;
+            return QStyledItemDelegate::eventFilter(object, event);
         }
 
         QRect itemRect = itemView->visualRect(itemIndex);
@@ -226,9 +240,7 @@ bool ZVisibilityStringDelegate::eventFilter(QObject *object, QEvent *event)
 
             return true;
         }
-
     }
-
-    return false;
+    return QStyledItemDelegate::eventFilter(object, event);
 }
 //======================================================================

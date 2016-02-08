@@ -38,8 +38,9 @@ void zh_onCurrentArrayChanged(const QModelIndex & current, const QModelIndex & p
 void ZCalibrationTableWidget::zp_setModel(QAbstractItemModel* model)
 {
     zv_table->setModel(model);
+
     ZVisibilityStringDelegate* visibilityStringDelegate = new ZVisibilityStringDelegate(zv_table);
-    zv_table->viewport()->installEventFilter(visibilityStringDelegate);
+    //zv_table->viewport()->installEventFilter(visibilityStringDelegate);
     zv_table->setItemDelegateForColumn(0, visibilityStringDelegate);
     ZChemElementComboBoxDelegate* chemElementComboBoxDelegate = new ZChemElementComboBoxDelegate(zv_table);
     zv_table->setItemDelegateForColumn(1, chemElementComboBoxDelegate);
