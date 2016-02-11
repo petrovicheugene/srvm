@@ -30,7 +30,7 @@ public:
     bool visibility;
     qreal averageConcentrationValue;
 
-    qint64 zp_chemElementId()
+    qint64 zp_chemElementId() const
     {
         return zv_id;
     }

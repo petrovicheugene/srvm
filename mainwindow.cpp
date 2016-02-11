@@ -328,7 +328,7 @@ void MainWindow::zh_createConnections()
    // spectra repository <-> spectra model and array model and plotter model
    // spectra
    zv_arrayModel->zp_connectToSpectraArrayRepository(zv_spectrumArrayRepository);
-   zv_jointSpectraDataManager->zp_connectToSpectraArrayRepository(zv_spectrumArrayRepository);
+   zv_jointSpectraDataManager->zp_connectToSpectrumArrayRepository(zv_spectrumArrayRepository);
    zv_jointSpectraDataManager->zp_connectToCalibrationRepository(zv_calibrationRepository);
    zv_jointSpectraModel->zp_connectToSpectraDataManager(zv_jointSpectraDataManager);
    // plotter
@@ -374,6 +374,10 @@ void MainWindow::zh_createConnections()
    // calibration repository <-> plotter
    connect(zv_calibrationRepository, &ZCalibrationRepository::zg_requestCurrentVisibleSceneRect,
            zv_plotter, &ZPlotter::zp_currentVisibleSceneRect);
+   connect(zv_calibrationRepository, &ZCalibrationRepository::zg_setCurrentWindowIndex,
+           zv_calibrationWindowTableWidget, &ZCalibrationWindowTableWidget::zp_setCurrentWindowIndex);
+   connect(zv_calibrationRepository, &ZCalibrationRepository::zg_startCurrentWindowEdition,
+           zv_calibrationWindowTableWidget, &ZCalibrationWindowTableWidget::zp_startCurrentWindowEdition);
 
 
    // joint calibration window data manager <-> to repositories

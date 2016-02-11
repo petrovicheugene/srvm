@@ -87,6 +87,7 @@ bool ZCalibrationWindow::zp_setWindowName(const QString& name)
         return false;
     }
     zv_windowName = name;
+    emit zg_windowNameChanged(zv_windowName);
     return true;
 }
 //====================================================

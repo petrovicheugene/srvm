@@ -1,5 +1,6 @@
 //==================================================
 #include "ZChemElementComboBoxDelegate.h"
+#include "globalVariables.h"
 #include <QComboBox>
 #include <QStyle>
 #include <QApplication>
@@ -7,7 +8,6 @@
 ZChemElementComboBoxDelegate::ZChemElementComboBoxDelegate(QObject *parent) :
     QStyledItemDelegate(parent)
 {
-    zv_notDefinedString = QString("Not defined");
     zv_notDefinedDisplayString = tr("Not defined");
 }
 //==================================================
@@ -24,7 +24,7 @@ QWidget* ZChemElementComboBoxDelegate::createEditor(QWidget* parent,
     if(vData.isValid() && !vData.isNull() && vData.canConvert<QString>())
     {
         QString currentChemElement = vData.toString();
-        if(!chemElementList.contains(currentChemElement) && currentChemElement != zv_notDefinedString)
+        if(!chemElementList.contains(currentChemElement) && currentChemElement != glDefaultChemElementString)
         {
             editor->addItem(currentChemElement);
         }
@@ -62,7 +62,7 @@ void ZChemElementComboBoxDelegate::setModelData(QWidget *editor,
     QString currentText = comboBox->currentText();
     if(currentText == zv_notDefinedDisplayString)
     {
-        currentText = zv_notDefinedString;
+        currentText = glDefaultChemElementString;
     }
      model->setData(index, currentText, Qt::EditRole);
 }
@@ -87,7 +87,7 @@ void ZChemElementComboBoxDelegate::paint(QPainter *painter,
     QStyleOptionViewItemV4 myOption = option;
 
     QString dataString = vData.toString();
-    if(dataString == zv_notDefinedString)
+    if(dataString == glDefaultChemElementString)
     {
         myOption.text = zv_notDefinedDisplayString;
     }

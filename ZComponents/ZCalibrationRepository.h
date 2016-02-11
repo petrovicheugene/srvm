@@ -37,7 +37,7 @@ public:
                         WOT_END_RESET
                        };
 
-    enum TermOperationType {TOT_TERM_CHANGED,
+    enum TermOperationType {TOT_TERM_NAME_CHANGED,
                         TOT_BEGIN_INSERT_TERM,
                         TOT_END_INSERT_TERM,
                         TOT_BEGIN_REMOVE_TERM,
@@ -101,6 +101,7 @@ public:
     // terms
     int zp_termCount(qint64) const;
     QString zp_termName(qint64, int) const;
+    qreal zp_termFactor(qint64 calibrationId, int termIndex, bool *ok);
 
 signals:
 
@@ -124,7 +125,11 @@ signals:
     void zg_requestSelectedWindowIndexList(QList<int>&) const;
     void zg_requestCurrentVisibleSceneRect(QRectF& sceneRect);
 
+    void zg_setCurrentWindowIndex(int windowIndex);
+    void zg_startCurrentWindowEdition();
+
 public slots:
+
 
     void zp_appendCalibrationsToArray(const QStringList&fileNameList);
     void zp_onCurrentCalibrationChanged(int current, int previous);

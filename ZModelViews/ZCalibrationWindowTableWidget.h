@@ -29,10 +29,15 @@ signals:
 
 public slots:
 
+    void zp_setCurrentWindowIndex(int);
+    void zp_currentWindowIndex(int&) const;
+    void zp_startCurrentWindowEdition();
+
     void zp_selectedSpectrumWindowIndexList(QList<int>&);
     void zp_setChannelNumberMinMax(int intensity, int channels);
 
 private:
+
     // VARS
     QTableView* zv_table;
     ZChannelNumberDelegate* zv_channelDelegate;

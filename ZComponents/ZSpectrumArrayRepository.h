@@ -86,7 +86,7 @@ public:
     QString zp_chemElementName(int arrayIndex, int row) const;
     qint64 zp_visibleChemElementId(int arrayIndex, int visibleIndex) const;
     qint64 zp_chemElementId(int arrayIndex, int row) const;
-
+    qint64 zp_chemElementIdForName(int arrayIndex, const QString&) const;
 
     bool zp_chemElementIsVisible(int arrayIndex, int row) const;
     bool zp_setChemElementVisible(int arrayIndex, int row, bool visible) const;

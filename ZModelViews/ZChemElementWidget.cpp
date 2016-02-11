@@ -71,7 +71,7 @@ void ZChemElementWidget::zp_setCurrentChemElementIndex(int chemElementIndex)
     }
 }
 //==============================================================
-void ZChemElementWidget::zp_currentChemElementIndex(int& chemElementIndex)
+void ZChemElementWidget::zp_currentChemElementIndex(int& chemElementIndex) const
 {
     QModelIndex currentIndex = zv_table->currentIndex();
     if(!currentIndex.isValid())
@@ -94,7 +94,7 @@ void ZChemElementWidget::zp_startCurrentChemElementEdition()
     zv_table->edit(currentIndex);
 }
 //==============================================================
-void ZChemElementWidget::zp_selectedChemElementIndexList(QList<int>& selectedIndexList)
+void ZChemElementWidget::zp_selectedChemElementIndexList(QList<int>& selectedIndexList) const
 {
     QModelIndexList indexList = zv_table->selectionModel()->selectedIndexes();
     foreach(QModelIndex index, indexList)

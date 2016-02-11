@@ -62,6 +62,43 @@ void ZCalibrationWindowTableWidget::zp_connectToCalibrationRepository(ZCalibrati
 
 }
 //=============================================================
+void ZCalibrationWindowTableWidget::zp_setCurrentWindowIndex(int windowIndex)
+{
+    if(!zv_table->model())
+    {
+        return;
+    }
+
+    QModelIndex index = zv_table->model()->index(windowIndex, 0, QModelIndex());
+    if(index.isValid())
+    {
+        zv_table->setCurrentIndex(index);
+    }
+}
+//=============================================================
+void ZCalibrationWindowTableWidget::zp_currentWindowIndex(int& windowIndex) const
+{
+    QModelIndex currentIndex = zv_table->currentIndex();
+    if(!currentIndex.isValid())
+    {
+        windowIndex = -1;
+        return;
+    }
+
+    windowIndex = currentIndex.row();
+}
+//=============================================================
+void ZCalibrationWindowTableWidget::zp_startCurrentWindowEdition()
+{
+    QModelIndex currentIndex = zv_table->currentIndex();
+    if(!currentIndex.isValid())
+    {
+        return;
+    }
+
+    zv_table->edit(currentIndex);
+}
+//=============================================================
 void ZCalibrationWindowTableWidget::zp_selectedSpectrumWindowIndexList(QList<int>& selectedSpectrumList)
 {
     QModelIndexList indexList = zv_table->selectionModel()->selectedIndexes();

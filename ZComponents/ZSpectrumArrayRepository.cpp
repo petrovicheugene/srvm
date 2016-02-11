@@ -189,6 +189,27 @@ qint64 ZSpectrumArrayRepository::zp_chemElementId(int arrayIndex, int row) const
     return zv_arrayList.value(arrayIndex)->zp_chemElementId(row);
 }
 //==================================================================
+qint64 ZSpectrumArrayRepository::zp_chemElementIdForName(int arrayIndex, const QString& name) const
+{
+    if(arrayIndex < 0 || arrayIndex >= zv_arrayList.count() || name.isEmpty())
+    {
+       return -1;
+    }
+
+    for(int a = 0; a < zv_arrayList.count(); a++)
+    {
+        for(int c = 0; c < zv_arrayList.at(a)->zp_chemElementCount(); c++)
+        {
+            if(zv_arrayList.at(a)->zp_chemElementName(c) == name)
+            {
+                return zv_arrayList.at(a)->zp_chemElementId(c);
+            }
+        }
+    }
+
+    return -1;
+}
+//==================================================================
 QString ZSpectrumArrayRepository::zp_chemConcentration(int arrayIndex,
                                                        int spectrumIndex, int visibleChemElementIndex) const
 {
@@ -982,7 +1003,6 @@ void ZSpectrumArrayRepository::zh_onAppendChemElementAction()
       emit zg_setCurrentChemElementIndex(zv_arrayList.at(currentArrayIndex)->zp_chemElementCount() - 1);
       emit zg_startCurrentChemElementEdition();
    }
-
 }
 //==================================================================
 void ZSpectrumArrayRepository::zh_onRemoveChemElementAction()

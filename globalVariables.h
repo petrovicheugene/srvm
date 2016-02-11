@@ -17,5 +17,8 @@ extern const QString glAppCompany;
 extern const QString glAppCopyright;
 extern const QString glAppCompanyURL;
 
+extern const QString glDefaultChemElementString;
+
+
 #endif // GLVARIABLES_H
 //================================

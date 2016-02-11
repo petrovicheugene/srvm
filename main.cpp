@@ -15,6 +15,7 @@ extern const QString glAppCompany = APP_COMPANY;
 extern const QString glAppCopyright = APP_COPYRIGHT;
 extern const QString glAppCompanyURL = APP_COMPANY_URL;
 
+extern const QString glDefaultChemElementString = "Not defined";
 //===============================================
 int main(int argc, char *argv[])
 {

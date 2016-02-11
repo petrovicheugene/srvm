@@ -9,6 +9,7 @@ ZAbstractTerm::ZAbstractTerm(ZCalibration *parent) : QObject(parent)
 {
    zh_connectToCalibration(parent);
    zv_type = PT_NOT_DEFINED;
+   zv_K = 0;
 }
 //============================================================
 ZAbstractTerm::TermType ZAbstractTerm::zp_termType()
@@ -19,6 +20,11 @@ ZAbstractTerm::TermType ZAbstractTerm::zp_termType()
 QString ZAbstractTerm::zp_termName()
 {
     return zv_name;
+}
+//============================================================
+qreal ZAbstractTerm::zp_termFactor()
+{
+    return zv_K;
 }
 //============================================================
 void ZAbstractTerm::zh_connectToNormalizer(ZTermNormalizer* normalizer)
@@ -42,12 +48,15 @@ void ZAbstractTerm::zh_connectToCalibration(ZCalibration* calibration)
            calibration, &ZCalibration::zp_isNormalizerValid);
    connect(this, &ZAbstractTerm::zg_normalizerValue,
            calibration, &ZCalibration::zp_normalizerValue);
+   connect(this, &ZAbstractTerm::zg_termNameChanged,
+           calibration, &ZCalibration::zp_onTermNameChange);
+
 
 }
 //============================================================
 void ZAbstractTerm::zh_normalizerChanged()
 {
-   emit zg_termChanged();
+   emit zg_termNameChanged();
 }
 //============================================================
 void ZAbstractTerm::zh_onWindowDestroying()

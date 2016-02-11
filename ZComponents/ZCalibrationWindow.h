@@ -47,6 +47,10 @@ public:
    static QString zp_typeName(WindowType);
    static WindowType zp_typeForName(const QString& );
 
+signals:
+
+   void zg_windowNameChanged(const QString&) const;
+
 private:
 
    QString zv_windowName;

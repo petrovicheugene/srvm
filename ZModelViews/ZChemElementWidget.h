@@ -25,9 +25,9 @@ signals:
 public slots:
 
     void zp_setCurrentChemElementIndex(int);
-    void zp_currentChemElementIndex(int&);
+    void zp_currentChemElementIndex(int&) const;
     void zp_startCurrentChemElementEdition();
-    void zp_selectedChemElementIndexList(QList<int>& selectedIndexList);
+    void zp_selectedChemElementIndexList(QList<int>& selectedIndexList) const;
 
 private:
 

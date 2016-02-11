@@ -145,7 +145,7 @@ double ZCalibration::zp_calcConcentration(const ZAbstractSpectrum* const spectru
     return 0;
 }
 //=========================================================
-void ZCalibration::zp_createNewCalibrationWindow(int firstChannel, int lastChannel)
+void ZCalibration::zp_createNewCalibrationWindow(int& windowNewIndex, int firstChannel, int lastChannel)
 {
     int nextWindowIndex = zv_spectrumWindowList.count();
     QString nextName = zv_defaultWindowName + QString::number(++nextWindowIndex);
@@ -155,7 +155,7 @@ void ZCalibration::zp_createNewCalibrationWindow(int firstChannel, int lastChann
         nextName = zv_defaultWindowName + QString::number(++nextWindowIndex);
     }
 
-    int windowNewIndex = zv_spectrumWindowList.count();
+    windowNewIndex = zv_spectrumWindowList.count();
     ZCalibrationWindow* calibrationWindow = new ZCalibrationWindow(nextName,
                                                                    ZCalibrationWindow::WT_NOT_DEFINED,
                                                                    firstChannel,
@@ -173,8 +173,8 @@ void ZCalibration::zh_createTermsForWindow(ZCalibrationWindow* window)
 {
     // creation
     ZSimpleTerm* simpleTerm = new ZSimpleTerm(window, this);
-    ZQuadraticTerm* quadraticTerm = new ZQuadraticTerm(window, this);
 
+    ZQuadraticTerm* quadraticTerm = new ZQuadraticTerm(window, this);
     // indexes by default (if list of terms is empty)
     int quadraticIndex = 1;
     int simpleIndex = 0;
@@ -212,6 +212,57 @@ void ZCalibration::zp_isNormalizerValid(bool& validFlag) const
 void ZCalibration::zp_normalizerValue(qreal& value) const
 {
    zv_termNormalizator->zp_value(value);
+}
+//=========================================================
+int ZCalibration::zp_termIndex(const ZAbstractTerm* term) const
+{
+    if(!term)
+    {
+        return -1;
+    }
+
+    for(int i = 0; i < zv_termList.count(); i++)
+    {
+        if(zv_termList.at(i) == term)
+        {
+            return i;
+        }
+    }
+
+    return -1;
+}
+//=========================================================
+qreal ZCalibration::zp_termFactor(int termIndex, bool* ok) const
+{
+    if(termIndex < 0 || termIndex >= zv_termList.count() )
+    {
+        if(ok)
+        {
+            *ok = false;
+        }
+
+        return 0;
+    }
+
+    if(ok)
+    {
+        *ok = true;
+    }
+
+    return zv_termList.at(termIndex)->zp_termFactor();
+}
+//=========================================================
+void ZCalibration::zp_onTermNameChange() const
+{
+    ZAbstractTerm* term = qobject_cast<ZAbstractTerm*>(sender());
+    if(term == 0)
+    {
+        return;
+    }
+
+    int termIndex = zp_termIndex(term);
+
+    emit zg_termOperation(TOT_TERM_NAME_CHANGED, termIndex, termIndex);
 }
 //=========================================================
 void ZCalibration::zh_removeTerm(ZAbstractTerm* term)

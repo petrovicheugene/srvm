@@ -16,6 +16,11 @@ public:
    // FUNCS
    qreal zp_calcValue() override;
 
+protected slots:
+
+   virtual bool zh_updateTermNameForWindowName(const QString&windowName) override;
+
+
 private:
 
    // VARS

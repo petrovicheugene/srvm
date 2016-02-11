@@ -28,7 +28,7 @@ public:
                         OT_COLUMN_HEADER_CHANGED,
                         OT_SEPECTRUM_DATA_CHANGED};
     // FUNCS
-    void zp_connectToSpectraArrayRepository(ZSpectrumArrayRepository*);
+    void zp_connectToSpectrumArrayRepository(ZSpectrumArrayRepository*);
     void zp_connectToCalibrationRepository(ZCalibrationRepository*);
 
     int zp_rowCount() const;
@@ -72,7 +72,7 @@ private:
 
     int zv_currentArrayIndex;
     qint64 zv_currentArrayId;
-    ZSpectrumArrayRepository* zv_spectrumArrayRepositiry;
+    ZSpectrumArrayRepository* zv_spectrumArrayRepository;
     ZCalibrationRepository* zv_calibrationRepository;
     QString zv_currentChemElement;
 

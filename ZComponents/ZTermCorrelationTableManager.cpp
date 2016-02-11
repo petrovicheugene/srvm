@@ -6,18 +6,38 @@
 ZTermCorrelationTableManager::ZTermCorrelationTableManager(QObject *parent) : QObject(parent)
 {
     zv_calibrationRepository = 0;
+    zv_spectrumArrayRepository = 0;
     zv_currentCalibrationId = -1;
     zv_columnCountCorrector = 0;
 }
 //=============================================================================
 void ZTermCorrelationTableManager::zp_connectToCalibrationRepository(ZCalibrationRepository* repository)
 {
+    emit zg_currentOperation(TOT_BEGIN_RESET, -1, -1);
     zv_calibrationRepository = repository;
     connect(repository, &ZCalibrationRepository::zg_termOperation,
             this, &ZTermCorrelationTableManager::zh_onRepositoryTermOperation);
     connect(repository, &ZCalibrationRepository::zg_currentCalibrationChanged,
             this, &ZTermCorrelationTableManager::zh_currentCalibrationChanged);
+    connect(zv_calibrationRepository, &ZCalibrationRepository::zg_calibrationOperation,
+            this, &ZTermCorrelationTableManager::zh_onCalibrationRepositoryOperation);
+    emit zg_currentOperation(TOT_END_RESET, -1, -1);
+
 }
+//=============================================================================
+void ZTermCorrelationTableManager::zp_connectToSpectrumArrayRepository(ZSpectrumArrayRepository* repository)
+{
+    zv_spectrumArrayRepository = repository;
+    // array repository <-> array model
+    //    connect(repository, &ZSpectrumArrayRepository::zg_spectrumOperation,
+    //            this, &ZJointSpectraDataManager::zh_onRepositoryArrayOperation);
+    //    connect(repository, &ZSpectrumArrayRepository::zg_chemElementOperation,
+    //            this, &ZJointSpectraDataManager::zh_onRepositoryChemElementOperation);
+    //    connect(repository, &ZSpectrumArrayRepository::zg_currentArrayIdChanged,
+    //            this, &ZJointSpectraDataManager::zh_currentSpectrumArrayChanged);
+
+}
+
 //=============================================================================
 int ZTermCorrelationTableManager::zp_rowCount() const
 {
@@ -31,12 +51,12 @@ int ZTermCorrelationTableManager::zp_rowCount() const
 //=============================================================================
 int ZTermCorrelationTableManager::zp_columnCount() const
 {
-    if(zv_currentCalibrationId < 0 || zv_calibrationRepository == 0)
+    if(zv_calibrationRepository == 0)
     {
         return 0;
     }
 
-    return zv_calibrationRepository->zp_termCount(zv_currentCalibrationId) + 2 + zv_columnCountCorrector; // 2 - term column and chem conc column
+    return zv_calibrationRepository->zp_termCount(zv_currentCalibrationId) + zv_firstNonTermColumnCount + zv_columnCountCorrector; // 2 - term column and chem conc column
 }
 //=============================================================================
 QVariant ZTermCorrelationTableManager::zp_data(QModelIndex index) const
@@ -48,8 +68,16 @@ QVariant ZTermCorrelationTableManager::zp_data(QModelIndex index) const
 
     if(index.column() == 0)
     {
-        return QVariant(zv_calibrationRepository->zp_termName(zv_currentCalibrationId, index.row()));
+        bool ok;
+        qreal factor = zv_calibrationRepository->zp_termFactor(zv_currentCalibrationId, index.row(), &ok);
+        if(!ok)
+        {
+            return tr("#Error");
+        }
+
+        return QVariant(factor);
     }
+
     //    if(index.column() == 1)
     //    {
     //        ZSpectrumPaintData paintData;
@@ -87,19 +115,18 @@ QVariant ZTermCorrelationTableManager::zp_data(QModelIndex index) const
 
 }
 //=============================================================================
-QString ZTermCorrelationTableManager::zp_columnName(int columnIndex) const
+QString ZTermCorrelationTableManager::zp_horizontalColumnName(int column) const
 {
-
-    if(columnIndex < 0 || columnIndex >= zv_calibrationRepository->zp_termCount(zv_currentCalibrationId) + zv_firstNonTermColumnCount)
+    if(column < 0 || column >= zv_calibrationRepository->zp_termCount(zv_currentCalibrationId) + zv_firstNonTermColumnCount)
     {
         return QString();
     }
 
-    if(columnIndex == 0)
+    if(column == 0)
     {
-        return tr("Term");
+        return tr("Factor");
     }
-    else if(columnIndex == 1)
+    else if(column == 1)
     {
         if(zv_currentCalibrationId < 0 || zv_calibrationRepository == 0)
         {
@@ -107,7 +134,7 @@ QString ZTermCorrelationTableManager::zp_columnName(int columnIndex) const
         }
 
         QString chemElementString = zv_calibrationRepository->zp_calibrationChemicalElementForId(zv_currentCalibrationId);
-        if(chemElementString.isEmpty())
+        if(chemElementString.isEmpty() || chemElementString == glDefaultChemElementString)
         {
             return zv_defaultChemElementString;
         }
@@ -120,57 +147,25 @@ QString ZTermCorrelationTableManager::zp_columnName(int columnIndex) const
         {
             return QString();
         }
-        return zv_calibrationRepository->zp_termName(zv_currentCalibrationId, columnIndex - zv_firstNonTermColumnCount);
+        return zv_calibrationRepository->zp_termName(zv_currentCalibrationId, column - zv_firstNonTermColumnCount);
     }
 
-    //    if(columnIndex == 0)
-    //    {
-    //        return tr("File");
-    //    }
-    //    else if(columnIndex == 1)
-    //    {
-    //        return tr("Spectrum");
-    //    }
-    //    else if(columnIndex > 1 && columnIndex < zv_spectrumDataColumnCount + zv_visibleChemElementCount)
-    //    {
-    //        if(zv_spectrumArrayRepositiry == 0)
-    //        {
-    //            return QString();
-    //        }
-
-    //        int visibleChemElementIndex = columnIndex - zv_spectrumDataColumnCount;
-    //        if(visibleChemElementIndex >= 0
-    //                && visibleChemElementIndex < zv_spectrumArrayRepositiry->zp_visibleChemElementCount(zv_currentArrayIndex))
-    //        {
-    //            return zv_spectrumArrayRepositiry->zp_visibleChemElementName(zv_currentArrayIndex, visibleChemElementIndex);
-    //        }
-    //        else
-    //        {
-    //            return QString();
-    //        }
-    //    }
-    //    else if(columnIndex > 1 && columnIndex < zv_spectrumDataColumnCount +
-    //            zv_visibleChemElementCount + zv_visibleCalibrationCount)
-    //    {
-    //        if(zv_calibrationRepository == 0)
-    //        {
-    //            return QString();
-    //        }
-
-    //        int visibleCalibrationIndex = columnIndex - zv_spectrumDataColumnCount - zv_visibleChemElementCount;
-    //        if(visibleCalibrationIndex >= 0
-    //                && visibleCalibrationIndex < zv_calibrationRepository->zp_visibleCalibrationCount())
-    //        {
-    //            return zv_calibrationRepository->zp_visibleCalibrationName(visibleCalibrationIndex);
-    //        }
-    //        else
-    //        {
-    //            return QString();
-    //        }
-
-    //    }
-
     return QString();
+}
+//=============================================================================
+QString ZTermCorrelationTableManager::zp_verticalColumnName(int row) const
+{
+    if(row < 0 || row >= zv_calibrationRepository->zp_termCount(zv_currentCalibrationId))
+    {
+        return QString();
+    }
+
+    if(zv_currentCalibrationId < 0 || zv_calibrationRepository == 0)
+    {
+        return QString();
+    }
+
+    return zv_calibrationRepository->zp_termName(zv_currentCalibrationId, row);
 }
 //=============================================================================
 void ZTermCorrelationTableManager::zh_currentCalibrationChanged(qreal calibrationId, int calibrationIndex)
@@ -235,9 +230,55 @@ void ZTermCorrelationTableManager::zh_onRepositoryTermOperation(ZCalibrationRepo
         zv_columnCountCorrector = 0;
         emit zg_currentOperation(TOT_END_REMOVE_COLUMN, first + zv_firstNonTermColumnCount, last + zv_firstNonTermColumnCount);
     }
-    else if(type == ZCalibrationRepository::TOT_TERM_CHANGED)
+    else if(type == ZCalibrationRepository::TOT_TERM_NAME_CHANGED)
     {
-        emit zg_currentOperation(TOT_DATA_CHANGED, first, last);
+        emit zg_currentOperation(TOT_VERTICAL_HEADER_CHANGED, first, last);
+        emit zg_currentOperation(TOT_HORIZONTAL_HEADER_CHANGED, first + zv_firstNonTermColumnCount, last + zv_firstNonTermColumnCount);
+    }
+}
+//=============================================================================
+void ZTermCorrelationTableManager::zh_onCalibrationRepositoryOperation(ZCalibrationRepository::CalibrationOperationType type,
+                                                                       int first, int last)
+{
+    if(zv_calibrationRepository == 0 || zv_currentCalibrationId < 0)
+    {
+        return;
+    }
+
+    for(int i = first; i <= last; i++)
+    {
+        if(zv_calibrationRepository->zp_calibrationIdForCalibrationIndex(i) == zv_currentCalibrationId)
+        {
+            if(type == ZCalibrationRepository::COT_BEGIN_RESET)
+            {
+                emit zg_currentOperation(TOT_BEGIN_RESET, first, last);
+            }
+            else if(type == ZCalibrationRepository::COT_END_RESET)
+            {
+                emit zg_currentOperation(TOT_END_RESET, first, last);
+            }
+            else if(type == ZCalibrationRepository::COT_INSERT_CALIBRATIONS)
+            {
+                emit zg_currentOperation(TOT_BEGIN_RESET, first, last);
+            }
+            else if(type == ZCalibrationRepository::COT_END_INSERT_CALIBRATIONS)
+            {
+                emit zg_currentOperation(TOT_END_RESET, first, last);
+            }
+            else if(type == ZCalibrationRepository::COT_REMOVE_CALIBRATIONS)
+            {
+                emit zg_currentOperation(TOT_BEGIN_RESET, first, last);
+            }
+            else if(type == ZCalibrationRepository::COT_END_REMOVE_CALIBRATIONS)
+            {
+                emit zg_currentOperation(TOT_END_RESET, first, last);
+            }
+            else if(type == ZCalibrationRepository::COT_CALIBRATION_CHANGED)
+            {
+                emit zg_currentOperation(TOT_BEGIN_RESET, first, last);
+                emit zg_currentOperation(TOT_END_RESET, first, last);
+            }
+        }
     }
 }
 //=============================================================================

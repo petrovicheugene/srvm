@@ -8,22 +8,26 @@ class ZCalibrationWindow;
 //===================================================================
 class ZQuadraticTerm : public ZAbstractTerm
 {
-   Q_OBJECT
+    Q_OBJECT
 public:
-   explicit ZQuadraticTerm(const ZCalibrationWindow* window,
-                                ZCalibration *parent);
+    explicit ZQuadraticTerm(const ZCalibrationWindow* window,
+                            ZCalibration *parent);
 
-   // FUNCS
-   qreal zp_calcValue() override;
+    // FUNCS
+    qreal zp_calcValue() override;
+
+protected slots:
+
+    virtual bool zh_updateTermNameForWindowName(const QString&windowName) override;
 
 private:
 
-   // VARS
+    // VARS
 
 
-   // FUNCS
-
-   void zh_connectToWindow(const ZCalibrationWindow* window);
+    // FUNCS
+    void zh_setName(const QString& windowName);
+    void zh_connectToWindow(const ZCalibrationWindow* window);
 
 };
 //===================================================================
