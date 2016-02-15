@@ -36,7 +36,8 @@ public:
                             TOT_END_INSERT_TERM,
                             TOT_BEGIN_REMOVE_TERM,
                             TOT_END_REMOVE_TERM,
-                            TOT_TERM_NAME_CHANGED};
+                            TOT_TERM_NAME_CHANGED,
+                            TOT_TERM_STATE_CHANGED};
 
     // FUNCS
     QString zp_name() const;
@@ -80,6 +81,8 @@ public:
     void zp_connectTermToCalibration(const ZAbstractTerm*);
     int zp_termCount() const;
     QString zp_termName(int termIndex) const;
+    ZAbstractTerm::TermState zp_termState(int termIndex) const;
+    void zp_setNextUsersTermState(int) const;
     int zp_termIndex(const ZAbstractTerm*) const;
     qreal zp_termFactor(int termIndex, bool *ok) const;
 
@@ -92,6 +95,7 @@ signals:
 
     void zg_termOperation(ZCalibration::TremOperationType, int first, int last)const;
     void zg_normalizerChanged() const;
+
 
 public slots:
 

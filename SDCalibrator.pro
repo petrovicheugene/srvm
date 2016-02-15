@@ -63,7 +63,8 @@ INCLUDEPATH += ZPlotter \
     ZModelViews/ZVisibilityStringDelegate \
     ZModelViews/ZChemElementComboBoxDelegate \
     ZModelViews/ZIntDelegate \
-    ZModelViews/ZWindowTypeComboBoxDelegate
+    ZModelViews/ZWindowTypeComboBoxDelegate \
+    ZModelViews/ZCustomCheckableVerticalHeaderView
 
 SOURCES += main.cpp \
     MainWindow.cpp \
@@ -129,7 +130,8 @@ SOURCES += main.cpp \
     ZComponents/ZSimpleTerm.cpp \
     ZComponents/ZQuadraticTerm.cpp \
     ZComponents/ZCustomTerm.cpp \
-    ZComponents/ZCrossProductTerm.cpp
+    ZComponents/ZCrossProductTerm.cpp \
+    ZModelViews/ZCustomCheckableVerticalHeaderView/ZCustomCheckableVerticalHeaderView.cpp
 
 
 HEADERS  += \
@@ -201,7 +203,8 @@ HEADERS  += \
     ZComponents/ZCrossProductTerm.h \
     ZComponents/ZCustomTerm.h \
     ZComponents/ZQuadraticTerm.h \
-    ZComponents/ZSimpleTerm.h
+    ZComponents/ZSimpleTerm.h \
+    ZModelViews/ZCustomCheckableVerticalHeaderView/ZCustomCheckableVerticalHeaderView.h
 
 
 RESOURCES += \

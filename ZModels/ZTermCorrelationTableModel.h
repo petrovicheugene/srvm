@@ -10,19 +10,23 @@ class ZTermCorrelationTableManager;
 //===========================================================
 class ZTermCorrelationTableModel : public QAbstractTableModel
 {
-   Q_OBJECT
+    Q_OBJECT
 public:
-   explicit ZTermCorrelationTableModel(QObject* parent = 0);
+    explicit ZTermCorrelationTableModel(QObject* parent = 0);
 
-   virtual Qt::ItemFlags	flags(const QModelIndex & index) const;
-   virtual int columnCount(const QModelIndex & parent = QModelIndex()) const;
-   virtual int rowCount(const QModelIndex & parent = QModelIndex()) const;
+    virtual Qt::ItemFlags	flags(const QModelIndex & index) const;
+    virtual int columnCount(const QModelIndex & parent = QModelIndex()) const;
+    virtual int rowCount(const QModelIndex & parent = QModelIndex()) const;
 
-   virtual QVariant data(const QModelIndex & index, int role = Qt::DisplayRole) const;
-   virtual bool	setData(const QModelIndex & index, const QVariant & value, int role = Qt::EditRole);
-   virtual QVariant	headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const;
+    virtual QVariant data(const QModelIndex & index, int role = Qt::DisplayRole) const;
+    virtual bool	setData(const QModelIndex & index, const QVariant & value, int role = Qt::EditRole);
+    virtual QVariant	headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const;
 
-   void zp_connectToPredicorTableManager(ZTermCorrelationTableManager* dataManager);
+    void zp_connectToPredicorTableManager(ZTermCorrelationTableManager* dataManager);
+
+public slots:
+
+    void zp_onUserChangesTermState(int termLogIndex);
 
 private slots:
 

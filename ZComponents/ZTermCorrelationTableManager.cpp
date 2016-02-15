@@ -168,6 +168,55 @@ QString ZTermCorrelationTableManager::zp_verticalColumnName(int row) const
     return zv_calibrationRepository->zp_termName(zv_currentCalibrationId, row);
 }
 //=============================================================================
+QPixmap ZTermCorrelationTableManager::zp_termStateIcon(int row) const
+{
+    if(row < 0 || row >= zv_calibrationRepository->zp_termCount(zv_currentCalibrationId))
+    {
+        return QPixmap();
+    }
+
+    if(zv_currentCalibrationId < 0 || zv_calibrationRepository == 0)
+    {
+        return QPixmap();
+    }
+
+    ZAbstractTerm::TermState state = zv_calibrationRepository->zp_termState(zv_currentCalibrationId, row);
+    QPixmap pixmap;
+    switch(state)
+    {
+
+    case ZAbstractTerm::TS_CONST_INCLUDED :
+        pixmap = QPixmap(":/images/check-green-1s.png");
+        break;
+    case ZAbstractTerm::TS_EXAM_WAITING :
+        pixmap = QPixmap(":/images/question-yellow.png");
+        break;
+    case ZAbstractTerm::TS_INCLUDED :
+        pixmap = QPixmap(":/images/plus-blue-1s.png");
+        break;
+    case ZAbstractTerm::TS_EXCEPTED :
+        pixmap = QPixmap(":/images/minus-magenta-1s.png");
+        break;
+
+    case ZAbstractTerm::TS_CONST_EXCLUDED :
+    default:
+        pixmap = QPixmap(":/images/cancel-red-1s.png");
+        break;
+    }
+
+    return pixmap;
+}
+//=============================================================================
+void ZTermCorrelationTableManager::zp_setNextUsersTermState(int termLogIndex)
+{
+    if(zv_currentCalibrationId < 0 )
+    {
+        return;
+    }
+
+    zv_calibrationRepository->zp_setNextUsersTermState(zv_currentCalibrationId, termLogIndex);
+}
+//=============================================================================
 void ZTermCorrelationTableManager::zh_currentCalibrationChanged(qreal calibrationId, int calibrationIndex)
 {
     if(zv_currentCalibrationId == calibrationId)
@@ -234,6 +283,10 @@ void ZTermCorrelationTableManager::zh_onRepositoryTermOperation(ZCalibrationRepo
     {
         emit zg_currentOperation(TOT_VERTICAL_HEADER_CHANGED, first, last);
         emit zg_currentOperation(TOT_HORIZONTAL_HEADER_CHANGED, first + zv_firstNonTermColumnCount, last + zv_firstNonTermColumnCount);
+    }
+    else if(type == ZCalibrationRepository::TOT_TERM_STATE_CHANGED)
+    {
+        emit zg_currentOperation(TOT_VERTICAL_HEADER_CHANGED, first, last);
     }
 }
 //=============================================================================

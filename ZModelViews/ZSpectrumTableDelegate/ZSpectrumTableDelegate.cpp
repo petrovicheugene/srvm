@@ -91,6 +91,10 @@ void ZSpectrumTableDelegate::paint(QPainter* painter, const QStyleOptionViewItem
         if(vData.isValid() && !vData.isNull() && vData.canConvert<QColor>())
         {
             decorationColor = index.data(Qt::DecorationRole).value<QColor>();
+            if(!decorationColor.isValid())
+            {
+                decorationColor = newOption.palette.color(QPalette::Base);
+            }
         }
         else
         {

@@ -75,7 +75,7 @@ QVariant ZChemElementModel::data(const QModelIndex & index, int role) const
     {
         if(index.column() == 0)
         {
-            return QVariant(QColor(Qt::transparent));
+            return QVariant(QColor());
         }
     }
 

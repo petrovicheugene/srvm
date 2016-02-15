@@ -3,7 +3,7 @@
 //===================================================================
 ZCustomTerm::ZCustomTerm(ZCalibration *parent) : ZAbstractTerm(parent)
 {
-   zv_type = PT_CUSTOM;
+   zv_type = TT_CUSTOM;
 }
 //===================================================================
 qreal ZCustomTerm::zp_calcValue()
@@ -11,7 +11,7 @@ qreal ZCustomTerm::zp_calcValue()
    return 0;
 }
 //===================================================================
-QString ZCustomTerm::zp_termName()
+QString ZCustomTerm::zp_termName() const
 {
    return QString();
 }

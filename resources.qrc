@@ -48,5 +48,10 @@
         <file>thinCrossRed.bmp</file>
         <file>thinCrossWhite.bmp</file>
         <file>eyeSignBlack.png</file>
+        <file>cancel-red-1s.png</file>
+        <file>check-green-1s.png</file>
+        <file>minus-magenta-1s.png</file>
+        <file>plus-blue-1s.png</file>
+        <file>question-yellow.png</file>
     </qresource>
 </RCC>

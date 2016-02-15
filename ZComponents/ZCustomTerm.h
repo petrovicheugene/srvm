@@ -12,7 +12,7 @@ public:
 
    // FUNCS
    qreal zp_calcValue() override;
-   QString zp_termName() override;
+   QString zp_termName() const override;
 
 };
 //===================================================================

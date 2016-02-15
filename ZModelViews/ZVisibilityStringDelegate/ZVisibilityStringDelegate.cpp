@@ -58,10 +58,14 @@ void	ZVisibilityStringDelegate::paint(QPainter* painter, const QStyleOptionViewI
         if(vData.isValid() && !vData.isNull() && vData.canConvert<QColor>())
         {
             decorationColor = index.data(Qt::DecorationRole).value<QColor>();
+            if(!decorationColor.isValid())
+            {
+                decorationColor = newOption.palette.color(QPalette::Base);
+            }
         }
         else
         {
-            decorationColor = QColor(Qt::transparent);
+            decorationColor = newOption.palette.color(QPalette::Base);
         }
 
         painter->save();

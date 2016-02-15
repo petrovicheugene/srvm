@@ -651,11 +651,12 @@ double ZCalibrationRepository::zp_calculateConcentration(int row, const ZAbstrac
 int ZCalibrationRepository::zp_termCount(qint64 calibrationId) const
 {
     const ZCalibration* calibration = zh_calibrationForId(calibrationId);
-    if(calibration)
+    if(!calibration)
     {
-        return calibration->zp_termCount();
+        return 0;
     }
 
+    return calibration->zp_termCount();
     //    if(calibrationId < 0)
     //    {
     //        return 0;
@@ -670,19 +671,37 @@ int ZCalibrationRepository::zp_termCount(qint64 calibrationId) const
 
     //        return zv_caibrationList.at(c)->zp_termCount();
     //    }
-
-    return 0;
 }
 //======================================================
 QString ZCalibrationRepository::zp_termName(qint64 calibrationId, int termIndex) const
 {
     const ZCalibration* calibration = zh_calibrationForId(calibrationId);
-    if(calibration)
+    if(!calibration)
     {
-        return calibration->zp_termName(termIndex);
+        return QString();
+    }
+    return calibration->zp_termName(termIndex);
+}
+//======================================================
+ZAbstractTerm::TermState ZCalibrationRepository::zp_termState(qint64 calibrationId, int termIndex)
+{
+    const ZCalibration* calibration = zh_calibrationForId(calibrationId);
+    if(!calibration)
+    {
+        return ZAbstractTerm::TS_CONST_EXCLUDED;
+    }
+    return calibration->zp_termState(termIndex);
+}
+//======================================================
+void ZCalibrationRepository::zp_setNextUsersTermState(qint64 calibrationId, int termLogIndex)
+{
+    const ZCalibration* calibration = zh_calibrationForId(calibrationId);
+    if(!calibration)
+    {
+        return;
     }
 
-    return QString();
+    calibration->zp_setNextUsersTermState(termLogIndex);
 }
 //======================================================
 qreal ZCalibrationRepository::zp_termFactor(qint64 calibrationId, int termIndex, bool* ok )
@@ -975,6 +994,10 @@ void ZCalibrationRepository::zh_onTermOperation(ZCalibration::TremOperationType 
         else if(type == ZCalibration::TOT_TERM_NAME_CHANGED)
         {
             emit zg_termOperation(TOT_TERM_NAME_CHANGED, calibrationIndex, first, last);
+        }
+        else if(type == ZCalibration::TOT_TERM_STATE_CHANGED)
+        {
+            emit zg_termOperation(TOT_TERM_STATE_CHANGED, calibrationIndex, first, last);
         }
 
         break;

@@ -6,7 +6,7 @@ ZQuadraticTerm::ZQuadraticTerm(const ZCalibrationWindow *window,
                                ZCalibration *parent) :
     ZAbstractTerm(parent)
 {
-    zv_type = PT_QUADRATIC;
+    zv_type = TT_QUADRATIC;
     zh_setName(window->zp_windowName());
     zh_connectToWindow(window);
     zh_connectToCalibration(parent);

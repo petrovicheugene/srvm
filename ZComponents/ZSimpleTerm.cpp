@@ -5,7 +5,7 @@
 ZSimpleTerm::ZSimpleTerm(const ZCalibrationWindow* window,
                                    ZCalibration *parent) : ZAbstractTerm(parent)
 {
-   zv_type = PT_SIMPLE;
+   zv_type = TT_SIMPLE;
    zv_name = window->zp_windowName();
 
    zh_connectToWindow(window);

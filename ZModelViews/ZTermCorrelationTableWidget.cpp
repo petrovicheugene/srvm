@@ -1,6 +1,7 @@
 //=============================================================
 #include "ZTermCorrelationTableWidget.h"
 #include "ZTermCorrelationTableModel.h"
+#include "ZCustomCheckableVerticalHeaderView.h"
 
 #include <QTableView>
 #include <QHBoxLayout>
@@ -17,6 +18,9 @@ ZTermCorrelationTableWidget::ZTermCorrelationTableWidget(QWidget *parent) : QWid
 void ZTermCorrelationTableWidget::zp_setModel(ZTermCorrelationTableModel* model)
 {
     zv_table->setModel(model);
+
+    connect(this, &ZTermCorrelationTableWidget::zg_userChangesTermState,
+            model, &ZTermCorrelationTableModel::zp_onUserChangesTermState);
 //    ZNumericDelegate* numericDelegate = new ZNumericDelegate(zv_table);
 //    connect(numericDelegate, &ZNumericDelegate::editNext,
 //            this, &ZJointSpectrumTableWidget::zh_editNext);
@@ -51,6 +55,13 @@ void ZTermCorrelationTableWidget::zh_createComponents()
     setLayout(mainLayout);
 
     zv_table = new QTableView(this);
+
+    // Vertical Header Replacing
+    ZCustomCheckableVerticalHeaderView* checkableHeader = new ZCustomCheckableVerticalHeaderView();
+    connect(checkableHeader, &ZCustomCheckableVerticalHeaderView::zg_userChangesTermState,
+            this, &ZTermCorrelationTableWidget::zg_userChangesTermState);
+    zv_table->setVerticalHeader(checkableHeader);
+
     mainLayout->addWidget(zv_table, INT_MAX);
 
     zv_buttonLayout = new QHBoxLayout(this);

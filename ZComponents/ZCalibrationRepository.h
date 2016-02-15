@@ -18,33 +18,34 @@ public:
 
     // VARS
     enum CalibrationOperationType {COT_CALIBRATION_VISIBILITY_CHANGE,
-                        COT_END_CALIBRATION_VISIBILITY_CHANGE,
-                        COT_CALIBRATION_CHANGED,
-                        COT_INSERT_CALIBRATIONS,
-                        COT_END_INSERT_CALIBRATIONS,
-                        COT_REMOVE_CALIBRATIONS,
-                        COT_END_REMOVE_CALIBRATIONS,
-                        COT_BEGIN_RESET,
-                        COT_END_RESET
-                       };
+                                   COT_END_CALIBRATION_VISIBILITY_CHANGE,
+                                   COT_CALIBRATION_CHANGED,
+                                   COT_INSERT_CALIBRATIONS,
+                                   COT_END_INSERT_CALIBRATIONS,
+                                   COT_REMOVE_CALIBRATIONS,
+                                   COT_END_REMOVE_CALIBRATIONS,
+                                   COT_BEGIN_RESET,
+                                   COT_END_RESET
+                                  };
 
     enum WindowOperationType {WOT_WINDOW_CHANGED,
-                        WOT_INSERT_WINDOWS,
-                        WOT_END_INSERT_WINDOWS,
-                        WOT_REMOVE_WINDOWS,
-                        WOT_END_REMOVE_WINDOWS,
-                        WOT_BEGIN_RESET,
-                        WOT_END_RESET
-                       };
+                              WOT_INSERT_WINDOWS,
+                              WOT_END_INSERT_WINDOWS,
+                              WOT_REMOVE_WINDOWS,
+                              WOT_END_REMOVE_WINDOWS,
+                              WOT_BEGIN_RESET,
+                              WOT_END_RESET
+                             };
 
     enum TermOperationType {TOT_TERM_NAME_CHANGED,
-                        TOT_BEGIN_INSERT_TERM,
-                        TOT_END_INSERT_TERM,
-                        TOT_BEGIN_REMOVE_TERM,
-                        TOT_END_REMOVE_TERM,
-                        TOT_BEGIN_RESET,
-                        TOT_END_RESET
-                       };
+                            TOT_BEGIN_INSERT_TERM,
+                            TOT_END_INSERT_TERM,
+                            TOT_BEGIN_REMOVE_TERM,
+                            TOT_END_REMOVE_TERM,
+                            TOT_BEGIN_RESET,
+                            TOT_END_RESET,
+                            TOT_TERM_STATE_CHANGED
+                           };
 
 
 
@@ -102,6 +103,8 @@ public:
     int zp_termCount(qint64) const;
     QString zp_termName(qint64, int) const;
     qreal zp_termFactor(qint64 calibrationId, int termIndex, bool *ok);
+    ZAbstractTerm::TermState zp_termState(qint64 calibrationId, int termIndex);
+    void zp_setNextUsersTermState(qint64 zv_currentCalibrationId, int termLogIndex);
 
 signals:
 

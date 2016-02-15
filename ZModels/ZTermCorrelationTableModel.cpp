@@ -4,6 +4,7 @@
 #include <QFont>
 #include <QApplication>
 #include <QStyle>
+#include <QPainter>
 //==================================================================
 ZTermCorrelationTableModel::ZTermCorrelationTableModel(QObject *parent) :
     QAbstractTableModel(parent)
@@ -97,6 +98,22 @@ QVariant	ZTermCorrelationTableModel::headerData(int section, Qt::Orientation ori
         }
     }
 
+    if(role == Qt::DecorationRole)
+    {
+        if(orientation == Qt::Vertical)
+        {
+            return QVariant(QColor(Qt::red));
+        }
+    }
+
+    if(role == IconRole)
+    {
+        if(orientation == Qt::Vertical)
+        {
+            return QVariant(zv_dataManager->zp_termStateIcon(section));
+        }
+    }
+
     return QVariant();
 }
 //==================================================================
@@ -112,6 +129,16 @@ void ZTermCorrelationTableModel::zp_connectToPredicorTableManager(ZTermCorrelati
     //            this, &ZJointCalibrationWindowModel::zh_onDataManagerOperation);
 
     endResetModel();
+}
+//==================================================================
+void ZTermCorrelationTableModel::zp_onUserChangesTermState(int termLogIndex)
+{
+    if(!zv_dataManager)
+    {
+        return;
+    }
+
+    zv_dataManager->zp_setNextUsersTermState(termLogIndex);
 }
 //==================================================================
 void ZTermCorrelationTableModel::zh_onDataManagerOperation(ZTermCorrelationTableManager::OperationType type, int first, int last)

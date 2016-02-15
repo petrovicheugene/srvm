@@ -42,6 +42,9 @@ public:
     QString zp_horizontalColumnName(int) const;
     QString zp_verticalColumnName(int) const;
 
+    QPixmap zp_termStateIcon(int) const;
+    void zp_setNextUsersTermState(int);
+
 signals:
 
     void zg_currentOperation(OperationType, int, int) const;

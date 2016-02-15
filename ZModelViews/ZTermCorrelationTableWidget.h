@@ -22,6 +22,8 @@ public:
 
 signals:
 
+   void zg_userChangesTermState(int termLogIndex);
+
 public slots:
 
 

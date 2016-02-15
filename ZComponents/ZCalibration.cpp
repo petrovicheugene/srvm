@@ -182,12 +182,12 @@ void ZCalibration::zh_createTermsForWindow(ZCalibrationWindow* window)
     // indexes to insertion before
     for(int i = 0; i < zv_termList.count(); i++)
     {
-        if(zv_termList.at(i)->zp_termType() == ZAbstractTerm::PT_SIMPLE)
+        if(zv_termList.at(i)->zp_termType() == ZAbstractTerm::TT_SIMPLE)
         {
             simpleIndex = i + 1;
         }
 
-        if(zv_termList.at(i)->zp_termType() == ZAbstractTerm::PT_QUADRATIC)
+        if(zv_termList.at(i)->zp_termType() == ZAbstractTerm::TT_QUADRATIC)
         {
             quadraticIndex = i + 1;
         }
@@ -206,12 +206,12 @@ void ZCalibration::zh_createTermsForWindow(ZCalibrationWindow* window)
 //=========================================================
 void ZCalibration::zp_isNormalizerValid(bool& validFlag) const
 {
-   zv_termNormalizator->zp_isValid(validFlag);
+    zv_termNormalizator->zp_isValid(validFlag);
 }
 //=========================================================
 void ZCalibration::zp_normalizerValue(qreal& value) const
 {
-   zv_termNormalizator->zp_value(value);
+    zv_termNormalizator->zp_value(value);
 }
 //=========================================================
 int ZCalibration::zp_termIndex(const ZAbstractTerm* term) const
@@ -335,12 +335,12 @@ QString ZCalibration::zp_calibrationWindowName(int windowIndex) const
 //=========================================================
 const ZCalibrationWindow* ZCalibration::zp_calibrationWindow(int windowIndex) const
 {
-   if(windowIndex < 0 || windowIndex >= zv_spectrumWindowList.count())
-   {
-       return 0;
-   }
+    if(windowIndex < 0 || windowIndex >= zv_spectrumWindowList.count())
+    {
+        return 0;
+    }
 
-   return zv_spectrumWindowList.at(windowIndex);
+    return zv_spectrumWindowList.at(windowIndex);
 }
 //=========================================================
 bool ZCalibration::zp_setCalibrationWindowName(int windowIndex, const QString& name)
@@ -459,12 +459,13 @@ bool ZCalibration::zp_removeSpectrumWindow(int windowIndex)
 //=========================================================
 void ZCalibration::zp_connectTermToCalibration(const ZAbstractTerm* term)
 {
-   if(term == 0)
-   {
-      return;
-   }
-   connect(term, &ZAbstractTerm::zg_requestForDelete,
-           this, &ZCalibration::zh_removeTerm);
+    if(term == 0)
+    {
+        return;
+    }
+    connect(term, &ZAbstractTerm::zg_requestForDelete,
+            this, &ZCalibration::zh_removeTerm);
+
 }
 //=========================================================
 int ZCalibration::zp_termCount() const
@@ -480,6 +481,50 @@ QString ZCalibration::zp_termName(int termIndex) const
     }
 
     return zv_termList.at(termIndex)->zp_termName();
+}
+//=========================================================
+ZAbstractTerm::TermState ZCalibration::zp_termState(int termIndex) const
+{
+    if(termIndex < 0 || termIndex >= zv_termList.count() )
+    {
+        return ZAbstractTerm::TS_CONST_EXCLUDED;
+    }
+
+    return zv_termList.at(termIndex)->zp_termState();
+}
+//=========================================================
+void ZCalibration::zp_setNextUsersTermState(int termIndex) const
+{
+    if(termIndex < 0 || termIndex >= zv_termList.count() )
+    {
+        return;
+    }
+
+    ZAbstractTerm::TermState state = zv_termList.at(termIndex)->zp_termState();
+    bool res;
+    switch(state)
+    {
+    case ZAbstractTerm::TS_CONST_INCLUDED:
+        res = zv_termList.at(termIndex)->zp_setTermState(ZAbstractTerm::TS_EXAM_WAITING);
+        break;
+    case ZAbstractTerm::TS_EXAM_WAITING:
+        res = zv_termList.at(termIndex)->zp_setTermState(ZAbstractTerm::TS_CONST_EXCLUDED);
+        break;
+    case ZAbstractTerm::TS_INCLUDED:
+        res = zv_termList.at(termIndex)->zp_setTermState(ZAbstractTerm::TS_CONST_EXCLUDED);
+        break;
+    case ZAbstractTerm::TS_EXCEPTED:
+        res = zv_termList.at(termIndex)->zp_setTermState(ZAbstractTerm::TS_CONST_EXCLUDED);
+        break;
+    case ZAbstractTerm::TS_CONST_EXCLUDED:
+        res =zv_termList.at(termIndex)->zp_setTermState(ZAbstractTerm::TS_CONST_INCLUDED);
+        break;
+    }
+
+    if(res)
+    {
+        emit zg_termOperation(TOT_TERM_STATE_CHANGED, termIndex, termIndex);
+    }
 }
 //=========================================================
 bool ZCalibration::checkColor(QColor color)
