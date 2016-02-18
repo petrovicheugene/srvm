@@ -20,7 +20,8 @@ public:
                         OT_END_INSERT_SPECTRA,
                         OT_REMOVE_SPECTRA,
                         OT_END_REMOVE_SPECTRA,
-                        OT_CHANGED};
+                        OT_CHANGED
+                       };
 
 
 
@@ -71,11 +72,14 @@ public:
     const ZAbstractSpectrum* zp_spectrum(int index) const;
     QList<ZAbstractSpectrum*> zp_spectrumList() const;
 
-    int zp_maxIntensity();
-    int zp_maxChannelCount();
-    bool zp_isEnergyCalibrationValid();
+    int zp_maxIntensity() const;
+    int zp_maxChannelCount() const;
+    bool zp_isEnergyCalibrationValid() const;
 
-    qint64 zp_arrayId();
+    qint64 zp_arrayId() const;
+    bool zp_averageChemConcentrationForChemElementId(qint64 chemElementId, qreal&) const;
+    bool zp_averageChemConcentration(const QString&, qreal&) const;
+    bool zp_averageChemConcentration(int, qreal&) const;
 
 signals:
 
@@ -84,7 +88,7 @@ signals:
     void zg_spectrumOperation(ZSpectrumArray::OperationType, int first, int last) const;
     void zg_energyCalibrationChanged(qint64 arrayId);
     void zg_arrayMaxParametersChanged(qint64 arrayId, int intensity, int channels);
-    void zg_averageConcentrationChanged(qint64 arrayId);
+    void zg_averageConcentrationChanged(qint64 chemElementId);
 
 private:
 
@@ -112,8 +116,8 @@ private:
     // FUNCS
     void zh_createConnections();
     void zh_recalcArrayMaxParameters();
-    bool zh_calcAverageConcentration(qint64 chemElementId);
-    void zh_calcAverageConcentrations();
+    bool zh_calcAverageChemConcentration(qint64 chemElementId);
+    void zh_calcAverageChemConcentrations();
 
     static QList<QColor> zp_createColorList();
     static bool checkColor(QColor color);

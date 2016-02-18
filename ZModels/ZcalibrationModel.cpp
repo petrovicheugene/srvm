@@ -56,7 +56,7 @@ QVariant ZCalibrationModel::data(const QModelIndex & index, int role) const
 
         if(index.column() == 1)
         {
-            return QVariant(zv_calibrationRepository->zp_calibrationChemicalElement(index.row()));
+            return QVariant(zv_calibrationRepository->zp_chemElement(index.row()));
         }
     }
 
@@ -115,7 +115,7 @@ bool	ZCalibrationModel::setData(const QModelIndex & index, const QVariant & valu
 
         if(index.column() == 1 )
         {
-            return zv_calibrationRepository->zp_setCalibrationChemicalElement(index.row(), value.toString());
+            return zv_calibrationRepository->zp_setChemElement(index.row(), value.toString());
         }
         return false;
     }

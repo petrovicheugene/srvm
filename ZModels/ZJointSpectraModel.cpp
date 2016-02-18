@@ -186,15 +186,15 @@ void ZJointSpectraModel::zh_onDataManagerOperation(ZJointSpectraDataManager::Ope
         return;
     }
 
-    if(type == ZJointSpectraDataManager::OT_RESET_DATA)
+    if(type == ZJointSpectraDataManager::OT_BEGIN_RESET)
     {
         beginResetModel();
     }
-    else if(type == ZJointSpectraDataManager::OT_END_RESET_DATA)
+    else if(type == ZJointSpectraDataManager::OT_END_RESET)
     {
         endResetModel();
     }
-    else if(type == ZJointSpectraDataManager::OT_INSERT_ROW)
+    else if(type == ZJointSpectraDataManager::OT_BEGIN_INSERT_ROW)
     {
         beginInsertRows(QModelIndex(), first, last);
     }
@@ -202,7 +202,7 @@ void ZJointSpectraModel::zh_onDataManagerOperation(ZJointSpectraDataManager::Ope
     {
         endInsertRows();
     }
-    else if(type == ZJointSpectraDataManager::OT_REMOVE_ROW)
+    else if(type == ZJointSpectraDataManager::OT_BEGIN_REMOVE_ROW)
     {
         beginRemoveRows(QModelIndex(), first, last);
     }
@@ -210,7 +210,7 @@ void ZJointSpectraModel::zh_onDataManagerOperation(ZJointSpectraDataManager::Ope
     {
         endRemoveRows();
     }
-    else if(type == ZJointSpectraDataManager::OT_INSERT_COLUMN)
+    else if(type == ZJointSpectraDataManager::OT_BEGIN_INSERT_COLUMN)
     {
         beginInsertColumns(QModelIndex(), first, last);
     }
@@ -218,7 +218,7 @@ void ZJointSpectraModel::zh_onDataManagerOperation(ZJointSpectraDataManager::Ope
     {
         endInsertColumns();
     }
-    else if(type == ZJointSpectraDataManager::OT_REMOVE_COLUMN)
+    else if(type == ZJointSpectraDataManager::OT_BEGIN_REMOVE_COLUMN)
     {
         beginRemoveColumns(QModelIndex(), first, last);
     }
@@ -230,7 +230,7 @@ void ZJointSpectraModel::zh_onDataManagerOperation(ZJointSpectraDataManager::Ope
     {
         emit headerDataChanged(Qt::Horizontal, first, last);
     }
-    else if(type == ZJointSpectraDataManager::OT_SEPECTRUM_DATA_CHANGED)
+    else if(type == ZJointSpectraDataManager::OT_SEPECTRUM_VISIBLE_CHANGED)
     {
         QModelIndex leftTop = index(first, 0);
         QModelIndex rightBottom = index(last, zv_dataManager->zp_spectrumDataColumnCount() - 1);

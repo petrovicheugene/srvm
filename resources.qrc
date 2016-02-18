@@ -52,6 +52,6 @@
         <file>check-green-1s.png</file>
         <file>minus-magenta-1s.png</file>
         <file>plus-blue-1s.png</file>
-        <file>question-yellow.png</file>
+        <file>question-yellow-1s.png</file>
     </qresource>
 </RCC>

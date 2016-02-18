@@ -15,18 +15,18 @@ class ZJointSpectraDataManager : public QObject
 public:
     explicit ZJointSpectraDataManager(QObject *parent = 0);
 
-    enum OperationType {OT_RESET_DATA,
-                        OT_END_RESET_DATA,
-                        OT_INSERT_ROW,
+    enum OperationType {OT_BEGIN_RESET,
+                        OT_END_RESET,
+                        OT_BEGIN_INSERT_ROW,
                         OT_END_INSERT_ROW,
-                        OT_REMOVE_ROW,
+                        OT_BEGIN_REMOVE_ROW,
                         OT_END_REMOVE_ROW,
-                        OT_INSERT_COLUMN,
+                        OT_BEGIN_INSERT_COLUMN,
                         OT_END_INSERT_COLUMN,
-                        OT_REMOVE_COLUMN,
+                        OT_BEGIN_REMOVE_COLUMN,
                         OT_END_REMOVE_COLUMN,
                         OT_COLUMN_HEADER_CHANGED,
-                        OT_SEPECTRUM_DATA_CHANGED};
+                        OT_SEPECTRUM_VISIBLE_CHANGED};
     // FUNCS
     void zp_connectToSpectrumArrayRepository(ZSpectrumArrayRepository*);
     void zp_connectToCalibrationRepository(ZCalibrationRepository*);

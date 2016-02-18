@@ -274,7 +274,7 @@ void ZPlotterDataManager::zh_onRepositoryArrayOperation(ZSpectrumArrayRepository
     {
 
     }
-    else if(type == ZSpectrumArrayRepository::SOT_DATA_CHANGED)
+    else if(type == ZSpectrumArrayRepository::SOT_VISIBLE_CHANGED)
     {
         for(int i = first; i <= last; i++ )
         {

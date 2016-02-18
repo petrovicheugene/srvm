@@ -28,7 +28,8 @@ public:
                         TOT_END_REMOVE_COLUMN,
                         TOT_DATA_CHANGED,
                         TOT_HORIZONTAL_HEADER_CHANGED,
-                        TOT_VERTICAL_HEADER_CHANGED};
+                        TOT_VERTICAL_HEADER_CHANGED
+                       };
 
     // FUNCS
     void zp_connectToCalibrationRepository(ZCalibrationRepository*);
@@ -54,6 +55,9 @@ public slots:
 
 private slots:
 
+    void zh_currentSpectrumArrayChanged(qint64, int);
+    void zh_onRepositoryChemElementOperation(ZSpectrumArrayRepository::ChemElementOperationType type,
+                                             int arrayIndex, int first, int last);
     void zh_currentCalibrationChanged(qreal calibrationId, int calibrationIndex);
     void zh_onRepositoryTermOperation(ZCalibrationRepository::TermOperationType, int, int, int);
     void zh_onCalibrationRepositoryOperation(ZCalibrationRepository::CalibrationOperationType, int, int);
@@ -64,13 +68,19 @@ private:
     ZCalibrationRepository* zv_calibrationRepository;
     ZSpectrumArrayRepository* zv_spectrumArrayRepository;
     qint64 zv_currentCalibrationId;
-    qreal zv_averageChemConcentration;
+    qint64 zv_currentArrayId;
+    int zv_currentArrayIndex;
+
     const int zv_firstNonTermColumnCount = 2;
     const QString zv_defaultChemElementString = tr("No Element");
     int zv_columnCountCorrector;
+
     // FUNCS
 
-
+    bool zh_calcChemElementCorrelation(int termIndex, qreal &correlationValue) const;
+    void zh_createTermValueAndChemConcentrationList(int termIndex,
+                                                    qint64 chemElementId,
+                                                    QList<QPair<qint64, qreal> > &termAndConcentrationList) const;
 
 };
 //==================================================================

@@ -6,6 +6,7 @@
 #include "ZCrossProductTerm.h"
 #include "ZCustomTerm.h"
 #include "ZTermNormalizer.h"
+#include "globalVariables.h"
 
 #include <QFileInfo>
 #include <QPointer>
@@ -252,6 +253,53 @@ qreal ZCalibration::zp_termFactor(int termIndex, bool* ok) const
     return zv_termList.at(termIndex)->zp_termFactor();
 }
 //=========================================================
+bool ZCalibration::zp_termValue(int termIndex, const ZAbstractSpectrum* spectrum,  qreal &value) const
+{
+    if(termIndex < 0 || termIndex >= zv_termList.count() )
+    {
+        return false;
+    }
+
+    return zv_termList.at(termIndex)->zp_calcValue(spectrum, value);
+}
+//=========================================================
+bool ZCalibration::zp_termVariablePart(int termIndex, const ZAbstractSpectrum* spectrum,  qint64& value) const
+{
+    if(termIndex < 0 || termIndex >= zv_termList.count() )
+    {
+        return false;
+    }
+
+    bool res = zv_termList.at(termIndex)->zp_calcTermVariablePart(spectrum, value);
+    return res;
+}
+//=========================================================
+bool ZCalibration::zp_termAverageValue(int termIndex,  qreal& averageValue) const
+{
+    if(termIndex < 0 || termIndex >= zv_termList.count() )
+    {
+        return false;
+    }
+
+    averageValue = zv_termList.at(termIndex)->zp_termAverageValue();
+    return true;
+}
+//=========================================================
+void ZCalibration::zp_calcTermAverageValues(const ZSpectrumArray* spectrumArray)
+{
+    if(!spectrumArray)
+    {
+        return;
+    }
+
+    for(int t = 0; t < zv_termList.count(); t++)
+    {
+        zv_termList.at(t)->zp_calcAverageTermValueForArray(spectrumArray);
+    }
+
+    emit zg_termOperation(TOT_TERM_AVERAGE_CHANGED, 0, zv_termList.count() - 1);
+}
+//=========================================================
 void ZCalibration::zp_onTermNameChange() const
 {
     ZAbstractTerm* term = qobject_cast<ZAbstractTerm*>(sender());
@@ -263,6 +311,26 @@ void ZCalibration::zp_onTermNameChange() const
     int termIndex = zp_termIndex(term);
 
     emit zg_termOperation(TOT_TERM_NAME_CHANGED, termIndex, termIndex);
+}
+//=========================================================
+void ZCalibration::zp_recalcTermAverageValue() const
+{
+    ZAbstractTerm* term = qobject_cast<ZAbstractTerm*>(sender());
+    if(!term)
+    {
+        return;
+    }
+
+    const ZSpectrumArray* spectrumArray = 0;
+    emit zg_requestForCurrentSpectrumArray(spectrumArray);
+    term->zp_calcAverageTermValueForArray(spectrumArray);
+    int termIndex = zv_termList.indexOf(term);
+    emit zg_termOperation(TOT_TERM_AVERAGE_CHANGED, termIndex, termIndex);
+}
+//=========================================================
+void ZCalibration::zp_onTermAverageValueChange() const
+{
+
 }
 //=========================================================
 void ZCalibration::zh_removeTerm(ZAbstractTerm* term)

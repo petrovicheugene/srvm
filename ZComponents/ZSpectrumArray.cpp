@@ -237,7 +237,7 @@ bool ZSpectrumArray::zp_setChemConcentration(qint64 chemElementId,
     bool res = zv_spectrumList.at(spectrumIndex)->zp_setConcentration(chemElementId, concentration);
     if(res)
     {
-        zh_calcAverageConcentration(chemElementId);
+        zh_calcAverageChemConcentration(chemElementId);
     }
 
     return res;
@@ -335,7 +335,7 @@ bool ZSpectrumArray::zp_setSpectrumChecked(int index, bool checked)
     if(res)
     {
         emit zg_spectrumOperation(OT_CHANGED, index, index);
-        zh_calcAverageConcentrations();
+        zh_calcAverageChemConcentrations();
     }
     return res;
 }
@@ -351,7 +351,7 @@ bool ZSpectrumArray::zp_removeSpectrum(int index)
     emit zg_spectrumOperation(OT_END_REMOVE_SPECTRA, index, index);
 
     zh_recalcArrayMaxParameters();
-    zh_calcAverageConcentrations();
+    zh_calcAverageChemConcentrations();
 
     if(zv_spectrumList.count() < 1 )
     {
@@ -380,7 +380,7 @@ void ZSpectrumArray::zp_clearArray()
         emit zg_spectrumOperation(OT_END_REMOVE_SPECTRA,  0, lastSpectrumIndex);
 
         zh_recalcArrayMaxParameters();
-        zh_calcAverageConcentrations();
+        zh_calcAverageChemConcentrations();
     }
 }
 //===============================================
@@ -513,7 +513,7 @@ bool ZSpectrumArray::zp_appendSpectrum(const ZRawSpectrum& rawSpectrum, bool las
                 speSpectrum->zp_insertConcentration(chemElementId, it.value());
             }
 
-            zh_calcAverageConcentrations();
+            zh_calcAverageChemConcentrations();
         }
     }
 
@@ -572,24 +572,39 @@ QList<ZAbstractSpectrum*> ZSpectrumArray::zp_spectrumList() const
     return spectrumList;
 }
 //===============================================
-int ZSpectrumArray::zp_maxIntensity()
+int ZSpectrumArray::zp_maxIntensity() const
 {
     return zv_maxArrayIntensity;
 }
 //===============================================
-int ZSpectrumArray::zp_maxChannelCount()
+int ZSpectrumArray::zp_maxChannelCount() const
 {
     return zv_maxArrayChannelCount;
 }
 //===============================================
-bool ZSpectrumArray::zp_isEnergyCalibrationValid()
+bool ZSpectrumArray::zp_isEnergyCalibrationValid() const
 {
     return !(zv_energyK1 == 0 && zv_energyK2 == 0);
 }
 //===============================================
-qint64 ZSpectrumArray::zp_arrayId()
+qint64 ZSpectrumArray::zp_arrayId() const
 {
     return zv_arrayId;
+}
+//===============================================
+bool ZSpectrumArray::zp_averageChemConcentrationForChemElementId(qint64 chemElementId, qreal& averageValue) const
+{
+    return zv_chemElementList.zp_averageChemConcentrationForChemElementId(chemElementId, averageValue);
+}
+//===============================================
+bool ZSpectrumArray::zp_averageChemConcentration(const QString& chemElement, qreal& averageValue) const
+{
+    return zv_chemElementList.zp_averageChemConcentration(chemElement, averageValue);
+}
+//===============================================
+bool ZSpectrumArray::zp_averageChemConcentration(int chemElementIndex, qreal& averageValue) const
+{
+    return zv_chemElementList.zp_averageChemConcentration(chemElementIndex, averageValue);
 }
 //===============================================
 void ZSpectrumArray::zh_createConnections()
@@ -622,14 +637,14 @@ void ZSpectrumArray::zh_recalcArrayMaxParameters()
     emit zg_arrayMaxParametersChanged(zv_arrayId,  zv_maxArrayIntensity,  zv_maxArrayChannelCount);
 }
 //===============================================
-bool ZSpectrumArray::zh_calcAverageConcentration(qint64 chemElementId)
+bool ZSpectrumArray::zh_calcAverageChemConcentration(qint64 chemElementId)
 {
     // TODO average concentration in speArray calculation
 
     if(!zv_chemElementList.zp_containsElementId(chemElementId))
     {
 #ifdef DBG
-    qDebug() << "AVERAGE NOT RECALCED FOR " << chemElementId;
+        qDebug() << "ZSpectrumArray: AVERAGE NOT RECALCED FOR CHEM ELEMENT ID" << chemElementId;
 #endif
 
         return false;
@@ -638,10 +653,10 @@ bool ZSpectrumArray::zh_calcAverageConcentration(qint64 chemElementId)
     if(zv_spectrumList.isEmpty())
     {
 #ifdef DBG
-    qDebug() << "AVERAGE NOT RECALCED FOR " << chemElementId << "SPE LIST IS EMPTY";
+        qDebug() << "ZSpectrumArray: AVERAGE NOT RECALCED FOR CHEM ELEMENT ID" << chemElementId << "SPE LIST IS EMPTY";
 #endif
 
-        zv_chemElementList.zp_setAverageValue(chemElementId, 0.0);
+        zv_chemElementList.zp_setAverageChemConcentration(chemElementId, 0.0);
         return true;
     }
 
@@ -668,26 +683,26 @@ bool ZSpectrumArray::zh_calcAverageConcentration(qint64 chemElementId)
     if(checkedSpectrumCount == 0)
     {
 #ifdef DBG
-    qDebug() << "AVERAGE NOT RECALCED FOR " << chemElementId << "CHECKED SPE COUNT IS ZERO";
+        qDebug() << "ZSpectrumArray: AVERAGE NOT RECALCED FOR CHEM ELEMENT ID" << chemElementId << "CHECKED SPE COUNT IS ZERO";
 #endif
 
-        zv_chemElementList.zp_setAverageValue(chemElementId, 0.0);
+        zv_chemElementList.zp_setAverageChemConcentration(chemElementId, 0.0);
         return true;
     }
     averageValue /= checkedSpectrumCount;
-    zv_chemElementList.zp_setAverageValue(chemElementId, averageValue);
+    zv_chemElementList.zp_setAverageChemConcentration(chemElementId, averageValue);
 
 #ifdef DBG
-    qDebug() << "AVERAGE RECALCED FOR " << chemElementId << averageValue;
+    qDebug() << "ZSpectrumArray: AVERAGE RECALCED FOR CHEM ELEMENT ID" << chemElementId << averageValue;
 #endif
 
     return true;
 }
 //===============================================
-void ZSpectrumArray::zh_calcAverageConcentrations()
+void ZSpectrumArray::zh_calcAverageChemConcentrations()
 {
 #ifdef DBG
-    qDebug() << "START FULL AVERAGE RECALC ";
+    qDebug() << "ZSpectrumArray: START FULL CHEM AVERAGE RECALC ";
 #endif
 
     if(zv_chemElementList.zp_isEmpty())
@@ -697,7 +712,7 @@ void ZSpectrumArray::zh_calcAverageConcentrations()
 
     for(int e = 0; e < zv_chemElementList.zp_chemElementCount(); e++)
     {
-        zh_calcAverageConcentration(zv_chemElementList.zp_chemElementId(e));
+        zh_calcAverageChemConcentration(zv_chemElementList.zp_chemElementId(e));
     }
 }
 //===============================================

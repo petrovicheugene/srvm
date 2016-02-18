@@ -15,7 +15,9 @@ public:
                             ZCalibration *parent);
 
    // FUNCS
-   qreal zp_calcValue() override;
+    bool zp_calcValue(const ZAbstractSpectrum*, qreal&) override;
+    bool zp_calcTermVariablePart(const ZAbstractSpectrum*, qint64 &value) override; // w/o factor
+
    QString zp_termName() const override;
 
 private:

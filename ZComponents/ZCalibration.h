@@ -29,7 +29,8 @@ public:
                               WOT_END_INSERT_WINDOWS,
                               WOT_BEGIN_REMOVE_WINDOWS,
                               WOT_END_REMOVE_WINDOWS,
-                              WOT_WINDOW_CHANGED};
+                              WOT_WINDOW_CHANGED
+                             };
 
 
     enum TremOperationType {TOT_BEGIN_INSERT_TERM,
@@ -37,7 +38,9 @@ public:
                             TOT_BEGIN_REMOVE_TERM,
                             TOT_END_REMOVE_TERM,
                             TOT_TERM_NAME_CHANGED,
-                            TOT_TERM_STATE_CHANGED};
+                            TOT_TERM_STATE_CHANGED,
+                            TOT_TERM_AVERAGE_CHANGED
+                            };
 
     // FUNCS
     QString zp_name() const;
@@ -85,6 +88,11 @@ public:
     void zp_setNextUsersTermState(int) const;
     int zp_termIndex(const ZAbstractTerm*) const;
     qreal zp_termFactor(int termIndex, bool *ok) const;
+    bool zp_termValue(int termIndex, const ZAbstractSpectrum*,  qreal &value) const;
+    bool zp_termVariablePart(int termIndex, const ZAbstractSpectrum* spectrum,  qint64& value) const;
+    bool zp_termAverageValue(int termIndex,  qreal &averageValue) const;
+
+    void zp_calcTermAverageValues(const ZSpectrumArray* spectrumArray);
 
 signals:
 
@@ -92,16 +100,17 @@ signals:
     void zg_windowOperation(ZCalibration::WindowOperationType, int first, int last) const;
     void zg_visibilityChanged(bool) const;
     void zg_dirtyChanged(bool) const;
-
+    void zg_requestForCurrentSpectrumArray(const ZSpectrumArray*&) const;
     void zg_termOperation(ZCalibration::TremOperationType, int first, int last)const;
     void zg_normalizerChanged() const;
-
 
 public slots:
 
     void zp_isNormalizerValid(bool&) const;
     void zp_normalizerValue(qreal&) const;
     void zp_onTermNameChange() const;
+    void zp_recalcTermAverageValue() const;
+    void zp_onTermAverageValueChange() const;
 
 private slots:
 

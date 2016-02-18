@@ -11,7 +11,7 @@
 #include "ZPlotterDataManager.h"
 #include "ZCalculationPlotterManager.h"
 #include "ZTermCorrelationTableManager.h"
-
+#include "ZSpeSpectrum.h"
 // views
 #include "ZWidgetWithSidebar.h"
 #include "ZSpectrumArrayWidget.h"
@@ -48,11 +48,15 @@
 #include <QDockWidget>
 #include <QSplitter>
 #include <QStatusBar>
+#include <QMetaType>
 //==========================================================
 MainWindow::MainWindow(QWidget *parent)
    : QMainWindow(parent)
 {
-   setWindowTitle(glAppProduct);
+//    qRegisterMetaType<ZAbstractSpectrum>("ZAbstractSpectrum");
+//    qRegisterMetaType<ZSpeSpectrum>("ZSpeSpectrum");
+
+    setWindowTitle(glAppProduct);
 
    //    QPalette palette = QPalette(Qt::darkBlue);
    //    this->setPalette(palette);
@@ -323,6 +327,7 @@ void MainWindow::zh_createConnections()
 
    // File Action Manager <-> other components
    zv_calibrationRepository->zp_connectToFileManager(zv_fileActionManager);
+   zv_calibrationRepository->zp_connectToSpectrumArrayRepository(zv_spectrumArrayRepository);
    zv_spectrumArrayRepository->zp_connectToFileActionManager(zv_fileActionManager);
 
    // spectra repository <-> spectra model and array model and plotter model
@@ -400,7 +405,7 @@ void MainWindow::zh_createConnections()
    zv_calculationPlotterManager->zp_connectToPlotter(zv_calculationPlotterWidget->zp_plotter());
    zv_termCorrelationTableModel->zp_connectToPredicorTableManager(zv_termCorrelationTableManager);
    zv_termCorrelationTableManager->zp_connectToCalibrationRepository(zv_calibrationRepository);
-
+   zv_termCorrelationTableManager->zp_connectToSpectrumArrayRepository(zv_spectrumArrayRepository);
 }
 //==========================================================
 void MainWindow::zh_appendActionsToMenu(QMenu* menu)

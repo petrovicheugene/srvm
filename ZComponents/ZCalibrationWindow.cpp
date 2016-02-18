@@ -1,6 +1,7 @@
 //====================================================
 #include "ZCalibrationWindow.h"
 #include "ZAbstractTerm.h"
+#include "ZAbstractSpectrum.h"
 #include <QPointer>
 //====================================================
 qint64 ZCalibrationWindow::zv_lastWindowId = 0;
@@ -108,6 +109,7 @@ bool ZCalibrationWindow::zp_setWindowFirstChannel(int channel)
         return false;
     }
     zv_firstChannel = channel;
+    emit zg_widowMarginsChanged();
     return true;
 }
 //====================================================
@@ -118,6 +120,7 @@ bool ZCalibrationWindow::zp_setWindowLastChannel(int channel)
         return false;
     }
     zv_lastChannel = channel;
+    emit zg_widowMarginsChanged();
     return true;
 }
 //====================================================
@@ -130,10 +133,11 @@ bool ZCalibrationWindow::zp_setWindowMarginChannels(int first, int last)
 
     if(first > last)
     {
-       qSwap(first, last);
+        qSwap(first, last);
     }
     zv_firstChannel = first;
     zv_lastChannel = last;
+    emit zg_widowMarginsChanged();
     return true;
 }
 //====================================================
@@ -175,5 +179,27 @@ ZCalibrationWindow::WindowType ZCalibrationWindow::zp_typeForName(const QString&
     }
 
     return zv_typeNameMap.key(typeName);
+}
+//====================================================
+void ZCalibrationWindow::zp_calcWindowIntensity(const QObject *spectrumObject, qint64& intensityValue, bool* ok)
+{
+    const ZAbstractSpectrum* spectrum = qobject_cast<const ZAbstractSpectrum*>(spectrumObject);
+
+    if(!spectrum)
+    {
+        intensityValue = 0;
+        if(ok)
+        {
+            *ok = false;
+        }
+
+        return;
+    }
+
+    bool res = spectrum->zp_intensityInWindow(zv_firstChannel, zv_lastChannel, intensityValue);
+    if(ok)
+    {
+        *ok = res;
+    }
 }
 //====================================================

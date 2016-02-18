@@ -57,10 +57,6 @@ void ZCalibrationWindowDataManager::zh_onArrayMaxParametersChanged(qint64 arrayI
 //=============================================================================
 void ZCalibrationWindowDataManager::zh_currentCalibrationChanged(qreal calibrationId, int calibrationIndex)
 {
-#ifdef DBG
-    qDebug() << "CURRENT CALIBRATION" << "ID" << calibrationId << calibrationIndex;
-#endif
-
     if(zv_currentCalibrationId == calibrationId)
     {
         return;
@@ -68,9 +64,6 @@ void ZCalibrationWindowDataManager::zh_currentCalibrationChanged(qreal calibrati
 
     zv_currentCalibrationId = calibrationId;
 
-#ifdef DBG
-    qDebug() << "CALIBRATION MANAGER DATA RESET";
-#endif
     emit zg_currentOperation(OT_RESET_DATA, -1, -1);
 
     emit zg_currentOperation(OT_END_RESET_DATA, -1, -1);

@@ -91,10 +91,6 @@ void ZChemElementDataManager::zp_currentArrayChanged(qint64 currentArrayId, int 
         return;
     }
 
-#ifdef DBG
-    qDebug() << "ChemElementDataManager" << currentArrayId << currentArrayIndex;
-#endif
-
     emit zg_currentOperation(OT_RESET_DATA, -1, -1);
     zv_currentArrayIndex = currentArrayIndex;
     zv_currentArrayId = currentArrayId;

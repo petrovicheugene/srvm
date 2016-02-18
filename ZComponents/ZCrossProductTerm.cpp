@@ -8,9 +8,16 @@ ZCrossProductTerm::ZCrossProductTerm(const ZCalibrationWindow& window1,
    zv_type = TT_MIXED;
 }
 //===================================================================
-qreal ZCrossProductTerm::zp_calcValue()
+bool ZCrossProductTerm::zp_calcValue(const ZAbstractSpectrum * spectrum, qreal& value)
 {
-   return 0;
+
+
+    return 0;
+}
+//===================================================================
+bool ZCrossProductTerm::zp_calcTermVariablePart(const ZAbstractSpectrum* spectrum, qint64 &value)  // w/o factor
+{
+
 }
 //===================================================================
 QString ZCrossProductTerm::zp_termName() const

@@ -9,6 +9,9 @@ ZTermCorrelationTableManager::ZTermCorrelationTableManager(QObject *parent) : QO
     zv_spectrumArrayRepository = 0;
     zv_currentCalibrationId = -1;
     zv_columnCountCorrector = 0;
+    zv_currentArrayId = -1;
+    zv_currentArrayIndex = -1;
+
 }
 //=============================================================================
 void ZTermCorrelationTableManager::zp_connectToCalibrationRepository(ZCalibrationRepository* repository)
@@ -31,13 +34,12 @@ void ZTermCorrelationTableManager::zp_connectToSpectrumArrayRepository(ZSpectrum
     // array repository <-> array model
     //    connect(repository, &ZSpectrumArrayRepository::zg_spectrumOperation,
     //            this, &ZJointSpectraDataManager::zh_onRepositoryArrayOperation);
-    //    connect(repository, &ZSpectrumArrayRepository::zg_chemElementOperation,
-    //            this, &ZJointSpectraDataManager::zh_onRepositoryChemElementOperation);
-    //    connect(repository, &ZSpectrumArrayRepository::zg_currentArrayIdChanged,
-    //            this, &ZJointSpectraDataManager::zh_currentSpectrumArrayChanged);
+    connect(repository, &ZSpectrumArrayRepository::zg_chemElementOperation,
+            this, &ZTermCorrelationTableManager::zh_onRepositoryChemElementOperation);
+    connect(repository, &ZSpectrumArrayRepository::zg_currentArrayIdChanged,
+            this, &ZTermCorrelationTableManager::zh_currentSpectrumArrayChanged);
 
 }
-
 //=============================================================================
 int ZTermCorrelationTableManager::zp_rowCount() const
 {
@@ -78,14 +80,16 @@ QVariant ZTermCorrelationTableManager::zp_data(QModelIndex index) const
         return QVariant(factor);
     }
 
-    //    if(index.column() == 1)
-    //    {
-    //        ZSpectrumPaintData paintData;
-    //        paintData.spectrumData = zv_spectrumArrayRepositiry->zp_spectrumData(zv_currentArrayIndex, index.row());
-    //        paintData.maxChannel = zv_spectrumArrayRepositiry->zp_arrayChannelCount(zv_currentArrayIndex);
-    //        paintData.maxIntensity = zv_spectrumArrayRepositiry->zp_arrayMaxIntensity(zv_currentArrayIndex);
-    //        return QVariant::fromValue(paintData);
-    //    }
+    if(index.column() == 1)
+    {
+        qreal correlationValue;
+        bool res = zh_calcChemElementCorrelation( index.row(), correlationValue);
+        if(!res)
+        {
+            return QVariant("- - -");
+        }
+        return QVariant(QString::number(correlationValue, 'g', 2));
+    }
 
     //    // int visibleChemElementCount = zv_spectrumArrayRepositiry->zp_visibleChemElementCount(zv_currentArrayIndex);
     //    if(index.column() >= zv_spectrumDataColumnCount
@@ -133,7 +137,7 @@ QString ZTermCorrelationTableManager::zp_horizontalColumnName(int column) const
             return zv_defaultChemElementString;
         }
 
-        QString chemElementString = zv_calibrationRepository->zp_calibrationChemicalElementForId(zv_currentCalibrationId);
+        QString chemElementString = zv_calibrationRepository->zp_chemElementForCalibrationId(zv_currentCalibrationId);
         if(chemElementString.isEmpty() || chemElementString == glDefaultChemElementString)
         {
             return zv_defaultChemElementString;
@@ -189,7 +193,7 @@ QPixmap ZTermCorrelationTableManager::zp_termStateIcon(int row) const
         pixmap = QPixmap(":/images/check-green-1s.png");
         break;
     case ZAbstractTerm::TS_EXAM_WAITING :
-        pixmap = QPixmap(":/images/question-yellow.png");
+        pixmap = QPixmap(":/images/question-yellow-1s.png");
         break;
     case ZAbstractTerm::TS_INCLUDED :
         pixmap = QPixmap(":/images/plus-blue-1s.png");
@@ -215,6 +219,94 @@ void ZTermCorrelationTableManager::zp_setNextUsersTermState(int termLogIndex)
     }
 
     zv_calibrationRepository->zp_setNextUsersTermState(zv_currentCalibrationId, termLogIndex);
+}
+//=============================================================================
+void ZTermCorrelationTableManager::zh_currentSpectrumArrayChanged(qint64 currentArrayId, int currentArrayIndex)
+{
+    if(zv_currentArrayIndex == currentArrayIndex && zv_currentArrayId == currentArrayId)
+    {
+        return;
+    }
+
+    emit zg_currentOperation(TOT_BEGIN_RESET, -1, -1);
+    zv_currentArrayIndex = currentArrayIndex;
+    zv_currentArrayId = currentArrayId;
+    emit zg_currentOperation(TOT_END_RESET, -1, -1);
+}
+//==================================================================
+void ZTermCorrelationTableManager::zh_onRepositoryChemElementOperation(ZSpectrumArrayRepository::ChemElementOperationType type,
+                                                                       int arrayIndex, int first, int last)
+{
+    if(zv_currentArrayIndex != arrayIndex || zv_currentCalibrationId < 0
+            || zv_spectrumArrayRepository == 0 || zv_calibrationRepository == 0)
+    {
+        return;
+    }
+
+    // current calibration chem
+    QString currentCalibrationChemElement = zv_calibrationRepository->zp_chemElementForCalibrationId(zv_currentCalibrationId);
+    bool chemElementAccordance = false;
+    for(int c = first; c <= last; c++)
+    {
+        if(zv_spectrumArrayRepository->zp_chemElementName(zv_currentArrayIndex, c) == currentCalibrationChemElement);
+        {
+            chemElementAccordance = true;
+            break;
+        }
+    }
+
+    if(!chemElementAccordance)
+    {
+        return;
+    }
+
+    //
+
+    if(type == ZSpectrumArrayRepository::CEOT_INSERT_CHEM_ELEMENT)
+    {
+        //        emit zg_currentOperation(OT_BEGIN_INSERT_COLUMN, visibleFirst, visibleLast);
+    }
+    else if(type == ZSpectrumArrayRepository::CEOT_END_INSERT_CHEM_ELEMENT)
+    {
+        //        emit zg_currentOperation(OT_END_INSERT_COLUMN, visibleFirst, visibleLast);
+    }
+    else if(type == ZSpectrumArrayRepository::CEOT_REMOVE_CHEM_ELEMENT)
+    {
+        //        emit zg_currentOperation(OT_BEGIN_REMOVE_COLUMN, visibleFirst, visibleLast);
+    }
+    else if(type == ZSpectrumArrayRepository::CEOT_END_REMOVE_CHEM_ELEMENT)
+    {
+        //        emit zg_currentOperation(OT_END_REMOVE_COLUMN, visibleFirst, visibleLast);
+    }
+    else if(type == ZSpectrumArrayRepository::CEOT_CHEM_ELEMENT_CHANGED)
+    {
+        emit zg_currentOperation(TOT_DATA_CHANGED, 0, zp_rowCount() - 1);
+        //        emit zg_currentOperation(OT_COLUMN_HEADER_CHANGED, visibleFirst, visibleLast);
+    }
+    else if(type == ZSpectrumArrayRepository::CEOT_CHEM_ELEMENT_VISIBILITY_CHANGE)
+    {
+        //        bool visible = zv_spectrumArrayRepository->zp_chemElementIsVisible(zv_currentArrayIndex, first);
+        //        if(!visible)
+        //        {
+        //            emit zg_currentOperation(OT_BEGIN_INSERT_COLUMN, visibleFirst, visibleLast);
+        //        }
+        //        else
+        //        {
+        //            emit zg_currentOperation(OT_BEGIN_REMOVE_COLUMN, visibleFirst, visibleLast);
+        //        }
+    }
+    else if(type == ZSpectrumArrayRepository::CEOT_END_CHEM_ELEMENT_VISIBILITY_CHANGE)
+    {
+        //        bool visible = zv_spectrumArrayRepository->zp_chemElementIsVisible(zv_currentArrayIndex, first);
+        //        if(visible)
+        //        {
+        //            emit zg_currentOperation(OT_END_INSERT_COLUMN, visibleFirst, visibleLast);
+        //        }
+        //        else
+        //        {
+        //            emit zg_currentOperation(OT_END_REMOVE_COLUMN, visibleFirst, visibleLast);
+        //        }
+    }
 }
 //=============================================================================
 void ZTermCorrelationTableManager::zh_currentCalibrationChanged(qreal calibrationId, int calibrationIndex)
@@ -288,6 +380,11 @@ void ZTermCorrelationTableManager::zh_onRepositoryTermOperation(ZCalibrationRepo
     {
         emit zg_currentOperation(TOT_VERTICAL_HEADER_CHANGED, first, last);
     }
+    else if(type == ZCalibrationRepository::TOT_TERM_AVERAGE_CHANGED)
+    {
+        emit zg_currentOperation(TOT_DATA_CHANGED, first, last);
+    }
+
 }
 //=============================================================================
 void ZTermCorrelationTableManager::zh_onCalibrationRepositoryOperation(ZCalibrationRepository::CalibrationOperationType type,
@@ -332,6 +429,111 @@ void ZTermCorrelationTableManager::zh_onCalibrationRepositoryOperation(ZCalibrat
                 emit zg_currentOperation(TOT_END_RESET, first, last);
             }
         }
+    }
+}
+//=============================================================================
+bool ZTermCorrelationTableManager::zh_calcChemElementCorrelation(int termIndex, qreal& correlationValue) const
+{
+    if(!zv_calibrationRepository || !zv_spectrumArrayRepository || zv_currentCalibrationId < 0 || zv_currentArrayId < 0)
+    {
+        return false;
+    }
+
+    QString calibrationChemElement = zv_calibrationRepository->zp_chemElementForCalibrationId(zv_currentCalibrationId);
+    qint64 currentCalibrationChemId = zv_spectrumArrayRepository->zp_chemElementIdForName(zv_currentArrayId, calibrationChemElement);
+
+    // TODO zp_averageChemConcentration
+    qreal averageChemConcentration;
+    qreal termAverage;
+
+    bool res = zv_spectrumArrayRepository->zp_averageChemConcentrationForChemElementId(zv_currentArrayId,
+                                                                                       currentCalibrationChemId, averageChemConcentration);
+    res = res && zv_calibrationRepository->zp_termAverageValue(zv_currentCalibrationId, termIndex, termAverage);
+
+    if(!res)
+    {
+        return false;
+    }
+
+    QList<QPair<qint64, qreal> > termValueAndChemConcentrationList;
+    zh_createTermValueAndChemConcentrationList(termIndex,
+                                               currentCalibrationChemId,
+                                               termValueAndChemConcentrationList);
+
+    if(termValueAndChemConcentrationList.isEmpty() )
+    {
+        return false;
+    }
+
+    qreal numerator = 0;
+    qreal denominator1 = 0;
+    qreal denominator2 = 0;
+
+    qreal currentTermDelta = 0;
+    qreal currentConcDelta = 0;
+
+    for(int i = 0; i < termValueAndChemConcentrationList.count(); i++)
+    {
+        currentTermDelta = (termValueAndChemConcentrationList.at(i).first - termAverage);
+        currentConcDelta = (termValueAndChemConcentrationList.at(i).second - averageChemConcentration);
+
+        numerator += currentTermDelta * currentConcDelta;
+        denominator1 += pow(currentTermDelta,2);
+        denominator2 += pow(currentConcDelta,2);
+    }
+
+    if(numerator == 0)
+    {
+        correlationValue = 0;
+        return true;
+    }
+
+    qreal denominator = sqrt(denominator1) * sqrt(denominator2);
+    if(denominator == 0)
+    {
+        return false;
+    }
+
+    correlationValue = numerator / denominator;
+    return true;
+}
+//=============================================================================
+void ZTermCorrelationTableManager::zh_createTermValueAndChemConcentrationList(int termIndex,
+                                                                              qint64 chemElementId,
+                                                                              QList<QPair<qint64, qreal> >& termAndConcentrationList) const
+{
+    termAndConcentrationList.clear();
+    const ZAbstractSpectrum* spectrum;
+    qint64 termValue;
+    QPair<qint64, qreal>  valuePair;
+    bool ok;
+    qreal concentrationValue;
+    for(int i = 0; i < zv_spectrumArrayRepository->zp_spectrumCount(zv_currentArrayId); i++)
+    {
+        spectrum = zv_spectrumArrayRepository->zp_spectrum(zv_currentArrayId, i);
+        if(!spectrum)
+        {
+            continue;
+        }
+
+        if(!spectrum->zp_isSpectrumChecked())
+        {
+            continue;
+        }
+
+        ok = zv_calibrationRepository->zp_termVariablePart(zv_currentCalibrationId, termIndex, spectrum, termValue);
+        if(!ok)
+        {
+            termValue = 0;
+        }
+        valuePair.first = termValue;
+        concentrationValue = spectrum->zp_concentration(chemElementId).toDouble(&ok);
+        if(!ok)
+        {
+            concentrationValue = 0;
+        }
+        valuePair.second = concentrationValue;
+        termAndConcentrationList.append(valuePair);
     }
 }
 //=============================================================================
