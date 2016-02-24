@@ -14,7 +14,12 @@ public:
                             ZCalibration *parent);
 
     // FUNCS
-    qreal zp_calcValue() override;
+    bool zp_calcValue(const ZAbstractSpectrum*, qreal&) override;
+    bool zp_calcTermVariablePart(const ZAbstractSpectrum*, qint64 &value) override; // w/o factor
+
+signals:
+
+    void zg_requestWindowIntensity(const QObject* spectrum, qint64& intensityValue, bool keepBufferClean, bool* ok = 0);
 
 protected slots:
 

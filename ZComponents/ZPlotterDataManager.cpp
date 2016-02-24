@@ -219,7 +219,7 @@ void ZPlotterDataManager::zh_onRepositoryArrayOperation(ZSpectrumArrayRepository
         return;
     }
 
-    if(type == ZSpectrumArrayRepository::SOT_INSERT_SPECTRA)
+    if(type == ZSpectrumArrayRepository::SOT_BEGIN_INSERT_SPECTRA)
     {
 
     }
@@ -248,7 +248,7 @@ void ZPlotterDataManager::zh_onRepositoryArrayOperation(ZSpectrumArrayRepository
             zv_plotter->zp_fitInBoundingRect();
         }
     }
-    else if(type == ZSpectrumArrayRepository::SOT_REMOVE_SPECTRA)
+    else if(type == ZSpectrumArrayRepository::SOT_BEGIN_REMOVE_SPECTRA)
     {
         // spectrum is searching by id
         for(int i = first; i <= last; i++ )
@@ -274,7 +274,7 @@ void ZPlotterDataManager::zh_onRepositoryArrayOperation(ZSpectrumArrayRepository
     {
 
     }
-    else if(type == ZSpectrumArrayRepository::SOT_DATA_CHANGED)
+    else if(type == ZSpectrumArrayRepository::SOT_VISIBLE_CHANGED)
     {
         for(int i = first; i <= last; i++ )
         {

@@ -1,0 +1,20 @@
+//========================================================
+#ifndef ZEQUATIONSETTINGSPANEL_H
+#define ZEQUATIONSETTINGSPANEL_H
+//========================================================
+#include <QWid>
+//========================================================
+
+//========================================================
+class ZEquationSettingsPanel : public QFrame
+{
+    Q_OBJECT
+public:
+    explicit ZEquationSettingsPanel(QWidget *parent = 0);
+
+signals:
+
+public slots:
+};
+//========================================================
+#endif // ZEQUATIONSETTINGSPANEL_H

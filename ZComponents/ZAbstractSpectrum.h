@@ -16,6 +16,8 @@
 #include <QColor>
 #include <QPainterPath>
 //==========================================================
+class ZCalibrationWindow;
+//==========================================================
 // Inheritage: ADD  SpectrumType !!!
 //==========================================================
 class ZAbstractSpectrum : public QObject
@@ -39,11 +41,14 @@ public:
     bool zp_setSpectrumChecked(bool);
 
     void zp_insertConcentration(qint64 chemElementId, const QString& concentration);
+    bool zp_removeConcentration(qint64 chemElementId);
     QString zp_concentration(qint64 chemElementId) const;
     bool zp_setConcentration(qint64 chemElementId, const QString& concentration);
     QList<int> zp_spectrumData() const;
     virtual const ZAbstractSpectrumAuxData* zp_auxData() const = 0;
-    int zp_intensityInWindow(int startChannel, int lastChannel, bool *ok = 0) const;
+    bool zp_intensityInWindow(int startChannel, int lastChannel, qint64& intensity) const;
+    bool zp_intensityInWindow(const ZCalibrationWindow*, qint64& intensity) const;
+
 
     int zp_channelCount() const;
     int zp_maxIntensity() const;
@@ -71,11 +76,12 @@ protected:
     int zv_channelCount;
     int zv_maxIntensity;
 
-    static qint64 zv_lastSpectrumId;
-
-
     // FUNCS
     void zh_recalcSpectrumPainterPath();
+
+    // STATIC
+    // VARS
+    static qint64 zv_lastSpectrumId;
 
 };
 //==========================================================

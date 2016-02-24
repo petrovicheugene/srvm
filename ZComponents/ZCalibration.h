@@ -18,7 +18,7 @@ class ZTermNormalizer;
 class ZCalibration : public QObject
 {
     Q_OBJECT
-
+    friend class ZAbstractTerm;
 public:
 
     explicit ZCalibration(const QString& name, QObject *parent = 0);
@@ -29,7 +29,8 @@ public:
                               WOT_END_INSERT_WINDOWS,
                               WOT_BEGIN_REMOVE_WINDOWS,
                               WOT_END_REMOVE_WINDOWS,
-                              WOT_WINDOW_CHANGED};
+                              WOT_WINDOW_CHANGED
+                             };
 
 
     enum TremOperationType {TOT_BEGIN_INSERT_TERM,
@@ -37,7 +38,9 @@ public:
                             TOT_BEGIN_REMOVE_TERM,
                             TOT_END_REMOVE_TERM,
                             TOT_TERM_NAME_CHANGED,
-                            TOT_TERM_STATE_CHANGED};
+                            TOT_TERM_STATE_CHANGED,
+                            TOT_TERM_VALUE_CHANGED
+                            };
 
     // FUNCS
     QString zp_name() const;
@@ -55,7 +58,7 @@ public:
     bool zp_isDirty() const;
     QColor zp_color() const;
     qint64 zp_calibrationId() const;
-    double zp_calcConcentration(const ZAbstractSpectrum* const, bool *ok = 0);
+    bool zp_calcConcentration(const ZAbstractSpectrum* const, qreal& concentration);
 
     // windows
     void zp_createNewCalibrationWindow(int& , int firstChannel = 0, int lastChannel = 0);
@@ -75,16 +78,19 @@ public:
     bool zp_setCalibrationWindowLastChannel(int windowIndex, int channel);
 
     qint64 zp_calibrationWindowId(int windowIndex) const;
-    bool zp_removeSpectrumWindow(int);
+    bool zp_removeCalibrationWindow(int);
 
     // terms
-    void zp_connectTermToCalibration(const ZAbstractTerm*);
     int zp_termCount() const;
     QString zp_termName(int termIndex) const;
     ZAbstractTerm::TermState zp_termState(int termIndex) const;
     void zp_setNextUsersTermState(int) const;
-    int zp_termIndex(const ZAbstractTerm*) const;
-    qreal zp_termFactor(int termIndex, bool *ok) const;
+    bool zp_termFactor(int termIndex, qreal &factor) const;
+    bool zp_setTermFactor(int termIndex, qreal factor) const;
+    bool zp_termVariablePart(int termIndex, const ZAbstractSpectrum* spectrum,  qreal &value) const;
+    //bool zp_termValue(int termIndex, const ZAbstractSpectrum*,  qreal &value) const;
+    //bool zp_termAverageValue(int termIndex,  qreal &averageValue) const;
+    //bool zp_calcTermAverageValues(const ZSpectrumArray* spectrumArray);
 
 signals:
 
@@ -92,19 +98,19 @@ signals:
     void zg_windowOperation(ZCalibration::WindowOperationType, int first, int last) const;
     void zg_visibilityChanged(bool) const;
     void zg_dirtyChanged(bool) const;
-
     void zg_termOperation(ZCalibration::TremOperationType, int first, int last)const;
     void zg_normalizerChanged() const;
 
-
 public slots:
 
-    void zp_isNormalizerValid(bool&) const;
-    void zp_normalizerValue(qreal&) const;
-    void zp_onTermNameChange() const;
 
 private slots:
 
+    void zh_onTermNameChange() const;
+    void zh_onTermAverageValueChange() const;
+    void zh_normalizerValue(qreal&) const;
+    void zh_isNormalizerValid(bool&) const;
+    void zh_onTermWindowMarginChange();
     void zh_removeTerm(ZAbstractTerm*);
 
 private:
@@ -122,11 +128,14 @@ private:
 
     QList<ZCalibrationWindow*> zv_spectrumWindowList;
     QList<ZAbstractTerm*> zv_termList;
-    ZTermNormalizer* zv_termNormalizator;
+    ZTermNormalizer* zv_termNormalizer;
+    qreal zv_freeMemeber;
+    //qreal zv_
 
     // FUNCS
     bool zh_isWindowExist(const QString&);
     void zh_createTermsForWindow(ZCalibrationWindow*);
+    int zp_termIndex(const ZAbstractTerm*) const;
 
     // STATIC
     // VARS

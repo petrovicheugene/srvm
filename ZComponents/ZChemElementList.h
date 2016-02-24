@@ -14,7 +14,7 @@ public:
     {
         element = QString();
         visibility = true;
-        averageConcentrationValue = 0;
+        // averageConcentrationValue = 0;
         zv_id = zv_lastId++;
     }
 
@@ -22,15 +22,15 @@ public:
     {
         element = name;
         visibility = true;
-        averageConcentrationValue = 0;
+        // averageConcentrationValue = 0;
         zv_id = zv_lastId++;
     }
 
     QString element;
     bool visibility;
-    qreal averageConcentrationValue;
+    // qreal averageConcentrationValue;
 
-    qint64 zp_chemElementId() const
+    qint64 zp_id() const
     {
         return zv_id;
     }
@@ -61,9 +61,7 @@ public:
                         OT_AVERAGE_VALUE_CHANGED};
 
     bool zp_appendElement(const QString&, qint64 &chemElementId);
-    bool zp_appendElement(const QString& element);
-
-    bool zp_removeElement(const QString&);
+    bool zp_removeElement(const QString&, qint64& chemElementId);
     void zp_clearList();
 
     QStringList zp_chemElementList() const;
@@ -89,10 +87,12 @@ public:
     bool zp_setChemElementVisible(int row, bool visible);
     bool zp_setChemElementVisible(const QString&, bool);
 
-    bool zp_setAverageValue(const QString&, qreal);
-    qreal zp_averageValue(const QString&) const;
-    bool zp_setAverageValue(int, qreal) ;
-    qreal zp_averageValue(int) const;
+//    bool zp_setAverageChemConcentration(const QString&, qreal);
+//    bool zp_averageChemConcentration(const QString&, qreal &value) const;
+//    bool zp_setAverageChemConcentration(int, qreal) ;
+//    bool zp_averageChemConcentration(int, qreal &value) const;
+//    bool zp_setAverageChemConcentrationForChemElementId(qint64, qreal) ;
+//    bool zp_averageChemConcentrationForChemElementId(qint64, qreal &value) const;
 
 signals:
 

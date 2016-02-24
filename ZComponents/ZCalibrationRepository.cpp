@@ -14,10 +14,24 @@
 ZCalibrationRepository::ZCalibrationRepository(QObject *parent) : QObject(parent)
 {
     zv_defaultCalibrationName = tr("Calibration #");
+    //zv_spectrumArrayRepository = 0;
+    zv_currentArrayId = -1;
+    zv_currentArrayIndex = 0;
+
     zh_createActions();
     zh_createConnections();
     zh_actionAvailabilityControl(-1);
 }
+//==================================================================
+//void ZCalibrationRepository::zp_connectToSpectrumArrayRepository(ZSpectrumArrayRepository* spectrumRepository)
+//{
+//    zv_spectrumArrayRepository = spectrumRepository;
+//    connect(zv_spectrumArrayRepository, &ZSpectrumArrayRepository::zg_currentArrayIsAboutChange,
+//            this, &ZCalibrationRepository::zh_onCurrentSpectrumArrayIsAboutChange);
+//    connect(zv_spectrumArrayRepository, &ZSpectrumArrayRepository::zg_spectrumOperation,
+//            this, &ZCalibrationRepository::zh_onSpectrumOperation);
+
+//}
 //==================================================================
 void ZCalibrationRepository::zp_appendActionsToMenu(QMenu *menu) const
 {
@@ -126,7 +140,7 @@ bool ZCalibrationRepository::zp_setCalibrationName(int row, const QString& name)
     }
 
     zv_caibrationList[row]->zp_setBaseName(name);
-    emit zg_calibrationOperation(COT_CALIBRATION_CHANGED, row, row);
+    emit zg_calibrationOperation(COT_CALIBRATION_NAME_CHANGED, row, row);
     return true;
 }
 //======================================================
@@ -155,7 +169,7 @@ QString ZCalibrationRepository::zp_visibleCalibrationName(int visibleCalibration
     return QString();
 }
 //======================================================
-QString ZCalibrationRepository::zp_calibrationChemicalElement(int row) const
+QString ZCalibrationRepository::zp_chemElement(int row) const
 {
     if(row < 0 || row >= zv_caibrationList.count())
     {
@@ -165,7 +179,7 @@ QString ZCalibrationRepository::zp_calibrationChemicalElement(int row) const
     return zv_caibrationList.at(row)->zp_chemElement();
 }
 //======================================================
-QString ZCalibrationRepository::zp_calibrationChemicalElementForId(qint64 id) const
+QString ZCalibrationRepository::zp_chemElementForCalibrationId(qint64 id) const
 {
     if(id < 0)
     {
@@ -183,7 +197,7 @@ QString ZCalibrationRepository::zp_calibrationChemicalElementForId(qint64 id) co
     return QString();
 }
 //======================================================
-bool ZCalibrationRepository::zp_setCalibrationChemicalElement(int row, const QString& chemElement)
+bool ZCalibrationRepository::zp_setChemElement(int row, const QString& chemElement)
 {
     if(row < 0 || row >= zv_caibrationList.count())
     {
@@ -196,7 +210,7 @@ bool ZCalibrationRepository::zp_setCalibrationChemicalElement(int row, const QSt
     }
 
     zv_caibrationList[row]->zp_setChemElement(chemElement);
-    emit zg_calibrationOperation(COT_CALIBRATION_CHANGED, row, row);
+    emit zg_calibrationOperation(COT_CALIBRATION_CHEM_ELEMENT_CHANGED, row, row);
     return true;
 }
 //======================================================
@@ -633,19 +647,16 @@ const ZCalibrationWindow* ZCalibrationRepository::zp_calibrationWindow(qint64 ca
     return 0;
 }
 //======================================================
-double ZCalibrationRepository::zp_calculateConcentration(int row, const ZAbstractSpectrum* const spectrum, bool* ok) const
+bool ZCalibrationRepository::zp_calculateConcentration(int row, const ZAbstractSpectrum* spectrum, qreal& concentration) const
 {
     if(row < 0 || row >= zv_caibrationList.count()
             || spectrum == 0)
     {
-        if(ok != 0)
-        {
-            *ok = false;
-        }
-        return 0;
+        concentration = 0;
+        return false;
     }
 
-    return zv_caibrationList.at(row)->zp_calcConcentration(spectrum, ok);
+    return zv_caibrationList.at(row)->zp_calcConcentration(spectrum, concentration);
 }
 //======================================================
 int ZCalibrationRepository::zp_termCount(qint64 calibrationId) const
@@ -704,20 +715,68 @@ void ZCalibrationRepository::zp_setNextUsersTermState(qint64 calibrationId, int 
     calibration->zp_setNextUsersTermState(termLogIndex);
 }
 //======================================================
-qreal ZCalibrationRepository::zp_termFactor(qint64 calibrationId, int termIndex, bool* ok )
+bool ZCalibrationRepository::zp_termFactor(qint64 calibrationId, int termIndex, qreal& factor) const
 {
     const ZCalibration* calibration = zh_calibrationForId(calibrationId);
     if(calibration)
     {
-        return calibration->zp_termFactor(termIndex, ok);
+        return calibration->zp_termFactor(termIndex, factor);
     }
 
-    if(ok)
-    {
-        *ok = false;
-    }
-    return 0;
+    factor = 0;
+    return false;
 }
+//======================================================
+bool ZCalibrationRepository::zp_setTermFactor(qint64 calibrationId, int termIndex, qreal factor)
+{
+    const ZCalibration* calibration = zh_calibrationForId(calibrationId);
+    if(calibration)
+    {
+        return calibration->zp_setTermFactor(termIndex, factor);
+    }
+
+    return false;
+}
+//======================================================
+//bool ZCalibrationRepository::zp_termValue(qint64 calibrationId,
+//                                          int termIndex,
+//                                          const ZAbstractSpectrum* spectrum,
+//                                          qreal& value)
+//{
+//    const ZCalibration* calibration = zh_calibrationForId(calibrationId);
+//    if(calibration)
+//    {
+//        return calibration->zp_termValue(termIndex, spectrum, value);
+//    }
+
+//    return false;
+//}
+//======================================================
+bool ZCalibrationRepository::zp_termVariablePart(qint64 calibrationId,
+                                                 int termIndex,
+                                                 const ZAbstractSpectrum *spectrum,
+                                                 qreal& value)
+{
+    const ZCalibration* calibration = zh_calibrationForId(calibrationId);
+    if(calibration)
+    {
+        return calibration->zp_termVariablePart(termIndex, spectrum, value);
+    }
+
+    return false;
+}
+//======================================================
+//bool ZCalibrationRepository::zp_termAverageValue(qint64 calibrationId, int termIndex, qreal& averageValue)
+//{
+//    const ZCalibration* calibration = zh_calibrationForId(calibrationId);
+//    if(calibration)
+//    {
+//        return calibration->zp_termAverageValue(termIndex, averageValue);
+//    }
+
+//    averageValue = 0;
+//    return false;
+//}
 //======================================================
 void ZCalibrationRepository::zp_appendCalibrationsToArray(const QStringList& fileNameList)
 {
@@ -917,7 +976,7 @@ void ZCalibrationRepository::zh_removeCalibrationWindow(int currentCalibrationIn
         return;
     }
 
-    zv_caibrationList[currentCalibrationIndex]->zp_removeSpectrumWindow(spectrumWindowIndex);
+    zv_caibrationList[currentCalibrationIndex]->zp_removeCalibrationWindow(spectrumWindowIndex);
 }
 //======================================================
 void ZCalibrationRepository::zh_onWindowOperation(ZCalibration::WindowOperationType type, int first, int last)
@@ -999,10 +1058,65 @@ void ZCalibrationRepository::zh_onTermOperation(ZCalibration::TremOperationType 
         {
             emit zg_termOperation(TOT_TERM_STATE_CHANGED, calibrationIndex, first, last);
         }
+        else if(type == ZCalibration::TOT_TERM_VALUE_CHANGED)
+        {
+            emit zg_termOperation(TOT_TERM_VALUE_CHANGED, calibrationIndex, first, last);
+        }
 
         break;
     }
 }
+//======================================================
+//void ZCalibrationRepository::zh_onCurrentSpectrumArrayIsAboutChange(qint64 arrayId, int arrayIndex)
+//{
+//    if(arrayIndex != zv_currentArrayIndex || arrayId != zv_currentArrayId)
+//    {
+//        zv_currentArrayIndex = arrayIndex;
+//        zv_currentArrayId = arrayId;
+//    }
+
+//    zh_calcTermAverageValues();
+//}
+//======================================================
+//void ZCalibrationRepository::zh_getCurrentSpectrumArray(const ZSpectrumArray*& array)
+//{
+//    if(!zv_spectrumArrayRepository)
+//    {
+//        array = 0;
+//        return;
+//    }
+
+//    array = zv_spectrumArrayRepository->zp_array(zv_currentArrayIndex);
+//}
+////======================================================
+//void ZCalibrationRepository::zh_onSpectrumOperation(ZSpectrumArrayRepository::SpectrumOperationType type,
+//                                                    int arrayIndex, int first, int last)
+//{
+//    if(arrayIndex != zv_currentArrayIndex)
+//    {
+//        return;
+//    }
+
+//    switch(type)
+//    {
+//    case ZSpectrumArrayRepository::SOT_INSERT_SPECTRA:
+
+//        break;
+//    case ZSpectrumArrayRepository::SOT_REMOVE_SPECTRA:
+
+//        break;
+//    case ZSpectrumArrayRepository::SOT_VISIBLE_CHANGED:
+
+//        break;
+
+//    case ZSpectrumArrayRepository::SOT_END_INSERT_SPECTRA:
+//    case ZSpectrumArrayRepository::SOT_END_REMOVE_SPECTRA:
+//    case ZSpectrumArrayRepository::SOT_CHECKED_CHANGED:
+//        zh_calcTermAverageValues();
+//        break;
+
+//    }
+//}
 //======================================================
 void ZCalibrationRepository::zh_removeCalibration(int index)
 {
@@ -1076,9 +1190,8 @@ bool ZCalibrationRepository::zh_appendCalibrationToList(ZCalibration* calibratio
     connect(calibration, &ZCalibration::zg_termOperation,
             this, &ZCalibrationRepository::zh_onTermOperation);
 
-
-    //    connect(calibration, &ZCalibration::zg_visibilityChanged,
-    //            this, &ZCalibrationRepository::zh_onCalibrationOperation);
+//    connect(calibration, &ZCalibration::zg_requestForCurrentSpectrumArray,
+//                this, &ZCalibrationRepository::zh_getCurrentSpectrumArray);
     //    connect(calibration, &ZCalibration::zg_dirtyChanged,
     //            this, &ZCalibrationRepository::zh_onCalibrationOperation);
 
@@ -1163,3 +1276,29 @@ ZCalibration* ZCalibrationRepository::zh_calibrationForId(qint64 calibrationId) 
     return 0;
 }
 //======================================================
+//void ZCalibrationRepository::zh_calcTermAverageValues()
+//{
+//    int currentCalibrationIndex = -1;
+//    emit zg_requestCurrentCalibrationIndex(currentCalibrationIndex);
+
+//    if(currentCalibrationIndex < 0 || currentCalibrationIndex >= zv_caibrationList.count())
+//    {
+//        return;
+//    }
+
+//    if(!zv_spectrumArrayRepository)
+//    {
+//        return;
+//    }
+
+//    const ZSpectrumArray* array = zv_spectrumArrayRepository->zp_array(zv_currentArrayIndex);
+
+//    if(!array)
+//    {
+//        return;
+//    }
+
+//    zv_caibrationList.value(currentCalibrationIndex)->zp_calcTermAverageValues(array);
+
+//}
+////======================================================

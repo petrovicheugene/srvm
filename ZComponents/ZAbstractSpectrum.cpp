@@ -1,7 +1,7 @@
 //==========================================================
 #include "ZAbstractSpectrum.h"
 #include <QFileInfo>
-
+#include "ZCalibrationWindow.h"
 //==========================================================
 qint64 ZAbstractSpectrum::zv_lastSpectrumId = 0;
 //==========================================================
@@ -13,6 +13,7 @@ ZAbstractSpectrum::ZAbstractSpectrum(const QList<int> &intensityList,
     zv_path = path;
     zv_color = color;
     zv_spectrumId = zv_lastSpectrumId++;
+    zv_checked = true;
 
     QFileInfo fileInfo(path);
     QString suffix = fileInfo.suffix();
@@ -81,6 +82,16 @@ void ZAbstractSpectrum::zp_insertConcentration(qint64 chemElementId, const QStri
     zv_concentrationMap.insert(chemElementId, concentration);
 }
 //==========================================================
+bool ZAbstractSpectrum::zp_removeConcentration(qint64 chemElementId)
+{
+    if(zv_concentrationMap.remove(chemElementId) > 0)
+    {
+        return true;
+    }
+
+    return false;
+}
+//==========================================================
 QString ZAbstractSpectrum::zp_concentration(qint64 chemElementId) const
 {
     if(!zv_concentrationMap.keys().contains(chemElementId))
@@ -124,7 +135,7 @@ QString ZAbstractSpectrum::zp_path() const
     return zv_path;
 }
 //==========================================================
-int ZAbstractSpectrum::zp_intensityInWindow(int startChannel, int lastChannel, bool* ok) const
+bool ZAbstractSpectrum::zp_intensityInWindow(int startChannel, int lastChannel, qint64& intensity) const
 {
     if(startChannel < 0)
     {
@@ -144,32 +155,33 @@ int ZAbstractSpectrum::zp_intensityInWindow(int startChannel, int lastChannel, b
         lastChannel = zv_spectrumData.count() - 1;
     }
 
-    if(startChannel == lastChannel)
-    {
-        if(ok != 0)
-        {
-            *ok = false;
-        }
-        return 0;
-    }
+//    if(startChannel == lastChannel)
+//    {
+//        return false;
+//    }
 
     if(startChannel > lastChannel)
     {
         qSwap(startChannel, lastChannel);
     }
 
-    int intensity = 0;
+    intensity = 0;
     for(int c = startChannel; c <= lastChannel; c++)
     {
         intensity += zv_spectrumData.value(c);
     }
 
-    if(ok != 0)
+    return true;
+}
+//==========================================================
+bool ZAbstractSpectrum::zp_intensityInWindow(const ZCalibrationWindow* window, qint64& intensity) const
+{
+    if(!window)
     {
-        *ok = true;
+        return false;
     }
 
-    return intensity;
+    return zp_intensityInWindow(window->zp_firstChannel(), window->zp_lastChannel(),  intensity);
 }
 //==========================================================
 int ZAbstractSpectrum::zp_channelCount() const

@@ -16,7 +16,7 @@ public:
                           const QString& path, QColor color, QObject* parent);
     virtual ~ZSpeSpectrum();
 
-    const ZAbstractSpectrumAuxData *zp_auxData() const override;
+    const ZAbstractSpectrumAuxData *zp_auxData() const;
     QStringList zp_isEnergyCalibrationSuitable(const QString&,
                                         qreal K0, qreal K1, qreal K2);
 
@@ -36,5 +36,6 @@ private:
 //    int zv_peakWidht;
 
 };
+
 //===================================================
 #endif // ZSPESPECTRUM_H

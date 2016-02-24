@@ -3,6 +3,8 @@
 #define ZTERMCORRELATIONTABLEWIDGET_H
 //========================================================
 #include <QWidget>
+#include <QModelIndex>
+
 //========================================================
 class QTableView;
 class QAction;
@@ -27,7 +29,9 @@ signals:
 public slots:
 
 
+private slots:
 
+   void zh_editNext(QModelIndex editedIndex);
 
 private:
 
@@ -37,7 +41,6 @@ private:
    // FUNCS
    void zh_createComponents();
    void zh_createConnections();
-
 
 };
 //========================================================

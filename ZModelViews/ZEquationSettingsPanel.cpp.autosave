@@ -1,0 +1,8 @@
+//========================================================
+#include "ZEquationSettingsPanel.h"
+//========================================================
+ZEquationSettingsPanel::ZEquationSettingsPanel(QWidget *parent) : QWidget(parent)
+{
+
+}
+//========================================================

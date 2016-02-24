@@ -26,11 +26,12 @@ public:
                              AOT_DATA_CHANGED
                             };
 
-    enum SpectrumOperationType {SOT_INSERT_SPECTRA,
+    enum SpectrumOperationType {SOT_BEGIN_INSERT_SPECTRA,
                                 SOT_END_INSERT_SPECTRA,
-                                SOT_REMOVE_SPECTRA,
+                                SOT_BEGIN_REMOVE_SPECTRA,
                                 SOT_END_REMOVE_SPECTRA,
-                                SOT_DATA_CHANGED
+                                SOT_VISIBLE_CHANGED,
+                                SOT_CHECKED_CHANGED
                                };
 
     enum ChemElementOperationType {CEOT_INSERT_CHEM_ELEMENT,
@@ -54,6 +55,7 @@ public:
     bool zp_isEmpty() const;
     void zp_clear();
 
+    const ZSpectrumArray* zp_array(int arrayIndex);
     int zp_arrayCount() const;
     QString zp_arrayName(int arrayIndex) const;
     bool zp_setSpectrumArrayName(int arrayIndex, const QString&);
@@ -68,8 +70,10 @@ public:
     bool zp_isSpectrumVisible(qint64 arrayId, qint64 spectrumId) const;
     bool zp_setSpectrumVisible(qint64 arrayId, qint64 spectrumId, bool visible);
 
-    bool zp_isSpectrumChecked(qint64 arrayId, qint64 spectrumId) const;
-    bool zp_setSpectrumChecked(qint64 arrayId, qint64 spectrumId, bool checked);
+    bool zp_isSpectrumCheckedForId(qint64 arrayId, qint64 spectrumId) const;
+    bool zp_isSpectrumChecked(int arrayIndex, int spectrumIndex) const;
+    bool zp_setSpectrumChecked(int arrayIndex, int spectrumIndex, bool checked);
+    bool zp_setSpectrumCheckedForId(qint64 arrayId, qint64 spectrumId, bool checked);
 
 
     const ZAbstractSpectrum * zp_spectrum(int arrayIndex, int spectrumIndex) const;
@@ -93,13 +97,18 @@ public:
 
     QString zp_chemConcentration(int arrayIndex,
                                  int spectrumIndex, int visibleChemElementIndex) const;
+
     bool zp_setChemConcentration(int arrayIndex,
                                  int spectrumIndex, int visibleChemElementIndex, const QString &concentration);
     bool zp_setChemElementName(int arrayIndex, int chemElementIndex, const QString&);
     bool zp_energyCalibration(int arrayIndex, qreal& K0, qreal& K1, qreal& K2, QString& energyUnit);
     bool zp_energyCalibrationForArrayId(qint64 arrayId, qreal& K0, qreal& K1, qreal& K2, QString& energyUnit);
 
-    qint64 zp_arrayIdForArrayIndex(int arrayIndex);
+    qint64 zp_arrayIdForArrayIndex(int arrayIndex) const;
+//    bool zp_averageChemConcentration(int arrayIndex, const QString& chemElement, qreal& averageValue ) const;
+//    bool zp_averageChemConcentration(int arrayIndex, int chemElementindex, qreal& averageValue ) const;
+//    bool zp_averageChemConcentrationForChemElementId(int arrayIndex, qint64 chemElementId , qreal& averageValue ) const;
+
 
 signals:
 
@@ -124,6 +133,7 @@ signals:
     void zg_saveSpectraArrayList(QString, QList<ZRawSpectrumArray>) const;
     void zg_initSpectraAppending(int);
 
+    void zg_currentArrayIsAboutChange(qint64 arrayId, int arrayIndex);
     void zg_currentArrayIdChanged(qint64 arrayId, int arrayIndex);
     void zg_currentSpectrumChanged(qint64 currentSpectrumId, int currentSpectrumIndex,
                               qint64 previousSpectrumId, int previousSpectrumIndex);
@@ -157,7 +167,7 @@ private slots:
 
     void zh_onChemElementOperation(ZChemElementList::OperationType, int, int);
     void zh_createRawArrayListAndStartSaving(QString filePath) const;
-    void zh_onSpectrumOperation(ZSpectrumArray::OperationType type, int first, int last);
+    void zh_onSpectrumOperation(ZSpectrumArray::OperationType type, int first, int last) const;
 
 private:
 
@@ -181,7 +191,7 @@ private:
 
     bool zh_removeArray(int);
     bool zh_removeSpectrum(int, int);
-    void zh_removeChemicalElement(int, int);
+    bool zh_removeChemicalElement(int, int);
     int zh_chemElementIndexForId(int arrayIndex, qint64 chemElementId);
     QList<ZRawSpectrumArray> zh_createRawArrayList() const;
     //  void zp_saveArrayListToFile();

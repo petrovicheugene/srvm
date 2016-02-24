@@ -7,6 +7,7 @@
 #include <QMap>
 //====================================================
 class ZAbstractTerm;
+class ZAbstractSpectrum;
 //====================================================
 class ZCalibrationWindow : public QObject
 {
@@ -47,9 +48,14 @@ public:
    static QString zp_typeName(WindowType);
    static WindowType zp_typeForName(const QString& );
 
+public slots:
+
+   void zp_calcWindowIntensity(const QObject*, qint64&, bool keepBufferClean, bool *ok);
+
 signals:
 
    void zg_windowNameChanged(const QString&) const;
+   void zg_widowMarginsChanged() const;
 
 private:
 
@@ -60,6 +66,9 @@ private:
    bool zv_visible;
    qint64 zv_windowId;
 
+   // buffer
+   qint64 zv_spectrumId;
+   qint64 zv_windowIntensityValue;
 
    // STATIC
    // VARS

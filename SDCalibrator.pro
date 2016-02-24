@@ -14,7 +14,7 @@ RC_ICONS = "SDC1.ico"
 
 VER_MAJ=0
 VER_MIN=0
-VER_PAT=2
+VER_PAT=5
 VER_RELEASE=a
 
 EXE_BASE_NAME=SDCalibrator
@@ -124,14 +124,16 @@ SOURCES += main.cpp \
     ZModels/ZTermCorrelationTableModel.cpp \
     ZComponents/ZAbstractTerm.cpp \
     ZComponents/ZTermCorrelationTableManager.cpp \
-    ZComponents/ZTermNormalizator.cpp \
     ZComponents/ZCalculationPlotterManager.cpp \
     ZModelViews/ZCalculationPlotterWidget.cpp \
     ZComponents/ZSimpleTerm.cpp \
     ZComponents/ZQuadraticTerm.cpp \
     ZComponents/ZCustomTerm.cpp \
     ZComponents/ZCrossProductTerm.cpp \
-    ZModelViews/ZCustomCheckableVerticalHeaderView/ZCustomCheckableVerticalHeaderView.cpp
+    ZModelViews/ZCustomCheckableVerticalHeaderView/ZCustomCheckableVerticalHeaderView.cpp \
+    ZComponents/ZTermNormalizer.cpp \
+    ZModelViews/ZTermSettingsDashBoard.cpp \
+    ZModelViews/ZEquationSettingsDashBoard.cpp
 
 
 HEADERS  += \
@@ -204,7 +206,9 @@ HEADERS  += \
     ZComponents/ZCustomTerm.h \
     ZComponents/ZQuadraticTerm.h \
     ZComponents/ZSimpleTerm.h \
-    ZModelViews/ZCustomCheckableVerticalHeaderView/ZCustomCheckableVerticalHeaderView.h
+    ZModelViews/ZCustomCheckableVerticalHeaderView/ZCustomCheckableVerticalHeaderView.h \
+    ZModelViews/ZTermSettingsDashBoard.h \
+    ZModelViews/ZEquationSettingsDashBoard.h
 
 
 RESOURCES += \

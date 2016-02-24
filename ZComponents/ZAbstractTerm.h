@@ -3,13 +3,14 @@
 #define ZABSTRACTTERM_H
 //============================================================
 #include <QObject>
+#include <QMap>
 #include "ZTermNormalizer.h"
 //============================================================
 class ZAbstractSpectrum;
 class ZCalibrationWindow;
 class ZTermNormalizer;
 class ZCalibration;
-
+class ZSpectrumArray;
 //============================================================
 class ZAbstractTerm : public QObject
 {
@@ -32,23 +33,29 @@ public:
 
 
     // FUNCS
-    virtual qreal zp_calcValue() = 0;
+    virtual bool zp_calcValue(const ZAbstractSpectrum*, qreal&) = 0;
+    virtual bool zp_calcTermVariablePart(const ZAbstractSpectrum*, qint64 &value) = 0; // w/o factor
     virtual QString zp_termName() const;
     virtual ZAbstractTerm::TermType zp_termType() const;
 
+    qint64 zp_termId();
     qreal zp_termFactor() const;
+    void zp_setTermFactor(qreal factor);
 
     ZAbstractTerm::TermState zp_termState() const;
     bool zp_setTermState(ZAbstractTerm::TermState);
 
+    // void zp_calcAverageTermValueAndTermValueList(const ZSpectrumArray*);
 
 signals:
 
-    void zg_isNormalizerValid(bool&);
-    void zg_normalizerValue(qreal&);
+    void zg_requestIsNormalizerValid(bool&);
+    void zg_requestNormalizerValue(qreal&);
+    void zg_termWindowMarginChanged();
     void zg_termNameChanged() const;
     void zg_requestForDelete(ZAbstractTerm*);
     void zg_termStateChanged(ZAbstractTerm::TermState) const;
+   // void zg_termValuesChanged() const;
 
 public slots:
 
@@ -65,13 +72,22 @@ protected slots:
 protected:
 
     // VARS
+    qint64 zv_termId;
     TermType zv_type;
     qreal zv_K;
     TermState zv_termState;
     QString zv_name;
+
+//    QList<qint64> zv_unnormalizedValueList;
+//    qreal zv_averageValue;
     // FUNCS
     void zh_connectToNormalizer(ZTermNormalizer *);
     void zh_connectToCalibration(ZCalibration* calibration);
+
+    // STATIC
+    // VARS
+    static qint64 zv_lastTermId;
+
 };
 //============================================================
 #endif // ZABSTRACTTERM_H

@@ -210,7 +210,7 @@ bool ZJointSpectraDataManager::zp_setSpectrumVisible(int spectrumIndex, bool vis
 //==================================================================
 bool ZJointSpectraDataManager::zp_isSpectrumChecked(int spectrumIndex) const
 {
-    if(!zv_spectrumArrayRepository || zv_currentArrayIndex < 0 )
+    if(!zv_spectrumArrayRepository)
     {
         return false;
     }
@@ -261,12 +261,12 @@ void ZJointSpectraDataManager::zh_currentSpectrumArrayChanged(qint64 currentArra
         return;
     }
 
-    emit zg_currentOperation(OT_RESET_DATA, -1, -1);
+    emit zg_currentOperation(OT_BEGIN_RESET, -1, -1);
     zv_currentArrayIndex = currentArrayIndex;
     zv_currentArrayId = currentArrayId;
     zh_defineColumnCounts();
     zh_calculateConcentrationsForCalibration();
-    emit zg_currentOperation(OT_END_RESET_DATA, -1, -1);
+    emit zg_currentOperation(OT_END_RESET, -1, -1);
 }
 //==================================================================
 void ZJointSpectraDataManager::zh_onRepositoryArrayOperation(ZSpectrumArrayRepository::SpectrumOperationType type,
@@ -278,25 +278,25 @@ void ZJointSpectraDataManager::zh_onRepositoryArrayOperation(ZSpectrumArrayRepos
         return;
     }
 
-    if(type == ZSpectrumArrayRepository::SOT_INSERT_SPECTRA)
+    if(type == ZSpectrumArrayRepository::SOT_BEGIN_INSERT_SPECTRA)
     {
-        emit zg_currentOperation(OT_INSERT_ROW, first, last);
+        emit zg_currentOperation(OT_BEGIN_INSERT_ROW, first, last);
     }
     else if(type == ZSpectrumArrayRepository::SOT_END_INSERT_SPECTRA)
     {
         emit zg_currentOperation(OT_END_INSERT_ROW, first, last);
     }
-    else if(type == ZSpectrumArrayRepository::SOT_REMOVE_SPECTRA)
+    else if(type == ZSpectrumArrayRepository::SOT_BEGIN_REMOVE_SPECTRA)
     {
-        emit zg_currentOperation(OT_REMOVE_ROW, first, last);
+        emit zg_currentOperation(OT_BEGIN_REMOVE_ROW, first, last);
     }
     else if(type == ZSpectrumArrayRepository::SOT_END_REMOVE_SPECTRA)
     {
         emit zg_currentOperation(OT_END_REMOVE_ROW, first, last);
     }
-    else if(type == ZSpectrumArrayRepository::SOT_DATA_CHANGED)
+    else if(type == ZSpectrumArrayRepository::SOT_VISIBLE_CHANGED)
     {
-        emit zg_currentOperation(OT_SEPECTRUM_DATA_CHANGED, first, last);
+        emit zg_currentOperation(OT_SEPECTRUM_VISIBLE_CHANGED, first, last);
     }
 }
 //==================================================================
@@ -324,7 +324,7 @@ void ZJointSpectraDataManager::zh_onRepositoryChemElementOperation(ZSpectrumArra
 
     if(type == ZSpectrumArrayRepository::CEOT_INSERT_CHEM_ELEMENT)
     {
-        emit zg_currentOperation(OT_INSERT_COLUMN, visibleFirst, visibleLast);
+        emit zg_currentOperation(OT_BEGIN_INSERT_COLUMN, visibleFirst, visibleLast);
     }
     else if(type == ZSpectrumArrayRepository::CEOT_END_INSERT_CHEM_ELEMENT)
     {
@@ -332,7 +332,7 @@ void ZJointSpectraDataManager::zh_onRepositoryChemElementOperation(ZSpectrumArra
     }
     else if(type == ZSpectrumArrayRepository::CEOT_REMOVE_CHEM_ELEMENT)
     {
-        emit zg_currentOperation(OT_REMOVE_COLUMN, visibleFirst, visibleLast);
+        emit zg_currentOperation(OT_BEGIN_REMOVE_COLUMN, visibleFirst, visibleLast);
     }
     else if(type == ZSpectrumArrayRepository::CEOT_END_REMOVE_CHEM_ELEMENT)
     {
@@ -347,11 +347,11 @@ void ZJointSpectraDataManager::zh_onRepositoryChemElementOperation(ZSpectrumArra
         bool visible = zv_spectrumArrayRepository->zp_chemElementIsVisible(zv_currentArrayIndex, first);
         if(!visible)
         {
-            emit zg_currentOperation(OT_INSERT_COLUMN, visibleFirst, visibleLast);
+            emit zg_currentOperation(OT_BEGIN_INSERT_COLUMN, visibleFirst, visibleLast);
         }
         else
         {
-            emit zg_currentOperation(OT_REMOVE_COLUMN, visibleFirst, visibleLast);
+            emit zg_currentOperation(OT_BEGIN_REMOVE_COLUMN, visibleFirst, visibleLast);
         }
     }
     else if(type == ZSpectrumArrayRepository::CEOT_END_CHEM_ELEMENT_VISIBILITY_CHANGE)
@@ -376,7 +376,7 @@ void ZJointSpectraDataManager::zh_onRepositoryCalibrationOperation(ZCalibrationR
 
     if(type == ZCalibrationRepository::COT_INSERT_CALIBRATIONS)
     {
-        emit zg_currentOperation(OT_INSERT_COLUMN, visibleFirst, visibleLast);
+        emit zg_currentOperation(OT_BEGIN_INSERT_COLUMN, visibleFirst, visibleLast);
     }
     else if(type == ZCalibrationRepository::COT_END_INSERT_CALIBRATIONS)
     {
@@ -384,13 +384,13 @@ void ZJointSpectraDataManager::zh_onRepositoryCalibrationOperation(ZCalibrationR
     }
     else if(type == ZCalibrationRepository::COT_REMOVE_CALIBRATIONS)
     {
-        emit zg_currentOperation(OT_REMOVE_COLUMN, visibleFirst, visibleLast);
+        emit zg_currentOperation(OT_BEGIN_REMOVE_COLUMN, visibleFirst, visibleLast);
     }
     else if(type == ZCalibrationRepository::COT_END_REMOVE_CALIBRATIONS)
     {
         emit zg_currentOperation(OT_END_REMOVE_COLUMN, visibleFirst, visibleLast);
     }
-    else if(type == ZCalibrationRepository::COT_CALIBRATION_CHANGED)
+    else if(type == ZCalibrationRepository::COT_CALIBRATION_NAME_CHANGED)
     {
         emit zg_currentOperation(OT_COLUMN_HEADER_CHANGED, visibleFirst, visibleLast);
     }
@@ -399,11 +399,11 @@ void ZJointSpectraDataManager::zh_onRepositoryCalibrationOperation(ZCalibrationR
         bool visible = zv_calibrationRepository->zp_isCalibrationVisible(first);
         if(!visible)
         {
-            emit zg_currentOperation(OT_INSERT_COLUMN, visibleFirst, visibleLast);
+            emit zg_currentOperation(OT_BEGIN_INSERT_COLUMN, visibleFirst, visibleLast);
         }
         else
         {
-            emit zg_currentOperation(OT_REMOVE_COLUMN, visibleFirst, visibleLast);
+            emit zg_currentOperation(OT_BEGIN_REMOVE_COLUMN, visibleFirst, visibleLast);
         }
     }
     else if(type == ZCalibrationRepository::COT_END_CALIBRATION_VISIBILITY_CHANGE)
@@ -468,16 +468,17 @@ void ZJointSpectraDataManager::zh_calculateConcentrationsForCalibration()
         return;
     }
 
-    bool ok;
+    bool res;
     QString calibrationName;
+    qreal concentration;
     for(int c = 0; c < zv_calibrationRepository->zp_calibrationCount(); c++)
     {
         calibrationName = zv_calibrationRepository->zp_calibrationName(c);
         QStringList concentrationList;
         for(int s = 0; s < zv_spectrumArrayRepository->zp_spectrumCount(zv_currentArrayIndex); s++)
         {
-            double concentration = zv_calibrationRepository->zp_calculateConcentration(c, zv_spectrumArrayRepository->zp_spectrum(zv_currentArrayIndex, s), &ok);
-            if(ok)
+            res = zv_calibrationRepository->zp_calculateConcentration(c, zv_spectrumArrayRepository->zp_spectrum(zv_currentArrayIndex, s), concentration);
+            if(res)
             {
                 concentrationList.append(QString::number(concentration, zv_concentrationFormat, zv_concentrationPrecision));
             }

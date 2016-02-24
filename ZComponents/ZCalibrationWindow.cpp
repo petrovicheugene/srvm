@@ -1,6 +1,7 @@
 //====================================================
 #include "ZCalibrationWindow.h"
 #include "ZAbstractTerm.h"
+#include "ZAbstractSpectrum.h"
 #include <QPointer>
 //====================================================
 qint64 ZCalibrationWindow::zv_lastWindowId = 0;
@@ -23,6 +24,8 @@ ZCalibrationWindow::ZCalibrationWindow(QObject* parent) : QObject(parent)
     zv_windowName = QString();
     zv_firstChannel = 0;
     zv_lastChannel = 0;
+    zv_spectrumId = -1;
+    zv_windowIntensityValue = 0;
 
     zv_type = WT_NOT_DEFINED;
     zv_visible = true;
@@ -108,6 +111,7 @@ bool ZCalibrationWindow::zp_setWindowFirstChannel(int channel)
         return false;
     }
     zv_firstChannel = channel;
+    emit zg_widowMarginsChanged();
     return true;
 }
 //====================================================
@@ -118,6 +122,7 @@ bool ZCalibrationWindow::zp_setWindowLastChannel(int channel)
         return false;
     }
     zv_lastChannel = channel;
+    emit zg_widowMarginsChanged();
     return true;
 }
 //====================================================
@@ -130,10 +135,11 @@ bool ZCalibrationWindow::zp_setWindowMarginChannels(int first, int last)
 
     if(first > last)
     {
-       qSwap(first, last);
+        qSwap(first, last);
     }
     zv_firstChannel = first;
     zv_lastChannel = last;
+    emit zg_widowMarginsChanged();
     return true;
 }
 //====================================================
@@ -175,5 +181,48 @@ ZCalibrationWindow::WindowType ZCalibrationWindow::zp_typeForName(const QString&
     }
 
     return zv_typeNameMap.key(typeName);
+}
+//====================================================
+void ZCalibrationWindow::zp_calcWindowIntensity(const QObject *spectrumObject, qint64& intensityValue, bool keepBufferClean, bool* ok)
+{
+    const ZAbstractSpectrum* spectrum = qobject_cast<const ZAbstractSpectrum*>(spectrumObject);
+
+    if(!spectrum)
+    {
+        intensityValue = 0;
+        if(ok)
+        {
+            *ok = false;
+        }
+
+        return;
+    }
+
+    if(zv_spectrumId >= 0 && zv_spectrumId == spectrum->zp_spectrumId() && !keepBufferClean)
+    {
+        intensityValue = zv_windowIntensityValue;
+        if(ok)
+        {
+            *ok = true;
+        }
+        return;
+    }
+
+    bool res = spectrum->zp_intensityInWindow(zv_firstChannel, zv_lastChannel, intensityValue);
+    if(res && !keepBufferClean)
+    {
+        zv_windowIntensityValue = intensityValue;
+        zv_spectrumId = spectrum->zp_spectrumId();
+    }
+    else
+    {
+        zv_windowIntensityValue = 0;
+        zv_spectrumId = -1;
+    }
+
+    if(ok)
+    {
+        *ok = res;
+    }
 }
 //====================================================

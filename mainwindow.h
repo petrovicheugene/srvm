@@ -12,6 +12,7 @@ class ZChemElementWidget;
 class ZCalibrationTableWidget;
 class ZCalibrationWindowTableWidget;
 class ZTermCorrelationTableWidget;
+class ZEquationSettingsDashBoard;
 class ZCalculationPlotterWidget;
 class ZWidgetWithSidebar;
 class ZMessagePanel;
@@ -77,6 +78,7 @@ private:
     ZCalibrationWindowTableWidget* zv_calibrationWindowTableWidget;
 
     ZTermCorrelationTableWidget* zv_termCorrelationTableWidget;
+    ZEquationSettingsDashBoard* zv_equationSettingsPanelWidget;
     ZCalculationPlotterWidget* zv_calculationPlotterWidget;
 
     ZMessagePanel* zv_messagePanel;
