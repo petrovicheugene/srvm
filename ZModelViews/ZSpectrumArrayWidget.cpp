@@ -43,6 +43,8 @@ void ZSpectrumArrayWidget::zp_setModel(ZArrayModel *model)
             this, &ZSpectrumArrayWidget::zh_onCurrentArrayChanged);
     connect(model, &ZArrayModel::zg_checkCurrentArray,
             this, &ZSpectrumArrayWidget::zh_checkCurrentArray);
+    zv_table->setSelectionMode(QAbstractItemView::SingleSelection);
+
 }
 //==============================================================
 void ZSpectrumArrayWidget::zp_appendButtonActions(QList<QAction*> actionList)

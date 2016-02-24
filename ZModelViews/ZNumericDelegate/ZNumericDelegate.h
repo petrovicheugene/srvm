@@ -21,9 +21,9 @@ public:
     virtual void	updateEditorGeometry ( QWidget * editor, const QStyleOptionViewItem & option, const QModelIndex & index ) const;
 
     //bool editorEvent(QEvent *event, QAbstractItemModel *model, const QStyleOptionViewItem &option, const QModelIndex &index);
-    void setEditorMinMax(double min, double max) ;
-
-    void setFontBold(bool);
+    void zp_setEditorMinMax(double min, double max) ;
+    void zp_editorMinMax(double& min, double& max) const;
+    void zp_setFontBold(bool);
 
 protected:
 
@@ -31,25 +31,25 @@ protected:
 
     enum MessageType {MT_NO_MESSAGE, MT_MAX_LIMIT, MT_MIN_LIMIT};
     //ZNumericEditor* m_numericEditor;
-    bool m_fontBoldFlag;
-    bool m_inheritFontBoldFlag;
-    double m_editorMin;
-    double m_editorMax;
+    bool zv_fontBoldFlag;
+    bool zv_inheritFontBoldFlag;
+    double zv_editorMin;
+    double zv_editorMax;
 
-    QModelIndex m_editedIndex;
-    bool m_isEditorAlive;
+    QModelIndex zv_editedIndex;
+    bool zv_isEditorAlive;
     // FUNCS
 
 signals:
     
     //void dataStored(QModelIndex) const;
-    void editNext(QModelIndex);
-    void requestEditorMinMax(ZNumericDelegate*, QModelIndex) const;
+    void zg_editNext(QModelIndex);
+    void zg_requestEditorMinMax(ZNumericDelegate*, QModelIndex) const;
 
 public slots:
     
 protected slots:
-    void onEditorEnterClick();
+    void zh_onEditorEnterClick();
 };
 //=========================================------------------------------------------
 #endif // ZCONCENTRATIONDELEGATE_H

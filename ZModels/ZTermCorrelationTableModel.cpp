@@ -15,8 +15,13 @@ ZTermCorrelationTableModel::ZTermCorrelationTableModel(QObject *parent) :
 Qt::ItemFlags ZTermCorrelationTableModel::flags(const QModelIndex & index) const
 {
     Qt::ItemFlags flags;
-    return flags;
+    flags |= Qt::ItemIsEnabled;
+    if(index.column() == 0)
+    {
+        flags |= Qt::ItemIsEditable;
+    }
 
+    return flags;
 }
 //==================================================================
 int ZTermCorrelationTableModel::columnCount(const QModelIndex & parent) const
@@ -67,24 +72,41 @@ QVariant	ZTermCorrelationTableModel::data(const QModelIndex & index, int role) c
         alignment = Qt::AlignRight | Qt::AlignVCenter;
         return QVariant(alignment);
     }
-    //   if(role == VisibleRole)
-    //   {
-    //       if(index.column() == 0)
-    //       {
-    //           return QVariant(zv_dataManager->zp_isWindowVisible(index.row()));
-    //       }
-    //   }
+
+    if(role == Qt::BackgroundRole)
+    {
+        return zv_dataManager->zp_cellColor(index);
+    }
 
     return QVariant();
 }
 //==================================================================
 bool ZTermCorrelationTableModel::setData(const QModelIndex & index, const QVariant & value, int role)
 {
+    if(!index.isValid() || !zv_dataManager || !value.isValid())
+    {
+        return false;
+    }
+
+    if(role == Qt::EditRole)
+    {
+        if(index.column() == 0)
+        {
+            return zv_dataManager->zp_setData(index, value);
+        }
+    }
+
     return false;
 }
 //==================================================================
 QVariant	ZTermCorrelationTableModel::headerData(int section, Qt::Orientation orientation, int role) const
 {
+    if(!zv_dataManager)
+    {
+        return QVariant();
+    }
+
+
     if(role == Qt::DisplayRole)
     {
         if(orientation == Qt::Horizontal)

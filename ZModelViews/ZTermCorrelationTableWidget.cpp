@@ -2,6 +2,7 @@
 #include "ZTermCorrelationTableWidget.h"
 #include "ZTermCorrelationTableModel.h"
 #include "ZCustomCheckableVerticalHeaderView.h"
+#include "ZNumericDelegate.h"
 
 #include <QTableView>
 #include <QHBoxLayout>
@@ -21,10 +22,10 @@ void ZTermCorrelationTableWidget::zp_setModel(ZTermCorrelationTableModel* model)
 
     connect(this, &ZTermCorrelationTableWidget::zg_userChangesTermState,
             model, &ZTermCorrelationTableModel::zp_onUserChangesTermState);
-//    ZNumericDelegate* numericDelegate = new ZNumericDelegate(zv_table);
-//    connect(numericDelegate, &ZNumericDelegate::editNext,
-//            this, &ZJointSpectrumTableWidget::zh_editNext);
-//    zv_table->setItemDelegate(numericDelegate);
+    ZNumericDelegate* numericDelegate = new ZNumericDelegate(zv_table);
+    connect(numericDelegate, &ZNumericDelegate::zg_editNext,
+            this, &ZTermCorrelationTableWidget::zh_editNext);
+    zv_table->setItemDelegate(numericDelegate);
 //    ZSpectrumTableDelegate* spectrumDelegate = new ZSpectrumTableDelegate(zv_table);
 //    zv_table->setItemDelegateForColumn(0, new ZVisibilityStringDelegate(zv_table));
 //    zv_table->setItemDelegateForColumn(1, spectrumDelegate);
@@ -71,6 +72,31 @@ void ZTermCorrelationTableWidget::zh_createComponents()
 void ZTermCorrelationTableWidget::zh_createConnections()
 {
 
+}
+//=============================================================
+void ZTermCorrelationTableWidget::zh_editNext(QModelIndex editedIndex)
+{
+    if(!editedIndex.isValid() || editedIndex.row() < 0)
+    {
+        return;
+    }
+
+    if(editedIndex.row()+1 >= editedIndex.model()->rowCount())
+    {
+        // end of column - quit editing keeping current index as "current"
+        zv_table->setCurrentIndex(editedIndex);
+        return;
+    }
+
+    // defining next index
+    QModelIndex nextIndex = editedIndex.model()->index(editedIndex.row()+1, editedIndex.column());
+    if(!nextIndex.isValid())
+    {
+        return;
+    }
+
+    zv_table->setCurrentIndex(nextIndex);
+    zv_table->edit(nextIndex);
 }
 //=============================================================
 

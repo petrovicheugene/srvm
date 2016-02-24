@@ -24,6 +24,8 @@ ZCalibrationWindow::ZCalibrationWindow(QObject* parent) : QObject(parent)
     zv_windowName = QString();
     zv_firstChannel = 0;
     zv_lastChannel = 0;
+    zv_spectrumId = -1;
+    zv_windowIntensityValue = 0;
 
     zv_type = WT_NOT_DEFINED;
     zv_visible = true;
@@ -181,7 +183,7 @@ ZCalibrationWindow::WindowType ZCalibrationWindow::zp_typeForName(const QString&
     return zv_typeNameMap.key(typeName);
 }
 //====================================================
-void ZCalibrationWindow::zp_calcWindowIntensity(const QObject *spectrumObject, qint64& intensityValue, bool* ok)
+void ZCalibrationWindow::zp_calcWindowIntensity(const QObject *spectrumObject, qint64& intensityValue, bool keepBufferClean, bool* ok)
 {
     const ZAbstractSpectrum* spectrum = qobject_cast<const ZAbstractSpectrum*>(spectrumObject);
 
@@ -196,7 +198,28 @@ void ZCalibrationWindow::zp_calcWindowIntensity(const QObject *spectrumObject, q
         return;
     }
 
+    if(zv_spectrumId >= 0 && zv_spectrumId == spectrum->zp_spectrumId() && !keepBufferClean)
+    {
+        intensityValue = zv_windowIntensityValue;
+        if(ok)
+        {
+            *ok = true;
+        }
+        return;
+    }
+
     bool res = spectrum->zp_intensityInWindow(zv_firstChannel, zv_lastChannel, intensityValue);
+    if(res && !keepBufferClean)
+    {
+        zv_windowIntensityValue = intensityValue;
+        zv_spectrumId = spectrum->zp_spectrumId();
+    }
+    else
+    {
+        zv_windowIntensityValue = 0;
+        zv_spectrumId = -1;
+    }
+
     if(ok)
     {
         *ok = res;

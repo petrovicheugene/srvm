@@ -210,7 +210,7 @@ bool ZJointSpectraDataManager::zp_setSpectrumVisible(int spectrumIndex, bool vis
 //==================================================================
 bool ZJointSpectraDataManager::zp_isSpectrumChecked(int spectrumIndex) const
 {
-    if(!zv_spectrumArrayRepository || zv_currentArrayIndex < 0 )
+    if(!zv_spectrumArrayRepository)
     {
         return false;
     }
@@ -278,7 +278,7 @@ void ZJointSpectraDataManager::zh_onRepositoryArrayOperation(ZSpectrumArrayRepos
         return;
     }
 
-    if(type == ZSpectrumArrayRepository::SOT_INSERT_SPECTRA)
+    if(type == ZSpectrumArrayRepository::SOT_BEGIN_INSERT_SPECTRA)
     {
         emit zg_currentOperation(OT_BEGIN_INSERT_ROW, first, last);
     }
@@ -286,7 +286,7 @@ void ZJointSpectraDataManager::zh_onRepositoryArrayOperation(ZSpectrumArrayRepos
     {
         emit zg_currentOperation(OT_END_INSERT_ROW, first, last);
     }
-    else if(type == ZSpectrumArrayRepository::SOT_REMOVE_SPECTRA)
+    else if(type == ZSpectrumArrayRepository::SOT_BEGIN_REMOVE_SPECTRA)
     {
         emit zg_currentOperation(OT_BEGIN_REMOVE_ROW, first, last);
     }
@@ -390,7 +390,7 @@ void ZJointSpectraDataManager::zh_onRepositoryCalibrationOperation(ZCalibrationR
     {
         emit zg_currentOperation(OT_END_REMOVE_COLUMN, visibleFirst, visibleLast);
     }
-    else if(type == ZCalibrationRepository::COT_CALIBRATION_CHANGED)
+    else if(type == ZCalibrationRepository::COT_CALIBRATION_NAME_CHANGED)
     {
         emit zg_currentOperation(OT_COLUMN_HEADER_CHANGED, visibleFirst, visibleLast);
     }
@@ -468,16 +468,17 @@ void ZJointSpectraDataManager::zh_calculateConcentrationsForCalibration()
         return;
     }
 
-    bool ok;
+    bool res;
     QString calibrationName;
+    qreal concentration;
     for(int c = 0; c < zv_calibrationRepository->zp_calibrationCount(); c++)
     {
         calibrationName = zv_calibrationRepository->zp_calibrationName(c);
         QStringList concentrationList;
         for(int s = 0; s < zv_spectrumArrayRepository->zp_spectrumCount(zv_currentArrayIndex); s++)
         {
-            double concentration = zv_calibrationRepository->zp_calculateConcentration(c, zv_spectrumArrayRepository->zp_spectrum(zv_currentArrayIndex, s), &ok);
-            if(ok)
+            res = zv_calibrationRepository->zp_calculateConcentration(c, zv_spectrumArrayRepository->zp_spectrum(zv_currentArrayIndex, s), concentration);
+            if(res)
             {
                 concentrationList.append(QString::number(concentration, zv_concentrationFormat, zv_concentrationPrecision));
             }

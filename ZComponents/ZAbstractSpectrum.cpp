@@ -82,6 +82,16 @@ void ZAbstractSpectrum::zp_insertConcentration(qint64 chemElementId, const QStri
     zv_concentrationMap.insert(chemElementId, concentration);
 }
 //==========================================================
+bool ZAbstractSpectrum::zp_removeConcentration(qint64 chemElementId)
+{
+    if(zv_concentrationMap.remove(chemElementId) > 0)
+    {
+        return true;
+    }
+
+    return false;
+}
+//==========================================================
 QString ZAbstractSpectrum::zp_concentration(qint64 chemElementId) const
 {
     if(!zv_concentrationMap.keys().contains(chemElementId))
@@ -145,10 +155,10 @@ bool ZAbstractSpectrum::zp_intensityInWindow(int startChannel, int lastChannel, 
         lastChannel = zv_spectrumData.count() - 1;
     }
 
-    if(startChannel == lastChannel)
-    {
-        return false;
-    }
+//    if(startChannel == lastChannel)
+//    {
+//        return false;
+//    }
 
     if(startChannel > lastChannel)
     {

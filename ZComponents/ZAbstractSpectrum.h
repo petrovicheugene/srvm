@@ -41,6 +41,7 @@ public:
     bool zp_setSpectrumChecked(bool);
 
     void zp_insertConcentration(qint64 chemElementId, const QString& concentration);
+    bool zp_removeConcentration(qint64 chemElementId);
     QString zp_concentration(qint64 chemElementId) const;
     bool zp_setConcentration(qint64 chemElementId, const QString& concentration);
     QList<int> zp_spectrumData() const;
@@ -75,11 +76,12 @@ protected:
     int zv_channelCount;
     int zv_maxIntensity;
 
-    static qint64 zv_lastSpectrumId;
-
-
     // FUNCS
     void zh_recalcSpectrumPainterPath();
+
+    // STATIC
+    // VARS
+    static qint64 zv_lastSpectrumId;
 
 };
 //==========================================================

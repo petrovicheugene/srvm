@@ -317,20 +317,20 @@ qint64 ZSpectrumArrayRepository::zp_arrayIdForArrayIndex(int arrayIndex) const
     return zv_arrayList.at(arrayIndex)->zp_arrayId();
 }
 //==================================================================
-bool ZSpectrumArrayRepository::zp_averageChemConcentration(int arrayIndex, const QString& chemElement, qreal& averageValue ) const
-{
-    return zv_arrayList.at(arrayIndex)->zp_averageChemConcentration(chemElement, averageValue);
-}
-//==================================================================
-bool ZSpectrumArrayRepository::zp_averageChemConcentration(int arrayIndex, int chemElementindex, qreal& averageValue ) const
-{
-    return zv_arrayList.at(arrayIndex)->zp_averageChemConcentration(chemElementindex, averageValue);
-}
-//==================================================================
-bool ZSpectrumArrayRepository::zp_averageChemConcentrationForChemElementId(int arrayIndex, qint64 chemElementId , qreal& averageValue ) const
-{
-    return zv_arrayList.at(arrayIndex)->zp_averageChemConcentrationForChemElementId(chemElementId, averageValue);
-}
+//bool ZSpectrumArrayRepository::zp_averageChemConcentration(int arrayIndex, const QString& chemElement, qreal& averageValue ) const
+//{
+//    return zv_arrayList.at(arrayIndex)->zp_averageChemConcentration(chemElement, averageValue);
+//}
+////==================================================================
+//bool ZSpectrumArrayRepository::zp_averageChemConcentration(int arrayIndex, int chemElementindex, qreal& averageValue ) const
+//{
+//    return zv_arrayList.at(arrayIndex)->zp_averageChemConcentration(chemElementindex, averageValue);
+//}
+////==================================================================
+//bool ZSpectrumArrayRepository::zp_averageChemConcentrationForChemElementId(int arrayIndex, qint64 chemElementId , qreal& averageValue ) const
+//{
+//    return zv_arrayList.at(arrayIndex)->zp_averageChemConcentrationForChemElementId(chemElementId, averageValue);
+//}
 //==================================================================
 bool ZSpectrumArrayRepository::zp_chemElementIsVisible(int arrayIndex, int row) const
 {
@@ -504,37 +504,28 @@ bool ZSpectrumArrayRepository::zp_isSpectrumCheckedForId(qint64 arrayId, qint64 
     return false;
 }
 //==================================================================
-bool ZSpectrumArrayRepository::zp_isSpectrumChecked(qint64 arrayId, int spectrumIndex) const
+bool ZSpectrumArrayRepository::zp_isSpectrumChecked(int arrayIndex, int spectrumIndex) const
 {
-    for(int i = 0; i < zv_arrayList.count(); i++)
+    if(arrayIndex < 0 || arrayIndex >= zv_arrayList.count())
     {
-        if(zv_arrayList.at(i)->zp_arrayId() != arrayId)
-        {
-            continue;
-        }
-
-        return zv_arrayList.at(arrayId)->zp_isSpectrumChecked(spectrumIndex);
+        return false;
     }
-    return false;
+    return zv_arrayList.at(arrayIndex)->zp_isSpectrumChecked(spectrumIndex);
 }
 //==================================================================
-bool ZSpectrumArrayRepository::zp_setSpectrumChecked(qint64 arrayId, int spectrumIndex, bool checked)
+bool ZSpectrumArrayRepository::zp_setSpectrumChecked(int arrayIndex, int spectrumIndex, bool checked)
 {
-    for(int i = 0; i < zv_arrayList.count(); i++)
+    if(arrayIndex < 0 || arrayIndex >= zv_arrayList.count())
     {
-        if(zv_arrayList.at(i)->zp_arrayId() != arrayId)
-        {
-            continue;
-        }
-
-        bool res = zv_arrayList.at(arrayId)->zp_setSpectrumChecked(spectrumIndex, checked);
-        if(res)
-        {
-            emit zg_spectrumOperation(SOT_CHECKED_CHANGED, i, spectrumIndex, spectrumIndex);
-        }
-        return res;
+        return false;
     }
-    return false;
+
+    bool res = zv_arrayList.at(arrayIndex)->zp_setSpectrumChecked(spectrumIndex, checked);
+    if(res)
+    {
+        emit zg_spectrumOperation(SOT_CHECKED_CHANGED,  arrayIndex, spectrumIndex, spectrumIndex);
+    }
+    return res;
 }
 //==================================================================
 bool ZSpectrumArrayRepository::zp_setSpectrumCheckedForId(qint64 arrayId, qint64 spectrumId, bool checked)
@@ -787,7 +778,10 @@ bool ZSpectrumArrayRepository::zh_removeArray(int arrayIndex)
     }
 
     emit zg_spectrumArrayOperation(AOT_REMOVE_ARRAYS, arrayIndex, arrayIndex);
-    delete zv_arrayList.takeAt(arrayIndex);
+
+    delete zv_arrayList.at(arrayIndex);
+    zv_arrayList.removeAt(arrayIndex);
+
     emit zg_spectrumArrayOperation(AOT_END_REMOVE_ARRAYS, arrayIndex, arrayIndex);
     emit zg_setCurrentArrayIndex(nextCurrentIndex);
     return true;
@@ -808,23 +802,25 @@ bool ZSpectrumArrayRepository::zh_removeSpectrum(int arrayIndex, int spectrumInd
     return zv_arrayList[arrayIndex]->zp_removeSpectrum(spectrumIndex);
 }
 //==================================================================
-void ZSpectrumArrayRepository::zh_removeChemicalElement(int arrayIndex, int elementIndex)
+bool ZSpectrumArrayRepository::zh_removeChemicalElement(int arrayIndex, int elementIndex)
 {
     if(arrayIndex < 0 || arrayIndex >= zv_arrayList.count())
     {
-        return;
+        return false;
     }
 
     if(elementIndex < 0 || elementIndex >= zv_arrayList.at(arrayIndex)->zp_chemElementCount())
     {
-        return;
+        return false;
     }
 
-    if(zv_arrayList[arrayIndex]->zp_removeChemElement(elementIndex))
+    bool res = zv_arrayList[arrayIndex]->zp_removeChemElement(elementIndex);
+    if(res)
     {
         zv_dirty = true;
         emit zg_currentFile(zv_dirty, zv_arrayFilePath);
     }
+    return  res;
 }
 //==================================================================
 void ZSpectrumArrayRepository::zp_getArrayCount(int& arrayCount) const
@@ -984,9 +980,20 @@ void ZSpectrumArrayRepository::zh_onRemoveArrayAction()
     if(QMessageBox::question(0, tr("Array removing"), question, QMessageBox::Yes, QMessageBox::No)
             == QMessageBox::Yes)
     {
-        zh_removeArray(currentArrayIndex);
-        zv_dirty = true;
-        emit zg_currentFile(zv_dirty, zv_arrayFilePath);
+        bool res = zh_removeArray(currentArrayIndex);
+        if(res)
+        {
+            if(zv_arrayList.isEmpty())
+            {
+                zv_dirty = false;
+                zv_arrayFilePath = QString();
+            }
+            else
+            {
+                zv_dirty = true;
+            }
+            emit zg_currentFile(zv_dirty, zv_arrayFilePath);
+        }
     }
 }
 //==================================================================
@@ -1038,16 +1045,31 @@ void ZSpectrumArrayRepository::zh_onRemoveSpectrumFromArrayAction()
         return;
     }
     qSort(selectedSpectrumList);
+    bool res = false;
     for(int i = selectedSpectrumList.count() - 1; i >= 0; i--)
     {
-        zh_removeSpectrum(currentArrayIndex, selectedSpectrumList.value(i));
+        res = zh_removeSpectrum(currentArrayIndex, selectedSpectrumList.value(i)) || res;
     }
 
-    bool plotIsScaled;
-    emit zg_requestIsPlotScaled(plotIsScaled);
-    if(!plotIsScaled)
+    if(res)
     {
-        emit zg_fitPlotInBoundingRect();
+        bool plotIsScaled;
+        emit zg_requestIsPlotScaled(plotIsScaled);
+        if(!plotIsScaled)
+        {
+            emit zg_fitPlotInBoundingRect();
+        }
+
+        if(zv_arrayList.isEmpty())
+        {
+            zv_dirty = false;
+            zv_arrayFilePath = QString();
+        }
+        else
+        {
+            zv_dirty = true;
+        }
+        emit zg_currentFile(zv_dirty, zv_arrayFilePath);
     }
 }
 //==================================================================
@@ -1096,10 +1118,26 @@ void ZSpectrumArrayRepository::zh_onRemoveChemElementAction()
     }
 
     qSort(selectedChemElementList);
+    bool res = false;
+
     for(int i = selectedChemElementList.count() - 1; i >= 0; i--)
     {
-        zh_removeChemicalElement(currentArrayIndex, selectedChemElementList.value(i));
+        res = zh_removeChemicalElement(currentArrayIndex, selectedChemElementList.value(i)) || res;
     }
+
+//    if(res)
+//    {
+//        if(zv_arrayList.isEmpty())
+//        {
+//            zv_dirty = false;
+//            zv_arrayFilePath = QString();
+//        }
+//        else
+//        {
+//            zv_dirty = true;
+//        }
+//        emit zg_currentFile(zv_dirty, zv_arrayFilePath);
+//    }
 }
 //==================================================================
 void ZSpectrumArrayRepository::zh_onChemElementOperation(ZChemElementList::OperationType type, int first, int last)
@@ -1167,7 +1205,7 @@ void ZSpectrumArrayRepository::zh_createRawArrayListAndStartSaving(QString fileP
     // TODO signal from fileActionManager with saved filePath. zv_path have to be canged
 }
 //==================================================================
-void ZSpectrumArrayRepository::zh_onSpectrumOperation(ZSpectrumArray::OperationType type, int first, int last)
+void ZSpectrumArrayRepository::zh_onSpectrumOperation(ZSpectrumArray::OperationType type, int first, int last) const
 {
     if(!sender())
     {
@@ -1183,7 +1221,7 @@ void ZSpectrumArrayRepository::zh_onSpectrumOperation(ZSpectrumArray::OperationT
 
         if(type == ZSpectrumArray::OT_INSERT_SPECTRA)
         {
-            emit zg_spectrumOperation(SOT_INSERT_SPECTRA, arrayIndex, first, last);
+            emit zg_spectrumOperation(SOT_BEGIN_INSERT_SPECTRA, arrayIndex, first, last);
         }
         else if(type == ZSpectrumArray::OT_END_INSERT_SPECTRA)
         {
@@ -1191,7 +1229,7 @@ void ZSpectrumArrayRepository::zh_onSpectrumOperation(ZSpectrumArray::OperationT
         }
         else if(type == ZSpectrumArray::OT_REMOVE_SPECTRA)
         {
-            emit zg_spectrumOperation(SOT_REMOVE_SPECTRA, arrayIndex, first, last);
+            emit zg_spectrumOperation(SOT_BEGIN_REMOVE_SPECTRA, arrayIndex, first, last);
         }
         else if(type == ZSpectrumArray::OT_END_REMOVE_SPECTRA)
         {

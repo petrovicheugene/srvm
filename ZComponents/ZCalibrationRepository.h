@@ -21,7 +21,8 @@ public:
     // VARS
     enum CalibrationOperationType {COT_CALIBRATION_VISIBILITY_CHANGE,
                                    COT_END_CALIBRATION_VISIBILITY_CHANGE,
-                                   COT_CALIBRATION_CHANGED,
+                                   COT_CALIBRATION_NAME_CHANGED,
+                                   COT_CALIBRATION_CHEM_ELEMENT_CHANGED,
                                    COT_INSERT_CALIBRATIONS,
                                    COT_END_INSERT_CALIBRATIONS,
                                    COT_REMOVE_CALIBRATIONS,
@@ -47,14 +48,14 @@ public:
                             TOT_BEGIN_RESET,
                             TOT_END_RESET,
                             TOT_TERM_STATE_CHANGED,
-                            TOT_TERM_AVERAGE_CHANGED
+                            TOT_TERM_VALUE_CHANGED
                            };
 
 
 
     // FUNCS
     void zp_connectToFileManager(ZFileActionManager*);
-    void zp_connectToSpectrumArrayRepository(ZSpectrumArrayRepository*spectrumRepository);
+    //void zp_connectToSpectrumArrayRepository(ZSpectrumArrayRepository*spectrumRepository);
 
 
     void zp_appendActionsToMenu(QMenu *menu) const;
@@ -101,18 +102,21 @@ public:
     QColor zp_calibrationWindowColor(qint64 calibrationId, int windowIndex) const;
     qint64 zp_calibrationWindowId(qint64 calibrationId, int windowIndex) const;
     const ZCalibrationWindow* zp_calibrationWindow(qint64 calibrationId, int windowIndex) const;
-    double zp_calculateConcentration(int row, const ZAbstractSpectrum* const, bool *ok = 0) const;
+    bool zp_calculateConcentration(int row, const ZAbstractSpectrum*, qreal& concentration) const;
 
 
     // terms
-    int zp_termCount(qint64) const;
-    QString zp_termName(qint64, int) const;
-    qreal zp_termFactor(qint64 calibrationId, int termIndex, bool *ok);
-    bool zp_termValue(qint64 calibrationId, int termIndex, const ZAbstractSpectrum *spectrum, qreal& value);
-    bool zp_termVariablePart(qint64 calibrationId, int termIndex, const ZAbstractSpectrum *spectrum, qint64& value);
-    bool zp_termAverageValue(qint64 calibrationId, int termIndex, qreal& averageValue);
+    int zp_termCount(qint64 calibrationId) const;
+    QString zp_termName(qint64 calibrationId, int termIndex) const;
+    bool zp_termFactor(qint64 calibrationId, int termIndex, qreal& factor) const;
+    bool zp_setTermFactor(qint64 calibrationId, int termIndex, qreal factor);
+    //bool zp_termValue(qint64 calibrationId, int termIndex, const ZAbstractSpectrum *spectrum, qreal& value);
+    bool zp_termVariablePart(qint64 calibrationId, int termIndex, const ZAbstractSpectrum *spectrum, qreal &value);
+    //bool zp_termAverageValue(qint64 calibrationId, int termIndex, qreal& averageValue);
+
     ZAbstractTerm::TermState zp_termState(qint64 calibrationId, int termIndex);
     void zp_setNextUsersTermState(qint64 calibrationId, int termLogIndex);
+
 
 signals:
 
@@ -154,9 +158,9 @@ private slots:
     void zh_onRemoveWindowAction();
     void zh_onWindowOperation(ZCalibration::WindowOperationType type, int first, int last);
     void zh_onTermOperation(ZCalibration::TremOperationType type, int first, int last);
-    void zh_getCurrentSpectrumArray(const ZSpectrumArray *&);
-    void zh_onCurrentSpectrumArrayIsAboutChange(qint64 arrayId, int arrayIndex);
-    void zh_onSpectrumOperation(ZSpectrumArrayRepository::SpectrumOperationType, int, int, int);
+    //void zh_getCurrentSpectrumArray(const ZSpectrumArray *&);
+    //void zh_onCurrentSpectrumArrayIsAboutChange(qint64 arrayId, int arrayIndex);
+    //void zh_onSpectrumOperation(ZSpectrumArrayRepository::SpectrumOperationType, int, int, int);
 
 private:
 
@@ -186,7 +190,7 @@ private:
 
     void zh_removeCalibrationWindow(int currentCalibrationIndex, int spectrumWindowIndex);
     ZCalibration* zh_calibrationForId(qint64) const;
-    void zh_calcTermAverageValues();
+    //void zh_calcTermAverageValues();
 
 
 };

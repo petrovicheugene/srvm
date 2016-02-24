@@ -1,4 +1,4 @@
-//=========================================------------------------------------------
+//=================================================================
 #include "ZNumericDelegate.h"
 #include "ZNumericEditor.h"
 #include <QDoubleSpinBox>
@@ -9,49 +9,48 @@
 #include <QDebug>
 #include <QEvent>
 #include <QKeyEvent>
-//=========================================------------------------------------------
+//=================================================================
 ZNumericDelegate::ZNumericDelegate(QWidget *parent) :
     QStyledItemDelegate(parent)
 {
-
-    m_editorMin = (double)std::numeric_limits<long>::min();
-    m_editorMax = (double)std::numeric_limits<long>::max();
-    m_inheritFontBoldFlag = true;
-    m_fontBoldFlag = false;
+    zv_editorMin = (double)std::numeric_limits<long>::min();
+    zv_editorMax = (double)std::numeric_limits<long>::max();
+    zv_inheritFontBoldFlag = true;
+    zv_fontBoldFlag = false;
 }
-//=========================================------------------------------------------
+//=================================================================
 QWidget* ZNumericDelegate::	createEditor ( QWidget * parent, const QStyleOptionViewItem & option, const QModelIndex & index ) const
 {
     ZNumericEditor* editor = new ZNumericEditor(parent);
-    connect(editor, SIGNAL(enterClicked()), this, SLOT(onEditorEnterClick()));
+    connect(editor, SIGNAL(enterClicked()), this, SLOT(zh_onEditorEnterClick()));
 
     ZNumericDelegate* pThis = const_cast<ZNumericDelegate*>(this);
-    emit requestEditorMinMax(pThis, index);
-    editor->setMinMax(m_editorMin, m_editorMax);
+    emit zg_requestEditorMinMax(pThis, index);
+    editor->setMinMax(zv_editorMin, zv_editorMax);
 
     return editor;
 
 }
-//=========================================------------------------------------------
+//=================================================================
 void	ZNumericDelegate::paint ( QPainter * painter, const QStyleOptionViewItem & option, const QModelIndex & index ) const
 {
     QStyleOptionViewItem newOption(option);
 
-    if(!m_inheritFontBoldFlag)
+    if(!zv_inheritFontBoldFlag)
     {
-        newOption.font.setBold(m_fontBoldFlag);
+        newOption.font.setBold(zv_fontBoldFlag);
     }
 
     QStyledItemDelegate::paint(painter, newOption, index);
 }
-//=========================================------------------------------------------
+//=================================================================
 void	ZNumericDelegate::setEditorData ( QWidget * editor, const QModelIndex & index ) const
 {
     QString val = index.model()->data(index, Qt::DisplayRole).toString();
     ZNumericEditor* numericEditor = qobject_cast<ZNumericEditor*>(editor);
     numericEditor->setText(val);
 }
-//=========================================------------------------------------------
+//=================================================================
 void	ZNumericDelegate::setModelData ( QWidget * editor, QAbstractItemModel * model, const QModelIndex & index ) const
 {
     ZNumericEditor* numericEditor = qobject_cast<ZNumericEditor*>(editor);
@@ -62,18 +61,18 @@ void	ZNumericDelegate::setModelData ( QWidget * editor, QAbstractItemModel * mod
     bool removeLastTree = false;
     MessageType messageType = MT_NO_MESSAGE;
 
-    if(val < m_editorMin )
+    if(val < zv_editorMin )
     {
         // QMessageBox::warning(0, tr("Limit exceed"),  tr("The value exceeds minimum limit."), QMessageBox::Ok) ;
         messageType = MT_MIN_LIMIT;
-        valString = QString::number(m_editorMin, 'g', 18);
+        valString = QString::number(zv_editorMin, 'g', 18);
         removeLastTree = true;
     }
-    else if(val > m_editorMax)
+    else if(val > zv_editorMax)
     {
         // QMessageBox::warning(0, tr("Limit exceed"),  tr("The value exceeds maximum limit."), QMessageBox::Ok) ;
         messageType = MT_MAX_LIMIT;
-        valString = QString::number(m_editorMax, 'g', 18);
+        valString = QString::number(zv_editorMax, 'g', 18);
         removeLastTree = true;
     }
 
@@ -126,11 +125,11 @@ void	ZNumericDelegate::setModelData ( QWidget * editor, QAbstractItemModel * mod
 
     }
 
-    QModelIndex* pIndex = const_cast<QModelIndex*>(&m_editedIndex);
+    QModelIndex* pIndex = const_cast<QModelIndex*>(&zv_editedIndex);
     *pIndex = index;
     pIndex = 0;
 
-    bool* pIsEditorAlive = const_cast<bool*>(&m_isEditorAlive);
+    bool* pIsEditorAlive = const_cast<bool*>(&zv_isEditorAlive);
 
     if(messageType == MT_MAX_LIMIT)
     {
@@ -147,34 +146,39 @@ void	ZNumericDelegate::setModelData ( QWidget * editor, QAbstractItemModel * mod
         *pIsEditorAlive = true;
     }
 }
-//=========================================------------------------------------------
+//=================================================================
 QSize ZNumericDelegate::sizeHint ( const QStyleOptionViewItem & option, const QModelIndex & index ) const
 {
     return QStyledItemDelegate::sizeHint (option, index);
 }
-//=========================================------------------------------------------
+//=================================================================
 void	ZNumericDelegate::updateEditorGeometry ( QWidget * editor, const QStyleOptionViewItem & option, const QModelIndex & index ) const
 {
     QStyledItemDelegate::updateEditorGeometry (editor, option, index);
 }
-//=========================================------------------------------------------
-
-void ZNumericDelegate::setEditorMinMax(double min, double max)
+//=================================================================
+void ZNumericDelegate::zp_setEditorMinMax(double min, double max)
 {
     if(min < max || min < std::numeric_limits<long>::min() || max > std::numeric_limits<long>::max())
     {
-        m_editorMin = min;
-        m_editorMax = max;
+        zv_editorMin = min;
+        zv_editorMax = max;
     }
 }
-//=========================================------------------------------------------
-void ZNumericDelegate::setFontBold(bool boldFlag)
+//=================================================================
+void ZNumericDelegate::zp_editorMinMax(double& min, double& max) const
 {
-    m_inheritFontBoldFlag = false;
-    m_fontBoldFlag = boldFlag;
+    min = zv_editorMin;
+    max = zv_editorMax;
 }
-//=========================================------------------------------------------
-void ZNumericDelegate::onEditorEnterClick()
+//=================================================================
+void ZNumericDelegate::zp_setFontBold(bool boldFlag)
+{
+    zv_inheritFontBoldFlag = false;
+    zv_fontBoldFlag = boldFlag;
+}
+//=================================================================
+void ZNumericDelegate::zh_onEditorEnterClick()
 {
     ZNumericEditor* editor = qobject_cast<ZNumericEditor*>(sender());
     if(editor->text().isEmpty())
@@ -183,11 +187,11 @@ void ZNumericDelegate::onEditorEnterClick()
 
     }
     emit commitData(editor);
-    if(m_isEditorAlive)
+    if(zv_isEditorAlive)
     {
         emit closeEditor(editor);
     }
 
-    emit editNext(m_editedIndex);
+    emit zg_editNext(zv_editedIndex);
 }
-//=========================================------------------------------------------
+//=================================================================

@@ -21,7 +21,7 @@ bool ZSimpleTerm::zp_calcValue(const ZAbstractSpectrum * spectrum, qreal& value)
 bool ZSimpleTerm::zp_calcTermVariablePart(const ZAbstractSpectrum* spectrum, qint64& value)  // w/o factor
 {
     bool ok;
-    emit zg_requestWindowIntensity((const QObject*)spectrum, value, &ok);
+    emit zg_requestWindowIntensity((const QObject*)spectrum, value, true, &ok);
     return ok;
 }
 //===================================================================
@@ -46,7 +46,7 @@ void ZSimpleTerm::zh_connectToWindow(const ZCalibrationWindow* window)
     connect(this, &ZSimpleTerm::zg_requestWindowIntensity,
             window, &ZCalibrationWindow::zp_calcWindowIntensity);
     connect(window, &ZCalibrationWindow::zg_widowMarginsChanged,
-            this, &ZSimpleTerm::zg_invokeAverageValueRecalc);
+            this, &ZSimpleTerm::zg_termWindowMarginChanged);
 }
 //===================================================================
 

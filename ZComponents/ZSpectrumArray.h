@@ -77,9 +77,9 @@ public:
     bool zp_isEnergyCalibrationValid() const;
 
     qint64 zp_arrayId() const;
-    bool zp_averageChemConcentrationForChemElementId(qint64 chemElementId, qreal&) const;
-    bool zp_averageChemConcentration(const QString&, qreal&) const;
-    bool zp_averageChemConcentration(int, qreal&) const;
+//    bool zp_averageChemConcentrationForChemElementId(qint64 chemElementId, qreal&) const;
+//    bool zp_averageChemConcentration(const QString&, qreal&) const;
+//    bool zp_averageChemConcentration(int, qreal&) const;
 
 signals:
 
@@ -116,8 +116,8 @@ private:
     // FUNCS
     void zh_createConnections();
     void zh_recalcArrayMaxParameters();
-    bool zh_calcAverageChemConcentration(qint64 chemElementId);
-    void zh_calcAverageChemConcentrations();
+//    bool zh_calcAverageChemConcentration(qint64 chemElementId);
+//    void zh_calcAverageChemConcentrations();
 
     static QList<QColor> zp_createColorList();
     static bool checkColor(QColor color);

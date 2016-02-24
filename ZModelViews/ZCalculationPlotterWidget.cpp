@@ -21,6 +21,7 @@ void ZCalculationPlotterWidget::zh_createComponents()
 {
     QVBoxLayout* mainLayout = new QVBoxLayout(this);
     setLayout(mainLayout);
+    mainLayout->setMargin(0);
 
     zv_plotter = new ZPlotter(this);
     QFrame* frame = new QFrame();

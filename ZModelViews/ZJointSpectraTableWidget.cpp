@@ -51,7 +51,12 @@ void ZJointSpectrumTableWidget::zp_setModel(ZJointSpectraModel* model)
 {
     zv_table->setModel(model);
     ZNumericDelegate* numericDelegate = new ZNumericDelegate(zv_table);
-    connect(numericDelegate, &ZNumericDelegate::editNext,
+    double min;
+    double max;
+    numericDelegate->zp_editorMinMax(min, max);
+    min = 0.0;
+    numericDelegate->zp_setEditorMinMax(min, max);
+    connect(numericDelegate, &ZNumericDelegate::zg_editNext,
             this, &ZJointSpectrumTableWidget::zh_editNext);
     zv_table->setItemDelegate(numericDelegate);
     ZSpectrumTableDelegate* spectrumDelegate = new ZSpectrumTableDelegate(zv_table);
@@ -84,7 +89,6 @@ void ZJointSpectrumTableWidget::zp_connectToSpectrumArrayRepository(ZSpectrumArr
 {
    connect(this, &ZJointSpectrumTableWidget::zg_currentSpectrumChanged,
            repository, &ZSpectrumArrayRepository::zp_currentSpectrumChanged);
-
 }
 //==============================================================
 void ZJointSpectrumTableWidget::zh_editNext(QModelIndex editedIndex)

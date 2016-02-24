@@ -22,7 +22,7 @@ bool ZQuadraticTerm::zp_calcValue(const ZAbstractSpectrum * spectrum, qreal& val
 bool ZQuadraticTerm::zp_calcTermVariablePart(const ZAbstractSpectrum* spectrum, qint64& value)  // w/o factor
 {
     bool ok;
-    emit zg_requestWindowIntensity((const QObject*)spectrum, value, &ok);
+    emit zg_requestWindowIntensity((const QObject*)spectrum, value, true, &ok);
     value = value * value;
     return ok;
 }
@@ -54,7 +54,7 @@ void ZQuadraticTerm::zh_connectToWindow(const ZCalibrationWindow* window)
     connect(this, &ZQuadraticTerm::zg_requestWindowIntensity,
             window, &ZCalibrationWindow::zp_calcWindowIntensity);
     connect(window, &ZCalibrationWindow::zg_widowMarginsChanged,
-            this, &ZQuadraticTerm::zg_invokeAverageValueRecalc);
+            this, &ZQuadraticTerm::zg_termWindowMarginChanged);
 
 }
 //===================================================================

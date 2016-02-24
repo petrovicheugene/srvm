@@ -131,19 +131,16 @@ qint64 ZCalibration::zp_calibrationId() const
     return zv_calibrationId;
 }
 //=========================================================
-double ZCalibration::zp_calcConcentration(const ZAbstractSpectrum* const spectrum, bool *ok)
+bool ZCalibration::zp_calcConcentration(const ZAbstractSpectrum* const spectrum, qreal& concentration)
 {
     if(spectrum == 0)
     {
-        if(ok != 0)
-        {
-            *ok = false;
-            return 0;
-        }
+        concentration = 0;
+        return false;
     }
 
-    * ok = true;
-    return 0;
+    concentration = 0;
+    return true;
 }
 //=========================================================
 void ZCalibration::zp_createNewCalibrationWindow(int& windowNewIndex, int firstChannel, int lastChannel)
@@ -205,14 +202,14 @@ void ZCalibration::zh_createTermsForWindow(ZCalibrationWindow* window)
 
 }
 //=========================================================
-void ZCalibration::zp_isNormalizerValid(bool& validFlag) const
+void ZCalibration::zh_isNormalizerValid(bool& validFlag) const
 {
-    zv_termNormalizator->zp_isValid(validFlag);
+    zv_termNormalizer->zp_isValid(validFlag);
 }
 //=========================================================
-void ZCalibration::zp_normalizerValue(qreal& value) const
+void ZCalibration::zh_normalizerValue(qreal& value) const
 {
-    zv_termNormalizator->zp_value(value);
+    zv_termNormalizer->zp_value(value);
 }
 //=========================================================
 int ZCalibration::zp_termIndex(const ZAbstractTerm* term) const
@@ -233,74 +230,154 @@ int ZCalibration::zp_termIndex(const ZAbstractTerm* term) const
     return -1;
 }
 //=========================================================
-qreal ZCalibration::zp_termFactor(int termIndex, bool* ok) const
+bool ZCalibration::zp_termFactor(int termIndex, qreal& factor) const
 {
     if(termIndex < 0 || termIndex >= zv_termList.count() )
     {
-        if(ok)
-        {
-            *ok = false;
-        }
-
-        return 0;
-    }
-
-    if(ok)
-    {
-        *ok = true;
-    }
-
-    return zv_termList.at(termIndex)->zp_termFactor();
-}
-//=========================================================
-bool ZCalibration::zp_termValue(int termIndex, const ZAbstractSpectrum* spectrum,  qreal &value) const
-{
-    if(termIndex < 0 || termIndex >= zv_termList.count() )
-    {
+        factor = 0;
         return false;
     }
 
-    return zv_termList.at(termIndex)->zp_calcValue(spectrum, value);
-}
-//=========================================================
-bool ZCalibration::zp_termVariablePart(int termIndex, const ZAbstractSpectrum* spectrum,  qint64& value) const
-{
-    if(termIndex < 0 || termIndex >= zv_termList.count() )
-    {
-        return false;
-    }
-
-    bool res = zv_termList.at(termIndex)->zp_calcTermVariablePart(spectrum, value);
-    return res;
-}
-//=========================================================
-bool ZCalibration::zp_termAverageValue(int termIndex,  qreal& averageValue) const
-{
-    if(termIndex < 0 || termIndex >= zv_termList.count() )
-    {
-        return false;
-    }
-
-    averageValue = zv_termList.at(termIndex)->zp_termAverageValue();
+    factor =  zv_termList.at(termIndex)->zp_termFactor();
     return true;
 }
 //=========================================================
-void ZCalibration::zp_calcTermAverageValues(const ZSpectrumArray* spectrumArray)
+bool ZCalibration::zp_setTermFactor(int termIndex, qreal factor) const
 {
-    if(!spectrumArray)
+    if(termIndex < 0 || termIndex >= zv_termList.count() )
     {
-        return;
+        factor = 0;
+        return false;
     }
 
-    for(int t = 0; t < zv_termList.count(); t++)
-    {
-        zv_termList.at(t)->zp_calcAverageTermValueForArray(spectrumArray);
-    }
-
-    emit zg_termOperation(TOT_TERM_AVERAGE_CHANGED, 0, zv_termList.count() - 1);
+    zv_termList.at(termIndex)->zp_setTermFactor(factor);
+    return true;
 }
 //=========================================================
-void ZCalibration::zp_onTermNameChange() const
+//bool ZCalibration::zp_termValue(int termIndex, const ZAbstractSpectrum* spectrum,  qreal &value) const
+//{
+//    if(termIndex < 0 || termIndex >= zv_termList.count() )
+//    {
+//        return false;
+//    }
+
+//    return zv_termList.at(termIndex)->zp_calcValue(spectrum, value);
+//}
+//=========================================================
+bool ZCalibration::zp_termVariablePart(int termIndex, const ZAbstractSpectrum* spectrum,  qreal& value) const
+{
+    if(termIndex < 0 || termIndex >= zv_termList.count() )
+    {
+        return false;
+    }
+
+    qint64 termValue;
+    value = 0.0;
+    bool res = zv_termList.at(termIndex)->zp_calcTermVariablePart(spectrum, termValue);
+    if(res)
+    {
+        value = static_cast<qreal>(termValue);
+        if(zv_termNormalizer->zp_isValid())
+        {
+            value /= zv_termNormalizer->zp_value();
+        }
+    }
+
+    return res;
+}
+//=========================================================
+//bool ZCalibration::zp_termAverageValue(int termIndex,  qreal& averageValue) const
+//{
+//    if(termIndex < 0 || termIndex >= zv_termList.count() )
+//    {
+//        return false;
+//    }
+
+//    averageValue = zv_termList.at(termIndex)->zp_termAverageValue();
+//    return true;
+//}
+//=========================================================
+//bool ZCalibration::zp_calcTermAverageValues(const ZSpectrumArray* spectrumArray)
+//{
+//    if(!spectrumArray)
+//    {
+//        return false;
+//    }
+
+//    QMap<ZAbstractTerm*, QList<qint64> > termValueMap;
+//    QList<qint64> termValueList;
+//    int valueCount = -1;
+//    for(int t = 0; t < zv_termList.count(); t++)
+//    {
+//        zv_termList.at(t)->zp_calcAverageTermValueAndTermValueList(spectrumArray, termValueList);
+//        if(valueCount < 0)
+//        {
+//            valueCount = termValueList.count();
+//        }
+
+//        if(valueCount != termValueList.count())
+//        {
+//            return false;
+//        }
+//        termValueMap.insert(zv_termList.at(t), termValueList);
+//    }
+
+//    qreal numerator = 0;
+//    qreal denominator1 = 0;
+//    qreal denominator2 = 0;
+
+//    qreal currentTermDeltaT = 0;
+//    qreal currentTermDeltaTC = 0;
+//    qreal correlationValue = 0;
+//    QList<qint64> termValueListT;
+//    QList<qint64> termValueListTC;
+
+//    for(int t = 0; t < zv_termList.count(); t++)
+//    {
+//        for(int tc = 0; tc < zv_termList.count(); tc++)
+//        {
+//            if(t >= tc)
+//            {
+//                continue;
+//            }
+
+//            termValueListT = termValueMap.value(zv_termList.at(t));
+//            termValueListTC = termValueMap.value(zv_termList.at(tc));
+
+//            for(int v = 0; v < termValueListT.count(); v++)
+//            {
+//                currentTermDeltaT = termValueListT.value(v) - zv_termList.at(t)->zp_termAverageValue();
+//                currentTermDeltaTC = termValueListTC.value(v) - zv_termList.at(tc)->zp_termAverageValue();
+
+//                numerator += currentTermDeltaT * currentTermDeltaTC;
+
+//                denominator1 += pow(currentTermDeltaT,2);
+//                denominator2 += pow(currentTermDeltaTC,2);
+//            }
+
+//            if(numerator == 0)
+//            {
+//                correlationValue = 0;
+//            }
+//            else
+//            {
+//                qreal denominator = sqrt(denominator1) * sqrt(denominator2);
+//                if(denominator == 0)
+//                {
+//                    correlationValue = 0;
+//                }
+
+//                correlationValue = numerator / denominator;
+
+//            }
+//        }
+//    }
+
+//    emit zg_termOperation(TOT_TERM_AVERAGE_CHANGED, 0, zv_termList.count() - 1);
+//    return true;
+//}
+//=========================================================
+void ZCalibration::zh_onTermNameChange() const
 {
     ZAbstractTerm* term = qobject_cast<ZAbstractTerm*>(sender());
     if(term == 0)
@@ -313,22 +390,18 @@ void ZCalibration::zp_onTermNameChange() const
     emit zg_termOperation(TOT_TERM_NAME_CHANGED, termIndex, termIndex);
 }
 //=========================================================
-void ZCalibration::zp_recalcTermAverageValue() const
+void ZCalibration::zh_onTermWindowMarginChange()
 {
     ZAbstractTerm* term = qobject_cast<ZAbstractTerm*>(sender());
     if(!term)
     {
         return;
     }
-
-    const ZSpectrumArray* spectrumArray = 0;
-    emit zg_requestForCurrentSpectrumArray(spectrumArray);
-    term->zp_calcAverageTermValueForArray(spectrumArray);
-    int termIndex = zv_termList.indexOf(term);
-    emit zg_termOperation(TOT_TERM_AVERAGE_CHANGED, termIndex, termIndex);
+    int termIndex = zp_termIndex(term);
+    emit zg_termOperation(TOT_TERM_VALUE_CHANGED, termIndex, termIndex);
 }
 //=========================================================
-void ZCalibration::zp_onTermAverageValueChange() const
+void ZCalibration::zh_onTermAverageValueChange() const
 {
 
 }
@@ -511,7 +584,7 @@ qint64 ZCalibration::zp_calibrationWindowId(int windowIndex) const
     return zv_spectrumWindowList.at(windowIndex)->zp_windowId();
 }
 //=========================================================
-bool ZCalibration::zp_removeSpectrumWindow(int windowIndex)
+bool ZCalibration::zp_removeCalibrationWindow(int windowIndex)
 {
     if(windowIndex < 0 || windowIndex >= zv_spectrumWindowList.count())
     {
@@ -523,17 +596,6 @@ bool ZCalibration::zp_removeSpectrumWindow(int windowIndex)
     emit zg_windowOperation(WOT_END_REMOVE_WINDOWS, windowIndex, windowIndex);
 
     return true;
-}
-//=========================================================
-void ZCalibration::zp_connectTermToCalibration(const ZAbstractTerm* term)
-{
-    if(term == 0)
-    {
-        return;
-    }
-    connect(term, &ZAbstractTerm::zg_requestForDelete,
-            this, &ZCalibration::zh_removeTerm);
-
 }
 //=========================================================
 int ZCalibration::zp_termCount() const

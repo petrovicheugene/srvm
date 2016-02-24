@@ -50,7 +50,7 @@ public:
 
 public slots:
 
-   void zp_calcWindowIntensity(const QObject*, qint64&, bool *ok);
+   void zp_calcWindowIntensity(const QObject*, qint64&, bool keepBufferClean, bool *ok);
 
 signals:
 
@@ -66,6 +66,9 @@ private:
    bool zv_visible;
    qint64 zv_windowId;
 
+   // buffer
+   qint64 zv_spectrumId;
+   qint64 zv_windowIntensityValue;
 
    // STATIC
    // VARS
