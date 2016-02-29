@@ -21,6 +21,7 @@ QMap<ZTermNormalizer::NormaType, QString> ZTermNormalizer::zh_initNormaTypeStrin
     map.insert(NT_COHERENT_INCOHERENT, tr("Coherent / Incoherent"));
     map.insert(NT_INCOHERENT_COHERENT, tr("Incoherent / Coherent"));
     map.insert(NT_CUSTOM, tr("Custom"));
+    return map;
 }
 //======================================================================
 ZTermNormalizer::ZTermNormalizer(ZCalibration *parent) : QObject(parent)
