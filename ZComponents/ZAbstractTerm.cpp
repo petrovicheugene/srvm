@@ -122,8 +122,6 @@ void ZAbstractTerm::zh_connectToCalibration(ZCalibration* calibration)
 
     connect(calibration, &ZCalibration::zg_normalizerChanged,
             this, &ZAbstractTerm::zh_normalizerChanged);
-    connect(this, &ZAbstractTerm::zg_requestIsNormalizerValid,
-            calibration, &ZCalibration::zh_isNormalizerValid);
     connect(this, &ZAbstractTerm::zg_requestNormalizerValue,
             calibration, &ZCalibration::zh_normalizerValue);
     connect(this, &ZAbstractTerm::zg_termNameChanged,

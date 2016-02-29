@@ -1,17 +1,17 @@
 //==============================================================
-#ifndef ZCALCULATIONPLOTWIDGET_H
-#define ZCALCULATIONPLOTWIDGET_H
+#ifndef ZCORRELATIONPLOTWIDGET_H
+#define ZCORRELATIONPLOTWIDGET_H
 //==============================================================
 #include <QWidget>
 //==============================================================
 class ZPlotter;
 
 //==============================================================
-class ZCalculationPlotterWidget : public QWidget
+class ZCorrelationPlotterWidget : public QWidget
 {
    Q_OBJECT
 public:
-   explicit ZCalculationPlotterWidget(QWidget *parent = 0);
+   explicit ZCorrelationPlotterWidget(QWidget *parent = 0);
 
    // FUNCS
    ZPlotter* zp_plotter();
@@ -32,4 +32,4 @@ private:
 
 };
 //==============================================================
-#endif // ZCALCULATIONPLOTWIDGET_H
+#endif // ZCORRELATIONPLOTWIDGET_H

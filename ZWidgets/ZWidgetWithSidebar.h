@@ -7,13 +7,14 @@
 class QSplitter;
 class QLabel;
 class ZClickableLabel;
+class QVBoxLayout;
 //=======================================================
 class ZWidgetWithSidebar : public QFrame
 {
     Q_OBJECT
 public:
     explicit ZWidgetWithSidebar(const QString& objectName,
-                                bool sideBarIsOnLeft,
+                                bool sideBarOnLeft,
                                 QWidget *parent);
     explicit ZWidgetWithSidebar(const QString& title,
                                 const QString& objectName,
@@ -22,6 +23,8 @@ public:
 
     bool zp_setMainWidget(QWidget*);
     bool zp_setSidebarWidget(QWidget*);
+
+    void zp_setMargin(int margin);
 
 signals:
 
@@ -33,11 +36,20 @@ public slots:
 private:
 
     // VARS
+    QVBoxLayout* zv_mainLayout;
+    int zv_margin;
+    bool zv_sideBarOnLeft;
+
     QSplitter* zv_splitter;
     ZClickableLabel* zv_hideLabel;
     QLabel* zv_infoLabel;
     QWidget* zv_mainWidget;
     QWidget* zv_sideBarWidget;
+
+    QPixmap zv_closePixmap;
+    QPixmap zv_openPixmap;
+    QString hideToolTipString;
+    QString showToolTipString;
 
     // FUNCS
     void zh_createComponents(QString title = QString());

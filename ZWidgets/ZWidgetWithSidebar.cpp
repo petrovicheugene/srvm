@@ -11,11 +11,15 @@
 #include <QSettings>
 //=======================================================
 ZWidgetWithSidebar::ZWidgetWithSidebar(const QString &objectName,
-                                       bool sideBarIsOnLeft,
+                                       bool sideBarOnLeft,
                                        QWidget *parent) : QFrame(parent)
 {
+    zv_sideBarOnLeft = sideBarOnLeft;
     zv_sideBarWidget = 0;
     zv_mainWidget = 0;
+    hideToolTipString = zv_sideBarOnLeft? tr("Hide left panel") : tr("Hide right panel");
+    showToolTipString = zv_sideBarOnLeft? tr("Show left panel") : tr("Show right panel");
+
     setObjectName(objectName);
     zh_createComponents();
     zh_createConnections();
@@ -44,8 +48,10 @@ bool ZWidgetWithSidebar::zp_setMainWidget(QWidget* mainWidget)
         return false;
     }
     zv_mainWidget = mainWidget;
-    zv_splitter->insertWidget(zv_splitter->count(), zv_mainWidget);
-    zv_splitter->setCollapsible(zv_splitter->count() - 1, false);
+    int widgetIndex = zv_sideBarOnLeft? zv_splitter->count() : 0;
+
+    zv_splitter->insertWidget(widgetIndex, zv_mainWidget);
+    zv_splitter->setCollapsible(widgetIndex, false);
     zh_restoreSettings();
     return true;
 }
@@ -56,15 +62,22 @@ bool ZWidgetWithSidebar::zp_setSidebarWidget(QWidget* sideBarWidget)
     {
         return false;
     }
-    zv_sideBarWidget = sideBarWidget;
-    zv_splitter->insertWidget(0, zv_sideBarWidget);
-    zv_splitter->setCollapsible(0, false);
 
-    zv_hideLabel->setPixmap(QPixmap(":/images/ZWidgets/sidebarBlueClose.png"));
+    zv_sideBarWidget = sideBarWidget;
+    int widgetIndex = zv_sideBarOnLeft? 0 : zv_splitter->count();
+    zv_splitter->insertWidget(widgetIndex, zv_sideBarWidget);
+    zv_splitter->setCollapsible(widgetIndex, false);
+
+    zv_hideLabel->setPixmap(zv_closePixmap); // QPixmap(":/images/ZWidgets/sidebarRightBlueClose.png"));
     zv_hideLabel->setVisible(true);
-    zv_hideLabel->setToolTip(tr("Hide left panel"));
+    zv_hideLabel->setToolTip(hideToolTipString);
     zh_restoreSettings();
     return true;
+}
+//=======================================================
+void ZWidgetWithSidebar::zp_setMargin(int margin)
+{
+    zv_mainLayout->setMargin(margin);
 }
 //=======================================================
 void ZWidgetWithSidebar::zp_setInfoLabelText(bool dirty, const QString& text)
@@ -81,11 +94,11 @@ void ZWidgetWithSidebar::zp_setInfoLabelText(bool dirty, const QString& text)
 void ZWidgetWithSidebar::zh_createComponents(QString title)
 {
     // Main Layout
-    QVBoxLayout* mainLayout = new QVBoxLayout(this);
-    int margin = mainLayout->margin();
-    mainLayout->setMargin(0);
-    mainLayout->setSpacing(0);
-    setLayout(mainLayout);
+    zv_mainLayout = new QVBoxLayout(this);
+    zv_margin = zv_mainLayout->margin();
+    // zv_mainLayout->setMargin(0);
+    zv_mainLayout->setSpacing(0);
+    setLayout(zv_mainLayout);
 
     // Title
     if(!title.isEmpty())
@@ -95,19 +108,19 @@ void ZWidgetWithSidebar::zh_createComponents(QString title)
         titleLabel->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
 
         QHBoxLayout* titleLayout = new QHBoxLayout(this);
-        titleLayout->addSpacing(margin);
+        titleLayout->addSpacing(zv_margin);
         titleLayout->addWidget(titleLabel);
         titleLayout->addStretch();
-        mainLayout->addSpacing(margin);
-        mainLayout->addLayout(titleLayout);
+        zv_mainLayout->addSpacing(zv_margin);
+        zv_mainLayout->addLayout(titleLayout);
     }
     // Splitter
     zv_splitter = new QSplitter(this);
     zv_splitter->setFrameShape(QFrame::NoFrame);
-    mainLayout->addWidget(zv_splitter);
+    zv_mainLayout->addWidget(zv_splitter);
 
     // Basement Widget
-    QFrame* basement = new QFrame(this);
+    QWidget* basement = new QWidget(this);
     //basement->setFrameShape(QFrame::HLine);
     //basement->setFrameStyle(QFrame::HLine | QFrame::Sunken);
     // basement layout
@@ -115,15 +128,15 @@ void ZWidgetWithSidebar::zh_createComponents(QString title)
     basement->setLayout(basementLayout);
     // int margin = basementLayout->margin();
     basementLayout->setMargin(0);
-    basementLayout->setSpacing(margin);
-    basementLayout->addSpacing(margin);
+    basementLayout->setSpacing(zv_margin);
+    // basementLayout->addSpacing(margin);
 
     QSizePolicy sizePolicy = basement->sizePolicy();
     sizePolicy.setVerticalPolicy(QSizePolicy::Fixed);
     basement->setSizePolicy(sizePolicy);
 
-    mainLayout->addWidget(basement);
-    mainLayout->addSpacing(margin);
+    zv_mainLayout->addWidget(basement);
+    zv_mainLayout->addSpacing(zv_margin);
 
     // labels
     zv_hideLabel = new ZClickableLabel(this);
@@ -134,8 +147,22 @@ void ZWidgetWithSidebar::zh_createComponents(QString title)
 
     zv_infoLabel = new QLabel(this);
     basementLayout->addWidget(zv_infoLabel);
-    basementLayout->addSpacing(margin);
+    //basementLayout->addSpacing(margin);
 
+    if(zv_sideBarOnLeft)
+    {
+        zv_closePixmap = QPixmap(":/images/ZWidgets/sidebarRightBlueClose.png");
+        zv_openPixmap = QPixmap(":/images/ZWidgets/sidebarRightBlueOpen.png");
+        basementLayout->addWidget(zv_hideLabel, 0, Qt::AlignLeft);
+        basementLayout->addWidget(zv_infoLabel, 999999, Qt::AlignLeft);
+    }
+    else
+    {
+        zv_closePixmap = QPixmap(":/images/ZWidgets/sidebarLeftBlueClose.png");
+        zv_openPixmap = QPixmap(":/images/ZWidgets/sidebarLeftBlueOpen.png");
+        basementLayout->addWidget(zv_infoLabel, 999999, Qt::AlignRight);
+        basementLayout->addWidget(zv_hideLabel, 0, Qt::AlignRight);
+    }
 }
 //=======================================================
 void ZWidgetWithSidebar::zh_createConnections()
@@ -178,13 +205,13 @@ void ZWidgetWithSidebar::zh_manageHideLabelPix()
 {
     if(zv_sideBarWidget->isVisible())
     {
-        zv_hideLabel->setPixmap(QPixmap(":/images/ZWidgets/sidebarBlueClose.png"));
-        zv_hideLabel->setToolTip(tr("Hide left panel"));
+        zv_hideLabel->setPixmap(zv_closePixmap); //  QPixmap(":/images/ZWidgets/sidebarRightBlueClose.png"));
+        zv_hideLabel->setToolTip(hideToolTipString);
     }
     else
     {
-        zv_hideLabel->setPixmap(QPixmap(":/images/ZWidgets/sidebarBlueOpen.png"));
-        zv_hideLabel->setToolTip(tr("Show left panel"));
+        zv_hideLabel->setPixmap(zv_openPixmap);// ":/images/ZWidgets/sidebarRightBlueOpen.png"));
+        zv_hideLabel->setToolTip(showToolTipString);
     }
 }
 //=======================================================

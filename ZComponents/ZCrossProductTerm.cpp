@@ -20,6 +20,11 @@ bool ZCrossProductTerm::zp_calcTermVariablePart(const ZAbstractSpectrum* spectru
 
 }
 //===================================================================
+bool ZCrossProductTerm::zp_termBelongsToWindow(const ZCalibrationWindow* window) const
+{
+    return false;
+}
+//===================================================================
 QString ZCrossProductTerm::zp_termName() const
 {
    return QString();

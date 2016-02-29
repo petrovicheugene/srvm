@@ -3,8 +3,10 @@
 #define ZQUADRATICTERM_H
 //===================================================================
 #include "ZAbstractTerm.h"
+#include "ZCalibrationWindow.h"
+
 //===================================================================
-class ZCalibrationWindow;
+
 //===================================================================
 class ZQuadraticTerm : public ZAbstractTerm
 {
@@ -16,6 +18,10 @@ public:
     // FUNCS
     bool zp_calcValue(const ZAbstractSpectrum*, qreal&) override;
     bool zp_calcTermVariablePart(const ZAbstractSpectrum*, qint64 &value) override; // w/o factor
+    bool zp_termBelongsToWindow(const ZCalibrationWindow*) const override;
+
+    const ZCalibrationWindow* zp_window() const;
+
 
 signals:
 
@@ -24,11 +30,12 @@ signals:
 protected slots:
 
     virtual bool zh_updateTermNameForWindowName(const QString&windowName) override;
+    void zh_onWindowTypeChange(ZCalibrationWindow::WindowType type);
 
 private:
 
     // VARS
-
+    const ZCalibrationWindow* zv_window;
 
     // FUNCS
     void zh_setName(const QString& windowName);

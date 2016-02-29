@@ -8,6 +8,7 @@ class QTableView;
 class ZArrayModel;
 class QAction;
 class QHBoxLayout;
+class QVBoxLayout;
 class ZSpectrumArrayRepository;
 //==============================================================
 class ZSpectrumArrayWidget : public QWidget
@@ -21,6 +22,7 @@ public:
    void zp_appendButtonActions(QList<QAction*>);
 
    void zp_connectToSpectrumArrayRepository(ZSpectrumArrayRepository*);
+   void zp_setMargin(int margin);
 
 signals:
 
@@ -37,6 +39,7 @@ private:
     // VARS
     QTableView* zv_table;
     QHBoxLayout* zv_buttonLayout;
+    QVBoxLayout* zv_mainLayout;
 
     // FUNCS
     void zh_createComponents();

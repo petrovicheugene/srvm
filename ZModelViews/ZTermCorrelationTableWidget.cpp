@@ -50,10 +50,16 @@ void ZTermCorrelationTableWidget::zp_appendButtonActions(QList<QAction*> actionL
     }
 }
 //=============================================================
+void ZTermCorrelationTableWidget::zp_setMargin(int margin)
+{
+    zv_mainLayout->setMargin(margin);
+}
+//=============================================================
 void ZTermCorrelationTableWidget::zh_createComponents()
 {
-    QVBoxLayout* mainLayout = new QVBoxLayout(this);
-    setLayout(mainLayout);
+    zv_mainLayout = new QVBoxLayout(this);
+    zv_mainLayout->setMargin(0);
+    setLayout(zv_mainLayout);
 
     zv_table = new QTableView(this);
 
@@ -63,10 +69,10 @@ void ZTermCorrelationTableWidget::zh_createComponents()
             this, &ZTermCorrelationTableWidget::zg_userChangesTermState);
     zv_table->setVerticalHeader(checkableHeader);
 
-    mainLayout->addWidget(zv_table, INT_MAX);
+    zv_mainLayout->addWidget(zv_table, INT_MAX);
 
     zv_buttonLayout = new QHBoxLayout(this);
-    mainLayout->addLayout(zv_buttonLayout);
+    zv_mainLayout->addLayout(zv_buttonLayout);
 }
 //=============================================================
 void ZTermCorrelationTableWidget::zh_createConnections()

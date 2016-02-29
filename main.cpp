@@ -55,6 +55,12 @@ int main(int argc, char *argv[])
         a.installTranslator(&qtTranslator);
     }
 
+    qApp->setStyleSheet(
+                "QSplitter::handle:vertical   {height: 6px; image: url(:/images/vSplitterHandle.png);}"
+                "QSplitter::handle:horizontal {width:  6px; image: url(:/images/hSplitterHandle.png);}"
+                );
+
+
     MainWindow w;
     w.show();
 

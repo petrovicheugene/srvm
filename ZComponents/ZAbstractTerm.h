@@ -37,6 +37,7 @@ public:
     virtual bool zp_calcTermVariablePart(const ZAbstractSpectrum*, qint64 &value) = 0; // w/o factor
     virtual QString zp_termName() const;
     virtual ZAbstractTerm::TermType zp_termType() const;
+    virtual bool zp_termBelongsToWindow(const ZCalibrationWindow*) const = 0;
 
     qint64 zp_termId();
     qreal zp_termFactor() const;
@@ -45,11 +46,9 @@ public:
     ZAbstractTerm::TermState zp_termState() const;
     bool zp_setTermState(ZAbstractTerm::TermState);
 
-    // void zp_calcAverageTermValueAndTermValueList(const ZSpectrumArray*);
 
 signals:
 
-    void zg_requestIsNormalizerValid(bool&);
     void zg_requestNormalizerValue(qreal&);
     void zg_termWindowMarginChanged();
     void zg_termNameChanged() const;

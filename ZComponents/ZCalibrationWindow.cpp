@@ -156,6 +156,7 @@ bool ZCalibrationWindow::zp_setWindowType(ZCalibrationWindow::WindowType type)
     }
 
     zv_type = type;
+    emit zg_windowTypeChanged(zv_type);
     return true;
 }
 //====================================================

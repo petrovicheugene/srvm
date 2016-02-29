@@ -13,7 +13,7 @@ class ZCalibrationTableWidget;
 class ZCalibrationWindowTableWidget;
 class ZTermCorrelationTableWidget;
 class ZEquationSettingsDashBoard;
-class ZCalculationPlotterWidget;
+class ZCorrelationPlotterWidget;
 class ZWidgetWithSidebar;
 class ZMessagePanel;
 
@@ -35,7 +35,7 @@ class ZJointSpectraDataManager;
 class ZChemElementDataManager;
 class ZCalibrationWindowDataManager;
 class ZPlotterDataManager;
-class ZCalculationPlotterManager;
+class ZCorrelationPlotterManager;
 class ZTermCorrelationTableManager;
 //==========================================================
 class MainWindow : public QMainWindow
@@ -62,14 +62,13 @@ private:
     QList<QDockWidget*> zv_dockList;
     QDockWidget* zv_spectrumArrayDock;
     QDockWidget* zv_calibrationDock;
-    QDockWidget* zv_termCorrelationTableDock;
+    QDockWidget* zv_correlationPlotterDock;
     QDockWidget* zv_chemElementArrayDock;
     QDockWidget* zv_messagePanelDock;
 
     // views
     ZWidgetWithSidebar* zv_spectraSidebarWidget;
     ZWidgetWithSidebar* zv_calibrationSidebarWidget;
-    ZWidgetWithSidebar* zv_termCorrelationTableSidebarWidget;
 
     ZSpectrumArrayWidget* zv_spectrumArrayWidget;
     ZJointSpectrumTableWidget* zv_spectrumTableWidget;
@@ -79,7 +78,7 @@ private:
 
     ZTermCorrelationTableWidget* zv_termCorrelationTableWidget;
     ZEquationSettingsDashBoard* zv_equationSettingsPanelWidget;
-    ZCalculationPlotterWidget* zv_calculationPlotterWidget;
+    ZCorrelationPlotterWidget* zv_correlationPlotterWidget;
 
     ZMessagePanel* zv_messagePanel;
     ZPlotter* zv_plotter;
@@ -100,7 +99,7 @@ private:
     ZCalibrationWindowDataManager* zv_jointCalibrationWindowDataManager;
     ZChemElementDataManager* zv_chemElementDataManager;
     ZPlotterDataManager* zv_plotterDataManager;
-    ZCalculationPlotterManager* zv_calculationPlotterManager;
+    ZCorrelationPlotterManager* zv_calculationPlotterManager;
     ZTermCorrelationTableManager* zv_termCorrelationTableManager;
 
     // FUNCS

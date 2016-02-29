@@ -689,24 +689,21 @@ void ZTermCorrelationTableManager::zh_calcCorrelations()
     zv_chemElementCorrelationList.clear();
     zv_termIntercorrelationMap.clear();
 
-    if(!zv_spectrumArrayRepository || zv_currentArrayId < 0
-            || !zv_calibrationRepository || zv_currentCalibrationId < 0)
+    if(!zv_spectrumArrayRepository || zv_currentArrayId < 0 || !zv_calibrationRepository)
     {
         return;
     }
 
     // Collect data from repositories
     // current conc chem element id
-    QString calibrationChemElementString = zv_calibrationRepository->zp_chemElementForCalibrationId(zv_currentCalibrationId);
-    if(calibrationChemElementString.isEmpty())
+    qint64 chemElementId = -1;
+    if(zv_currentArrayId >= 0 )
     {
-        return;
-    }
-
-    qint64 chemElementId = zv_spectrumArrayRepository->zp_chemElementIdForName(zv_currentArrayIndex, calibrationChemElementString);
-    if(chemElementId < 0)
-    {
-        return;
+        QString calibrationChemElementString = zv_calibrationRepository->zp_chemElementForCalibrationId(zv_currentCalibrationId);
+        if(!calibrationChemElementString.isEmpty())
+        {
+            chemElementId = zv_spectrumArrayRepository->zp_chemElementIdForName(zv_currentArrayIndex, calibrationChemElementString);
+        }
     }
 
     QList< QPair<qreal, QList<qreal> > > chemConcentrationAndTermValueList;
@@ -719,10 +716,10 @@ void ZTermCorrelationTableManager::zh_calcCorrelations()
     bool averageChemElementOk = true;
     QSet<int> invalidTermRows;
 
-    for(int s = 0; s < zv_spectrumArrayRepository->zp_spectrumCount(zv_currentArrayId); s++)
+    for(int s = 0; s < zv_spectrumArrayRepository->zp_spectrumCount(zv_currentArrayIndex); s++)
     {
         // get spectrum
-        spectrum = zv_spectrumArrayRepository->zp_spectrum(zv_currentArrayId, s);
+        spectrum = zv_spectrumArrayRepository->zp_spectrum(zv_currentArrayIndex, s);
         if(!spectrum->zp_isSpectrumChecked())
         {
             continue;

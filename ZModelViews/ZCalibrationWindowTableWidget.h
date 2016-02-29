@@ -9,6 +9,7 @@ class ZChannelNumberDelegate;
 class ZCalibrationRepository;
 class QTableView;
 class QHBoxLayout;
+class QVBoxLayout;
 class QAction;
 //==============================================================
 class ZCalibrationWindowTableWidget : public QWidget
@@ -22,6 +23,7 @@ public:
     void zp_appendButtonActions(QList<QAction*>);
 
     void zp_connectToCalibrationRepository(ZCalibrationRepository*);
+    void zp_setMargin(int margin);
 
 signals:
 
@@ -42,6 +44,8 @@ private:
     QTableView* zv_table;
     ZChannelNumberDelegate* zv_channelDelegate;
     QHBoxLayout* zv_buttonLayout;
+    QVBoxLayout* zv_mainLayout;
+
     const int zv_defaultChannelCount = 2048;
 
     // FUNCS

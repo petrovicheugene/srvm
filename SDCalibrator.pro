@@ -124,16 +124,15 @@ SOURCES += main.cpp \
     ZModels/ZTermCorrelationTableModel.cpp \
     ZComponents/ZAbstractTerm.cpp \
     ZComponents/ZTermCorrelationTableManager.cpp \
-    ZComponents/ZCalculationPlotterManager.cpp \
-    ZModelViews/ZCalculationPlotterWidget.cpp \
     ZComponents/ZSimpleTerm.cpp \
     ZComponents/ZQuadraticTerm.cpp \
     ZComponents/ZCustomTerm.cpp \
     ZComponents/ZCrossProductTerm.cpp \
     ZModelViews/ZCustomCheckableVerticalHeaderView/ZCustomCheckableVerticalHeaderView.cpp \
     ZComponents/ZTermNormalizer.cpp \
-    ZModelViews/ZTermSettingsDashBoard.cpp \
-    ZModelViews/ZEquationSettingsDashBoard.cpp
+    ZModelViews/ZEquationSettingsDashBoard.cpp \
+    ZModelViews/ZCorrelationPlotterWidget.cpp \
+    ZComponents/ZCorrelationPlotterManager.cpp
 
 
 HEADERS  += \
@@ -200,15 +199,14 @@ HEADERS  += \
     ZComponents/ZTermCorrelationTableManager.h \
     ZComponents/ZAbstractTerm.h \
     ZComponents/ZTermNormalizer.h \
-    ZComponents/ZCalculationPlotterManager.h \
-    ZModelViews/ZCalculationPlotterWidget.h \
     ZComponents/ZCrossProductTerm.h \
     ZComponents/ZCustomTerm.h \
     ZComponents/ZQuadraticTerm.h \
     ZComponents/ZSimpleTerm.h \
     ZModelViews/ZCustomCheckableVerticalHeaderView/ZCustomCheckableVerticalHeaderView.h \
-    ZModelViews/ZTermSettingsDashBoard.h \
-    ZModelViews/ZEquationSettingsDashBoard.h
+    ZModelViews/ZEquationSettingsDashBoard.h \
+    ZModelViews/ZCorrelationPlotterWidget.h \
+    ZComponents/ZCorrelationPlotterManager.h
 
 
 RESOURCES += \

@@ -18,6 +18,11 @@ bool ZCustomTerm::zp_calcTermVariablePart(const ZAbstractSpectrum* spectrum, qin
 
 }
 //===================================================================
+bool ZCustomTerm::zp_termBelongsToWindow(const ZCalibrationWindow* window) const
+{
+    return false;
+}
+//===================================================================
 QString ZCustomTerm::zp_termName() const
 {
    return QString();

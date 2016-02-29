@@ -19,6 +19,8 @@ class ZCalibration : public QObject
 {
     Q_OBJECT
     friend class ZAbstractTerm;
+    friend class ZTermNormalizer;
+
 public:
 
     explicit ZCalibration(const QString& name, QObject *parent = 0);
@@ -109,7 +111,6 @@ private slots:
     void zh_onTermNameChange() const;
     void zh_onTermAverageValueChange() const;
     void zh_normalizerValue(qreal&) const;
-    void zh_isNormalizerValid(bool&) const;
     void zh_onTermWindowMarginChange();
     void zh_removeTerm(ZAbstractTerm*);
 
@@ -126,7 +127,7 @@ private:
     bool zv_dirty;
     QString zv_defaultWindowName;
 
-    QList<ZCalibrationWindow*> zv_spectrumWindowList;
+    QList<ZCalibrationWindow*> zv_windowList;
     QList<ZAbstractTerm*> zv_termList;
     ZTermNormalizer* zv_termNormalizer;
     qreal zv_freeMemeber;
@@ -134,7 +135,8 @@ private:
 
     // FUNCS
     bool zh_isWindowExist(const QString&);
-    void zh_createTermsForWindow(ZCalibrationWindow*);
+    void zh_createTermsForWindow(const ZCalibrationWindow*);
+    bool zh_windowHasTerms(const ZCalibrationWindow*, ZAbstractTerm::TermType) const;
     int zp_termIndex(const ZAbstractTerm*) const;
 
     // STATIC

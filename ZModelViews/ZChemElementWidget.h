@@ -7,6 +7,8 @@
 class QTableView;
 class QAbstractItemModel;
 class QHBoxLayout;
+class QVBoxLayout;
+
 //==============================================================
 class ZChemElementWidget : public QWidget
 {
@@ -17,6 +19,7 @@ public:
     // FUNCS
     void zp_setModel(QAbstractItemModel* model);
     void zp_appendButtonActions(QList<QAction*>);
+    void zp_setMargin(int margin);
 
 signals:
 
@@ -34,6 +37,7 @@ private:
     // VARS
     QTableView* zv_table;
     QHBoxLayout* zv_buttonLayout;
+    QVBoxLayout* zv_mainLayout;
 
     // FUNCS
     void zh_createComponents();

@@ -2,8 +2,8 @@
     <qresource prefix="/images">
         <file>SDC.ico</file>
         <file>ZWidgets/editclear.png</file>
-        <file>ZWidgets/sidebarBlueClose.png</file>
-        <file>ZWidgets/sidebarBlueOpen.png</file>
+        <file>ZWidgets/sidebarRightBlueClose.png</file>
+        <file>ZWidgets/sidebarRightBlueOpen.png</file>
         <file>SDC1.ico</file>
         <file>addGreen.png</file>
         <file>document-save.png</file>
@@ -53,5 +53,9 @@
         <file>minus-magenta-1s.png</file>
         <file>plus-blue-1s.png</file>
         <file>question-yellow-1s.png</file>
+        <file>hSplitterHandle.png</file>
+        <file>vSplitterHandle.png</file>
+        <file>ZWidgets/sidebarLeftBlueClose.png</file>
+        <file>ZWidgets/sidebarLeftBlueOpen.png</file>
     </qresource>
 </RCC>

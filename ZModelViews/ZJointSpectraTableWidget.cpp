@@ -32,14 +32,16 @@ void ZJointSpectrumTableWidget::zp_selectedSpectrumIndexList(QList<int>& selecte
 //=============================================================
 void ZJointSpectrumTableWidget::zh_createComponents()
 {
-    QVBoxLayout* mainLayout = new QVBoxLayout(this);
-    setLayout(mainLayout);
+    zv_mainLayout = new QVBoxLayout(this);
+    zv_mainLayout->setMargin(0);
+
+    setLayout(zv_mainLayout);
 
     zv_table = new QTableView(this);
-    mainLayout->addWidget(zv_table, INT_MAX);
+    zv_mainLayout->addWidget(zv_table, INT_MAX);
 
     zv_buttonLayout = new QHBoxLayout(this);
-    mainLayout->addLayout(zv_buttonLayout);
+    zv_mainLayout->addLayout(zv_buttonLayout);
 }
 //=============================================================
 void ZJointSpectrumTableWidget::zh_createConnections()
@@ -89,6 +91,11 @@ void ZJointSpectrumTableWidget::zp_connectToSpectrumArrayRepository(ZSpectrumArr
 {
    connect(this, &ZJointSpectrumTableWidget::zg_currentSpectrumChanged,
            repository, &ZSpectrumArrayRepository::zp_currentSpectrumChanged);
+}
+//==============================================================
+void ZJointSpectrumTableWidget::zp_setMargin(int margin)
+{
+    zv_mainLayout->setMargin(margin);
 }
 //==============================================================
 void ZJointSpectrumTableWidget::zh_editNext(QModelIndex editedIndex)

@@ -1,4 +1,4 @@
-//=========================================----------------------
+//================================================================
 #include "ZNumericEditor.h"
 #include <QLineEdit>
 #include <limits>
@@ -6,29 +6,36 @@
 #include <math.h>
 #include <QMessageBox>
 #include <QKeyEvent>
-//=========================================----------------------
+#include <QFontMetrics>
+#include <QStyle>
+#include <QStyleOptionComplex>
+//================================================================
 ZNumericEditor::ZNumericEditor(QWidget *parent) :
     QAbstractSpinBox(parent)
 {
-    m_min = (double)std::numeric_limits<long>::min();
-    m_max = (double)std::numeric_limits<long>::max();
+    zv_min = (double)std::numeric_limits<long long>::min();
+    zv_max = (double)std::numeric_limits<long long>::max();
 
     //int maxPartSymbols = QString::number(m_max).count();
-
+    lineEdit()->setAlignment(Qt::AlignVCenter | Qt::AlignRight);
     lineEdit()->setValidator(new QDoubleValidator());
     lineEdit()->setText("0.0");
+    connect(lineEdit(), &QLineEdit::textChanged,
+            this, &ZNumericEditor::zp_checkChangedText);
+
 }
-//=========================================------------------------
+//================================================================
 ZNumericEditor::StepEnabled	ZNumericEditor::stepEnabled () const
 {
     return ZNumericEditor::StepDownEnabled | ZNumericEditor::StepUpEnabled;
 }
-//=========================================----------------------
+//================================================================
 void	ZNumericEditor::stepBy ( int steps )
 {
     QString numericString = lineEdit()->text();
     int cursorPos = lineEdit()->cursorPosition();
 
+    qDebug() << "STEPS" << steps;
     //double doubleValue = numericString.toDouble();
 
     numericString.replace(QRegExp(","), ".");
@@ -124,7 +131,6 @@ void	ZNumericEditor::stepBy ( int steps )
     int newPartCount;
     for(int s = 0; s < qAbs(steps); s++)
     {
-
         if(fractionlPartMax > 0)
         {
             if((changedPartNumeric <= 0 && steps < 0) || (changedPartNumeric >= fractionlPartMax && steps > 0))
@@ -192,7 +198,7 @@ void	ZNumericEditor::stepBy ( int steps )
 
     lineEdit()->setCursorPosition(newCursorPos);
 }
-//=========================================----------------------
+//================================================================
 void ZNumericEditor::keyPressEvent(QKeyEvent *event)
 {
     if(event->key() == Qt::Key_Return || event->key() == Qt::Key_Enter)
@@ -207,7 +213,7 @@ void ZNumericEditor::keyPressEvent(QKeyEvent *event)
 
     QAbstractSpinBox::keyPressEvent(event);
 }
-//=========================================----------------------
+//================================================================
 bool ZNumericEditor::checkNewNumber(QStringList parts,
                                     bool powerTypeRecord,
                                     qint64 changedPartNumeric,
@@ -231,20 +237,24 @@ bool ZNumericEditor::checkNewNumber(QStringList parts,
         }
     }
 
+    if(parts.count() - 1 == changedPartNumber && powerTypeRecord && changedPartNumeric >= 0)
+    {
+        partString = "+"+partString;
+    }
+
     for(int i = 0; i < parts.count(); i++)
     {
-
         newNumericString = i == changedPartNumber ? newNumericString + partString : newNumericString + parts.value(i);
-        if((i == 0 && powerTypeRecord == false && parts.count() == 2) ||
-                (i == 0 && powerTypeRecord == true && parts.count() == 3))
+        if((i == 0 && !powerTypeRecord && parts.count() == 2) ||
+                (i == 0 && powerTypeRecord && parts.count() == 3))
         {
             newNumericString = newNumericString + ".";
         }
 
-        if( (i == 0 &&  powerTypeRecord == true && parts.count() == 2) ||
-                (i == 1 && powerTypeRecord == true && parts.count() == 3) )
+        if( (i == 0 &&  powerTypeRecord && parts.count() == 2) ||
+                (i == 1 && powerTypeRecord && parts.count() == 3) )
         {
-            newNumericString = newNumericString + "E";
+            newNumericString = newNumericString + "e";
         }
     }
 
@@ -252,40 +262,39 @@ bool ZNumericEditor::checkNewNumber(QStringList parts,
 
     newPartCount = partString.count();
 
-    if(newValue < m_min || newValue > m_max)
+    if(newValue < zv_min || newValue > zv_max)
     {
         return false;
     }
 
     return true;
 }
-//=========================================----------------------
+//================================================================
 void ZNumericEditor::setMinMax(double min, double max)
 {
     if(min < max || min < std::numeric_limits<long>::min() || max > std::numeric_limits<long>::max())
     {
-        m_min = min;
-        m_max = max;
+        zv_min = min;
+        zv_max = max;
     }
 }
-//=========================================----------------------
+//================================================================
 void ZNumericEditor::setText(QString numericString)
 {
-    bool ok;
 
-    double val = numericString.toDouble(&ok);
     bool removeLastTree = false;
-    if(val < m_min )
-    {
-        QMessageBox::warning(0, tr("Limit exceed"),  tr("The value exceeds minimum limit."), QMessageBox::Ok) ;
-        numericString = QString::number(m_min, 'g', 18);
-
-    }
-    else if(val > m_max)
-    {
-        QMessageBox::warning(0, tr("Limit exceed"),  tr("The value exceeds maximum limit."), QMessageBox::Ok) ;
-        numericString = QString::number(m_max, 'g', 18);
-    }
+//    if(val < zv_min )
+//    {
+//        //QMessageBox::warning(0, tr("Limit exceed"),  tr("The value exceeds minimum limit."), QMessageBox::Ok) ;
+//        // numericString = QString::number(zv_min, 'g', 18);
+//        zv_min = val;
+//    }
+//    else if(val > zv_max)
+//    {
+//        //QMessageBox::warning(0, tr("Limit exceed"),  tr("The value exceeds maximum limit."), QMessageBox::Ok) ;
+//        // numericString = QString::number(zv_max, 'g', 18);
+//        zv_max = val;
+//    }
 
     if(removeLastTree)
     {
@@ -306,27 +315,79 @@ void ZNumericEditor::setText(QString numericString)
 
             if(i == 1)
             {
-                numericString = numericString + "E";
+                numericString = numericString + "e";
             }
         }
     }
 
+    bool ok;
+    double val = numericString.toDouble(&ok);
+
+    if(val < zv_min )
+    {
+        zv_min = val;
+    }
+    else if(val > zv_max)
+    {
+        zv_max = val;
+    }
+
+
     lineEdit()->setText(numericString);
     lineEdit()->selectAll();
 }
-//=========================================----------------------
+//================================================================
 void ZNumericEditor::setValue(double value)
 {
     lineEdit()->setText(QString::number(value));
 }
-//=========================================----------------------
+//================================================================
 QString ZNumericEditor::text()
 {
     return lineEdit()->text();
 }
-//=========================================----------------------
+//================================================================
 double ZNumericEditor::value()
 {
     return lineEdit()->text().toDouble();
 }
-//=========================================----------------------
+//================================================================
+QSize ZNumericEditor::sizeHint() const
+{
+    QSize size = QAbstractSpinBox::sizeHint();
+    QFontMetrics fm(this->font());
+    QString maxString = QString::number(zv_max, 'f', 18);
+    QString minString = QString::number(zv_min, 'f', 18);
+    int stringWidth = qMax(fm.width(maxString), fm.width(minString));
+    QStyleOptionComplex opt;
+    opt.initFrom(this);
+    int upDownButtonWidth = this->style()->subControlRect(QStyle::CC_SpinBox, &opt, QStyle::SC_SpinBoxDown, this).width();
+    size.setWidth(stringWidth + (upDownButtonWidth));
+    return size;
+}
+//================================================================
+void ZNumericEditor::zp_checkChangedText(const QString& newValueString)
+{
+    if(newValueString.isEmpty())
+    {
+        lineEdit()->setText(QString::number(0.0));
+        return;
+    }
+
+    bool ok;
+    qreal newValue = newValueString.toDouble(&ok);
+    if(!ok && lineEdit()->isUndoAvailable())
+    {
+        lineEdit()->undo();
+    }
+
+    if(newValue > zv_max)
+    {
+        lineEdit()->setText(QString::number(zv_max));
+    }
+    else if(newValue < zv_min)
+    {
+        lineEdit()->setText(QString::number(zv_min));
+    }
+}
+//================================================================

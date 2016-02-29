@@ -184,7 +184,6 @@ void ZNumericDelegate::zh_onEditorEnterClick()
     if(editor->text().isEmpty())
     {
         editor->setValue(0);
-
     }
     emit commitData(editor);
     if(zv_isEditorAlive)

@@ -3,8 +3,9 @@
 #define ZSIMPLETERM_H
 //===================================================================
 #include "ZAbstractTerm.h"
+#include "ZCalibrationWindow.h"
 //===================================================================
-class ZCalibrationWindow;
+
 //===================================================================
 class ZSimpleTerm : public ZAbstractTerm
 {
@@ -16,19 +17,23 @@ public:
    // FUNCS
    bool zp_calcValue(const ZAbstractSpectrum*, qreal&) override;
    bool zp_calcTermVariablePart(const ZAbstractSpectrum*, qint64 &value) override; // w/o factor
+   bool zp_termBelongsToWindow(const ZCalibrationWindow*) const override;
 
+   const ZCalibrationWindow* zp_window() const;
 
 signals:
 
-    void zg_requestWindowIntensity(const QObject* spectrum, qint64& intensityValue, bool keepBufferClean,  bool* ok = 0);
+   void zg_requestWindowIntensity(const QObject* spectrum, qint64& intensityValue, bool keepBufferClean,  bool* ok = 0);
 
 protected slots:
 
    virtual bool zh_updateTermNameForWindowName(const QString&windowName) override;
+   void zh_onWindowTypeChange(ZCalibrationWindow::WindowType type);
 
 private:
 
    // VARS
+   const ZCalibrationWindow* zv_window;
 
 
    // FUNCS

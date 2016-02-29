@@ -1,23 +1,23 @@
 //==============================================================
-#include "ZCalculationPlotterWidget.h"
+#include "ZCorrelationPlotterWidget.h"
 #include "ZPlotter.h"
 #include <QHBoxLayout>
 #include <QVBoxLayout>
 #include <QFrame>
 
 //==============================================================
-ZCalculationPlotterWidget::ZCalculationPlotterWidget(QWidget *parent) : QWidget(parent)
+ZCorrelationPlotterWidget::ZCorrelationPlotterWidget(QWidget *parent) : QWidget(parent)
 {
    zh_createComponents();
    zh_createConnections();
 }
 //==============================================================
-ZPlotter* ZCalculationPlotterWidget::zp_plotter()
+ZPlotter* ZCorrelationPlotterWidget::zp_plotter()
 {
    return zv_plotter;
 }
 //==============================================================
-void ZCalculationPlotterWidget::zh_createComponents()
+void ZCorrelationPlotterWidget::zh_createComponents()
 {
     QVBoxLayout* mainLayout = new QVBoxLayout(this);
     setLayout(mainLayout);
@@ -35,7 +35,7 @@ void ZCalculationPlotterWidget::zh_createComponents()
 
 }
 //==============================================================
-void ZCalculationPlotterWidget::zh_createConnections()
+void ZCorrelationPlotterWidget::zh_createConnections()
 {
 
 }

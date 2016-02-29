@@ -1,9 +1,9 @@
 //=====================================================================
-#include "ZCalculationPlotterManager.h"
+#include "ZCorrelationPlotterManager.h"
 #include "ZPlotter.h"
 
 //=====================================================================
-ZCalculationPlotterManager::ZCalculationPlotterManager(QObject *parent) : QObject(parent)
+ZCorrelationPlotterManager::ZCorrelationPlotterManager(QObject *parent) : QObject(parent)
 {
    zv_plotter = 0;
 
@@ -11,7 +11,7 @@ ZCalculationPlotterManager::ZCalculationPlotterManager(QObject *parent) : QObjec
    zv_horizontalRuleLabel = tr("Concentration");
 }
 //=====================================================================
-void ZCalculationPlotterManager::zp_connectToPlotter(ZPlotter* plotter)
+void ZCorrelationPlotterManager::zp_connectToPlotter(ZPlotter* plotter)
 {
    zv_plotter = plotter;
    zv_plotter->zp_setAutoDefineVerticalAbsMax(false);

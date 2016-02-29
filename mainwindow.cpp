@@ -9,7 +9,7 @@
 #include "ZCalibrationRepository.h"
 #include "ZChemElementDataManager.h"
 #include "ZPlotterDataManager.h"
-#include "ZCalculationPlotterManager.h"
+#include "ZCorrelationPlotterManager.h"
 #include "ZTermCorrelationTableManager.h"
 #include "ZSpeSpectrum.h"
 // views
@@ -19,7 +19,7 @@
 #include "ZChemElementWidget.h"
 #include "ZCalibrationTableWidget.h"
 #include "ZCalibrationWindowTableWidget.h"
-#include "ZCalculationPlotterWidget.h"
+#include "ZCorrelationPlotterWidget.h"
 #include "ZTermCorrelationTableWidget.h"
 #include "ZEquationSettingsDashBoard.h"
 #include "ZPlotter.h"
@@ -159,19 +159,8 @@ void MainWindow::zh_createComponents()
     zv_spectraSidebarWidget->zp_setSidebarWidget(spectrumArraySplitter);
     zv_spectraSidebarWidget->zp_setMainWidget(zv_spectrumTableWidget);
     // setting to dock
+
     zv_spectrumArrayDock->setWidget(zv_spectraSidebarWidget);
-
-    // Chem Element Array View
-    //   zv_chemElementArrayDock = new QDockWidget(this);
-    //   zv_chemElementArrayDock->setObjectName("CHEMELEMENT_ARRAY_DOCK");
-    //   zv_chemElementArrayDock->setWindowTitle(tr("Chemical elements"));
-    //   zv_dockList << zv_chemElementArrayDock;
-    //   addDockWidget(Qt::LeftDockWidgetArea, zv_chemElementArrayDock);
-
-    //   zv_chemElementWidget = new ZChemElementWidget(this);
-    //   frame = zh_setWidgetToFrame(zv_chemElementWidget);
-    //   // setting to dock
-    //   zv_chemElementArrayDock->setWidget(frame);
 
     // Calibration View
     zv_calibrationDock= new QDockWidget(this);
@@ -180,53 +169,53 @@ void MainWindow::zh_createComponents()
     zv_dockList << zv_calibrationDock;
     addDockWidget(Qt::TopDockWidgetArea, zv_calibrationDock);
 
-    zv_calibrationSidebarWidget = new ZWidgetWithSidebar("CALIBRATION_SIDEBAR_WIDGET", true, this);
-    zv_calibrationSidebarWidget->setFrameStyle(QFrame::StyledPanel | QFrame::Plain);
-    zv_calibrationSidebarWidget->setLineWidth(1);
+    zv_calibrationSidebarWidget = new ZWidgetWithSidebar("CALIBRATION_SIDEBAR_WIDGET", false, this);
+    zv_calibrationSidebarWidget->zp_setMargin(0);
+    // zv_calibrationSidebarWidget->setFrameStyle(QFrame::StyledPanel | QFrame::Plain);
+    zv_calibrationSidebarWidget->setFrameShape(QFrame::NoFrame);
+    zv_calibrationSidebarWidget->setLineWidth(0);
 
     zv_calibrationTableWidget = new ZCalibrationTableWidget(this);
     zv_termCorrelationTableWidget = new ZTermCorrelationTableWidget(this);
     zv_calibrationWindowTableWidget = new ZCalibrationWindowTableWidget(this);
+    zv_equationSettingsPanelWidget = new ZEquationSettingsDashBoard(this);
+
+    // sideWidget composition
+    zv_calibrationSidebarWidget->zp_setSidebarWidget(zv_calibrationWindowTableWidget);
+    zv_calibrationSidebarWidget->zp_setMainWidget(zv_calibrationTableWidget);
+
+    // left side widget
+    QWidget* calibrationWidget = new QWidget();
+    QVBoxLayout*leftWidgetLayout = new QVBoxLayout(calibrationWidget);
+    leftWidgetLayout->setMargin(0);
+    calibrationWidget->setLayout(leftWidgetLayout);
 
     QSplitter* calibrationSplitter = new QSplitter(Qt::Vertical, this);
-    calibrationSplitter->addWidget(zv_calibrationTableWidget);
+    calibrationSplitter->setFrameShape(QFrame::NoFrame);
+    calibrationSplitter->addWidget(zv_calibrationSidebarWidget);
     calibrationSplitter->addWidget(zv_termCorrelationTableWidget);
     calibrationSplitter->setChildrenCollapsible(false);
+    leftWidgetLayout->addWidget(calibrationSplitter);
 
-    zv_calibrationSidebarWidget->zp_setSidebarWidget(calibrationSplitter);
-    zv_calibrationSidebarWidget->zp_setMainWidget(zv_calibrationWindowTableWidget);
-
-    // setting to dock
-    zv_calibrationDock->setWidget(zv_calibrationSidebarWidget);
-
-    // Term Correlation Table View
-    zv_termCorrelationTableDock= new QDockWidget(this);
-    zv_termCorrelationTableDock->setObjectName("TERM_CORRELATION_TABLE_DOCK");
-    zv_termCorrelationTableDock->setWindowTitle(tr("Terms"));
-    zv_dockList << zv_termCorrelationTableDock;
-    addDockWidget(Qt::TopDockWidgetArea, zv_termCorrelationTableDock);
-
-    zv_termCorrelationTableSidebarWidget = new ZWidgetWithSidebar("TERM_CORRELATION_TABLE_WIDGET", false, this);
-    zv_termCorrelationTableSidebarWidget->setFrameStyle(QFrame::StyledPanel | QFrame::Plain);
-    zv_termCorrelationTableSidebarWidget->setLineWidth(1);
-
-    //zv_termCorrelationTableWidget = new ZTermCorrelationTableWidget(this);
-    zv_calculationPlotterWidget = new ZCalculationPlotterWidget(this);
-    zv_equationSettingsPanelWidget = new ZEquationSettingsDashBoard(this);
     frame = zh_setWidgetToFrame(zv_equationSettingsPanelWidget);
-    QWidget* equationBaseWidget = new QWidget();
-    QVBoxLayout* layout = new QVBoxLayout(equationBaseWidget);
-//    layout->setMargin(0);
-//    layout->setSpacing(0);
-    equationBaseWidget->setLayout(layout);
-    layout->addWidget(zv_calculationPlotterWidget);
-    layout->addWidget(frame);
-
-    zv_termCorrelationTableSidebarWidget->zp_setSidebarWidget(equationBaseWidget);
-    //zv_termCorrelationTableSidebarWidget->zp_setMainWidget(zv_termCorrelationTableWidget);
+    frame->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
+    leftWidgetLayout->addWidget(frame);
 
     // setting to dock
-    zv_termCorrelationTableDock->setWidget(zv_termCorrelationTableSidebarWidget);
+    frame = zh_setWidgetToFrame(calibrationWidget);
+    zv_calibrationDock->setWidget(frame);
+
+    // Correlation Plotter View
+    zv_correlationPlotterDock= new QDockWidget(this);
+    zv_correlationPlotterDock->setObjectName("CORRELATION_PLOT_DOCK");
+    zv_correlationPlotterDock->setWindowTitle(tr("Correlation plot"));
+    zv_dockList << zv_correlationPlotterDock;
+    addDockWidget(Qt::TopDockWidgetArea, zv_correlationPlotterDock);
+
+    zv_correlationPlotterWidget = new ZCorrelationPlotterWidget(this);
+
+    // setting to dock
+    zv_correlationPlotterDock->setWidget(zv_correlationPlotterWidget);
 
     // Message Panel
     zv_messagePanelDock = new QDockWidget(this);
@@ -251,7 +240,7 @@ void MainWindow::zh_createComponents()
     zv_calibrationRepository = new ZCalibrationRepository(this);
     zv_jointCalibrationWindowDataManager = new ZCalibrationWindowDataManager(this);
     zv_plotterDataManager = new ZPlotterDataManager(this);
-    zv_calculationPlotterManager = new ZCalculationPlotterManager(this);
+    zv_calculationPlotterManager = new ZCorrelationPlotterManager(this);
     zv_termCorrelationTableManager = new ZTermCorrelationTableManager(this);
 
     // Models
@@ -332,8 +321,8 @@ void MainWindow::zh_createConnections()
             zv_spectraSidebarWidget, &ZWidgetWithSidebar::zp_saveSettings);
     connect(this, &MainWindow::zg_saveSettings,
             zv_calibrationSidebarWidget, &ZWidgetWithSidebar::zp_saveSettings);
-    connect(this, &MainWindow::zg_saveSettings,
-            zv_termCorrelationTableSidebarWidget, &ZWidgetWithSidebar::zp_saveSettings);
+//    connect(this, &MainWindow::zg_saveSettings,
+//            zv_termCorrelationTableSidebarWidget, &ZWidgetWithSidebar::zp_saveSettings);
 
     connect(this, &MainWindow::zg_saveSettings,
             zv_fileActionManager, &ZFileActionManager::zp_saveSettings);
@@ -423,7 +412,7 @@ void MainWindow::zh_createConnections()
 
     // term correlation table and calculation plotter
 
-    zv_calculationPlotterManager->zp_connectToPlotter(zv_calculationPlotterWidget->zp_plotter());
+    zv_calculationPlotterManager->zp_connectToPlotter(zv_correlationPlotterWidget->zp_plotter());
     zv_termCorrelationTableModel->zp_connectToPredicorTableManager(zv_termCorrelationTableManager);
     zv_termCorrelationTableManager->zp_connectToCalibrationRepository(zv_calibrationRepository);
     zv_termCorrelationTableManager->zp_connectToSpectrumArrayRepository(zv_spectrumArrayRepository);

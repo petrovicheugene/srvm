@@ -18,14 +18,16 @@ ZChemElementWidget::ZChemElementWidget(QWidget *parent) : QWidget(parent)
 //==============================================================
 void ZChemElementWidget::zh_createComponents()
 {
-    QVBoxLayout* mainLayout = new QVBoxLayout(this);
-    setLayout(mainLayout);
+    zv_mainLayout = new QVBoxLayout(this);
+    zv_mainLayout->setMargin(0);
+
+    setLayout(zv_mainLayout);
 
     zv_table = new QTableView(this);
-    mainLayout->addWidget(zv_table);
+    zv_mainLayout->addWidget(zv_table);
 
     zv_buttonLayout = new QHBoxLayout(this);
-    mainLayout->addLayout(zv_buttonLayout);
+    zv_mainLayout->addLayout(zv_buttonLayout);
 }
 //==============================================================
 void ZChemElementWidget::zp_setModel(QAbstractItemModel* model)
@@ -55,6 +57,11 @@ void ZChemElementWidget::zp_appendButtonActions(QList<QAction*> actionList)
                 actionList[a], &QAction::trigger);
         zv_buttonLayout->addWidget(button);
     }
+}
+//==============================================================
+void ZChemElementWidget::zp_setMargin(int margin)
+{
+    zv_mainLayout->setMargin(margin);
 }
 //==============================================================
 void ZChemElementWidget::zp_setCurrentChemElementIndex(int chemElementIndex)

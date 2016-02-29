@@ -8,6 +8,8 @@ class QPushButton;
 class QToolButton;
 class QLineEdit;
 class QComboBox;
+class QLabel;
+
 class ZNumericEditor;
 //========================================================
 class ZEquationSettingsDashBoard : public QWidget
@@ -27,9 +29,9 @@ private:
     // VARS
     QComboBox* zv_normalizerTypeComboBox;
     QLineEdit* zv_customNormalizerLineEdit;
-    QToolButton* zv_checkCustomNormalizerButton;
 
-    QComboBox* zv_equationTypeComboBox;
+    QPushButton* zv_equationChooseButton;
+    QLabel* zv_equationLabel;
 
     ZNumericEditor* zv_freeMemberNumericEditor;
     ZNumericEditor* zv_freeFactorNumericEditor;
@@ -44,7 +46,13 @@ private:
     // FUNCS
 
     void zh_createComponents();
+    QWidget* zh_createEquationWidget();
+    QWidget* zh_createNormalizerWidget();
+    QWidget* zh_createFreeMemeberWidget();
+
     void zh_createConnections();
+
+
 
 };
 //========================================================

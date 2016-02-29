@@ -20,14 +20,16 @@ ZCalibrationTableWidget::ZCalibrationTableWidget(QWidget *parent) : QWidget(pare
 //==============================================================
 void ZCalibrationTableWidget::zh_createComponents()
 {
-    QVBoxLayout* mainLayout = new QVBoxLayout(this);
-    setLayout(mainLayout);
+    zv_mainLayout = new QVBoxLayout(this);
+    zv_mainLayout->setMargin(0);
+
+    setLayout(zv_mainLayout);
 
     zv_table = new QTableView(this);
-    mainLayout->addWidget(zv_table);
+    zv_mainLayout->addWidget(zv_table);
 
     zv_buttonLayout = new QHBoxLayout(this);
-    mainLayout->addLayout(zv_buttonLayout);
+    zv_mainLayout->addLayout(zv_buttonLayout);
 }
 //==============================================================
 void zh_onCurrentArrayChanged(const QModelIndex & current, const QModelIndex & previous)
@@ -87,6 +89,11 @@ void ZCalibrationTableWidget::zp_connectToCalibrationRepository(ZCalibrationRepo
     connect(repository, &ZCalibrationRepository::zg_startCurrentCalibrationEdition,
             this, &ZCalibrationTableWidget::zp_startCurrentCalibrationEdition);
 
+}
+//==============================================================
+void ZCalibrationTableWidget::zp_setMargin(int margin)
+{
+    zv_mainLayout->setMargin(margin);
 }
 //==============================================================
 void ZCalibrationTableWidget::zp_selectedCalibrationIndexList(QList<int>& selectedList)

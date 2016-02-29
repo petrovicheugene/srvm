@@ -3,23 +3,31 @@
 #define ZTERMNORMALIZATOR_H
 //======================================================================
 #include <QObject>
+#include "ZCalibrationWindow.h"
+//======================================================================
+class ZAbstractSpectrum;
+class ZCalibration;
 //======================================================================
 class ZTermNormalizer : public QObject
 {
     Q_OBJECT
 public:
 
-    enum NormaType {NT_NONE,
-                    NT_COHERENT,
-                    NT_INCOHERENT,
-                    NT_COHERENT_INCOHERENT,
-                    NT_INCOHERENT_COHERENT,
-                    NT_CUSTOM};
+    enum NormaType {NT_NONE = 0,
+                    NT_COHERENT = 1,
+                    NT_INCOHERENT = 2,
+                    NT_COHERENT_INCOHERENT = 3,
+                    NT_INCOHERENT_COHERENT = 4,
+                    NT_CUSTOM = 5
+                   };
 
-                   explicit ZTermNormalizer(QObject *parent = 0);
+                   explicit ZTermNormalizer(ZCalibration *parent);
 
     bool zp_isValid() const;
     qreal zp_value() const;
+    bool zp_calcNormalizedValue(const ZAbstractSpectrum *spectrum, qreal &value);
+
+    static QStringList zp_normaTypeList();
 
 signals:
 
@@ -27,18 +35,27 @@ signals:
     void zg_requestCoherentIntensity(qint64&) const;
     void zg_requestIncoherentIntensity(qint64&) const;
 
-
 public slots:
 
     void zp_isValid(bool&) const;
     void zp_value(qreal&) const;
 
-
 private:
 
     // VARS
     NormaType zv_normaType;
+    ZCalibration* zv_calibration;
+    static QMap<ZTermNormalizer::NormaType, QString> zv_normaTypeStringMap;
 
+    // buffer
+    qint64 zv_spectrumId;
+    qreal zv_normaValue;
+
+    // FUNCS
+    bool zh_getWindowsValue(ZCalibrationWindow::WindowType type, const ZAbstractSpectrum* spectrum, qint64& value);
+
+    // STATIC
+    static QMap<ZTermNormalizer::NormaType, QString> zh_initNormaTypeStringMap();
 
 };
 //======================================================================
