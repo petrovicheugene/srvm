@@ -31,10 +31,16 @@ void ZTermCorrelationTableManager::zp_connectToCalibrationRepository(ZCalibratio
     zv_calibrationRepository = repository;
     connect(repository, &ZCalibrationRepository::zg_termOperation,
             this, &ZTermCorrelationTableManager::zh_onRepositoryTermOperation);
+//    connect(repository, &ZCalibrationRepository::zg_calibrationWindowOperation,
+//            this, &ZTermCorrelationTableManager::zh_onCalibrationWindowOperation);
+
     connect(repository, &ZCalibrationRepository::zg_currentCalibrationChanged,
             this, &ZTermCorrelationTableManager::zh_currentCalibrationChanged);
     connect(zv_calibrationRepository, &ZCalibrationRepository::zg_calibrationOperation,
             this, &ZTermCorrelationTableManager::zh_onCalibrationRepositoryOperation);
+    connect(zv_calibrationRepository, &ZCalibrationRepository::zg_normalizerChanged,
+            this, &ZTermCorrelationTableManager::zh_onCalibrationNormalizerChange);
+
     emit zg_currentOperation(TOT_END_RESET, -1, -1);
 
 }
@@ -145,7 +151,7 @@ QVariant ZTermCorrelationTableManager::zp_cellColor(QModelIndex index) const
         return QVariant();
     }
 
-    qreal correlationValue;
+    qreal correlationValue = 0;
     bool ok;
 
     // chem Correlations
@@ -575,6 +581,17 @@ void ZTermCorrelationTableManager::zh_onSpectrumOperation(ZSpectrumArrayReposito
     }
 }
 //=============================================================================
+void ZTermCorrelationTableManager::zh_onCalibrationNormalizerChange(qint64 calibrationId)
+{
+    if(zv_currentCalibrationId != calibrationId)
+    {
+        return;
+    }
+
+    zh_calcCorrelations();
+    emit zg_currentOperation(TOT_DATA_CHANGED, 0, zp_rowCount() -1);
+}
+//=============================================================================
 //bool ZTermCorrelationTableManager::zh_calcChemElementCorrelation(int termIndex, qreal& correlationValue) const
 //{
 //    if(!zv_calibrationRepository || !zv_spectrumArrayRepository || zv_currentCalibrationId < 0 || zv_currentArrayId < 0)
@@ -709,7 +726,7 @@ void ZTermCorrelationTableManager::zh_calcCorrelations()
     QList< QPair<qreal, QList<qreal> > > chemConcentrationAndTermValueList;
     const ZAbstractSpectrum* spectrum;
     QString concentrationString;
-    qreal concentration;
+    qreal concentration = 0.0;
     bool ok;
 
     qreal averageChemElementValue = 0.0;
@@ -866,8 +883,8 @@ void ZTermCorrelationTableManager::zh_calcIntercorrelations(const QList< QPair<q
                                                             const QMap<int, qreal>& averageTermValueMap)
 {
     QMap<int, QList<qreal> > deltaMap;
-//    qreal rowTermDelta = 0;
-//    qreal columnTermDelta = 0;
+    //    qreal rowTermDelta = 0;
+    //    qreal columnTermDelta = 0;
 
     qreal denominator1 = 0;
     qreal denominator2 = 0;

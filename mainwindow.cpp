@@ -416,6 +416,9 @@ void MainWindow::zh_createConnections()
     zv_termCorrelationTableModel->zp_connectToPredicorTableManager(zv_termCorrelationTableManager);
     zv_termCorrelationTableManager->zp_connectToCalibrationRepository(zv_calibrationRepository);
     zv_termCorrelationTableManager->zp_connectToSpectrumArrayRepository(zv_spectrumArrayRepository);
+
+    // equation dashboard
+    zv_equationSettingsPanelWidget->zp_connectToCalibrationRepository(zv_calibrationRepository);
 }
 //==========================================================
 void MainWindow::zh_appendActionsToMenu(QMenu* menu)

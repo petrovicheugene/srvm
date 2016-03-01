@@ -401,7 +401,7 @@ void ZPlotterDataManager::zh_onRepositoryCalibrationWindowOperation(ZCalibration
             return;
         }
 
-        ZWindowGraphicsItem* windowItem;
+        ZWindowGraphicsItem* windowItem = 0;
         QList<QGraphicsItem*>windowList = zv_plotter->zp_itemListForType(WindowItemType);
 
         for(int w = first; w <= last; w++ )
@@ -429,7 +429,10 @@ void ZPlotterDataManager::zh_onRepositoryCalibrationWindowOperation(ZCalibration
                 }
             }
 
-            zv_plotter->zp_addItem(windowItem);
+            if(windowItem)
+            {
+                zv_plotter->zp_addItem(windowItem);
+            }
         }
     }
 }

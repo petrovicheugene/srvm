@@ -68,12 +68,15 @@ void	ZNumericEditor::stepBy ( int steps )
     {
     case 1:
 
+        firstSeparatorPos = 0;
+        secondSeparatorPos = 0;
         changedPartNumber = 0;
         cursorPos = lineEdit()->cursorPosition();
 
         break;
     case 2:
 
+        secondSeparatorPos = numericString.length() - 1;
         firstSeparatorPos = numericString.indexOf(QRegExp("[,.Ee]"));
         if(cursorPos > firstSeparatorPos)
         {

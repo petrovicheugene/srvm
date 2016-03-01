@@ -49,7 +49,7 @@ public:
 
 signals:
 
-    void zg_requestNormalizerValue(qreal&);
+ //   void zg_requestNormalizerValue(qreal&);
     void zg_termWindowMarginChanged();
     void zg_termNameChanged() const;
     void zg_requestForDelete(ZAbstractTerm*);

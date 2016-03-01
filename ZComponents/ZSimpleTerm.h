@@ -28,7 +28,8 @@ signals:
 protected slots:
 
    virtual bool zh_updateTermNameForWindowName(const QString&windowName) override;
-   void zh_onWindowTypeChange(ZCalibrationWindow::WindowType type);
+   void zh_onWindowTypeChange(ZCalibrationWindow::WindowType previousType,
+                              ZCalibrationWindow::WindowType currentType);
 
 private:
 

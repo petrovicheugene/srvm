@@ -11,6 +11,7 @@ class QComboBox;
 class QLabel;
 
 class ZNumericEditor;
+class ZCalibrationRepository;
 //========================================================
 class ZEquationSettingsDashBoard : public QWidget
 {
@@ -18,15 +19,24 @@ class ZEquationSettingsDashBoard : public QWidget
 public:
     explicit ZEquationSettingsDashBoard(QWidget *parent = 0);
 
+    void zp_connectToCalibrationRepository(ZCalibrationRepository*);
+
 signals:
 
 public slots:
 
+private slots:
 
+    void zh_onCurrentCalibrationChange(qreal calibrationId, int calibrationIndex);
+    void zh_onNormaTypeChange(int index);
 
 private:
 
     // VARS
+    ZCalibrationRepository* zv_calibrationRepository;
+    qint64 zv_currentCalibrationId;
+    int zv_currentCalibrationIndex;
+
     QComboBox* zv_normalizerTypeComboBox;
     QLineEdit* zv_customNormalizerLineEdit;
 

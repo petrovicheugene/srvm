@@ -66,7 +66,7 @@ private slots:
     void zh_onRepositoryTermOperation(ZCalibrationRepository::TermOperationType, int, int, int);
     void zh_onCalibrationRepositoryOperation(ZCalibrationRepository::CalibrationOperationType, int, int);
     void zh_onSpectrumOperation(ZSpectrumArrayRepository::SpectrumOperationType, int, int, int);
-
+    void zh_onCalibrationNormalizerChange(qint64 calibrationId);
 
 private:
 

@@ -41,7 +41,7 @@ public:
 
     bool  zp_setWindowMarginChannels(int, int);
 
-    WindowType zp_type() const;
+    WindowType zp_windowType() const;
     bool zp_setWindowType(WindowType);
     qint64 zp_windowId() const;
 
@@ -56,8 +56,8 @@ public slots:
 signals:
 
     void zg_windowNameChanged(const QString&) const;
-    void zg_widowMarginsChanged() const;
-    void zg_windowTypeChanged(ZCalibrationWindow::WindowType);
+    void zg_windowMarginsChanged() const;
+    void zg_windowTypeChanged(ZCalibrationWindow::WindowType previousType, ZCalibrationWindow::WindowType currentType);
 
 private:
 

@@ -56,9 +56,10 @@ void ZQuadraticTerm::zh_setName(const QString& windowName)
     zv_name = "(" + windowName + ")" + QChar(0x00B2);
 }
 //===================================================================
-void ZQuadraticTerm::zh_onWindowTypeChange(ZCalibrationWindow::WindowType type)
+void ZQuadraticTerm::zh_onWindowTypeChange(ZCalibrationWindow::WindowType previousType,
+                                           ZCalibrationWindow::WindowType currentType)
 {
-    if(type != ZCalibrationWindow::WT_BASE_PEAK && type != ZCalibrationWindow::WT_PEAK)
+    if(currentType != ZCalibrationWindow::WT_BASE_PEAK && currentType != ZCalibrationWindow::WT_PEAK)
     {
         emit zg_requestForDelete(this);
     }
@@ -74,7 +75,7 @@ void ZQuadraticTerm::zh_connectToWindow(const ZCalibrationWindow* window)
                 this, &ZQuadraticTerm::zh_updateTermNameForWindowName);
         connect(this, &ZQuadraticTerm::zg_requestWindowIntensity,
                 window, &ZCalibrationWindow::zp_calcWindowIntensity);
-        connect(window, &ZCalibrationWindow::zg_widowMarginsChanged,
+        connect(window, &ZCalibrationWindow::zg_windowMarginsChanged,
                 this, &ZQuadraticTerm::zg_termWindowMarginChanged);
         connect(window, &ZCalibrationWindow::zg_windowTypeChanged,
                 this, &ZQuadraticTerm::zh_onWindowTypeChange);

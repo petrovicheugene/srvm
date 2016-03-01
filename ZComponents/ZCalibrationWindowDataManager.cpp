@@ -25,7 +25,7 @@ void ZCalibrationWindowDataManager::zp_connectToCalibrationRepository(ZCalibrati
     connect(repository, &ZCalibrationRepository::zg_calibrationWindowOperation,
             this, &ZCalibrationWindowDataManager::zh_onRepositoryWindowOperation);
     connect(repository, &ZCalibrationRepository::zg_currentCalibrationChanged,
-            this, &ZCalibrationWindowDataManager::zh_currentCalibrationChanged);
+            this, &ZCalibrationWindowDataManager::zh_onCurrentCalibrationChange);
 }
 //=============================================================================
 int ZCalibrationWindowDataManager::zp_rowCount() const
@@ -55,7 +55,7 @@ void ZCalibrationWindowDataManager::zh_onArrayMaxParametersChanged(qint64 arrayI
     emit zg_setChannelMinMax(0, channels);
 }
 //=============================================================================
-void ZCalibrationWindowDataManager::zh_currentCalibrationChanged(qreal calibrationId, int calibrationIndex)
+void ZCalibrationWindowDataManager::zh_onCurrentCalibrationChange(qreal calibrationId, int calibrationIndex)
 {
     if(zv_currentCalibrationId == calibrationId)
     {

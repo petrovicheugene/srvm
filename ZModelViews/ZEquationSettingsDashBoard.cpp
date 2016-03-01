@@ -3,6 +3,7 @@
 #include "ZNumericEditor.h"
 #include "globalVariables.h"
 #include "ZTermNormalizer.h"
+#include "ZCalibrationRepository.h"
 
 #include <QPushButton>
 #include <QToolButton>
@@ -19,8 +20,59 @@
 //========================================================
 ZEquationSettingsDashBoard::ZEquationSettingsDashBoard(QWidget *parent) : QWidget(parent)
 {
+    zv_calibrationRepository = 0;
+    zv_currentCalibrationId = -1;
+    zv_currentCalibrationIndex = -1;
+
     zh_createComponents();
     zh_createConnections();
+}
+//========================================================
+void ZEquationSettingsDashBoard::zp_connectToCalibrationRepository(ZCalibrationRepository* calibrationRepository)
+{
+    zv_calibrationRepository = calibrationRepository;
+    connect(zv_calibrationRepository, &ZCalibrationRepository::zg_currentCalibrationChanged,
+            this, &ZEquationSettingsDashBoard::zh_onCurrentCalibrationChange);
+}
+//========================================================
+void ZEquationSettingsDashBoard::zh_onCurrentCalibrationChange(qreal calibrationId, int calibrationIndex)
+{
+    if(!zv_calibrationRepository || (zv_currentCalibrationId == calibrationId && zv_currentCalibrationIndex == calibrationIndex ))
+    {
+        return;
+    }
+
+    zv_currentCalibrationId = calibrationId;
+    zv_currentCalibrationIndex = calibrationIndex;
+
+    QString normaTypeString = ZTermNormalizer::zp_normaTypeString( zv_calibrationRepository->zp_normaType(calibrationId));
+    if(normaTypeString.isEmpty())
+    {
+        zv_normalizerTypeComboBox->setCurrentIndex(0);
+    }
+
+    int index = zv_normalizerTypeComboBox->findText(normaTypeString);
+    if(index < 0 )
+    {
+        index = 0;
+    }
+
+    if(zv_normalizerTypeComboBox->currentIndex() != index)
+    {
+        zv_normalizerTypeComboBox->setCurrentIndex(index);
+    }
+}
+//========================================================
+void ZEquationSettingsDashBoard::zh_onNormaTypeChange(int index)
+{
+    if(!zv_calibrationRepository)
+    {
+        return;
+    }
+
+    QString typeString = zv_normalizerTypeComboBox->itemText(index);
+    ZTermNormalizer::NormaType newType = ZTermNormalizer::zp_normaTypeForString(typeString);
+    zv_calibrationRepository->zp_setNormaType(zv_currentCalibrationId, newType);
 }
 //========================================================
 void ZEquationSettingsDashBoard::zh_createComponents()
@@ -135,7 +187,8 @@ QWidget* ZEquationSettingsDashBoard::zh_createFreeMemeberWidget()
 //========================================================
 void ZEquationSettingsDashBoard::zh_createConnections()
 {
-
+    connect(zv_normalizerTypeComboBox, SIGNAL(currentIndexChanged(int)),
+            this, SLOT(zh_onNormaTypeChange(int)));
 }
 //========================================================
 

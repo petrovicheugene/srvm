@@ -21,13 +21,22 @@ public:
                     NT_CUSTOM = 5
                    };
 
-                   explicit ZTermNormalizer(ZCalibration *parent);
+    explicit ZTermNormalizer(ZCalibration *parent);
+
+    // Static
+    static QStringList zp_normaTypeList();
+    static QString zp_normaTypeString(NormaType);
+    static ZTermNormalizer::NormaType zp_normaTypeForString(const QString&);
+    // End Static
+
+    void zp_connectToWindow(ZCalibrationWindow* window);
 
     bool zp_isValid() const;
     qreal zp_value() const;
     bool zp_calcNormalizedValue(const ZAbstractSpectrum *spectrum, qreal &value);
 
-    static QStringList zp_normaTypeList();
+    ZTermNormalizer::NormaType zp_normaType() const;
+    bool zp_setNormaType(NormaType);
 
 signals:
 
@@ -39,6 +48,13 @@ public slots:
 
     void zp_isValid(bool&) const;
     void zp_value(qreal&) const;
+
+private slots:
+
+    void zh_onWindowTypeChange(ZCalibrationWindow::WindowType previousType,
+                               ZCalibrationWindow::WindowType currentType) const;
+    void zh_onWindowDestroy(QObject* obj) const;
+    void zh_onWindowMarginsChange() const;
 
 private:
 
@@ -52,6 +68,7 @@ private:
     qreal zv_normaValue;
 
     // FUNCS
+    void zh_createConnections();
     bool zh_getWindowsValue(ZCalibrationWindow::WindowType type, const ZAbstractSpectrum* spectrum, qint64& value);
 
     // STATIC

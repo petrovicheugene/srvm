@@ -51,7 +51,7 @@ public slots:
 
 private slots:
 
-    void zh_currentCalibrationChanged(qreal calibrationId, int calibrationIndex);
+    void zh_onCurrentCalibrationChange(qreal calibrationId, int calibrationIndex);
     void zh_onRepositoryWindowOperation(ZCalibrationRepository::WindowOperationType, int, int, int);
     void zh_currentSpectrumArrayChanged(qint64, int);
     void zh_onArrayMaxParametersChanged(qint64 arrayId, int intensity, int channels);

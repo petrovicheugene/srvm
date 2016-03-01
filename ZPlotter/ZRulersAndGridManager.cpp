@@ -162,8 +162,8 @@ void ZRulersAndGridManager::zh_recalcBottomRule()
                 - zv_plotView->mapToScene(QPoint(0,0)).x();
 
         // new mark and scratch interval calculation
-        qreal newScMarkInterval;
-        qreal newScScratchInterval;
+        qreal newScMarkInterval = 1;
+        qreal newScScratchInterval = 1;
 
         if(maxScMarkInterval < zv_minimalHorizontalScaleInterval)
         {
@@ -396,8 +396,8 @@ void ZRulersAndGridManager::zh_recalcLeftRule()
                 - zv_plotView->mapToScene(QPoint(0,0)).y();
 
         // new mark and scratch interval calculation
-        qreal newScMarkInterval;
-        qreal newScScratchInterval;
+        qreal newScMarkInterval = zv_minimalVerticalScaleInterval;
+        qreal newScScratchInterval = zv_minimalVerticalScaleInterval;
 
         if(minScMarkInterval < zv_minimalVerticalScaleInterval)
         {

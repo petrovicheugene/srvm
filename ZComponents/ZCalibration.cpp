@@ -162,6 +162,7 @@ void ZCalibration::zp_createNewCalibrationWindow(int& windowNewIndex, int firstC
                                                                    lastChannel,
                                                                    this);
 
+    zv_termNormalizer->zp_connectToWindow(calibrationWindow);
     emit zg_windowOperation(WOT_BRGIN_INSERT_WINDOWS, windowNewIndex, windowNewIndex);
     zv_windowList.append(calibrationWindow);
     emit zg_windowOperation(WOT_END_INSERT_WINDOWS, windowNewIndex, windowNewIndex);
@@ -283,10 +284,10 @@ bool ZCalibration::zh_windowHasTerms(const ZCalibrationWindow* window, ZAbstract
     return false;
 }
 //=========================================================
-void ZCalibration::zh_normalizerValue(qreal& value) const
-{
-    zv_termNormalizer->zp_value(value);
-}
+//void ZCalibration::zh_normalizerValue(qreal& value) const
+//{
+//    zv_termNormalizer->zp_value(value);
+//}
 //=========================================================
 int ZCalibration::zp_termIndex(const ZAbstractTerm* term) const
 {
@@ -349,6 +350,16 @@ bool ZCalibration::zp_termVariablePart(int termIndex, const ZAbstractSpectrum* s
     return res;
 }
 //=========================================================
+ZTermNormalizer::NormaType ZCalibration::zp_normaType() const
+{
+    return zv_termNormalizer->zp_normaType();
+}
+//=========================================================
+bool ZCalibration::zp_setNormaType(ZTermNormalizer::NormaType type)
+{
+    return zv_termNormalizer->zp_setNormaType(type);
+}
+//=========================================================
 void ZCalibration::zh_onTermNameChange() const
 {
     ZAbstractTerm* term = qobject_cast<ZAbstractTerm*>(sender());
@@ -373,11 +384,6 @@ void ZCalibration::zh_onTermWindowMarginChange()
     emit zg_termOperation(TOT_TERM_VALUE_CHANGED, termIndex, termIndex);
 }
 //=========================================================
-void ZCalibration::zh_onTermAverageValueChange() const
-{
-
-}
-//=========================================================
 void ZCalibration::zh_removeTerm(ZAbstractTerm* term)
 {
     for(int i = 0; i < zv_termList.count(); i ++)
@@ -391,6 +397,14 @@ void ZCalibration::zh_removeTerm(ZAbstractTerm* term)
             return;
         }
     }
+}
+//=========================================================
+void ZCalibration::zh_onNormalizerChange()
+{
+#ifdef DBG
+    qDebug() << "CALIBRATION NORM CHANGED";
+#endif
+    emit zg_normalizerChanged();
 }
 //=========================================================
 bool ZCalibration::zh_isWindowExist(const QString& windowName)
@@ -478,7 +492,7 @@ ZCalibrationWindow::WindowType ZCalibration::zp_calibrationWindowType(int window
         return ZCalibrationWindow::WT_NOT_DEFINED;
     }
 
-    return zv_windowList.at(windowIndex)->zp_type();
+    return zv_windowList.at(windowIndex)->zp_windowType();
 }
 //=========================================================
 bool ZCalibration::zp_setCalibrationWindowType(int windowIndex, ZCalibrationWindow::WindowType type)
@@ -586,7 +600,12 @@ QString ZCalibration::zp_termName(int termIndex) const
         return QString();
     }
 
-    return zv_termList.at(termIndex)->zp_termName();
+    QString termName = zv_termList.at(termIndex)->zp_termName();
+    if(zv_termNormalizer->zp_normaType() != ZTermNormalizer::NT_NONE)
+    {
+        termName += " / N";
+    }
+    return termName;
 }
 //=========================================================
 ZAbstractTerm::TermState ZCalibration::zp_termState(int termIndex) const
@@ -607,7 +626,7 @@ void ZCalibration::zp_setNextUsersTermState(int termIndex) const
     }
 
     ZAbstractTerm::TermState state = zv_termList.at(termIndex)->zp_termState();
-    bool res;
+    bool res = false;
     switch(state)
     {
     case ZAbstractTerm::TS_CONST_INCLUDED:

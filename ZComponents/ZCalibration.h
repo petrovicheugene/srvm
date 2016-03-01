@@ -94,6 +94,10 @@ public:
     //bool zp_termAverageValue(int termIndex,  qreal &averageValue) const;
     //bool zp_calcTermAverageValues(const ZSpectrumArray* spectrumArray);
 
+    // normalizer
+    ZTermNormalizer::NormaType zp_normaType() const;
+    bool zp_setNormaType(ZTermNormalizer::NormaType type);
+
 signals:
 
     void zg_message(QString) const;
@@ -109,10 +113,10 @@ public slots:
 private slots:
 
     void zh_onTermNameChange() const;
-    void zh_onTermAverageValueChange() const;
-    void zh_normalizerValue(qreal&) const;
+    //void zh_normalizerValue(qreal&) const;
     void zh_onTermWindowMarginChange();
     void zh_removeTerm(ZAbstractTerm*);
+    void zh_onNormalizerChange();
 
 private:
 

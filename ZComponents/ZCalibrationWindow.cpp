@@ -111,7 +111,7 @@ bool ZCalibrationWindow::zp_setWindowFirstChannel(int channel)
         return false;
     }
     zv_firstChannel = channel;
-    emit zg_widowMarginsChanged();
+    emit zg_windowMarginsChanged();
     return true;
 }
 //====================================================
@@ -122,7 +122,7 @@ bool ZCalibrationWindow::zp_setWindowLastChannel(int channel)
         return false;
     }
     zv_lastChannel = channel;
-    emit zg_widowMarginsChanged();
+    emit zg_windowMarginsChanged();
     return true;
 }
 //====================================================
@@ -139,11 +139,11 @@ bool ZCalibrationWindow::zp_setWindowMarginChannels(int first, int last)
     }
     zv_firstChannel = first;
     zv_lastChannel = last;
-    emit zg_widowMarginsChanged();
+    emit zg_windowMarginsChanged();
     return true;
 }
 //====================================================
-ZCalibrationWindow::WindowType ZCalibrationWindow::zp_type() const
+ZCalibrationWindow::WindowType ZCalibrationWindow::zp_windowType() const
 {
     return zv_type;
 }
@@ -155,8 +155,9 @@ bool ZCalibrationWindow::zp_setWindowType(ZCalibrationWindow::WindowType type)
         return false;
     }
 
+    ZCalibrationWindow::WindowType previousType = zv_type;
     zv_type = type;
-    emit zg_windowTypeChanged(zv_type);
+    emit zg_windowTypeChanged(previousType, zv_type);
     return true;
 }
 //====================================================

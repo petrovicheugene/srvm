@@ -48,9 +48,10 @@ bool ZSimpleTerm::zh_updateTermNameForWindowName(const QString& windowName)
     return true;
 }
 //===================================================================
-void ZSimpleTerm::zh_onWindowTypeChange(ZCalibrationWindow::WindowType type)
+void ZSimpleTerm::zh_onWindowTypeChange(ZCalibrationWindow::WindowType previousType,
+                                        ZCalibrationWindow::WindowType currentType)
 {
-    if(type != ZCalibrationWindow::WT_BASE_PEAK && type != ZCalibrationWindow::WT_PEAK)
+    if(currentType != ZCalibrationWindow::WT_BASE_PEAK && currentType != ZCalibrationWindow::WT_PEAK)
     {
         emit zg_requestForDelete(this);
     }
@@ -66,7 +67,7 @@ void ZSimpleTerm::zh_connectToWindow(const ZCalibrationWindow* window)
                 this, &ZSimpleTerm::zh_updateTermNameForWindowName);
         connect(this, &ZSimpleTerm::zg_requestWindowIntensity,
                 window, &ZCalibrationWindow::zp_calcWindowIntensity);
-        connect(window, &ZCalibrationWindow::zg_widowMarginsChanged,
+        connect(window, &ZCalibrationWindow::zg_windowMarginsChanged,
                 this, &ZSimpleTerm::zg_termWindowMarginChanged);
         connect(window, &ZCalibrationWindow::zg_windowTypeChanged,
                 this, &ZSimpleTerm::zh_onWindowTypeChange);

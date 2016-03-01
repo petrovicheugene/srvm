@@ -444,21 +444,6 @@ bool ZCalibrationRepository::zp_setCalibrationWindowType(qint64 calibrationId, i
         return calibration->zp_setCalibrationWindowType(windowIndex, type);
     }
 
-    //    if(calibrationId < 0)
-    //    {
-    //        return false;
-    //    }
-
-    //    for(int c = 0; c < zv_caibrationList.count(); c++)
-    //    {
-    //        if(zv_caibrationList.at(c)->zp_calibrationId() != calibrationId)
-    //        {
-    //            continue;
-    //        }
-
-    //        return zv_caibrationList.at(c)->zp_setCalibrationWindowType(windowIndex, type);
-    //    }
-
     return false;
 }
 //======================================================
@@ -713,6 +698,28 @@ void ZCalibrationRepository::zp_setNextUsersTermState(qint64 calibrationId, int 
     }
 
     calibration->zp_setNextUsersTermState(termLogIndex);
+}
+//======================================================
+ZTermNormalizer::NormaType ZCalibrationRepository::zp_normaType(qint64 calibrationId) const
+{
+    const ZCalibration* calibration = zh_calibrationForId(calibrationId);
+    if(!calibration)
+    {
+        return ZTermNormalizer::NT_NONE;
+    }
+
+    return calibration->zp_normaType();
+}
+//======================================================
+bool ZCalibrationRepository::zp_setNormaType(qint64 calibrationId, ZTermNormalizer::NormaType type)
+{
+    ZCalibration* calibration = zh_calibrationForId(calibrationId);
+    if(!calibration)
+    {
+        return false;
+    }
+
+    return calibration->zp_setNormaType(type);
 }
 //======================================================
 bool ZCalibrationRepository::zp_termFactor(qint64 calibrationId, int termIndex, qreal& factor) const
@@ -1067,6 +1074,18 @@ void ZCalibrationRepository::zh_onTermOperation(ZCalibration::TremOperationType 
     }
 }
 //======================================================
+void ZCalibrationRepository::zh_onNormalizerChange() const
+{
+    if(!sender())
+    {
+        return;
+    }
+
+    ZCalibration* calibration = static_cast<ZCalibration*>(sender());
+    qint64 calibrationId = calibration->zp_calibrationId();
+    emit zg_normalizerChanged(calibrationId);
+}
+//======================================================
 //void ZCalibrationRepository::zh_onCurrentSpectrumArrayIsAboutChange(qint64 arrayId, int arrayIndex)
 //{
 //    if(arrayIndex != zv_currentArrayIndex || arrayId != zv_currentArrayId)
@@ -1190,11 +1209,8 @@ bool ZCalibrationRepository::zh_appendCalibrationToList(ZCalibration* calibratio
     connect(calibration, &ZCalibration::zg_termOperation,
             this, &ZCalibrationRepository::zh_onTermOperation);
 
-//    connect(calibration, &ZCalibration::zg_requestForCurrentSpectrumArray,
-//                this, &ZCalibrationRepository::zh_getCurrentSpectrumArray);
-    //    connect(calibration, &ZCalibration::zg_dirtyChanged,
-    //            this, &ZCalibrationRepository::zh_onCalibrationOperation);
-
+    connect(calibration, &ZCalibration::zg_normalizerChanged,
+                this, &ZCalibrationRepository::zh_onNormalizerChange);
 
 
     int insertIndex = zv_caibrationList.count();

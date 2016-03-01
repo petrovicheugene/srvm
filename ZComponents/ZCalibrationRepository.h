@@ -117,6 +117,10 @@ public:
     ZAbstractTerm::TermState zp_termState(qint64 calibrationId, int termIndex);
     void zp_setNextUsersTermState(qint64 calibrationId, int termLogIndex);
 
+    // normalizer
+    ZTermNormalizer::NormaType zp_normaType(qint64 calibrationId) const;
+    bool zp_setNormaType(qint64 calibrationId, ZTermNormalizer::NormaType type);
+
 
 signals:
 
@@ -143,6 +147,8 @@ signals:
     void zg_setCurrentWindowIndex(int windowIndex);
     void zg_startCurrentWindowEdition();
 
+    void zg_normalizerChanged(qint64 calibrationId) const;
+
 public slots:
 
 
@@ -158,7 +164,7 @@ private slots:
     void zh_onRemoveWindowAction();
     void zh_onWindowOperation(ZCalibration::WindowOperationType type, int first, int last);
     void zh_onTermOperation(ZCalibration::TremOperationType type, int first, int last);
-    //void zh_getCurrentSpectrumArray(const ZSpectrumArray *&);
+    void zh_onNormalizerChange() const;
     //void zh_onCurrentSpectrumArrayIsAboutChange(qint64 arrayId, int arrayIndex);
     //void zh_onSpectrumOperation(ZSpectrumArrayRepository::SpectrumOperationType, int, int, int);
 
