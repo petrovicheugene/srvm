@@ -11,7 +11,7 @@ QMap<ZCalibrationWindow::WindowType, QString> ZCalibrationWindow::zh_intTypeName
 {
     QMap<ZCalibrationWindow::WindowType, QString> map;
     map.insert(WT_NOT_DEFINED, QObject::tr("Not defined"));
-    map.insert(WT_BASE_PEAK, QObject::tr("Base peak"));
+    //map.insert(WT_BASE_PEAK, QObject::tr("Base peak"));
     map.insert(WT_PEAK, QObject::tr("Peak"));
     map.insert(WT_COHERENT, QObject::tr("Coherent"));
     map.insert(WT_INCOHERENT, QObject::tr("Incoherent"));
@@ -185,7 +185,7 @@ ZCalibrationWindow::WindowType ZCalibrationWindow::zp_typeForName(const QString&
     return zv_typeNameMap.key(typeName);
 }
 //====================================================
-void ZCalibrationWindow::zp_calcWindowIntensity(const QObject *spectrumObject, qint64& intensityValue, bool keepBufferClean, bool* ok)
+void ZCalibrationWindow::zp_calcWindowIntensity(const QObject *spectrumObject, qint64& intensityValue, bool useBuffer, bool* ok)
 {
     const ZAbstractSpectrum* spectrum = qobject_cast<const ZAbstractSpectrum*>(spectrumObject);
 
@@ -196,11 +196,10 @@ void ZCalibrationWindow::zp_calcWindowIntensity(const QObject *spectrumObject, q
         {
             *ok = false;
         }
-
         return;
     }
 
-    if(zv_spectrumId >= 0 && zv_spectrumId == spectrum->zp_spectrumId() && !keepBufferClean)
+    if(zv_spectrumId >= 0 && zv_spectrumId == spectrum->zp_spectrumId() && useBuffer)
     {
         intensityValue = zv_windowIntensityValue;
         if(ok)
@@ -211,7 +210,7 @@ void ZCalibrationWindow::zp_calcWindowIntensity(const QObject *spectrumObject, q
     }
 
     bool res = spectrum->zp_intensityInWindow(zv_firstChannel, zv_lastChannel, intensityValue);
-    if(res && !keepBufferClean)
+    if(res && useBuffer)
     {
         zv_windowIntensityValue = intensityValue;
         zv_spectrumId = spectrum->zp_spectrumId();

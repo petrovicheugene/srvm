@@ -13,7 +13,7 @@ ZAbstractTerm::ZAbstractTerm(ZCalibration *parent) : QObject(parent)
     zh_connectToCalibration(parent);
     zv_type = TT_NOT_DEFINED;
     zv_termState = TS_CONST_EXCLUDED;
-    zv_K = 0;
+    zv_termFactor = 0;
     zv_termId = zv_lastTermId++;
 }
 //============================================================
@@ -96,12 +96,12 @@ QString ZAbstractTerm::zp_termName() const
 //============================================================
 qreal ZAbstractTerm::zp_termFactor() const
 {
-    return zv_K;
+    return zv_termFactor;
 }
 //============================================================
 void ZAbstractTerm::zp_setTermFactor(qreal factor)
 {
-    zv_K = factor;
+    zv_termFactor = factor;
 }
 //============================================================
 void ZAbstractTerm::zh_connectToNormalizer(ZTermNormalizer* normalizer)

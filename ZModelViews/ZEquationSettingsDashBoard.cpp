@@ -4,6 +4,7 @@
 #include "globalVariables.h"
 #include "ZTermNormalizer.h"
 #include "ZCalibrationRepository.h"
+#include "ZEquationChooseDialog.h"
 
 #include <QPushButton>
 #include <QToolButton>
@@ -31,8 +32,8 @@ ZEquationSettingsDashBoard::ZEquationSettingsDashBoard(QWidget *parent) : QWidge
 void ZEquationSettingsDashBoard::zp_connectToCalibrationRepository(ZCalibrationRepository* calibrationRepository)
 {
     zv_calibrationRepository = calibrationRepository;
-    connect(zv_calibrationRepository, &ZCalibrationRepository::zg_currentCalibrationChanged,
-            this, &ZEquationSettingsDashBoard::zh_onCurrentCalibrationChange);
+//    connect(zv_calibrationRepository, &ZCalibrationRepository::zg_currentCalibrationChanged,
+//            this, &ZEquationSettingsDashBoard::zh_onCurrentCalibrationChange);
 }
 //========================================================
 void ZEquationSettingsDashBoard::zh_onCurrentCalibrationChange(qreal calibrationId, int calibrationIndex)
@@ -45,7 +46,7 @@ void ZEquationSettingsDashBoard::zh_onCurrentCalibrationChange(qreal calibration
     zv_currentCalibrationId = calibrationId;
     zv_currentCalibrationIndex = calibrationIndex;
 
-    QString normaTypeString = ZTermNormalizer::zp_normaTypeString( zv_calibrationRepository->zp_normaType(calibrationId));
+    QString normaTypeString = ZTermNormalizer::zp_normaTypeString( zv_calibrationRepository->zp_normaTypeForCalibrationId(calibrationId));
     if(normaTypeString.isEmpty())
     {
         zv_normalizerTypeComboBox->setCurrentIndex(0);
@@ -72,7 +73,20 @@ void ZEquationSettingsDashBoard::zh_onNormaTypeChange(int index)
 
     QString typeString = zv_normalizerTypeComboBox->itemText(index);
     ZTermNormalizer::NormaType newType = ZTermNormalizer::zp_normaTypeForString(typeString);
-    zv_calibrationRepository->zp_setNormaType(zv_currentCalibrationId, newType);
+    zv_calibrationRepository->zp_setNormaTypeForCalibrationId(zv_currentCalibrationId, newType);
+}
+//========================================================
+void ZEquationSettingsDashBoard::zh_onEquationTypeChange()
+{
+    ZEquationChooseDialog dialog;
+    if(dialog.exec() == QDialog::Rejected)
+    {
+        return;
+    }
+
+#ifdef DBG
+    qDebug() << "ACCEPTED";
+#endif
 }
 //========================================================
 void ZEquationSettingsDashBoard::zh_createComponents()
@@ -114,13 +128,13 @@ QWidget* ZEquationSettingsDashBoard::zh_createEquationWidget()
 
     QLabel* label = new QLabel(w);
     label->setText(QString("<b>%1<b>").arg(tr("Equation type:")));
-    zv_equationChooseButton = new QPushButton(this);
-    zv_equationChooseButton->setText("...");
+    zv_equationTypeChooseButton = new QPushButton(this);
+    zv_equationTypeChooseButton->setText("...");
 
     zv_equationLabel = new QLabel(this);
 
     layout->addWidget(label, 0,0,1,1, Qt::AlignLeft);
-    layout->addWidget(zv_equationChooseButton, 0,1,1,1, Qt::AlignLeft);
+    layout->addWidget(zv_equationTypeChooseButton, 0,1,1,1, Qt::AlignLeft);
     layout->addWidget(zv_equationLabel, 1,0,1,2, Qt::AlignLeft);
 
     return w;
@@ -189,6 +203,9 @@ void ZEquationSettingsDashBoard::zh_createConnections()
 {
     connect(zv_normalizerTypeComboBox, SIGNAL(currentIndexChanged(int)),
             this, SLOT(zh_onNormaTypeChange(int)));
+    connect(zv_equationTypeChooseButton, &QPushButton::clicked,
+            this, &ZEquationSettingsDashBoard::zh_onEquationTypeChange);
+
 }
 //========================================================
 

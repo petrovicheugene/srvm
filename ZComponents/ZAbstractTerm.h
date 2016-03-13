@@ -73,7 +73,7 @@ protected:
     // VARS
     qint64 zv_termId;
     TermType zv_type;
-    qreal zv_K;
+    qreal zv_termFactor;
     TermState zv_termState;
     QString zv_name;
 

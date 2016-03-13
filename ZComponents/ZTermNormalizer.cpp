@@ -3,10 +3,11 @@
 #include "ZAbstractSpectrum.h"
 #include "ZCalibration.h"
 //======================================================================
+// STATIC
+//======================================================================
 QMap<ZTermNormalizer::NormaType, QString> ZTermNormalizer::zv_normaTypeStringMap =
         ZTermNormalizer::zh_initNormaTypeStringMap();
 //======================================================================
-// STATIC
 QStringList ZTermNormalizer::zp_normaTypeList()
 {
     return zv_normaTypeStringMap.values();
@@ -39,10 +40,12 @@ QMap<ZTermNormalizer::NormaType, QString> ZTermNormalizer::zh_initNormaTypeStrin
 }
 // END STATIC
 //======================================================================
+//======================================================================
 ZTermNormalizer::ZTermNormalizer(ZCalibration *parent) : QObject(parent)
 {
     zv_calibration = parent;
     zv_normaType = NT_NONE;
+    zv_customNormaString = QString();
     zh_createConnections();
 
 }
@@ -58,15 +61,15 @@ void ZTermNormalizer::zp_connectToWindow(ZCalibrationWindow* window)
 
 }
 //======================================================================
-bool ZTermNormalizer::zp_isValid() const
-{
-    return false;
-}
-//======================================================================
-qreal ZTermNormalizer::zp_value() const
-{
-    return 0;
-}
+//bool ZTermNormalizer::zp_isValid() const
+//{
+//    return false;
+//}
+////======================================================================
+//qreal ZTermNormalizer::zp_value() const
+//{
+//    return 0;
+//}
 //======================================================================
 ZTermNormalizer::NormaType ZTermNormalizer::zp_normaType() const
 {
@@ -85,16 +88,83 @@ bool ZTermNormalizer::zp_setNormaType(ZTermNormalizer::NormaType type)
     return true;
 }
 //======================================================================
-bool ZTermNormalizer::zp_calcNormalizedValue(const ZAbstractSpectrum* spectrum, qreal& value)
+bool ZTermNormalizer::zp_setCustomNormaString(const QString& customString)
 {
-    if(zv_normaType == NT_NONE || !spectrum)
+    zv_customNormaString = customString;
+    return true;
+}
+//======================================================================
+QString ZTermNormalizer::zp_customNormaString() const
+{
+    return zv_customNormaString;
+}
+//======================================================================
+bool ZTermNormalizer::zp_normalizeValue(const ZAbstractSpectrum* spectrum, qreal& value ) const
+{
+    if(zv_normaType == NT_NONE)
     {
-        zv_spectrumId = -1;
-        zv_normaValue = 0;
         return true;
     }
 
-    qreal normaValue = 0;
+    qreal normaValue;
+    if(!zh_calcNormaValue(spectrum, normaValue))
+    {
+        return false;
+    }
+
+    if(normaValue == 0)
+    {
+        return false;
+    }
+
+    value /= normaValue;
+    return true;
+}
+//======================================================================
+bool ZTermNormalizer::zp_normalizeValue(qreal &value) const
+{
+    if(zv_normaType == NT_NONE)
+    {
+        return true;
+    }
+
+    if(zv_normaValueBuffer == 0)
+    {
+        return false;
+    }
+
+    value /= zv_normaValueBuffer;
+    return true;
+}
+//======================================================================
+bool ZTermNormalizer::zp_calcAndSetNormaValue(const ZAbstractSpectrum *spectrum)
+{
+    zp_resetNormaValue();
+    qreal normaValue;
+    if(!zh_calcNormaValue(spectrum, normaValue))
+    {
+        return false;
+    }
+
+    zv_spectrumIdBuffer = spectrum->zp_spectrumId();
+    zv_normaValueBuffer = normaValue;
+
+    return true;
+}
+//======================================================================
+bool ZTermNormalizer::zh_calcNormaValue(const ZAbstractSpectrum *spectrum, qreal& normaValue) const
+{
+    normaValue = 0;
+    if(!spectrum)
+    {
+        return false;
+    }
+
+    if(zv_normaType == NT_NONE)
+    {
+        return true;
+    }
+
     if(zv_normaType == NT_COHERENT)
     {
         qint64 windowIntensity = 0;
@@ -157,16 +227,17 @@ bool ZTermNormalizer::zp_calcNormalizedValue(const ZAbstractSpectrum* spectrum, 
     }
     else if(zv_normaType == NT_CUSTOM)
     {
-        return value;
+        // TODO custom normalization
+        normaValue = 1;
     }
 
-    if(normaValue == 0)
-    {
-        return false;
-    }
-
-    value /= normaValue;
     return true;
+}
+//======================================================================
+void ZTermNormalizer::zp_resetNormaValue()
+{
+    zv_spectrumIdBuffer = -1;
+    zv_normaValueBuffer = 0;
 }
 //======================================================================
 void ZTermNormalizer::zh_createConnections()
@@ -176,7 +247,7 @@ void ZTermNormalizer::zh_createConnections()
 }
 //======================================================================
 bool ZTermNormalizer::zh_getWindowsValue(ZCalibrationWindow::WindowType type,
-                                         const ZAbstractSpectrum* spectrum, qint64& value)
+                                         const ZAbstractSpectrum* spectrum, qint64& value) const
 {
     qint64 currentValue;
     bool ok;
@@ -193,22 +264,20 @@ bool ZTermNormalizer::zh_getWindowsValue(ZCalibrationWindow::WindowType type,
         {
             return false;
         }
-
         value += currentValue;
     }
-
     return true;
 }
 //======================================================================
-void ZTermNormalizer::zp_isValid(bool& validFlag) const
-{
-    validFlag = false;
-}
-//======================================================================
-void ZTermNormalizer::zp_value(qreal& value) const
-{
-    value = 1;
-}
+//void ZTermNormalizer::zp_isValid(bool& validFlag) const
+//{
+//    validFlag = false;
+//}
+////======================================================================
+//void ZTermNormalizer::zp_value(qreal& value) const
+//{
+//    value = 1;
+//}
 //======================================================================
 void ZTermNormalizer::zh_onWindowTypeChange(ZCalibrationWindow::WindowType previousType,
                                             ZCalibrationWindow::WindowType currentType) const

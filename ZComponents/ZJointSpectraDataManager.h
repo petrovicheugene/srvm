@@ -26,6 +26,7 @@ public:
                         OT_BEGIN_REMOVE_COLUMN,
                         OT_END_REMOVE_COLUMN,
                         OT_COLUMN_HEADER_CHANGED,
+                        OT_COLUMN_DATA_CHANGED,
                         OT_SEPECTRUM_VISIBLE_CHANGED};
     // FUNCS
     void zp_connectToSpectrumArrayRepository(ZSpectrumArrayRepository*);
@@ -60,6 +61,7 @@ private slots:
 
     void zh_onRepositoryChemElementOperation(ZSpectrumArrayRepository::ChemElementOperationType,
                                              int arrayIndex, int first, int last);
+    void zh_onRepositoryTermOperation(ZCalibrationRepository::TermOperationType, int calibrationIndex, int first, int last);
     void zh_onRepositoryCalibrationOperation(ZCalibrationRepository::CalibrationOperationType, int, int);
     void zh_currentSpectrumArrayChanged(qint64, int);
 
@@ -78,12 +80,19 @@ private:
 
     int zv_visibleChemElementCount;
     int zv_visibleCalibrationCount;
-    QMap<QString, QStringList> zv_calculatedConcentrationMap; // QMap<CalibName, QPair<specIndex, Concentration>>
+    QMap<qint64, QStringList> zv_calibrationConcentrationMap; // QMap<CalibName, QPair<specIndex, Concentration>>
 
     // FUNCS
+    bool zh_getVisibleIndexesForInsert(int first, int last, int& visibleFirst, int& visibleLast) const;
+    bool zh_getVisibleIndexesForOperation(int first, int last, int& visibleFirst, int& visibleLast) const;
+
     int zh_convertChemElementIndexToVisibleChemElementIndex(int arrayIndex, int originalIndex);
+    int zh_convertVisibleIndexToCalibrationIndex(int visibleIndex);
     void zh_defineColumnCounts();
-    void zh_calculateConcentrationsForCalibration();
+    void zh_calculateCalibrationConcentrations();
+    bool zh_calculateCalibrationConcentrationForCalibration(int calibrationIndex);
+    bool zh_calculateCalibrationConcentrationForCalibrationId(qint64 calibrationId);
+
 
 };
 //==================================================================

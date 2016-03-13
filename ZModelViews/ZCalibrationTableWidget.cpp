@@ -3,6 +3,9 @@
 #include "ZVisibilityStringDelegate.h"
 #include "ZChemElementComboBoxDelegate.h"
 #include "ZCalibrationRepository.h"
+#include "ZEquationDelegate.h"
+#include "ZNormaDelegate.h"
+#include "ZNumericDelegate.h"
 
 #include <QTableView>
 #include <QHBoxLayout>
@@ -46,6 +49,15 @@ void ZCalibrationTableWidget::zp_setModel(QAbstractItemModel* model)
     zv_table->setItemDelegateForColumn(0, visibilityStringDelegate);
     ZChemElementComboBoxDelegate* chemElementComboBoxDelegate = new ZChemElementComboBoxDelegate(zv_table);
     zv_table->setItemDelegateForColumn(1, chemElementComboBoxDelegate);
+
+    ZEquationDelegate* equationDelegate = new ZEquationDelegate(zv_table);
+    zv_table->setItemDelegateForColumn(2, equationDelegate);
+
+    ZNormaDelegate* normaDelegate = new ZNormaDelegate(zv_table);
+    zv_table->setItemDelegateForColumn(3, normaDelegate);
+
+    ZNumericDelegate* freeMemberDelegate = new ZNumericDelegate(zv_table);
+    zv_table->setItemDelegateForColumn(4, freeMemberDelegate);
 
     //zv_table->horizontalHeader()->setSectionResizeMode(0, QHeaderView::Stretch);
     // zv_table->horizontalHeader()->setSectionResizeMode(1, QHeaderView::ResizeToContents);

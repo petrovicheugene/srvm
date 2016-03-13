@@ -21,9 +21,10 @@ public:
     void zp_appendButtonsToDashboard(QList<QAction*>& actionList,
                                      Qt::AlignmentFlag alignent,
                                      int extraSperatorSpacing = 0);
-
+    void zp_appendWidgetToDashboard(QWidget* widget,
+                                    Qt::AlignmentFlag alignment,
+                                    int extraSeparatorSpacing = 0);
     int zp_distortionValue();
-
     void zp_setDistortionSliderVisible(bool visible);
 
 signals:

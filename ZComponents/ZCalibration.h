@@ -7,6 +7,7 @@
 #include <QColor>
 #include "ZCalibrationWindow.h"
 #include "ZAbstractTerm.h"
+
 //=========================================================
 class ZAbstractSpectrum;
 class ZSimpleTerm;
@@ -14,6 +15,8 @@ class ZQuadraticTerm;
 class ZCrossProductTerm;
 class ZCustomTerm;
 class ZTermNormalizer;
+//=========================================================
+
 //=========================================================
 class ZCalibration : public QObject
 {
@@ -41,9 +44,14 @@ public:
                             TOT_END_REMOVE_TERM,
                             TOT_TERM_NAME_CHANGED,
                             TOT_TERM_STATE_CHANGED,
-                            TOT_TERM_VALUE_CHANGED
-                            };
+                            TOT_TERM_WINDOW_MARGIN_CHANGED,
+                            TOT_TERM_FACTOR_CHANGED
+                           };
 
+    enum EquationType {ET_NOT_DEFINED,
+                       ET_POLYNOMIAL,
+                       ET_FRACTIONAL
+                      };
     // FUNCS
     QString zp_name() const;
     void zp_setBaseName(const QString&);
@@ -85,6 +93,7 @@ public:
     // terms
     int zp_termCount() const;
     QString zp_termName(int termIndex) const;
+    qint64 zp_termId(int termIndex) const;
     ZAbstractTerm::TermState zp_termState(int termIndex) const;
     void zp_setNextUsersTermState(int) const;
     bool zp_termFactor(int termIndex, qreal &factor) const;
@@ -97,6 +106,24 @@ public:
     // normalizer
     ZTermNormalizer::NormaType zp_normaType() const;
     bool zp_setNormaType(ZTermNormalizer::NormaType type);
+    bool zp_setNormaCustomString(const QString&);
+    QString zp_customNormaString() const;
+
+    EquationType zp_equationType() const;
+    bool zp_setEquationType(EquationType type);
+
+    qreal zp_equationFreeMember() const;
+    bool zp_setEquationFreeMember(qreal);
+    QString zp_baseTermString() const;
+    qint64 zp_baseTermId() const;
+    bool zp_setBaseTermId(qint64 id);
+
+    // STATIC
+    // VARS
+    static const QString simplePolynomEquationString;
+    static const QString fractionalEquationString;
+    // FUNCS
+    static QString zp_equationTypeString(ZCalibration::EquationType type);
 
 signals:
 
@@ -133,8 +160,10 @@ private:
 
     QList<ZCalibrationWindow*> zv_windowList;
     QList<ZAbstractTerm*> zv_termList;
+    EquationType zv_equationType;
     ZTermNormalizer* zv_termNormalizer;
     qreal zv_freeMemeber;
+    qint64 zv_baseTermId;
     //qreal zv_
 
     // FUNCS
@@ -148,10 +177,16 @@ private:
     static QList<QColor> zv_colorList;
     static qint64 zv_lastCalibrationId;
     static int zv_lastColorIndex;
+    static QMap<ZCalibration::EquationType, QString> zv_eqationTypeStringMap;
 
     //  FUNCS
     static QList<QColor> zp_createColorList();
     static bool checkColor(QColor color);
+    static QMap<ZCalibration::EquationType, QString> zh_initEquationTypeStringMap();
+    static QString zh_initPlynomialEquationString();
+    static QString zh_initFractionalEquationString();
+    static QString zh_initFractionalEquationString1();
+
 
 };
 //=========================================================

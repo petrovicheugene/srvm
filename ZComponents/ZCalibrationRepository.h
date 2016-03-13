@@ -7,6 +7,8 @@
 #include <QMenu>
 #include "ZCalibration.h"
 #include "ZSpectrumArrayRepository.h"
+#include "ZEquationSettingsData.h"
+#include "ZNormaSettingsData.h"
 
 //======================================================
 class QAction;
@@ -28,7 +30,11 @@ public:
                                    COT_REMOVE_CALIBRATIONS,
                                    COT_END_REMOVE_CALIBRATIONS,
                                    COT_BEGIN_RESET,
-                                   COT_END_RESET
+                                   COT_END_RESET,
+                                   COT_CALIBRATION_FREE_MEMBER_CHANGED,
+                                   COT_CALIBRATION_EQUATION_TYPE_CHANGED,
+                                   COT_CALIBRATION_EQUATION_BASE_TERM_CHANGED,
+                                   COT_CALIBRATION_NORMA_CHANGED
                                   };
 
     enum WindowOperationType {WOT_WINDOW_CHANGED,
@@ -48,7 +54,8 @@ public:
                             TOT_BEGIN_RESET,
                             TOT_END_RESET,
                             TOT_TERM_STATE_CHANGED,
-                            TOT_TERM_VALUE_CHANGED
+                            TOT_TERM_WINDOW_MARGIN_CHANGED,
+                            TOT_TERM_FACTOR_CHANGED
                            };
 
 
@@ -71,10 +78,13 @@ public:
     qint64 zp_calibrationIdForCalibrationIndex(int calibrationIndex) const;
     bool zp_setCalibrationName(int row, const QString&);
     QString zp_visibleCalibrationName(int visibleCalibrationIndex) const;
+    qint64 zp_visibleCalibrationId(int visibleCalibrationIndex) const;
+    int zp_calibrationIndexForVisibleIndex(int visibleCalibrationIndex) const;
 
     QString zp_chemElement(int row) const;
     QString zp_chemElementForCalibrationId(qint64 id) const;
     bool zp_setChemElement(int row, const QString&);
+    QString zp_baseMemberString(int row) const;
 
     bool zp_isCalibrationVisible(int row);
     QColor zp_calibrationColor(int row);
@@ -103,6 +113,7 @@ public:
     qint64 zp_calibrationWindowId(qint64 calibrationId, int windowIndex) const;
     const ZCalibrationWindow* zp_calibrationWindow(qint64 calibrationId, int windowIndex) const;
     bool zp_calculateConcentration(int row, const ZAbstractSpectrum*, qreal& concentration) const;
+    bool zp_calculateConcentrationForId(qint64 calibrationId, const ZAbstractSpectrum* spectrum, qreal& concentration) const;
 
 
     // terms
@@ -118,9 +129,27 @@ public:
     void zp_setNextUsersTermState(qint64 calibrationId, int termLogIndex);
 
     // normalizer
-    ZTermNormalizer::NormaType zp_normaType(qint64 calibrationId) const;
-    bool zp_setNormaType(qint64 calibrationId, ZTermNormalizer::NormaType type);
+    ZTermNormalizer::NormaType zp_normaTypeForCalibrationId(qint64 calibrationId) const;
+    bool zp_setNormaTypeForCalibrationId(qint64 calibrationId, ZTermNormalizer::NormaType type);
 
+    ZTermNormalizer::NormaType zp_normaType(int calibrationIndex) const;
+    bool zp_setNormaType(int calibrationIndex, ZTermNormalizer::NormaType type);
+
+    bool zp_equationTypeForCalibrationId(qint64 calibrationId, ZCalibration::EquationType& type) const;
+    bool zp_setEquationTypeForCalibrationId(qint64 calibrationId, ZCalibration::EquationType type);
+
+    ZNormaSettingsData zp_normaSettingsData(int calibrationIndex) const;
+    bool zp_setNormaSettings(int calibrationIndex, ZNormaSettingsData);
+
+    // equation
+    ZCalibration::EquationType zp_equationType(int calibrationIndex) const;
+    bool zp_setEquationType(int calibrationIndex, ZCalibration::EquationType type);
+
+    ZEquationSettingsData zp_equationSettingsData(int calibrationIndex) const;
+    bool zp_setEquationSettings(int calibrationIndex, ZEquationSettingsData);
+
+    qreal zp_equationFreeMemeber(int calibrationIndex) const;
+    bool zp_setEquationFreeMember(int calibrationIndex, qreal);
 
 signals:
 
@@ -150,7 +179,6 @@ signals:
     void zg_normalizerChanged(qint64 calibrationId) const;
 
 public slots:
-
 
     void zp_appendCalibrationsToArray(const QStringList&fileNameList);
     void zp_onCurrentCalibrationChanged(int current, int previous);

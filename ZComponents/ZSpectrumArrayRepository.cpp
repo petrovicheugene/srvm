@@ -265,9 +265,11 @@ bool ZSpectrumArrayRepository::zp_setChemConcentration(int arrayIndex, int spect
     bool res = zv_arrayList.value(arrayIndex)->zp_setChemConcentration(chemElementId, spectrumIndex, concentration);
     if(res)
     {
-        int chemElementIndex = zh_chemElementIndexForId(arrayIndex, chemElementId);
-        emit zg_chemElementOperation(CEOT_CHEM_ELEMENT_CHANGED,
-                                     arrayIndex, chemElementIndex, chemElementIndex);
+//        int chemElementIndex = zh_chemElementIndexForId(arrayIndex, chemElementId);
+//        emit zg_chemElementOperation(CEOT_CHEM_ELEMENT_VALUE_CHANGED,
+//                                     arrayIndex, chemElementIndex, chemElementIndex);
+
+
         zv_dirty = true;
         emit zg_currentFile(zv_dirty, zv_arrayFilePath);
     }

@@ -5,15 +5,123 @@
 #include "ZQuadraticTerm.h"
 #include "ZCrossProductTerm.h"
 #include "ZCustomTerm.h"
+#include "ZEquationSettingsData.h"
 #include "ZTermNormalizer.h"
 #include "globalVariables.h"
 
 #include <QFileInfo>
 #include <QPointer>
 //=========================================================
+// STATIC
+//=========================================================
+const QString ZCalibration::simplePolynomEquationString(ZCalibration::zh_initPlynomialEquationString());
+const QString ZCalibration::fractionalEquationString(ZCalibration::zh_initFractionalEquationString1());
+
 QList<QColor> ZCalibration::zv_colorList = ZCalibration::zp_createColorList();
 qint64 ZCalibration::zv_lastCalibrationId = 0;
 int ZCalibration::zv_lastColorIndex = 0;
+QMap<ZCalibration::EquationType, QString> ZCalibration::zv_eqationTypeStringMap =
+        ZCalibration::zh_initEquationTypeStringMap();
+//=========================================================
+QMap<ZCalibration::EquationType, QString> ZCalibration::zh_initEquationTypeStringMap()
+{
+    QMap<ZCalibration::EquationType, QString> map;
+    map.insert(ET_NOT_DEFINED, tr("Not defined"));
+    map.insert(ET_POLYNOMIAL, tr("Polynomial"));
+    map.insert(ET_FRACTIONAL, tr("Fractional"));
+    return map;
+}
+//=========================================================
+QString ZCalibration::zh_initPlynomialEquationString()
+{
+    QString simplePolynomEquationString = "<table border=0 cellspacing=0 cellpadding=0>"
+                                          "<tr>"
+                                          "<td></td>"
+                                          "<td align=center><sub><i>n</i></sub></td>"
+                                          "<td></td>"
+                                          "</tr>"
+
+                                          "<tr>"
+                                          "<td valign=middle>C=</td>"
+                                          "<td valign=middle align=center>\u2211</td>"
+                                          "<td valign=middle>(a<sub><i>i</i></sub>*X<sub><i>i</i></sub>) + a<sub>0</sub></td>"
+                                          "</tr>"
+
+                                          "<tr>"
+                                          "<td></td>"
+                                          "<td align=center><sup><i>i</i> = 1</sup></td>"
+                                          "<td></td>"
+                                          "</tr>"
+                                          "</table>";
+    return simplePolynomEquationString;
+}
+//=========================================================
+QString ZCalibration::zh_initFractionalEquationString()
+{
+    QString fractionalEquationString = "<table border=0 cellspacing=0 cellpadding=0>"
+                                       "<tr>"
+                                       "<td></td>"
+                                       "<td></td>"
+                                       "<td>a<sub><i>base</i></sub>*X<sub><i>base</i></sub></td>"
+                                       "</tr>"
+
+                                       "<tr>"
+                                       "<td>C= </td>"
+                                       "<td><hr></td>"
+                                       "<td><hr></td>"
+                                       "</tr>"
+
+                                       "<tr>"
+                                       "<td></td>"
+                                       "<td align=center><sub><i>n</i></sub></td>"
+                                       "<td></td>"
+                                       "<td></td>"
+
+                                       "<tr>"
+                                       "<td></td>"
+                                       "<td valign=middle align=center>\u2211</td>"
+                                       "<td valign=middle>(a<sub><i>i</i></sub>*X<sub><i>i</i></sub>) + a<sub>0</sub></td>"
+                                       "</tr>"
+
+                                       "<tr>"
+                                       "<td></td>"
+                                       "<td align=center><sup><i>i</i> = 1</sup></td>"
+                                       "<td></td>"
+                                       "</tr>"
+                                       "</table>";
+    return fractionalEquationString;
+}
+//=========================================================
+QString ZCalibration::zh_initFractionalEquationString1()
+{
+    QString fractionalEquationString = "<table border=0 cellspacing=0 cellpadding=0>"
+                                       "<tr>"
+                                       "<td></td>"
+                                       "<td align=center><sub><i>n</i></sub></td>"
+                                       "<td></td>"
+                                       "</tr>"
+
+                                       "<tr>"
+                                       "<td valign=middle>C= a<sub><i>base</i></sub>*X<sub><i>base</i></sub> / (</td>"
+                                       "<td valign=middle align=center>\u2211</td>"
+                                       "<td valign=middle>(a<sub><i>i</i></sub>*X<sub><i>i</i></sub>) + a<sub>0</sub>)</td>"
+                                       "</tr>"
+
+                                       "<tr>"
+                                       "<td></td>"
+                                       "<td align=center><sup><i>i</i> = 1</sup></td>"
+                                       "<td></td>"
+                                       "</tr>"
+                                       "</table>";
+    return fractionalEquationString;
+}
+//=========================================================
+QString ZCalibration::zp_equationTypeString(ZCalibration::EquationType type)
+{
+    return zv_eqationTypeStringMap.value(type);
+}
+// END STATIC
+//=========================================================
 //=========================================================
 ZCalibration::ZCalibration(const QString& name, QObject *parent) : QObject(parent)
 {
@@ -40,8 +148,12 @@ ZCalibration::ZCalibration(const QString& name, QObject *parent) : QObject(paren
     }
 
     zv_calibrationId = zv_lastCalibrationId++;
+    zv_chemElement = glDefaultChemElementString;
     zv_termNormalizer  = new ZTermNormalizer(this);
 
+    zv_equationType = ET_POLYNOMIAL;
+    zv_freeMemeber = 0.0;
+    zv_baseTermId = -1;
 }
 //=========================================================
 ZCalibration::~ZCalibration()
@@ -135,25 +247,69 @@ qint64 ZCalibration::zp_calibrationId() const
 //=========================================================
 bool ZCalibration::zp_calcConcentration(const ZAbstractSpectrum* const spectrum, qreal& concentration)
 {
-    if(spectrum == 0)
+    concentration = 0;
+    if(spectrum == 0 || zv_equationType == ET_NOT_DEFINED)
     {
-        concentration = 0;
         return false;
     }
 
-    concentration = 0;
+    if(zv_equationType == ET_FRACTIONAL)
+    {
+        return true;
+    }
+
+    // calc norma
+    if(!zv_termNormalizer->zp_calcAndSetNormaValue(spectrum))
+    {
+        return false;
+    }
+
+    // calc all terms
+    qreal value;
+    for(int t = 0; t < zv_termList.count(); t++)
+    {
+        if(!zv_termList.at(t)->zp_calcValue(spectrum, value))
+        {
+            return false;
+        }
+
+        zv_termNormalizer->zp_normalizeValue(value);
+        concentration += value;
+    }
+
+    concentration += zv_freeMemeber;
     return true;
 }
 //=========================================================
 void ZCalibration::zp_createNewCalibrationWindow(int& windowNewIndex, int firstChannel, int lastChannel)
 {
-    int nextWindowIndex = zv_windowList.count();
-    QString nextName = zv_defaultWindowName + QString::number(++nextWindowIndex);
+    int maxWindowNumber = 1;
 
-    while(zh_isWindowExist(nextName))
+//    int nextWindowIndex = zv_windowList.count();
+//    QString nextName = zv_defaultWindowName + QString::number(++nextWindowIndex);
+
+//    while(zh_isWindowExist(nextName))
+//    {
+//        nextName = zv_defaultWindowName + QString::number(++nextWindowIndex);
+//    }
+
+    for(int i = 0; i < zv_windowList.count(); i++)
     {
-        nextName = zv_defaultWindowName + QString::number(++nextWindowIndex);
+        QString name = zv_windowList.at(i)->zp_windowName();
+
+        QString digitalPart = name.mid(zv_defaultWindowName.count());
+        bool ok;
+        int number = digitalPart.toInt(&ok);
+        if(!ok)
+        {
+            continue;
+        }
+        if(number >= maxWindowNumber)
+        {
+            maxWindowNumber = ++number;
+        }
     }
+    QString nextName = zv_defaultWindowName + QString::number(maxWindowNumber);
 
     windowNewIndex = zv_windowList.count();
     ZCalibrationWindow* calibrationWindow = new ZCalibrationWindow(nextName,
@@ -328,12 +484,13 @@ bool ZCalibration::zp_setTermFactor(int termIndex, qreal factor) const
     }
 
     zv_termList.at(termIndex)->zp_setTermFactor(factor);
+    emit zg_termOperation(TOT_TERM_FACTOR_CHANGED, termIndex, termIndex);
     return true;
 }
 //=========================================================
 bool ZCalibration::zp_termVariablePart(int termIndex, const ZAbstractSpectrum* spectrum,  qreal& value) const
 {
-    if(termIndex < 0 || termIndex >= zv_termList.count() )
+    if(termIndex < 0 || termIndex >= zv_termList.count() || !spectrum)
     {
         return false;
     }
@@ -344,7 +501,7 @@ bool ZCalibration::zp_termVariablePart(int termIndex, const ZAbstractSpectrum* s
     if(res)
     {
         value = static_cast<qreal>(termValue);
-        res = zv_termNormalizer->zp_calcNormalizedValue(spectrum, value);
+        res = zv_termNormalizer->zp_normalizeValue(spectrum, value);
     }
 
     return res;
@@ -358,6 +515,89 @@ ZTermNormalizer::NormaType ZCalibration::zp_normaType() const
 bool ZCalibration::zp_setNormaType(ZTermNormalizer::NormaType type)
 {
     return zv_termNormalizer->zp_setNormaType(type);
+}
+//=========================================================
+bool ZCalibration::zp_setNormaCustomString(const QString& customString)
+{
+    return zv_termNormalizer->zp_setCustomNormaString(customString);
+}
+//=========================================================
+QString ZCalibration::zp_customNormaString() const
+{
+    return zv_termNormalizer->zp_customNormaString();
+}
+//=========================================================
+ZCalibration::EquationType ZCalibration::zp_equationType() const
+{
+    return zv_equationType;
+}
+//=========================================================
+bool ZCalibration::zp_setEquationType(ZCalibration::EquationType type)
+{
+    if(zv_equationType == type)
+    {
+        return false;
+    }
+    zv_equationType = type;
+    return true;
+}
+//=========================================================
+qreal ZCalibration::zp_equationFreeMember() const
+{
+    return zv_freeMemeber;
+}
+//=========================================================
+bool ZCalibration::zp_setEquationFreeMember(qreal value)
+{
+    if(zv_freeMemeber == value)
+    {
+        return false;
+    }
+
+    zv_freeMemeber = value;
+    return true;
+}
+//=========================================================
+QString ZCalibration::zp_baseTermString() const
+{
+    if(zv_baseTermId < 0)
+    {
+        return QString();
+    }
+
+    for(int t = 0; t < zv_termList.count(); t++)
+    {
+        if(zv_termList.at(t)->zp_termId() == zv_baseTermId)
+        {
+            return zv_termList.at(t)->zp_termName();
+        }
+    }
+
+    return QString();
+}
+//=========================================================
+qint64 ZCalibration::zp_baseTermId() const
+{
+    return zv_baseTermId;
+}
+//=========================================================
+bool ZCalibration::zp_setBaseTermId(qint64 id)
+{
+    if(zv_baseTermId == id)
+    {
+        return false;
+    }
+
+    for(int i = 0; i < zv_termList.count(); i++)
+    {
+        if(zv_termList.at(i)->zp_termId() == id)
+        {
+            zv_baseTermId = id;
+            return true;
+        }
+    }
+    zv_baseTermId = -1;
+    return true;
 }
 //=========================================================
 void ZCalibration::zh_onTermNameChange() const
@@ -381,7 +621,7 @@ void ZCalibration::zh_onTermWindowMarginChange()
         return;
     }
     int termIndex = zp_termIndex(term);
-    emit zg_termOperation(TOT_TERM_VALUE_CHANGED, termIndex, termIndex);
+    emit zg_termOperation(TOT_TERM_WINDOW_MARGIN_CHANGED, termIndex, termIndex);
 }
 //=========================================================
 void ZCalibration::zh_removeTerm(ZAbstractTerm* term)
@@ -506,7 +746,7 @@ bool ZCalibration::zp_setCalibrationWindowType(int windowIndex, ZCalibrationWind
     if(res)
     {
         emit zg_windowOperation(WOT_WINDOW_CHANGED, windowIndex, windowIndex);
-        if(type == ZCalibrationWindow::WT_BASE_PEAK || type == ZCalibrationWindow::WT_PEAK)
+        if(type == ZCalibrationWindow::WT_PEAK)
         {
             zh_createTermsForWindow(zv_windowList.at(windowIndex));
         }
@@ -606,6 +846,16 @@ QString ZCalibration::zp_termName(int termIndex) const
         termName += " / N";
     }
     return termName;
+}
+//=========================================================
+qint64 ZCalibration::zp_termId(int termIndex) const
+{
+    if(termIndex < 0 || termIndex >= zv_termList.count())
+    {
+        return -1;
+    }
+
+    return zv_termList.at(termIndex)->zp_termId();
 }
 //=========================================================
 ZAbstractTerm::TermState ZCalibration::zp_termState(int termIndex) const

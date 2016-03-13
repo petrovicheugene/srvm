@@ -31,12 +31,17 @@ public:
 
     void zp_connectToWindow(ZCalibrationWindow* window);
 
-    bool zp_isValid() const;
-    qreal zp_value() const;
-    bool zp_calcNormalizedValue(const ZAbstractSpectrum *spectrum, qreal &value);
+    //bool zp_value(const ZAbstractSpectrum *spectrum, qreal &value) const;
+    bool zp_normalizeValue(const ZAbstractSpectrum *spectrum, qreal &value) const;
+    bool zp_normalizeValue(qreal &value) const;
+    bool zp_calcAndSetNormaValue(const ZAbstractSpectrum *spectrum);
+    void zp_resetNormaValue();
 
     ZTermNormalizer::NormaType zp_normaType() const;
     bool zp_setNormaType(NormaType);
+
+    bool zp_setCustomNormaString(const QString &customString);
+    QString zp_customNormaString() const;
 
 signals:
 
@@ -46,8 +51,7 @@ signals:
 
 public slots:
 
-    void zp_isValid(bool&) const;
-    void zp_value(qreal&) const;
+
 
 private slots:
 
@@ -61,17 +65,22 @@ private:
     // VARS
     NormaType zv_normaType;
     ZCalibration* zv_calibration;
-    static QMap<ZTermNormalizer::NormaType, QString> zv_normaTypeStringMap;
-
+    QString zv_customNormaString;
     // buffer
-    qint64 zv_spectrumId;
-    qreal zv_normaValue;
+    qint64 zv_spectrumIdBuffer;
+    qreal zv_normaValueBuffer;
 
     // FUNCS
     void zh_createConnections();
-    bool zh_getWindowsValue(ZCalibrationWindow::WindowType type, const ZAbstractSpectrum* spectrum, qint64& value);
+    bool zh_getWindowsValue(ZCalibrationWindow::WindowType type, const ZAbstractSpectrum* spectrum, qint64& value) const;
+    bool zh_calcNormaValue(const ZAbstractSpectrum *spectrum, qreal& normaValue) const;
+
 
     // STATIC
+    // VARS
+    static QMap<ZTermNormalizer::NormaType, QString> zv_normaTypeStringMap;
+
+    // FUNCS
     static QMap<ZTermNormalizer::NormaType, QString> zh_initNormaTypeStringMap();
 
 };

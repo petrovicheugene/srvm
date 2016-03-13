@@ -480,13 +480,10 @@ void ZTermCorrelationTableManager::zh_onRepositoryTermOperation(ZCalibrationRepo
     {
         emit zg_currentOperation(TOT_VERTICAL_HEADER_CHANGED, first, last);
     }
-    else if(type == ZCalibrationRepository::TOT_TERM_VALUE_CHANGED)
+    else if(type == ZCalibrationRepository::TOT_TERM_WINDOW_MARGIN_CHANGED)
     {
         zh_calcCorrelations();
         emit zg_currentOperation(TOT_DATA_CHANGED, 0, zp_rowCount() - 1);
-#ifdef DBG
-        qDebug() << "WINDOW CHANGE RECALC";
-#endif
     }
 }
 //=============================================================================

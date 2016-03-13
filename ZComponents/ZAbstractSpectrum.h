@@ -49,7 +49,6 @@ public:
     bool zp_intensityInWindow(int startChannel, int lastChannel, qint64& intensity) const;
     bool zp_intensityInWindow(const ZCalibrationWindow*, qint64& intensity) const;
 
-
     int zp_channelCount() const;
     int zp_maxIntensity() const;
     QColor zp_color() const;

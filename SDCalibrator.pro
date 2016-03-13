@@ -14,7 +14,7 @@ RC_ICONS = "SDC1.ico"
 
 VER_MAJ=0
 VER_MIN=0
-VER_PAT=5
+VER_PAT=7
 VER_RELEASE=a
 
 EXE_BASE_NAME=SDCalibrator
@@ -64,7 +64,9 @@ INCLUDEPATH += ZPlotter \
     ZModelViews/ZChemElementComboBoxDelegate \
     ZModelViews/ZIntDelegate \
     ZModelViews/ZWindowTypeComboBoxDelegate \
-    ZModelViews/ZCustomCheckableVerticalHeaderView
+    ZModelViews/ZCustomCheckableVerticalHeaderView \
+    ZModelViews/ZEquationDelegate \
+    ZModelViews/ZNormaDelegate
 
 SOURCES += main.cpp \
     MainWindow.cpp \
@@ -132,7 +134,13 @@ SOURCES += main.cpp \
     ZComponents/ZTermNormalizer.cpp \
     ZModelViews/ZEquationSettingsDashBoard.cpp \
     ZModelViews/ZCorrelationPlotterWidget.cpp \
-    ZComponents/ZCorrelationPlotterManager.cpp
+    ZComponents/ZCorrelationPlotterManager.cpp \
+    ZModelViews/ZEquationDelegate/ZEquationDelegate.cpp \
+    ZDialogs/ZEquationChooseDialog.cpp \
+    ZComponents/ZEquationSettingsData.cpp \
+    ZDialogs/ZNormaSettingsDialog.cpp \
+    ZModelViews/ZNormaDelegate/ZNormaDelegate.cpp \
+    ZComponents/ZNormaSettingsData.cpp
 
 
 HEADERS  += \
@@ -206,7 +214,13 @@ HEADERS  += \
     ZModelViews/ZCustomCheckableVerticalHeaderView/ZCustomCheckableVerticalHeaderView.h \
     ZModelViews/ZEquationSettingsDashBoard.h \
     ZModelViews/ZCorrelationPlotterWidget.h \
-    ZComponents/ZCorrelationPlotterManager.h
+    ZComponents/ZCorrelationPlotterManager.h \
+    ZModelViews/ZEquationDelegate/ZEquationDelegate.h \
+    ZDialogs/ZEquationChooseDialog.h \
+    ZComponents/ZEquationSettingsData.h \
+    ZDialogs/ZNormaSettingsDialog.h \
+    ZModelViews/ZNormaDelegate/ZNormaDelegate.h \
+    ZComponents/ZNormaSettingsData.h
 
 
 RESOURCES += \

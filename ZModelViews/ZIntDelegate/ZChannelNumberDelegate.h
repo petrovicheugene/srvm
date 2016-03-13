@@ -16,6 +16,7 @@ public:
    virtual QSize	sizeHint ( const QStyleOptionViewItem & option, const QModelIndex & index ) const;
    virtual void	updateEditorGeometry ( QWidget * editor, const QStyleOptionViewItem & option, const QModelIndex & index ) const;
 
+   void zp_setImmediatellyValueChange(bool);
 
 public slots:
 
@@ -27,6 +28,7 @@ private:
    qint64 zv_editorMin;
    qint64 zv_editorMax;
    QModelIndex zv_currentModelIndex;
+   bool zv_immediatellyValueChangeFlag;
    //funcs
 
 private slots:

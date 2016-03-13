@@ -61,6 +61,12 @@ QVariant ZJointSpectraModel::data(const QModelIndex & index, int role) const
         return zv_dataManager->zp_data(index);
     }
 
+    if(role == Qt::TextAlignmentRole)
+    {
+        Qt::Alignment flag = Qt::AlignRight | Qt::AlignVCenter;
+        return QVariant(flag);
+    }
+
     if(role == Qt::DecorationRole)
     {
         if(index.column() == 1)
@@ -109,7 +115,11 @@ bool	ZJointSpectraModel::setData(const QModelIndex & index, const QVariant & val
     {
         if(value.canConvert<QString>())
         {
-            return zv_dataManager->zp_setChemConcentration(index.row(), index.column(), value.toString());
+            bool res =  zv_dataManager->zp_setChemConcentration(index.row(), index.column(), value.toString());
+            if(res)
+            {
+                emit dataChanged(index, index);
+            }
         }
     }
 
@@ -234,6 +244,13 @@ void ZJointSpectraModel::zh_onDataManagerOperation(ZJointSpectraDataManager::Ope
     {
         QModelIndex leftTop = index(first, 0);
         QModelIndex rightBottom = index(last, zv_dataManager->zp_spectrumDataColumnCount() - 1);
+
+        emit dataChanged(leftTop, rightBottom);
+    }
+    else if(type == ZJointSpectraDataManager::OT_COLUMN_DATA_CHANGED)
+    {
+        QModelIndex leftTop = index(0, first);
+        QModelIndex rightBottom = index(zv_dataManager->zp_rowCount() - 1, last);
 
         emit dataChanged(leftTop, rightBottom);
     }

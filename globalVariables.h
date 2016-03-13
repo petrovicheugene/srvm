@@ -9,7 +9,8 @@
 #endif
 
 enum UserRole {VisibleRole = Qt::UserRole + 1,
-               IconRole = Qt::UserRole + 2};
+               IconRole = Qt::UserRole + 2
+              };
 
 extern const QString glAppExeBaseName;
 extern const QString glAppProduct;

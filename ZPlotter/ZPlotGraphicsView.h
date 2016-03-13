@@ -4,7 +4,6 @@
 //=============================================================
 #include <QGraphicsView>
 #include "ZRulersAndGridManager.h"
-
 //=============================================================
 class QWheelEvent;
 class QRubberBand;
@@ -63,6 +62,9 @@ private:
     enum PlotMode{PM_REGULAR,
                   PM_PAD_DRAGGING,
                  PM_RUBBER_BAND};
+
+
+    QList<QEvent*> zv_paintEventList;
 
     ZRulersAndGridManager* zv_rulersAndGreedManager;
     PlotMode zv_plotMode;

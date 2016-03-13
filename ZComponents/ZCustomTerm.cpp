@@ -8,9 +8,8 @@ ZCustomTerm::ZCustomTerm(ZCalibration *parent) : ZAbstractTerm(parent)
 //===================================================================
 bool ZCustomTerm::zp_calcValue(const ZAbstractSpectrum * spectrum, qreal& value)
 {
-
-
-    return 0;
+    value = 0;
+    return true;
 }
 //===================================================================
 bool ZCustomTerm::zp_calcTermVariablePart(const ZAbstractSpectrum* spectrum, qint64 &value)  // w/o factor

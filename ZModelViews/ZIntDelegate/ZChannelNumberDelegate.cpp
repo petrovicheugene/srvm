@@ -8,6 +8,7 @@ ZChannelNumberDelegate::ZChannelNumberDelegate(QObject *parent) : QStyledItemDel
    zv_editorMin = std::numeric_limits<long>::min();
    zv_editorMax = std::numeric_limits<long>::max();
    zv_currentModelIndex = QModelIndex();
+   zv_immediatellyValueChangeFlag = true;
 }
 //================================================
 QWidget* ZChannelNumberDelegate::createEditor(QWidget* parent,
@@ -64,10 +65,12 @@ QWidget* ZChannelNumberDelegate::createEditor(QWidget* parent,
       editor->setMaximum(zv_editorMax);
    }
 
-   ZChannelNumberDelegate* pThis = const_cast<ZChannelNumberDelegate*>(this);
-   connect(editor, SIGNAL(valueChanged(int)), pThis, SLOT(zh_editorValueChanged(int)));
+   if(zv_immediatellyValueChangeFlag)
+   {
+       ZChannelNumberDelegate* pThis = const_cast<ZChannelNumberDelegate*>(this);
+       connect(editor, SIGNAL(valueChanged(int)), pThis, SLOT(zh_editorValueChanged(int)));
+   }
    return editor;
-
 }
 //================================================
 void	ZChannelNumberDelegate::setEditorData(QWidget * editor, const QModelIndex & index) const
@@ -105,6 +108,11 @@ QSize	ZChannelNumberDelegate::sizeHint ( const QStyleOptionViewItem & option, co
 void	ZChannelNumberDelegate::updateEditorGeometry ( QWidget * editor, const QStyleOptionViewItem & option, const QModelIndex & index ) const
 {
    QStyledItemDelegate::updateEditorGeometry (editor, option, index);
+}
+//================================================
+void ZChannelNumberDelegate::zp_setImmediatellyValueChange(bool flag)
+{
+    zv_immediatellyValueChangeFlag = flag;
 }
 //================================================
 void ZChannelNumberDelegate::zp_setEditorMinMax(qint64 min, qint64 max)

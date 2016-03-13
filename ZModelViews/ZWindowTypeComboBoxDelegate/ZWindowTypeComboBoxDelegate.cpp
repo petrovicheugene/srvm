@@ -19,7 +19,7 @@ QWidget* ZWindowTypeComboBoxDelegate::createEditor(QWidget* parent,
 
     QStringList typeNameList;
     typeNameList << ZCalibrationWindow::zp_typeName(ZCalibrationWindow::WT_NOT_DEFINED);
-    typeNameList << ZCalibrationWindow::zp_typeName(ZCalibrationWindow::WT_BASE_PEAK);
+    //typeNameList << ZCalibrationWindow::zp_typeName(ZCalibrationWindow::WT_BASE_PEAK);
     typeNameList << ZCalibrationWindow::zp_typeName(ZCalibrationWindow::WT_PEAK);
     typeNameList << ZCalibrationWindow::zp_typeName(ZCalibrationWindow::WT_COHERENT);
     typeNameList << ZCalibrationWindow::zp_typeName(ZCalibrationWindow::WT_INCOHERENT);

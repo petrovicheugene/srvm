@@ -20,6 +20,7 @@ public:
     virtual QSize	sizeHint ( const QStyleOptionViewItem & option, const QModelIndex & index ) const;
     virtual void	updateEditorGeometry ( QWidget * editor, const QStyleOptionViewItem & option, const QModelIndex & index ) const;
 
+    void zp_setImmediatellyValueChange(bool);
     //bool editorEvent(QEvent *event, QAbstractItemModel *model, const QStyleOptionViewItem &option, const QModelIndex &index);
     void zp_setEditorMinMax(double min, double max) ;
     void zp_editorMinMax(double& min, double& max) const;
@@ -38,6 +39,8 @@ protected:
 
     QModelIndex zv_editedIndex;
     bool zv_isEditorAlive;
+    bool zv_immediatellyValueChangeFlag;
+
     // FUNCS
 
 signals:
@@ -49,7 +52,10 @@ signals:
 public slots:
     
 protected slots:
+
     void zh_onEditorEnterClick();
+    void zh_editorValueChanged(double value);
+
 };
 //=========================================------------------------------------------
 #endif // ZCONCENTRATIONDELEGATE_H

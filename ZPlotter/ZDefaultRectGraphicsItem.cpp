@@ -30,6 +30,7 @@ int ZDefaultRectGraphicsItem::type() const
 //========================================================
 void ZDefaultRectGraphicsItem::zp_setSceneRect(QRectF rect)
 {
+    prepareGeometryChange();
     if(!rect.isValid() || rect.isEmpty())
     {
         rect = QRectF(QPointF(0.0, -100.0), QPointF(2048, 0.0));

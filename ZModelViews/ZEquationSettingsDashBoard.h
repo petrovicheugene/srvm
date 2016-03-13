@@ -30,6 +30,8 @@ private slots:
     void zh_onCurrentCalibrationChange(qreal calibrationId, int calibrationIndex);
     void zh_onNormaTypeChange(int index);
 
+    void zh_onEquationTypeChange();
+
 private:
 
     // VARS
@@ -40,7 +42,7 @@ private:
     QComboBox* zv_normalizerTypeComboBox;
     QLineEdit* zv_customNormalizerLineEdit;
 
-    QPushButton* zv_equationChooseButton;
+    QPushButton* zv_equationTypeChooseButton;
     QLabel* zv_equationLabel;
 
     ZNumericEditor* zv_freeMemberNumericEditor;

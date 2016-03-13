@@ -80,6 +80,9 @@ public:
    void zp_appendButtonsToDashboard(QList<QAction*>&,
                                     Qt::AlignmentFlag align,
                                     int extraSperatorSpacing = 0);
+   void zp_appendWidgetToDashboard(QWidget* widget,
+                                   Qt::AlignmentFlag alignment,
+                                   int extraSeparatorSpacing = 0);
 
    void zp_setVerticalAbsMax(qreal);
    qreal zp_verticalAbsMax() const;

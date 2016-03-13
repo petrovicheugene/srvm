@@ -16,7 +16,7 @@ Qt::ItemFlags	ZCalibrationModel::flags(const QModelIndex & index) const
     flags |= Qt::ItemIsEnabled
             | Qt::ItemIsSelectable;
 
-    if(index.column() <= 1)
+    if(index.column() <= 4)
     {
         flags |= Qt::ItemIsEditable;
     }
@@ -25,7 +25,7 @@ Qt::ItemFlags	ZCalibrationModel::flags(const QModelIndex & index) const
 //==================================================================
 int ZCalibrationModel::columnCount(const QModelIndex & parent) const
 {
-    return 2;
+    return 7;
 }
 //==================================================================
 int ZCalibrationModel::rowCount(const QModelIndex & parent) const
@@ -53,11 +53,72 @@ QVariant ZCalibrationModel::data(const QModelIndex & index, int role) const
         {
             return QVariant(zv_calibrationRepository->zp_calibrationName(index.row()));
         }
-
-        if(index.column() == 1)
+        else if(index.column() == 1)
         {
             return QVariant(zv_calibrationRepository->zp_chemElement(index.row()));
         }
+        else if(index.column() == 2)
+        {
+            ZCalibration::EquationType equationType =  zv_calibrationRepository->zp_equationType(index.row());
+            QString equationString = ZCalibration::zp_equationTypeString(equationType);
+            if(equationType == ZCalibration::ET_FRACTIONAL)
+            {
+                QString baseString = zv_calibrationRepository->zp_baseMemberString(index.row());
+                if(baseString.isEmpty())
+                {
+                    equationString += tr(", no base");
+                }
+                else
+                {
+                    equationString += tr(", base:") + baseString;
+                }
+            }
+            return QVariant(equationString);
+        }
+        else if(index.column() == 3)
+        {
+            ZTermNormalizer::NormaType type = zv_calibrationRepository->zp_normaType(index.row());
+            QString normaType = ZTermNormalizer::zp_normaTypeString(type);
+            return QVariant(normaType);
+        }
+        else if(index.column() == 4)
+        {
+            QString freeMemberString = QString::number(zv_calibrationRepository->zp_equationFreeMemeber(index.row()));
+            return QVariant(freeMemberString);
+        }
+        else if(index.column() == 5)
+        {
+            return QVariant();
+        }
+        else if(index.column() == 6)
+        {
+            return QVariant();
+        }
+    }
+
+    if(role == Qt::TextAlignmentRole)
+    {
+        if(index.column() == 4)
+        {
+            Qt::Alignment flag = Qt::AlignRight | Qt::AlignVCenter;
+            return QVariant(flag);
+        }
+    }
+
+    if(role == Qt::EditRole)
+    {
+        if(index.column() == 2)
+        {
+            ZEquationSettingsData equationData = zv_calibrationRepository->zp_equationSettingsData(index.row());
+            return QVariant::fromValue(equationData);
+        }
+
+        if(index.column() == 3)
+        {
+            ZNormaSettingsData normaData = zv_calibrationRepository->zp_normaSettingsData(index.row());
+            return QVariant::fromValue(normaData);
+        }
+
     }
 
     if(role == VisibleRole)
@@ -103,20 +164,56 @@ bool	ZCalibrationModel::setData(const QModelIndex & index, const QVariant & valu
 
     if(role == Qt::EditRole)
     {
-        if(!value.canConvert<QString>())
-        {
-            return false;
-        }
-
         if(index.column() == 0 )
         {
+            if(!value.canConvert<QString>())
+            {
+                return false;
+            }
             return zv_calibrationRepository->zp_setCalibrationName(index.row(), value.toString());
         }
 
         if(index.column() == 1 )
         {
+            if(!value.canConvert<QString>())
+            {
+                return false;
+            }
             return zv_calibrationRepository->zp_setChemElement(index.row(), value.toString());
         }
+
+        if(index.column() == 2 )
+        {
+            if(!value.isValid() || value.isNull() || !value.canConvert<ZEquationSettingsData>())
+            {
+                return false;
+            }
+
+            ZEquationSettingsData equationSetting = value.value<ZEquationSettingsData>();
+            return zv_calibrationRepository->zp_setEquationSettings(index.row(), equationSetting);
+        }
+
+        if(index.column() == 3)
+        {
+            if(!value.isValid() || value.isNull() || !value.canConvert<ZNormaSettingsData>())
+            {
+                return false;
+            }
+
+            ZNormaSettingsData equationSetting = value.value<ZNormaSettingsData>();
+            return zv_calibrationRepository->zp_setNormaSettings(index.row(), equationSetting);
+        }
+
+        if(index.column() == 4)
+        {
+            if(!value.isValid() || value.isNull() || !value.canConvert<qreal>())
+            {
+                return false;
+            }
+            qreal freeMemberValue = value.value<qreal>();
+            return zv_calibrationRepository->zp_setEquationFreeMember(index.row(), freeMemberValue);
+        }
+
         return false;
     }
     else if(role == VisibleRole)
@@ -142,14 +239,36 @@ QVariant ZCalibrationModel::headerData(int section, Qt::Orientation orientation,
     {
         if(orientation == Qt::Horizontal)
         {
+            QString header;
             if(section == 0)
             {
-                return QVariant(tr("Calibration"));
+                header = tr("Calibration");
             }
-            if(section == 1)
+            else if(section == 1)
             {
-                return QVariant(tr("Chem. element"));
+                header = tr("Chem. element");
             }
+            else if(section == 2)
+            {
+                header = tr("Equation");
+            }
+            else if(section == 3)
+            {
+                header = tr("Norma");
+            }
+            else if(section == 4)
+            {
+                header = tr("Free member");
+            }
+            else if(section == 5)
+            {
+                header = QString("R%1").arg(QChar(0x00B2));
+            }
+            else if(section == 6)
+            {
+                header = tr("\u03C3");
+            }
+            return QVariant(header);
         }
         else
         {
@@ -208,6 +327,42 @@ void ZCalibrationModel::zh_onCalibrationRepositoryOperation(ZCalibrationReposito
     else if(type == ZCalibrationRepository::COT_END_REMOVE_CALIBRATIONS)
     {
         endRemoveRows();
+    }
+    else if(type == ZCalibrationRepository::COT_CALIBRATION_FREE_MEMBER_CHANGED)
+    {
+        QModelIndex firstIndex = index(first, 4);
+        QModelIndex lastIndex = index(last, 4);
+        emit dataChanged(firstIndex, lastIndex);
+    }
+    else if(type == ZCalibrationRepository::COT_CALIBRATION_NAME_CHANGED)
+    {
+        QModelIndex firstIndex = index(first, 0);
+        QModelIndex lastIndex = index(last, 0);
+        emit dataChanged(firstIndex, lastIndex);
+    }
+    else if(type == ZCalibrationRepository::COT_CALIBRATION_CHEM_ELEMENT_CHANGED)
+    {
+        QModelIndex firstIndex = index(first, 1);
+        QModelIndex lastIndex = index(last, 1);
+        emit dataChanged(firstIndex, lastIndex);
+    }
+    else if(type == ZCalibrationRepository::COT_CALIBRATION_EQUATION_BASE_TERM_CHANGED)
+    {
+        QModelIndex firstIndex = index(first, 2);
+        QModelIndex lastIndex = index(last, 2);
+        emit dataChanged(firstIndex, lastIndex);
+    }
+    else if(type == ZCalibrationRepository::COT_CALIBRATION_EQUATION_TYPE_CHANGED)
+    {
+        QModelIndex firstIndex = index(first, 2);
+        QModelIndex lastIndex = index(last, 2);
+        emit dataChanged(firstIndex, lastIndex);
+    }
+    else if(type == ZCalibrationRepository::COT_CALIBRATION_NORMA_CHANGED)
+    {
+        QModelIndex firstIndex = index(first, 3);
+        QModelIndex lastIndex = index(last, 3);
+        emit dataChanged(firstIndex, lastIndex);
     }
 }
 //==================================================================

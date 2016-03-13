@@ -14,7 +14,7 @@ class ZCalibrationWindow : public QObject
     Q_OBJECT
 public:
     enum WindowType{WT_NOT_DEFINED,
-                    WT_BASE_PEAK,
+                    //WT_BASE_PEAK,
                     WT_PEAK,
                     WT_COHERENT,
                     WT_INCOHERENT};

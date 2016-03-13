@@ -11,8 +11,8 @@ ZCrossProductTerm::ZCrossProductTerm(const ZCalibrationWindow& window1,
 bool ZCrossProductTerm::zp_calcValue(const ZAbstractSpectrum * spectrum, qreal& value)
 {
 
-
-    return 0;
+    value = 0;
+    return true;
 }
 //===================================================================
 bool ZCrossProductTerm::zp_calcTermVariablePart(const ZAbstractSpectrum* spectrum, qint64 &value)  // w/o factor

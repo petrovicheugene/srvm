@@ -15,15 +15,28 @@ ZQuadraticTerm::ZQuadraticTerm(const ZCalibrationWindow *window,
 //===================================================================
 bool ZQuadraticTerm::zp_calcValue(const ZAbstractSpectrum * spectrum, qreal& value)
 {
+    value = 0;
+    if(zv_termState != TS_CONST_INCLUDED && zv_termState != TS_INCLUDED)
+    {
+        return true;
+    }
 
+    bool ok;
+    qint64 windowIntensity;
+    emit zg_requestWindowIntensity((const QObject*)spectrum, windowIntensity, true, &ok);
+    if(!ok)
+    {
+        return false;
+    }
 
-    return 0;
+    value = static_cast<qreal>(pow(windowIntensity, 2)) * zv_termFactor ;
+    return true;
 }
 //===================================================================
 bool ZQuadraticTerm::zp_calcTermVariablePart(const ZAbstractSpectrum* spectrum, qint64& value)  // w/o factor
 {
     bool ok;
-    emit zg_requestWindowIntensity((const QObject*)spectrum, value, true, &ok);
+    emit zg_requestWindowIntensity((const QObject*)spectrum, value, false, &ok);
     value = value * value;
     return ok;
 }
@@ -59,7 +72,7 @@ void ZQuadraticTerm::zh_setName(const QString& windowName)
 void ZQuadraticTerm::zh_onWindowTypeChange(ZCalibrationWindow::WindowType previousType,
                                            ZCalibrationWindow::WindowType currentType)
 {
-    if(currentType != ZCalibrationWindow::WT_BASE_PEAK && currentType != ZCalibrationWindow::WT_PEAK)
+    if(currentType != ZCalibrationWindow::WT_PEAK)
     {
         emit zg_requestForDelete(this);
     }

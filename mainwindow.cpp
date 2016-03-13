@@ -12,6 +12,8 @@
 #include "ZCorrelationPlotterManager.h"
 #include "ZTermCorrelationTableManager.h"
 #include "ZSpeSpectrum.h"
+#include "ZEquationSettingsData.h"
+
 // views
 #include "ZWidgetWithSidebar.h"
 #include "ZSpectrumArrayWidget.h"
@@ -54,7 +56,7 @@
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
 {
-    //    qRegisterMetaType<ZAbstractSpectrum>("ZAbstractSpectrum");
+        qRegisterMetaType<ZEquationSettingsData>("ZEquationSettingsData");
     //    qRegisterMetaType<ZSpeSpectrum>("ZSpeSpectrum");
 
     setWindowTitle(glAppProduct);
@@ -178,7 +180,7 @@ void MainWindow::zh_createComponents()
     zv_calibrationTableWidget = new ZCalibrationTableWidget(this);
     zv_termCorrelationTableWidget = new ZTermCorrelationTableWidget(this);
     zv_calibrationWindowTableWidget = new ZCalibrationWindowTableWidget(this);
-    zv_equationSettingsPanelWidget = new ZEquationSettingsDashBoard(this);
+    //zv_equationSettingsPanelWidget = new ZEquationSettingsDashBoard(this);
 
     // sideWidget composition
     zv_calibrationSidebarWidget->zp_setSidebarWidget(zv_calibrationWindowTableWidget);
@@ -197,9 +199,9 @@ void MainWindow::zh_createComponents()
     calibrationSplitter->setChildrenCollapsible(false);
     leftWidgetLayout->addWidget(calibrationSplitter);
 
-    frame = zh_setWidgetToFrame(zv_equationSettingsPanelWidget);
-    frame->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
-    leftWidgetLayout->addWidget(frame);
+    //frame = zh_setWidgetToFrame(zv_equationSettingsPanelWidget);
+    //frame->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
+    //leftWidgetLayout->addWidget(frame);
 
     // setting to dock
     frame = zh_setWidgetToFrame(calibrationWidget);
@@ -418,7 +420,7 @@ void MainWindow::zh_createConnections()
     zv_termCorrelationTableManager->zp_connectToSpectrumArrayRepository(zv_spectrumArrayRepository);
 
     // equation dashboard
-    zv_equationSettingsPanelWidget->zp_connectToCalibrationRepository(zv_calibrationRepository);
+    //zv_equationSettingsPanelWidget->zp_connectToCalibrationRepository(zv_calibrationRepository);
 }
 //==========================================================
 void MainWindow::zh_appendActionsToMenu(QMenu* menu)

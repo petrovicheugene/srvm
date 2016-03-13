@@ -31,7 +31,8 @@ public:
                                 SOT_BEGIN_REMOVE_SPECTRA,
                                 SOT_END_REMOVE_SPECTRA,
                                 SOT_VISIBLE_CHANGED,
-                                SOT_CHECKED_CHANGED
+                                SOT_CHECKED_CHANGED,
+                                SOT_CONCENTRATION_CHANGED
                                };
 
     enum ChemElementOperationType {CEOT_INSERT_CHEM_ELEMENT,

@@ -75,7 +75,8 @@ void ZHorizontalDashBoard::zp_appendButtonsToDashboard(QList<QAction*>& actionLi
     }
     else
     {
-        insertIndex = actionList.count();
+        //insertIndex = actionList.count();
+        insertIndex = zv_mainLayout->count();
         zv_mainLayout->addSpacing(extraSeparatorSpacing);
     }
 
@@ -107,6 +108,28 @@ void ZHorizontalDashBoard::zp_appendButtonsToDashboard(QList<QAction*>& actionLi
     if(alignent == Qt::AlignLeft)
     {
         zv_mainLayout->insertSpacing(actionList.count(), extraSeparatorSpacing);
+    }
+}
+//===========================================================
+void ZHorizontalDashBoard::zp_appendWidgetToDashboard(QWidget* widget,
+                                Qt::AlignmentFlag alignment,
+                                int extraSeparatorSpacing)
+{
+    int insertIndex;
+    if(alignment == Qt::AlignLeft)
+    {
+        insertIndex = 0; // 0 - log slider
+    }
+    else
+    {
+        insertIndex = zv_mainLayout->count();
+        zv_mainLayout->addSpacing(extraSeparatorSpacing);
+    }
+
+    zv_mainLayout->insertWidget(insertIndex, widget);
+    if(alignment == Qt::AlignLeft)
+    {
+        zv_mainLayout->insertSpacing(1, extraSeparatorSpacing);
     }
 }
 //===========================================================

@@ -429,10 +429,10 @@ void ZPlotterDataManager::zh_onRepositoryCalibrationWindowOperation(ZCalibration
                 }
             }
 
-            if(windowItem)
-            {
-                zv_plotter->zp_addItem(windowItem);
-            }
+//            if(windowItem)
+//            {
+//                zv_plotter->zp_addItem(windowItem);
+//            }
         }
     }
 }

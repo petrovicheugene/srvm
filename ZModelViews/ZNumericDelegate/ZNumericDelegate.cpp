@@ -17,9 +17,11 @@ ZNumericDelegate::ZNumericDelegate(QWidget *parent) :
     zv_editorMax = (double)std::numeric_limits<long>::max();
     zv_inheritFontBoldFlag = true;
     zv_fontBoldFlag = false;
+    zv_immediatellyValueChangeFlag = true;
+
 }
 //=================================================================
-QWidget* ZNumericDelegate::	createEditor ( QWidget * parent, const QStyleOptionViewItem & option, const QModelIndex & index ) const
+QWidget* ZNumericDelegate::createEditor ( QWidget * parent, const QStyleOptionViewItem & option, const QModelIndex & index ) const
 {
     ZNumericEditor* editor = new ZNumericEditor(parent);
     connect(editor, SIGNAL(enterClicked()), this, SLOT(zh_onEditorEnterClick()));
@@ -28,8 +30,15 @@ QWidget* ZNumericDelegate::	createEditor ( QWidget * parent, const QStyleOptionV
     emit zg_requestEditorMinMax(pThis, index);
     editor->setMinMax(zv_editorMin, zv_editorMax);
 
-    return editor;
+    QModelIndex* pIndex = const_cast<QModelIndex*>(&zv_editedIndex);
+    *pIndex = index;
 
+    if(zv_immediatellyValueChangeFlag)
+    {
+        ZNumericDelegate* pThis = const_cast<ZNumericDelegate*>(this);
+        connect(editor, SIGNAL(valueChanged(double)), pThis, SLOT(zh_editorValueChanged(double)));
+    }
+    return editor;
 }
 //=================================================================
 void	ZNumericDelegate::paint ( QPainter * painter, const QStyleOptionViewItem & option, const QModelIndex & index ) const
@@ -40,7 +49,6 @@ void	ZNumericDelegate::paint ( QPainter * painter, const QStyleOptionViewItem & 
     {
         newOption.font.setBold(zv_fontBoldFlag);
     }
-
     QStyledItemDelegate::paint(painter, newOption, index);
 }
 //=================================================================
@@ -119,15 +127,7 @@ void	ZNumericDelegate::setModelData ( QWidget * editor, QAbstractItemModel * mod
     }
 
     numericEditor->setText(newNumericString);
-
-    if(model->setData(index, QVariant(newNumericString)))
-    {
-
-    }
-
-    QModelIndex* pIndex = const_cast<QModelIndex*>(&zv_editedIndex);
-    *pIndex = index;
-    pIndex = 0;
+    model->setData(index, QVariant(newNumericString));
 
     bool* pIsEditorAlive = const_cast<bool*>(&zv_isEditorAlive);
 
@@ -155,6 +155,11 @@ QSize ZNumericDelegate::sizeHint ( const QStyleOptionViewItem & option, const QM
 void	ZNumericDelegate::updateEditorGeometry ( QWidget * editor, const QStyleOptionViewItem & option, const QModelIndex & index ) const
 {
     QStyledItemDelegate::updateEditorGeometry (editor, option, index);
+}
+//=================================================================
+void ZNumericDelegate::zp_setImmediatellyValueChange(bool flag)
+{
+    zv_immediatellyValueChangeFlag = flag;
 }
 //=================================================================
 void ZNumericDelegate::zp_setEditorMinMax(double min, double max)
@@ -192,5 +197,17 @@ void ZNumericDelegate::zh_onEditorEnterClick()
     }
 
     emit zg_editNext(zv_editedIndex);
+}
+//=================================================================
+void ZNumericDelegate::zh_editorValueChanged(double value)
+{
+    ZNumericEditor* editor = qobject_cast<ZNumericEditor*>(sender());
+    if(!editor)
+    {
+        return;
+    }
+
+    QAbstractItemModel* model = const_cast<QAbstractItemModel*>(zv_editedIndex.model());
+    setModelData (editor, model, zv_editedIndex);
 }
 //=================================================================

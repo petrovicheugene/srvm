@@ -17,11 +17,16 @@ public:
     void zp_addItem(QGraphicsItem * item);
     void 	zp_removeItem(QGraphicsItem * item);
 
+
+signals:
+
+    void zg_deleteRemovedItems() const;
+
 protected:
 
     // VARS
     QList<ZWindowGraphicsItem*> zv_windowItemList;
-
+    QList<QGraphicsItem*> zv_itemToRemoveList;
     // FUNCS
     // resectioned
     void addItem(QGraphicsItem * item);
