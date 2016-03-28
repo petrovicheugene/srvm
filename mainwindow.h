@@ -35,7 +35,7 @@ class ZJointSpectraDataManager;
 class ZChemElementDataManager;
 class ZCalibrationWindowDataManager;
 class ZPlotterDataManager;
-class ZCorrelationPlotterManager;
+class ZCorrelationPlotterDataManager;
 class ZTermCorrelationTableManager;
 //==========================================================
 class MainWindow : public QMainWindow
@@ -99,7 +99,7 @@ private:
     ZCalibrationWindowDataManager* zv_jointCalibrationWindowDataManager;
     ZChemElementDataManager* zv_chemElementDataManager;
     ZPlotterDataManager* zv_plotterDataManager;
-    ZCorrelationPlotterManager* zv_calculationPlotterManager;
+    ZCorrelationPlotterDataManager* zv_calculationPlotterManager;
     ZTermCorrelationTableManager* zv_termCorrelationTableManager;
 
     // FUNCS

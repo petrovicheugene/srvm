@@ -57,5 +57,6 @@
         <file>vSplitterHandle.png</file>
         <file>ZWidgets/sidebarLeftBlueClose.png</file>
         <file>ZWidgets/sidebarLeftBlueOpen.png</file>
+        <file>calc.png</file>
     </qresource>
 </RCC>

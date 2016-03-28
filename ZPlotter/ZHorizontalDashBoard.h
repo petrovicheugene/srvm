@@ -14,14 +14,20 @@ class ZHorizontalDashBoard : public QFrame
 {
     Q_OBJECT
 public:
+
+    enum AuxWidgetPositon {AWP_LEFT_OF_BUTTONS,
+                          AWP_RIGHT_OF_BUTTONS};
+
     explicit ZHorizontalDashBoard(QWidget *parent = 0);
 
     void zp_setPlotGraphicsView(ZPlotGraphicsView*);
     void zp_setPlotGraphicsScene(ZPlotGraphicsScene*);
     void zp_appendButtonsToDashboard(QList<QAction*>& actionList,
+                                     AuxWidgetPositon position,
                                      Qt::AlignmentFlag alignent,
                                      int extraSperatorSpacing = 0);
     void zp_appendWidgetToDashboard(QWidget* widget,
+                                    AuxWidgetPositon position,
                                     Qt::AlignmentFlag alignment,
                                     int extraSeparatorSpacing = 0);
     int zp_distortionValue();

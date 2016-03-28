@@ -9,6 +9,7 @@
 #include <QVBoxLayout>
 #include <QPushButton>
 #include <QAction>
+#include <QItemSelectionModel>
 //=============================================================
 ZTermCorrelationTableWidget::ZTermCorrelationTableWidget(QWidget *parent) : QWidget(parent)
 {
@@ -31,8 +32,8 @@ void ZTermCorrelationTableWidget::zp_setModel(ZTermCorrelationTableModel* model)
 //    zv_table->setItemDelegateForColumn(1, spectrumDelegate);
 //    zv_table->setAlternatingRowColors(true);
 
-//    connect(zv_table->selectionModel(), &QItemSelectionModel::currentRowChanged,
-//            this, &ZJointSpectrumTableWidget::zh_onCurrentSpectrumChanged);
+    connect(zv_table->selectionModel(), &QItemSelectionModel::currentRowChanged,
+            this, &ZTermCorrelationTableWidget::zh_onCurrentTermChanged);
 }
 //=============================================================
 void ZTermCorrelationTableWidget::zp_appendButtonActions(QList<QAction*> actionList)
@@ -105,4 +106,18 @@ void ZTermCorrelationTableWidget::zh_editNext(QModelIndex editedIndex)
     zv_table->edit(nextIndex);
 }
 //=============================================================
+void ZTermCorrelationTableWidget::zp_currentTermIndex(int& index)
+{
+    if(!zv_table)
+    {
+        index = -1;
+    }
 
+    index = zv_table->currentIndex().row();
+}
+//=============================================================
+void ZTermCorrelationTableWidget::zh_onCurrentTermChanged(QModelIndex current, QModelIndex previous)
+{
+    emit zg_currentTermChanged(current.row(), previous.row());
+}
+//=============================================================

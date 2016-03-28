@@ -29,7 +29,7 @@ bool ZQuadraticTerm::zp_calcValue(const ZAbstractSpectrum * spectrum, qreal& val
         return false;
     }
 
-    value = static_cast<qreal>(pow(windowIntensity, 2)) * zv_termFactor ;
+    value = static_cast<qreal>(pow(windowIntensity, 2)) * zv_termFactor;
     return true;
 }
 //===================================================================

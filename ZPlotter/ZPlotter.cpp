@@ -4,9 +4,10 @@
 #include "ZPlotGraphicsView.h"
 #include "ZRulersAndGridManager.h"
 #include "ZRulerWidget.h"
-#include "ZHorizontalDashBoard.h"
 #include "ZSpectrumGraphicsItem.h"
 #include "ZWindowGraphicsItem.h"
+#include "ZChartPointGraphicsItem.h"
+
 #include "globalVariables.h"
 #include "ZPlotterDefaulVariables.h"
 
@@ -367,11 +368,28 @@ void ZPlotter::zp_clearItemsForType(int type)
     {
         if(itemList.value(i)->type() == type)
         {
-            itemList.value(i)->setVisible(false);
+            //itemList.value(i)->setVisible(false);
+
             zv_plotScene->zp_removeItem(itemList.value(i));
-            zv_plotView->update();
         }
     }
+
+    //zv_plotView->update();
+}
+//====================================================
+void ZPlotter::zp_clearItemsExeptType(int type)
+{
+    QList<QGraphicsItem*> itemList = zv_plotScene->items();
+    for(int i = 0; i < itemList.count(); i++)
+    {
+        if(itemList.value(i)->type() == type)
+        {
+            continue;
+        }
+        zv_plotScene->zp_removeItem(itemList.value(i));
+    }
+
+    //zv_plotView->update();
 }
 //====================================================
 void ZPlotter::zp_addItem(QGraphicsItem * item)
@@ -438,6 +456,7 @@ int ZPlotter::zp_itemCount() const
 }
 //====================================================
 void ZPlotter::zp_appendButtonsToDashboard(QList<QAction*>& actionList,
+                                           ZHorizontalDashBoard::AuxWidgetPositon position,
                                            Qt::AlignmentFlag alignment,
                                            int extraSeparatorSpacing)
 {
@@ -446,21 +465,24 @@ void ZPlotter::zp_appendButtonsToDashboard(QList<QAction*>& actionList,
         return;
     }
     zv_dashBoard->zp_appendButtonsToDashboard(actionList,
+                                              position,
                                               alignment,
                                               extraSeparatorSpacing);
 }
 //====================================================
 void ZPlotter::zp_appendWidgetToDashboard(QWidget* widget,
-                                Qt::AlignmentFlag alignment,
-                                int extraSeparatorSpacing)
+                                          ZHorizontalDashBoard::AuxWidgetPositon position,
+                                          Qt::AlignmentFlag alignment,
+                                          int extraSeparatorSpacing)
 {
     if(!zv_dashBoard)
     {
         return;
     }
     zv_dashBoard->zp_appendWidgetToDashboard(widget,
-                                              alignment,
-                                              extraSeparatorSpacing);
+                                             position,
+                                             alignment,
+                                             extraSeparatorSpacing);
 }
 //====================================================
 void ZPlotter::zp_setVerticalAbsMax(qreal max)

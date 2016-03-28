@@ -51,9 +51,7 @@ void ZPlotGraphicsScene::zp_removeItem(QGraphicsItem * item)
 //        ZWindowGraphicsItem* windowItem = qgraphicsitem_cast<ZWindowGraphicsItem*>(item);
 //        zv_windowItemList.removeAt(zv_windowItemList.indexOf(windowItem));
 //    }
-    item->setVisible(false);
     QGraphicsScene::removeItem(item);
-    emit zg_deleteRemovedItems();
     delete item;
 }
 //====================================================

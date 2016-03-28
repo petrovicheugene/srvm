@@ -94,7 +94,6 @@ bool ZWindowGraphicsItem::zp_setTopAndButtonMargins(qreal top, qreal bottom)
 //======================================================
 bool ZWindowGraphicsItem::zp_setAlphaChannelValue(quint8 alpha)
 {
-
     zv_alphaCannelValue = alpha;
     return true;
 }
@@ -140,9 +139,10 @@ void ZWindowGraphicsItem::zp_updateCurrentWindow(bool visible)
     }
 }
 //======================================================
-void ZWindowGraphicsItem::zp_updateWindowHeight()
+void ZWindowGraphicsItem::zp_updateItem()
 {
     zh_recalcShapeAndBoundingRect();
+    update();
 }
 //======================================================
 void ZWindowGraphicsItem::zp_setVisible(bool visible)

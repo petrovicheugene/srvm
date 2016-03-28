@@ -30,7 +30,7 @@ public:
    qint64 zp_windowId() const;
    void zp_setLeftRightMargins(qreal, qreal);
    void zp_updateCurrentWindow(bool);
-   void zp_updateWindowHeight();
+   void zp_updateItem();
 
    void zp_setVisible(bool visible);
 

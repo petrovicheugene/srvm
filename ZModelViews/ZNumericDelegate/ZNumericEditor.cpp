@@ -35,7 +35,6 @@ void	ZNumericEditor::stepBy ( int steps )
     QString numericString = lineEdit()->text();
     int cursorPos = lineEdit()->cursorPosition();
 
-    qDebug() << "STEPS" << steps;
     //double doubleValue = numericString.toDouble();
 
     numericString.replace(QRegExp(","), ".");
@@ -166,7 +165,6 @@ void	ZNumericEditor::stepBy ( int steps )
 
     lineEdit()->setText(newNumericString);
     bool ok;
-    // qDebug() << "NUMERIC EDITOR DATA CHANGED";
     double newValue = newNumericString.toDouble(&ok);
     if(ok)
     {
@@ -359,8 +357,8 @@ QSize ZNumericEditor::sizeHint() const
 {
     QSize size = QAbstractSpinBox::sizeHint();
     QFontMetrics fm(this->font());
-    QString maxString = QString::number(zv_max, 'f', 18);
-    QString minString = QString::number(zv_min, 'f', 18);
+    QString maxString = QString::number(zv_max, 'f', 15);
+    QString minString = QString::number(zv_min, 'f', 15);
     int stringWidth = qMax(fm.width(maxString), fm.width(minString));
     QStyleOptionComplex opt;
     opt.initFrom(this);

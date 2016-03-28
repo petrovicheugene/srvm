@@ -64,7 +64,6 @@ public:
     void zp_connectToFileManager(ZFileActionManager*);
     //void zp_connectToSpectrumArrayRepository(ZSpectrumArrayRepository*spectrumRepository);
 
-
     void zp_appendActionsToMenu(QMenu *menu) const;
     QList<QAction*> zp_arrayActions() const;
     QList<QAction*> zp_windowActions() const;
@@ -115,12 +114,15 @@ public:
     bool zp_calculateConcentration(int row, const ZAbstractSpectrum*, qreal& concentration) const;
     bool zp_calculateConcentrationForId(qint64 calibrationId, const ZAbstractSpectrum* spectrum, qreal& concentration) const;
 
-
     // terms
     int zp_termCount(qint64 calibrationId) const;
     QString zp_termName(qint64 calibrationId, int termIndex) const;
     bool zp_termFactor(qint64 calibrationId, int termIndex, qreal& factor) const;
     bool zp_setTermFactor(qint64 calibrationId, int termIndex, qreal factor);
+
+    bool zp_termFactorString(qint64 calibrationId, int termIndex, QString &factorString) const;
+    bool zp_setTermFactorString(qint64 calibrationId, int termIndex, const QString& factorString);
+
     //bool zp_termValue(qint64 calibrationId, int termIndex, const ZAbstractSpectrum *spectrum, qreal& value);
     bool zp_termVariablePart(qint64 calibrationId, int termIndex, const ZAbstractSpectrum *spectrum, qreal &value);
     //bool zp_termAverageValue(qint64 calibrationId, int termIndex, qreal& averageValue);
@@ -151,12 +153,15 @@ public:
     qreal zp_equationFreeMemeber(int calibrationIndex) const;
     bool zp_setEquationFreeMember(int calibrationIndex, qreal);
 
+    QString zp_equationFreeMemeberString(int calibrationIndex) const;
+    bool zp_setEquationFreeMemberString(int calibrationIndex, const QString&freeMemberString);
+
 signals:
 
     void zg_message(QString) const;
-    void zg_calibrationOperation(CalibrationOperationType, int, int) const;
-    void zg_calibrationWindowOperation(WindowOperationType, int, int, int) const;
-    void zg_termOperation(TermOperationType, int, int, int) const;
+    void zg_calibrationOperation(CalibrationOperationType, int first, int last) const;
+    void zg_calibrationWindowOperation(WindowOperationType, int calibrationIndex, int first, int last) const;
+    void zg_termOperation(TermOperationType, int calibrationIndex, int first, int last) const;
 
     void zg_requestSelectedCalibrationIndexList(QList<int>&);
     void zg_requestCurrentCalibrationIndex(int&);
@@ -190,6 +195,7 @@ private slots:
     void zh_onRemoveCalibrationsAction();
     void zh_onNewWindowAction();
     void zh_onRemoveWindowAction();
+    void zh_onRecalcEquationFactorsAction();
     void zh_onWindowOperation(ZCalibration::WindowOperationType type, int first, int last);
     void zh_onTermOperation(ZCalibration::TremOperationType type, int first, int last);
     void zh_onNormalizerChange() const;
@@ -208,9 +214,12 @@ private:
     QAction* zv_newWindowAction;
     QAction* zv_removeWindowAction;
 
+    QAction* zv_recalcEquationFactorsAction;
+
     QString zv_defaultCalibrationName;
     qint64 zv_currentArrayId;
     int zv_currentArrayIndex;
+    int zv_currentCalibrationIndex;
 
     // FUNCS
     void zh_createActions();
@@ -221,11 +230,11 @@ private:
     bool zh_createNewCalibration(const QString&);
     bool zh_appendCalibrationToList(ZCalibration*);
     void zh_actionAvailabilityControl(int current);
+    void zh_recalcEquationFactors(int calibrationIndex);
 
     void zh_removeCalibrationWindow(int currentCalibrationIndex, int spectrumWindowIndex);
     ZCalibration* zh_calibrationForId(qint64) const;
     //void zh_calcTermAverageValues();
-
 
 };
 //======================================================

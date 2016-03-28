@@ -206,16 +206,16 @@ qint64 ZSpectrumArrayRepository::zp_chemElementIdForName(int arrayIndex, const Q
         return -1;
     }
 
-    for(int a = 0; a < zv_arrayList.count(); a++)
-    {
-        for(int c = 0; c < zv_arrayList.at(a)->zp_chemElementCount(); c++)
+//    for(int a = 0; a < zv_arrayList.count(); a++)
+//    {
+        for(int c = 0; c < zv_arrayList.at(arrayIndex)->zp_chemElementCount(); c++)
         {
-            if(zv_arrayList.at(a)->zp_chemElementName(c) == name)
+            if(zv_arrayList.at(arrayIndex)->zp_chemElementName(c) == name)
             {
-                return zv_arrayList.at(a)->zp_chemElementId(c);
+                return zv_arrayList.at(arrayIndex)->zp_chemElementId(c);
             }
         }
-    }
+//    }
 
     return -1;
 }

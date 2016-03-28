@@ -48,7 +48,6 @@ void	ZNormaDelegate::setEditorData(QWidget* editor, const QModelIndex& index) co
     }
 
     dialog->zp_setNormaSettings(vSettings.value<ZNormaSettingsData>());
-
 }
 //=======================================================
 void	ZNormaDelegate::setModelData(QWidget* editor, QAbstractItemModel* model, const QModelIndex& index) const

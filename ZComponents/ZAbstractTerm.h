@@ -41,7 +41,9 @@ public:
 
     qint64 zp_termId();
     qreal zp_termFactor() const;
-    void zp_setTermFactor(qreal factor);
+    QString zp_termFactorString() const;
+    bool zp_setTermFactor(qreal factor);
+    bool zp_setTermFactorString(const QString&);
 
     ZAbstractTerm::TermState zp_termState() const;
     bool zp_setTermState(ZAbstractTerm::TermState);
@@ -73,6 +75,7 @@ protected:
     // VARS
     qint64 zv_termId;
     TermType zv_type;
+    QString zv_termFactorString;
     qreal zv_termFactor;
     TermState zv_termState;
     QString zv_name;
@@ -82,7 +85,7 @@ protected:
     // FUNCS
     void zh_connectToNormalizer(ZTermNormalizer *);
     void zh_connectToCalibration(ZCalibration* calibration);
-
+    void zh_chopTailZeroesFromTermFactorString();
     // STATIC
     // VARS
     static qint64 zv_lastTermId;

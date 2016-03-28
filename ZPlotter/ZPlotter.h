@@ -4,6 +4,7 @@
 //====================================================
 #include <QWidget>
 #include <QGraphicsItem>
+#include "ZHorizontalDashBoard.h"
 //====================================================
 class ZMarkLine;
 class ZVerticalMarkLine;
@@ -14,7 +15,6 @@ class ZPlotGraphicsScene;
 class QScrollBar;
 class ZRulersAndGridManager;
 class ZRulerWidget;
-class ZHorizontalDashBoard;
 //====================================================
 class ZPlotter : public QWidget
 {
@@ -71,6 +71,7 @@ public:
 
    // ***
    void zp_clearItemsForType(int type);
+   void zp_clearItemsExeptType(int type);
    void zp_addItem(QGraphicsItem * item);
    void zp_removeItem(QGraphicsItem * item);
    void zp_removeItemsForType(int type);
@@ -78,9 +79,11 @@ public:
    int zp_itemCount() const;
 
    void zp_appendButtonsToDashboard(QList<QAction*>&,
+                                    ZHorizontalDashBoard::AuxWidgetPositon position,
                                     Qt::AlignmentFlag align,
                                     int extraSperatorSpacing = 0);
    void zp_appendWidgetToDashboard(QWidget* widget,
+                                   ZHorizontalDashBoard::AuxWidgetPositon position,
                                    Qt::AlignmentFlag alignment,
                                    int extraSeparatorSpacing = 0);
 

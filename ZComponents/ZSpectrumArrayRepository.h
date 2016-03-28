@@ -115,8 +115,8 @@ signals:
 
     void zg_message(QString) const;
     void zg_spectrumArrayOperation(ArrayOperationType, int, int) const;
-    void zg_spectrumOperation(SpectrumOperationType, int, int, int) const;
-    void zg_chemElementOperation(ChemElementOperationType, int, int, int) const;
+    void zg_spectrumOperation(SpectrumOperationType, int arrayIndex, int first, int last) const;
+    void zg_chemElementOperation(ChemElementOperationType, int arrayIndex, int first, int last) const;
 
     void zg_currentFile(bool dirty, QString fileName) const;
     void zg_fitPlotInBoundingRect();

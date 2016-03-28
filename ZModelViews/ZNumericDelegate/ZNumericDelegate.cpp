@@ -43,7 +43,7 @@ QWidget* ZNumericDelegate::createEditor ( QWidget * parent, const QStyleOptionVi
 //=================================================================
 void	ZNumericDelegate::paint ( QPainter * painter, const QStyleOptionViewItem & option, const QModelIndex & index ) const
 {
-    QStyleOptionViewItem newOption(option);
+    QStyleOptionViewItemV4 newOption(option);
 
     if(!zv_inheritFontBoldFlag)
     {
@@ -123,7 +123,6 @@ void	ZNumericDelegate::setModelData ( QWidget * editor, QAbstractItemModel * mod
         {
             newNumericString = newNumericString + "E";
         }
-
     }
 
     numericEditor->setText(newNumericString);

@@ -10,7 +10,7 @@ public:
     enum DataType {DT_SPE};
     ZAbstractSpectrumAuxData(DataType type);
 
-    DataType zp_type();
+    DataType zp_type() const;
 
 private:
 

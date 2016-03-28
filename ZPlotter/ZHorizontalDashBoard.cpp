@@ -65,11 +65,12 @@ void ZHorizontalDashBoard::zp_setPlotGraphicsScene(ZPlotGraphicsScene* plotGraph
 }
 //===========================================================
 void ZHorizontalDashBoard::zp_appendButtonsToDashboard(QList<QAction*>& actionList,
-                                             Qt::AlignmentFlag alignent,
-                                             int extraSeparatorSpacing)
+                                                       AuxWidgetPositon position,
+                                                       Qt::AlignmentFlag alignment,
+                                                       int extraSeparatorSpacing)
 {
     int insertIndex;
-    if(alignent == Qt::AlignLeft)
+    if(position == AWP_LEFT_OF_BUTTONS)
     {
         insertIndex = 1; // 0 - log slider
     }
@@ -89,8 +90,8 @@ void ZHorizontalDashBoard::zp_appendButtonsToDashboard(QList<QAction*>& actionLi
         button->setCheckable(actionList.value(i)->isCheckable());
         if(actionList.value(i)->isCheckable())
         {
-//            connect(button, &QToolButton::toggled ,
-//                    actionList[i], &QAction::trigger);
+            //            connect(button, &QToolButton::toggled ,
+            //                    actionList[i], &QAction::trigger);
             connect(button, &QToolButton::toggled ,
                     actionList[i], &QAction::setChecked);
             connect(actionList[i], &QAction::toggled,
@@ -102,34 +103,54 @@ void ZHorizontalDashBoard::zp_appendButtonsToDashboard(QList<QAction*>& actionLi
                     actionList[i], &QAction::trigger);
 
         }
-        zv_mainLayout->insertWidget(insertIndex, button);
+        zv_mainLayout->insertWidget(insertIndex, button, alignment);
     }
 
-    if(alignent == Qt::AlignLeft)
+    if(position == AWP_LEFT_OF_BUTTONS)
     {
-        zv_mainLayout->insertSpacing(actionList.count(), extraSeparatorSpacing);
+        if(alignment == Qt::AlignLeft)
+        {
+            zv_mainLayout->insertStretch(actionList.count(), 999999);
+        }
+
+        if(extraSeparatorSpacing > 0)
+        {
+            zv_mainLayout->insertSpacing(actionList.count(), extraSeparatorSpacing);
+        }
     }
 }
 //===========================================================
 void ZHorizontalDashBoard::zp_appendWidgetToDashboard(QWidget* widget,
-                                Qt::AlignmentFlag alignment,
-                                int extraSeparatorSpacing)
+                                                      AuxWidgetPositon position,
+                                                      Qt::AlignmentFlag alignment,
+                                                      int extraSeparatorSpacing)
 {
     int insertIndex;
-    if(alignment == Qt::AlignLeft)
+    if(position == AWP_LEFT_OF_BUTTONS)
     {
         insertIndex = 0; // 0 - log slider
     }
     else
     {
         insertIndex = zv_mainLayout->count();
-        zv_mainLayout->addSpacing(extraSeparatorSpacing);
+        if(extraSeparatorSpacing > 0)
+        {
+            zv_mainLayout->addSpacing(extraSeparatorSpacing);
+        }
     }
 
-    zv_mainLayout->insertWidget(insertIndex, widget);
-    if(alignment == Qt::AlignLeft)
+    zv_mainLayout->insertWidget(insertIndex, widget, alignment);
+    if(position == AWP_LEFT_OF_BUTTONS)
     {
-        zv_mainLayout->insertSpacing(1, extraSeparatorSpacing);
+        if(alignment == Qt::AlignLeft)
+        {
+            zv_mainLayout->insertStretch(1, 999999);
+        }
+
+        if(extraSeparatorSpacing > 0)
+        {
+            zv_mainLayout->insertSpacing(1, extraSeparatorSpacing);
+        }
     }
 }
 //===========================================================
@@ -144,11 +165,11 @@ int ZHorizontalDashBoard::zp_distortionValue()
 //===========================================================
 void ZHorizontalDashBoard::zp_setDistortionSliderVisible(bool visible)
 {
-   if(zv_distortionSlider == 0)
-   {
-      return;
-   }
-   zv_distortionSlider->setVisible(visible);
+    if(zv_distortionSlider == 0)
+    {
+        return;
+    }
+    zv_distortionSlider->setVisible(visible);
 }
 //===========================================================
 void ZHorizontalDashBoard::timerEvent(QTimerEvent* event)

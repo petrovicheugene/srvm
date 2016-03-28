@@ -83,7 +83,7 @@ QVariant ZCalibrationModel::data(const QModelIndex & index, int role) const
         }
         else if(index.column() == 4)
         {
-            QString freeMemberString = QString::number(zv_calibrationRepository->zp_equationFreeMemeber(index.row()));
+            QString freeMemberString = zv_calibrationRepository->zp_equationFreeMemeberString(index.row());
             return QVariant(freeMemberString);
         }
         else if(index.column() == 5)
@@ -206,12 +206,12 @@ bool	ZCalibrationModel::setData(const QModelIndex & index, const QVariant & valu
 
         if(index.column() == 4)
         {
-            if(!value.isValid() || value.isNull() || !value.canConvert<qreal>())
+            if(!value.isValid() || value.isNull() || !value.canConvert<QString>())
             {
                 return false;
             }
-            qreal freeMemberValue = value.value<qreal>();
-            return zv_calibrationRepository->zp_setEquationFreeMember(index.row(), freeMemberValue);
+            QString freeMemberValue = value.toString();
+            return zv_calibrationRepository->zp_setEquationFreeMemberString(index.row(), freeMemberValue);
         }
 
         return false;

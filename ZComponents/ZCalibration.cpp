@@ -152,7 +152,7 @@ ZCalibration::ZCalibration(const QString& name, QObject *parent) : QObject(paren
     zv_termNormalizer  = new ZTermNormalizer(this);
 
     zv_equationType = ET_POLYNOMIAL;
-    zv_freeMemeber = 0.0;
+    zp_setEquationFreeMember(0.0);
     zv_baseTermId = -1;
 }
 //=========================================================
@@ -277,7 +277,7 @@ bool ZCalibration::zp_calcConcentration(const ZAbstractSpectrum* const spectrum,
         concentration += value;
     }
 
-    concentration += zv_freeMemeber;
+    concentration += zv_freeMember;
     return true;
 }
 //=========================================================
@@ -463,6 +463,18 @@ int ZCalibration::zp_termIndex(const ZAbstractTerm* term) const
     return -1;
 }
 //=========================================================
+void ZCalibration::zh_chopTailZeroesFromFreeMemberString()
+{
+    for(int i = zv_freeMemberString.count() - 1; i > 0; i--)
+    {
+        if(zv_freeMemberString.at(i) != '0' || (zv_freeMemberString.at(i - 1) == '.' || zv_freeMemberString.at(i - 1) == ',' ))
+        {
+            break;
+        }
+        zv_freeMemberString.chop(1);
+    }
+}
+//=========================================================
 bool ZCalibration::zp_termFactor(int termIndex, qreal& factor) const
 {
     if(termIndex < 0 || termIndex >= zv_termList.count() )
@@ -479,11 +491,34 @@ bool ZCalibration::zp_setTermFactor(int termIndex, qreal factor) const
 {
     if(termIndex < 0 || termIndex >= zv_termList.count() )
     {
-        factor = 0;
         return false;
     }
 
     zv_termList.at(termIndex)->zp_setTermFactor(factor);
+    emit zg_termOperation(TOT_TERM_FACTOR_CHANGED, termIndex, termIndex);
+    return true;
+}
+//=========================================================
+bool ZCalibration::zp_termFactorString(int termIndex, QString& factorString) const
+{
+    if(termIndex < 0 || termIndex >= zv_termList.count() )
+    {
+        factorString = "0.0";
+        return false;
+    }
+
+    factorString =  zv_termList.at(termIndex)->zp_termFactorString();
+    return true;
+}
+//=========================================================
+bool ZCalibration::zp_setTermFactorString(int termIndex, const QString& factorString) const
+{
+    if(termIndex < 0 || termIndex >= zv_termList.count() )
+    {
+        return false;
+    }
+
+    zv_termList.at(termIndex)->zp_setTermFactorString(factorString);
     emit zg_termOperation(TOT_TERM_FACTOR_CHANGED, termIndex, termIndex);
     return true;
 }
@@ -544,18 +579,37 @@ bool ZCalibration::zp_setEquationType(ZCalibration::EquationType type)
 //=========================================================
 qreal ZCalibration::zp_equationFreeMember() const
 {
-    return zv_freeMemeber;
+    return zv_freeMember;
 }
 //=========================================================
 bool ZCalibration::zp_setEquationFreeMember(qreal value)
 {
-    if(zv_freeMemeber == value)
+    if(zv_freeMember == value)
     {
         return false;
     }
 
-    zv_freeMemeber = value;
+    zv_freeMember = value;
+    zv_freeMemberString = QString::number(value, 'f', 15);
+    zh_chopTailZeroesFromFreeMemberString();
     return true;
+}
+//=========================================================
+QString ZCalibration::zp_equationFreeMemberString() const
+{
+    return zv_freeMemberString;
+}
+//=========================================================
+bool ZCalibration::zp_setEquationFreeMemberString(const QString& freeMemberString)
+{
+    bool ok;
+    qreal freeMember = freeMemberString.toDouble(&ok);
+    if(!ok)
+    {
+        return false;
+    }
+
+    return zp_setEquationFreeMember(freeMember);
 }
 //=========================================================
 QString ZCalibration::zp_baseTermString() const

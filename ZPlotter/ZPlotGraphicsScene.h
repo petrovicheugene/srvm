@@ -17,10 +17,8 @@ public:
     void zp_addItem(QGraphicsItem * item);
     void 	zp_removeItem(QGraphicsItem * item);
 
-
 signals:
 
-    void zg_deleteRemovedItems() const;
 
 protected:
 

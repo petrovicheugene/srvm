@@ -13,7 +13,7 @@ ZAbstractTerm::ZAbstractTerm(ZCalibration *parent) : QObject(parent)
     zh_connectToCalibration(parent);
     zv_type = TT_NOT_DEFINED;
     zv_termState = TS_CONST_EXCLUDED;
-    zv_termFactor = 0;
+    zp_setTermFactor(0.0); // zv_termFactorString = 0;
     zv_termId = zv_lastTermId++;
 }
 //============================================================
@@ -99,19 +99,56 @@ qreal ZAbstractTerm::zp_termFactor() const
     return zv_termFactor;
 }
 //============================================================
-void ZAbstractTerm::zp_setTermFactor(qreal factor)
+QString ZAbstractTerm::zp_termFactorString() const
 {
+    return zv_termFactorString;
+}
+//============================================================
+bool ZAbstractTerm::zp_setTermFactor(qreal factor)
+{
+    if(zv_termFactor == factor)
+    {
+        return false;
+    }
+
     zv_termFactor = factor;
+    zv_termFactorString = QString::number(factor, 'f', 15);
+    zh_chopTailZeroesFromTermFactorString();
+    return true;
+}
+//============================================================
+bool ZAbstractTerm::zp_setTermFactorString(const QString& termFactorString)
+{
+    bool ok;
+    qreal termFactor = termFactorString.toDouble(&ok);
+    if(!ok)
+    {
+        return false;
+    }
+
+    return zp_setTermFactor(termFactor);
+}
+//============================================================
+void ZAbstractTerm::zh_chopTailZeroesFromTermFactorString()
+{
+    for(int i = zv_termFactorString.count() - 1; i > 0; i--)
+    {
+        if(zv_termFactorString.at(i) != '0' || (zv_termFactorString.at(i - 1) == '.' || zv_termFactorString.at(i - 1) == ',' ))
+        {
+            break;
+        }
+        zv_termFactorString.chop(1);
+    }
 }
 //============================================================
 void ZAbstractTerm::zh_connectToNormalizer(ZTermNormalizer* normalizer)
 {
     connect(normalizer, &ZTermNormalizer::zg_normalizerChanged,
             this, &ZAbstractTerm::zh_normalizerChanged);
-//    connect(this, &ZAbstractTerm::zg_requestIsNormalizerValid,
-//            normalizer, &ZTermNormalizer::zp_isValid);
-//    connect(this, &ZAbstractTerm::zg_requestNormalizerValue,
-//            normalizer, &ZTermNormalizer::zp_value);
+    //    connect(this, &ZAbstractTerm::zg_requestIsNormalizerValid,
+    //            normalizer, &ZTermNormalizer::zp_isValid);
+    //    connect(this, &ZAbstractTerm::zg_requestNormalizerValue,
+    //            normalizer, &ZTermNormalizer::zp_value);
 
 }
 //============================================================
@@ -122,15 +159,15 @@ void ZAbstractTerm::zh_connectToCalibration(ZCalibration* calibration)
 
     connect(calibration, &ZCalibration::zg_normalizerChanged,
             this, &ZAbstractTerm::zh_normalizerChanged);
-//    connect(this, &ZAbstractTerm::zg_requestNormalizerValue,
-//            calibration, &ZCalibration::zh_normalizerValue);
+    //    connect(this, &ZAbstractTerm::zg_requestNormalizerValue,
+    //            calibration, &ZCalibration::zh_normalizerValue);
     connect(this, &ZAbstractTerm::zg_termNameChanged,
             calibration, &ZCalibration::zh_onTermNameChange);
 
     connect(this, &ZAbstractTerm::zg_termWindowMarginChanged,
             calibration, &ZCalibration::zh_onTermWindowMarginChange);
-//    connect(this, &ZAbstractTerm::zg_termValuesChanged,
-//            calibration, &ZCalibration::zp_onTermAverageValueChange);
+    //    connect(this, &ZAbstractTerm::zg_termValuesChanged,
+    //            calibration, &ZCalibration::zp_onTermAverageValueChange);
 
 }
 //============================================================

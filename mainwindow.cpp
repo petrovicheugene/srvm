@@ -9,7 +9,7 @@
 #include "ZCalibrationRepository.h"
 #include "ZChemElementDataManager.h"
 #include "ZPlotterDataManager.h"
-#include "ZCorrelationPlotterManager.h"
+#include "ZCorrelationPlotterDataManager.h"
 #include "ZTermCorrelationTableManager.h"
 #include "ZSpeSpectrum.h"
 #include "ZEquationSettingsData.h"
@@ -23,7 +23,6 @@
 #include "ZCalibrationWindowTableWidget.h"
 #include "ZCorrelationPlotterWidget.h"
 #include "ZTermCorrelationTableWidget.h"
-#include "ZEquationSettingsDashBoard.h"
 #include "ZPlotter.h"
 #include "ZMessagePanel.h"
 // models
@@ -242,7 +241,7 @@ void MainWindow::zh_createComponents()
     zv_calibrationRepository = new ZCalibrationRepository(this);
     zv_jointCalibrationWindowDataManager = new ZCalibrationWindowDataManager(this);
     zv_plotterDataManager = new ZPlotterDataManager(this);
-    zv_calculationPlotterManager = new ZCorrelationPlotterManager(this);
+    zv_calculationPlotterManager = new ZCorrelationPlotterDataManager(this);
     zv_termCorrelationTableManager = new ZTermCorrelationTableManager(this);
 
     // Models
@@ -415,6 +414,10 @@ void MainWindow::zh_createConnections()
     // term correlation table and calculation plotter
 
     zv_calculationPlotterManager->zp_connectToPlotter(zv_correlationPlotterWidget->zp_plotter());
+    zv_calculationPlotterManager->zp_connectToCalibrationRepository(zv_calibrationRepository);
+    zv_calculationPlotterManager->zp_connectToSpectrumArrayRepository(zv_spectrumArrayRepository);
+    zv_calculationPlotterManager->zp_connectToTermCorrelationWidget(zv_termCorrelationTableWidget);
+
     zv_termCorrelationTableModel->zp_connectToPredicorTableManager(zv_termCorrelationTableManager);
     zv_termCorrelationTableManager->zp_connectToCalibrationRepository(zv_calibrationRepository);
     zv_termCorrelationTableManager->zp_connectToSpectrumArrayRepository(zv_spectrumArrayRepository);

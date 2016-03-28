@@ -5,13 +5,13 @@
 //=============================================================================
 ZTermCorrelationTableManager::ZTermCorrelationTableManager(QObject *parent) : QObject(parent)
 {
+
     zv_calibrationRepository = 0;
     zv_spectrumArrayRepository = 0;
     zv_currentCalibrationId = -1;
     zv_columnCountCorrector = 0;
     zv_currentArrayId = -1;
     zv_currentArrayIndex = -1;
-
 
     zv_greenCell = QColor(Qt::green);
     zv_orangeCell = QColor(Qt::darkYellow);
@@ -90,15 +90,15 @@ QVariant ZTermCorrelationTableManager::zp_data(QModelIndex index) const
 
     if(index.column() == 0)
     {
-        qreal factor;
-        bool ok = zv_calibrationRepository->zp_termFactor(zv_currentCalibrationId, index.row(), factor);
+        QString factorString;
+        bool ok = zv_calibrationRepository->zp_termFactorString(zv_currentCalibrationId, index.row(), factorString);
 
         if(!ok)
         {
             return tr("#Error");
         }
 
-        return QVariant(factor);
+        return QVariant(factorString);
     }
     else if(index.column() == 1)
     {
@@ -134,13 +134,13 @@ QVariant ZTermCorrelationTableManager::zp_data(QModelIndex index) const
 //=============================================================================
 bool ZTermCorrelationTableManager::zp_setData(QModelIndex index, QVariant vFactor)
 {
-    if(!zv_calibrationRepository || !vFactor.isValid() || vFactor.isNull() || !vFactor.canConvert<qreal>())
+    if(!zv_calibrationRepository || !vFactor.isValid() || vFactor.isNull() || !vFactor.canConvert<QString>())
     {
         return false;
     }
 
-    qreal factor = vFactor.value<qreal>();
-    return zv_calibrationRepository->zp_setTermFactor(zv_currentCalibrationId, index.row(), factor);
+    QString factorString = vFactor.toString();
+    return zv_calibrationRepository->zp_setTermFactorString(zv_currentCalibrationId, index.row(), factorString);
 }
 //=============================================================================
 QVariant ZTermCorrelationTableManager::zp_cellColor(QModelIndex index) const
@@ -696,10 +696,6 @@ void ZTermCorrelationTableManager::zh_onCalibrationNormalizerChange(qint64 calib
 //=============================================================================
 void ZTermCorrelationTableManager::zh_calcCorrelations()
 {
-#ifdef DBG
-    qDebug() << "CHEM CORRELATION RECALCULATION";
-#endif
-
     zv_chemElementCorrelationList.clear();
     zv_termIntercorrelationMap.clear();
 

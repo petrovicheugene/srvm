@@ -16,7 +16,7 @@ ZPlotterDataManager::ZPlotterDataManager(QObject *parent) : QObject(parent)
     zv_switchRuleMetrixAction = 0;
     zv_currentArrayId = -1;
     zv_boundingRectTopFactor = 1.05;
-
+    zv_defaultItem = 0;
     zv_currentCalibrationId = -1;
     zv_currentCalibrationIndex = -1;
 
@@ -65,7 +65,9 @@ void ZPlotterDataManager::zp_connectToPlotter(ZPlotter* plotter)
     zv_plotter->zp_setAutoDefineVerticalAbsMax(false);
     QList<QAction*> actionList;
     actionList << zv_switchRuleMetrixAction;
-    zv_plotter->zp_appendButtonsToDashboard(actionList, Qt::AlignLeft, 0);
+    zv_plotter->zp_appendButtonsToDashboard(actionList,
+                                            ZHorizontalDashBoard::AWP_LEFT_OF_BUTTONS,
+                                            Qt::AlignLeft, 0);
 
     connect(zv_plotter, &ZPlotter::zg_cursorAreaImage,
             this, &ZPlotterDataManager::zh_findItemInCursorAreaImage);
@@ -87,8 +89,8 @@ void ZPlotterDataManager::zp_connectToPlotter(ZPlotter* plotter)
 
     if(zv_plotter->zp_itemCount() <= 0)
     {
-        ZDefaultRectGraphicsItem* defaultItem = new ZDefaultRectGraphicsItem(zv_defaultSceneRect);
-        zv_plotter->zp_addItem(defaultItem);
+        zv_defaultItem = new ZDefaultRectGraphicsItem(zv_defaultSceneRect, false, false, false);
+        zv_plotter->zp_addItem(zv_defaultItem);
     }
 }
 //===========================================================
@@ -523,10 +525,9 @@ void ZPlotterDataManager::zh_setPlotterVerticalAbsMax(qreal maxIntensity)
         {
             continue;
         }
-        windowItem->zp_updateWindowHeight();
+        windowItem->zp_updateItem();
     }
     zv_plotter->zp_updatePlot();
-
 }
 //===========================================================
 void ZPlotterDataManager::zh_setMaxParametersToDefaultItem(qreal maxY, qreal maxX)
@@ -549,7 +550,7 @@ void ZPlotterDataManager::zh_setMaxParametersToDefaultItem(qreal maxY, qreal max
         return;
     }
 
-    defaultItem->zp_setSceneRect(rect);
+    defaultItem->zp_fitItemInRect(rect);
 }
 //===========================================================
 void ZPlotterDataManager::zh_definePlotScaling(bool& plotIsScaled)

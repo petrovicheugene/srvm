@@ -98,6 +98,10 @@ public:
     void zp_setNextUsersTermState(int) const;
     bool zp_termFactor(int termIndex, qreal &factor) const;
     bool zp_setTermFactor(int termIndex, qreal factor) const;
+
+    bool zp_termFactorString(int termIndex, QString &factorString) const;
+    bool zp_setTermFactorString(int termIndex, const QString& factorString) const;
+
     bool zp_termVariablePart(int termIndex, const ZAbstractSpectrum* spectrum,  qreal &value) const;
     //bool zp_termValue(int termIndex, const ZAbstractSpectrum*,  qreal &value) const;
     //bool zp_termAverageValue(int termIndex,  qreal &averageValue) const;
@@ -114,6 +118,10 @@ public:
 
     qreal zp_equationFreeMember() const;
     bool zp_setEquationFreeMember(qreal);
+
+    QString zp_equationFreeMemberString() const;
+    bool zp_setEquationFreeMemberString(const QString&);
+
     QString zp_baseTermString() const;
     qint64 zp_baseTermId() const;
     bool zp_setBaseTermId(qint64 id);
@@ -162,7 +170,8 @@ private:
     QList<ZAbstractTerm*> zv_termList;
     EquationType zv_equationType;
     ZTermNormalizer* zv_termNormalizer;
-    qreal zv_freeMemeber;
+    QString zv_freeMemberString;
+    qreal zv_freeMember;
     qint64 zv_baseTermId;
     //qreal zv_
 
@@ -171,6 +180,8 @@ private:
     void zh_createTermsForWindow(const ZCalibrationWindow*);
     bool zh_windowHasTerms(const ZCalibrationWindow*, ZAbstractTerm::TermType) const;
     int zp_termIndex(const ZAbstractTerm*) const;
+    void zh_chopTailZeroesFromFreeMemberString();
+
 
     // STATIC
     // VARS

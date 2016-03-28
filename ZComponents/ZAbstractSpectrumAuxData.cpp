@@ -6,7 +6,7 @@ ZAbstractSpectrumAuxData::ZAbstractSpectrumAuxData(ZAbstractSpectrumAuxData::Dat
     zv_type = type;
 }
 //================================================
-ZAbstractSpectrumAuxData::DataType ZAbstractSpectrumAuxData::zp_type()
+ZAbstractSpectrumAuxData::DataType ZAbstractSpectrumAuxData::zp_type() const
 {
     return zv_type;
 }
