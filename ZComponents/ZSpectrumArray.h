@@ -40,6 +40,7 @@ public:
     QString zp_chemElementName(int index) const;
     qint64 zp_visibleChemElementId(int visibleIndex) const;
     qint64 zp_chemElementId(int index) const;
+    bool zp_containsChemElementId(qint64) const;
 
     bool zp_chemElementIsVisible(int index) const;
     bool zp_setChemElementVisible(int row, bool visible);
@@ -47,6 +48,8 @@ public:
 
     QString zp_chemConcentration(qint64 chemElementId,
                                  int spectrumIndex) const;
+    qreal zp_chemConcentrationValue(qint64 chemElementId,
+                               int spectrumIndex) const;
     bool zp_setChemConcentration(qint64 chemElementId,
                                  int spectrumIndex, const QString& concentration);
     bool zp_energyCalibration(qreal& K0, qreal& K1, qreal& K2, QString& energyUnit);

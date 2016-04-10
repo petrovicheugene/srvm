@@ -249,7 +249,7 @@ void ZTermNormalizer::zh_createConnections()
 bool ZTermNormalizer::zh_getWindowsValue(ZCalibrationWindow::WindowType type,
                                          const ZAbstractSpectrum* spectrum, qint64& value) const
 {
-    qint64 currentValue;
+    qreal currentValue;
     bool ok;
     value = 0;
     for(int w = 0; w < zv_calibration->zv_windowList.count(); w++)

@@ -344,7 +344,7 @@ bool ZCorrelationPlotterDataManager::zh_getTermToConcentrationData(QMap<qint64, 
             termValue = 0.0;
         }
 
-        concentration = spectrum->zp_concentration(chemElementId).toDouble(&ok);
+        concentration = spectrum->zp_concentrationString(chemElementId).toDouble(&ok);
         if(!ok)
         {
             isDataOk = false;
@@ -403,7 +403,7 @@ bool ZCorrelationPlotterDataManager::zh_getCalibrationToConcentrationData(QMap<q
             calibrationValue = 0.0;
         }
 
-        concentration = spectrum->zp_concentration(chemElementId).toDouble(&ok);
+        concentration = spectrum->zp_concentrationString(chemElementId).toDouble(&ok);
         if(!ok)
         {
             isDataOk = false;

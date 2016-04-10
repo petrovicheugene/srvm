@@ -15,6 +15,7 @@ class ZSpectrumArray;
 class ZAbstractTerm : public QObject
 {
     Q_OBJECT
+    friend  class ZCalibration;
 public:
     explicit ZAbstractTerm(ZCalibration*);
 
@@ -34,7 +35,7 @@ public:
 
     // FUNCS
     virtual bool zp_calcValue(const ZAbstractSpectrum*, qreal&) = 0;
-    virtual bool zp_calcTermVariablePart(const ZAbstractSpectrum*, qint64 &value) = 0; // w/o factor
+    virtual bool zp_calcTermVariablePart(const ZAbstractSpectrum*, qreal &value) = 0; // w/o factor
     virtual QString zp_termName() const;
     virtual ZAbstractTerm::TermType zp_termType() const;
     virtual bool zp_termBelongsToWindow(const ZCalibrationWindow*) const = 0;
@@ -86,6 +87,8 @@ protected:
     void zh_connectToNormalizer(ZTermNormalizer *);
     void zh_connectToCalibration(ZCalibration* calibration);
     void zh_chopTailZeroesFromTermFactorString();
+    qreal* zh_termFactorPointer();
+
     // STATIC
     // VARS
     static qint64 zv_lastTermId;

@@ -92,7 +92,7 @@ bool ZAbstractSpectrum::zp_removeConcentration(qint64 chemElementId)
     return false;
 }
 //==========================================================
-QString ZAbstractSpectrum::zp_concentration(qint64 chemElementId) const
+QString ZAbstractSpectrum::zp_concentrationString(qint64 chemElementId) const
 {
     if(!zv_concentrationMap.keys().contains(chemElementId))
     {
@@ -100,6 +100,26 @@ QString ZAbstractSpectrum::zp_concentration(qint64 chemElementId) const
     }
 
     return zv_concentrationMap.value(chemElementId);
+}
+//==========================================================
+qreal ZAbstractSpectrum::zp_concentrationValue(qint64 chemElementId) const
+{
+    QString concentrationString =  zp_concentrationString(chemElementId);
+    qreal concentration;
+    bool ok;
+    if(concentrationString.isEmpty())
+    {
+        concentration = 0;
+    }
+    else
+    {
+        concentration = concentrationString.toDouble(&ok);
+        if(!ok)
+        {
+            concentration = 0;
+        }
+    }
+    return concentration;
 }
 //==========================================================
 bool ZAbstractSpectrum::zp_setConcentration(qint64 chemElementId,
@@ -135,7 +155,7 @@ QString ZAbstractSpectrum::zp_path() const
     return zv_path;
 }
 //==========================================================
-bool ZAbstractSpectrum::zp_intensityInWindow(int startChannel, int lastChannel, qint64& intensity) const
+bool ZAbstractSpectrum::zp_intensityInWindow(int startChannel, int lastChannel, qreal& intensity) const
 {
     if(startChannel < 0)
     {
@@ -165,16 +185,16 @@ bool ZAbstractSpectrum::zp_intensityInWindow(int startChannel, int lastChannel, 
         qSwap(startChannel, lastChannel);
     }
 
-    intensity = 0;
+    intensity = 0.0;
     for(int c = startChannel; c <= lastChannel; c++)
     {
-        intensity += zv_spectrumData.value(c);
+        intensity += static_cast<qreal>(zv_spectrumData.value(c));
     }
 
     return true;
 }
 //==========================================================
-bool ZAbstractSpectrum::zp_intensityInWindow(const ZCalibrationWindow* window, qint64& intensity) const
+bool ZAbstractSpectrum::zp_intensityInWindow(const ZCalibrationWindow* window, qreal &intensity) const
 {
     if(!window)
     {

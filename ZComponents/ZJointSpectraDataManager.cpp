@@ -488,7 +488,8 @@ void ZJointSpectraDataManager::zh_onRepositoryCalibrationOperation(ZCalibrationR
         }
     }
     else if(type == ZCalibrationRepository::COT_CALIBRATION_EQUATION_TYPE_CHANGED ||
-            type == ZCalibrationRepository::COT_CALIBRATION_FREE_MEMBER_CHANGED
+            type == ZCalibrationRepository::COT_CALIBRATION_FREE_MEMBER_CHANGED ||
+            type == ZCalibrationRepository::COT_CALIBRATION_EQUATION_BASE_TERM_CHANGED
             )
     {
         if(!zh_getVisibleIndexesForOperation(first, last, visibleFirst, visibleLast))
@@ -500,10 +501,6 @@ void ZJointSpectraDataManager::zh_onRepositoryCalibrationOperation(ZCalibrationR
         for(int v = visibleFirst; v <= visibleLast; v++)
         {
             calibrationIndex = zh_convertVisibleIndexToCalibrationIndex(v);
-
-#ifdef DBG
-            qDebug() << "CALC CONC VIS INDEX" << v << "CALIBR INDEX" << calibrationIndex;
-#endif
             zh_calculateCalibrationConcentrationForCalibration(calibrationIndex);
             emit zg_currentOperation(OT_COLUMN_DATA_CHANGED, visibleFirst, visibleLast);
         }

@@ -109,7 +109,7 @@ QVariant ZCalibrationModel::data(const QModelIndex & index, int role) const
     {
         if(index.column() == 2)
         {
-            ZEquationSettingsData equationData = zv_calibrationRepository->zp_equationSettingsData(index.row());
+            ZEquationSettingsData equationData = zv_calibrationRepository->zp_equationDataForSettings(index.row());
             return QVariant::fromValue(equationData);
         }
 
@@ -190,7 +190,7 @@ bool	ZCalibrationModel::setData(const QModelIndex & index, const QVariant & valu
             }
 
             ZEquationSettingsData equationSetting = value.value<ZEquationSettingsData>();
-            return zv_calibrationRepository->zp_setEquationSettings(index.row(), equationSetting);
+            return zv_calibrationRepository->zp_setEquationDataFromSettings(index.row(), equationSetting);
         }
 
         if(index.column() == 3)

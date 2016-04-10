@@ -16,10 +16,11 @@
 //=========================================================
 const QString ZCalibration::simplePolynomEquationString(ZCalibration::zh_initPlynomialEquationString());
 const QString ZCalibration::fractionalEquationString(ZCalibration::zh_initFractionalEquationString1());
-
+bool ZCalibration::zv_useBaseTermInFractionalEquationByDefault = false;
 QList<QColor> ZCalibration::zv_colorList = ZCalibration::zp_createColorList();
 qint64 ZCalibration::zv_lastCalibrationId = 0;
 int ZCalibration::zv_lastColorIndex = 0;
+
 QMap<ZCalibration::EquationType, QString> ZCalibration::zv_eqationTypeStringMap =
         ZCalibration::zh_initEquationTypeStringMap();
 //=========================================================
@@ -127,6 +128,8 @@ ZCalibration::ZCalibration(const QString& name, QObject *parent) : QObject(paren
 {
     zv_visibility = false;
     zv_defaultWindowName = tr("Peak #");
+    zv_useBaseTermInFractionalEquation = zv_useBaseTermInFractionalEquationByDefault;
+
     QFileInfo fileInfo(name);
     if(!fileInfo.absoluteFilePath().isEmpty())
     {
@@ -253,46 +256,63 @@ bool ZCalibration::zp_calcConcentration(const ZAbstractSpectrum* const spectrum,
         return false;
     }
 
-    if(zv_equationType == ET_FRACTIONAL)
-    {
-        return true;
-    }
-
     // calc norma
     if(!zv_termNormalizer->zp_calcAndSetNormaValue(spectrum))
     {
         return false;
     }
 
-    // calc all terms
+    // calc polynom
     qreal value;
     for(int t = 0; t < zv_termList.count(); t++)
     {
+        // exclude base term if !zv_useBaseTermInFractionalEquation
+        if(zv_equationType == ET_FRACTIONAL
+                && !zv_useBaseTermInFractionalEquation
+                && zv_termList.at(t)->zp_termId() == zv_baseTermId)
+        {
+            continue;
+        }
+
+        // calc all terms
         if(!zv_termList.at(t)->zp_calcValue(spectrum, value))
         {
             return false;
         }
 
-        zv_termNormalizer->zp_normalizeValue(value);
+        // normalize terms (zv_termNormalizer defines nesessary)
+        if(!zv_termNormalizer->zp_normalizeValue(value))
+        {
+            return false;
+        }
         concentration += value;
     }
 
-    concentration += zv_freeMember;
+    concentration += zv_freeTerm;
+
+    if(zv_equationType == ET_FRACTIONAL)
+    {
+        // concentration goes to denominator. check out it
+        if(concentration == 0)
+        {
+            return false;
+        }
+
+        // calc nominator
+        if(!zp_calcBaseTermValue(spectrum, value))
+        {
+            return false;
+        }
+
+        concentration = value / concentration;
+    } // end ET_FRACTIONAL
+
     return true;
 }
 //=========================================================
-void ZCalibration::zp_createNewCalibrationWindow(int& windowNewIndex, int firstChannel, int lastChannel)
+void ZCalibration::zp_createNewCalibrationWindow(int& windowNewIndex, int firstChannel, int lastChannel, ZCalibrationWindow::WindowType windowType)
 {
     int maxWindowNumber = 1;
-
-//    int nextWindowIndex = zv_windowList.count();
-//    QString nextName = zv_defaultWindowName + QString::number(++nextWindowIndex);
-
-//    while(zh_isWindowExist(nextName))
-//    {
-//        nextName = zv_defaultWindowName + QString::number(++nextWindowIndex);
-//    }
-
     for(int i = 0; i < zv_windowList.count(); i++)
     {
         QString name = zv_windowList.at(i)->zp_windowName();
@@ -313,7 +333,7 @@ void ZCalibration::zp_createNewCalibrationWindow(int& windowNewIndex, int firstC
 
     windowNewIndex = zv_windowList.count();
     ZCalibrationWindow* calibrationWindow = new ZCalibrationWindow(nextName,
-                                                                   ZCalibrationWindow::WT_NOT_DEFINED,
+                                                                   windowType,
                                                                    firstChannel,
                                                                    lastChannel,
                                                                    this);
@@ -323,6 +343,10 @@ void ZCalibration::zp_createNewCalibrationWindow(int& windowNewIndex, int firstC
     zv_windowList.append(calibrationWindow);
     emit zg_windowOperation(WOT_END_INSERT_WINDOWS, windowNewIndex, windowNewIndex);
 
+    if(calibrationWindow->zp_windowType() == ZCalibrationWindow::WT_PEAK)
+    {
+        zh_createTermsForWindow(calibrationWindow);
+    }
     // zh_createTermsForWindow(calibrationWindow);
 }
 //=========================================================
@@ -445,7 +469,7 @@ bool ZCalibration::zh_windowHasTerms(const ZCalibrationWindow* window, ZAbstract
 //    zv_termNormalizer->zp_value(value);
 //}
 //=========================================================
-int ZCalibration::zp_termIndex(const ZAbstractTerm* term) const
+int ZCalibration::zh_termIndex(const ZAbstractTerm* term) const
 {
     if(!term)
     {
@@ -473,6 +497,16 @@ void ZCalibration::zh_chopTailZeroesFromFreeMemberString()
         }
         zv_freeMemberString.chop(1);
     }
+}
+//=========================================================
+qreal* ZCalibration::zh_termFactorPointer(int termIndex) const
+{
+    if(termIndex < 0 || termIndex >= zv_termList.count() )
+    {
+        return 0;
+    }
+
+    return zv_termList.value(termIndex)->zh_termFactorPointer();
 }
 //=========================================================
 bool ZCalibration::zp_termFactor(int termIndex, qreal& factor) const
@@ -523,6 +557,22 @@ bool ZCalibration::zp_setTermFactorString(int termIndex, const QString& factorSt
     return true;
 }
 //=========================================================
+bool ZCalibration::zp_setEquationFactorsAndFreeMember(QList<qreal> factorList, qreal freeTerm)
+{
+    if(factorList.count() != zv_termList.count())
+    {
+        return false;
+    }
+
+    for(int t = 0; t < zv_termList.count(); t++)
+    {
+        zv_termList.value(t)->zp_setTermFactor(factorList.value(t));
+    }
+
+    zv_freeTerm = freeTerm;
+    return true;
+}
+//=========================================================
 bool ZCalibration::zp_termVariablePart(int termIndex, const ZAbstractSpectrum* spectrum,  qreal& value) const
 {
     if(termIndex < 0 || termIndex >= zv_termList.count() || !spectrum)
@@ -530,16 +580,73 @@ bool ZCalibration::zp_termVariablePart(int termIndex, const ZAbstractSpectrum* s
         return false;
     }
 
-    qint64 termValue;
     value = 0.0;
-    bool res = zv_termList.at(termIndex)->zp_calcTermVariablePart(spectrum, termValue);
+    bool res = zv_termList.at(termIndex)->zp_calcTermVariablePart(spectrum, value);
     if(res)
     {
-        value = static_cast<qreal>(termValue);
         res = zv_termNormalizer->zp_normalizeValue(spectrum, value);
     }
 
     return res;
+}
+//=========================================================
+bool ZCalibration::zp_calcBaseTermValue(const ZAbstractSpectrum* spectrum, qreal& value) const
+{
+    value = 0.0;
+    if(zv_baseTermId < 0)
+    {
+        return false;
+    }
+
+    qreal baseTermValue = std::numeric_limits<double>::quiet_NaN();
+    qreal baseNormaValue = std::numeric_limits<double>::quiet_NaN();
+
+    for(int t = 0; t < zv_termList.count(); t++)
+    {
+        if(zv_termList.at(t)->zp_termId() == zv_baseTermId)
+        {
+            if(!zv_termList.at(t)->zp_calcTermVariablePart(spectrum, baseTermValue))
+            {
+                return false;
+            }
+            // baseTerm - ok
+            // if baseNorma has been found, break circle
+            if(zv_baseTermNormaId < 0 || !(baseNormaValue != baseNormaValue))
+            {
+                break;
+            }
+        }
+
+        // find norma if id >= 0 only
+        if(zv_baseTermNormaId >= 0 && zv_termList.at(t)->zp_termId() == zv_baseTermNormaId)
+        {
+            if(!zv_termList.at(t)->zp_calcTermVariablePart(spectrum, baseNormaValue))
+            {
+                return false;
+            }
+            // norma term - ok
+            // if base has been already found, break circle
+            if(!(baseTermValue != baseTermValue))
+            {
+                break;
+            }
+        }
+    }
+
+    // check values
+    if(baseTermValue != baseTermValue
+            || (zv_baseTermNormaId >= 0 && (baseNormaValue != baseNormaValue || baseNormaValue == 0)))
+    {
+        return false;
+    }
+
+    value = baseTermValue;
+    if(zv_baseTermNormaId >= 0)
+    {
+        value /= baseNormaValue;
+    }
+
+    return true;
 }
 //=========================================================
 ZTermNormalizer::NormaType ZCalibration::zp_normaType() const
@@ -579,19 +686,20 @@ bool ZCalibration::zp_setEquationType(ZCalibration::EquationType type)
 //=========================================================
 qreal ZCalibration::zp_equationFreeMember() const
 {
-    return zv_freeMember;
+    return zv_freeTerm;
 }
 //=========================================================
 bool ZCalibration::zp_setEquationFreeMember(qreal value)
 {
-    if(zv_freeMember == value)
+    if(zv_freeTerm == value)
     {
         return false;
     }
 
-    zv_freeMember = value;
+    zv_freeTerm = value;
     zv_freeMemberString = QString::number(value, 'f', 15);
     zh_chopTailZeroesFromFreeMemberString();
+    emit zg_freeTermChanged();
     return true;
 }
 //=========================================================
@@ -654,6 +762,52 @@ bool ZCalibration::zp_setBaseTermId(qint64 id)
     return true;
 }
 //=========================================================
+int ZCalibration::zp_baseTermIndex() const
+{
+    if(zv_baseTermId < 0)
+    {
+        return -1;
+    }
+
+    for(int t = 0; t < zv_termList.count(); t++)
+    {
+        if(zv_termList.at(t)->zp_termId() == zv_baseTermId)
+        {
+            return t;
+        }
+    }
+    return -1;
+}
+//=========================================================
+void ZCalibration::zp_createEquationDataForEquationRecalc(QMap<int, qreal*>& factorMap, qreal*& freeTermPtr)
+{
+    ZAbstractTerm::TermState termState;
+    for(int t = 0; t < zv_termList.count(); t++)
+    {
+        if(zv_equationType == ET_FRACTIONAL
+                && !zv_useBaseTermInFractionalEquation
+                && zv_termList.value(t)->zv_termId == zv_baseTermId )
+        {
+            continue;
+        }
+
+        termState = zv_termList.value(t)->zv_termState;
+        if(termState == ZAbstractTerm::TS_CONST_INCLUDED
+                || termState == ZAbstractTerm::TS_INCLUDED)
+        {
+            factorMap.insert(t, &zv_termList.value(t)->zv_termFactor);
+        }
+    }
+
+    freeTermPtr = &zv_freeTerm;
+}
+//=========================================================
+void ZCalibration::zh_notifyCalibrationRecalc() const
+{
+    emit zg_termOperation(TOT_TERM_FACTOR_CHANGED, 0, zv_termList.count() - 1);
+    emit zg_freeTermChanged();
+}
+//=========================================================
 void ZCalibration::zh_onTermNameChange() const
 {
     ZAbstractTerm* term = qobject_cast<ZAbstractTerm*>(sender());
@@ -662,7 +816,7 @@ void ZCalibration::zh_onTermNameChange() const
         return;
     }
 
-    int termIndex = zp_termIndex(term);
+    int termIndex = zh_termIndex(term);
 
     emit zg_termOperation(TOT_TERM_NAME_CHANGED, termIndex, termIndex);
 }
@@ -674,7 +828,7 @@ void ZCalibration::zh_onTermWindowMarginChange()
     {
         return;
     }
-    int termIndex = zp_termIndex(term);
+    int termIndex = zh_termIndex(term);
     emit zg_termOperation(TOT_TERM_WINDOW_MARGIN_CHANGED, termIndex, termIndex);
 }
 //=========================================================

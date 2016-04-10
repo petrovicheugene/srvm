@@ -185,13 +185,13 @@ ZCalibrationWindow::WindowType ZCalibrationWindow::zp_typeForName(const QString&
     return zv_typeNameMap.key(typeName);
 }
 //====================================================
-void ZCalibrationWindow::zp_calcWindowIntensity(const QObject *spectrumObject, qint64& intensityValue, bool useBuffer, bool* ok)
+void ZCalibrationWindow::zp_calcWindowIntensity(const QObject *spectrumObject, qreal& intensityValue, bool useBuffer, bool* ok)
 {
     const ZAbstractSpectrum* spectrum = qobject_cast<const ZAbstractSpectrum*>(spectrumObject);
 
     if(!spectrum)
     {
-        intensityValue = 0;
+        intensityValue = 0.0;
         if(ok)
         {
             *ok = false;
