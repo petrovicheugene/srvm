@@ -595,39 +595,6 @@ void ZTermCorrelationTableManager::zh_onCalibrationNormalizerChange(qint64 calib
 //=============================================================================
 void ZTermCorrelationTableManager::zh_recalcCalibrationFactors()
 {
-    //#ifdef DBG
-    //    qDebug() << "Calibration Recalc";
-
-    //#ifdef DBG
-    //    qDebug() << "Term cov";
-    //#endif
-
-    //    QMap<QPair<int, int>, qreal>::iterator it; // zv_termCovariationMap; //
-
-    //    for(it = zv_termCovariationMap.begin(); it != zv_termCovariationMap.end(); it++)
-    //    {
-    //#ifdef DBG
-    //        qDebug() << it.key().first << it.key().second << it.value();
-    //#endif
-    //    }
-
-    //#ifdef DBG
-    //    qDebug() << "Conc cov";
-    //#endif
-
-    //    QMap<int, qreal>::iterator itr;
-    //    // zv_concentrationCovariationMap;
-
-    //    for(itr = zv_concentrationCovariationMap.begin(); itr != zv_concentrationCovariationMap.end(); itr++)
-    //    {
-    //#ifdef DBG
-    //        qDebug() << itr.key() << itr.value();
-    //#endif
-    //    }
-
-
-    //#endif
-
     if(!zv_calibrationRepository || zv_currentCalibrationId < 0)
     {
         return;
@@ -635,6 +602,13 @@ void ZTermCorrelationTableManager::zh_recalcCalibrationFactors()
 
     //  check matrixes
     if(zv_freeTermCovariationList.count() != zp_rowCount())
+    {
+        // TODO Error report
+        return;
+    }
+
+    // check average free term
+    if(zv_averageEquationFreeTerm != zv_averageEquationFreeTerm)
     {
         // TODO Error report
         return;
@@ -682,6 +656,7 @@ void ZTermCorrelationTableManager::zh_recalcCalibrationFactors()
     QList<qreal> freeTermList;
     int row;
     int col;
+
     // passage through rows of covariance matrix
     for(int rowi = 0; rowi < factorCount; rowi++)
     {
@@ -691,7 +666,6 @@ void ZTermCorrelationTableManager::zh_recalcCalibrationFactors()
 #ifdef DBG
         qDebug() << row << *factorToIndexMap.value(row);
 #endif
-
 
         // passage through columns of covariance matrix
         for(int coli = 0; coli < factorCount; coli++)
@@ -713,6 +687,9 @@ void ZTermCorrelationTableManager::zh_recalcCalibrationFactors()
     // append free term column to solver
     solver.zp_appendFreeTermList(freeTermList);
 
+    // before solvation reset all termFactors of the calibration
+    calibration->zp_resetEquationTerms();
+
     if(!solver.zp_solve())
     {
         // TODO Error report ?? (solver has already reported ?)
@@ -722,24 +699,45 @@ void ZTermCorrelationTableManager::zh_recalcCalibrationFactors()
 #ifdef DBG
     qDebug() << "FACTORS AFTER";
 
-    QMap<int, qreal*>::iterator it;
-    for(it = factorToIndexMap.begin(); it != factorToIndexMap.end(); it++)
+    QMap<int, qreal*>::iterator itr;
+    for(itr = factorToIndexMap.begin(); itr != factorToIndexMap.end(); itr++)
     {
-        qDebug() << it.key() << *it.value();
+        qDebug() << itr.key() << *itr.value();
     }
 
 #endif
 
-    // equation free term calculation
-    int firstfactorIndex = factorIndexList.at(0);
-    qreal firstCovariationValue = zv_termCovariationMatrix.at(firstfactorIndex).at(firstfactorIndex);
-    if(firstCovariationValue == 0)
-    {
-        // TODO Error report
-        return;
-    }
+    //    int firstfactorIndex = factorIndexList.at(0);
+    //    qreal firstCovariationValue = zv_termCovariationMatrix.at(firstfactorIndex).at(firstfactorIndex);
+    //    if(firstCovariationValue == 0)
+    //    {
+    //        // TODO Error report
+    //        return;
+    //    }
 
-    *freeTerm = zv_freeTermCovariationList.at(firstfactorIndex) / firstCovariationValue;
+
+    //    zv_freeTermCovariationList.at(firstfactorIndex) / firstCovariationValue;
+
+    // Equation free term calculation
+    // first initialization of free term
+    *freeTerm = zv_averageEquationFreeTerm;
+    QMap<int, qreal*>::const_iterator it;
+    qreal averageTerm;
+    for(it = factorToIndexMap.begin(); it != factorToIndexMap.end(); it++)
+    {
+        averageTerm = zv_averageTermValueList.at(it.key());
+        if(averageTerm != averageTerm)
+        {
+            // one of averageTermValues is nan value. Free term cannot be calculated
+            // reset all factors
+            calibration->zp_resetEquationTerms();
+
+            // TODO error report
+            break;
+
+        }
+        *freeTerm -= (*it.value()) * averageTerm;
+    }
 
     // force signal emit
     zv_calibrationRepository->zh_notifyCalibrationRecalc(zv_currentCalibrationId);
@@ -987,7 +985,7 @@ void ZTermCorrelationTableManager::zh_calcConcentrationAndFreeTermDispersions()
 
             if(!fractionalDispersionError)
             {
-                 if(!zv_calibrationRepository->zp_calcBaseTermValue(zv_currentCalibrationId, spectrum, baseTermValue))
+                if(!zv_calibrationRepository->zp_calcBaseTermValue(zv_currentCalibrationId, spectrum, baseTermValue))
                 {
                     fractionalDispersionError = true;
                     zv_freeTermDispersionList.clear();
@@ -1033,7 +1031,7 @@ void ZTermCorrelationTableManager::zh_calcConcentrationAndFreeTermDispersions()
         }
         else
         {
-            zv_averageEquationFreeTerm = nan;
+            zv_averageEquationFreeTerm = std::numeric_limits<double>::quiet_NaN();
         }
     }
     else

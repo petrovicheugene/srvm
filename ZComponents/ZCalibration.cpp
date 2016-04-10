@@ -808,6 +808,18 @@ void ZCalibration::zh_notifyCalibrationRecalc() const
     emit zg_freeTermChanged();
 }
 //=========================================================
+void ZCalibration::zp_resetEquationTerms()
+{
+    for(int t = 0; t < zv_termList.count(); t++)
+    {
+        zv_termList[t]->zv_termFactor = 0.0;
+    }
+
+    zv_freeTerm = 0.0;
+    emit zg_termOperation(TOT_TERM_FACTOR_CHANGED, 0, zv_termList.count() - 1);
+    emit zg_freeTermChanged();
+}
+//=========================================================
 void ZCalibration::zh_onTermNameChange() const
 {
     ZAbstractTerm* term = qobject_cast<ZAbstractTerm*>(sender());

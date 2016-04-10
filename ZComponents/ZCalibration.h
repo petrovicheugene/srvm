@@ -130,6 +130,7 @@ public:
                                                 qreal *&freeTermPtr);
 
     void zh_notifyCalibrationRecalc() const;
+    void zp_resetEquationTerms();
 
     // STATIC
     // VARS
