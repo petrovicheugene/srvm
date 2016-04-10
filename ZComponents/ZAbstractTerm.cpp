@@ -99,6 +99,11 @@ qreal ZAbstractTerm::zp_termFactor() const
     return zv_termFactor;
 }
 //============================================================
+qreal* ZAbstractTerm::zh_termFactorPointer()
+{
+    return &zv_termFactor;
+}
+//============================================================
 QString ZAbstractTerm::zp_termFactorString() const
 {
     return zv_termFactorString;

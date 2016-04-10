@@ -14,7 +14,7 @@ RC_ICONS = "SDC1.ico"
 
 VER_MAJ=0
 VER_MIN=0
-VER_PAT=8
+VER_PAT=9
 VER_RELEASE=a
 
 EXE_BASE_NAME=SDCalibrator
@@ -66,7 +66,7 @@ INCLUDEPATH += ZPlotter \
     ZModelViews/ZWindowTypeComboBoxDelegate \
     ZModelViews/ZCustomCheckableVerticalHeaderView \
     ZModelViews/ZEquationDelegate \
-    ZModelViews/ZNormaDelegate
+    ZModelViews/ZNormaDelegate \
 
 SOURCES += main.cpp \
     MainWindow.cpp \
@@ -142,7 +142,8 @@ SOURCES += main.cpp \
     ZComponents/ZCorrelationPlotterDataManager.cpp \
     ZComponents/ZVisibilityPointF.cpp \
     ZPlotter/ZChartPointGraphicsItem.cpp \
-    ZPlotter/ZChartPointOptions.cpp
+    ZPlotter/ZChartPointOptions.cpp \
+    ZComponents/ZLSEGaussSolver.cpp
 
 
 HEADERS  += \
@@ -224,11 +225,14 @@ HEADERS  += \
     ZComponents/ZCorrelationPlotterDataManager.h \
     ZComponents/ZVisibilityPointF.h \
     ZPlotter/ZChartPointGraphicsItem.h \
-    ZPlotter/ZChartPointOptions.h
+    ZPlotter/ZChartPointOptions.h \
+    ZComponents/ZLSEGaussSolver.h
 
 
 RESOURCES += \
     resources.qrc
 
 DISTFILES += \
-    PLAN
+    PLAN \
+    SettingsToDo.txt \
+    myBacklog.txt

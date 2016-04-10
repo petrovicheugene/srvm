@@ -119,7 +119,7 @@ ZRawSpectrumArray ZSpectrumArray::zp_createRawSpectrumArray()
             {
                 continue;
             }
-            QString concentration = zv_spectrumList.value(s)->zp_concentration(chemElementId);
+            QString concentration = zv_spectrumList.value(s)->zp_concentrationString(chemElementId);
             rawSpectrum.concentrationMap.insert(chemElement, concentration);
         }
 
@@ -198,6 +198,11 @@ qint64 ZSpectrumArray::zp_chemElementId(int index) const
     return zv_chemElementList.zp_chemElementId(index);
 }
 //===============================================
+bool ZSpectrumArray::zp_containsChemElementId(qint64 chemElementId) const
+{
+    return zv_chemElementList.zp_containsElementId(chemElementId);
+}
+//===============================================
 bool ZSpectrumArray::zp_chemElementIsVisible(int index) const
 {
     return zv_chemElementList.zp_chemElementIsVisible(index);
@@ -222,7 +227,20 @@ QString ZSpectrumArray::zp_chemConcentration(qint64 chemElementId,
         return QString();
     }
 
-    return zv_spectrumList.at(spectrumIndex)->zp_concentration(chemElementId);
+    return zv_spectrumList.at(spectrumIndex)->zp_concentrationString(chemElementId);
+}
+//===============================================
+qreal ZSpectrumArray::zp_chemConcentrationValue(qint64 chemElementId,
+                                                int spectrumIndex) const
+{
+    bool ok;
+    qreal value = zp_chemConcentration(chemElementId, spectrumIndex).toDouble(&ok);
+    if(!ok)
+    {
+        return 0.0;
+    }
+
+    return value;
 }
 //===============================================
 bool ZSpectrumArray::zp_setChemConcentration(qint64 chemElementId,
@@ -235,10 +253,10 @@ bool ZSpectrumArray::zp_setChemConcentration(qint64 chemElementId,
     }
 
     bool res = zv_spectrumList.at(spectrumIndex)->zp_setConcentration(chemElementId, concentration);
-//    if(res)
-//    {
-//        zh_calcAverageChemConcentration(chemElementId);
-//    }
+    //    if(res)
+    //    {
+    //        zh_calcAverageChemConcentration(chemElementId);
+    //    }
 
     return res;
 }
@@ -335,7 +353,7 @@ bool ZSpectrumArray::zp_setSpectrumChecked(int index, bool checked)
     if(res)
     {
         emit zg_spectrumOperation(OT_CHANGED, index, index);
-//        zh_calcAverageChemConcentrations();
+        //        zh_calcAverageChemConcentrations();
     }
     return res;
 }
@@ -352,7 +370,7 @@ bool ZSpectrumArray::zp_removeSpectrum(int index)
     emit zg_spectrumOperation(OT_END_REMOVE_SPECTRA, index, index);
 
     zh_recalcArrayMaxParameters();
- //   zh_calcAverageChemConcentrations();
+    //   zh_calcAverageChemConcentrations();
 
     if(zv_spectrumList.count() < 1 )
     {
@@ -381,7 +399,7 @@ void ZSpectrumArray::zp_clearArray()
         emit zg_spectrumOperation(OT_END_REMOVE_SPECTRA,  0, lastSpectrumIndex);
 
         zh_recalcArrayMaxParameters();
-//        zh_calcAverageChemConcentrations();
+        //        zh_calcAverageChemConcentrations();
     }
 }
 //===============================================

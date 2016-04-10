@@ -15,7 +15,7 @@ bool ZCrossProductTerm::zp_calcValue(const ZAbstractSpectrum * spectrum, qreal& 
     return true;
 }
 //===================================================================
-bool ZCrossProductTerm::zp_calcTermVariablePart(const ZAbstractSpectrum* spectrum, qint64 &value)  // w/o factor
+bool ZCrossProductTerm::zp_calcTermVariablePart(const ZAbstractSpectrum* spectrum, qreal &value)  // w/o factor
 {
 
 }

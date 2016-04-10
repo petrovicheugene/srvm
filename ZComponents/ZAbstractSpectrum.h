@@ -42,12 +42,13 @@ public:
 
     void zp_insertConcentration(qint64 chemElementId, const QString& concentration);
     bool zp_removeConcentration(qint64 chemElementId);
-    QString zp_concentration(qint64 chemElementId) const;
+    QString zp_concentrationString(qint64 chemElementId) const;
+    qreal zp_concentrationValue(qint64 chemElementId) const;
     bool zp_setConcentration(qint64 chemElementId, const QString& concentration);
     QList<int> zp_spectrumData() const;
     virtual const ZAbstractSpectrumAuxData* zp_auxData() const = 0;
-    bool zp_intensityInWindow(int startChannel, int lastChannel, qint64& intensity) const;
-    bool zp_intensityInWindow(const ZCalibrationWindow*, qint64& intensity) const;
+    bool zp_intensityInWindow(int startChannel, int lastChannel, qreal& intensity) const;
+    bool zp_intensityInWindow(const ZCalibrationWindow*, qreal& intensity) const;
 
     int zp_channelCount() const;
     int zp_maxIntensity() const;

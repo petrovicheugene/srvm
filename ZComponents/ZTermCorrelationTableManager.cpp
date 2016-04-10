@@ -1,7 +1,8 @@
 //=============================================================================
 #include "ZTermCorrelationTableManager.h"
+#include "ZLSEGaussSolver.h"
 #include "globalVariables.h"
-
+#include <QPair>
 //=============================================================================
 ZTermCorrelationTableManager::ZTermCorrelationTableManager(QObject *parent) : QObject(parent)
 {
@@ -12,16 +13,17 @@ ZTermCorrelationTableManager::ZTermCorrelationTableManager(QObject *parent) : QO
     zv_columnCountCorrector = 0;
     zv_currentArrayId = -1;
     zv_currentArrayIndex = -1;
+    zv_averageEquationFreeTerm = std::numeric_limits<double>::quiet_NaN();
 
     zv_greenCell = QColor(Qt::green);
-    zv_orangeCell = QColor(Qt::darkYellow);
+    zv_orangeCell = QColor(Qt::yellow);
     zv_yellowCell = QColor(Qt::yellow);
     zv_redCell = QColor(Qt::red);
 
-    zv_greenCell.setAlpha(20);
-    zv_orangeCell.setAlpha(20);
-    zv_yellowCell.setAlpha(20);
-    zv_redCell.setAlpha(20);
+    zv_greenCell.setAlpha(30);
+    zv_orangeCell.setAlpha(30);
+    zv_yellowCell.setAlpha(30);
+    zv_redCell.setAlpha(30);
 
 }
 //=============================================================================
@@ -31,8 +33,8 @@ void ZTermCorrelationTableManager::zp_connectToCalibrationRepository(ZCalibratio
     zv_calibrationRepository = repository;
     connect(repository, &ZCalibrationRepository::zg_termOperation,
             this, &ZTermCorrelationTableManager::zh_onRepositoryTermOperation);
-//    connect(repository, &ZCalibrationRepository::zg_calibrationWindowOperation,
-//            this, &ZTermCorrelationTableManager::zh_onCalibrationWindowOperation);
+    //    connect(repository, &ZCalibrationRepository::zg_calibrationWindowOperation,
+    //            this, &ZTermCorrelationTableManager::zh_onCalibrationWindowOperation);
 
     connect(repository, &ZCalibrationRepository::zg_currentCalibrationChanged,
             this, &ZTermCorrelationTableManager::zh_currentCalibrationChanged);
@@ -40,6 +42,9 @@ void ZTermCorrelationTableManager::zp_connectToCalibrationRepository(ZCalibratio
             this, &ZTermCorrelationTableManager::zh_onCalibrationRepositoryOperation);
     connect(zv_calibrationRepository, &ZCalibrationRepository::zg_normalizerChanged,
             this, &ZTermCorrelationTableManager::zh_onCalibrationNormalizerChange);
+
+    connect(zv_calibrationRepository, &ZCalibrationRepository::zg_invokeCalibrationRecalc,
+            this, &ZTermCorrelationTableManager::zh_recalcCalibrationFactors);
 
     emit zg_currentOperation(TOT_END_RESET, -1, -1);
 
@@ -103,34 +108,35 @@ QVariant ZTermCorrelationTableManager::zp_data(QModelIndex index) const
     else if(index.column() == 1)
     {
 
-        if(index.row() >= zv_chemElementCorrelationList.count())
+        if(index.row() >= zv_concentrationCorrelationList.count())
         {
             return QVariant();
         }
 
-        return QVariant(zv_chemElementCorrelationList.at(index.row()));
+        return QVariant(zv_concentrationCorrelationList.at(index.row()));
     }
     else if(index.column() >= zv_firstNonTermColumnCount)
     {
-        int termRow = index.row();
-        int termColumn = index.column() - zv_firstNonTermColumnCount;
+        // col index conversion
+        int col = index.column() - zv_firstNonTermColumnCount;
+        int row = index.row();
 
-        if(termColumn == termRow)
+        if(col == row)
         {
             return QVariant();
         }
-        else if(termColumn < termRow)
+
+        if(!zh_convertColRowForInterCorrelationMatrix(row, col))
         {
-            return QVariant(zv_termIntercorrelationMap.value(QPair<int, int>(termColumn, termRow)));
+            return QVariant(tr("Error"));
         }
-        else if(termColumn > termRow)
-        {
-            return QVariant(zv_termIntercorrelationMap.value(QPair<int, int>(termRow, termColumn)));
-        }
+
+        return QVariant(zv_termIntercorrelationMatrix.at(row).at(col));// value(QPair<int, int>(termColumn, termRow)));
     }
 
     return QVariant();
 }
+
 //=============================================================================
 bool ZTermCorrelationTableManager::zp_setData(QModelIndex index, QVariant vFactor)
 {
@@ -157,7 +163,7 @@ QVariant ZTermCorrelationTableManager::zp_cellColor(QModelIndex index) const
     // chem Correlations
     if( index.column() == 1)
     {
-        correlationValue = qAbs(zv_chemElementCorrelationList.value(index.row(), QString()).toDouble(&ok));
+        correlationValue = qAbs(zv_concentrationCorrelationList.value(index.row(), QString()).toDouble(&ok));
         if(!ok)
         {
             return QVariant();
@@ -174,23 +180,14 @@ QVariant ZTermCorrelationTableManager::zp_cellColor(QModelIndex index) const
     }
     else if(index.column() >=  zv_firstNonTermColumnCount)
     {
-        // Intercorrelations
-        int termRow = index.row();
-        int termColumn = index.column() - zv_firstNonTermColumnCount;
+        QVariant vData = zp_data(index);
 
-        if(termColumn == termRow)
+        if(!vData.isValid() || vData.isNull() || !vData.canConvert<double>())
         {
             return QVariant();
         }
 
-        if(termColumn < termRow)
-        {
-            correlationValue = qAbs(zv_termIntercorrelationMap.value(QPair<int, int>(termColumn, termRow), QString()).toDouble(&ok));
-        }
-        else if(termColumn > termRow)
-        {
-            correlationValue = qAbs(zv_termIntercorrelationMap.value(QPair<int, int>(termRow, termColumn), QString()).toDouble(&ok));
-        }
+        correlationValue = qAbs(vData.toDouble(&ok));
 
         if(!ok)
         {
@@ -323,7 +320,7 @@ void ZTermCorrelationTableManager::zh_currentSpectrumArrayChanged(qint64 current
 
     zv_currentArrayIndex = currentArrayIndex;
     zv_currentArrayId = currentArrayId;
-    zh_calcCorrelations();
+    zh_startCalculationCorrelationsAndCovariations();
     emit zg_currentOperation(TOT_DATA_CHANGED, 0, zp_rowCount() - 1);
 }
 //==================================================================
@@ -361,12 +358,12 @@ void ZTermCorrelationTableManager::zh_onRepositoryChemElementOperation(ZSpectrum
     }
     else if(type == ZSpectrumArrayRepository::CEOT_END_INSERT_CHEM_ELEMENT)
     {
-        zh_calcCorrelations();
+        zh_startCalculationCorrelationsAndCovariations();
         emit zg_currentOperation(TOT_DATA_CHANGED, 0, zp_rowCount() - 1);
     }
     else if(type == ZSpectrumArrayRepository::CEOT_REMOVE_CHEM_ELEMENT)
     {
-        zv_chemElementCorrelationList.clear();
+        zv_concentrationCorrelationList.clear();
         emit zg_currentOperation(TOT_DATA_CHANGED, 0, zp_rowCount() - 1);
     }
     else if(type == ZSpectrumArrayRepository::CEOT_END_REMOVE_CHEM_ELEMENT)
@@ -376,7 +373,7 @@ void ZTermCorrelationTableManager::zh_onRepositoryChemElementOperation(ZSpectrum
     }
     else if(type == ZSpectrumArrayRepository::CEOT_CHEM_ELEMENT_CHANGED)
     {
-        zh_calcCorrelations();
+        zh_startCalculationCorrelationsAndCovariations();
         emit zg_currentOperation(TOT_DATA_CHANGED, 0, zp_rowCount() - 1);
         //        emit zg_currentOperation(OT_COLUMN_HEADER_CHANGED, visibleFirst, visibleLast);
     }
@@ -416,7 +413,7 @@ void ZTermCorrelationTableManager::zh_currentCalibrationChanged(qreal calibratio
     emit zg_currentOperation(TOT_BEGIN_RESET, -1, -1);
 
     zv_currentCalibrationId = calibrationId;
-    zh_calcCorrelations();
+    zh_startCalculationCorrelationsAndCovariations();
     emit zg_currentOperation(TOT_END_RESET, -1, -1);
 }
 //=============================================================================
@@ -454,7 +451,7 @@ void ZTermCorrelationTableManager::zh_onRepositoryTermOperation(ZCalibrationRepo
         zv_columnCountCorrector = 0;
         emit zg_currentOperation(TOT_END_INSERT_COLUMN, first + zv_firstNonTermColumnCount, last + zv_firstNonTermColumnCount);
 
-        zh_calcCorrelations();
+        zh_startCalculationCorrelationsAndCovariations();
         emit zg_currentOperation(TOT_DATA_CHANGED, 0, zp_rowCount() - 1);
     }
     else if(type == ZCalibrationRepository::TOT_BEGIN_REMOVE_TERM)
@@ -468,7 +465,7 @@ void ZTermCorrelationTableManager::zh_onRepositoryTermOperation(ZCalibrationRepo
         emit zg_currentOperation(TOT_BEGIN_REMOVE_COLUMN, first + zv_firstNonTermColumnCount, last + zv_firstNonTermColumnCount);
         zv_columnCountCorrector = 0;
         emit zg_currentOperation(TOT_END_REMOVE_COLUMN, first + zv_firstNonTermColumnCount, last + zv_firstNonTermColumnCount);
-        zh_calcCorrelations();
+        zh_startCalculationCorrelationsAndCovariations();
         emit zg_currentOperation(TOT_DATA_CHANGED, 0, zp_rowCount() - 1);
     }
     else if(type == ZCalibrationRepository::TOT_TERM_NAME_CHANGED)
@@ -482,7 +479,7 @@ void ZTermCorrelationTableManager::zh_onRepositoryTermOperation(ZCalibrationRepo
     }
     else if(type == ZCalibrationRepository::TOT_TERM_WINDOW_MARGIN_CHANGED)
     {
-        zh_calcCorrelations();
+        zh_startCalculationCorrelationsAndCovariations();
         emit zg_currentOperation(TOT_DATA_CHANGED, 0, zp_rowCount() - 1);
     }
 }
@@ -501,45 +498,52 @@ void ZTermCorrelationTableManager::zh_onCalibrationRepositoryOperation(ZCalibrat
         {
             if(type == ZCalibrationRepository::COT_BEGIN_RESET)
             {
-                zv_chemElementCorrelationList.clear();
+                zv_concentrationCorrelationList.clear();
                 emit zg_currentOperation(TOT_DATA_CHANGED, 0, zp_rowCount() - 1);
             }
             else if(type == ZCalibrationRepository::COT_END_RESET)
             {
-                zh_calcCorrelations();
+                zh_startCalculationCorrelationsAndCovariations();
                 emit zg_currentOperation(TOT_DATA_CHANGED, 0, zp_rowCount() - 1);
             }
             else if(type == ZCalibrationRepository::COT_INSERT_CALIBRATIONS)
             {
-                zv_chemElementCorrelationList.clear();
+                zv_concentrationCorrelationList.clear();
                 emit zg_currentOperation(TOT_DATA_CHANGED, 0, zp_rowCount() - 1);
             }
             else if(type == ZCalibrationRepository::COT_END_INSERT_CALIBRATIONS)
             {
-                zh_calcCorrelations();
+                zh_startCalculationCorrelationsAndCovariations();
                 emit zg_currentOperation(TOT_DATA_CHANGED, 0, zp_rowCount() - 1);
             }
             else if(type == ZCalibrationRepository::COT_REMOVE_CALIBRATIONS)
             {
-                zv_chemElementCorrelationList.clear();
+                zv_concentrationCorrelationList.clear();
                 emit zg_currentOperation(TOT_DATA_CHANGED, 0, zp_rowCount() - 1);
             }
             else if(type == ZCalibrationRepository::COT_END_REMOVE_CALIBRATIONS)
             {
-                zh_calcCorrelations();
+                zh_startCalculationCorrelationsAndCovariations();
                 emit zg_currentOperation(TOT_DATA_CHANGED, 0, zp_rowCount() - 1);
             }
             else if(type == ZCalibrationRepository::COT_CALIBRATION_NAME_CHANGED)
             {
-                zh_calcCorrelations();
+                zh_startCalculationCorrelationsAndCovariations();
                 emit zg_currentOperation(TOT_DATA_CHANGED, 0, zp_rowCount() - 1);
             }
             else if(type == ZCalibrationRepository::COT_CALIBRATION_CHEM_ELEMENT_CHANGED)
             {
-                zv_chemElementCorrelationList.clear();
-                zh_calcCorrelations();
+                zh_startCalculationCorrelationsAndCovariations();
                 emit zg_currentOperation(TOT_HORIZONTAL_HEADER_CHANGED, 0, 0);
                 emit zg_currentOperation(TOT_DATA_CHANGED, 0, zp_rowCount() - 1);
+            }
+            else if(type == ZCalibrationRepository::COT_CALIBRATION_EQUATION_TYPE_CHANGED)
+            {
+                zh_startCalculationCorrelationsAndCovariations();
+            }
+            else if(type == ZCalibrationRepository::COT_CALIBRATION_EQUATION_BASE_TERM_CHANGED)
+            {
+                zh_startCalculationCorrelationsAndCovariations();
             }
         }
     }
@@ -559,7 +563,7 @@ void ZTermCorrelationTableManager::zh_onSpectrumOperation(ZSpectrumArrayReposito
     }
     else if(type == ZSpectrumArrayRepository::SOT_END_INSERT_SPECTRA)
     {
-        zh_calcCorrelations();
+        zh_startCalculationCorrelationsAndCovariations();
         emit zg_currentOperation(TOT_DATA_CHANGED, 0, zp_rowCount() -1);
     }
     else if(type == ZSpectrumArrayRepository::SOT_BEGIN_REMOVE_SPECTRA)
@@ -568,12 +572,12 @@ void ZTermCorrelationTableManager::zh_onSpectrumOperation(ZSpectrumArrayReposito
     }
     else if(type == ZSpectrumArrayRepository::SOT_END_REMOVE_SPECTRA)
     {
-        zh_calcCorrelations();
+        zh_startCalculationCorrelationsAndCovariations();
         emit zg_currentOperation(TOT_DATA_CHANGED, 0, zp_rowCount() -1);
     }
     else if(type == ZSpectrumArrayRepository::SOT_CHECKED_CHANGED)
     {
-        zh_calcCorrelations();
+        zh_startCalculationCorrelationsAndCovariations();
         emit zg_currentOperation(TOT_DATA_CHANGED, 0, zp_rowCount() -1);
     }
 }
@@ -585,363 +589,596 @@ void ZTermCorrelationTableManager::zh_onCalibrationNormalizerChange(qint64 calib
         return;
     }
 
-    zh_calcCorrelations();
+    zh_startCalculationCorrelationsAndCovariations();
     emit zg_currentOperation(TOT_DATA_CHANGED, 0, zp_rowCount() -1);
 }
 //=============================================================================
-//bool ZTermCorrelationTableManager::zh_calcChemElementCorrelation(int termIndex, qreal& correlationValue) const
-//{
-//    if(!zv_calibrationRepository || !zv_spectrumArrayRepository || zv_currentCalibrationId < 0 || zv_currentArrayId < 0)
-//    {
-//        return false;
-//    }
-
-//    QString calibrationChemElement = zv_calibrationRepository->zp_chemElementForCalibrationId(zv_currentCalibrationId);
-//    qint64 currentCalibrationChemId = zv_spectrumArrayRepository->zp_chemElementIdForName(zv_currentArrayId, calibrationChemElement);
-
-//    // TODO zp_averageChemConcentration
-//    qreal averageChemConcentration;
-//    qreal termAverage;
-
-//    bool res = zv_spectrumArrayRepository->zp_averageChemConcentrationForChemElementId(zv_currentArrayId,
-//                                                                                       currentCalibrationChemId, averageChemConcentration);
-//    res = res && zv_calibrationRepository->zp_termAverageValue(zv_currentCalibrationId, termIndex, termAverage);
-
-//    if(!res)
-//    {
-//        return false;
-//    }
-
-//    QList<QPair<qint64, qreal> > termValueAndChemConcentrationList;
-//    zh_createTermValueAndChemConcentrationList(termIndex,
-//                                               currentCalibrationChemId,
-//                                               termValueAndChemConcentrationList);
-
-//    if(termValueAndChemConcentrationList.isEmpty() )
-//    {
-//        return false;
-//    }
-
-//    qreal numerator = 0;
-//    qreal denominator1 = 0;
-//    qreal denominator2 = 0;
-
-//    qreal currentTermDelta = 0;
-//    qreal currentConcDelta = 0;
-
-//    for(int i = 0; i < termValueAndChemConcentrationList.count(); i++)
-//    {
-//        currentTermDelta = (termValueAndChemConcentrationList.at(i).first - termAverage);
-//        currentConcDelta = (termValueAndChemConcentrationList.at(i).second - averageChemConcentration);
-
-//        numerator += currentTermDelta * currentConcDelta;
-//        denominator1 += pow(currentTermDelta,2);
-//        denominator2 += pow(currentConcDelta,2);
-//    }
-
-//    if(numerator == 0)
-//    {
-//        correlationValue = 0;
-//        return true;
-//    }
-
-//    qreal denominator = sqrt(denominator1) * sqrt(denominator2);
-//    if(denominator == 0)
-//    {
-//        return false;
-//    }
-
-//    correlationValue = numerator / denominator;
-//    return true;
-//}
-////=============================================================================
-//void ZTermCorrelationTableManager::zh_createTermValueAndChemConcentrationList(int termIndex,
-//                                                                              qint64 chemElementId,
-//                                                                              QList<QPair<qint64, qreal> >& termAndConcentrationList) const
-//{
-//    termAndConcentrationList.clear();
-//    const ZAbstractSpectrum* spectrum;
-//    qint64 termValue;
-//    QPair<qint64, qreal>  valuePair;
-//    bool ok;
-//    qreal concentrationValue;
-//    for(int i = 0; i < zv_spectrumArrayRepository->zp_spectrumCount(zv_currentArrayId); i++)
-//    {
-//        spectrum = zv_spectrumArrayRepository->zp_spectrum(zv_currentArrayId, i);
-//        if(!spectrum)
-//        {
-//            continue;
-//        }
-
-//        if(!spectrum->zp_isSpectrumChecked())
-//        {
-//            continue;
-//        }
-
-//        ok = zv_calibrationRepository->zp_termVariablePart(zv_currentCalibrationId, termIndex, spectrum, termValue);
-//        if(!ok)
-//        {
-//            termValue = 0;
-//        }
-//        valuePair.first = termValue;
-//        concentrationValue = spectrum->zp_concentration(chemElementId).toDouble(&ok);
-//        if(!ok)
-//        {
-//            concentrationValue = 0;
-//        }
-//        valuePair.second = concentrationValue;
-//        termAndConcentrationList.append(valuePair);
-//    }
-//}
-//=============================================================================
-void ZTermCorrelationTableManager::zh_calcCorrelations()
+void ZTermCorrelationTableManager::zh_recalcCalibrationFactors()
 {
-    zv_chemElementCorrelationList.clear();
-    zv_termIntercorrelationMap.clear();
-
-    if(!zv_spectrumArrayRepository || zv_currentArrayId < 0 || !zv_calibrationRepository)
+    if(!zv_calibrationRepository || zv_currentCalibrationId < 0)
     {
         return;
     }
 
-    // Collect data from repositories
-    // current conc chem element id
-    qint64 chemElementId = -1;
-    if(zv_currentArrayId >= 0 )
+    //  check matrixes
+    if(zv_freeTermCovariationList.count() != zp_rowCount())
     {
-        QString calibrationChemElementString = zv_calibrationRepository->zp_chemElementForCalibrationId(zv_currentCalibrationId);
-        if(!calibrationChemElementString.isEmpty())
-        {
-            chemElementId = zv_spectrumArrayRepository->zp_chemElementIdForName(zv_currentArrayIndex, calibrationChemElementString);
-        }
+        // TODO Error report
+        return;
     }
 
-    QList< QPair<qreal, QList<qreal> > > chemConcentrationAndTermValueList;
+    // check average free term
+    if(zv_averageEquationFreeTerm != zv_averageEquationFreeTerm)
+    {
+        // TODO Error report
+        return;
+    }
+
+    if(zv_termCovariationMatrix.count() != zp_rowCount())
+    {
+        // TODO Error report
+        return;
+    }
+    // matrixes - ok
+
+    // get calibration that will be recalced
+    ZCalibration* calibration = zv_calibrationRepository->zh_calibrationForId(zv_currentCalibrationId);
+    if(!calibration)
+    {
+        // TODO Error message
+        return;
+    }
+
+    // pointers to factors and free term
+    QMap<int, qreal*> factorToIndexMap;
+    qreal* freeTerm;
+    calibration->zp_createEquationDataForEquationRecalc(factorToIndexMap, freeTerm);
+
+    if(factorToIndexMap.isEmpty())
+    {
+        // TODO Error msg
+        return;
+    }
+
+    ZLSEGaussSolver solver;
+    connect(&solver, &ZLSEGaussSolver::zg_message,
+            this, &ZTermCorrelationTableManager::zg_message);
+
+    // create cov column for each factor
+    QList<int> factorIndexList = factorToIndexMap.keys();
+    int factorCount = factorIndexList.count();
+
+#ifdef DBG
+    qDebug() << "FACTORS BEFORE";
+#endif
+    // column list init
+    QList<qreal> columnList;
+    QList<qreal> freeTermList;
+    int row;
+    int col;
+
+    // passage through rows of covariance matrix
+    for(int rowi = 0; rowi < factorCount; rowi++)
+    {
+        columnList.clear();
+        row = factorIndexList.at(rowi);
+
+#ifdef DBG
+        qDebug() << row << *factorToIndexMap.value(row);
+#endif
+
+        // passage through columns of covariance matrix
+        for(int coli = 0; coli < factorCount; coli++)
+        {
+            col = factorIndexList.at(coli);
+            if(!zh_convertColRowForCovariationMatrix(row, col))
+            {
+                // TODO error report
+                return;
+            }
+            columnList.append(zv_termCovariationMatrix.at(row).at(col));
+        }
+        // append column to solver
+        solver.zp_appendTermColumn(factorToIndexMap.value(rowi), columnList);
+        // free term list formation
+        freeTermList.append(zv_freeTermCovariationList.at(rowi));
+    }
+
+    // append free term column to solver
+    solver.zp_appendFreeTermList(freeTermList);
+
+    // before solvation reset all termFactors of the calibration
+    calibration->zp_resetEquationTerms();
+
+    if(!solver.zp_solve())
+    {
+        // TODO Error report ?? (solver has already reported ?)
+        return;
+    }
+
+#ifdef DBG
+    qDebug() << "FACTORS AFTER";
+
+    QMap<int, qreal*>::iterator itr;
+    for(itr = factorToIndexMap.begin(); itr != factorToIndexMap.end(); itr++)
+    {
+        qDebug() << itr.key() << *itr.value();
+    }
+
+#endif
+
+    //    int firstfactorIndex = factorIndexList.at(0);
+    //    qreal firstCovariationValue = zv_termCovariationMatrix.at(firstfactorIndex).at(firstfactorIndex);
+    //    if(firstCovariationValue == 0)
+    //    {
+    //        // TODO Error report
+    //        return;
+    //    }
+
+
+    //    zv_freeTermCovariationList.at(firstfactorIndex) / firstCovariationValue;
+
+    // Equation free term calculation
+    // first initialization of free term
+    *freeTerm = zv_averageEquationFreeTerm;
+    QMap<int, qreal*>::const_iterator it;
+    qreal averageTerm;
+    for(it = factorToIndexMap.begin(); it != factorToIndexMap.end(); it++)
+    {
+        averageTerm = zv_averageTermValueList.at(it.key());
+        if(averageTerm != averageTerm)
+        {
+            // one of averageTermValues is nan value. Free term cannot be calculated
+            // reset all factors
+            calibration->zp_resetEquationTerms();
+
+            // TODO error report
+            break;
+
+        }
+        *freeTerm -= (*it.value()) * averageTerm;
+    }
+
+    // force signal emit
+    zv_calibrationRepository->zh_notifyCalibrationRecalc(zv_currentCalibrationId);
+}
+//=============================================================================
+bool ZTermCorrelationTableManager::zh_convertColRowForInterCorrelationMatrix(int& row, int& col) const
+{
+    if(col < row)
+    {
+        qSwap(col, row);
+    }
+
+    col -= row;
+
+    if(row >= zv_termIntercorrelationMatrix.count())
+    {
+        return false;
+    }
+    if(col >= zv_termIntercorrelationMatrix.at(row).count())
+    {
+        return false;
+    }
+
+    return true;
+}
+//=============================================================================
+bool ZTermCorrelationTableManager::zh_convertColRowForCovariationMatrix(int& row, int& col) const
+{
+    if(col < row)
+    {
+        qSwap(col, row);
+    }
+
+    col -= row;
+
+    if(row >= zv_termCovariationMatrix.count())
+    {
+        return false;
+    }
+    if(col >= zv_termCovariationMatrix.at(row).count())
+    {
+        return false;
+    }
+
+    return true;
+}
+//=============================================================================
+void ZTermCorrelationTableManager::zh_startCalculationCorrelationsAndCovariations()
+{
+
+    if(!zv_spectrumArrayRepository || zv_currentArrayId < 0 || !zv_calibrationRepository)
+    {
+        // clear average values
+        zv_averageEquationFreeTerm = 0.0;
+        zv_averageTermValueList.clear();
+
+        // clear dispersion data
+        zv_termDispersionMatrix.clear();
+        zv_concentrationDispersionList.clear();
+        zv_freeTermDispersionList.clear();
+
+        // clear correlation and covariation data
+        zv_termIntercorrelationMatrix.clear();
+        zv_concentrationCorrelationList.clear();
+        zv_termCovariationMatrix.clear();
+        zv_freeTermCovariationList.clear();
+        return;
+    }
+
+    // dispersions
+    zh_calcTermDispersions();
+    zh_calcConcentrationAndFreeTermDispersions();
+
+    if(zv_termDispersionMatrix.isEmpty())
+    {
+        return;
+    }
+    // correlations
+    zh_calcIntercorrelationsAndCovariations();
+
+    if(zv_concentrationDispersionList.isEmpty())
+    {
+        return;
+    }
+    zh_calcConcentrationCorrelationsAndCavariations();
+
+    //#ifdef DBG
+    //    qDebug() <<  "TERM COVARIATION CHECK";
+
+    //    for(int t = 0; t < zv_termCovariationMatrix.count(); t++)
+    //    {
+    //        QString str = QString::number(t) + ":";
+    //        for(int i = 0; i < zv_termCovariationMatrix.at(t).count(); i++)
+    //        {
+    //            str += " " + QString::number(zv_termCovariationMatrix.at(t).at(i));
+    //        }
+    //        qDebug() <<  str;
+
+    //    }
+
+    //    qDebug() <<  "FREE TERM COVARIATION CHECK";
+
+    //    for(int t = 0; t < zv_freeTermCovariationList.count(); t++)
+    //    {
+    //        qDebug() <<  QString::number(zv_freeTermCovariationList.at(t));
+    //    }
+
+    //#endif
+
+}
+//=============================================================================
+void ZTermCorrelationTableManager::zh_calcTermDispersions()
+{
+    zv_termDispersionMatrix.clear();
+
+    // local vars for circles
+    qreal averageTerm;
+    qreal termValue;
     const ZAbstractSpectrum* spectrum;
-    QString concentrationString;
+
+    // term circle
+    for(int t = 0; t < zp_rowCount(); t++)
+    {
+        // add dispersion list for the current term
+        zv_termDispersionMatrix.append(QList<qreal>());
+
+        // vars init
+        averageTerm = 0.0;
+        termValue = 0.0;
+        // spectrum circle
+        for(int s = 0; s < zv_spectrumArrayRepository->zp_spectrumCount(zv_currentArrayIndex); s++)
+        {
+            // get spectrum
+            spectrum = zv_spectrumArrayRepository->zp_spectrum(zv_currentArrayIndex, s);
+            if(spectrum == 0 || !spectrum->zp_isSpectrumChecked())
+            {
+                continue;
+            }
+
+            // get term value from spectrum
+            if(!zv_calibrationRepository->zp_termVariablePart(zv_currentCalibrationId, t, spectrum, termValue))
+            {
+                termValue = std::numeric_limits<double>::quiet_NaN();
+                // invalidTermRows << t;
+            }
+
+            // term value nan check
+            if(termValue != termValue)
+            {
+                // nan detected
+                // make dispersion list empty and average term nan
+                averageTerm = std::numeric_limits<double>::quiet_NaN();
+                zv_termDispersionMatrix.last().clear();
+                // get out of spectrum circle
+                break;
+            }
+            zv_termDispersionMatrix.last().append(termValue);
+            averageTerm += termValue;
+        }
+
+        // average term nan check
+        if(averageTerm != averageTerm)
+        {
+            // add average nan val to average list
+            zv_averageTermValueList.append(averageTerm);
+            // jump to the next term
+            continue;
+        }
+
+        if(zv_termDispersionMatrix.last().isEmpty())
+        {
+            // jump to the next term
+            continue;
+        }
+
+        // average calc
+        int checkedSpectrumNumber = zv_termDispersionMatrix.last().count();
+        averageTerm /= checkedSpectrumNumber;
+        // add average  val to average list
+        zv_averageTermValueList.append(averageTerm);
+
+        // dispersion calc
+        for(int i = 0; i < checkedSpectrumNumber; i++)
+        {
+            zv_termDispersionMatrix.last()[i] = zv_termDispersionMatrix.last().at(i) - averageTerm;
+        }
+    }
+}
+//=============================================================================
+void ZTermCorrelationTableManager::zh_calcConcentrationAndFreeTermDispersions()
+{
+    zv_concentrationDispersionList.clear();
+    zv_freeTermDispersionList.clear();
+
+    // current conc chem element id
+    QString calibrationChemElementString = zv_calibrationRepository->zp_chemElementForCalibrationId(zv_currentCalibrationId);
+    if(calibrationChemElementString.isEmpty())
+    {
+        return;
+    }
+
+    qint64 chemElementId = zv_spectrumArrayRepository->zp_chemElementIdForName(zv_currentArrayIndex, calibrationChemElementString);
+    if(chemElementId < 0)
+    {
+        return;
+    }
+
+    // equation type
+    ZCalibration::EquationType equationType;
+    zv_calibrationRepository->zp_equationTypeForCalibrationId(zv_currentCalibrationId, equationType);
+
+    // local vars for circles
+    qreal averageConcentration = 0.0;
     qreal concentration = 0.0;
-    bool ok;
+    const ZAbstractSpectrum* spectrum;
 
-    qreal averageChemElementValue = 0.0;
-    bool averageChemElementOk = true;
-    QSet<int> invalidTermRows;
+    qreal equationFreeTerm = 0.0;
+    qreal baseTermValue = 0.0;
+    qreal averageFractionalFreeTerm = 0.0;
+    bool fractionalDispersionError = false;
 
+    // spectrum circle
     for(int s = 0; s < zv_spectrumArrayRepository->zp_spectrumCount(zv_currentArrayIndex); s++)
     {
         // get spectrum
         spectrum = zv_spectrumArrayRepository->zp_spectrum(zv_currentArrayIndex, s);
-        if(!spectrum->zp_isSpectrumChecked())
+        if(spectrum == 0 || !spectrum->zp_isSpectrumChecked())
         {
             continue;
-        }
-
-        // get term values for the spectrum
-        QList<qreal> termValueList;
-        qreal termValue;
-
-        for(int t = 0; t < zp_rowCount(); t++)
-        {
-            if(!zv_calibrationRepository->zp_termVariablePart(zv_currentCalibrationId, t, spectrum, termValue))
-            {
-                termValue = -1;
-                invalidTermRows << t;
-            }
-            termValueList.append(termValue);
         }
 
         // concentration for chem element
-        if(averageChemElementOk)
+        concentration = spectrum->zp_concentrationValue(chemElementId);
+        averageConcentration += concentration;
+        zv_concentrationDispersionList.append(concentration);
+
+        if(equationType == ZCalibration::ET_FRACTIONAL)
         {
-            concentrationString = spectrum->zp_concentration(chemElementId);
-            if(concentrationString.isEmpty())
+            // fractional dispersions
+            if(concentration == 0)
             {
-                concentration = 0;
-                averageChemElementOk = false;
+                fractionalDispersionError = true;
+                zv_freeTermDispersionList.clear();
             }
-            else
+
+            if(!fractionalDispersionError)
             {
-                concentration = concentrationString.toDouble(&ok);
-                if(!ok)
+                if(!zv_calibrationRepository->zp_calcBaseTermValue(zv_currentCalibrationId, spectrum, baseTermValue))
                 {
-                    concentration = 0;
-                    averageChemElementOk = false;
+                    fractionalDispersionError = true;
+                    zv_freeTermDispersionList.clear();
+                    continue;
                 }
-                else
-                {
-                    averageChemElementValue += concentration;
-                }
+
+                equationFreeTerm = baseTermValue / concentration;
+                averageFractionalFreeTerm += equationFreeTerm;
+                zv_freeTermDispersionList.append(equationFreeTerm);
             }
-        }
-        chemConcentrationAndTermValueList.append(QPair<qreal, QList<qreal> >(concentration, termValueList));
+        } // end equationType == ZCalibration::ET_FRACTIONAL
     }
 
-    // No a checked spectrum
-    if(chemConcentrationAndTermValueList.isEmpty())
+    // average concentration
+    if(zv_concentrationDispersionList.isEmpty())
     {
+        // assign nan to average concentration
+        zv_averageEquationFreeTerm = std::numeric_limits<double>::quiet_NaN();
+        // jump to the next term
         return;
     }
 
+    // average calc
+    int checkedSpectrumNumber = zv_concentrationDispersionList.count();
+    averageConcentration /= checkedSpectrumNumber;
 
-    // data from repositories are collected
-    // average term values
-    QMap<int, qreal> averageTermValueMap;
-    qreal summTermValue;
-
-    for(int t = 0; t < zp_rowCount(); t++)
+    // dispersion calc
+    for(int i = 0; i < checkedSpectrumNumber; i++)
     {
-        if(invalidTermRows.contains(t))
-        {
-            continue;
-        }
-
-        summTermValue = 0.0;
-        for(int i = 0; i < chemConcentrationAndTermValueList.count(); i++)
-        {
-            summTermValue += chemConcentrationAndTermValueList.at(i).second.at(t);
-        }
-
-        averageTermValueMap.insert(t, summTermValue / chemConcentrationAndTermValueList.count());
+        zv_concentrationDispersionList[i] = zv_concentrationDispersionList.at(i) - averageConcentration;
     }
 
-    if(averageChemElementOk && !averageTermValueMap.isEmpty())
+    if(equationType == ZCalibration::ET_FRACTIONAL)
     {
-        // chem average and recalc chem correlations
-        averageChemElementValue /= chemConcentrationAndTermValueList.count();
-        zh_calcChemElementCorrelations(chemConcentrationAndTermValueList,
-                                       averageChemElementValue,
-                                       averageTermValueMap);
+        averageFractionalFreeTerm /= checkedSpectrumNumber;
+        if(!fractionalDispersionError)
+        {
+            for(int i = 0; i < checkedSpectrumNumber; i++)
+            {
+                zv_freeTermDispersionList[i] = zv_freeTermDispersionList.at(i) - averageFractionalFreeTerm;
+            }
+            zv_averageEquationFreeTerm = averageFractionalFreeTerm;
+        }
+        else
+        {
+            zv_averageEquationFreeTerm = std::numeric_limits<double>::quiet_NaN();
+        }
     }
-
-    if(!averageTermValueMap.isEmpty())
+    else
     {
-        // recalc intercorrelations
-        zh_calcIntercorrelations(chemConcentrationAndTermValueList,
-                                 averageTermValueMap);
+        zv_freeTermDispersionList = zv_concentrationDispersionList;
+        zv_averageEquationFreeTerm = averageConcentration;
     }
 }
 //=============================================================================
-void ZTermCorrelationTableManager::zh_calcChemElementCorrelations(const QList< QPair<qreal, QList<qreal> > >& chemConcentrationAndTermValueList,
-                                                                  qreal averageChemElementValue,
-                                                                  const QMap<int, qreal>& averageTermValueMap)
+void ZTermCorrelationTableManager::zh_calcIntercorrelationsAndCovariations()
 {
-    qreal correlationValue;
-    qreal numerator = 0.0;
+    zv_termIntercorrelationMatrix.clear();
+    zv_termCovariationMatrix.clear();
 
-    qreal denominator1 = 0;
-    qreal denominator2 = 0;
-
-    qreal currentTermDelta = 0;
-    qreal currentConcDelta = 0;
-
-    for(int t = 0; t < zp_rowCount(); t++)
-    {
-        if(!averageTermValueMap.contains(t))
-        {
-            zv_chemElementCorrelationList.append("Error");
-            continue;
-        }
-
-        numerator = 0.0;
-        denominator1 = 0.0;
-        denominator2 = 0.0;
-        for(int s = 0; s < chemConcentrationAndTermValueList.count(); s++)
-        {
-            currentTermDelta = chemConcentrationAndTermValueList.at(s).second.at(t) - averageTermValueMap.value(t);
-            currentConcDelta = chemConcentrationAndTermValueList.at(s).first - averageChemElementValue;
-            numerator += currentTermDelta * currentConcDelta;
-
-            denominator1 += pow(currentTermDelta,2);
-            denominator2 += pow(currentConcDelta,2);
-        }
-
-        if(numerator == 0)
-        {
-            zv_chemElementCorrelationList.append(QString::number(0.0, 'f', 2));
-            continue;
-        }
-
-        qreal denominator = sqrt(denominator1) * sqrt(denominator2);
-        if(denominator == 0)
-        {
-            zv_chemElementCorrelationList.append("Error");
-            continue;
-        }
-
-        correlationValue = numerator / denominator;
-        zv_chemElementCorrelationList.append(QString::number(correlationValue, 'f', 2));
-    }
-}
-//=============================================================================
-void ZTermCorrelationTableManager::zh_calcIntercorrelations(const QList< QPair<qreal, QList<qreal> > >& chemConcentrationAndTermValueList,
-                                                            const QMap<int, qreal>& averageTermValueMap)
-{
-    QMap<int, QList<qreal> > deltaMap;
-    //    qreal rowTermDelta = 0;
-    //    qreal columnTermDelta = 0;
-
-    qreal denominator1 = 0;
-    qreal denominator2 = 0;
-
-    qreal correlationValue;
-    qreal numerator = 0.0;
+    // local vars
+    qreal numerator;
+    qreal tDenominator;
+    qreal iDenominator;
+    qreal correlation;
+    qreal tDispersion;
+    qreal iDispersion;
     QString intercorrelationString;
+    int termCount = zp_rowCount();
 
-
-    for(int r = 0; r < zp_rowCount(); r++)
+    // term circle
+    for(int t = 0; t < termCount; t++)
     {
-        if(!deltaMap.contains(r) && averageTermValueMap.contains(r))
-        {
-            QList<qreal> deltaList;
-            for(int s = 0; s < chemConcentrationAndTermValueList.count(); s++)
-            {
-                deltaList.append(chemConcentrationAndTermValueList.at(s).second.at(r) - averageTermValueMap.value(r));
-            }
+        // add correlation list for the current term
+        zv_termIntercorrelationMatrix.append(QList<QString>());
 
-            deltaMap.insert(r, deltaList);
+        //        // append term itself correlation
+        //        zv_termIntercorrelationMatrix.last().append("1.00");
+
+        //
+        zv_termCovariationMatrix.append(QList<qreal>());
+        // check out dispersion t-list
+        if(zv_termDispersionMatrix.at(t).isEmpty())
+        {
+            continue;
         }
 
-        for(int c = r + 1; c <  zp_rowCount(); c++)
+        // intercorrelated term circle
+        for(int i = t; i < termCount; i++)
         {
-            if(!deltaMap.contains(c) && averageTermValueMap.contains(c))
+            // check out dispersion i-list
+            int checkedSpeCount = zv_termDispersionMatrix.at(t).count();
+            if(zv_termDispersionMatrix.at(i).count() != checkedSpeCount)
             {
-                QList<qreal> deltaList;
-                for(int s = 0; s < chemConcentrationAndTermValueList.count(); s++)
-                {
-                    deltaList.append(chemConcentrationAndTermValueList.at(s).second.at(c) - averageTermValueMap.value(c));
-                }
-
-                deltaMap.insert(c, deltaList);
+                // TODO Error report
+                continue;
             }
 
+            // init numerator
             numerator = 0.0;
-            denominator1 = 0;
-            denominator2 = 0;
+            tDenominator = 0.0;
+            iDenominator = 0.0;
 
-            for(int s = 0; s < chemConcentrationAndTermValueList.count(); s++)
+            // term dispersion circle
+            for(int s = 0; s < checkedSpeCount; s++)
             {
-                numerator += deltaMap.value(r).value(s) * deltaMap.value(c).value(s);
-                denominator1 += pow(deltaMap.value(r).value(s), 2);
-                denominator2 += pow(deltaMap.value(c).value(s), 2);
+                tDispersion = zv_termDispersionMatrix.at(t).at(s);
+                iDispersion = zv_termDispersionMatrix.at(i).at(s);
+
+                numerator += tDispersion * iDispersion;
+                tDenominator += pow(tDispersion, 2);
+                iDenominator += pow(iDispersion, 2);
             }
 
-            if(numerator == 0)
+            // covariation
+            zv_termCovariationMatrix.last().append(numerator);
+
+            if(tDenominator == 0 || iDenominator == 0)
             {
-                zv_termIntercorrelationMap.insert(QPair<int, int>(r,c), QString::number(0.0, 'f', 2));
-                continue;
+                zv_termIntercorrelationMatrix.last().append("Error");
             }
 
-            qreal denominator = sqrt(denominator1) * sqrt(denominator2);
-            if(denominator == 0)
-            {
-                zv_termIntercorrelationMap.insert(QPair<int, int>(r,c), "Error");
-                continue;
-            }
-
-            correlationValue = numerator / denominator;
-
-            intercorrelationString = QString::number(correlationValue, 'f', 2);
-            zv_termIntercorrelationMap.insert(QPair<int, int>(r,c), intercorrelationString);
+            correlation = numerator / (sqrt(tDenominator) * sqrt(iDenominator));
+            intercorrelationString = QString::number(correlation, 'f', 2);
+            zv_termIntercorrelationMatrix.last().append(intercorrelationString);
         }
+    }
+}
+//=============================================================================
+void ZTermCorrelationTableManager::zh_calcConcentrationCorrelationsAndCavariations()
+{
+    // clear list
+    zv_concentrationCorrelationList.clear();
+    zv_freeTermCovariationList.clear();
+
+    // local vars
+    qreal numerator;
+    qreal tDenominator;
+    qreal cDenominator;
+    qreal tDispersion;
+    qreal cDispersion;
+    qreal freeTermCovariation;
+    qreal correlation;
+    QString correlationString;
+    int termCount = zp_rowCount();
+    int checkedSpeCount = zv_concentrationDispersionList.count();
+    bool freeDispersionOk = zv_freeTermDispersionList.count() == checkedSpeCount;
+
+    // term circle
+    for(int t = 0; t < termCount; t++)
+    {
+        // check term dispersion list and conc dispersion
+        if(zv_termDispersionMatrix.at(t).count() != checkedSpeCount)
+        {
+            zv_concentrationCorrelationList.append("Error");
+            continue;
+        }
+
+        // init
+        numerator = 0.0;
+        tDenominator = 0.0;
+        cDenominator = 0.0;
+        freeTermCovariation = 0.0;
+
+        // term dispersion circle
+        for(int s = 0; s < checkedSpeCount; s++)
+        {
+            tDispersion =  zv_termDispersionMatrix.at(t).at(s);
+            cDispersion = zv_concentrationDispersionList.at(s);
+            if(freeDispersionOk)
+            {
+                freeTermCovariation += zv_freeTermDispersionList.at(s) * tDispersion;
+            }
+            numerator += tDispersion * cDispersion;
+            tDenominator += pow(tDispersion, 2);
+            cDenominator += pow(cDispersion, 2);
+        }
+
+        // covariation
+        if(freeDispersionOk)
+        {
+            zv_freeTermCovariationList.append(freeTermCovariation);
+        }
+
+        if(tDenominator == 0 || cDenominator == 0)
+        {
+            zv_concentrationCorrelationList.append("Error");
+        }
+
+        correlation = numerator / (sqrt(tDenominator) * sqrt(cDenominator));
+        correlationString = QString::number(correlation, 'f', 2);
+        zv_concentrationCorrelationList.append(correlationString);
+
     }
 }
 //=============================================================================

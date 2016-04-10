@@ -22,18 +22,17 @@ bool ZQuadraticTerm::zp_calcValue(const ZAbstractSpectrum * spectrum, qreal& val
     }
 
     bool ok;
-    qint64 windowIntensity;
-    emit zg_requestWindowIntensity((const QObject*)spectrum, windowIntensity, true, &ok);
+    emit zg_requestWindowIntensity((const QObject*)spectrum, value, true, &ok);
     if(!ok)
     {
         return false;
     }
 
-    value = static_cast<qreal>(pow(windowIntensity, 2)) * zv_termFactor;
+    value = pow(value, 2.0) * zv_termFactor;
     return true;
 }
 //===================================================================
-bool ZQuadraticTerm::zp_calcTermVariablePart(const ZAbstractSpectrum* spectrum, qint64& value)  // w/o factor
+bool ZQuadraticTerm::zp_calcTermVariablePart(const ZAbstractSpectrum* spectrum, qreal& value)  // w/o factor
 {
     bool ok;
     emit zg_requestWindowIntensity((const QObject*)spectrum, value, false, &ok);

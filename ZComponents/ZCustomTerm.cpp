@@ -12,7 +12,7 @@ bool ZCustomTerm::zp_calcValue(const ZAbstractSpectrum * spectrum, qreal& value)
     return true;
 }
 //===================================================================
-bool ZCustomTerm::zp_calcTermVariablePart(const ZAbstractSpectrum* spectrum, qint64 &value)  // w/o factor
+bool ZCustomTerm::zp_calcTermVariablePart(const ZAbstractSpectrum* spectrum, qreal &value)  // w/o factor
 {
 
 }

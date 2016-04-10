@@ -51,13 +51,13 @@ public:
 
 signals:
 
+    void zg_message(QString);
     void zg_currentOperation(OperationType, int, int) const;
 
 public slots:
 
 
 private slots:
-
 
     void zh_currentSpectrumArrayChanged(qint64, int);
     void zh_onRepositoryChemElementOperation(ZSpectrumArrayRepository::ChemElementOperationType type,
@@ -67,6 +67,7 @@ private slots:
     void zh_onCalibrationRepositoryOperation(ZCalibrationRepository::CalibrationOperationType, int, int);
     void zh_onSpectrumOperation(ZSpectrumArrayRepository::SpectrumOperationType, int, int, int);
     void zh_onCalibrationNormalizerChange(qint64 calibrationId);
+    void zh_recalcCalibrationFactors();
 
 private:
 
@@ -77,10 +78,22 @@ private:
     qint64 zv_currentArrayId;
     int zv_currentArrayIndex;
 
-    QStringList zv_chemElementCorrelationList;
-    QMap<QPair<int, int>, QString> zv_termIntercorrelationMap;
+    // average values
+    qreal zv_averageEquationFreeTerm;
+    QList<qreal> zv_averageTermValueList;
 
-    // QList< QPair<qreal, QList<qreal> > >chemConcentrationAndTermValueList;
+    // dispersion data
+    QList<QList<qreal>> zv_termDispersionMatrix;
+    QList<qreal> zv_concentrationDispersionList;
+    QList<qreal> zv_freeTermDispersionList;
+
+    // correlations
+    QList<QList<QString> > zv_termIntercorrelationMatrix;
+    QStringList zv_concentrationCorrelationList;
+
+    // covariations
+    QList<QList<qreal> > zv_termCovariationMatrix;
+    QList<qreal> zv_freeTermCovariationList;
 
     const int zv_firstNonTermColumnCount = 2;
     const QString zv_defaultChemElementString = tr("No Element");
@@ -93,17 +106,15 @@ private:
 
     // FUNCS
 
-//    bool zh_calcChemElementCorrelation(int termIndex, qreal &correlationValue) const;
-//    void zh_createTermValueAndChemConcentrationList(int termIndex,
-//                                                    qint64 chemElementId,
-//                                                    QList<QPair<qint64, qreal> > &termAndConcentrationList) const;
+    bool zh_convertColRowForInterCorrelationMatrix(int& row, int& col) const;
+    bool zh_convertColRowForCovariationMatrix(int& row, int& col) const;
 
-    void zh_calcCorrelations();
-    void zh_calcChemElementCorrelations(const QList< QPair<qreal, QList<qreal> > >& chemConcentrationAndTermValueList,
-                                        qreal averageChemElementValue,
-                                        const QMap<int, qreal>& averageTermValueMap);
-    void zh_calcIntercorrelations(const QList< QPair<qreal, QList<qreal> > >& chemConcentrationAndTermValueList,
-                                  const QMap<int, qreal>& averageTermValueMap);
+    void zh_startCalculationCorrelationsAndCovariations();
+    void zh_calcTermDispersions();
+    void zh_calcConcentrationAndFreeTermDispersions();
+    void zh_calcIntercorrelationsAndCovariations();
+    void zh_calcConcentrationCorrelationsAndCavariations();
+
 };
 //==================================================================
 #endif // ZTERMTABLEMANAGER_H

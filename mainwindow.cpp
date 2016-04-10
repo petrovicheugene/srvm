@@ -281,6 +281,7 @@ void MainWindow::zh_createMenu()
     // menu->setCursor(Qt::PointingHandCursor);
     menu->setObjectName("Edit");
     zv_spectrumArrayRepository->zp_appendActionsToMenu(menu);
+    zv_calibrationRepository->zp_appendActionsToMenu(menu);
     zh_appendActionsToMenu(menu);
 
     // View
@@ -293,6 +294,7 @@ void MainWindow::zh_createMenu()
     menu = menuBar()->addMenu(tr("Actions"));
     // menu->setCursor(Qt::PointingHandCursor);
     menu->setObjectName("Actions");
+    zv_calibrationRepository->zp_appendActionsToMenu(menu);
     zh_appendActionsToMenu(menu);
 
     // Help
