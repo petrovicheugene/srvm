@@ -816,7 +816,7 @@ qint64 ZCalibrationRepository::zp_baseTermIdForCalibrationId(qint64 calibrationI
 //======================================================
 void ZCalibrationRepository::zh_notifyCalibrationRecalc(qint64 calibrationId) const
 {
-    const ZCalibration* calibration = zh_calibrationForId(calibrationId);
+    ZCalibration* calibration = zh_calibrationForId(calibrationId);
     if(!calibration)
     {
         return;
@@ -837,16 +837,16 @@ bool ZCalibrationRepository::zp_termFactor(qint64 calibrationId, int termIndex, 
     return calibration->zp_termFactor(termIndex, factor);
 }
 //======================================================
-bool ZCalibrationRepository::zp_setTermFactor(qint64 calibrationId, int termIndex, qreal factor)
-{
-    const ZCalibration* calibration = zh_calibrationForId(calibrationId);
-    if(!calibration)
-    {
-        return false;
-    }
+//bool ZCalibrationRepository::zp_setTermFactor(qint64 calibrationId, int termIndex, qreal factor)
+//{
+//    const ZCalibration* calibration = zh_calibrationForId(calibrationId);
+//    if(!calibration)
+//    {
+//        return false;
+//    }
 
-    return calibration->zp_setTermFactor(termIndex, factor);
-}
+//    return calibration->zp_setTermFactor(termIndex, factor);
+//}
 //======================================================
 bool ZCalibrationRepository::zp_termFactorString(qint64 calibrationId,
                                                  int termIndex, QString &factorString) const

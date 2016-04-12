@@ -648,9 +648,6 @@ void ZTermCorrelationTableManager::zh_recalcCalibrationFactors()
     QList<int> factorIndexList = factorToIndexMap.keys();
     int factorCount = factorIndexList.count();
 
-#ifdef DBG
-    qDebug() << "FACTORS BEFORE";
-#endif
     // column list init
     QList<qreal> columnList;
     QList<qreal> freeTermList;
@@ -661,27 +658,34 @@ void ZTermCorrelationTableManager::zh_recalcCalibrationFactors()
     for(int rowi = 0; rowi < factorCount; rowi++)
     {
         columnList.clear();
-        row = factorIndexList.at(rowi);
 
 #ifdef DBG
-        qDebug() << row << *factorToIndexMap.value(row);
-#endif
+        QString rowInd = "Row " + QString::number(row) + ": ";
 
+#endif
         // passage through columns of covariance matrix
         for(int coli = 0; coli < factorCount; coli++)
         {
+            row = factorIndexList.at(rowi);
             col = factorIndexList.at(coli);
             if(!zh_convertColRowForCovariationMatrix(row, col))
             {
                 // TODO error report
                 return;
             }
+
+#ifdef DBG
+            rowInd += " r:"+QString::number(row)+" c:"+QString::number(col);
+#endif
             columnList.append(zv_termCovariationMatrix.at(row).at(col));
         }
+#ifdef DBG
+        qDebug() << rowInd;
+#endif
         // append column to solver
-        solver.zp_appendTermColumn(factorToIndexMap.value(rowi), columnList);
+        solver.zp_appendTermColumn(factorToIndexMap.value(factorIndexList.at(rowi)), columnList);
         // free term list formation
-        freeTermList.append(zv_freeTermCovariationList.at(rowi));
+        freeTermList.append(zv_freeTermCovariationList.at(factorIndexList.at(rowi)));
     }
 
     // append free term column to solver
@@ -695,28 +699,6 @@ void ZTermCorrelationTableManager::zh_recalcCalibrationFactors()
         // TODO Error report ?? (solver has already reported ?)
         return;
     }
-
-#ifdef DBG
-    qDebug() << "FACTORS AFTER";
-
-    QMap<int, qreal*>::iterator itr;
-    for(itr = factorToIndexMap.begin(); itr != factorToIndexMap.end(); itr++)
-    {
-        qDebug() << itr.key() << *itr.value();
-    }
-
-#endif
-
-    //    int firstfactorIndex = factorIndexList.at(0);
-    //    qreal firstCovariationValue = zv_termCovariationMatrix.at(firstfactorIndex).at(firstfactorIndex);
-    //    if(firstCovariationValue == 0)
-    //    {
-    //        // TODO Error report
-    //        return;
-    //    }
-
-
-    //    zv_freeTermCovariationList.at(firstfactorIndex) / firstCovariationValue;
 
     // Equation free term calculation
     // first initialization of free term
@@ -852,6 +834,7 @@ void ZTermCorrelationTableManager::zh_startCalculationCorrelationsAndCovariation
 void ZTermCorrelationTableManager::zh_calcTermDispersions()
 {
     zv_termDispersionMatrix.clear();
+    zv_averageTermValueList.clear();
 
     // local vars for circles
     qreal averageTerm;
@@ -918,6 +901,10 @@ void ZTermCorrelationTableManager::zh_calcTermDispersions()
         averageTerm /= checkedSpectrumNumber;
         // add average  val to average list
         zv_averageTermValueList.append(averageTerm);
+
+#ifdef DBG
+        qDebug() << "AVERAGE TERM" << t << averageTerm;
+#endif
 
         // dispersion calc
         for(int i = 0; i < checkedSpectrumNumber; i++)
@@ -1113,6 +1100,20 @@ void ZTermCorrelationTableManager::zh_calcIntercorrelationsAndCovariations()
             zv_termIntercorrelationMatrix.last().append(intercorrelationString);
         }
     }
+
+#ifdef DBG
+    qDebug() << "COV";
+    for(int r = 0; r < zv_termCovariationMatrix.count(); r++)
+    {
+        QString covRow;
+        for(int c = 0; c < zv_termCovariationMatrix.at(r).count(); c++)
+        {
+            covRow += " "+QString::number(zv_termCovariationMatrix.at(r).at(c));
+
+        }
+        qDebug() << r <<": " << covRow;
+    }
+#endif
 }
 //=============================================================================
 void ZTermCorrelationTableManager::zh_calcConcentrationCorrelationsAndCavariations()

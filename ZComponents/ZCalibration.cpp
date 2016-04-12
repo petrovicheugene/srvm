@@ -20,7 +20,7 @@ bool ZCalibration::zv_useBaseTermInFractionalEquationByDefault = false;
 QList<QColor> ZCalibration::zv_colorList = ZCalibration::zp_createColorList();
 qint64 ZCalibration::zv_lastCalibrationId = 0;
 int ZCalibration::zv_lastColorIndex = 0;
-
+int ZCalibration::zv_precision = 15;
 QMap<ZCalibration::EquationType, QString> ZCalibration::zv_eqationTypeStringMap =
         ZCalibration::zh_initEquationTypeStringMap();
 //=========================================================
@@ -489,13 +489,13 @@ int ZCalibration::zh_termIndex(const ZAbstractTerm* term) const
 //=========================================================
 void ZCalibration::zh_chopTailZeroesFromFreeMemberString()
 {
-    for(int i = zv_freeMemberString.count() - 1; i > 0; i--)
+    for(int i = zv_freeTermString.count() - 1; i > 0; i--)
     {
-        if(zv_freeMemberString.at(i) != '0' || (zv_freeMemberString.at(i - 1) == '.' || zv_freeMemberString.at(i - 1) == ',' ))
+        if(zv_freeTermString.at(i) != '0' || (zv_freeTermString.at(i - 1) == '.' || zv_freeTermString.at(i - 1) == ',' ))
         {
             break;
         }
-        zv_freeMemberString.chop(1);
+        zv_freeTermString.chop(1);
     }
 }
 //=========================================================
@@ -521,17 +521,17 @@ bool ZCalibration::zp_termFactor(int termIndex, qreal& factor) const
     return true;
 }
 //=========================================================
-bool ZCalibration::zp_setTermFactor(int termIndex, qreal factor) const
-{
-    if(termIndex < 0 || termIndex >= zv_termList.count() )
-    {
-        return false;
-    }
+//bool ZCalibration::zp_setTermFactor(int termIndex, qreal factor) const
+//{
+//    if(termIndex < 0 || termIndex >= zv_termList.count() )
+//    {
+//        return false;
+//    }
 
-    zv_termList.at(termIndex)->zp_setTermFactor(factor);
-    emit zg_termOperation(TOT_TERM_FACTOR_CHANGED, termIndex, termIndex);
-    return true;
-}
+//    zv_termList.at(termIndex)->zp_setTermFactor(factor);
+//    emit zg_termOperation(TOT_TERM_FACTOR_CHANGED, termIndex, termIndex);
+//    return true;
+//}
 //=========================================================
 bool ZCalibration::zp_termFactorString(int termIndex, QString& factorString) const
 {
@@ -557,21 +557,21 @@ bool ZCalibration::zp_setTermFactorString(int termIndex, const QString& factorSt
     return true;
 }
 //=========================================================
-bool ZCalibration::zp_setEquationFactorsAndFreeMember(QList<qreal> factorList, qreal freeTerm)
-{
-    if(factorList.count() != zv_termList.count())
-    {
-        return false;
-    }
+//bool ZCalibration::zp_setEquationFactorsAndFreeMember(QList<qreal> factorList, qreal freeTerm)
+//{
+//    if(factorList.count() != zv_termList.count())
+//    {
+//        return false;
+//    }
 
-    for(int t = 0; t < zv_termList.count(); t++)
-    {
-        zv_termList.value(t)->zp_setTermFactor(factorList.value(t));
-    }
+//    for(int t = 0; t < zv_termList.count(); t++)
+//    {
+//        zv_termList.value(t)->zp_setTermFactor(factorList.value(t));
+//    }
 
-    zv_freeTerm = freeTerm;
-    return true;
-}
+//    zv_freeTerm = freeTerm;
+//    return true;
+//}
 //=========================================================
 bool ZCalibration::zp_termVariablePart(int termIndex, const ZAbstractSpectrum* spectrum,  qreal& value) const
 {
@@ -697,7 +697,7 @@ bool ZCalibration::zp_setEquationFreeMember(qreal value)
     }
 
     zv_freeTerm = value;
-    zv_freeMemberString = QString::number(value, 'f', 15);
+    zv_freeTermString = QString::number(value, 'f', 15);
     zh_chopTailZeroesFromFreeMemberString();
     emit zg_freeTermChanged();
     return true;
@@ -705,7 +705,7 @@ bool ZCalibration::zp_setEquationFreeMember(qreal value)
 //=========================================================
 QString ZCalibration::zp_equationFreeMemberString() const
 {
-    return zv_freeMemberString;
+    return zv_freeTermString;
 }
 //=========================================================
 bool ZCalibration::zp_setEquationFreeMemberString(const QString& freeMemberString)
@@ -795,15 +795,67 @@ void ZCalibration::zp_createEquationDataForEquationRecalc(QMap<int, qreal*>& fac
         if(termState == ZAbstractTerm::TS_CONST_INCLUDED
                 || termState == ZAbstractTerm::TS_INCLUDED)
         {
-            factorMap.insert(t, &zv_termList.value(t)->zv_termFactor);
+            factorMap.insert(t, zv_termList.value(t)->zh_termFactorPointer());
         }
     }
 
     freeTermPtr = &zv_freeTerm;
 }
 //=========================================================
-void ZCalibration::zh_notifyCalibrationRecalc() const
+void ZCalibration::zh_notifyCalibrationRecalc()
 {
+    // conform free term string to value
+    if(qAbs(zv_freeTerm) < 1)
+    {
+        bool started = false;
+        zv_freeTermString = QString::number(zv_freeTerm, 'f', zv_precision);
+        // first zero count after point
+        int firstZeroCount = 0;
+        for(int i = 0; i < zv_freeTermString.count(); i++)
+        {
+            if(!started && (zv_freeTermString.at(i) == '.' || zv_freeTermString.at(i) == ','))
+            {
+                started = true;
+                continue;
+            }
+
+            if(zv_freeTermString.at(i) == '0')
+            {
+                firstZeroCount++;
+                continue;
+            }
+
+            break;
+        }
+
+        if(firstZeroCount > 9)
+        {
+            zv_freeTermString = QString::number(zv_freeTerm, 'g', zv_precision);
+        }
+        else
+        {
+            // chop tail zero if they exist
+            for(int i = zv_freeTermString.count()-1; i > 0; i--)
+            {
+                if(zv_freeTermString.at(i) == '0' && (zv_freeTermString.at(i - 1) != '.' || zv_freeTermString.at(i - 1) != ','))
+                {
+                    zv_freeTermString.remove(i, 1);
+                    continue;
+                }
+                break;
+            }
+        }
+    }
+    else
+    {
+        zv_freeTermString = QString::number(zv_freeTerm, 'g', zv_precision);
+    }
+
+    // conform equation terms
+    for(int t = 0; t < zv_termList.count(); t++)
+    {
+        zv_termList.value(t)->zp_conformStringWithValue();
+    }
     emit zg_termOperation(TOT_TERM_FACTOR_CHANGED, 0, zv_termList.count() - 1);
     emit zg_freeTermChanged();
 }

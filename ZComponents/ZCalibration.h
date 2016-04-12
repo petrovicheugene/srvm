@@ -99,11 +99,11 @@ public:
     ZAbstractTerm::TermState zp_termState(int termIndex) const;
     void zp_setNextUsersTermState(int) const;
     bool zp_termFactor(int termIndex, qreal &factor) const;
-    bool zp_setTermFactor(int termIndex, qreal factor) const;
+    //bool zp_setTermFactor(int termIndex, qreal factor) const;
 
     bool zp_termFactorString(int termIndex, QString &factorString) const;
     bool zp_setTermFactorString(int termIndex, const QString& factorString) const;
-    bool zp_setEquationFactorsAndFreeMember(QList<qreal> factorList, qreal freeTerm);
+    //bool zp_setEquationFactorsAndFreeMember(QList<qreal> factorList, qreal freeTerm);
     bool zp_termVariablePart(int termIndex, const ZAbstractSpectrum* spectrum,  qreal &value) const;
     bool zp_calcBaseTermValue(const ZAbstractSpectrum* spectrum, qreal& value) const;
 
@@ -129,7 +129,7 @@ public:
     void zp_createEquationDataForEquationRecalc(QMap<int, qreal *> &factorMap,
                                                 qreal *&freeTermPtr);
 
-    void zh_notifyCalibrationRecalc() const;
+    void zh_notifyCalibrationRecalc();
     void zp_resetEquationTerms();
 
     // STATIC
@@ -177,7 +177,7 @@ private:
     QList<ZAbstractTerm*> zv_termList;
     EquationType zv_equationType;
     ZTermNormalizer* zv_termNormalizer;
-    QString zv_freeMemberString;
+    QString zv_freeTermString;
     qreal zv_freeTerm;
     qint64 zv_baseTermId;
     qint64 zv_baseTermNormaId;
@@ -198,6 +198,8 @@ private:
     static QList<QColor> zv_colorList;
     static qint64 zv_lastCalibrationId;
     static int zv_lastColorIndex;
+    static int zv_precision;
+
     static QMap<ZCalibration::EquationType, QString> zv_eqationTypeStringMap;
     static bool zv_useBaseTermInFractionalEquationByDefault;
     //  FUNCS
@@ -207,7 +209,6 @@ private:
     static QString zh_initPlynomialEquationString();
     static QString zh_initFractionalEquationString();
     static QString zh_initFractionalEquationString1();
-
 
 };
 //=========================================================

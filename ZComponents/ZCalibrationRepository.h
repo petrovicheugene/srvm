@@ -117,7 +117,7 @@ public:
     int zp_termCount(qint64 calibrationId) const;
     QString zp_termName(qint64 calibrationId, int termIndex) const;
     bool zp_termFactor(qint64 calibrationId, int termIndex, qreal& factor) const;
-    bool zp_setTermFactor(qint64 calibrationId, int termIndex, qreal factor);
+    // bool zp_setTermFactor(qint64 calibrationId, int termIndex, qreal factor);
 
     bool zp_termFactorString(qint64 calibrationId, int termIndex, QString &factorString) const;
     bool zp_setTermFactorString(qint64 calibrationId, int termIndex, const QString& factorString);

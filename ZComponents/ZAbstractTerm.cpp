@@ -7,13 +7,15 @@
 #include <QPointer>
 //============================================================
 qint64 ZAbstractTerm::zv_lastTermId = 0;
+int ZAbstractTerm::zv_precision = 15;
 //============================================================
 ZAbstractTerm::ZAbstractTerm(ZCalibration *parent) : QObject(parent)
 {
     zh_connectToCalibration(parent);
     zv_type = TT_NOT_DEFINED;
     zv_termState = TS_CONST_EXCLUDED;
-    zp_setTermFactor(0.0); // zv_termFactorString = 0;
+    // zp_setTermFactor(0.0); // zv_termFactorString = 0;
+    zp_setTermFactorString("0.0");
     zv_termId = zv_lastTermId++;
 }
 //============================================================
@@ -41,6 +43,65 @@ bool ZAbstractTerm::zp_setTermState(ZAbstractTerm::TermState state)
 
     zv_termState = state;
     emit zg_termStateChanged(zv_termState);
+    return true;
+}
+//============================================================
+void ZAbstractTerm::zp_conformStringWithValue()
+{
+    if(qAbs(zv_termFactor) < 1)
+    {
+        bool started = false;
+        zv_termFactorString = QString::number(zv_termFactor, 'f', zv_precision);
+        // first zero count after point
+        int firstZeroCount = 0;
+        for(int i = 0; i < zv_termFactorString.count(); i++)
+        {
+            if(!started && (zv_termFactorString.at(i) == '.' || zv_termFactorString.at(i) == ','))
+            {
+                started = true;
+                continue;
+            }
+
+            if(zv_termFactorString.at(i) == '0')
+            {
+                firstZeroCount++;
+                continue;
+            }
+
+            break;
+        }
+
+        if(firstZeroCount > 9)
+        {
+            zv_termFactorString = QString::number(zv_termFactor, 'g', zv_precision);
+        }
+        else
+        {
+            // chop tail zero if they exist
+            for(int i = zv_termFactorString.count()-1; i > 0; i--)
+            {
+                if(zv_termFactorString.at(i) == '0' && (zv_termFactorString.at(i - 1) != '.' || zv_termFactorString.at(i - 1) != ','))
+                {
+                    zv_termFactorString.remove(i, 1);
+                    continue;
+                }
+                break;
+            }
+        }
+    }
+    else
+    {
+        zv_termFactorString = QString::number(zv_termFactor, 'g', zv_precision);
+    }
+}
+//============================================================
+bool ZAbstractTerm::zp_setPrecision(int precision)
+{
+    if(precision < 0 )
+    {
+        return false;
+    }
+    zv_precision = precision;
     return true;
 }
 //============================================================
@@ -109,18 +170,18 @@ QString ZAbstractTerm::zp_termFactorString() const
     return zv_termFactorString;
 }
 //============================================================
-bool ZAbstractTerm::zp_setTermFactor(qreal factor)
-{
-    if(zv_termFactor == factor)
-    {
-        return false;
-    }
+//bool ZAbstractTerm::zh_setTermFactor(qreal factor)
+//{
+//    if(zv_termFactor == factor)
+//    {
+//        return false;
+//    }
 
-    zv_termFactor = factor;
-    zv_termFactorString = QString::number(factor, 'f', 15);
-    zh_chopTailZeroesFromTermFactorString();
-    return true;
-}
+//    zv_termFactor = factor;
+//    zv_termFactorString = QString::number(factor, 'f', 15);
+//    zh_chopTailZeroesFromTermFactorString();
+//    return true;
+//}
 //============================================================
 bool ZAbstractTerm::zp_setTermFactorString(const QString& termFactorString)
 {
@@ -131,7 +192,9 @@ bool ZAbstractTerm::zp_setTermFactorString(const QString& termFactorString)
         return false;
     }
 
-    return zp_setTermFactor(termFactor);
+    zv_termFactorString = termFactorString;
+    zv_termFactor = termFactor;
+    return true;
 }
 //============================================================
 void ZAbstractTerm::zh_chopTailZeroesFromTermFactorString()

@@ -26,20 +26,24 @@ bool ZLSEGaussSolver::zp_solve()
     }
 
     // forward pass
-    qreal rowFactor;
-    qreal maxValue;
-    for(int i = 0; i < zv_freeTermList.count(); i++)
+    // if more than one term
+    if(zv_columnList.count() > 1)
     {
-        if(!zh_putMaxValueOnDiagonal(i))
+        qreal rowFactor;
+        qreal maxValue;
+        for(int i = 0; i < zv_freeTermList.count(); i++)
         {
-            return false;
-        }
-        // maxValue is on the diagonal
-        maxValue = zv_columnList.at(i).elements.at(i);
-        for(int r = i + 1; r < zv_freeTermList.count(); r++)
-        {
-            rowFactor = -1 * zv_columnList.at(i).elements.at(r) / maxValue;
-            zh_addMultipliedRow(r, i, rowFactor);
+            if(!zh_putMaxValueOnDiagonal(i))
+            {
+                return false;
+            }
+            // maxValue is on the diagonal
+            maxValue = zv_columnList.at(i).elements.at(i);
+            for(int r = i + 1; r < zv_freeTermList.count(); r++)
+            {
+                rowFactor = -1 * zv_columnList.at(i).elements.at(r) / maxValue;
+                zh_addMultipliedRow(r, i, rowFactor);
+            }
         }
     }
 
@@ -57,10 +61,13 @@ bool ZLSEGaussSolver::zp_solve()
         numerator = zv_freeTermList.at(i);
         for(int r = zv_freeTermList.count() - 1; r > i; r--)
         {
-            numerator -= zv_columnList[r].elements[i] * (*zv_columnList[r].factor);
+            numerator -= zv_columnList[r].elements[i] * (*(zv_columnList[r].factor));
         }
 
-        *zv_columnList[i].factor =  numerator / zv_columnList[i].elements[i];
+//        qreal fVal = numerator / zv_columnList[i].elements[i];
+//        qreal* pointer = zv_columnList[i].factor;
+//        *pointer = fVal;
+        *(zv_columnList[i].factor) =  numerator / zv_columnList[i].elements[i];
     }
 
     return true;
