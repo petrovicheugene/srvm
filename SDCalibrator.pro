@@ -14,12 +14,12 @@ RC_ICONS = "SDC1.ico"
 
 VER_MAJ=0
 VER_MIN=0
-VER_PAT=10
+VER_PAT=12
 VER_RELEASE=a
 
 EXE_BASE_NAME=SDCalibrator
 QMAKE_TARGET_PRODUCT="SD Calibrator"
-QMAKE_TARGET_DESCRIPTION="Creates calibrations for the SRV stream analyser"
+QMAKE_TARGET_DESCRIPTION="Creates calibrations for spectrometer"
 QMAKE_TARGET_COMPANY="TechnoAnalyt"
 QMAKE_TARGET_COPYRIGHT="Copyright © $${QMAKE_TARGET_COMPANY} Ltd. 2015.  All rights reserved."
 COMPANY_URL=tehnoanalit.com
@@ -143,7 +143,9 @@ SOURCES += main.cpp \
     ZComponents/ZVisibilityPointF.cpp \
     ZPlotter/ZChartPointGraphicsItem.cpp \
     ZPlotter/ZChartPointOptions.cpp \
-    ZComponents/ZLSEGaussSolver.cpp
+    ZComponents/ZLSEGaussSolver.cpp \
+    ZComponents/ZQrealToStringConverter.cpp \
+    ZComponents/ZCalibrationQualityData.cpp
 
 
 HEADERS  += \
@@ -226,7 +228,9 @@ HEADERS  += \
     ZComponents/ZVisibilityPointF.h \
     ZPlotter/ZChartPointGraphicsItem.h \
     ZPlotter/ZChartPointOptions.h \
-    ZComponents/ZLSEGaussSolver.h
+    ZComponents/ZLSEGaussSolver.h \
+    ZComponents/ZQrealToStringConverter.h \
+    ZComponents/ZCalibrationQualityData.h
 
 
 RESOURCES += \

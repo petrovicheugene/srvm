@@ -8,6 +8,7 @@
 #include <QList>
 #include "ZSpectrumArrayRepository.h"
 #include "ZCalibrationRepository.h"
+#include "ZCalibrationQualityData.h"
 //==================================================================
 class ZJointSpectraDataManager : public QObject
 {
@@ -46,14 +47,20 @@ public:
 
     bool zp_setChemConcentration(int row, int column, const QString& consentration);
     int zp_spectrumDataColumnCount();
+    bool zp_calculateConcentrationResidualList(qint64 calibrationId,
+                                               QList<qreal>& residualDispersionList) const;
 
 signals:
 
     void zg_currentOperation(OperationType, int, int) const;
+    void zg_calibrationQualityData(qint64 calibrationId, ZCalibrationQualityData) const;
+    void zg_calibrationValuesChanged(qint64 calibrationId);
 
 public slots:
 
-
+    void zp_calculateCalibrationQualityData(qint64 calibrationId,
+                                            int factorCount,
+                                            qreal summSquareAverageConcentrationDispersion) const;
 private slots:
 
     void zh_onRepositoryArrayOperation(ZSpectrumArrayRepository::SpectrumOperationType,
@@ -81,6 +88,7 @@ private:
     int zv_visibleChemElementCount;
     int zv_visibleCalibrationCount;
     QMap<qint64, QStringList> zv_calibrationConcentrationMap; // QMap<CalibName, QPair<specIndex, Concentration>>
+   // QMap<qint64, QList<qreal> > zv_concentrationResidualMap; //
 
     // FUNCS
     bool zh_getVisibleIndexesForInsert(int first, int last, int& visibleFirst, int& visibleLast) const;
@@ -92,7 +100,6 @@ private:
     void zh_calculateCalibrationConcentrations();
     bool zh_calculateCalibrationConcentrationForCalibration(int calibrationIndex);
     bool zh_calculateCalibrationConcentrationForCalibrationId(qint64 calibrationId);
-
 
 };
 //==================================================================

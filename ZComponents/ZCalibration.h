@@ -99,11 +99,9 @@ public:
     ZAbstractTerm::TermState zp_termState(int termIndex) const;
     void zp_setNextUsersTermState(int) const;
     bool zp_termFactor(int termIndex, qreal &factor) const;
-    //bool zp_setTermFactor(int termIndex, qreal factor) const;
 
     bool zp_termFactorString(int termIndex, QString &factorString) const;
     bool zp_setTermFactorString(int termIndex, const QString& factorString) const;
-    //bool zp_setEquationFactorsAndFreeMember(QList<qreal> factorList, qreal freeTerm);
     bool zp_termVariablePart(int termIndex, const ZAbstractSpectrum* spectrum,  qreal &value) const;
     bool zp_calcBaseTermValue(const ZAbstractSpectrum* spectrum, qreal& value) const;
 
@@ -155,7 +153,6 @@ public slots:
 private slots:
 
     void zh_onTermNameChange() const;
-    //void zh_normalizerValue(qreal&) const;
     void zh_onTermWindowMarginChange();
     void zh_removeTerm(ZAbstractTerm*);
     void zh_onNormalizerChange();

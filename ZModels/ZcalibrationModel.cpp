@@ -25,7 +25,7 @@ Qt::ItemFlags	ZCalibrationModel::flags(const QModelIndex & index) const
 //==================================================================
 int ZCalibrationModel::columnCount(const QModelIndex & parent) const
 {
-    return 7;
+    return 8;
 }
 //==================================================================
 int ZCalibrationModel::rowCount(const QModelIndex & parent) const
@@ -88,11 +88,33 @@ QVariant ZCalibrationModel::data(const QModelIndex & index, int role) const
         }
         else if(index.column() == 5)
         {
-            return QVariant();
+            qint64 calibrationId = zv_calibrationRepository->zp_calibrationIdForCalibrationIndex(index.row());
+            if(!zv_qualityData.contains(calibrationId))
+            {
+                return QVariant();
+            }
+
+            return zv_qualityData.value(calibrationId).determination;
         }
         else if(index.column() == 6)
         {
-            return QVariant();
+            qint64 calibrationId = zv_calibrationRepository->zp_calibrationIdForCalibrationIndex(index.row());
+            if(!zv_qualityData.contains(calibrationId))
+            {
+                return QVariant();
+            }
+
+            return zv_qualityData.value(calibrationId).adj_determination;
+        }
+        else if(index.column() == 7)
+        {
+            qint64 calibrationId = zv_calibrationRepository->zp_calibrationIdForCalibrationIndex(index.row());
+            if(!zv_qualityData.contains(calibrationId))
+            {
+                return QVariant();
+            }
+
+            return zv_qualityData.value(calibrationId).standardDeviation;
         }
     }
 
@@ -266,8 +288,17 @@ QVariant ZCalibrationModel::headerData(int section, Qt::Orientation orientation,
             }
             else if(section == 6)
             {
-                header = tr("\u03C3");
+                header = QString("R%1 adj.").arg(QChar(0x00B2));
             }
+//            else if(section == 7)
+//            {
+//                header = "\u03C3";
+//            }
+            else if(section == 7)
+            {
+                header = "s, %";
+            }
+
             return QVariant(header);
         }
         else
@@ -302,6 +333,32 @@ void ZCalibrationModel::zp_connectToCalibrationRepository(ZCalibrationRepository
     endResetModel();
 }
 //==================================================================
+void ZCalibrationModel::zp_calibrationQualityDataChanged(qint64 calibrationId, ZCalibrationQualityData qualityData)
+{
+    zv_qualityData.insert(calibrationId, qualityData);
+
+    int row = -1;
+    for(int i = 0; i < zv_calibrationRepository->zp_calibrationCount(); i++)
+    {
+        if(zv_calibrationRepository->zp_calibrationIdForCalibrationIndex(i) == calibrationId)
+        {
+            row = i;
+            break;
+        }
+    }
+
+    if(row < 0)
+    {
+        return;
+    }
+
+    QModelIndex firstIndex = index(row, 5);
+    QModelIndex lastIndex = index(row, 7);
+
+    emit dataChanged(firstIndex, lastIndex);
+
+}
+//==================================================================
 void ZCalibrationModel::zh_onCalibrationRepositoryOperation(ZCalibrationRepository::CalibrationOperationType type, int first, int last)
 {
     if(type == ZCalibrationRepository::COT_BEGIN_RESET)
@@ -310,6 +367,7 @@ void ZCalibrationModel::zh_onCalibrationRepositoryOperation(ZCalibrationReposito
     }
     else if(type == ZCalibrationRepository::COT_END_RESET)
     {
+        zv_qualityData.clear();
         endResetModel();
     }
     else if(type == ZCalibrationRepository::COT_INSERT_CALIBRATIONS)
@@ -327,6 +385,12 @@ void ZCalibrationModel::zh_onCalibrationRepositoryOperation(ZCalibrationReposito
     else if(type == ZCalibrationRepository::COT_END_REMOVE_CALIBRATIONS)
     {
         endRemoveRows();
+        qint64 calibrationId;
+        for(int ci = first; ci <= last; ci++)
+        {
+            calibrationId = zv_calibrationRepository->zp_calibrationIdForCalibrationIndex(ci);
+            zv_qualityData.remove(calibrationId);
+        }
     }
     else if(type == ZCalibrationRepository::COT_CALIBRATION_FREE_MEMBER_CHANGED)
     {

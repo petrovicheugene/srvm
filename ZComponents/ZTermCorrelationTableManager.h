@@ -9,7 +9,7 @@
 #include "ZCalibrationRepository.h"
 #include "ZSpectrumArrayRepository.h"
 //==================================================================
-
+class ZJointSpectraDataManager;
 //==================================================================
 class ZTermCorrelationTableManager : public QObject
 {
@@ -35,7 +35,7 @@ public:
     // FUNCS
     void zp_connectToCalibrationRepository(ZCalibrationRepository*);
     void zp_connectToSpectrumArrayRepository(ZSpectrumArrayRepository*);
-
+    void zp_connectToJointSpectraDataManager(ZJointSpectraDataManager*jointSpectraDataManager);
 
     int zp_rowCount() const;
     int zp_columnCount() const;
@@ -53,6 +53,9 @@ signals:
 
     void zg_message(QString);
     void zg_currentOperation(OperationType, int, int) const;
+    void zg_calculateCalibrationQualityData(qint64 calibrationId,
+                                            int factorCount,
+                                            qreal sumSquareAverageConcentration) const;
 
 public slots:
 
@@ -68,12 +71,14 @@ private slots:
     void zh_onSpectrumOperation(ZSpectrumArrayRepository::SpectrumOperationType, int, int, int);
     void zh_onCalibrationNormalizerChange(qint64 calibrationId);
     void zh_recalcCalibrationFactors();
+    void zh_onCalibrationValuesChanged(qint64 calibrationId);
 
 private:
 
     // VARS
     ZCalibrationRepository* zv_calibrationRepository;
     ZSpectrumArrayRepository* zv_spectrumArrayRepository;
+    ZJointSpectraDataManager* zv_jointSpectraDataManager;
     qint64 zv_currentCalibrationId;
     qint64 zv_currentArrayId;
     int zv_currentArrayIndex;
@@ -86,22 +91,24 @@ private:
     QList<QList<qreal>> zv_termDispersionMatrix;
     QList<qreal> zv_concentrationDispersionList;
     QList<qreal> zv_freeTermDispersionList;
+    qreal zv_sumSquareAverageConcentrationDispersion;
 
     // correlations
     QList<QList<QString> > zv_termIntercorrelationMatrix;
     QStringList zv_concentrationCorrelationList;
+    QStringList zv_residualCorrelationList;
 
     // covariations
     QList<QList<qreal> > zv_termCovariationMatrix;
     QList<qreal> zv_freeTermCovariationList;
 
-    const int zv_firstNonTermColumnCount = 2;
+    const int zv_firstNonTermColumnCount = 3;
     const QString zv_defaultChemElementString = tr("No Element");
     int zv_columnCountCorrector;
 
     QColor zv_greenCell;
-    QColor zv_orangeCell;
     QColor zv_yellowCell;
+    QColor zv_blueCell;
     QColor zv_redCell;
 
     // FUNCS
@@ -114,6 +121,7 @@ private:
     void zh_calcConcentrationAndFreeTermDispersions();
     void zh_calcIntercorrelationsAndCovariations();
     void zh_calcConcentrationCorrelationsAndCavariations();
+    void zh_calcResidualTermCorrelation();
 
 };
 //==================================================================

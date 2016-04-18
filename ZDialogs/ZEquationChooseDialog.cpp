@@ -15,7 +15,8 @@
 ZEquationChooseDialog::ZEquationChooseDialog(QWidget *parent) : QDialog(parent)
 {
     setWindowTitle(tr("Equation settings"));
-    setWindowFlags(Qt::Tool | Qt::MSWindowsFixedSizeDialogHint);
+    setWindowFlags(Qt::Tool | Qt::MSWindowsFixedSizeDialogHint | Qt::WindowStaysOnTopHint);
+
     zv_accepted = false;
     zh_createComponents();
     zh_createConnections();

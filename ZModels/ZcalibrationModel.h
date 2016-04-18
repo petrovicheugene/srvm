@@ -4,6 +4,8 @@
 //===========================================================
 #include <QAbstractTableModel>
 #include "ZCalibrationRepository.h"
+#include "ZCalibrationQualityData.h"
+#include "QMap"
 //===========================================================
 
 //===========================================================
@@ -27,11 +29,14 @@ signals:
 
 public slots:
 
+    void zp_calibrationQualityDataChanged(qint64 calibrationId, ZCalibrationQualityData);
 
 private:
 
     // VARS
     ZCalibrationRepository* zv_calibrationRepository;
+
+    QMap<qint64, ZCalibrationQualityData> zv_qualityData;
 
 private slots:
 

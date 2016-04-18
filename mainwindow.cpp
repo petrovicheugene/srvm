@@ -420,9 +420,14 @@ void MainWindow::zh_createConnections()
     zv_calculationPlotterManager->zp_connectToSpectrumArrayRepository(zv_spectrumArrayRepository);
     zv_calculationPlotterManager->zp_connectToTermCorrelationWidget(zv_termCorrelationTableWidget);
 
-    zv_termCorrelationTableModel->zp_connectToPredicorTableManager(zv_termCorrelationTableManager);
+    zv_termCorrelationTableModel->zp_connectToTermCorrelationTableManager(zv_termCorrelationTableManager);
     zv_termCorrelationTableManager->zp_connectToCalibrationRepository(zv_calibrationRepository);
     zv_termCorrelationTableManager->zp_connectToSpectrumArrayRepository(zv_spectrumArrayRepository);
+
+    zv_termCorrelationTableManager->zp_connectToJointSpectraDataManager(zv_jointSpectraDataManager);
+
+    connect(zv_jointSpectraDataManager, &ZJointSpectraDataManager::zg_calibrationQualityData,
+            zv_calibrationModel, &ZCalibrationModel::zp_calibrationQualityDataChanged);
 
     // equation dashboard
     //zv_equationSettingsPanelWidget->zp_connectToCalibrationRepository(zv_calibrationRepository);

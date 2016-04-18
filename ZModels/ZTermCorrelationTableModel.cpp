@@ -139,7 +139,7 @@ QVariant	ZTermCorrelationTableModel::headerData(int section, Qt::Orientation ori
     return QVariant();
 }
 //==================================================================
-void ZTermCorrelationTableModel::zp_connectToPredicorTableManager(ZTermCorrelationTableManager* dataManager)
+void ZTermCorrelationTableModel::zp_connectToTermCorrelationTableManager(ZTermCorrelationTableManager* dataManager)
 {
     beginResetModel();
     zv_dataManager = dataManager;

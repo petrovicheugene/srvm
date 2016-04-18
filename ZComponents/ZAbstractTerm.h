@@ -43,12 +43,9 @@ public:
     qint64 zp_termId();
     qreal zp_termFactor() const;
     QString zp_termFactorString() const;
-    bool zp_setTermFactorString(const QString&);
 
     ZAbstractTerm::TermState zp_termState() const;
     bool zp_setTermState(ZAbstractTerm::TermState);
-
-    void zp_conformStringWithValue();
 
     // STATIC
     static bool zp_setPrecision(int);
@@ -91,6 +88,10 @@ protected:
     void zh_connectToCalibration(ZCalibration* calibration);
     void zh_chopTailZeroesFromTermFactorString();
     qreal* zh_termFactorPointer();
+
+    bool zh_setTermFactor(const QString&);
+    bool zh_setTermFactor(qreal);
+    void zh_conformStringWithValue();
 
     // STATIC
     // VARS

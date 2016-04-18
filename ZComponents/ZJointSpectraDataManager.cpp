@@ -273,6 +273,103 @@ void ZJointSpectraDataManager::zh_currentSpectrumArrayChanged(qint64 currentArra
     emit zg_currentOperation(OT_END_RESET, -1, -1);
 }
 //==================================================================
+void ZJointSpectraDataManager::zp_calculateCalibrationQualityData(qint64 calibrationId,
+                                                                  int factorCount,
+                                                                  qreal summSquareAverageConcentrationDispersion) const
+{
+    ZCalibrationQualityData qualityData;
+    if(calibrationId < 0)
+    {
+        return;
+    }
+
+    QString chemElement = zv_calibrationRepository->zp_chemElementForCalibrationId(calibrationId);
+    qint64 calibrationChemElementId = zv_spectrumArrayRepository->zp_chemElementIdForName(zv_currentArrayIndex, chemElement);
+
+    if(calibrationChemElementId < 0)
+    {
+        emit zg_calibrationQualityData(calibrationId, qualityData);
+        return;
+    }
+
+    int checkedSpectrumCount = 0;
+    const ZAbstractSpectrum* spectrum;
+    QStringList calibrationConcentrationList = zv_calibrationConcentrationMap.value(calibrationId);
+    if(calibrationConcentrationList.isEmpty() || calibrationConcentrationList.count() != zv_spectrumArrayRepository->zp_spectrumCount(zv_currentArrayIndex))
+    {
+        emit zg_calibrationQualityData(calibrationId, qualityData);
+        return;
+    }
+
+    qreal calibrationConcentration;
+    qreal chemConcentration;
+    qreal summSquareConcentrationDispersion = 0.0;
+    bool ok;
+
+    for(int s = 0; s < zv_spectrumArrayRepository->zp_spectrumCount(zv_currentArrayIndex); s++)
+    {
+        spectrum = zv_spectrumArrayRepository->zp_spectrum(zv_currentArrayId, s);
+        if(spectrum == 0 || !spectrum->zp_isSpectrumChecked())
+        {
+            continue;
+        }
+
+        checkedSpectrumCount++;
+        // chemConc
+        chemConcentration = spectrum->zp_concentrationValue(calibrationChemElementId);
+        // calibr conc
+        calibrationConcentration = calibrationConcentrationList.at(s).toDouble(&ok);
+        if(!ok)
+        {
+            emit zg_calibrationQualityData(calibrationId, qualityData);
+            return;
+        }
+
+        summSquareConcentrationDispersion += pow(chemConcentration - calibrationConcentration, 2.0);
+    }
+
+    if(checkedSpectrumCount <= 1)
+    {
+        emit zg_calibrationQualityData(calibrationId, qualityData);
+        return;
+    }
+
+    // dispersion sigma square
+    qreal squareSigma = summSquareConcentrationDispersion / checkedSpectrumCount;
+    qualityData.squareSigma = QString::number(squareSigma);
+
+    // standard deviation
+    qreal standardDeviation = sqrt(summSquareConcentrationDispersion / (checkedSpectrumCount - 1)) * 100;
+    qualityData.standardDeviation = QString::number(standardDeviation);
+
+    // R2 determination
+    if(summSquareAverageConcentrationDispersion == 0)
+    {
+        //
+        qualityData.determination = "Error";
+        qualityData.adj_determination = "Error";
+        emit zg_calibrationQualityData(calibrationId, qualityData);
+        return;
+    }
+
+    qreal determination = 1 - (summSquareConcentrationDispersion / summSquareAverageConcentrationDispersion);
+    qualityData.determination = QString::number(determination);
+
+    // R2adj determination
+    qreal denominator = checkedSpectrumCount - factorCount - 1;
+    if(denominator == 0)
+    {
+        qualityData.adj_determination = "Error";
+        emit zg_calibrationQualityData(calibrationId, qualityData);
+        return;
+    }
+
+    qreal adjDetermination = 1 - (1 - determination)*( (checkedSpectrumCount - 1)/(denominator) );
+    qualityData.adj_determination = QString::number(adjDetermination);
+    emit zg_calibrationQualityData(calibrationId, qualityData);
+
+}
+//==================================================================
 void ZJointSpectraDataManager::zh_onRepositoryArrayOperation(ZSpectrumArrayRepository::SpectrumOperationType type,
                                                              int arrayIndex, int first, int last)
 {
@@ -400,6 +497,7 @@ void ZJointSpectraDataManager::zh_onRepositoryTermOperation(ZCalibrationReposito
             type == ZCalibrationRepository::TOT_END_RESET)
     {
         zh_calculateCalibrationConcentrationForCalibration(calibrationIndex);
+
         emit zg_currentOperation(OT_COLUMN_DATA_CHANGED, visibleFirst, visibleLast);
     }
 }
@@ -625,60 +723,21 @@ void ZJointSpectraDataManager::zh_calculateCalibrationConcentrations()
         return;
     }
 
-    //    bool res;
-    //    qint64 calibrationId;
-    //    qreal concentration;
     for(int c = 0; c < zv_calibrationRepository->zp_calibrationCount(); c++)
     {
-        //        calibrationId = zv_calibrationRepository->zp_calibrationIdForCalibrationIndex(c);
-        //        QStringList concentrationList;
-        //        for(int s = 0; s < zv_spectrumArrayRepository->zp_spectrumCount(zv_currentArrayIndex); s++)
-        //        {
-        //            res = zv_calibrationRepository->zp_calculateConcentration(c, zv_spectrumArrayRepository->zp_spectrum(zv_currentArrayIndex, s), concentration);
-        //            if(res)
-        //            {
-        //                concentrationList.append(QString::number(concentration, zv_concentrationFormat, zv_concentrationPrecision));
-        //            }
-        //            else
-        //            {
-        //                concentrationList.append(QString("N/A"));
-        //            }
-        //        }
-        //        zv_calibrationConcentrationMap.insert(calibrationId, concentrationList);
         zh_calculateCalibrationConcentrationForCalibration(c);
     }
 }
 //==================================================================
 bool ZJointSpectraDataManager::zh_calculateCalibrationConcentrationForCalibration(int calibrationIndex)
 {
-    if(!zv_calibrationRepository || calibrationIndex < 0 || calibrationIndex >= zv_calibrationRepository->zp_calibrationCount())
-    {
-        return false;
-    }
-
     qint64 calibrationId = zv_calibrationRepository->zp_calibrationIdForCalibrationIndex(calibrationIndex);
     if(calibrationId < 0)
     {
         return false;
     }
 
-    QStringList concentrationList;
-    qreal concentration;
-    bool res;
-    for(int s = 0; s < zv_spectrumArrayRepository->zp_spectrumCount(zv_currentArrayIndex); s++)
-    {
-        res = zv_calibrationRepository->zp_calculateConcentration(calibrationIndex, zv_spectrumArrayRepository->zp_spectrum(zv_currentArrayIndex, s), concentration);
-        if(res)
-        {
-            concentrationList.append(QString::number(concentration, zv_concentrationFormat, zv_concentrationPrecision));
-        }
-        else
-        {
-            concentrationList.append(QString("N/A"));
-        }
-    }
-    zv_calibrationConcentrationMap.insert(calibrationId, concentrationList);
-    return true;
+    return zh_calculateCalibrationConcentrationForCalibrationId(calibrationId);
 }
 //==================================================================
 bool ZJointSpectraDataManager::zh_calculateCalibrationConcentrationForCalibrationId(qint64 calibrationId)
@@ -689,21 +748,100 @@ bool ZJointSpectraDataManager::zh_calculateCalibrationConcentrationForCalibratio
     }
 
     QStringList concentrationList;
+    //QString chemElementName = zv_calibrationRepository->zp_chemElementForCalibrationId(calibrationId);
+    //qint64 chemElementId = zv_spectrumArrayRepository->zp_chemElementIdForName(zv_currentArrayId, chemElementName);
     qreal concentration;
+    const ZAbstractSpectrum* spectrum;
     bool res;
     for(int s = 0; s < zv_spectrumArrayRepository->zp_spectrumCount(zv_currentArrayIndex); s++)
     {
-        res = zv_calibrationRepository->zp_calculateConcentrationForId(calibrationId, zv_spectrumArrayRepository->zp_spectrum(zv_currentArrayIndex, s), concentration);
+        spectrum = zv_spectrumArrayRepository->zp_spectrum(zv_currentArrayIndex, s);
+        if(!spectrum)
+        {
+            concentrationList.append(QString("N/A"));
+            //residualList.append(std::numeric_limits::quiet_NaN());
+            continue;
+        }
+        // calculate calibration concentration value
+        res = zv_calibrationRepository->zp_calculateConcentrationForId(calibrationId, spectrum, concentration);
         if(res)
         {
             concentrationList.append(QString::number(concentration, zv_concentrationFormat, zv_concentrationPrecision));
+            // get chem concentration
+            // calc residual and put it in residualList
+            //residualList.append(spectrum->zp_concentrationValue(chemElementId) - concentration);
         }
         else
         {
             concentrationList.append(QString("N/A"));
+            // put in residual list nan value
+            //residualList.append(std::numeric_limits::quiet_NaN());
         }
     }
     zv_calibrationConcentrationMap.insert(calibrationId, concentrationList);
+    //zv_concentrationResidualMap.insert(calibrationId, residualList);
+    emit zg_calibrationValuesChanged(calibrationId);
+    return true;
+}
+//==================================================================
+bool ZJointSpectraDataManager::zp_calculateConcentrationResidualList(qint64 calibrationId,
+                                                                     QList<qreal>&residualDispersionList) const
+{
+    residualDispersionList.clear();
+    QString chemElementName = zv_calibrationRepository->zp_chemElementForCalibrationId(calibrationId);
+    qint64 chemElementId = zv_spectrumArrayRepository->zp_chemElementIdForName(zv_currentArrayId, chemElementName);
+
+    if(chemElementId < 0)
+    {
+        return false;
+    }
+
+    qreal concentration;
+    const ZAbstractSpectrum* spectrum;
+    bool res;
+    qreal residual;
+    qreal averageResidual = 0.0;
+    int checkedSpectrumCount = 0;
+    for(int s = 0; s < zv_spectrumArrayRepository->zp_spectrumCount(zv_currentArrayIndex); s++)
+    {
+        spectrum = zv_spectrumArrayRepository->zp_spectrum(zv_currentArrayIndex, s);
+        if(!spectrum)
+        {
+            return false;
+        }
+
+        if(!spectrum->zp_isSpectrumChecked())
+        {
+            continue;
+        }
+        checkedSpectrumCount ++;
+        // calculate calibration concentration value
+        res = zv_calibrationRepository->zp_calculateConcentrationForId(calibrationId, spectrum, concentration);
+        if(res)
+        {
+            // get chem concentration
+            //calc residual and put it in residualList
+            residual = spectrum->zp_concentrationValue(chemElementId) - concentration;
+            averageResidual += residual;
+            residualDispersionList.append(residual);
+        }
+        else
+        {
+            return false;
+        }
+    }
+
+    if(checkedSpectrumCount < 1)
+    {
+        return false;
+    }
+
+    averageResidual /= static_cast<qreal>(checkedSpectrumCount);
+
+    for(int r = 0; r < residualDispersionList.count(); r++)
+    {
+        residualDispersionList[r] = residualDispersionList.at(r) - averageResidual;
+    }
     return true;
 }
 //==================================================================

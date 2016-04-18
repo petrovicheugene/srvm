@@ -15,7 +15,7 @@ ZAbstractTerm::ZAbstractTerm(ZCalibration *parent) : QObject(parent)
     zv_type = TT_NOT_DEFINED;
     zv_termState = TS_CONST_EXCLUDED;
     // zp_setTermFactor(0.0); // zv_termFactorString = 0;
-    zp_setTermFactorString("0.0");
+    zh_setTermFactor("0.0");
     zv_termId = zv_lastTermId++;
 }
 //============================================================
@@ -46,7 +46,7 @@ bool ZAbstractTerm::zp_setTermState(ZAbstractTerm::TermState state)
     return true;
 }
 //============================================================
-void ZAbstractTerm::zp_conformStringWithValue()
+void ZAbstractTerm::zh_conformStringWithValue()
 {
     if(qAbs(zv_termFactor) < 1)
     {
@@ -170,20 +170,21 @@ QString ZAbstractTerm::zp_termFactorString() const
     return zv_termFactorString;
 }
 //============================================================
-//bool ZAbstractTerm::zh_setTermFactor(qreal factor)
-//{
-//    if(zv_termFactor == factor)
-//    {
-//        return false;
-//    }
+bool ZAbstractTerm::zh_setTermFactor(qreal factor)
+{
+    if(zv_termFactor == factor)
+    {
+        return false;
+    }
 
-//    zv_termFactor = factor;
+    zv_termFactor = factor;
+    zh_conformStringWithValue();
 //    zv_termFactorString = QString::number(factor, 'f', 15);
 //    zh_chopTailZeroesFromTermFactorString();
-//    return true;
-//}
+    return true;
+}
 //============================================================
-bool ZAbstractTerm::zp_setTermFactorString(const QString& termFactorString)
+bool ZAbstractTerm::zh_setTermFactor(const QString& termFactorString)
 {
     bool ok;
     qreal termFactor = termFactorString.toDouble(&ok);

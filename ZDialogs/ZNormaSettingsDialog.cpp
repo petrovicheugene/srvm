@@ -14,7 +14,8 @@
 ZNormaSettingsDialog::ZNormaSettingsDialog(QWidget *parent) : QDialog(parent)
 {
     setWindowTitle(tr("Norma settings"));
-    setWindowFlags(Qt::Tool | Qt::MSWindowsFixedSizeDialogHint);
+    setWindowFlags(Qt::Tool | Qt::MSWindowsFixedSizeDialogHint | Qt::WindowStaysOnTopHint);
+
     zv_accepted = false;
     zh_createComponents();
     zh_createConnections();
