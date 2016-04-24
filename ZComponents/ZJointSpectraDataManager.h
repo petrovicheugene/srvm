@@ -55,6 +55,7 @@ signals:
     void zg_currentOperation(OperationType, int, int) const;
     void zg_calibrationQualityData(qint64 calibrationId, ZCalibrationQualityData) const;
     void zg_calibrationValuesChanged(qint64 calibrationId);
+    void zg_requestCurrentIndex(QModelIndex& index) const;
 
 public slots:
 
@@ -71,6 +72,7 @@ private slots:
     void zh_onRepositoryTermOperation(ZCalibrationRepository::TermOperationType, int calibrationIndex, int first, int last);
     void zh_onRepositoryCalibrationOperation(ZCalibrationRepository::CalibrationOperationType, int, int);
     void zh_currentSpectrumArrayChanged(qint64, int);
+    void zh_currentChemConcentrationCellIndex(int& row, int& chemConcColumn);
 
 private:
 

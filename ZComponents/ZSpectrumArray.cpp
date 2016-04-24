@@ -11,6 +11,12 @@
 QList<QColor> ZSpectrumArray::zv_colorList = ZSpectrumArray::zp_createColorList();
 qint64 ZSpectrumArray::zv_lastArrayId = 0;
 //===============================================
+ZSpectrumArray::ZSpectrumArray(QObject* parent)
+{
+    QString name;
+    ZSpectrumArray(name, parent) ;
+}
+//===============================================
 ZSpectrumArray::ZSpectrumArray(const QString& name, QObject* parent)  : QObject(parent)
 {
     zv_arrayName = name;
@@ -551,17 +557,30 @@ bool ZSpectrumArray::zp_appendSpectrum(const ZRawSpectrum& rawSpectrum, bool las
     return res;
 }
 //===============================================
-bool ZSpectrumArray::zp_appendNewChemElement()
+bool ZSpectrumArray::zp_appendNewChemElement(QString chemElement)
 {
-    QString chemElement = "Element #";
     int nextElementIndex = zv_chemElementList.zp_chemElementCount() + 1;
-    while(zv_chemElementList.zp_containsElement(chemElement+QString::number(nextElementIndex)))
+    if(chemElement.isEmpty())
     {
-        nextElementIndex++;
+        chemElement = "Element #";
+        while(zv_chemElementList.zp_containsElement(chemElement+QString::number(nextElementIndex)))
+        {
+            nextElementIndex++;
+        }
+        chemElement += QString::number(nextElementIndex);
+    }
+    else if(zv_chemElementList.zp_containsElement(chemElement))
+    {
+        chemElement += " #";
+        while(zv_chemElementList.zp_containsElement(chemElement+QString::number(nextElementIndex)))
+        {
+            nextElementIndex++;
+        }
+        chemElement += QString::number(nextElementIndex);
     }
 
     qint64 chemElementId;
-    bool res = zv_chemElementList.zp_appendElement(chemElement+QString::number(nextElementIndex), chemElementId);
+    bool res = zv_chemElementList.zp_appendElement(chemElement, chemElementId);
     if(res)
     {
         for(int s = 0; s < zv_spectrumList.count(); s++)

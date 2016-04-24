@@ -6,6 +6,11 @@
 #include <QMessageBox>
 #include <QFileInfo>
 #include <QtAlgorithms>
+#include <QApplication>
+#include <QClipboard>
+#include <QMimeData>
+#include <QMessageBox>
+#include <QStringList>
 //==================================================================
 ZSpectrumArrayRepository::ZSpectrumArrayRepository(QObject *parent) : QObject(parent)
 {
@@ -42,6 +47,12 @@ QList<QAction*> ZSpectrumArrayRepository::zp_spectrumActions() const
     QList<QAction*> actionList;
     actionList << zv_appendSpectrumToArrayAction;
     actionList << zv_removeSpectrumFromArrayAction;
+    actionList << 0; // separator
+    actionList << zv_copyConcentrationDataAction;
+    actionList << zv_pasteConcentrationDataAction;
+    actionList << 0; // separator
+    actionList << zv_clearConcentrationDataAction;
+
     return actionList;
 }
 //==================================================================
@@ -206,16 +217,16 @@ qint64 ZSpectrumArrayRepository::zp_chemElementIdForName(int arrayIndex, const Q
         return -1;
     }
 
-//    for(int a = 0; a < zv_arrayList.count(); a++)
-//    {
-        for(int c = 0; c < zv_arrayList.at(arrayIndex)->zp_chemElementCount(); c++)
+    //    for(int a = 0; a < zv_arrayList.count(); a++)
+    //    {
+    for(int c = 0; c < zv_arrayList.at(arrayIndex)->zp_chemElementCount(); c++)
+    {
+        if(zv_arrayList.at(arrayIndex)->zp_chemElementName(c) == name)
         {
-            if(zv_arrayList.at(arrayIndex)->zp_chemElementName(c) == name)
-            {
-                return zv_arrayList.at(arrayIndex)->zp_chemElementId(c);
-            }
+            return zv_arrayList.at(arrayIndex)->zp_chemElementId(c);
         }
-//    }
+    }
+    //    }
 
     return -1;
 }
@@ -265,9 +276,9 @@ bool ZSpectrumArrayRepository::zp_setChemConcentration(int arrayIndex, int spect
     bool res = zv_arrayList.value(arrayIndex)->zp_setChemConcentration(chemElementId, spectrumIndex, concentration);
     if(res)
     {
-//        int chemElementIndex = zh_chemElementIndexForId(arrayIndex, chemElementId);
-//        emit zg_chemElementOperation(CEOT_CHEM_ELEMENT_VALUE_CHANGED,
-//                                     arrayIndex, chemElementIndex, chemElementIndex);
+        //        int chemElementIndex = zh_chemElementIndexForId(arrayIndex, chemElementId);
+        //        emit zg_chemElementOperation(CEOT_CHEM_ELEMENT_VALUE_CHANGED,
+        //                                     arrayIndex, chemElementIndex, chemElementIndex);
 
 
         zv_dirty = true;
@@ -881,9 +892,10 @@ void ZSpectrumArrayRepository::zp_currentArrayChanged(int current, int previous)
         arrayId = zv_arrayList.at(current)->zp_arrayId();
     }
 
+    zv_pasteConcentrationDataAction->setEnabled(current >= 0 && zv_pasteData.zp_isValid());
+
     emit zg_currentArrayIsAboutChange(arrayId, current);
     emit zg_currentArrayIdChanged(arrayId, current);
-
 }
 //==================================================================
 void ZSpectrumArrayRepository::zp_currentSpectrumChanged(int currentSpectrumIndex, int previousSpectrumIndex)
@@ -1127,19 +1139,19 @@ void ZSpectrumArrayRepository::zh_onRemoveChemElementAction()
         res = zh_removeChemicalElement(currentArrayIndex, selectedChemElementList.value(i)) || res;
     }
 
-//    if(res)
-//    {
-//        if(zv_arrayList.isEmpty())
-//        {
-//            zv_dirty = false;
-//            zv_arrayFilePath = QString();
-//        }
-//        else
-//        {
-//            zv_dirty = true;
-//        }
-//        emit zg_currentFile(zv_dirty, zv_arrayFilePath);
-//    }
+    //    if(res)
+    //    {
+    //        if(zv_arrayList.isEmpty())
+    //        {
+    //            zv_dirty = false;
+    //            zv_arrayFilePath = QString();
+    //        }
+    //        else
+    //        {
+    //            zv_dirty = true;
+    //        }
+    //        emit zg_currentFile(zv_dirty, zv_arrayFilePath);
+    //    }
 }
 //==================================================================
 void ZSpectrumArrayRepository::zh_onChemElementOperation(ZChemElementList::OperationType type, int first, int last)
@@ -1242,6 +1254,246 @@ void ZSpectrumArrayRepository::zh_onSpectrumOperation(ZSpectrumArray::OperationT
     }
 }
 //==================================================================
+void ZSpectrumArrayRepository::zh_onClipboardContentChange()
+{
+    zv_pasteData.zp_reset();
+
+    QClipboard* clipboard = qApp->clipboard();
+    if(!clipboard->mimeData()->hasText())
+    {
+        zv_pasteConcentrationDataAction->setEnabled(false);
+        return;
+    }
+
+    QString sourceString = clipboard->text();
+
+    int currentArrayIndex = -1;
+    emit zg_requestCurrentArrayIndex(currentArrayIndex);
+    ZSpectrumArray* currentArray = zv_arrayList.value(currentArrayIndex);
+    QStringList chemElementList;
+    if(currentArray)
+    {
+        chemElementList = currentArray->zp_chemElementList();
+    }
+
+    if(!zv_pasteData.zp_loadData(sourceString, chemElementList))
+    {
+        zv_pasteConcentrationDataAction->setEnabled(false);
+        return;
+    }
+
+    zv_pasteConcentrationDataAction->setEnabled(currentArrayIndex >= 0 && currentArrayIndex < zv_arrayList.count());
+    return;
+}
+//==================================================================
+void ZSpectrumArrayRepository::zh_onPasteConcentrationDataAction()
+{
+    if(!zv_pasteData.zp_isValid())
+    {
+        zv_pasteConcentrationDataAction->setEnabled(false);
+        return;
+    }
+
+    int currentArrayIndex = -1;
+    emit zg_requestCurrentArrayIndex(currentArrayIndex);
+    if(currentArrayIndex < 0 || currentArrayIndex >= zv_arrayList.count())
+    {
+        QString warning = tr("Select a spectrum array for data pasting.");
+        QMessageBox::warning(0, zv_messageBoxPasteTitle, warning, QMessageBox::Ok);
+        return;
+    }
+
+    ZSpectrumArray* currentArray = zv_arrayList.value(currentArrayIndex);
+    if(!currentArray)
+    {
+        return;
+    }
+
+    if(zv_pasteData.zp_isHeaderListValid())
+    {
+        // Headers exist. fill every chemElement from first spectrum
+        // check chemElements in pastingData
+        QStringList chemElementList = currentArray->zp_chemElementList();
+        QStringList absentChemElementList = zv_pasteData.zp_absentHeaderList(chemElementList);
+
+        if(!absentChemElementList.isEmpty())
+        {
+            QString absentChemElementString;
+            for(int i = 0; i < absentChemElementList.count(); i++)
+            {
+                absentChemElementString += absentChemElementList.at(i);
+                if(i < absentChemElementList.count() - 1)
+                {
+                    absentChemElementString += ", ";
+                }
+            }
+            absentChemElementString += ".";
+            QString question = tr("In the pasting data are folowing chemical elements not presented in current array:\n"
+                                  "%1\n"
+                                  "Do you want to create new chemical elements?").arg(absentChemElementString);
+            if(QMessageBox::question(0, zv_messageBoxPasteTitle, question, QMessageBox::Yes | QMessageBox::No)
+                    == QMessageBox::Yes)
+            {
+                // create new chem elements
+                foreach(QString str, absentChemElementList)
+                {
+                    currentArray->zp_appendNewChemElement(str);
+                }
+            }
+        } // end if(!absentChemElementList.isEmpty())
+
+        // check dimension
+        QString question;
+        if(zv_pasteData.zp_dataRowCount() > currentArray->zp_spectrumCount())
+        {
+            question = tr("The number of pasting data row exceeds the number of spectrum in the array.");
+        }
+        else if(zv_pasteData.zp_dataRowCount() < currentArray->zp_spectrumCount())
+        {
+            question = tr("The number of spectrum in the array exceeds the number of pasting data.");
+        }
+
+        if(!question.isEmpty())
+        {
+            question += "\nContinue anyway?";
+            if(QMessageBox::question(0, zv_messageBoxPasteTitle, question, QMessageBox::Yes | QMessageBox::No)
+                    == QMessageBox::No)
+            {
+                return;
+            }
+        }
+
+        // paste data
+        qint64 chemElementId;
+        QStringList concentrationColumn;
+        QString header;
+        int chemElementIndex;
+        enum AnswerResult {AR_NOT_DEFINED, AR_YES, AR_NO} answerResult = AR_NOT_DEFINED;
+        for(int col = 0; col < zv_pasteData.zp_columnCount(); col++)
+        {
+            header = zv_pasteData.zp_columnHeader(col);
+            chemElementIndex = currentArray->zp_chemElementIndexForName(header);
+            chemElementId = currentArray->zp_chemElementId(chemElementIndex);
+
+            if(chemElementId < 0 || chemElementIndex < 0 || chemElementIndex >= currentArray->zp_chemElementCount())
+            {
+                continue;
+            }
+
+            if(!currentArray->zp_chemElementIsVisible(chemElementIndex) && answerResult != AR_YES)
+            {
+                if(answerResult == AR_NOT_DEFINED)
+                {
+                    QString question = tr("There are hidden chemical element columns.\n"
+                                          "Do you want to paste data to them?");
+                    int res = QMessageBox::question(0, zv_messageBoxPasteTitle, question,
+                                                    QMessageBox::Yes | QMessageBox::No);
+                    switch(res)
+                    {
+                    case QMessageBox::Yes:
+                        answerResult = AR_YES;
+                        break;
+                    case QMessageBox::No:
+                        answerResult = AR_NO;
+                        continue;
+                        break;
+                    }
+                }
+                else if(answerResult == AR_NO)
+                {
+                    continue;
+                }
+            }
+
+            concentrationColumn = zv_pasteData.zp_columnData(col);
+            for(int s = 0; (s < currentArray->zp_spectrumCount() && s < concentrationColumn.count()); s++)
+            {
+                currentArray->zp_setChemConcentration(chemElementId, s, concentrationColumn.at(s));
+            }
+        }
+    }
+    else
+    {
+        // data only. fill from current cell
+
+        // get start cell to paste
+        int row = -1;
+        int column = -1;
+        emit zg_requestCurrentChemConcentrationCellIndex(row, column);
+        if(row < 0 || row >= currentArray->zp_spectrumCount()
+                || column < 0 || column >= currentArray->zp_visibleChemElementCount())
+        {
+            QString warning = tr("Select a top left cell in a chemical concentration column for data pasting.");
+            QMessageBox::warning(0, zv_messageBoxPasteTitle, warning, QMessageBox::Ok);
+            return;
+        }
+
+        // check dimension
+        QString question;
+        if(zv_pasteData.zp_dataRowCount() > currentArray->zp_spectrumCount() - row)
+        {
+            question = tr("The number of inserted rows exceeds the number of spectra.");
+        }
+
+        if(zv_pasteData.zp_columnCount() > currentArray->zp_visibleChemElementCount() - column)
+        {
+            if(question.isEmpty())
+            {
+                question = tr("The number of inserted columns exceeds the number of visible chemical elements.");
+            }
+            else
+            {
+                question = tr("The dimension of inserted data exceeds the numbers of spectra and visible chemical elements.");
+            }
+        }
+
+        if(!question.isEmpty())
+        {
+            question += "\nContinue anyway?";
+            if(QMessageBox::question(0, zv_messageBoxPasteTitle, question, QMessageBox::Yes | QMessageBox::No)
+                    == QMessageBox::No)
+            {
+                return;
+            }
+        }
+
+        // create chemElementIdList that corresponding with pastingData columns
+        QList<qint64> chemElementIdList;
+        for(int col = column; col < currentArray->zp_visibleChemElementCount(); col++)
+        {
+            chemElementIdList.append(currentArray->zp_visibleChemElementId(col));
+        }
+
+        // paste data
+        qint64 chemElementId;
+        QStringList concentrationColumn;
+        for(int col = 0; col < zv_pasteData.zp_columnCount(); col++)
+        {
+            if(col >= chemElementIdList.count())
+            {
+                return;
+            }
+            chemElementId = chemElementIdList.at(col);
+            concentrationColumn = zv_pasteData.zp_columnData(col);
+
+            for(int s = row, cr = 0; (s < currentArray->zp_spectrumCount() && cr < concentrationColumn.count()); s++, cr++)
+            {
+                currentArray->zp_setChemConcentration(chemElementId, s, concentrationColumn.at(cr));
+            }
+        } // end pasting
+    }
+}
+//==================================================================
+void ZSpectrumArrayRepository::zh_onCopyConcentrationDataAction()
+{
+
+}
+//==================================================================
+void ZSpectrumArrayRepository::zh_onClearConcentrationDataAction()
+{
+
+}
+//==================================================================
 QList<ZRawSpectrumArray> ZSpectrumArrayRepository::zh_createRawArrayList() const
 {
     QList<ZRawSpectrumArray> rawSpectrumArrayList;
@@ -1253,6 +1505,34 @@ QList<ZRawSpectrumArray> ZSpectrumArrayRepository::zh_createRawArrayList() const
 
     return rawSpectrumArrayList;
 }
+//==================================================================
+//void ZSpectrumArrayRepository::zh_pasteConcentrationData(int arrayIndex,
+//                                                         int startSpectrumIndex,
+//                                                         const QList<qint64>& chemElementIdList)
+//{
+//    if(arrayIndex < 0 || arrayIndex >= zv_arrayList.count())
+//    {
+//        return;
+//    }
+
+//    ZSpectrumArray* currentArray = zv_arrayList.value(arrayIndex);
+//    qint64 chemElementId;
+//    QStringList concentrationColumn;
+//    for(int col = 0; col < zv_pasteData.zp_columnCount(); col++)
+//    {
+//        if(col >= chemElementIdList.count())
+//        {
+//            return;
+//        }
+//        chemElementId = chemElementIdList.at(col);
+//        concentrationColumn = zv_pasteData.zp_columnData(col);
+
+//        for(int s = startSpectrumIndex, cr = 0; (s < currentArray->zp_spectrumCount() && cr < concentrationColumn.count()); s++, cr++)
+//        {
+//            currentArray->zp_setChemConcentration(chemElementId, s, concentrationColumn.at(cr));
+//        }
+//    }
+//}
 //==================================================================
 void ZSpectrumArrayRepository::zh_createActions()
 {
@@ -1286,6 +1566,18 @@ void ZSpectrumArrayRepository::zh_createActions()
     zv_removeChemElementAction->setText(tr("Remove current chemical element"));
     zv_removeChemElementAction->setToolTip(tr("Remove current chemical element from the list"));
 
+    zv_copyConcentrationDataAction = new QAction(this);
+    zv_copyConcentrationDataAction->setText(tr("Copy selected concentrations"));
+    zv_copyConcentrationDataAction->setEnabled(false);
+
+    zv_pasteConcentrationDataAction = new QAction(this);
+    zv_pasteConcentrationDataAction->setText(tr("Paste concentrations"));
+    zv_pasteConcentrationDataAction->setEnabled(false);
+
+    zv_clearConcentrationDataAction = new QAction(this);
+    zv_clearConcentrationDataAction->setText(tr("Clear selected concentrations"));
+    zv_clearConcentrationDataAction->setEnabled(false);
+
 }
 //==================================================================
 void ZSpectrumArrayRepository::zh_createConnections()
@@ -1302,6 +1594,17 @@ void ZSpectrumArrayRepository::zh_createConnections()
             this, &ZSpectrumArrayRepository::zh_onAppendChemElementAction);
     connect(zv_removeChemElementAction, &QAction::triggered,
             this, &ZSpectrumArrayRepository::zh_onRemoveChemElementAction);
+
+    connect(zv_copyConcentrationDataAction, &QAction::triggered,
+            this, &ZSpectrumArrayRepository::zh_onCopyConcentrationDataAction);
+    connect(zv_pasteConcentrationDataAction, &QAction::triggered,
+            this, &ZSpectrumArrayRepository::zh_onPasteConcentrationDataAction);
+    connect(zv_clearConcentrationDataAction, &QAction::triggered,
+            this, &ZSpectrumArrayRepository::zh_onClearConcentrationDataAction);
+
+    connect(qApp->clipboard(), &QClipboard::dataChanged,
+            this, &ZSpectrumArrayRepository::zh_onClipboardContentChange);
+
 }
 //==================================================================
 int ZSpectrumArrayRepository::zh_chemElementIndexForId(int arrayIndex, qint64 chemElementId)

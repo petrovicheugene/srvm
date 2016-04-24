@@ -19,7 +19,7 @@ VER_RELEASE=a
 
 EXE_BASE_NAME=SDCalibrator
 QMAKE_TARGET_PRODUCT="SD Calibrator"
-QMAKE_TARGET_DESCRIPTION="Creates calibrations for spectrometer"
+QMAKE_TARGET_DESCRIPTION="Creates calibrations for spectrometers"
 QMAKE_TARGET_COMPANY="TechnoAnalyt"
 QMAKE_TARGET_COPYRIGHT="Copyright © $${QMAKE_TARGET_COMPANY} Ltd. 2015.  All rights reserved."
 COMPANY_URL=tehnoanalit.com
@@ -145,7 +145,8 @@ SOURCES += main.cpp \
     ZPlotter/ZChartPointOptions.cpp \
     ZComponents/ZLSEGaussSolver.cpp \
     ZComponents/ZQrealToStringConverter.cpp \
-    ZComponents/ZCalibrationQualityData.cpp
+    ZComponents/ZCalibrationQualityData.cpp \
+    ZComponents/ZPasteData.cpp
 
 
 HEADERS  += \
@@ -230,7 +231,8 @@ HEADERS  += \
     ZPlotter/ZChartPointOptions.h \
     ZComponents/ZLSEGaussSolver.h \
     ZComponents/ZQrealToStringConverter.h \
-    ZComponents/ZCalibrationQualityData.h
+    ZComponents/ZCalibrationQualityData.h \
+    ZComponents/ZPasteData.h
 
 
 RESOURCES += \

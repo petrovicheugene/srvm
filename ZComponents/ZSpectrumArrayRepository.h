@@ -4,9 +4,11 @@
 //==================================================================
 #include <QObject>
 #include <QList>
+#include <QMap>
 #include <QMenu>
 #include "ZRawSpectrumArray.h"
 #include "ZSpectrumArray.h"
+#include <ZPasteData.h>
 
 //==================================================================
 class QAction;
@@ -106,10 +108,6 @@ public:
     bool zp_energyCalibrationForArrayId(qint64 arrayId, qreal& K0, qreal& K1, qreal& K2, QString& energyUnit);
 
     qint64 zp_arrayIdForArrayIndex(int arrayIndex) const;
-//    bool zp_averageChemConcentration(int arrayIndex, const QString& chemElement, qreal& averageValue ) const;
-//    bool zp_averageChemConcentration(int arrayIndex, int chemElementindex, qreal& averageValue ) const;
-//    bool zp_averageChemConcentrationForChemElementId(int arrayIndex, qint64 chemElementId , qreal& averageValue ) const;
-
 
 signals:
 
@@ -124,8 +122,9 @@ signals:
     void zg_setCurrentArrayIndex(int arrayIndex);
     void zg_setCurrentChemElementIndex(int chemElementIndex);
 
-    void zg_requestCurrentArrayIndex(int& arrayIndex);
+    void zg_requestCurrentArrayIndex(int& arrayIndex) const;
     void zg_requestSelectedSpectrumIndexList(QList<int>&);
+    void zg_requestCurrentChemConcentrationCellIndex(int& row, int& visibleChemColumn);
     void zg_requestSelectedChemElementIndexList(QList<int>&);
 
     void zg_startCurrentArrayEdition();
@@ -170,6 +169,12 @@ private slots:
     void zh_createRawArrayListAndStartSaving(QString filePath) const;
     void zh_onSpectrumOperation(ZSpectrumArray::OperationType type, int first, int last) const;
 
+    void zh_onClipboardContentChange();
+
+    void zh_onPasteConcentrationDataAction();
+    void zh_onCopyConcentrationDataAction();
+    void zh_onClearConcentrationDataAction();
+
 private:
 
     // VARS
@@ -177,6 +182,7 @@ private:
     QString zv_arrayFilePath;
     bool zv_dirty;
     QString zv_defaultArrayBaseName;
+    const QString zv_messageBoxPasteTitle = tr("Paste concentration");
 
     QAction* zv_appendArrayAction;
     QAction* zv_removeArrayAction;
@@ -184,6 +190,12 @@ private:
     QAction* zv_removeSpectrumFromArrayAction;
     QAction* zv_appendChemElementAction;
     QAction* zv_removeChemElementAction;
+
+    QAction* zv_pasteConcentrationDataAction;
+    QAction* zv_copyConcentrationDataAction;
+    QAction* zv_clearConcentrationDataAction;
+
+    ZPasteData zv_pasteData;
 
     // FUNCS
     void zh_createActions();
@@ -195,8 +207,9 @@ private:
     bool zh_removeChemicalElement(int, int);
     int zh_chemElementIndexForId(int arrayIndex, qint64 chemElementId);
     QList<ZRawSpectrumArray> zh_createRawArrayList() const;
-    //  void zp_saveArrayListToFile();
-
+//    void zh_pasteConcentrationData(int arrayIndex,
+//                                   int startSpectrumIndex,
+//                                   const QList<qint64>& chemElementIdList);
 
 };
 //==================================================================

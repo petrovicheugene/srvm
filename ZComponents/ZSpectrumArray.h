@@ -14,6 +14,7 @@ class ZSpectrumArray : public QObject
 {
     Q_OBJECT
 public:
+    explicit ZSpectrumArray(QObject* parent = 0);
     explicit ZSpectrumArray(const QString&, QObject* parent);
     ~ZSpectrumArray();
     enum OperationType {OT_INSERT_SPECTRA,
@@ -69,7 +70,7 @@ public:
     void zp_clearChemElements();
 
     bool zp_appendSpectrum(const ZRawSpectrum& rawSpectrum, bool last, bool& dontAsk);
-    bool zp_appendNewChemElement();
+    bool zp_appendNewChemElement(QString chemElement = QString());
     bool zp_removeChemElement(int);
 
     const ZAbstractSpectrum* zp_spectrum(int index) const;

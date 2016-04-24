@@ -28,6 +28,7 @@ public slots:
 
 signals:
 
+    void zg_requestCurrentIndex(QModelIndex& currentIndex) const;
 
 private:
 
@@ -37,7 +38,6 @@ private:
 private slots:
 
     void zh_onDataManagerOperation(ZJointSpectraDataManager::OperationType, int, int);
-
 };
 //===========================================================
 #endif // ZJOINTSPECTRAMODEL_H

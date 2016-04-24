@@ -14,6 +14,7 @@
 //=============================================================
 ZJointSpectrumTableWidget::ZJointSpectrumTableWidget(QWidget *parent) : QWidget(parent)
 {
+    //zh_createActions();
     zh_createComponents();
     zh_createConnections();
 }
@@ -30,6 +31,17 @@ void ZJointSpectrumTableWidget::zp_selectedSpectrumIndexList(QList<int>& selecte
     }
 }
 //=============================================================
+void ZJointSpectrumTableWidget::zp_currentIndex(QModelIndex& index) const
+{
+    if(!zv_table)
+    {
+        index = QModelIndex();
+        return;
+    }
+
+    index = zv_table->currentIndex();
+}
+//=============================================================
 void ZJointSpectrumTableWidget::zh_createComponents()
 {
     zv_mainLayout = new QVBoxLayout(this);
@@ -38,14 +50,20 @@ void ZJointSpectrumTableWidget::zh_createComponents()
     setLayout(zv_mainLayout);
 
     zv_table = new QTableView(this);
+    zv_table->setContextMenuPolicy(Qt::CustomContextMenu);
+
     zv_mainLayout->addWidget(zv_table, INT_MAX);
 
     zv_buttonLayout = new QHBoxLayout(this);
     zv_mainLayout->addLayout(zv_buttonLayout);
+
 }
 //=============================================================
 void ZJointSpectrumTableWidget::zh_createConnections()
 {
+    connect(zv_table, &QTableView::customContextMenuRequested,
+            this, &ZJointSpectrumTableWidget::zh_onContextMenuRequest);
+
 
 }
 //=============================================================
@@ -70,27 +88,37 @@ void ZJointSpectrumTableWidget::zp_setModel(ZJointSpectraModel* model)
 
     connect(zv_table->selectionModel(), &QItemSelectionModel::currentRowChanged,
             this, &ZJointSpectrumTableWidget::zh_onCurrentSpectrumChanged);
+    connect(model, &ZJointSpectraModel::zg_requestCurrentIndex,
+            this, &ZJointSpectrumTableWidget::zp_currentIndex);
 }
 //==============================================================
 void ZJointSpectrumTableWidget::zp_appendButtonActions(QList<QAction*> actionList)
 {
+    zv_buttonActionList = actionList;
     zv_buttonLayout->addStretch();
+
     for(int a = 0; a < actionList.count(); a++)
     {
+        if(actionList.at(a) == 0)
+        {
+            // Separator for context menu
+            continue;
+        }
         QPushButton* button = new QPushButton(this);
         button->setFlat(true);
         button->setIcon(actionList.at(a)->icon());
         button->setToolTip(actionList.at(a)->toolTip());
         connect(button, &QPushButton::clicked,
                 actionList[a], &QAction::trigger);
-        zv_buttonLayout->addWidget(button);
+        zv_buttonLayout->addWidget(button, 0, Qt::AlignRight);
     }
 }
 //==============================================================
 void ZJointSpectrumTableWidget::zp_connectToSpectrumArrayRepository(ZSpectrumArrayRepository* repository)
 {
-   connect(this, &ZJointSpectrumTableWidget::zg_currentSpectrumChanged,
-           repository, &ZSpectrumArrayRepository::zp_currentSpectrumChanged);
+    connect(this, &ZJointSpectrumTableWidget::zg_currentSpectrumChanged,
+            repository, &ZSpectrumArrayRepository::zp_currentSpectrumChanged);
+
 }
 //==============================================================
 void ZJointSpectrumTableWidget::zp_setMargin(int margin)
@@ -146,5 +174,25 @@ void ZJointSpectrumTableWidget::zh_onCurrentSpectrumChanged(const QModelIndex & 
     }
 
     emit zg_currentSpectrumChanged(currentRow, previousRow);
+}
+//==============================================================
+void ZJointSpectrumTableWidget::zh_onContextMenuRequest(const QPoint &pos)
+{
+    QMenu *menu=new QMenu(this);
+    menu->setAttribute(Qt::WA_DeleteOnClose);
+
+    foreach(QAction* action, zv_buttonActionList)
+    {
+        if(action == 0)
+        {
+            menu->addSeparator();
+            continue;
+        }
+
+        menu->addAction(action);
+    }
+
+    menu->popup(zv_table->viewport()->mapToGlobal(pos));
+
 }
 //==============================================================

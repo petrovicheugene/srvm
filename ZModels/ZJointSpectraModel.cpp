@@ -186,6 +186,8 @@ void ZJointSpectraModel::zp_connectToSpectraDataManager(ZJointSpectraDataManager
     // data manager <-> joint model
     connect(dataManager, &ZJointSpectraDataManager::zg_currentOperation,
             this, &ZJointSpectraModel::zh_onDataManagerOperation);
+    connect(dataManager, &ZJointSpectraDataManager::zg_requestCurrentIndex,
+            this, &ZJointSpectraModel::zg_requestCurrentIndex);
     endResetModel();
 }
 //==================================================================

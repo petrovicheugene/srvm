@@ -26,6 +26,9 @@ void ZJointSpectraDataManager::zp_connectToSpectrumArrayRepository(ZSpectrumArra
             this, &ZJointSpectraDataManager::zh_onRepositoryChemElementOperation);
     connect(repository, &ZSpectrumArrayRepository::zg_currentArrayIdChanged,
             this, &ZJointSpectraDataManager::zh_currentSpectrumArrayChanged);
+    connect(repository, &ZSpectrumArrayRepository::zg_requestCurrentChemConcentrationCellIndex,
+            this, &ZJointSpectraDataManager::zh_currentChemConcentrationCellIndex);
+
 
 }
 //==================================================================
@@ -273,6 +276,29 @@ void ZJointSpectraDataManager::zh_currentSpectrumArrayChanged(qint64 currentArra
     emit zg_currentOperation(OT_END_RESET, -1, -1);
 }
 //==================================================================
+void ZJointSpectraDataManager::zh_currentChemConcentrationCellIndex(int& row, int& chemConcColumn)
+{
+    QModelIndex currentIndex;
+    emit zg_requestCurrentIndex(currentIndex);
+
+    if(!currentIndex.isValid())
+    {
+        row = -1;
+        chemConcColumn = -1;
+        return;
+    }
+
+    // row without changing
+    row = currentIndex.row();
+
+    // column - index of visible. if out of chem element range then -1
+    chemConcColumn = currentIndex.column() - zv_spectrumDataColumnCount;
+    if(chemConcColumn > zv_visibleChemElementCount - 1)
+    {
+        chemConcColumn = -1;
+    }
+}
+//==================================================================
 void ZJointSpectraDataManager::zp_calculateCalibrationQualityData(qint64 calibrationId,
                                                                   int factorCount,
                                                                   qreal summSquareAverageConcentrationDispersion) const
@@ -308,7 +334,7 @@ void ZJointSpectraDataManager::zp_calculateCalibrationQualityData(qint64 calibra
 
     for(int s = 0; s < zv_spectrumArrayRepository->zp_spectrumCount(zv_currentArrayIndex); s++)
     {
-        spectrum = zv_spectrumArrayRepository->zp_spectrum(zv_currentArrayId, s);
+        spectrum = zv_spectrumArrayRepository->zp_spectrum(zv_currentArrayIndex, s);
         if(spectrum == 0 || !spectrum->zp_isSpectrumChecked())
         {
             continue;
@@ -339,7 +365,7 @@ void ZJointSpectraDataManager::zp_calculateCalibrationQualityData(qint64 calibra
     qualityData.squareSigma = QString::number(squareSigma);
 
     // standard deviation
-    qreal standardDeviation = sqrt(summSquareConcentrationDispersion / (checkedSpectrumCount - 1)) * 100;
+    qreal standardDeviation = sqrt(summSquareConcentrationDispersion / (checkedSpectrumCount - 1));
     qualityData.standardDeviation = QString::number(standardDeviation);
 
     // R2 determination

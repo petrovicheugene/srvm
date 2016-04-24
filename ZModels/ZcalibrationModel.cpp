@@ -296,7 +296,7 @@ QVariant ZCalibrationModel::headerData(int section, Qt::Orientation orientation,
 //            }
             else if(section == 7)
             {
-                header = "s, %";
+                header = "s";
             }
 
             return QVariant(header);
