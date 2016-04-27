@@ -740,7 +740,63 @@ void ZTermCorrelationTableManager::zh_recalcCalibrationFactors()
 
     if(factorToIndexMap.isEmpty())
     {
-        // TODO Error msg
+        if(calibration->zp_equationType() != ZCalibration::ET_FRACTIONAL)
+        {
+            // TODO Error msg
+            return;
+        }
+        // calc only free term freeTerm = averageNumerator / averageConcentration
+        // chem element id
+        QString chemElement = calibration->zp_chemElement();
+        qint64 chemElementId = zv_spectrumArrayRepository->zp_chemElementIdForName(zv_currentArrayIndex, chemElement);
+        if(chemElementId < 0)
+        {
+            return;
+        }
+
+        qreal averageConcentration = 0.0;
+        qreal averageBaseValue = 0.0;
+        int checkedSpectrumCount = 0;
+        qreal value;
+        const ZAbstractSpectrum* spectrum;
+        for(int s = 0; s < zv_spectrumArrayRepository->zp_spectrumCount(zv_currentArrayIndex); s++)
+        {
+            spectrum = zv_spectrumArrayRepository->zp_spectrum(zv_currentArrayIndex, s);
+            if(!spectrum )
+            {
+                continue;
+            }
+
+            if(!spectrum->zp_isSpectrumChecked())
+            {
+                continue;
+            }
+
+            checkedSpectrumCount++;
+            // averageConcentration
+            averageConcentration += spectrum->zp_concentrationValue(chemElementId);
+
+            // averageNumerator
+            if(!calibration->zp_calcBaseTermValue(spectrum, value))
+            {
+                // TODO Error msg
+                return;
+            }
+            averageBaseValue += value;
+        }
+
+        if(checkedSpectrumCount == 0 || averageConcentration == 0)
+        {
+
+            return;
+        }
+        averageConcentration /= checkedSpectrumCount;
+        averageBaseValue /= checkedSpectrumCount;
+
+        *freeTerm = averageBaseValue / averageConcentration;
+        // force signal emit
+        zv_calibrationRepository->zh_notifyCalibrationRecalc(zv_currentCalibrationId);
+        emit zg_calculateCalibrationQualityData(zv_currentCalibrationId, 1, zv_sumSquareAverageConcentrationDispersion);
         return;
     }
 
@@ -814,8 +870,9 @@ void ZTermCorrelationTableManager::zh_recalcCalibrationFactors()
 
     // force signal emit
     zv_calibrationRepository->zh_notifyCalibrationRecalc(zv_currentCalibrationId);
+    // factor count + 1 - free member
 
-    emit zg_calculateCalibrationQualityData(zv_currentCalibrationId, factorCount, zv_sumSquareAverageConcentrationDispersion);
+    emit zg_calculateCalibrationQualityData(zv_currentCalibrationId, factorCount + 1, zv_sumSquareAverageConcentrationDispersion);
 }
 //=============================================================================
 bool ZTermCorrelationTableManager::zh_convertColRowForInterCorrelationMatrix(int& row, int& col) const

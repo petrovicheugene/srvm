@@ -569,14 +569,14 @@ bool ZCalibration::zp_calcBaseTermValue(const ZAbstractSpectrum* spectrum, qreal
         return false;
     }
 
-    qreal baseTermValue = std::numeric_limits<double>::quiet_NaN();
+    //qreal baseTermValue = std::numeric_limits<double>::quiet_NaN();
     //qreal baseNormaValue = std::numeric_limits<double>::quiet_NaN();
 
     for(int t = 0; t < zv_termList.count(); t++)
     {
         if(zv_termList.at(t)->zp_termId() == zv_baseTermId)
         {
-            if(!zv_termList.at(t)->zp_calcTermVariablePart(spectrum, baseTermValue))
+            if(!zv_termList.at(t)->zp_calcTermVariablePart(spectrum, value))
             {
                 return false;
             }
@@ -586,6 +586,8 @@ bool ZCalibration::zp_calcBaseTermValue(const ZAbstractSpectrum* spectrum, qreal
             {
                 return false;
             }
+
+            break;
          }
      }
 
@@ -1098,7 +1100,8 @@ void ZCalibration::zp_setNextUsersTermState(int termIndex) const
         return;
     }
 
-    if(zv_termList.at(termIndex)->zp_termId() == zv_baseTermId)
+    if(zv_termList.at(termIndex)->zp_termId() == zv_baseTermId
+            && zv_equationType == ET_FRACTIONAL)
     {
         return;
     }
