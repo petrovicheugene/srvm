@@ -22,11 +22,19 @@ public:
 
 private slots:
 
-       // void zh_onDialogAccept();
+    void zh_onEditorChildDialogOpen(bool);
 
 signals:
 
 public slots:
+
+private:
+
+    //VARS
+    bool zv_editorChildDialogOpen;
+
+    // FUNCS
+    // bool eventFilter(QObject *object, QEvent *event);
 };
 //=======================================================
 #endif // ZEQUATIONDELEGATE_H

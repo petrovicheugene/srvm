@@ -91,12 +91,37 @@ bool ZTermNormalizer::zp_setNormaType(ZTermNormalizer::NormaType type)
 bool ZTermNormalizer::zp_setCustomNormaString(const QString& customString)
 {
     zv_customNormaString = customString;
+    emit zg_normalizerChanged();
     return true;
 }
 //======================================================================
 QString ZTermNormalizer::zp_customNormaString() const
 {
     return zv_customNormaString;
+}
+//======================================================================
+bool ZTermNormalizer::zp_setNormalizerParameters(ZTermNormalizer::NormaType type,
+                              const QString& customString)
+{
+    bool res = false;
+    if(type != zv_normaType)
+    {
+        zv_normaType = type;
+        res = true;
+    }
+
+    if(zv_customNormaString != customString)
+    {
+        zv_customNormaString = customString;
+        res = true;
+    }
+
+    if(res)
+    {
+        emit zg_normalizerChanged();
+    }
+
+    return res;
 }
 //======================================================================
 bool ZTermNormalizer::zp_normalizeValue(const ZAbstractSpectrum* spectrum, qreal& value ) const
@@ -269,16 +294,6 @@ bool ZTermNormalizer::zh_getWindowsValue(ZCalibrationWindow::WindowType type,
     return true;
 }
 //======================================================================
-//void ZTermNormalizer::zp_isValid(bool& validFlag) const
-//{
-//    validFlag = false;
-//}
-////======================================================================
-//void ZTermNormalizer::zp_value(qreal& value) const
-//{
-//    value = 1;
-//}
-//======================================================================
 void ZTermNormalizer::zh_onWindowTypeChange(ZCalibrationWindow::WindowType previousType,
                                             ZCalibrationWindow::WindowType currentType) const
 {
@@ -305,7 +320,6 @@ void ZTermNormalizer::zh_onWindowTypeChange(ZCalibrationWindow::WindowType previ
     {
         emit zg_normalizerChanged();
     }
-
 }
 //======================================================================
 void ZTermNormalizer::zh_onWindowDestroy(QObject* obj) const
@@ -320,7 +334,6 @@ void ZTermNormalizer::zh_onWindowDestroy(QObject* obj) const
         emit zg_normalizerChanged();
         return;
     }
-
 
     ZCalibrationWindow* window = qobject_cast<ZCalibrationWindow*>(obj);
     if(!window)

@@ -15,10 +15,20 @@ ZTermCorrelationTableModel::ZTermCorrelationTableModel(QObject *parent) :
 Qt::ItemFlags ZTermCorrelationTableModel::flags(const QModelIndex & index) const
 {
     Qt::ItemFlags flags;
+
+    if(!index.isValid())
+    {
+        return flags;
+    }
+
     flags |= Qt::ItemIsEnabled;
+
     if(index.column() == 0)
     {
-        flags |= Qt::ItemIsEditable;
+        if(zv_dataManager && zv_dataManager->zp_isRowEditable(index.row()))
+        {
+            flags |= Qt::ItemIsEditable;
+        }
     }
 
     return flags;

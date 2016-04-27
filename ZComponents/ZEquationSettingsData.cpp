@@ -11,6 +11,8 @@ ZEquationSettingsData::ZEquationSettingsData(const ZCalibration *calibration)
 {
     equationType = calibration->zp_equationType();
     baseTermId = calibration->zp_baseTermId();
+    fractionalBaseNormaSettingsData.normaType = calibration->zp_baseTermNormaType();
+    fractionalBaseNormaSettingsData.customNormaString = calibration->zp_baseTermNormaCustomString();
 
     QPair<qint64, QString> termData;
     for(int t = 0; t < calibration->zp_termCount(); t++)

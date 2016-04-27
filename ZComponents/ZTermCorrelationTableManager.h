@@ -40,6 +40,7 @@ public:
     int zp_rowCount() const;
     int zp_columnCount() const;
 
+    bool zp_isRowEditable(int row) const;
     QVariant zp_data(QModelIndex index) const;
     bool zp_setData(QModelIndex index, QVariant vFactor);
     QVariant zp_cellColor(QModelIndex index) const;
@@ -80,6 +81,7 @@ private:
     ZSpectrumArrayRepository* zv_spectrumArrayRepository;
     ZJointSpectraDataManager* zv_jointSpectraDataManager;
     qint64 zv_currentCalibrationId;
+    int zv_currentCalibrationIndex;
     qint64 zv_currentArrayId;
     int zv_currentArrayIndex;
 
@@ -110,6 +112,8 @@ private:
     QColor zv_yellowCell;
     QColor zv_blueCell;
     QColor zv_redCell;
+    QColor zv_cyanCell;
+    QColor zv_magentaCell;
 
     // FUNCS
 

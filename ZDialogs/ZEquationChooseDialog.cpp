@@ -2,6 +2,8 @@
 #include "ZEquationChooseDialog.h"
 #include "globalVariables.h"
 #include "ZCalibration.h"
+#include "ZNormaSettingsDialog.h"
+#include "ZTermNormalizer.h"
 
 #include <QLabel>
 #include <QPushButton>
@@ -10,16 +12,40 @@
 #include <QVBoxLayout>
 #include <QHBoxLayout>
 #include <QComboBox>
-
+#include <QLineEdit>
+#include <QEvent>
+#include <QMouseEvent>
+#include <QApplication>
 //============================================================
 ZEquationChooseDialog::ZEquationChooseDialog(QWidget *parent) : QDialog(parent)
 {
+    zv_normaDialog = 0;
     setWindowTitle(tr("Equation settings"));
     setWindowFlags(Qt::Tool | Qt::MSWindowsFixedSizeDialogHint | Qt::WindowStaysOnTopHint);
 
-    zv_accepted = false;
     zh_createComponents();
     zh_createConnections();
+}
+//============================================================
+ZEquationChooseDialog::~ZEquationChooseDialog()
+{
+    if(zv_normaDialog)
+    {
+        delete zv_normaDialog;
+    }
+}
+//============================================================
+bool ZEquationChooseDialog::eventFilter(QObject * receiver, QEvent *event)
+{
+    if(receiver == zv_normTermLineEdit
+            && event->type() == QEvent::MouseButtonDblClick
+            && zv_fractionalEquationRadioButton->isChecked())
+    {
+        zh_runNormalizationDialog();
+        return true;
+    }
+
+    return QObject::eventFilter(receiver, event);
 }
 //============================================================
 void ZEquationChooseDialog::zh_createComponents()
@@ -64,6 +90,19 @@ void ZEquationChooseDialog::zh_createComponents()
     zv_baseTermComboBox = new QComboBox(this);
     zv_baseTermComboBox->setEnabled(false);
     baseTermLayout->addWidget(zv_baseTermComboBox);
+
+    baseTermLayout->addSpacing(10);
+
+    label = new QLabel(this);
+    label->setText(tr("Normalization term:"));
+    baseTermLayout->addWidget(label);
+
+    zv_normTermLineEdit = new QLineEdit(this);
+    zv_normTermLineEdit->setEnabled(false);
+    zv_normTermLineEdit->setReadOnly(true);
+    zv_normTermLineEdit->installEventFilter(this);
+    baseTermLayout->addWidget(zv_normTermLineEdit);
+
     baseTermLayout->addStretch();
 
     // buttons
@@ -83,23 +122,26 @@ void ZEquationChooseDialog::zh_createConnections()
             this, &ZEquationChooseDialog::zh_onDialogAccepted);
     connect(zv_cancelButton, &QPushButton::clicked,
             this, &ZEquationChooseDialog::reject);
-
     connect(zv_simplePolynomEquationRadioButton, &QRadioButton::toggled,
             zv_baseTermComboBox, &QComboBox::setDisabled);
     connect(zv_fractionalEquationRadioButton, &QRadioButton::toggled,
             zv_baseTermComboBox, &QComboBox::setEnabled);
-
+    connect(zv_simplePolynomEquationRadioButton, &QRadioButton::toggled,
+            zv_normTermLineEdit, &QLineEdit::setDisabled);
+    connect(zv_fractionalEquationRadioButton, &QRadioButton::toggled,
+            zv_normTermLineEdit, &QLineEdit::setEnabled);
 
 }
 //============================================================
 void ZEquationChooseDialog::zh_onDialogAccepted()
 {
-    zv_accepted = true;
+    setResult(QDialog::Accepted);
     accept();
 }
 //============================================================
 void ZEquationChooseDialog::zp_setEquationSettings(const ZEquationSettingsData& settings)
 {
+
     if(settings.equationType == ZCalibration::ET_POLYNOMIAL)
     {
         zv_simplePolynomEquationRadioButton->setChecked(true);
@@ -120,6 +162,7 @@ void ZEquationChooseDialog::zp_setEquationSettings(const ZEquationSettingsData& 
     }
 
     zv_baseTermComboBox->setCurrentIndex(currentTermIndex);
+    zh_setNormalizationToLineEdit(settings.fractionalBaseNormaSettingsData);
 }
 //============================================================
 ZEquationSettingsData ZEquationChooseDialog::zp_equationSettings() const
@@ -151,12 +194,44 @@ ZEquationSettingsData ZEquationChooseDialog::zp_equationSettings() const
         settings.equationType = ZCalibration::ET_NOT_DEFINED;
     }
 
+    settings.fractionalBaseNormaSettingsData = zv_fractionalBaseNormaSettingsData;
+
     return settings;
 }
 //============================================================
-bool ZEquationChooseDialog::zp_accepted() const
+void ZEquationChooseDialog::zh_runNormalizationDialog()
 {
-    return zv_accepted;
+    zv_normaDialog = new ZNormaSettingsDialog();
+
+    //  dialog position
+    QPoint dialogPos = mapToGlobal(zv_normTermLineEdit->geometry().bottomLeft());
+    dialogPos.setY(dialogPos.y() + 5);
+    zv_normaDialog->move(dialogPos);
+    zv_normaDialog->zp_setNormaSettings(zv_fractionalBaseNormaSettingsData);
+
+    // exec and set
+    if(zv_normaDialog->exec())
+    {
+        zh_setNormalizationToLineEdit(zv_normaDialog->zp_normaSettings());
+    }
+
+    delete zv_normaDialog;
+    zv_normaDialog = 0;
 }
 //============================================================
+void ZEquationChooseDialog::zh_setNormalizationToLineEdit(ZNormaSettingsData fractionalBaseNormaSettingsData)
+{
+    zv_fractionalBaseNormaSettingsData = fractionalBaseNormaSettingsData;
+    QString normaString;
+    if(zv_fractionalBaseNormaSettingsData.normaType == ZTermNormalizer::NT_CUSTOM)
+    {
+        normaString = zv_fractionalBaseNormaSettingsData.customNormaString;
+    }
+    else
+    {
+        normaString = ZTermNormalizer::zp_normaTypeString(zv_fractionalBaseNormaSettingsData.normaType);
+    }
 
+    zv_normTermLineEdit->setText(normaString);
+}
+//============================================================

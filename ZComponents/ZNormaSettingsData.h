@@ -11,7 +11,6 @@ public:
     ZNormaSettingsData(const ZCalibration* calibration);
 
     // VARS
-
     ZTermNormalizer::NormaType normaType;
     QString customNormaString;
     QList<QPair<qint64, QString> > termList;

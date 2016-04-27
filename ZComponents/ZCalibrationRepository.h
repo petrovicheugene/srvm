@@ -83,7 +83,7 @@ public:
     QString zp_chemElement(int row) const;
     QString zp_chemElementForCalibrationId(qint64 id) const;
     bool zp_setChemElement(int row, const QString&);
-    QString zp_baseMemberString(int row) const;
+    QString zp_baseTermString(int row) const;
 
     bool zp_isCalibrationVisible(int row);
     QColor zp_calibrationColor(int row);

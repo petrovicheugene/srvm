@@ -15,10 +15,6 @@ QWidget* ZNormaDelegate::createEditor(QWidget* parent, const QStyleOptionViewIte
 {
     ZNormaSettingsDialog* dialog = new ZNormaSettingsDialog();
     dialog->setAttribute(Qt::WA_DeleteOnClose);
-//    connect(dialog, &ZNormaSettingsDialog::accepted,
-//            this, &ZNormaDelegate::zh_onDialogAccept);
-    connect(dialog, &ZNormaSettingsDialog::rejected,
-            dialog, &ZNormaSettingsDialog::close);
 
     return dialog;
 }
@@ -58,7 +54,7 @@ void	ZNormaDelegate::setModelData(QWidget* editor, QAbstractItemModel* model, co
         return;
     }
 
-    if(!dialog->zp_accepted())
+    if(dialog->result() == QDialog::Rejected)
     {
         return;
     }

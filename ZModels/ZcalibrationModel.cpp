@@ -63,14 +63,14 @@ QVariant ZCalibrationModel::data(const QModelIndex & index, int role) const
             QString equationString = ZCalibration::zp_equationTypeString(equationType);
             if(equationType == ZCalibration::ET_FRACTIONAL)
             {
-                QString baseString = zv_calibrationRepository->zp_baseMemberString(index.row());
+                QString baseString = zv_calibrationRepository->zp_baseTermString(index.row());
                 if(baseString.isEmpty())
                 {
                     equationString += tr(", no base");
                 }
                 else
                 {
-                    equationString += tr(", base:") + baseString;
+                    equationString += tr(", base: ") + baseString;
                 }
             }
             return QVariant(equationString);
@@ -276,7 +276,7 @@ QVariant ZCalibrationModel::headerData(int section, Qt::Orientation orientation,
             }
             else if(section == 3)
             {
-                header = tr("Norma");
+                header = tr("Normalization");
             }
             else if(section == 4)
             {

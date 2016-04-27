@@ -26,11 +26,13 @@ public:
                    TT_MIXED,
                    TT_CUSTOM};
 
-    enum TermState {TS_CONST_INCLUDED,
+    enum TermState {TS_NOT_DEFINED,
+                    TS_CONST_INCLUDED,
                     TS_EXAM_WAITING,
                     TS_INCLUDED,
                     TS_EXCEPTED,
-                    TS_CONST_EXCLUDED};
+                    TS_CONST_EXCLUDED,
+                    TS_BASE};
 
 
     // FUNCS

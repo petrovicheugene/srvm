@@ -29,14 +29,10 @@ public:
 protected:
 
     // VARS
-
     double zv_min;
     double zv_max;
 
-
-
     // FUNCS
-
     virtual StepEnabled stepEnabled () const;
     bool checkNewNumber(QStringList parts,
                         bool powerTypeRecord,

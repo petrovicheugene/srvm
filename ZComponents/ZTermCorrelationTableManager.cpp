@@ -12,6 +12,7 @@ ZTermCorrelationTableManager::ZTermCorrelationTableManager(QObject *parent) : QO
     zv_spectrumArrayRepository = 0;
     zv_jointSpectraDataManager = 0;
     zv_currentCalibrationId = -1;
+    zv_currentCalibrationIndex = -1;
     zv_columnCountCorrector = 0;
     zv_currentArrayId = -1;
     zv_currentArrayIndex = -1;
@@ -20,11 +21,15 @@ ZTermCorrelationTableManager::ZTermCorrelationTableManager(QObject *parent) : QO
     zv_greenCell = QColor(Qt::green);
     zv_yellowCell = QColor(Qt::yellow);
     zv_blueCell = QColor(Qt::blue);
+    zv_cyanCell = QColor(Qt::cyan);
+    zv_magentaCell = QColor(Qt::cyan);
     zv_redCell = QColor(Qt::red);
 
     zv_greenCell.setAlpha(30);
     zv_yellowCell.setAlpha(30);
     zv_blueCell.setAlpha(30);
+    zv_cyanCell.setAlpha(30);
+    zv_magentaCell.setAlpha(30);
     zv_redCell.setAlpha(30);
 
 }
@@ -97,6 +102,18 @@ int ZTermCorrelationTableManager::zp_columnCount() const
     return zv_calibrationRepository->zp_termCount(zv_currentCalibrationId) + zv_firstNonTermColumnCount + zv_columnCountCorrector; // 2 - term column and chem conc column
 }
 //=============================================================================
+bool ZTermCorrelationTableManager::zp_isRowEditable(int row) const
+{
+    if(!zv_calibrationRepository || row < 0 || row >= zp_rowCount())
+    {
+        return false;
+    }
+
+    return zv_calibrationRepository->zp_equationType(zv_currentCalibrationIndex) != ZCalibration::ET_FRACTIONAL
+            || zv_calibrationRepository->zp_baseTermIndex(zv_currentCalibrationIndex) != row;
+
+}
+//=============================================================================
 QVariant ZTermCorrelationTableManager::zp_data(QModelIndex index) const
 {
     if(!zv_calibrationRepository || !index.isValid() || index.row() < 0 || index.column() < 0
@@ -107,9 +124,24 @@ QVariant ZTermCorrelationTableManager::zp_data(QModelIndex index) const
 
     if(index.column() == 0)
     {
-        QString factorString;
-        bool ok = zv_calibrationRepository->zp_termFactorString(zv_currentCalibrationId, index.row(), factorString);
+#ifdef DBG
 
+        if(index.row() == 1)
+        {
+            ZCalibration::EquationType et = zv_calibrationRepository->zp_equationType(zv_currentCalibrationIndex);
+            int bi = zv_calibrationRepository->zp_baseTermIndex(zv_currentCalibrationIndex);
+            qDebug() << "Equation Type" << et << "Base index" << bi;
+        }
+#endif
+
+        QString factorString;
+        if(zv_calibrationRepository->zp_equationType(zv_currentCalibrationIndex) == ZCalibration::ET_FRACTIONAL
+                && zv_calibrationRepository->zp_baseTermIndex(zv_currentCalibrationIndex) == index.row())
+        {
+            return tr("Base");
+        }
+
+        bool ok = zv_calibrationRepository->zp_termFactorString(zv_currentCalibrationId, index.row(), factorString);
         if(!ok)
         {
             return tr("#Error");
@@ -160,7 +192,14 @@ QVariant ZTermCorrelationTableManager::zp_data(QModelIndex index) const
 //=============================================================================
 bool ZTermCorrelationTableManager::zp_setData(QModelIndex index, QVariant vFactor)
 {
-    if(!zv_calibrationRepository || !vFactor.isValid() || vFactor.isNull() || !vFactor.canConvert<QString>())
+    if(!zv_calibrationRepository || !index.isValid() || index.row() < 0 || index.row() >= zp_rowCount()
+            || index.column() != 0
+            || !vFactor.isValid() || vFactor.isNull() || !vFactor.canConvert<QString>())
+    {
+        return false;
+    }
+
+    if(zv_calibrationRepository->zp_baseTermIndexForCalibrationId(zv_currentCalibrationId) == index.row())
     {
         return false;
     }
@@ -181,9 +220,23 @@ QVariant ZTermCorrelationTableManager::zp_cellColor(QModelIndex index) const
     bool ok;
 
     // chem Correlations
-    if( index.column() == 1)
+    if(index.column() < zv_firstNonTermColumnCount)
     {
-        correlationValue = qAbs(zv_concentrationCorrelationList.value(index.row(), QString()).toDouble(&ok));
+        // correlations in column
+        if(index.column() == 1)
+        {
+            correlationValue = qAbs(zv_concentrationCorrelationList.value(index.row(), QString()).toDouble(&ok));
+        }
+        else if(index.column() == 2)
+        {
+            correlationValue = qAbs(zv_residualCorrelationList.value(index.row(), QString()).toDouble(&ok));
+        }
+        else
+        {
+            return QVariant();
+        }
+
+        // colors
         if(!ok)
         {
             return QVariant();
@@ -195,27 +248,14 @@ QVariant ZTermCorrelationTableManager::zp_cellColor(QModelIndex index) const
         }
         else if(correlationValue < 0.7 && correlationValue >= 0.5)
         {
-            return QVariant(zv_blueCell);
+            return QVariant(zv_cyanCell);
+        }
+        else if(correlationValue < 0.5 && correlationValue >= 0.3)
+        {
+            return QVariant(zv_magentaCell);
         }
     }
-    else if(index.column() == 1)
-    {
-        correlationValue = qAbs(zv_residualCorrelationList.value(index.row(), QString()).toDouble(&ok));
-        if(!ok)
-        {
-            return QVariant();
-        }
-
-        if(correlationValue >= 0.7)
-        {
-            return QVariant(zv_greenCell);
-        }
-        else if(correlationValue < 0.7 && correlationValue >= 0.5)
-        {
-            return QVariant(zv_blueCell);
-        }
-    }
-    else if(index.column() >=  zv_firstNonTermColumnCount)
+    else //if(index.column() >=  zv_firstNonTermColumnCount)
     {
         QVariant vData = zp_data(index);
 
@@ -316,7 +356,9 @@ QPixmap ZTermCorrelationTableManager::zp_termStateIcon(int row) const
     QPixmap pixmap;
     switch(state)
     {
-
+    case ZAbstractTerm::TS_BASE :
+        pixmap = QPixmap(":/images/calc.png");
+        break;
     case ZAbstractTerm::TS_CONST_INCLUDED :
         pixmap = QPixmap(":/images/check-green-1s.png");
         break;
@@ -329,11 +371,14 @@ QPixmap ZTermCorrelationTableManager::zp_termStateIcon(int row) const
     case ZAbstractTerm::TS_EXCEPTED :
         pixmap = QPixmap(":/images/minus-magenta-1s.png");
         break;
-
     case ZAbstractTerm::TS_CONST_EXCLUDED :
-    default:
         pixmap = QPixmap(":/images/cancel-red-1s.png");
         break;
+
+    case ZAbstractTerm::TS_NOT_DEFINED :
+    default:
+        pixmap = QPixmap();
+
     }
 
     return pixmap;
@@ -456,7 +501,7 @@ void ZTermCorrelationTableManager::zh_onRepositoryChemElementOperation(ZSpectrum
 //=============================================================================
 void ZTermCorrelationTableManager::zh_currentCalibrationChanged(qreal calibrationId, int calibrationIndex)
 {
-    if(zv_currentCalibrationId == calibrationId)
+    if(zv_currentCalibrationId == calibrationId && zv_currentCalibrationIndex == calibrationIndex)
     {
         return;
     }
@@ -464,6 +509,7 @@ void ZTermCorrelationTableManager::zh_currentCalibrationChanged(qreal calibratio
     emit zg_currentOperation(TOT_BEGIN_RESET, -1, -1);
 
     zv_currentCalibrationId = calibrationId;
+    zv_currentCalibrationIndex = calibrationIndex;
     zh_startCalculationCorrelationsAndCovariations();
     emit zg_currentOperation(TOT_END_RESET, -1, -1);
 }

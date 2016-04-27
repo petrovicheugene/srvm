@@ -13,10 +13,10 @@
 //============================================================
 ZNormaSettingsDialog::ZNormaSettingsDialog(QWidget *parent) : QDialog(parent)
 {
-    setWindowTitle(tr("Norma settings"));
-    setWindowFlags(Qt::Tool | Qt::MSWindowsFixedSizeDialogHint | Qt::WindowStaysOnTopHint);
+    setWindowTitle(tr("Normalization settings"));
+    setWindowFlags(Qt::Tool | Qt::MSWindowsFixedSizeDialogHint
+                   | Qt::WindowStaysOnTopHint);
 
-    zv_accepted = false;
     zh_createComponents();
     zh_createConnections();
 }
@@ -90,7 +90,7 @@ void ZNormaSettingsDialog::zh_createConnections()
 //============================================================
 void ZNormaSettingsDialog::zh_onDialogAccepted()
 {
-    zv_accepted = true;
+    setResult(QDialog::Accepted);
     accept();
 }
 //============================================================
@@ -162,9 +162,3 @@ ZNormaSettingsData ZNormaSettingsDialog::zp_normaSettings() const
     return settings;
 }
 //============================================================
-bool ZNormaSettingsDialog::zp_accepted() const
-{
-    return zv_accepted;
-}
-//============================================================
-

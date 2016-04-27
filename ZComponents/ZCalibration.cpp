@@ -154,6 +154,7 @@ ZCalibration::ZCalibration(const QString& name, QObject *parent) : QObject(paren
     zv_calibrationId = zv_lastCalibrationId++;
     zv_chemElement = glDefaultChemElementString;
     zv_termNormalizer  = new ZTermNormalizer(this);
+    zv_baseTermNormalizer = new ZTermNormalizer(this);
 
     zv_equationType = ET_POLYNOMIAL;
     zp_setEquationFreeMember(0.0);
@@ -340,6 +341,8 @@ void ZCalibration::zp_createNewCalibrationWindow(int& windowNewIndex, int firstC
                                                                    this);
 
     zv_termNormalizer->zp_connectToWindow(calibrationWindow);
+    zv_baseTermNormalizer->zp_connectToWindow(calibrationWindow);
+
     emit zg_windowOperation(WOT_BRGIN_INSERT_WINDOWS, windowNewIndex, windowNewIndex);
     zv_windowList.append(calibrationWindow);
     emit zg_windowOperation(WOT_END_INSERT_WINDOWS, windowNewIndex, windowNewIndex);
@@ -567,7 +570,7 @@ bool ZCalibration::zp_calcBaseTermValue(const ZAbstractSpectrum* spectrum, qreal
     }
 
     qreal baseTermValue = std::numeric_limits<double>::quiet_NaN();
-    qreal baseNormaValue = std::numeric_limits<double>::quiet_NaN();
+    //qreal baseNormaValue = std::numeric_limits<double>::quiet_NaN();
 
     for(int t = 0; t < zv_termList.count(); t++)
     {
@@ -578,41 +581,13 @@ bool ZCalibration::zp_calcBaseTermValue(const ZAbstractSpectrum* spectrum, qreal
                 return false;
             }
             // baseTerm - ok
-            // if baseNorma has been found, break circle
-            if(zv_baseTermNormaId < 0 || !(baseNormaValue != baseNormaValue))
-            {
-                break;
-            }
-        }
 
-        // find norma if id >= 0 only
-        if(zv_baseTermNormaId >= 0 && zv_termList.at(t)->zp_termId() == zv_baseTermNormaId)
-        {
-            if(!zv_termList.at(t)->zp_calcTermVariablePart(spectrum, baseNormaValue))
+            if(!zv_baseTermNormalizer->zp_normalizeValue(spectrum, value))
             {
                 return false;
             }
-            // norma term - ok
-            // if base has been already found, break circle
-            if(!(baseTermValue != baseTermValue))
-            {
-                break;
-            }
-        }
-    }
-
-    // check values
-    if(baseTermValue != baseTermValue
-            || (zv_baseTermNormaId >= 0 && (baseNormaValue != baseNormaValue || baseNormaValue == 0)))
-    {
-        return false;
-    }
-
-    value = baseTermValue;
-    if(zv_baseTermNormaId >= 0)
-    {
-        value /= baseNormaValue;
-    }
+         }
+     }
 
     return true;
 }
@@ -635,6 +610,32 @@ bool ZCalibration::zp_setNormaCustomString(const QString& customString)
 QString ZCalibration::zp_customNormaString() const
 {
     return zv_termNormalizer->zp_customNormaString();
+}
+//=========================================================
+ZTermNormalizer::NormaType ZCalibration::zp_baseTermNormaType() const
+{
+    return zv_baseTermNormalizer->zp_normaType();
+}
+//=========================================================
+bool ZCalibration::zp_setBaseTermNormaType(ZTermNormalizer::NormaType type)
+{
+     return zv_baseTermNormalizer->zp_setNormaType(type);
+}
+//=========================================================
+bool ZCalibration::zp_setBaseTermNormaCustomString(const QString& customString)
+{
+    return zv_baseTermNormalizer->zp_setCustomNormaString(customString);
+}
+//=========================================================
+QString ZCalibration::zp_baseTermNormaCustomString() const
+{
+    return zv_baseTermNormalizer->zp_customNormaString();
+}
+//=========================================================
+bool ZCalibration::zp_setBaseTermNormalizerParameters(ZTermNormalizer::NormaType type,
+                              const QString& customString)
+{
+    return zv_baseTermNormalizer->zp_setNormalizerParameters(type, customString);
 }
 //=========================================================
 ZCalibration::EquationType ZCalibration::zp_equationType() const
@@ -695,15 +696,30 @@ QString ZCalibration::zp_baseTermString() const
         return QString();
     }
 
+    QString baseTermString;
     for(int t = 0; t < zv_termList.count(); t++)
     {
         if(zv_termList.at(t)->zp_termId() == zv_baseTermId)
         {
-            return zv_termList.at(t)->zp_termName();
+            baseTermString = zv_termList.at(t)->zp_termName();
+            break;
         }
     }
 
-    return QString();
+    if(zv_baseTermNormalizer->zp_normaType() != ZTermNormalizer::NT_NONE)
+    {
+        QString normaTypeString = ZTermNormalizer::zp_normaTypeString(zv_baseTermNormalizer->zp_normaType());
+
+        if(zv_baseTermNormalizer->zp_normaType() == ZTermNormalizer::NT_COHERENT_INCOHERENT
+                || zv_baseTermNormalizer->zp_normaType() == ZTermNormalizer::NT_INCOHERENT_COHERENT)
+        {
+            normaTypeString = "("+normaTypeString+")";
+        }
+
+        baseTermString = baseTermString + "/" + normaTypeString;
+    }
+
+    return baseTermString;
 }
 //=========================================================
 qint64 ZCalibration::zp_baseTermId() const
@@ -839,7 +855,14 @@ void ZCalibration::zh_removeTerm(ZAbstractTerm* term)
 //=========================================================
 void ZCalibration::zh_onNormalizerChange()
 {
-    emit zg_normalizerChanged();
+    if(sender() == zv_termNormalizer)
+    {
+        emit zg_normalizerChanged();
+    }
+    else if(sender() == zv_baseTermNormalizer)
+    {
+        // TODO create signal base term changed and emit
+    }
 }
 //=========================================================
 bool ZCalibration::zh_isWindowExist(const QString& windowName)
@@ -1057,7 +1080,12 @@ ZAbstractTerm::TermState ZCalibration::zp_termState(int termIndex) const
 {
     if(termIndex < 0 || termIndex >= zv_termList.count() )
     {
-        return ZAbstractTerm::TS_CONST_EXCLUDED;
+        return ZAbstractTerm::TS_NOT_DEFINED;
+    }
+
+    if(zv_termList.at(termIndex)->zp_termId() == zv_baseTermId && zv_equationType == ET_FRACTIONAL)
+    {
+        return ZAbstractTerm::TS_BASE;
     }
 
     return zv_termList.at(termIndex)->zp_termState();
@@ -1066,6 +1094,11 @@ ZAbstractTerm::TermState ZCalibration::zp_termState(int termIndex) const
 void ZCalibration::zp_setNextUsersTermState(int termIndex) const
 {
     if(termIndex < 0 || termIndex >= zv_termList.count() )
+    {
+        return;
+    }
+
+    if(zv_termList.at(termIndex)->zp_termId() == zv_baseTermId)
     {
         return;
     }
@@ -1089,6 +1122,10 @@ void ZCalibration::zp_setNextUsersTermState(int termIndex) const
     case ZAbstractTerm::TS_CONST_EXCLUDED:
         res =zv_termList.at(termIndex)->zp_setTermState(ZAbstractTerm::TS_CONST_INCLUDED);
         break;
+    case ZAbstractTerm::TS_BASE:
+    case ZAbstractTerm::TS_NOT_DEFINED:
+    default:
+        return;
     }
 
     if(res)

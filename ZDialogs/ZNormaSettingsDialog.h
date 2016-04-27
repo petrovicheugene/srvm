@@ -15,10 +15,8 @@ class ZNormaSettingsDialog : public QDialog
     Q_OBJECT
 public:
     explicit ZNormaSettingsDialog(QWidget* parent = 0);
-
     void zp_setNormaSettings(const ZNormaSettingsData& settings);
     ZNormaSettingsData zp_normaSettings() const;
-    bool zp_accepted() const;
 
 
 private slots:
@@ -40,16 +38,9 @@ private:
 
     QLineEdit* zv_customNormaLineEdit;
 
-    bool zv_accepted;
-
-//    QRadioButton* zv_simplePolynomEquationRadioButton;
-//    QRadioButton* zv_fractionalEquationRadioButton;
-//    QComboBox* zv_baseTermComboBox;
     // FUNCS
     void zh_createComponents();
     void zh_createConnections();
-
-
 
 };
 //============================================================

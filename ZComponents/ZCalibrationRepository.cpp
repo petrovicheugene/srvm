@@ -270,7 +270,7 @@ bool ZCalibrationRepository::zp_setChemElement(int row, const QString& chemEleme
     return true;
 }
 //======================================================
-QString ZCalibrationRepository::zp_baseMemberString(int row) const
+QString ZCalibrationRepository::zp_baseTermString(int row) const
 {
     if(row < 0 || row >= zv_caibrationList.count())
     {
@@ -577,7 +577,7 @@ ZAbstractTerm::TermState ZCalibrationRepository::zp_termState(qint64 calibration
     const ZCalibration* calibration = zh_calibrationForId(calibrationId);
     if(!calibration)
     {
-        return ZAbstractTerm::TS_CONST_EXCLUDED;
+        return ZAbstractTerm::TS_NOT_DEFINED;
     }
     return calibration->zp_termState(termIndex);
 }
@@ -723,10 +723,15 @@ bool ZCalibrationRepository::zp_setEquationDataFromSettings(int calibrationIndex
     {
         emit zg_calibrationOperation(COT_CALIBRATION_EQUATION_TYPE_CHANGED, calibrationIndex, calibrationIndex);
     }
-    if(calibration->zp_setBaseTermId(settings.baseTermId))
+
+    bool res = calibration->zp_setBaseTermId(settings.baseTermId);
+    res =  calibration->zp_setBaseTermNormalizerParameters(settings.fractionalBaseNormaSettingsData.normaType,
+                                                           settings.fractionalBaseNormaSettingsData.customNormaString) || res;
+    if(res)
     {
         emit zg_calibrationOperation(COT_CALIBRATION_EQUATION_BASE_TERM_CHANGED, calibrationIndex, calibrationIndex);
     }
+
     return true;
 }
 //======================================================
@@ -774,7 +779,7 @@ bool ZCalibrationRepository::zp_setEquationFreeMemberString(int calibrationIndex
 //======================================================
 int ZCalibrationRepository::zp_baseTermIndex(int calibrationIndex)
 {
-    if(calibrationIndex < 0 || calibrationIndex > zv_caibrationList.count())
+    if(calibrationIndex < 0 || calibrationIndex >= zv_caibrationList.count())
     {
         return -1;
     }

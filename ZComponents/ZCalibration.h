@@ -108,8 +108,16 @@ public:
     // normalizer
     ZTermNormalizer::NormaType zp_normaType() const;
     bool zp_setNormaType(ZTermNormalizer::NormaType type);
-    bool zp_setNormaCustomString(const QString&);
+    bool zp_setNormaCustomString(const QString& customString);
     QString zp_customNormaString() const;
+
+    ZTermNormalizer::NormaType zp_baseTermNormaType() const;
+    bool zp_setBaseTermNormaType(ZTermNormalizer::NormaType type);
+    bool zp_setBaseTermNormaCustomString(const QString& customString);
+    QString zp_baseTermNormaCustomString() const;
+    bool zp_setBaseTermNormalizerParameters(ZTermNormalizer::NormaType type,
+                                  const QString& customString);
+
 
     EquationType zp_equationType() const;
     bool zp_setEquationType(EquationType type);
@@ -124,6 +132,7 @@ public:
     qint64 zp_baseTermId() const;
     bool zp_setBaseTermId(qint64 id);
     int zp_baseTermIndex() const;
+
     void zp_createEquationDataForEquationRecalc(QMap<int, qreal *> &factorMap,
                                                 qreal *&freeTermPtr);
 
@@ -177,7 +186,8 @@ private:
     QString zv_freeTermString;
     qreal zv_freeTerm;
     qint64 zv_baseTermId;
-    qint64 zv_baseTermNormaId;
+    // qint64 zv_baseTermNormaId;
+    ZTermNormalizer* zv_baseTermNormalizer;
     bool zv_useBaseTermInFractionalEquation;
 
     //qreal zv_
