@@ -4,6 +4,7 @@
 //=============================================================
 #include <QWidget>
 #include <QModelIndex>
+#include <QItemSelection>
 //=============================================================
 class QTableView;
 class QAction;
@@ -28,7 +29,8 @@ public:
 
 signals:
 
-    void zg_currentSpectrumChanged(int, int);
+    void zg_currentSpectrumChanged(int, int) const;
+    void zg_selectedIndexListChanged(QModelIndexList) const;
 
 public slots:
 
@@ -55,6 +57,7 @@ private slots:
                                      const QModelIndex & previous);
 
     void zh_onContextMenuRequest(const QPoint &pos);
+    void zh_onSelectionChange(const QItemSelection & selected, const QItemSelection & deselected) const;
 };
 //=============================================================
 #endif // ZSPECTRUMTABLEWIDGET_H

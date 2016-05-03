@@ -157,7 +157,7 @@ ZCalibration::ZCalibration(const QString& name, QObject *parent) : QObject(paren
     zv_baseTermNormalizer = new ZTermNormalizer(this);
 
     zv_equationType = ET_POLYNOMIAL;
-    zp_setEquationFreeMember(0.0);
+    zp_setEquationIntercept(0.0);
     zv_baseTermId = -1;
 }
 //=========================================================
@@ -290,7 +290,7 @@ bool ZCalibration::zp_calcConcentration(const ZAbstractSpectrum* const spectrum,
         concentration += value;
     }
 
-    concentration += zv_freeTerm;
+    concentration += zv_intercept;
 
     if(zv_equationType == ET_FRACTIONAL)
     {
@@ -486,15 +486,15 @@ int ZCalibration::zh_termIndex(const ZAbstractTerm* term) const
     return -1;
 }
 //=========================================================
-void ZCalibration::zh_chopTailZeroesFromFreeMemberString()
+void ZCalibration::zh_chopTailZeroesFromInterceptString()
 {
-    for(int i = zv_freeTermString.count() - 1; i > 0; i--)
+    for(int i = zv_interceptString.count() - 1; i > 0; i--)
     {
-        if(zv_freeTermString.at(i) != '0' || (zv_freeTermString.at(i - 1) == '.' || zv_freeTermString.at(i - 1) == ',' ))
+        if(zv_interceptString.at(i) != '0' || (zv_interceptString.at(i - 1) == '.' || zv_interceptString.at(i - 1) == ',' ))
         {
             break;
         }
-        zv_freeTermString.chop(1);
+        zv_interceptString.chop(1);
     }
 }
 //=========================================================
@@ -655,40 +655,40 @@ bool ZCalibration::zp_setEquationType(ZCalibration::EquationType type)
     return true;
 }
 //=========================================================
-qreal ZCalibration::zp_equationFreeMember() const
+qreal ZCalibration::zp_equationIntercept() const
 {
-    return zv_freeTerm;
+    return zv_intercept;
 }
 //=========================================================
-bool ZCalibration::zp_setEquationFreeMember(qreal value)
+bool ZCalibration::zp_setEquationIntercept(qreal value)
 {
-    if(zv_freeTerm == value)
+    if(zv_intercept == value)
     {
         return false;
     }
 
-    zv_freeTerm = value;
-    zv_freeTermString = QString::number(value, 'f', 15);
-    zh_chopTailZeroesFromFreeMemberString();
-    emit zg_freeTermChanged();
+    zv_intercept = value;
+    zv_interceptString = QString::number(value, 'f', 15);
+    zh_chopTailZeroesFromInterceptString();
+    emit zg_interceptChanged();
     return true;
 }
 //=========================================================
-QString ZCalibration::zp_equationFreeMemberString() const
+QString ZCalibration::zp_equationInterceptString() const
 {
-    return zv_freeTermString;
+    return zv_interceptString;
 }
 //=========================================================
-bool ZCalibration::zp_setEquationFreeMemberString(const QString& freeMemberString)
+bool ZCalibration::zp_setEquationInterceptString(const QString& interceptString)
 {
     bool ok;
-    qreal freeMember = freeMemberString.toDouble(&ok);
+    qreal intercept = interceptString.toDouble(&ok);
     if(!ok)
     {
         return false;
     }
 
-    return zp_setEquationFreeMember(freeMember);
+    return zp_setEquationIntercept(intercept);
 }
 //=========================================================
 QString ZCalibration::zp_baseTermString() const
@@ -785,14 +785,14 @@ void ZCalibration::zp_createEquationDataForEquationRecalc(QMap<int, qreal*>& fac
         }
     }
 
-    freeTermPtr = &zv_freeTerm;
+    freeTermPtr = &zv_intercept;
 }
 //=========================================================
 void ZCalibration::zh_notifyCalibrationRecalc()
 {
     // conform free term string to value
 
-    zv_freeTermString = ZQrealToStringConverter::zp_convert(zv_freeTerm);
+    zv_interceptString = ZQrealToStringConverter::zp_convert(zv_intercept);
 
     // conform equation terms
     for(int t = 0; t < zv_termList.count(); t++)
@@ -800,7 +800,7 @@ void ZCalibration::zh_notifyCalibrationRecalc()
         zv_termList.value(t)->zh_conformStringWithValue();
     }
     emit zg_termOperation(TOT_TERM_FACTOR_CHANGED, 0, zv_termList.count() - 1);
-    emit zg_freeTermChanged();
+    emit zg_interceptChanged();
 }
 //=========================================================
 void ZCalibration::zp_resetEquationTerms()
@@ -812,7 +812,7 @@ void ZCalibration::zp_resetEquationTerms()
     }
 
     emit zg_termOperation(TOT_TERM_FACTOR_CHANGED, 0, zv_termList.count() - 1);
-    zp_setEquationFreeMember(0.0);
+    zp_setEquationIntercept(0.0);
 
 }
 //=========================================================

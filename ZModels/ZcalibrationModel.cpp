@@ -83,8 +83,8 @@ QVariant ZCalibrationModel::data(const QModelIndex & index, int role) const
         }
         else if(index.column() == 4)
         {
-            QString freeMemberString = zv_calibrationRepository->zp_equationFreeMemeberString(index.row());
-            return QVariant(freeMemberString);
+            QString interceptString = zv_calibrationRepository->zp_equationInterceptString(index.row());
+            return QVariant(interceptString);
         }
         else if(index.column() == 5)
         {
@@ -232,8 +232,8 @@ bool	ZCalibrationModel::setData(const QModelIndex & index, const QVariant & valu
             {
                 return false;
             }
-            QString freeMemberValue = value.toString();
-            return zv_calibrationRepository->zp_setEquationFreeMemberString(index.row(), freeMemberValue);
+            QString interceptValue = value.toString();
+            return zv_calibrationRepository->zp_setEquationInterceptString(index.row(), interceptValue);
         }
 
         return false;
@@ -280,7 +280,7 @@ QVariant ZCalibrationModel::headerData(int section, Qt::Orientation orientation,
             }
             else if(section == 4)
             {
-                header = tr("Free member");
+                header = tr("Intercept");
             }
             else if(section == 5)
             {

@@ -86,13 +86,13 @@ private:
     int zv_currentArrayIndex;
 
     // average values
-    qreal zv_averageEquationFreeTerm;
+    qreal zv_averageEquationIntercept;
     QList<qreal> zv_averageTermValueList;
 
     // dispersion data
     QList<QList<qreal>> zv_termDispersionMatrix;
     QList<qreal> zv_concentrationDispersionList;
-    QList<qreal> zv_freeTermDispersionList;
+    QList<qreal> zv_interceptDispersionList;
     qreal zv_sumSquareAverageConcentrationDispersion;
 
     // correlations

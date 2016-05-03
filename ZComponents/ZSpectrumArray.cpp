@@ -259,10 +259,10 @@ bool ZSpectrumArray::zp_setChemConcentration(qint64 chemElementId,
     }
 
     bool res = zv_spectrumList.at(spectrumIndex)->zp_setConcentration(chemElementId, concentration);
-    //    if(res)
-    //    {
-    //        zh_calcAverageChemConcentration(chemElementId);
-    //    }
+    if(res)
+    {
+        emit zg_spectrumOperation(ZSpectrumArray::OT_CONCENTRATION_CHANGED, spectrumIndex, spectrumIndex);
+    }
 
     return res;
 }

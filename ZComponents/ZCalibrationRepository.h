@@ -148,11 +148,11 @@ public:
     ZEquationSettingsData zp_equationDataForSettings(int calibrationIndex) const;
     bool zp_setEquationDataFromSettings(int calibrationIndex, ZEquationSettingsData);
 
-    qreal zp_equationFreeMemeber(int calibrationIndex) const;
-    bool zp_setEquationFreeMember(int calibrationIndex, qreal);
+    qreal zp_equationIntercept(int calibrationIndex) const;
+    bool zp_setEquationIntercept(int calibrationIndex, qreal);
 
-    QString zp_equationFreeMemeberString(int calibrationIndex) const;
-    bool zp_setEquationFreeMemberString(int calibrationIndex, const QString&freeMemberString);
+    QString zp_equationInterceptString(int calibrationIndex) const;
+    bool zp_setEquationInterceptString(int calibrationIndex, const QString& interceptString);
 
     int zp_baseTermIndex(int calibrationIndex);
     qint64 zp_baseTermId(int calibrationIndex);

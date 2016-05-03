@@ -122,11 +122,11 @@ public:
     EquationType zp_equationType() const;
     bool zp_setEquationType(EquationType type);
 
-    qreal zp_equationFreeMember() const;
-    bool zp_setEquationFreeMember(qreal);
+    qreal zp_equationIntercept() const;
+    bool zp_setEquationIntercept(qreal);
 
-    QString zp_equationFreeMemberString() const;
-    bool zp_setEquationFreeMemberString(const QString&);
+    QString zp_equationInterceptString() const;
+    bool zp_setEquationInterceptString(const QString&);
 
     QString zp_baseTermString() const;
     qint64 zp_baseTermId() const;
@@ -154,7 +154,7 @@ signals:
     void zg_dirtyChanged(bool) const;
     void zg_termOperation(ZCalibration::TremOperationType, int first, int last)const;
     void zg_normalizerChanged() const;
-    void zg_freeTermChanged() const;
+    void zg_interceptChanged() const;
 
 public slots:
 
@@ -183,8 +183,8 @@ private:
     QList<ZAbstractTerm*> zv_termList;
     EquationType zv_equationType;
     ZTermNormalizer* zv_termNormalizer;
-    QString zv_freeTermString;
-    qreal zv_freeTerm;
+    QString zv_interceptString;
+    qreal zv_intercept;
     qint64 zv_baseTermId;
     // qint64 zv_baseTermNormaId;
     ZTermNormalizer* zv_baseTermNormalizer;
@@ -197,7 +197,7 @@ private:
     void zh_createTermsForWindow(const ZCalibrationWindow*);
     bool zh_windowHasTerms(const ZCalibrationWindow*, ZAbstractTerm::TermType) const;
     int zh_termIndex(const ZAbstractTerm*) const;
-    void zh_chopTailZeroesFromFreeMemberString();
+    void zh_chopTailZeroesFromInterceptString();
     qreal* zh_termFactorPointer(int termIndex) const;
 
     // STATIC

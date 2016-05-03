@@ -16,7 +16,7 @@ ZTermCorrelationTableManager::ZTermCorrelationTableManager(QObject *parent) : QO
     zv_columnCountCorrector = 0;
     zv_currentArrayId = -1;
     zv_currentArrayIndex = -1;
-    zv_averageEquationFreeTerm = std::numeric_limits<double>::quiet_NaN();
+    zv_averageEquationIntercept = std::numeric_limits<double>::quiet_NaN();
 
     zv_greenCell = QColor(Qt::green);
     zv_yellowCell = QColor(Qt::yellow);
@@ -709,7 +709,7 @@ void ZTermCorrelationTableManager::zh_recalcCalibrationFactors()
     }
 
     // check average free term
-    if(zv_averageEquationFreeTerm != zv_averageEquationFreeTerm)
+    if(zv_averageEquationIntercept != zv_averageEquationIntercept)
     {
         // TODO Error report
         return;
@@ -849,7 +849,7 @@ void ZTermCorrelationTableManager::zh_recalcCalibrationFactors()
 
     // Equation free term calculation
     // first initialization of free term
-    *freeTerm = zv_averageEquationFreeTerm;
+    *freeTerm = zv_averageEquationIntercept;
     QMap<int, qreal*>::const_iterator it;
     qreal averageTerm;
     for(it = factorToIndexMap.begin(); it != factorToIndexMap.end(); it++)
@@ -922,14 +922,14 @@ void ZTermCorrelationTableManager::zh_startCalculationCorrelationsAndCovariation
     if(!zv_spectrumArrayRepository || zv_currentArrayId < 0 || !zv_calibrationRepository)
     {
         // clear average values
-        zv_averageEquationFreeTerm = 0.0;
+        zv_averageEquationIntercept = 0.0;
         zv_averageTermValueList.clear();
 
         // clear dispersion data
         zv_termDispersionMatrix.clear();
         zv_concentrationDispersionList.clear();
         zv_sumSquareAverageConcentrationDispersion = 0.0;
-        zv_freeTermDispersionList.clear();
+        zv_interceptDispersionList.clear();
 
         // clear correlation and covariation data
         zv_termIntercorrelationMatrix.clear();
@@ -1043,7 +1043,7 @@ void ZTermCorrelationTableManager::zh_calcConcentrationAndFreeTermDispersions()
 {
     zv_concentrationDispersionList.clear();
     zv_sumSquareAverageConcentrationDispersion = 0.0;
-    zv_freeTermDispersionList.clear();
+    zv_interceptDispersionList.clear();
 
     // current conc chem element id
     QString calibrationChemElementString = zv_calibrationRepository->zp_chemElementForCalibrationId(zv_currentCalibrationId);
@@ -1093,7 +1093,7 @@ void ZTermCorrelationTableManager::zh_calcConcentrationAndFreeTermDispersions()
             if(concentration == 0)
             {
                 fractionalDispersionError = true;
-                zv_freeTermDispersionList.clear();
+                zv_interceptDispersionList.clear();
             }
 
             if(!fractionalDispersionError)
@@ -1101,13 +1101,13 @@ void ZTermCorrelationTableManager::zh_calcConcentrationAndFreeTermDispersions()
                 if(!zv_calibrationRepository->zp_calcBaseTermValue(zv_currentCalibrationId, spectrum, baseTermValue))
                 {
                     fractionalDispersionError = true;
-                    zv_freeTermDispersionList.clear();
+                    zv_interceptDispersionList.clear();
                     continue;
                 }
 
                 equationFreeTerm = baseTermValue / concentration;
                 averageFractionalFreeTerm += equationFreeTerm;
-                zv_freeTermDispersionList.append(equationFreeTerm);
+                zv_interceptDispersionList.append(equationFreeTerm);
             }
         } // end equationType == ZCalibration::ET_FRACTIONAL
     }
@@ -1116,7 +1116,7 @@ void ZTermCorrelationTableManager::zh_calcConcentrationAndFreeTermDispersions()
     if(zv_concentrationDispersionList.isEmpty())
     {
         // assign nan to average concentration
-        zv_averageEquationFreeTerm = std::numeric_limits<double>::quiet_NaN();
+        zv_averageEquationIntercept = std::numeric_limits<double>::quiet_NaN();
         // jump to the next term
         return;
     }
@@ -1140,19 +1140,19 @@ void ZTermCorrelationTableManager::zh_calcConcentrationAndFreeTermDispersions()
         {
             for(int i = 0; i < checkedSpectrumNumber; i++)
             {
-                zv_freeTermDispersionList[i] = zv_freeTermDispersionList.at(i) - averageFractionalFreeTerm;
+                zv_interceptDispersionList[i] = zv_interceptDispersionList.at(i) - averageFractionalFreeTerm;
             }
-            zv_averageEquationFreeTerm = averageFractionalFreeTerm;
+            zv_averageEquationIntercept = averageFractionalFreeTerm;
         }
         else
         {
-            zv_averageEquationFreeTerm = std::numeric_limits<double>::quiet_NaN();
+            zv_averageEquationIntercept = std::numeric_limits<double>::quiet_NaN();
         }
     }
     else
     {
-        zv_freeTermDispersionList = zv_concentrationDispersionList;
-        zv_averageEquationFreeTerm = averageConcentration;
+        zv_interceptDispersionList = zv_concentrationDispersionList;
+        zv_averageEquationIntercept = averageConcentration;
     }
 }
 //=============================================================================
@@ -1247,7 +1247,7 @@ void ZTermCorrelationTableManager::zh_calcConcentrationCorrelationsAndCavariatio
     QString correlationString;
     int termCount = zp_rowCount();
     int checkedSpeCount = zv_concentrationDispersionList.count();
-    bool freeDispersionOk = zv_freeTermDispersionList.count() == checkedSpeCount;
+    bool freeDispersionOk = zv_interceptDispersionList.count() == checkedSpeCount;
 
     // term circle
     for(int t = 0; t < termCount; t++)
@@ -1272,7 +1272,7 @@ void ZTermCorrelationTableManager::zh_calcConcentrationCorrelationsAndCavariatio
             cDispersion = zv_concentrationDispersionList.at(s);
             if(freeDispersionOk)
             {
-                freeTermCovariation += zv_freeTermDispersionList.at(s) * tDispersion;
+                freeTermCovariation += zv_interceptDispersionList.at(s) * tDispersion;
             }
             numerator += tDispersion * cDispersion;
             tDenominator += pow(tDispersion, 2);

@@ -142,6 +142,9 @@ signals:
     void zg_arrayMaxParametersChanged(qint64 arrayId, int intensity, int channels);
     void zg_requestIsPlotScaled(bool& isScaled);
 
+    void zg_requestClearSelected() const;
+    void zg_requestSelectedString(QString&) const;
+
 public slots:
 
     void zp_getArrayCount(int&) const;
@@ -151,6 +154,7 @@ public slots:
     void zp_currentArrayChanged(int current, int previous);
     void zp_currentSpectrumChanged(int currentSpectrumIndex, int previousSpectrumIndex);
     void zp_chemElementListForCurrentArray(QStringList& chemElementList);
+    void zp_onSelectionChange(bool selectionEnabled, bool concentrationSelected);
 
 private slots:
 

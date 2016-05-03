@@ -16,6 +16,21 @@ extern const QString glAppCopyright = APP_COPYRIGHT;
 extern const QString glAppCompanyURL = APP_COMPANY_URL;
 
 extern const QString glDefaultChemElementString = "Not defined";
+
+extern const QString glOpenIconString = ":/images/addGreen.png";
+extern const QString glAddIconString = ":/images/addGreen-1.png";
+extern const QString glRemoveIconString = ":/images/cancel-red-1s.png";
+extern const QString glClearIconString = ":/images/eraser.png";
+extern const QString glCopyIconString = ":/images/addGreen.png";
+extern const QString glPasteIconString = ":/images/addGreen.png";
+extern const QString glCalcIconString = ":/images/calc.png";
+
+extern const QString glArrayIconString = ":/images/AGreen.png";
+extern const QString glSpectrumIconString = ":/images/SPurple.png";
+extern const QString glCalibrationIconString = ":/images/CBlue.png";
+extern const QString glWindowIconString = ":/images/WBrown.png";
+extern const QString glElementIconString = ":/images/ECyan.png";
+
 //===============================================
 int main(int argc, char *argv[])
 {
@@ -59,7 +74,6 @@ int main(int argc, char *argv[])
                 "QSplitter::handle:vertical   {height: 6px; image: url(:/images/vSplitterHandle.png);}"
                 "QSplitter::handle:horizontal {width:  6px; image: url(:/images/hSplitterHandle.png);}"
                 );
-
 
     MainWindow w;
     w.show();

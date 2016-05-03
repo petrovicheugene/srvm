@@ -63,8 +63,6 @@ void ZJointSpectrumTableWidget::zh_createConnections()
 {
     connect(zv_table, &QTableView::customContextMenuRequested,
             this, &ZJointSpectrumTableWidget::zh_onContextMenuRequest);
-
-
 }
 //=============================================================
 void ZJointSpectrumTableWidget::zp_setModel(ZJointSpectraModel* model)
@@ -88,14 +86,20 @@ void ZJointSpectrumTableWidget::zp_setModel(ZJointSpectraModel* model)
 
     connect(zv_table->selectionModel(), &QItemSelectionModel::currentRowChanged,
             this, &ZJointSpectrumTableWidget::zh_onCurrentSpectrumChanged);
+    connect(zv_table->selectionModel(), &QItemSelectionModel::selectionChanged,
+            this, &ZJointSpectrumTableWidget::zh_onSelectionChange);
     connect(model, &ZJointSpectraModel::zg_requestCurrentIndex,
             this, &ZJointSpectrumTableWidget::zp_currentIndex);
+    connect(this, &ZJointSpectrumTableWidget::zg_selectedIndexListChanged,
+            model, &ZJointSpectraModel::zp_onSelectedIndexListChange);
+
 }
 //==============================================================
 void ZJointSpectrumTableWidget::zp_appendButtonActions(QList<QAction*> actionList)
 {
     zv_buttonActionList = actionList;
     zv_buttonLayout->addStretch();
+    // zv_table->addActions(actionList);
 
     for(int a = 0; a < actionList.count(); a++)
     {
@@ -193,6 +197,12 @@ void ZJointSpectrumTableWidget::zh_onContextMenuRequest(const QPoint &pos)
     }
 
     menu->popup(zv_table->viewport()->mapToGlobal(pos));
-
+}
+//==============================================================
+void ZJointSpectrumTableWidget::zh_onSelectionChange(const QItemSelection & selected,
+                                                    const QItemSelection & deselected) const
+{
+    QModelIndexList selectedIndexList = zv_table->selectionModel()->selectedIndexes();
+    emit zg_selectedIndexListChanged(selectedIndexList);
 }
 //==============================================================

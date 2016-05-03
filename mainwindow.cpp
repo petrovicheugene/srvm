@@ -375,6 +375,10 @@ void MainWindow::zh_createConnections()
     // spectra repository <-> joint spectrum view
     connect(zv_spectrumArrayRepository, &ZSpectrumArrayRepository::zg_requestSelectedSpectrumIndexList,
             zv_spectrumTableWidget, &ZJointSpectrumTableWidget::zp_selectedSpectrumIndexList);
+//    connect(zv_spectrumArrayRepository, &ZSpectrumArrayRepository::zg_requestSelectionToStringConversion,
+//            zv_spectrumTableWidget, &ZJointSpectrumTableWidget::zp_selectionToString);
+//    connect(zv_spectrumTableWidget, &ZJointSpectrumTableWidget::zg_selectionEnable,
+//            zv_spectrumArrayRepository, &ZSpectrumArrayRepository::zp_onSelectionEnable );
 
     // spectra repository <-> chemical element view
     connect(zv_spectrumArrayRepository, &ZSpectrumArrayRepository::zg_requestSelectedChemElementIndexList,

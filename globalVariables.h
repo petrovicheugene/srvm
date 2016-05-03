@@ -3,6 +3,7 @@
 #define GLVARIABLES_H
 //================================
 #include <QString>
+#include <QIcon>
 #define DBG
 #ifdef DBG
 #include <QDebug>
@@ -21,6 +22,21 @@ extern const QString glAppCompanyURL;
 
 extern const QString glDefaultChemElementString;
 
+// icons
+extern const QString glOpenIconString;
+extern const QString glAddIconString;
+extern const QString glRemoveIconString;
+
+extern const QString glClearIconString;
+extern const QString glCopyIconString;
+extern const QString glPasteIconString;
+
+extern const QString glCalcIconString;
+extern const QString glArrayIconString;
+extern const QString glSpectrumIconString;
+extern const QString glCalibrationIconString;
+extern const QString glWindowIconString;
+extern const QString glElementIconString;
 
 #endif // GLVARIABLES_H
 //================================

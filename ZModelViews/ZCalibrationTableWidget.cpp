@@ -56,8 +56,8 @@ void ZCalibrationTableWidget::zp_setModel(QAbstractItemModel* model)
     ZNormaDelegate* normaDelegate = new ZNormaDelegate(zv_table);
     zv_table->setItemDelegateForColumn(3, normaDelegate);
 
-    ZNumericDelegate* freeMemberDelegate = new ZNumericDelegate(zv_table);
-    zv_table->setItemDelegateForColumn(4, freeMemberDelegate);
+    ZNumericDelegate* interceptDelegate = new ZNumericDelegate(zv_table);
+    zv_table->setItemDelegateForColumn(4, interceptDelegate);
 
     //zv_table->horizontalHeader()->setSectionResizeMode(0, QHeaderView::Stretch);
     // zv_table->horizontalHeader()->setSectionResizeMode(1, QHeaderView::ResizeToContents);

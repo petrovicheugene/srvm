@@ -21,7 +21,8 @@ public:
                         OT_END_INSERT_SPECTRA,
                         OT_REMOVE_SPECTRA,
                         OT_END_REMOVE_SPECTRA,
-                        OT_CHANGED
+                        OT_CHANGED,
+                        OT_CONCENTRATION_CHANGED
                        };
 
 

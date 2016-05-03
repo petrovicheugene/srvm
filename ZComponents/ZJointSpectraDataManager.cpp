@@ -28,7 +28,13 @@ void ZJointSpectraDataManager::zp_connectToSpectrumArrayRepository(ZSpectrumArra
             this, &ZJointSpectraDataManager::zh_currentSpectrumArrayChanged);
     connect(repository, &ZSpectrumArrayRepository::zg_requestCurrentChemConcentrationCellIndex,
             this, &ZJointSpectraDataManager::zh_currentChemConcentrationCellIndex);
+    connect(this, &ZJointSpectraDataManager::zg_onSelectionChange,
+            repository, &ZSpectrumArrayRepository::zp_onSelectionChange);
 
+    connect(repository, &ZSpectrumArrayRepository::zg_requestClearSelected,
+            this, &ZJointSpectraDataManager::zg_requestClearSelected);
+    connect(repository, &ZSpectrumArrayRepository::zg_requestSelectedString,
+            this, &ZJointSpectraDataManager::zg_requestSelectedString);
 
 }
 //==================================================================
@@ -425,6 +431,11 @@ void ZJointSpectraDataManager::zh_onRepositoryArrayOperation(ZSpectrumArrayRepos
     {
         emit zg_currentOperation(OT_SEPECTRUM_VISIBLE_CHANGED, first, last);
     }
+    else if(type == ZSpectrumArrayRepository::SOT_CONCENTRATION_CHANGED)
+    {
+        emit zg_currentOperation(OT_SEPECTRUM_CONCENTRATION_CHANGED, first, last);
+    }
+
 }
 //==================================================================
 void ZJointSpectraDataManager::zh_onRepositoryChemElementOperation(ZSpectrumArrayRepository::ChemElementOperationType type,

@@ -38,9 +38,17 @@ void ZCalibrationRepository::zp_appendActionsToMenu(QMenu *menu) const
 {
     if(menu->objectName() == "Edit")
     {
-        menu->addAction(zv_newCalibrationAction);
-        menu->addAction(zv_removeCalibrationAction);
-        menu->addSeparator();
+        QMenu* calibrationMenu = new QMenu(tr("Calibrations"));
+        calibrationMenu->setIcon(QIcon(glCalibrationIconString));
+        calibrationMenu->addAction(zv_newCalibrationAction);
+        calibrationMenu->addAction(zv_removeCalibrationAction);
+        menu->addMenu(calibrationMenu);
+
+        QMenu* windowsMenu = new QMenu(tr("Calibration windows"));
+        windowsMenu->setIcon(QIcon(glWindowIconString));
+        windowsMenu->addAction(zv_newWindowAction);
+        windowsMenu->addAction(zv_removeWindowAction);
+        menu->addMenu(windowsMenu);
     }
     else if(menu->objectName() == "Actions")
     {
@@ -735,45 +743,45 @@ bool ZCalibrationRepository::zp_setEquationDataFromSettings(int calibrationIndex
     return true;
 }
 //======================================================
-qreal ZCalibrationRepository::zp_equationFreeMemeber(int calibrationIndex) const
+qreal ZCalibrationRepository::zp_equationIntercept(int calibrationIndex) const
 {
     if(calibrationIndex < 0 || calibrationIndex > zv_caibrationList.count())
     {
         return 0.0;
     }
 
-    return zv_caibrationList.at(calibrationIndex)->zp_equationFreeMember();
+    return zv_caibrationList.at(calibrationIndex)->zp_equationIntercept();
 }
 //======================================================
-bool ZCalibrationRepository::zp_setEquationFreeMember(int calibrationIndex, qreal value)
+bool ZCalibrationRepository::zp_setEquationIntercept(int calibrationIndex, qreal value)
 {
     if(calibrationIndex < 0 || calibrationIndex > zv_caibrationList.count())
     {
         return false;
     }
 
-    bool res = zv_caibrationList.at(calibrationIndex)->zp_setEquationFreeMember(value);
+    bool res = zv_caibrationList.at(calibrationIndex)->zp_setEquationIntercept(value);
     return res;
 }
 //======================================================
-QString ZCalibrationRepository::zp_equationFreeMemeberString(int calibrationIndex) const
+QString ZCalibrationRepository::zp_equationInterceptString(int calibrationIndex) const
 {
     if(calibrationIndex < 0 || calibrationIndex > zv_caibrationList.count())
     {
         return "0.0";
     }
 
-    return zv_caibrationList.at(calibrationIndex)->zp_equationFreeMemberString();
+    return zv_caibrationList.at(calibrationIndex)->zp_equationInterceptString();
 }
 //======================================================
-bool ZCalibrationRepository::zp_setEquationFreeMemberString(int calibrationIndex, const QString& freeMemberString)
+bool ZCalibrationRepository::zp_setEquationInterceptString(int calibrationIndex, const QString& interceptString)
 {
     if(calibrationIndex < 0 || calibrationIndex > zv_caibrationList.count())
     {
         return false;
     }
 
-    bool res = zv_caibrationList.at(calibrationIndex)->zp_setEquationFreeMemberString(freeMemberString);
+    bool res = zv_caibrationList.at(calibrationIndex)->zp_setEquationInterceptString(interceptString);
     return res;
 }
 //======================================================
@@ -1034,7 +1042,10 @@ void ZCalibrationRepository::zh_onNewWindowAction()
         return;
     }
 
-    int offset = qRound(currentVisibleSceneRect.width()/2.5);
+    //int offset = qRound(currentVisibleSceneRect.width()/5);
+
+    int windowWidth = qRound(currentVisibleSceneRect.width() / 10);
+    int offset = qRound((currentVisibleSceneRect.width() - windowWidth) / 2);
     int firstChannel;
     int lastChannel;
     if(currentVisibleSceneRect.width() > 0)
@@ -1300,7 +1311,7 @@ bool ZCalibrationRepository::zh_appendCalibrationToList(ZCalibration* calibratio
             this, &ZCalibrationRepository::zh_onTermOperation);
     connect(calibration, &ZCalibration::zg_normalizerChanged,
             this, &ZCalibrationRepository::zh_onNormalizerChange);
-    connect(calibration, &ZCalibration::zg_freeTermChanged,
+    connect(calibration, &ZCalibration::zg_interceptChanged,
             this, &ZCalibrationRepository::zh_onCalibrationFreeTermChange);
 
     int insertIndex = zv_caibrationList.count();
@@ -1327,34 +1338,34 @@ void ZCalibrationRepository::zh_createActions()
 {
     // calibration actions
     zv_newCalibrationAction = new QAction(this);
-    zv_newCalibrationAction->setIcon(QIcon(":/images/addGreen.png"));
+    zv_newCalibrationAction->setIcon(QIcon(glAddIconString));
     zv_newCalibrationAction->setText(tr("Append a new calibration"));
     zv_newCalibrationAction->setToolTip(tr("Append a new calibration to the list"));
 
     zv_openCalibrationsAction = new QAction(this);
-    zv_openCalibrationsAction->setIcon(QIcon(":/images/addGreen.png"));
+    zv_openCalibrationsAction->setIcon(QIcon(glOpenIconString));
     zv_openCalibrationsAction->setText(tr("Open calibrations"));
     zv_openCalibrationsAction->setToolTip(tr("Append a new calibration to the list"));
 
     zv_removeCalibrationAction = new QAction(this);
-    zv_removeCalibrationAction->setIcon(QIcon(":/images/CRemove3Blue.png"));
+    zv_removeCalibrationAction->setIcon(QIcon(glRemoveIconString));
     zv_removeCalibrationAction->setText(tr("Remove selected calibrations"));
     zv_removeCalibrationAction->setToolTip(tr("Remove selected calibrations from the list"));
 
     // window actions
     zv_newWindowAction = new QAction(this);
-    zv_newWindowAction->setIcon(QIcon(":/images/CRemove3Blue.png"));
-    zv_newWindowAction->setText(tr("Remove selected calibrations"));
-    zv_newWindowAction->setToolTip(tr("Remove selected calibrations from the list"));
+    zv_newWindowAction->setIcon(QIcon(glAddIconString));
+    zv_newWindowAction->setText(tr("Append a new calibration window"));
+    zv_newWindowAction->setToolTip(tr("Append a new calibration window to the list"));
 
     zv_removeWindowAction = new QAction(this);
-    zv_removeWindowAction->setIcon(QIcon(":/images/CRemove3Blue.png"));
-    zv_removeWindowAction->setText(tr("Remove selected calibrations"));
-    zv_removeWindowAction->setToolTip(tr("Remove selected calibrations from the list"));
+    zv_removeWindowAction->setIcon(QIcon(glRemoveIconString));
+    zv_removeWindowAction->setText(tr("Remove selected calibration windows"));
+    zv_removeWindowAction->setToolTip(tr("Remove selected calibration windows from the list"));
 
     // action actions
     zv_recalcEquationFactorsAction = new QAction(this);
-    zv_recalcEquationFactorsAction->setIcon(QIcon(":/images/calc.png"));
+    zv_recalcEquationFactorsAction->setIcon(QIcon(glCalcIconString));
     zv_recalcEquationFactorsAction->setText(tr("Recalculate calibration"));
     zv_recalcEquationFactorsAction->setToolTip(tr("Recalculate equation factors for current calibration"));
 

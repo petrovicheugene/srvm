@@ -58,5 +58,12 @@
         <file>ZWidgets/sidebarLeftBlueClose.png</file>
         <file>ZWidgets/sidebarLeftBlueOpen.png</file>
         <file>calc.png</file>
+        <file>AGreen.png</file>
+        <file>CBlue.png</file>
+        <file>SPurple.png</file>
+        <file>WBrown.png</file>
+        <file>eraser.png</file>
+        <file>ECyan.png</file>
+        <file>addGreen-1.png</file>
     </qresource>
 </RCC>

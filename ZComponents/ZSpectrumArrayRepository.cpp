@@ -25,12 +25,24 @@ void ZSpectrumArrayRepository::zp_appendActionsToMenu(QMenu* menu) const
 {
     if(menu->objectName() == "Edit")
     {
-        menu->addAction(zv_appendArrayAction);
-        menu->addAction(zv_removeArrayAction);
-        menu->addSeparator();
-        menu->addAction(zv_appendSpectrumToArrayAction);
-        menu->addAction(zv_removeSpectrumFromArrayAction);
-        menu->addSeparator();
+        QMenu* arrayMenu = new QMenu(tr("Spectrum array"));
+        arrayMenu->setIcon(QIcon(glArrayIconString));
+        arrayMenu->addAction(zv_appendArrayAction);
+        arrayMenu->addAction(zv_removeArrayAction);
+        menu->addMenu(arrayMenu);
+
+        QMenu* spectraMenu = new QMenu(tr("Spectra"));
+        spectraMenu->setIcon(QIcon(glSpectrumIconString));
+        spectraMenu->addAction(zv_appendSpectrumToArrayAction);
+        spectraMenu->addAction(zv_removeSpectrumFromArrayAction);
+        menu->addMenu(spectraMenu);
+
+        QMenu* elementMenu = new QMenu(tr("Chemical element"));
+        elementMenu->setIcon(QIcon(glElementIconString));
+        elementMenu->addAction(zv_appendChemElementAction);
+        elementMenu->addAction(zv_removeChemElementAction);
+        menu->addMenu(elementMenu);
+
     }
 }
 //==================================================================
@@ -941,6 +953,12 @@ void ZSpectrumArrayRepository::zp_chemElementListForCurrentArray(QStringList& ch
     chemElementList = zp_chemElementList(currentArray);
 }
 //==================================================================
+void ZSpectrumArrayRepository::zp_onSelectionChange(bool selectionEnabled, bool concentrationSelected)
+{
+    zv_copyConcentrationDataAction->setEnabled(selectionEnabled);
+    zv_clearConcentrationDataAction->setEnabled(concentrationSelected);
+}
+//==================================================================
 void ZSpectrumArrayRepository::zh_onSpectrumArraySaving(QString filePath)
 {
     zv_arrayFilePath = filePath;
@@ -1249,6 +1267,10 @@ void ZSpectrumArrayRepository::zh_onSpectrumOperation(ZSpectrumArray::OperationT
         {
             emit zg_spectrumOperation(SOT_END_REMOVE_SPECTRA, arrayIndex, first, last);
         }
+        else if(type == ZSpectrumArray::OT_CONCENTRATION_CHANGED)
+        {
+            emit zg_spectrumOperation(SOT_CONCENTRATION_CHANGED, arrayIndex, first, last);
+        }
 
         break;
     }
@@ -1486,12 +1508,21 @@ void ZSpectrumArrayRepository::zh_onPasteConcentrationDataAction()
 //==================================================================
 void ZSpectrumArrayRepository::zh_onCopyConcentrationDataAction()
 {
+    QString selectedString;
+    emit zg_requestSelectedString(selectedString);
 
+    if(selectedString.isEmpty())
+    {
+        return;
+    }
+
+    QClipboard* clipboard = qApp->clipboard();
+    clipboard->setText(selectedString);
 }
 //==================================================================
 void ZSpectrumArrayRepository::zh_onClearConcentrationDataAction()
 {
-
+    emit zg_requestClearSelected();
 }
 //==================================================================
 QList<ZRawSpectrumArray> ZSpectrumArrayRepository::zh_createRawArrayList() const
@@ -1537,44 +1568,47 @@ QList<ZRawSpectrumArray> ZSpectrumArrayRepository::zh_createRawArrayList() const
 void ZSpectrumArrayRepository::zh_createActions()
 {
     zv_appendArrayAction = new QAction(this);
-    zv_appendArrayAction->setIcon(QIcon(":/images/addGreen.png"));
+    zv_appendArrayAction->setIcon(QIcon(glAddIconString));
     zv_appendArrayAction->setText(tr("Append a new spectrum array"));
     zv_appendArrayAction->setToolTip(tr("Append a new spectrum array to the list"));
 
     zv_removeArrayAction = new QAction(this);
-    zv_removeArrayAction->setIcon(QIcon(":/images/ARemove3Green.png"));
+    zv_removeArrayAction->setIcon(QIcon(glRemoveIconString));
     zv_removeArrayAction->setText(tr("Remove current spectrum array"));
     zv_removeArrayAction->setToolTip(tr("Remove current spectrum array from the list"));
 
     zv_appendSpectrumToArrayAction = new QAction(this);
-    zv_appendSpectrumToArrayAction->setIcon(QIcon(":/images/addGreen.png"));
+    zv_appendSpectrumToArrayAction->setIcon(QIcon(glAddIconString));
     zv_appendSpectrumToArrayAction->setText(tr("Append spectra"));
     zv_appendSpectrumToArrayAction->setToolTip(tr("Append spectra to current array"));
 
     zv_removeSpectrumFromArrayAction = new QAction(this);
-    zv_removeSpectrumFromArrayAction->setIcon(QIcon(":/images/SRemove3Purple.png"));
+    zv_removeSpectrumFromArrayAction->setIcon(QIcon(glRemoveIconString));
     zv_removeSpectrumFromArrayAction->setText(tr("Remove selected spectra"));
     zv_removeSpectrumFromArrayAction->setToolTip(tr("Remove selected spectra from the array"));
 
     zv_appendChemElementAction = new QAction(this);
-    zv_appendChemElementAction->setIcon(QIcon(":/images/addGreen.png"));
+    zv_appendChemElementAction->setIcon(QIcon(glAddIconString));
     zv_appendChemElementAction->setText(tr("Append a new chemical element"));
     zv_appendChemElementAction->setToolTip(tr("Append a new chemical element to the list"));
 
     zv_removeChemElementAction = new QAction(this);
-    zv_removeChemElementAction->setIcon(QIcon(":/images/ARemove3Green.png"));
+    zv_removeChemElementAction->setIcon(QIcon(glRemoveIconString));
     zv_removeChemElementAction->setText(tr("Remove current chemical element"));
     zv_removeChemElementAction->setToolTip(tr("Remove current chemical element from the list"));
 
     zv_copyConcentrationDataAction = new QAction(this);
-    zv_copyConcentrationDataAction->setText(tr("Copy selected concentrations"));
+    zv_copyConcentrationDataAction->setIcon(QIcon(glAddIconString));
+    zv_copyConcentrationDataAction->setText(tr("Copy selected"));
     zv_copyConcentrationDataAction->setEnabled(false);
 
     zv_pasteConcentrationDataAction = new QAction(this);
+    zv_pasteConcentrationDataAction->setIcon(QIcon(glAddIconString));
     zv_pasteConcentrationDataAction->setText(tr("Paste concentrations"));
     zv_pasteConcentrationDataAction->setEnabled(false);
 
     zv_clearConcentrationDataAction = new QAction(this);
+    zv_clearConcentrationDataAction->setIcon(QIcon(glAddIconString));
     zv_clearConcentrationDataAction->setText(tr("Clear selected concentrations"));
     zv_clearConcentrationDataAction->setEnabled(false);
 

@@ -17,7 +17,7 @@ Qt::ItemFlags	ZJointSpectraModel::flags(const QModelIndex & index) const
 
     if(index.column() == 0)
     {
-         flags |= Qt::ItemIsUserCheckable;
+        flags |= Qt::ItemIsUserCheckable;
     }
     else if(zv_dataManager->zp_isColumnChemElement(index.column()))
     {
@@ -188,6 +188,15 @@ void ZJointSpectraModel::zp_connectToSpectraDataManager(ZJointSpectraDataManager
             this, &ZJointSpectraModel::zh_onDataManagerOperation);
     connect(dataManager, &ZJointSpectraDataManager::zg_requestCurrentIndex,
             this, &ZJointSpectraModel::zg_requestCurrentIndex);
+    connect(this, &ZJointSpectraModel::zg_selectionChanged,
+            dataManager, &ZJointSpectraDataManager::zg_onSelectionChange);
+
+    connect(dataManager, &ZJointSpectraDataManager::zg_requestClearSelected,
+            this, &ZJointSpectraModel::zp_clearSelectedConcentrations);
+    connect(dataManager, &ZJointSpectraDataManager::zg_requestSelectedString,
+            this, &ZJointSpectraModel::zp_convertSelectedToString);
+
+
     endResetModel();
 }
 //==================================================================
@@ -249,12 +258,103 @@ void ZJointSpectraModel::zh_onDataManagerOperation(ZJointSpectraDataManager::Ope
 
         emit dataChanged(leftTop, rightBottom);
     }
+    else if(type == ZJointSpectraDataManager::OT_SEPECTRUM_CONCENTRATION_CHANGED)
+    {
+        QModelIndex leftTop = index(first, zv_dataManager->zv_spectrumDataColumnCount - 1);
+        QModelIndex rightBottom = index(last, zv_dataManager->zv_spectrumDataColumnCount
+                                        + zv_dataManager->zv_visibleChemElementCount);
+
+        emit dataChanged(leftTop, rightBottom);
+    }
+
     else if(type == ZJointSpectraDataManager::OT_COLUMN_DATA_CHANGED)
     {
         QModelIndex leftTop = index(0, first);
         QModelIndex rightBottom = index(zv_dataManager->zp_rowCount() - 1, last);
 
         emit dataChanged(leftTop, rightBottom);
+    }
+}
+//==================================================================
+void ZJointSpectraModel::zp_onSelectedIndexListChange(QModelIndexList selectedIndexList)
+{
+    zv_selectedIndexMap.clear();
+    bool concentrationSelected = false;
+    foreach(QModelIndex index, selectedIndexList)
+    {
+        // skip spectrum
+        if(index.column() == 1)
+        {
+            continue;
+        }
+
+        // check chemElementColumns in selection
+        if(!concentrationSelected)
+        {
+            if(index.column() >= zv_dataManager->zv_spectrumDataColumnCount
+                    && index.column() < zv_dataManager->zv_visibleChemElementCount
+                    + zv_dataManager->zv_spectrumDataColumnCount)
+            {
+                concentrationSelected = true;
+            }
+        }
+        zv_selectedIndexMap[index.row()].insert(index.column(), index);
+    }
+
+    emit zg_selectionChanged(!zv_selectedIndexMap.isEmpty(), concentrationSelected);
+}
+//==================================================================
+void ZJointSpectraModel::zp_clearSelectedConcentrations()
+{
+    QMap<int, QMap<int, QModelIndex> >::const_iterator rit;
+    QMap<int, QModelIndex> columnList;
+    QMap<int, QModelIndex>::const_iterator cit;
+    for(rit = zv_selectedIndexMap.begin(); rit != zv_selectedIndexMap.end(); rit++)
+    {
+        columnList = rit.value();
+        for(cit = columnList.begin(); cit != columnList.end(); cit++)
+        {
+            setData(cit.value(), QVariant("0.0"));
+        }
+    }
+}
+//==================================================================
+void ZJointSpectraModel::zp_convertSelectedToString(QString& selectionString) const
+{
+    selectionString.clear();
+    if(zv_selectedIndexMap.isEmpty())
+    {
+        return;
+    }
+
+    QMap<int, QMap<int, QModelIndex> >::const_iterator rit;
+    QMap<int, QModelIndex> columnList;
+    QMap<int, QModelIndex>::const_iterator cit;
+    QVariant vData;
+    QChar separator = '\t';
+    for(rit = zv_selectedIndexMap.begin(); rit != zv_selectedIndexMap.end(); rit++)
+    {
+        columnList = rit.value();
+        for(cit = columnList.begin(); cit != columnList.end(); cit++)
+        {
+            vData = data(cit.value());
+            if(!vData.isValid() && !vData.canConvert<QString>())
+            {
+                selectionString += separator;
+                continue;
+            }
+            selectionString += vData.toString();
+
+            if(cit != columnList.end() - 1)
+            {
+                selectionString += separator;
+            }
+        }
+        // row is comlete
+        if(rit != zv_selectedIndexMap.end() - 1)
+        {
+            selectionString.append('\n');
+        }
     }
 }
 //==================================================================

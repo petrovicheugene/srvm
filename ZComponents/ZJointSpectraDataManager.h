@@ -6,6 +6,7 @@
 #include <QModelIndex>
 #include <QMap>
 #include <QList>
+#include <QItemSelection>
 #include "ZSpectrumArrayRepository.h"
 #include "ZCalibrationRepository.h"
 #include "ZCalibrationQualityData.h"
@@ -13,6 +14,7 @@
 class ZJointSpectraDataManager : public QObject
 {
     Q_OBJECT
+    friend class ZJointSpectraModel;
 public:
     explicit ZJointSpectraDataManager(QObject *parent = 0);
 
@@ -28,7 +30,8 @@ public:
                         OT_END_REMOVE_COLUMN,
                         OT_COLUMN_HEADER_CHANGED,
                         OT_COLUMN_DATA_CHANGED,
-                        OT_SEPECTRUM_VISIBLE_CHANGED};
+                        OT_SEPECTRUM_VISIBLE_CHANGED,
+                        OT_SEPECTRUM_CONCENTRATION_CHANGED};
     // FUNCS
     void zp_connectToSpectrumArrayRepository(ZSpectrumArrayRepository*);
     void zp_connectToCalibrationRepository(ZCalibrationRepository*);
@@ -56,12 +59,16 @@ signals:
     void zg_calibrationQualityData(qint64 calibrationId, ZCalibrationQualityData) const;
     void zg_calibrationValuesChanged(qint64 calibrationId);
     void zg_requestCurrentIndex(QModelIndex& index) const;
+    void zg_onSelectionChange(bool selectionEnabled, bool concentrationSelected) const;
+    void zg_requestClearSelected() const;
+    void zg_requestSelectedString(QString&) const;
 
 public slots:
 
     void zp_calculateCalibrationQualityData(qint64 calibrationId,
                                             int factorCount,
                                             qreal summSquareAverageConcentrationDispersion) const;
+
 private slots:
 
     void zh_onRepositoryArrayOperation(ZSpectrumArrayRepository::SpectrumOperationType,
