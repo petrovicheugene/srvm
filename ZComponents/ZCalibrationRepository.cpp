@@ -28,6 +28,7 @@ ZCalibrationRepository::ZCalibrationRepository(QObject *parent) : QObject(parent
     zv_currentArrayId = -1;
     zv_currentArrayIndex = 0;
     zv_currentCalibrationIndex = -1;
+    zv_currentTermIndex = -1;
 
     zh_createActions();
     zh_createConnections();
@@ -49,6 +50,16 @@ void ZCalibrationRepository::zp_appendActionsToMenu(QMenu *menu) const
         windowsMenu->addAction(zv_newWindowAction);
         windowsMenu->addAction(zv_removeWindowAction);
         menu->addMenu(windowsMenu);
+
+        QMenu* termMenu = new QMenu(tr("Equation terms"));
+        termMenu->setIcon(QIcon());
+        termMenu->addAction(zv_createMixedTermsAction);
+        termMenu->addAction(zv_removeMixedTermsAction);
+        termMenu->addSeparator();
+        termMenu->addAction(zv_createCustomTermAction);
+        termMenu->addAction(zv_removeCustomTermAction);
+
+        menu->addMenu(termMenu);
     }
     else if(menu->objectName() == "Actions")
     {
@@ -80,6 +91,18 @@ QList<QAction*> ZCalibrationRepository::zp_windowActions() const
     QList<QAction*> actionList;
     actionList << zv_newWindowAction;
     actionList << zv_removeWindowAction;
+    return actionList;
+}
+//==================================================================
+QList<QAction*> ZCalibrationRepository::zp_termActions() const
+{
+    QList<QAction*> actionList;
+    actionList << zv_createMixedTermsAction;
+    actionList << zv_removeMixedTermsAction;
+    actionList << 0;
+    actionList << zv_createCustomTermAction;
+    actionList << zv_removeCustomTermAction;
+
     return actionList;
 }
 //==================================================================
@@ -980,6 +1003,29 @@ void ZCalibrationRepository::zp_onCurrentCalibrationWindowChanged(int currentInd
                                             previousCalibrationWindowId, previousIndex);
 }
 //======================================================
+void ZCalibrationRepository::zp_onCurrentTermChange(int currentTermIndex, int previousTermIndex)
+{
+    zv_currentTermIndex = currentTermIndex;
+//    if(zv_currentCalibrationIndex < 0 || zv_currentCalibrationIndex >= zv_caibrationList.count())
+//    {
+//        zv_createCustomTermAction->setEnabled(false);
+//        zv_removeCustomTermAction->setEnabled(false);
+//        zv_createMixedTermsAction->setEnabled(false);
+//        zv_removeMixedTermsAction->setEnabled(false);
+
+//        return;
+//    }
+
+//    ZCalibration* currentCalibration = zv_caibrationList.at(zv_currentCalibrationIndex);
+
+//    ZAbstractTerm* currentTerm =
+
+#ifdef DBG
+    qDebug() << "Current Term" << currentTermIndex;
+#endif
+
+}
+//======================================================
 void ZCalibrationRepository::zh_onNewCalibrationAction()
 {
     // new Calibration Name
@@ -1043,8 +1089,7 @@ void ZCalibrationRepository::zh_onNewWindowAction()
     }
 
     //int offset = qRound(currentVisibleSceneRect.width()/5);
-
-    int windowWidth = qRound(currentVisibleSceneRect.width() / 10);
+    int windowWidth = qRound(currentVisibleSceneRect.width() / 20);
     int offset = qRound((currentVisibleSceneRect.width() - windowWidth) / 2);
     int firstChannel;
     int lastChannel;
@@ -1106,6 +1151,38 @@ void ZCalibrationRepository::zh_onRecalcEquationFactorsAction()
 {
     // zh_recalcEquationFactors(zv_currentCalibrationIndex);
     emit zg_invokeCalibrationRecalc();
+}
+//======================================================
+void ZCalibrationRepository::zh_onCreateMixedTermsAction()
+{
+    if(zv_currentCalibrationIndex < 0 || zv_currentCalibrationIndex >= zv_caibrationList.count())
+    {
+        return;
+    }
+
+    ZCalibration* calibration = zv_caibrationList.at(zv_currentCalibrationIndex);
+    calibration->zp_createMixedTerms(zv_currentTermIndex);
+}
+//======================================================
+void ZCalibrationRepository::zh_onRemoveMixedTermsAction()
+{
+    if(zv_currentCalibrationIndex < 0 || zv_currentCalibrationIndex >= zv_caibrationList.count())
+    {
+        return;
+    }
+
+    ZCalibration* calibration = zv_caibrationList.at(zv_currentCalibrationIndex);
+    calibration->zp_createMixedTerms(zv_currentTermIndex);
+}
+//======================================================
+void ZCalibrationRepository::zh_onCreateCustomTermAction()
+{
+
+}
+//======================================================
+void ZCalibrationRepository::zh_onRemoveCustomTermAction()
+{
+
 }
 //======================================================
 void ZCalibrationRepository::zh_removeCalibrationWindow(int currentCalibrationIndex, int spectrumWindowIndex)
@@ -1369,6 +1446,27 @@ void ZCalibrationRepository::zh_createActions()
     zv_recalcEquationFactorsAction->setText(tr("Recalculate calibration"));
     zv_recalcEquationFactorsAction->setToolTip(tr("Recalculate equation factors for current calibration"));
 
+    // terms actions
+    zv_createMixedTermsAction = new QAction(this);
+    zv_createMixedTermsAction->setIcon(QIcon(glAddIconString));
+    zv_createMixedTermsAction->setText(tr("Create mixed terms"));
+    zv_createMixedTermsAction->setToolTip(tr("Create mixed terms"));
+
+    zv_removeMixedTermsAction = new QAction(this);
+    zv_removeMixedTermsAction->setIcon(QIcon(glRemoveIconString));
+    zv_removeMixedTermsAction->setText(tr("Remove mixed terms"));
+    zv_removeMixedTermsAction->setToolTip(tr("Remove mixed terms from the list"));
+
+    zv_createCustomTermAction = new QAction(this);
+    zv_createCustomTermAction->setIcon(QIcon(glAddIconString));
+    zv_createCustomTermAction->setText(tr("Create custom term"));
+    zv_createCustomTermAction->setToolTip(tr("Create custom term"));
+
+    zv_removeCustomTermAction = new QAction(this);
+    zv_removeCustomTermAction->setIcon(QIcon(glRemoveIconString));
+    zv_removeCustomTermAction->setText(tr("Remove selected custom term"));
+    zv_removeCustomTermAction->setToolTip(tr("Remove selected custom term from the list"));
+
 }
 //======================================================
 void ZCalibrationRepository::zh_createConnections()
@@ -1385,6 +1483,15 @@ void ZCalibrationRepository::zh_createConnections()
             this, &ZCalibrationRepository::zh_onRemoveWindowAction);
     connect(zv_recalcEquationFactorsAction, &QAction::triggered,
             this, &ZCalibrationRepository::zh_onRecalcEquationFactorsAction);
+
+    connect(zv_createMixedTermsAction, &QAction::triggered,
+            this, &ZCalibrationRepository::zh_onCreateMixedTermsAction);
+    connect(zv_removeMixedTermsAction, &QAction::triggered,
+            this, &ZCalibrationRepository::zh_onRemoveMixedTermsAction);
+    connect(zv_createCustomTermAction, &QAction::triggered,
+            this, &ZCalibrationRepository::zh_onCreateCustomTermAction);
+    connect(zv_removeCustomTermAction, &QAction::triggered,
+            this, &ZCalibrationRepository::zh_onRemoveCustomTermAction);
 
 }
 //======================================================

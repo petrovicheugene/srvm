@@ -14,14 +14,14 @@ RC_ICONS = "SDC1.ico"
 
 VER_MAJ=0
 VER_MIN=0
-VER_PAT=16
+VER_PAT=17
 VER_RELEASE=a
 
 EXE_BASE_NAME=SDCalibrator
 QMAKE_TARGET_PRODUCT="SD Calibrator"
 QMAKE_TARGET_DESCRIPTION="Creates calibrations for spectrometers"
 QMAKE_TARGET_COMPANY="TechnoAnalyt"
-QMAKE_TARGET_COPYRIGHT="Copyright © $${QMAKE_TARGET_COMPANY} Ltd. 2015.  All rights reserved."
+QMAKE_TARGET_COPYRIGHT="Copyright © $${QMAKE_TARGET_COMPANY} Ltd. 2015, 2016.  All rights reserved."
 COMPANY_URL=tehnoanalit.com
 
 CONFIG += $$VER_RELEASE
@@ -129,7 +129,6 @@ SOURCES += main.cpp \
     ZComponents/ZSimpleTerm.cpp \
     ZComponents/ZQuadraticTerm.cpp \
     ZComponents/ZCustomTerm.cpp \
-    ZComponents/ZCrossProductTerm.cpp \
     ZModelViews/ZCustomCheckableVerticalHeaderView/ZCustomCheckableVerticalHeaderView.cpp \
     ZComponents/ZTermNormalizer.cpp \
     ZModelViews/ZCorrelationPlotterWidget.cpp \
@@ -146,7 +145,8 @@ SOURCES += main.cpp \
     ZComponents/ZLSEGaussSolver.cpp \
     ZComponents/ZQrealToStringConverter.cpp \
     ZComponents/ZCalibrationQualityData.cpp \
-    ZComponents/ZPasteData.cpp
+    ZComponents/ZPasteData.cpp \
+    ZComponents/ZMixedTerm.cpp
 
 
 HEADERS  += \
@@ -213,7 +213,6 @@ HEADERS  += \
     ZComponents/ZTermCorrelationTableManager.h \
     ZComponents/ZAbstractTerm.h \
     ZComponents/ZTermNormalizer.h \
-    ZComponents/ZCrossProductTerm.h \
     ZComponents/ZCustomTerm.h \
     ZComponents/ZQuadraticTerm.h \
     ZComponents/ZSimpleTerm.h \
@@ -232,7 +231,8 @@ HEADERS  += \
     ZComponents/ZLSEGaussSolver.h \
     ZComponents/ZQrealToStringConverter.h \
     ZComponents/ZCalibrationQualityData.h \
-    ZComponents/ZPasteData.h
+    ZComponents/ZPasteData.h \
+    ZComponents/ZMixedTerm.h
 
 
 RESOURCES += \

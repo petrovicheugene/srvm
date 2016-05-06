@@ -3,7 +3,7 @@
 #include "ZAbstractSpectrum.h"
 #include "ZSimpleTerm.h"
 #include "ZQuadraticTerm.h"
-#include "ZCrossProductTerm.h"
+#include "ZMixedTerm.h"
 #include "ZCustomTerm.h"
 #include "ZEquationSettingsData.h"
 #include "ZTermNormalizer.h"
@@ -588,8 +588,111 @@ bool ZCalibration::zp_calcBaseTermValue(const ZAbstractSpectrum* spectrum, qreal
             }
 
             break;
-         }
-     }
+        }
+    }
+
+    return true;
+}
+//=========================================================
+bool ZCalibration::zp_createMixedTerms(int termIndex)
+{
+    if(termIndex < 0 || termIndex >= zv_termList.count())
+    {
+        return false;
+    }
+
+    if(zv_termList.at(termIndex)->zp_termType() != ZAbstractTerm::TT_SIMPLE)
+    {
+        return false;
+    }
+
+    //  get window from simple term
+    ZSimpleTerm* baseTerm = qobject_cast<ZSimpleTerm*>(zv_termList.at(termIndex));
+    if(!baseTerm)
+    {
+        return false;
+    }
+
+    const ZCalibrationWindow* baseWindow = baseTerm->zp_window();
+    ZMixedTerm* mixedTerm;
+    QList<ZAbstractTerm*> mixedTermList;
+    for(int w = 0; w < zv_windowList.count(); w++)
+    {
+        if(zv_windowList.at(w) == baseWindow || zv_windowList.at(w)->zp_windowType() != ZCalibrationWindow::WT_PEAK)
+        {
+            continue;
+        }
+
+        // check existing mixed terms
+        bool termExists = false;
+        for(int t = 0; t < zv_termList.count(); t++)
+        {
+            if(zv_termList.at(t)->zp_termType() != ZAbstractTerm::TT_MIXED)
+            {
+                continue;
+            }
+
+            if(zv_termList.at(t)->zp_termBelongsToWindow(baseWindow) && zv_termList.at(t)->zp_termBelongsToWindow(zv_windowList.at(w)))
+            {
+                termExists = true;
+                break;
+            }
+        }
+
+        if(termExists)
+        {
+            continue;
+        }
+
+        // create mixed term
+        mixedTerm = new ZMixedTerm(baseWindow, zv_windowList.at(w), this);
+        mixedTermList.append(mixedTerm);
+    }
+
+    if(mixedTermList.isEmpty())
+    {
+        return false;
+    }
+
+    // define first custom term
+    int t = 0;
+    for(; t < zv_termList.count(); t++)
+    {
+        if(zv_termList.at(t)->zp_termType() == ZAbstractTerm::TT_CUSTOM)
+        {
+            break;
+        }
+    }
+
+    // insert new term
+    if(mixedTermList.isEmpty())
+    {
+        return false;
+    }
+
+    emit zg_termOperation(TOT_BEGIN_INSERT_TERM, t, t + mixedTermList.count() - 1);
+    for(int i = 0; i < mixedTermList.count(); i++)
+    {
+        zv_termList.insert(t+i , mixedTermList.at(i));
+    }
+    emit zg_termOperation(TOT_END_INSERT_TERM, t, t + mixedTermList.count() - 1);
+
+    return true;
+}
+//=========================================================
+bool ZCalibration::zp_removeMixedTerms()
+{
+    for(int t = zv_termList.count() - 1; t >= 0; t--)
+    {
+        if(zv_termList.at(t)->zp_termType() != ZAbstractTerm::TT_MIXED)
+        {
+            continue;
+        }
+
+        emit zg_termOperation(TOT_BEGIN_REMOVE_TERM, t, t);
+        delete zv_termList.takeAt(t);
+        emit zg_termOperation(TOT_END_REMOVE_TERM, t, t);
+    }
 
     return true;
 }
@@ -621,7 +724,7 @@ ZTermNormalizer::NormaType ZCalibration::zp_baseTermNormaType() const
 //=========================================================
 bool ZCalibration::zp_setBaseTermNormaType(ZTermNormalizer::NormaType type)
 {
-     return zv_baseTermNormalizer->zp_setNormaType(type);
+    return zv_baseTermNormalizer->zp_setNormaType(type);
 }
 //=========================================================
 bool ZCalibration::zp_setBaseTermNormaCustomString(const QString& customString)
@@ -635,7 +738,7 @@ QString ZCalibration::zp_baseTermNormaCustomString() const
 }
 //=========================================================
 bool ZCalibration::zp_setBaseTermNormalizerParameters(ZTermNormalizer::NormaType type,
-                              const QString& customString)
+                                                      const QString& customString)
 {
     return zv_baseTermNormalizer->zp_setNormalizerParameters(type, customString);
 }

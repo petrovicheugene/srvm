@@ -15,7 +15,6 @@ public:
     bool zp_calcTermVariablePart(const ZAbstractSpectrum*, qreal& value) override; // w/o factor
     bool zp_termBelongsToWindow(const ZCalibrationWindow*) const override;
 
-   QString zp_termName() const override;
 
 };
 //===================================================================

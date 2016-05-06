@@ -3,7 +3,7 @@
 //==========================================
 ZNormaSettingsData::ZNormaSettingsData()
 {
-
+    normaType = ZTermNormalizer::NT_NONE;
 }
 //==========================================
 ZNormaSettingsData::ZNormaSettingsData(const ZCalibration *calibration)

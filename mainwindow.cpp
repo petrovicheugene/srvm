@@ -430,6 +430,7 @@ void MainWindow::zh_createConnections()
 
     zv_termCorrelationTableManager->zp_connectToJointSpectraDataManager(zv_jointSpectraDataManager);
 
+    zv_termCorrelationTableWidget->zp_appendButtonActions(zv_calibrationRepository->zp_termActions());
     connect(zv_jointSpectraDataManager, &ZJointSpectraDataManager::zg_calibrationQualityData,
             zv_calibrationModel, &ZCalibrationModel::zp_calibrationQualityDataChanged);
 

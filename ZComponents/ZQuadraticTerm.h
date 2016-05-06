@@ -22,15 +22,14 @@ public:
 
     const ZCalibrationWindow* zp_window() const;
 
-
 signals:
 
     void zg_requestWindowIntensity(const QObject* spectrum, qreal& intensityValue, bool keepBufferClean, bool* ok = 0);
 
 protected slots:
 
-    virtual bool zh_updateTermNameForWindowName(const QString&windowName) override;
-    void zh_onWindowTypeChange(ZCalibrationWindow::WindowType previousType, ZCalibrationWindow::WindowType currentType);
+    virtual void zh_updateTermNameForWindowName() override;
+    virtual void zh_onWindowTypeChange(ZCalibrationWindow::WindowType previousType, ZCalibrationWindow::WindowType currentType) override;
 
 private:
 
@@ -38,8 +37,8 @@ private:
     const ZCalibrationWindow* zv_window;
 
     // FUNCS
-    void zh_setName(const QString& windowName);
-    void zh_connectToWindow(const ZCalibrationWindow* window);
+    void zh_setName();
+    void zh_connectToWindow();
 
 };
 //===================================================================

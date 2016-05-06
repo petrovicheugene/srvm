@@ -38,12 +38,12 @@ void ZTermCorrelationTableManager::zp_connectToCalibrationRepository(ZCalibratio
 {
     emit zg_currentOperation(TOT_BEGIN_RESET, -1, -1);
     zv_calibrationRepository = repository;
-    connect(repository, &ZCalibrationRepository::zg_termOperation,
+    connect(zv_calibrationRepository, &ZCalibrationRepository::zg_termOperation,
             this, &ZTermCorrelationTableManager::zh_onRepositoryTermOperation);
     //    connect(repository, &ZCalibrationRepository::zg_calibrationWindowOperation,
     //            this, &ZTermCorrelationTableManager::zh_onCalibrationWindowOperation);
 
-    connect(repository, &ZCalibrationRepository::zg_currentCalibrationChanged,
+    connect(zv_calibrationRepository, &ZCalibrationRepository::zg_currentCalibrationChanged,
             this, &ZTermCorrelationTableManager::zh_currentCalibrationChanged);
     connect(zv_calibrationRepository, &ZCalibrationRepository::zg_calibrationOperation,
             this, &ZTermCorrelationTableManager::zh_onCalibrationRepositoryOperation);
@@ -52,6 +52,10 @@ void ZTermCorrelationTableManager::zp_connectToCalibrationRepository(ZCalibratio
 
     connect(zv_calibrationRepository, &ZCalibrationRepository::zg_invokeCalibrationRecalc,
             this, &ZTermCorrelationTableManager::zh_recalcCalibrationFactors);
+
+    connect(this, &ZTermCorrelationTableManager::zg_currentTermChanged,
+            zv_calibrationRepository, &ZCalibrationRepository::zp_onCurrentTermChange);
+
 
     emit zg_currentOperation(TOT_END_RESET, -1, -1);
 

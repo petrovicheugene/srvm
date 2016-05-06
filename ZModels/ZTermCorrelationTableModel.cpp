@@ -154,11 +154,11 @@ void ZTermCorrelationTableModel::zp_connectToTermCorrelationTableManager(ZTermCo
     beginResetModel();
     zv_dataManager = dataManager;
     // data manager <-> joint model
-    connect(dataManager, &ZTermCorrelationTableManager::zg_currentOperation,
+    connect(zv_dataManager, &ZTermCorrelationTableManager::zg_currentOperation,
             this, &ZTermCorrelationTableModel::zh_onDataManagerOperation);
 
-    //    connect(dataManager, &ZJointCalibrationWindowDataManager::zg_currentOperation,
-    //            this, &ZJointCalibrationWindowModel::zh_onDataManagerOperation);
+    connect(this, &ZTermCorrelationTableModel::zg_currentTermChanged,
+            zv_dataManager, &ZTermCorrelationTableManager::zg_currentTermChanged);
 
     endResetModel();
 }

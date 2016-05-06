@@ -14,7 +14,7 @@ ZSimpleTerm::ZSimpleTerm(const ZCalibrationWindow* window,
 //===================================================================
 bool ZSimpleTerm::zp_calcValue(const ZAbstractSpectrum * spectrum, qreal& value)
 {
-    value = 0;
+    value = 0.0;
     if(zv_termState != TS_CONST_INCLUDED && zv_termState != TS_INCLUDED)
     {
         return true;
@@ -33,6 +33,7 @@ bool ZSimpleTerm::zp_calcValue(const ZAbstractSpectrum * spectrum, qreal& value)
 //===================================================================
 bool ZSimpleTerm::zp_calcTermVariablePart(const ZAbstractSpectrum* spectrum, qreal &value)  // w/o factor
 {
+    value = 0;
     bool ok;
     emit zg_requestWindowIntensity((const QObject*)spectrum, value, false, &ok);
     return ok;
@@ -48,21 +49,25 @@ const ZCalibrationWindow* ZSimpleTerm::zp_window() const
     return zv_window;
 }
 //===================================================================
-bool ZSimpleTerm::zh_updateTermNameForWindowName(const QString& windowName)
+void ZSimpleTerm::zh_updateTermNameForWindowName()
 {
-    if(windowName.isEmpty() || windowName == zv_name)
+    if(!sender() || zv_window->zp_windowName() == zv_name)
     {
-        return false;
+        return;
     }
 
-    zv_name = windowName;
+    zv_name = zv_window->zp_windowName();
     emit zg_termNameChanged();
-    return true;
 }
 //===================================================================
 void ZSimpleTerm::zh_onWindowTypeChange(ZCalibrationWindow::WindowType previousType,
                                         ZCalibrationWindow::WindowType currentType)
 {
+    if(!sender() || sender() != zv_window)
+    {
+        return;
+    }
+
     if(currentType != ZCalibrationWindow::WT_PEAK)
     {
         emit zg_requestForDelete(this);
