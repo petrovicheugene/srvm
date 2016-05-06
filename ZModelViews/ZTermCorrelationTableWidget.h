@@ -36,6 +36,7 @@ private slots:
 
     void zh_editNext(QModelIndex editedIndex);
     void zh_onCurrentTermChanged(QModelIndex current, QModelIndex previous);
+    void zh_onContextMenuRequest(const QPoint &pos);
 
 private:
 
@@ -43,6 +44,8 @@ private:
     QTableView* zv_table;
     QHBoxLayout* zv_buttonLayout;
     QVBoxLayout* zv_mainLayout;
+    QList<QAction*> zv_buttonActionList;
+
     // FUNCS
     void zh_createComponents();
     void zh_createConnections();

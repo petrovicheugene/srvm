@@ -12,7 +12,7 @@
 class ZAbstractSpectrum;
 class ZSimpleTerm;
 class ZQuadraticTerm;
-class ZCrossProductTerm;
+class ZMixedTerm;
 class ZCustomTerm;
 class ZTermNormalizer;
 //=========================================================
@@ -104,6 +104,7 @@ public:
     bool zp_setTermFactorString(int termIndex, const QString& factorString) const;
     bool zp_termVariablePart(int termIndex, const ZAbstractSpectrum* spectrum,  qreal &value) const;
     bool zp_calcBaseTermValue(const ZAbstractSpectrum* spectrum, qreal& value) const;
+    bool zp_createMixedTerms(int termIndex);
 
     // normalizer
     ZTermNormalizer::NormaType zp_normaType() const;

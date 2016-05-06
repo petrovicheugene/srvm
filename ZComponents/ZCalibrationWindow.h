@@ -55,7 +55,7 @@ public slots:
 
 signals:
 
-    void zg_windowNameChanged(const QString&) const;
+    void zg_windowNameChanged() const;
     void zg_windowMarginsChanged() const;
     void zg_windowTypeChanged(ZCalibrationWindow::WindowType previousType, ZCalibrationWindow::WindowType currentType);
 

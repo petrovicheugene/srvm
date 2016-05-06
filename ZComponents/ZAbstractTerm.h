@@ -38,8 +38,8 @@ public:
     // FUNCS
     virtual bool zp_calcValue(const ZAbstractSpectrum*, qreal&) = 0;
     virtual bool zp_calcTermVariablePart(const ZAbstractSpectrum*, qreal &value) = 0; // w/o factor
-    virtual QString zp_termName() const;
-    virtual ZAbstractTerm::TermType zp_termType() const;
+    QString zp_termName() const;
+    ZAbstractTerm::TermType zp_termType() const;
     virtual bool zp_termBelongsToWindow(const ZCalibrationWindow*) const = 0;
 
     qint64 zp_termId();
@@ -71,7 +71,8 @@ protected slots:
 
 protected slots:
 
-    virtual bool zh_updateTermNameForWindowName(const QString&) = 0;
+    virtual void zh_updateTermNameForWindowName() = 0;
+    virtual void zh_onWindowTypeChange(ZCalibrationWindow::WindowType previousType, ZCalibrationWindow::WindowType currentType) = 0;
 
 protected:
 

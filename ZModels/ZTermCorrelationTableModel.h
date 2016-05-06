@@ -24,6 +24,10 @@ public:
 
     void zp_connectToTermCorrelationTableManager(ZTermCorrelationTableManager* dataManager);
 
+signals:
+
+    void zg_currentTermChanged(int currentTermIndex, int previousTermIndex) const;
+
 public slots:
 
     void zp_onUserChangesTermState(int termLogIndex);

@@ -25,7 +25,7 @@ void ZSpectrumArrayRepository::zp_appendActionsToMenu(QMenu* menu) const
 {
     if(menu->objectName() == "Edit")
     {
-        QMenu* arrayMenu = new QMenu(tr("Spectrum array"));
+        QMenu* arrayMenu = new QMenu(tr("Spectrum arrays"));
         arrayMenu->setIcon(QIcon(glArrayIconString));
         arrayMenu->addAction(zv_appendArrayAction);
         arrayMenu->addAction(zv_removeArrayAction);
@@ -37,7 +37,7 @@ void ZSpectrumArrayRepository::zp_appendActionsToMenu(QMenu* menu) const
         spectraMenu->addAction(zv_removeSpectrumFromArrayAction);
         menu->addMenu(spectraMenu);
 
-        QMenu* elementMenu = new QMenu(tr("Chemical element"));
+        QMenu* elementMenu = new QMenu(tr("Chemical elements"));
         elementMenu->setIcon(QIcon(glElementIconString));
         elementMenu->addAction(zv_appendChemElementAction);
         elementMenu->addAction(zv_removeChemElementAction);

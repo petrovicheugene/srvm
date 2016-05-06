@@ -34,21 +34,30 @@ void ZTermCorrelationTableWidget::zp_setModel(ZTermCorrelationTableModel* model)
 
     connect(zv_table->selectionModel(), &QItemSelectionModel::currentRowChanged,
             this, &ZTermCorrelationTableWidget::zh_onCurrentTermChanged);
+    connect(this, &ZTermCorrelationTableWidget::zg_currentTermChanged,
+            model, &ZTermCorrelationTableModel::zg_currentTermChanged);
 }
 //=============================================================
 void ZTermCorrelationTableWidget::zp_appendButtonActions(QList<QAction*> actionList)
 {
-    zv_buttonLayout->addStretch();
-    for(int a = 0; a < actionList.count(); a++)
-    {
-        QPushButton* button = new QPushButton(this);
-        button->setFlat(true);
-        button->setIcon(actionList.at(a)->icon());
-        button->setToolTip(actionList.at(a)->toolTip());
-        connect(button, &QPushButton::clicked,
-                actionList[a], &QAction::trigger);
-        zv_buttonLayout->addWidget(button);
-    }
+    zv_buttonActionList = actionList;
+//    zv_buttonLayout->addStretch();
+//    for(int a = 0; a < actionList.count(); a++)
+//    {
+//        if(actionList.at(a) == 0)
+//        {
+//            // Separator for context menu
+//            continue;
+//        }
+
+//        QPushButton* button = new QPushButton(this);
+//        button->setFlat(true);
+//        button->setIcon(actionList.at(a)->icon());
+//        button->setToolTip(actionList.at(a)->toolTip());
+//        connect(button, &QPushButton::clicked,
+//                actionList[a], &QAction::trigger);
+//        zv_buttonLayout->addWidget(button);
+//    }
 }
 //=============================================================
 void ZTermCorrelationTableWidget::zp_setMargin(int margin)
@@ -63,6 +72,7 @@ void ZTermCorrelationTableWidget::zh_createComponents()
     setLayout(zv_mainLayout);
 
     zv_table = new QTableView(this);
+    zv_table->setContextMenuPolicy(Qt::CustomContextMenu);
 
     // Vertical Header Replacing
     ZCustomCheckableVerticalHeaderView* checkableHeader = new ZCustomCheckableVerticalHeaderView();
@@ -78,6 +88,8 @@ void ZTermCorrelationTableWidget::zh_createComponents()
 //=============================================================
 void ZTermCorrelationTableWidget::zh_createConnections()
 {
+    connect(zv_table, &QTableView::customContextMenuRequested,
+            this, &ZTermCorrelationTableWidget::zh_onContextMenuRequest);
 
 }
 //=============================================================
@@ -119,5 +131,24 @@ void ZTermCorrelationTableWidget::zp_currentTermIndex(int& index)
 void ZTermCorrelationTableWidget::zh_onCurrentTermChanged(QModelIndex current, QModelIndex previous)
 {
     emit zg_currentTermChanged(current.row(), previous.row());
+}
+//=============================================================
+void ZTermCorrelationTableWidget::zh_onContextMenuRequest(const QPoint &pos)
+{
+    QMenu *menu=new QMenu(this);
+    menu->setAttribute(Qt::WA_DeleteOnClose);
+
+    foreach(QAction* action, zv_buttonActionList)
+    {
+        if(action == 0)
+        {
+            menu->addSeparator();
+            continue;
+        }
+
+        menu->addAction(action);
+    }
+
+    menu->popup(zv_table->viewport()->mapToGlobal(pos));
 }
 //=============================================================

@@ -8,8 +8,8 @@ ZQuadraticTerm::ZQuadraticTerm(const ZCalibrationWindow *window,
 {
     zv_type = TT_QUADRATIC;
     zv_window = window;
-    zh_setName(window->zp_windowName());
-    zh_connectToWindow(window);
+    zh_setName();
+    zh_connectToWindow();
     zh_connectToCalibration(parent);
 }
 //===================================================================
@@ -34,6 +34,7 @@ bool ZQuadraticTerm::zp_calcValue(const ZAbstractSpectrum * spectrum, qreal& val
 //===================================================================
 bool ZQuadraticTerm::zp_calcTermVariablePart(const ZAbstractSpectrum* spectrum, qreal& value)  // w/o factor
 {
+    value = 0.0;
     bool ok;
     emit zg_requestWindowIntensity((const QObject*)spectrum, value, false, &ok);
     value = value * value;
@@ -50,46 +51,50 @@ const ZCalibrationWindow* ZQuadraticTerm::zp_window() const
     return zv_window;
 }
 //===================================================================
-bool ZQuadraticTerm::zh_updateTermNameForWindowName(const QString& windowName)
+void ZQuadraticTerm::zh_updateTermNameForWindowName()
 {
-    if(windowName.isEmpty() || windowName == zv_name)
+    if(!sender())
     {
-        return false;
+        return;
     }
 
-    zh_setName(windowName);
+    zh_setName();
     emit zg_termNameChanged();
-
-    return true;
 }
 //===================================================================
-void ZQuadraticTerm::zh_setName(const QString& windowName)
+void ZQuadraticTerm::zh_setName()
 {
-    zv_name = "(" + windowName + ")" + QChar(0x00B2);
+    // zv_name = "(" + windowName + ")" + QChar(0x00B2);
+    zv_name = zv_window->zp_windowName() + QChar(0x00B2);
 }
 //===================================================================
 void ZQuadraticTerm::zh_onWindowTypeChange(ZCalibrationWindow::WindowType previousType,
                                            ZCalibrationWindow::WindowType currentType)
 {
+    if(!sender() || sender() != zv_window)
+    {
+        return;
+    }
+
     if(currentType != ZCalibrationWindow::WT_PEAK)
     {
         emit zg_requestForDelete(this);
     }
 }
 //===================================================================
-void ZQuadraticTerm::zh_connectToWindow(const ZCalibrationWindow* window)
+void ZQuadraticTerm::zh_connectToWindow()
 {
-    if(window)
+    if(zv_window)
     {
-        connect(window, &ZCalibrationWindow::destroyed,
+        connect(zv_window, &ZCalibrationWindow::destroyed,
                 this, &ZQuadraticTerm::zh_onWindowDestroying);
-        connect(window, &ZCalibrationWindow::zg_windowNameChanged,
+        connect(zv_window, &ZCalibrationWindow::zg_windowNameChanged,
                 this, &ZQuadraticTerm::zh_updateTermNameForWindowName);
         connect(this, &ZQuadraticTerm::zg_requestWindowIntensity,
-                window, &ZCalibrationWindow::zp_calcWindowIntensity);
-        connect(window, &ZCalibrationWindow::zg_windowMarginsChanged,
+                zv_window, &ZCalibrationWindow::zp_calcWindowIntensity);
+        connect(zv_window, &ZCalibrationWindow::zg_windowMarginsChanged,
                 this, &ZQuadraticTerm::zg_termWindowMarginChanged);
-        connect(window, &ZCalibrationWindow::zg_windowTypeChanged,
+        connect(zv_window, &ZCalibrationWindow::zg_windowTypeChanged,
                 this, &ZQuadraticTerm::zh_onWindowTypeChange);
     }
 }

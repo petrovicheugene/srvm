@@ -58,8 +58,9 @@ signals:
                                             int factorCount,
                                             qreal sumSquareAverageConcentration) const;
 
-public slots:
+    void zg_currentTermChanged(int currentTermIndex, int previousTermIndex) const;
 
+public slots:
 
 private slots:
 

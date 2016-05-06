@@ -59,14 +59,13 @@ public:
                             TOT_TERM_FACTOR_CHANGED
                            };
 
-
-
     // FUNCS
     void zp_connectToFileManager(ZFileActionManager*);
 
     void zp_appendActionsToMenu(QMenu *menu) const;
     QList<QAction*> zp_arrayActions() const;
     QList<QAction*> zp_windowActions() const;
+    QList<QAction*> zp_termActions() const;
 
     bool zp_isEmpty() const;
     void zp_clear();
@@ -194,6 +193,7 @@ public slots:
     void zp_appendCalibrationsToArray(const QStringList&fileNameList);
     void zp_onCurrentCalibrationChanged(int current, int previous);
     void zp_onCurrentCalibrationWindowChanged(int current, int previous);
+    void zp_onCurrentTermChange(int currentTermIndex, int previousTermIndex);
 
 private slots:
 
@@ -202,6 +202,12 @@ private slots:
     void zh_onNewWindowAction();
     void zh_onRemoveWindowAction();
     void zh_onRecalcEquationFactorsAction();
+
+    void zh_onCreateMixedTermsAction();
+    void zh_onRemoveMixedTermsAction();
+    void zh_onCreateCustomTermAction();
+    void zh_onRemoveCustomTermAction();
+
     void zh_onWindowOperation(ZCalibration::WindowOperationType type, int first, int last);
     void zh_onTermOperation(ZCalibration::TremOperationType type, int first, int last);
     void zh_onNormalizerChange() const;
@@ -219,6 +225,11 @@ private:
     QAction* zv_newWindowAction;
     QAction* zv_removeWindowAction;
 
+    QAction* zv_createMixedTermsAction;
+    QAction* zv_removeMixedTermsAction;
+    QAction* zv_createCustomTermAction;
+    QAction* zv_removeCustomTermAction;
+
     QAction* zv_recalcEquationFactorsAction;
 
     QString zv_defaultCalibrationName;
@@ -226,6 +237,7 @@ private:
     qint64 zv_currentArrayId;
     int zv_currentArrayIndex;
     int zv_currentCalibrationIndex;
+    int zv_currentTermIndex;
 
     // FUNCS
     void zh_createActions();
