@@ -1166,8 +1166,13 @@ void ZCalibrationRepository::zh_onCreateMixedTermsAction()
 //======================================================
 void ZCalibrationRepository::zh_onRemoveMixedTermsAction()
 {
+    if(zv_currentCalibrationIndex < 0 || zv_currentCalibrationIndex >= zv_caibrationList.count())
+    {
+        return;
+    }
 
-
+    ZCalibration* calibration = zv_caibrationList.at(zv_currentCalibrationIndex);
+    calibration->zp_createMixedTerms(zv_currentTermIndex);
 }
 //======================================================
 void ZCalibrationRepository::zh_onCreateCustomTermAction()

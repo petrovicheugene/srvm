@@ -105,6 +105,7 @@ public:
     bool zp_termVariablePart(int termIndex, const ZAbstractSpectrum* spectrum,  qreal &value) const;
     bool zp_calcBaseTermValue(const ZAbstractSpectrum* spectrum, qreal& value) const;
     bool zp_createMixedTerms(int termIndex);
+    bool zp_removeMixedTerms();
 
     // normalizer
     ZTermNormalizer::NormaType zp_normaType() const;

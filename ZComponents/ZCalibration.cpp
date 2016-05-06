@@ -588,8 +588,8 @@ bool ZCalibration::zp_calcBaseTermValue(const ZAbstractSpectrum* spectrum, qreal
             }
 
             break;
-         }
-     }
+        }
+    }
 
     return true;
 }
@@ -680,6 +680,23 @@ bool ZCalibration::zp_createMixedTerms(int termIndex)
     return true;
 }
 //=========================================================
+bool ZCalibration::zp_removeMixedTerms()
+{
+    for(int t = zv_termList.count() - 1; t >= 0; t--)
+    {
+        if(zv_termList.at(t)->zp_termType() != ZAbstractTerm::TT_MIXED)
+        {
+            continue;
+        }
+
+        emit zg_termOperation(TOT_BEGIN_REMOVE_TERM, t, t);
+        delete zv_termList.takeAt(t);
+        emit zg_termOperation(TOT_END_REMOVE_TERM, t, t);
+    }
+
+    return true;
+}
+//=========================================================
 ZTermNormalizer::NormaType ZCalibration::zp_normaType() const
 {
     return zv_termNormalizer->zp_normaType();
@@ -707,7 +724,7 @@ ZTermNormalizer::NormaType ZCalibration::zp_baseTermNormaType() const
 //=========================================================
 bool ZCalibration::zp_setBaseTermNormaType(ZTermNormalizer::NormaType type)
 {
-     return zv_baseTermNormalizer->zp_setNormaType(type);
+    return zv_baseTermNormalizer->zp_setNormaType(type);
 }
 //=========================================================
 bool ZCalibration::zp_setBaseTermNormaCustomString(const QString& customString)
@@ -721,7 +738,7 @@ QString ZCalibration::zp_baseTermNormaCustomString() const
 }
 //=========================================================
 bool ZCalibration::zp_setBaseTermNormalizerParameters(ZTermNormalizer::NormaType type,
-                              const QString& customString)
+                                                      const QString& customString)
 {
     return zv_baseTermNormalizer->zp_setNormalizerParameters(type, customString);
 }
