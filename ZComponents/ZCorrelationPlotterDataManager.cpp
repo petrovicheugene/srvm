@@ -81,6 +81,8 @@ void ZCorrelationPlotterDataManager::zp_connectToSpectrumArrayRepository(ZSpectr
             this, &ZCorrelationPlotterDataManager::zh_onRepositoryChemElementOperation);
     connect(repository, &ZSpectrumArrayRepository::zg_currentArrayIdChanged,
             this, &ZCorrelationPlotterDataManager::zh_currentSpectrumArrayChanged);
+    connect(repository, &ZSpectrumArrayRepository::zg_currentSpectrumChanged,
+            this, &ZCorrelationPlotterDataManager::zh_currentSpectrumChanged);
 
 }
 //=====================================================================
@@ -113,6 +115,11 @@ void ZCorrelationPlotterDataManager::zp_setBottomRulerScaleMetrix(qreal scaleVal
 
 
 
+}
+//=====================================================================
+void ZCorrelationPlotterDataManager::zp_setCurrentSpectrum(qint64 id) const
+{
+    zv_spectrumArrayRepository->zp_setSpectrumCurrent(id);
 }
 //=====================================================================
 bool ZCorrelationPlotterDataManager::zh_setRulerMetrixAndPrecisionToPlot(const ZChartPointOptions& options) const
@@ -163,12 +170,11 @@ QWidget* ZCorrelationPlotterDataManager::zh_createChartDataKindComboBoxWidget()
     return widget;
 }
 //=====================================================================
-#include <QSpinBox>
 void ZCorrelationPlotterDataManager::zh_setUpChartPointOptions()
 {
     // concentration chart
     zv_calibrationChartPointOptions.zp_setPointType(ZChartPointOptions::PT_ROUND);
-    zv_calibrationChartPointOptions.zp_setPointColor(QColor(Qt::magenta));
+    zv_calibrationChartPointOptions.zp_setPointColor(QColor(Qt::cyan));
     zv_calibrationChartPointOptions.zp_setPointPixelSize(5);
 
     zv_calibrationChartPointOptions.zp_setRulerLabelString(Qt::Horizontal, zv_concentrationRulerLabelBaseString);
@@ -289,7 +295,7 @@ void ZCorrelationPlotterDataManager::zh_rebuildChart()
         }
         else
         {
-            pointItem = new ZChartPointGraphicsItem(it.value(), chartPointOptions, it.key());
+            pointItem = new ZChartPointGraphicsItem(this, it.value(), chartPointOptions, it.key());
             zv_plotter->zp_addItem(pointItem);
         }
     }
@@ -519,7 +525,7 @@ void ZCorrelationPlotterDataManager::zh_createAndPlaceChartPointItems(const QMap
     QMap<qint64, ZVisibilityPointF>::const_iterator it;
     for(it = chartPointMap.begin(); it != chartPointMap.end(); it++)
     {
-        pointItem = new ZChartPointGraphicsItem(it.value(), chartPointOptions, it.key());
+        pointItem = new ZChartPointGraphicsItem(this, it.value(), chartPointOptions, it.key());
         zv_plotter->zp_addItem(pointItem);
     }
 }
@@ -527,6 +533,27 @@ void ZCorrelationPlotterDataManager::zh_createAndPlaceChartPointItems(const QMap
 void ZCorrelationPlotterDataManager::zp_currentTermChanged(int , int)
 {
     zh_rebuildChart();
+}
+//=====================================================================
+void ZCorrelationPlotterDataManager::zh_currentSpectrumChanged(qint64 currentSpectrumId,
+                                                    int currentSpectrumIndex,
+                                                    qint64 previousSpectrumId,
+                                                    int previousSpectrumIndex)
+{
+    ZChartPointGraphicsItem::zp_setCurrentSpectrumId(currentSpectrumId);
+
+    QList<QGraphicsItem*> itemList = zv_plotter->zp_itemListForType(ChartPointItemType);
+    ZChartPointGraphicsItem* spectrumItem;
+    for(int i = 0; i < itemList.count(); i++)
+    {
+        spectrumItem = qgraphicsitem_cast<ZChartPointGraphicsItem*>(itemList.value(i));
+        if(!spectrumItem)
+        {
+            continue;
+        }
+        spectrumItem->zp_updateCurrentItem();
+    }
+    zv_plotter->zp_updatePlot();
 }
 //=====================================================================
 void ZCorrelationPlotterDataManager::zh_onChartDataKindChange(int)

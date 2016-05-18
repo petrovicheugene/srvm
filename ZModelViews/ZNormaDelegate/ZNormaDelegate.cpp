@@ -21,7 +21,10 @@ QWidget* ZNormaDelegate::createEditor(QWidget* parent, const QStyleOptionViewIte
 //=======================================================
 void	ZNormaDelegate::paint(QPainter* painter, const QStyleOptionViewItem& option, const QModelIndex& index) const
 {
-    QStyledItemDelegate::paint(painter, option, index);
+    QStyleOptionViewItemV4 newOption(option);
+    newOption.state =  newOption.state | QStyle::State_Active;
+
+    QStyledItemDelegate::paint(painter, newOption, index);
 }
 //=======================================================
 void	ZNormaDelegate::setEditorData(QWidget* editor, const QModelIndex& index) const

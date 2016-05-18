@@ -14,7 +14,7 @@ RC_ICONS = "SDC1.ico"
 
 VER_MAJ=0
 VER_MIN=0
-VER_PAT=17
+VER_PAT=18
 VER_RELEASE=a
 
 EXE_BASE_NAME=SDCalibrator
@@ -146,7 +146,8 @@ SOURCES += main.cpp \
     ZComponents/ZQrealToStringConverter.cpp \
     ZComponents/ZCalibrationQualityData.cpp \
     ZComponents/ZPasteData.cpp \
-    ZComponents/ZMixedTerm.cpp
+    ZComponents/ZMixedTerm.cpp \
+    ZModelViews/ZActiveStyledItemDelegate.cpp
 
 
 HEADERS  += \
@@ -232,7 +233,8 @@ HEADERS  += \
     ZComponents/ZQrealToStringConverter.h \
     ZComponents/ZCalibrationQualityData.h \
     ZComponents/ZPasteData.h \
-    ZComponents/ZMixedTerm.h
+    ZComponents/ZMixedTerm.h \
+    ZModelViews/ZActiveStyledItemDelegate.h
 
 
 RESOURCES += \

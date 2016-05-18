@@ -49,6 +49,8 @@ void	ZNumericDelegate::paint ( QPainter * painter, const QStyleOptionViewItem & 
     {
         newOption.font.setBold(zv_fontBoldFlag);
     }
+
+    newOption.state =  newOption.state | QStyle::State_Active;
     QStyledItemDelegate::paint(painter, newOption, index);
 }
 //=================================================================

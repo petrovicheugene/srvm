@@ -13,6 +13,7 @@ class QVBoxLayout;
 
 class ZJointSpectraModel;
 class ZSpectrumArrayRepository;
+class ZCalibrationRepository;
 //=============================================================
 class ZJointSpectrumTableWidget : public QWidget
 {
@@ -23,8 +24,11 @@ public:
     // FUNCS
     void zp_setModel(ZJointSpectraModel* model);
     void zp_appendButtonActions(QList<QAction*>);
+    void zp_appendContextMenuActions(QList<QAction*> actionList);
 
     void zp_connectToSpectrumArrayRepository(ZSpectrumArrayRepository*);
+    void zp_connectToCalibrationRepository(ZCalibrationRepository*);
+
     void zp_setMargin(int margin);
 
 signals:
@@ -34,6 +38,7 @@ signals:
 
 public slots:
 
+    void zp_setCurrentSpectrumIndex(int spectrumIndex);
     void zp_selectedSpectrumIndexList(QList<int>&);
     void zp_currentIndex(QModelIndex& ) const;
 
@@ -44,7 +49,7 @@ private:
     QHBoxLayout* zv_buttonLayout;
     QVBoxLayout* zv_mainLayout;
 
-    QList<QAction*> zv_buttonActionList;
+    QList<QAction*> zv_contextMenuActionList;
 
     // FUNCS
     void zh_createComponents();

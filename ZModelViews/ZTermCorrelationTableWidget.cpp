@@ -24,8 +24,8 @@ void ZTermCorrelationTableWidget::zp_setModel(ZTermCorrelationTableModel* model)
     connect(this, &ZTermCorrelationTableWidget::zg_userChangesTermState,
             model, &ZTermCorrelationTableModel::zp_onUserChangesTermState);
     ZNumericDelegate* numericDelegate = new ZNumericDelegate(zv_table);
-    connect(numericDelegate, &ZNumericDelegate::zg_editNext,
-            this, &ZTermCorrelationTableWidget::zh_editNext);
+//    connect(numericDelegate, &ZNumericDelegate::zg_editNext,
+//            this, &ZTermCorrelationTableWidget::zh_editNext);
     zv_table->setItemDelegate(numericDelegate);
 //    ZSpectrumTableDelegate* spectrumDelegate = new ZSpectrumTableDelegate(zv_table);
 //    zv_table->setItemDelegateForColumn(0, new ZVisibilityStringDelegate(zv_table));
@@ -40,7 +40,6 @@ void ZTermCorrelationTableWidget::zp_setModel(ZTermCorrelationTableModel* model)
 //=============================================================
 void ZTermCorrelationTableWidget::zp_appendButtonActions(QList<QAction*> actionList)
 {
-    zv_buttonActionList = actionList;
 //    zv_buttonLayout->addStretch();
 //    for(int a = 0; a < actionList.count(); a++)
 //    {
@@ -58,6 +57,18 @@ void ZTermCorrelationTableWidget::zp_appendButtonActions(QList<QAction*> actionL
 //                actionList[a], &QAction::trigger);
 //        zv_buttonLayout->addWidget(button);
 //    }
+}
+//=============================================================
+void ZTermCorrelationTableWidget::zp_appendContextMenuActions(QList<QAction*> actionList)
+{
+    foreach(QAction* action, actionList)
+    {
+        if(action != 0 && zv_contextMenuActionList.contains(action))
+        {
+            continue;
+        }
+        zv_contextMenuActionList.append(action);
+    }
 }
 //=============================================================
 void ZTermCorrelationTableWidget::zp_setMargin(int margin)
@@ -138,7 +149,7 @@ void ZTermCorrelationTableWidget::zh_onContextMenuRequest(const QPoint &pos)
     QMenu *menu=new QMenu(this);
     menu->setAttribute(Qt::WA_DeleteOnClose);
 
-    foreach(QAction* action, zv_buttonActionList)
+    foreach(QAction* action, zv_contextMenuActionList)
     {
         if(action == 0)
         {

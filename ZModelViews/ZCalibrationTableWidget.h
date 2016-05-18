@@ -20,6 +20,8 @@ public:
      // FUNCS
     void zp_setModel(QAbstractItemModel* model);
     void zp_appendButtonActions(QList<QAction*>);
+    void zp_appendContextMenuActions(QList<QAction*> actionList);
+
     void zp_connectToCalibrationRepository(ZCalibrationRepository*);
     void zp_setMargin(int margin);
 
@@ -42,11 +44,15 @@ private:
     QTableView* zv_table;
     QHBoxLayout* zv_buttonLayout;
     QVBoxLayout* zv_mainLayout;
+    QList<QAction*> zv_contextMenuActionList;
+
     // FUNCS
     void zh_createComponents();
+    void zh_createConnections();
 
 private slots:
 
+    void zh_onContextMenuRequest(const QPoint &pos);
     void zh_onCurrentCalibrationChanged(const QModelIndex & current, const QModelIndex & previous);
 };
 //==============================================================

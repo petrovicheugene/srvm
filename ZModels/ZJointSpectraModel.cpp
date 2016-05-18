@@ -4,6 +4,9 @@
 
 #include <QFont>
 #include <QColor>
+#include <QApplication>
+#include <QStyle>
+#include <QStyledItemDelegate>
 //==================================================================
 ZJointSpectraModel::ZJointSpectraModel(QObject *parent) : QAbstractTableModel(parent)
 {

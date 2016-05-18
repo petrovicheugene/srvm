@@ -3,8 +3,10 @@
 #include "globalVariables.h"
 #include "ZNumericDelegate.h"
 #include "ZSpectrumTableDelegate.h"
+#include "ZActiveStyledItemDelegate.h"
 #include "ZJointSpectraModel.h"
 #include "ZSpectrumArrayRepository.h"
+#include "ZCalibrationRepository.h"
 
 #include <QTableView>
 #include <QHBoxLayout>
@@ -17,6 +19,43 @@ ZJointSpectrumTableWidget::ZJointSpectrumTableWidget(QWidget *parent) : QWidget(
     //zh_createActions();
     zh_createComponents();
     zh_createConnections();
+}
+//=============================================================
+void ZJointSpectrumTableWidget::zp_setCurrentSpectrumIndex(int spectrumIndex)
+{
+    if(!zv_table->model())
+    {
+        return;
+    }
+
+    QModelIndex previousIndex = zv_table->currentIndex();
+
+    int column = previousIndex.isValid() ? previousIndex.column() : 0;
+    QModelIndex index = zv_table->model()->index(spectrumIndex, column, QModelIndex());
+    if(index.isValid())
+    {
+        zv_table->setCurrentIndex(index);
+        int currentRow;
+        if(index.isValid())
+        {
+            currentRow = index.row();
+        }
+        else
+        {
+            currentRow = -1;
+        }
+        int previousRow;
+        if(previousIndex.isValid())
+        {
+            previousRow = previousIndex.row();
+        }
+        else
+        {
+            previousRow = -1;
+        }
+
+        emit zg_currentSpectrumChanged(currentRow, previousRow);
+    }
 }
 //=============================================================
 void ZJointSpectrumTableWidget::zp_selectedSpectrumIndexList(QList<int>& selectedSpectrumList)
@@ -80,7 +119,7 @@ void ZJointSpectrumTableWidget::zp_setModel(ZJointSpectraModel* model)
     ZSpectrumTableDelegate* spectrumDelegate = new ZSpectrumTableDelegate(zv_table);
     // tracking mouse event to prevent current event setting when visible changed
     zv_table->viewport()->installEventFilter(spectrumDelegate);
-    zv_table->setItemDelegateForColumn(0, new QStyledItemDelegate);
+    zv_table->setItemDelegateForColumn(0, new ZActiveStyledItemDelegate);
     zv_table->setItemDelegateForColumn(1, spectrumDelegate);
     zv_table->setAlternatingRowColors(true);
 
@@ -97,7 +136,6 @@ void ZJointSpectrumTableWidget::zp_setModel(ZJointSpectraModel* model)
 //==============================================================
 void ZJointSpectrumTableWidget::zp_appendButtonActions(QList<QAction*> actionList)
 {
-    zv_buttonActionList = actionList;
     zv_buttonLayout->addStretch();
     // zv_table->addActions(actionList);
 
@@ -118,11 +156,36 @@ void ZJointSpectrumTableWidget::zp_appendButtonActions(QList<QAction*> actionLis
     }
 }
 //==============================================================
+void ZJointSpectrumTableWidget::zp_appendContextMenuActions(QList<QAction*> actionList)
+{
+    foreach(QAction* action, actionList)
+    {
+        if(action != 0 && zv_contextMenuActionList.contains(action))
+        {
+            continue;
+        }
+        zv_contextMenuActionList.append(action);
+    }
+}
+//==============================================================
 void ZJointSpectrumTableWidget::zp_connectToSpectrumArrayRepository(ZSpectrumArrayRepository* repository)
 {
+    zp_appendButtonActions(repository->zp_spectrumActions());
+    zp_appendContextMenuActions(repository->zp_spectrumContextMenuActions());
+
     connect(this, &ZJointSpectrumTableWidget::zg_currentSpectrumChanged,
             repository, &ZSpectrumArrayRepository::zp_currentSpectrumChanged);
+    connect(repository, &ZSpectrumArrayRepository::zg_setCurrentSpectrumIndex,
+            this, &ZJointSpectrumTableWidget::zp_setCurrentSpectrumIndex);
 
+}
+//==============================================================
+void ZJointSpectrumTableWidget::zp_connectToCalibrationRepository(ZCalibrationRepository* repository)
+{
+    QList<QAction*> separatorList;
+    separatorList << 0;
+    zp_appendContextMenuActions(separatorList);
+    zp_appendContextMenuActions(repository->zp_calibrationVisibilityActions());
 }
 //==============================================================
 void ZJointSpectrumTableWidget::zp_setMargin(int margin)
@@ -185,7 +248,7 @@ void ZJointSpectrumTableWidget::zh_onContextMenuRequest(const QPoint &pos)
     QMenu *menu=new QMenu(this);
     menu->setAttribute(Qt::WA_DeleteOnClose);
 
-    foreach(QAction* action, zv_buttonActionList)
+    foreach(QAction* action, zv_contextMenuActionList)
     {
         if(action == 0)
         {
@@ -200,7 +263,7 @@ void ZJointSpectrumTableWidget::zh_onContextMenuRequest(const QPoint &pos)
 }
 //==============================================================
 void ZJointSpectrumTableWidget::zh_onSelectionChange(const QItemSelection & selected,
-                                                    const QItemSelection & deselected) const
+                                                     const QItemSelection & deselected) const
 {
     QModelIndexList selectedIndexList = zv_table->selectionModel()->selectedIndexes();
     emit zg_selectedIndexListChanged(selectedIndexList);

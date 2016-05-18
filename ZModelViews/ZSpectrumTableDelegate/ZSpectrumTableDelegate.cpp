@@ -41,6 +41,7 @@ void ZSpectrumTableDelegate::paint(QPainter* painter, const QStyleOptionViewItem
     QPalette palette = option.palette;
 
     QStyleOptionViewItemV4 newOption(option);
+    newOption.state =  newOption.state | QStyle::State_Active;
     newOption.rect = pixmap.rect();
     initStyleOption(&newOption, index);
 

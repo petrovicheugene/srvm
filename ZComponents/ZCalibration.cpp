@@ -1151,6 +1151,14 @@ bool ZCalibration::zp_removeCalibrationWindow(int windowIndex)
     return true;
 }
 //=========================================================
+void ZCalibration::zp_removeCalibrationWindows()
+{
+    for(int w = zv_windowList.count() - 1; w >= 0; w--)
+    {
+        zp_removeCalibrationWindow(w);
+    }
+}
+//=========================================================
 int ZCalibration::zp_termCount() const
 {
     return zv_termList.count();

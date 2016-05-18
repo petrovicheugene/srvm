@@ -63,9 +63,6 @@ private:
                   PM_PAD_DRAGGING,
                  PM_RUBBER_BAND};
 
-
-    QList<QEvent*> zv_paintEventList;
-
     ZRulersAndGridManager* zv_rulersAndGreedManager;
     PlotMode zv_plotMode;
     QPointF zv_sceneCenterPos;

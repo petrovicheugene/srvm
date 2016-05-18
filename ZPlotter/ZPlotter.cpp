@@ -655,20 +655,32 @@ bool ZPlotter::eventFilter(QObject *obj, QEvent *event)
             || event->type() == QEvent::NonClientAreaMouseButtonPress)
     {
         zv_mouseButtonDown = true;
-        return QObject::eventFilter(obj, event);
-    }
+        bool res = QObject::eventFilter(obj, event);
+#ifdef DBG
+        qDebug() << "PLOTTER: Button PRESS Result:" << res;
+#endif
 
-    if(event->type() == QEvent::MouseButtonRelease
+        return res;
+    }else if(event->type() == QEvent::MouseButtonRelease
             || event->type() == QEvent::NonClientAreaMouseButtonRelease)
     {
         zv_mouseButtonDown = false;
         zv_userResizesWidget = false;
         zv_plotView->zp_setScaleViewWhenResizeFlag(false);
         zh_updateScrollBarsVisible();
-        return QObject::eventFilter(obj, event);
+        bool res = QObject::eventFilter(obj, event);
+#ifdef DBG
+        qDebug() << "PLOTTER: Button RELEASE Result:" << res;
+#endif
+
+        return res;
     }
 
-    return QObject::eventFilter(obj, event);
+    bool res = QObject::eventFilter(obj, event);
+
+    return res;
+
+    //return QObject::eventFilter(obj, event);
 }
 //====================================================
 void ZPlotter::zh_verticalDistortionChanged(int distortionValue)

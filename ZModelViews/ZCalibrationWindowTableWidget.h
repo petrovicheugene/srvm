@@ -21,6 +21,7 @@ public:
     // FUNCS
     void zp_setModel(ZCalibrationWindowModel* model);
     void zp_appendButtonActions(QList<QAction*>);
+    void zp_appendContextMenuActions(QList<QAction*> actionList);
 
     void zp_connectToCalibrationRepository(ZCalibrationRepository*);
     void zp_setMargin(int margin);
@@ -45,15 +46,18 @@ private:
     ZChannelNumberDelegate* zv_channelDelegate;
     QHBoxLayout* zv_buttonLayout;
     QVBoxLayout* zv_mainLayout;
+    QList<QAction*> zv_contextMenuActionList;
 
     const int zv_defaultChannelCount = 2048;
 
     // FUNCS
     void zh_createComponents();
+    void zh_createConnections();
 
 private slots:
     void zh_onCurrentCalibrationWindowChanged(const QModelIndex & current,
                                      const QModelIndex & previous);
+    void zh_onContextMenuRequest(const QPoint &pos);
 
 };
 //==============================================================

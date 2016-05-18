@@ -72,6 +72,13 @@ QWidget* ZChannelNumberDelegate::createEditor(QWidget* parent,
    }
    return editor;
 }
+//=================================================================
+void	ZChannelNumberDelegate::paint ( QPainter * painter, const QStyleOptionViewItem & option, const QModelIndex & index ) const
+{
+    QStyleOptionViewItemV4 newOption(option);
+    newOption.state =  newOption.state | QStyle::State_Active;
+    QStyledItemDelegate::paint(painter, newOption, index);
+}
 //================================================
 void	ZChannelNumberDelegate::setEditorData(QWidget * editor, const QModelIndex & index) const
 {

@@ -50,8 +50,13 @@ public:
     // FUNCS
     void zp_appendActionsToMenu(QMenu *menu) const;
     QList<QAction*> zp_arrayActions() const;
+    QList<QAction*> zp_arrayContextMenuActions() const;
+
     QList<QAction*>zp_spectrumActions() const;
+    QList<QAction*>zp_spectrumContextMenuActions() const;
+
     QList<QAction*>zp_chemElementActions() const;
+    QList<QAction*>zp_chemElementContextMenuActions() const;
 
     void zp_connectToFileActionManager(ZFileActionManager*);
 
@@ -77,7 +82,7 @@ public:
     bool zp_isSpectrumChecked(int arrayIndex, int spectrumIndex) const;
     bool zp_setSpectrumChecked(int arrayIndex, int spectrumIndex, bool checked);
     bool zp_setSpectrumCheckedForId(qint64 arrayId, qint64 spectrumId, bool checked);
-
+    void zp_setSpectrumCurrent(qint64 spectrumId) const;
 
     const ZAbstractSpectrum * zp_spectrum(int arrayIndex, int spectrumIndex) const;
     QList<ZAbstractSpectrum*> zp_spectrumListForArray(int arrayIndex) const;
@@ -119,8 +124,9 @@ signals:
     void zg_currentFile(bool dirty, QString fileName) const;
     void zg_fitPlotInBoundingRect();
 
-    void zg_setCurrentArrayIndex(int arrayIndex);
-    void zg_setCurrentChemElementIndex(int chemElementIndex);
+    void zg_setCurrentArrayIndex(int arrayIndex) const;
+    void zg_setCurrentChemElementIndex(int chemElementIndex) const;
+    void zg_setCurrentSpectrumIndex(int spectrumIndex) const;
 
     void zg_requestCurrentArrayIndex(int& arrayIndex) const;
     void zg_requestSelectedSpectrumIndexList(QList<int>&);
@@ -136,7 +142,7 @@ signals:
     void zg_currentArrayIsAboutChange(qint64 arrayId, int arrayIndex);
     void zg_currentArrayIdChanged(qint64 arrayId, int arrayIndex);
     void zg_currentSpectrumChanged(qint64 currentSpectrumId, int currentSpectrumIndex,
-                              qint64 previousSpectrumId, int previousSpectrumIndex);
+                                   qint64 previousSpectrumId, int previousSpectrumIndex);
 
     void zg_energyCalibrationChanged(qint64 arrayId);
     void zg_arrayMaxParametersChanged(qint64 arrayId, int intensity, int channels);
@@ -154,7 +160,10 @@ public slots:
     void zp_currentArrayChanged(int current, int previous);
     void zp_currentSpectrumChanged(int currentSpectrumIndex, int previousSpectrumIndex);
     void zp_chemElementListForCurrentArray(QStringList& chemElementList);
-    void zp_onSelectionChange(bool selectionEnabled, bool concentrationSelected);
+
+    void zp_onSelectionSpectraChange(bool selectionEnabled, bool concentrationSelected);
+//    void zp_onSelectionChemElementChange(bool selectionEnabled, bool concentrationSelected);
+//    void zp_onSelectionArrayChange(bool selectionEnabled, bool concentrationSelected);
 
 private slots:
 
@@ -179,6 +188,14 @@ private slots:
     void zh_onCopyConcentrationDataAction();
     void zh_onClearConcentrationDataAction();
 
+    void zh_onSetSpectraVisibleAction();
+    void zh_onSetSpectraInvisibleAction();
+    void zh_onInvertSpectraVisibilityAction();
+
+    void zh_onSetChemElementsVisibleAction();
+    void zh_onSetChemElementsInvisibleAction();
+    void zh_onInvertChemElementsVisibilityAction();
+
 private:
 
     // VARS
@@ -199,6 +216,14 @@ private:
     QAction* zv_copyConcentrationDataAction;
     QAction* zv_clearConcentrationDataAction;
 
+    QAction* zv_setSpectraVisibleAction;
+    QAction* zv_setSpectraInvisibleAction;
+    QAction* zv_invertSpectraVisibilityAction;
+
+    QAction* zv_setChemElementsVisibleAction;
+    QAction* zv_setChemElementsInvisibleAction;
+    QAction* zv_invertChemElementsVisibilityAction;
+
     ZPasteData zv_pasteData;
 
     // FUNCS
@@ -211,9 +236,10 @@ private:
     bool zh_removeChemicalElement(int, int);
     int zh_chemElementIndexForId(int arrayIndex, qint64 chemElementId);
     QList<ZRawSpectrumArray> zh_createRawArrayList() const;
-//    void zh_pasteConcentrationData(int arrayIndex,
-//                                   int startSpectrumIndex,
-//                                   const QList<qint64>& chemElementIdList);
+    void zh_actionEnablingControl();
+    //    void zh_pasteConcentrationData(int arrayIndex,
+    //                                   int startSpectrumIndex,
+    //                                   const QList<qint64>& chemElementIdList);
 
 };
 //==================================================================

@@ -10,7 +10,6 @@
 //======================================================
 QColor ZSpectrumGraphicsItem::zv_currentColor = QColor(Qt::red);
 qint64 ZSpectrumGraphicsItem::zv_currentSpectrumId = -1;
-
 //======================================================
 ZSpectrumGraphicsItem::ZSpectrumGraphicsItem(const ZAbstractSpectrum *spectrum,
                                              qreal boundingRectTopFactor,

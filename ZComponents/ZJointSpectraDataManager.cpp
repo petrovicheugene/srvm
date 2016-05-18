@@ -29,7 +29,7 @@ void ZJointSpectraDataManager::zp_connectToSpectrumArrayRepository(ZSpectrumArra
     connect(repository, &ZSpectrumArrayRepository::zg_requestCurrentChemConcentrationCellIndex,
             this, &ZJointSpectraDataManager::zh_currentChemConcentrationCellIndex);
     connect(this, &ZJointSpectraDataManager::zg_onSelectionChange,
-            repository, &ZSpectrumArrayRepository::zp_onSelectionChange);
+            repository, &ZSpectrumArrayRepository::zp_onSelectionSpectraChange);
 
     connect(repository, &ZSpectrumArrayRepository::zg_requestClearSelected,
             this, &ZJointSpectraDataManager::zg_requestClearSelected);
@@ -826,7 +826,7 @@ bool ZJointSpectraDataManager::zp_calculateConcentrationResidualList(qint64 cali
 {
     residualDispersionList.clear();
     QString chemElementName = zv_calibrationRepository->zp_chemElementForCalibrationId(calibrationId);
-    qint64 chemElementId = zv_spectrumArrayRepository->zp_chemElementIdForName(zv_currentArrayId, chemElementName);
+    qint64 chemElementId = zv_spectrumArrayRepository->zp_chemElementIdForName(zv_currentArrayIndex, chemElementName);
 
     if(chemElementId < 0)
     {

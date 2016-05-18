@@ -360,8 +360,10 @@ void MainWindow::zh_createConnections()
     // spectra repository <-> array view
     zv_spectrumArrayWidget->zp_connectToSpectrumArrayRepository(zv_spectrumArrayRepository);
     zv_spectrumTableWidget->zp_connectToSpectrumArrayRepository(zv_spectrumArrayRepository);
-    zv_spectrumTableWidget->zp_appendButtonActions(zv_spectrumArrayRepository->zp_spectrumActions());
+    zv_spectrumTableWidget->zp_connectToCalibrationRepository(zv_calibrationRepository);
+
     zv_chemElementWidget->zp_appendButtonActions(zv_spectrumArrayRepository->zp_chemElementActions());
+    zv_chemElementWidget->zp_appendContextMenuActions(zv_spectrumArrayRepository->zp_chemElementContextMenuActions());
 
     connect(zv_spectrumArrayRepository, &ZSpectrumArrayRepository::zg_currentFile,
             zv_spectraSidebarWidget, &ZWidgetWithSidebar::zp_setInfoLabelText);
@@ -410,7 +412,6 @@ void MainWindow::zh_createConnections()
     zv_jointCalibrationWindowModel->zp_connectToJointCalibrationWindowDataManager(zv_jointCalibrationWindowDataManager);
 
     // calibration repository <-> joint window view
-    zv_calibrationWindowTableWidget->zp_appendButtonActions(zv_calibrationRepository->zp_windowActions());
     zv_calibrationWindowTableWidget->zp_connectToCalibrationRepository(zv_calibrationRepository);
 
     // joint calibration window data manager <->  joint window view
@@ -430,7 +431,7 @@ void MainWindow::zh_createConnections()
 
     zv_termCorrelationTableManager->zp_connectToJointSpectraDataManager(zv_jointSpectraDataManager);
 
-    zv_termCorrelationTableWidget->zp_appendButtonActions(zv_calibrationRepository->zp_termActions());
+    zv_termCorrelationTableWidget->zp_appendContextMenuActions(zv_calibrationRepository->zp_termContextMenuActions());
     connect(zv_jointSpectraDataManager, &ZJointSpectraDataManager::zg_calibrationQualityData,
             zv_calibrationModel, &ZCalibrationModel::zp_calibrationQualityDataChanged);
 

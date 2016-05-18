@@ -27,12 +27,12 @@ signals:
 
 public slots:
 
-    void zp_currentCalibrationChanged(qint64 currentCalibrationId, int currentCalibrationIndex);
-    void zp_currentCalibrationWindowChanged(qint64 currentWindowId, int currentWindowIndex,
-                                            qint64 previousWindowId, int previousWindowIndex);
-    void zp_currentArrayChanged(qint64 currentArrayId, int currentArrayIndex);
-    void zp_currentSpectrumChanged(qint64 currentSpectrumId, int currentSpectrumIndex,
-                                   qint64 previousSpectrumId, int previousSpectrumIndex);
+//    void zp_currentCalibrationChanged(qint64 currentCalibrationId, int currentCalibrationIndex);
+//    void zp_currentCalibrationWindowChanged(qint64 currentWindowId, int currentWindowIndex,
+//                                            qint64 previousWindowId, int previousWindowIndex);
+//    void zp_currentArrayChanged(qint64 currentArrayId, int currentArrayIndex);
+//    void zp_currentSpectrumChanged(qint64 currentSpectrumId, int currentSpectrumIndex,
+//                                   qint64 previousSpectrumId, int previousSpectrumIndex);
 
 private:
 
@@ -74,6 +74,13 @@ private slots:
     void zh_setMaxParametersToDefaultItem(qreal, qreal);
     void zh_definePlotScaling(bool& plotIsScaled);
     void zh_findItemInCursorAreaImage(QImage cursorAreaImage);
+
+    void zp_currentCalibrationChanged(qint64 currentCalibrationId, int currentCalibrationIndex);
+    void zp_currentCalibrationWindowChanged(qint64 currentWindowId, int currentWindowIndex,
+                                            qint64 previousWindowId, int previousWindowIndex);
+    void zp_currentArrayChanged(qint64 currentArrayId, int currentArrayIndex);
+    void zp_currentSpectrumChanged(qint64 currentSpectrumId, int currentSpectrumIndex,
+                                   qint64 previousSpectrumId, int previousSpectrumIndex);
 
 };
 //===========================================================

@@ -15,6 +15,7 @@ ZCalibrationWindowTableWidget::ZCalibrationWindowTableWidget(QWidget *parent) : 
 {
     zv_channelDelegate = 0;
     zh_createComponents();
+    zh_createConnections();
 }
 //==============================================================
 void ZCalibrationWindowTableWidget::zp_setModel(ZCalibrationWindowModel* model)
@@ -53,8 +54,23 @@ void ZCalibrationWindowTableWidget::zp_appendButtonActions(QList<QAction*> actio
     }
 }
 //=============================================================
+void ZCalibrationWindowTableWidget::zp_appendContextMenuActions(QList<QAction*> actionList)
+{
+    foreach(QAction* action, actionList)
+    {
+        if(action != 0 && zv_contextMenuActionList.contains(action))
+        {
+            continue;
+        }
+        zv_contextMenuActionList.append(action);
+    }
+}
+//=============================================================
 void ZCalibrationWindowTableWidget::zp_connectToCalibrationRepository(ZCalibrationRepository* repository)
 {
+   this->zp_appendButtonActions(repository->zp_windowActions());
+   this->zp_appendContextMenuActions(repository->zp_windowContextMenuActions());
+
    connect(this, &ZCalibrationWindowTableWidget::zg_currentCalibrationWindowChanged,
            repository, &ZCalibrationRepository::zp_onCurrentCalibrationWindowChanged);
    connect(repository, &ZCalibrationRepository::zg_requestSelectedWindowIndexList,
@@ -145,11 +161,19 @@ void ZCalibrationWindowTableWidget::zh_createComponents()
     setLayout(zv_mainLayout);
 
     zv_table = new QTableView(this);
+    zv_table->setContextMenuPolicy(Qt::CustomContextMenu);
+
     zv_mainLayout->addWidget(zv_table);
 
     zv_buttonLayout = new QHBoxLayout(this);
     zv_mainLayout->addLayout(zv_buttonLayout);
 
+}
+//==============================================================
+void ZCalibrationWindowTableWidget::zh_createConnections()
+{
+    connect(zv_table, &QTableView::customContextMenuRequested,
+            this, &ZCalibrationWindowTableWidget::zh_onContextMenuRequest);
 }
 //==============================================================
 void ZCalibrationWindowTableWidget::zh_onCurrentCalibrationWindowChanged(const QModelIndex & current,
@@ -175,5 +199,24 @@ void ZCalibrationWindowTableWidget::zh_onCurrentCalibrationWindowChanged(const Q
    }
 
    emit zg_currentCalibrationWindowChanged(currentRow, previousRow);
+}
+//==============================================================
+void ZCalibrationWindowTableWidget::zh_onContextMenuRequest(const QPoint &pos)
+{
+    QMenu *menu=new QMenu(this);
+    menu->setAttribute(Qt::WA_DeleteOnClose);
+
+    foreach(QAction* action, zv_contextMenuActionList)
+    {
+        if(action == 0)
+        {
+            menu->addSeparator();
+            continue;
+        }
+
+        menu->addAction(action);
+    }
+
+    menu->popup(zv_table->viewport()->mapToGlobal(pos));
 }
 //==============================================================

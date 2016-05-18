@@ -63,9 +63,16 @@ public:
     void zp_connectToFileManager(ZFileActionManager*);
 
     void zp_appendActionsToMenu(QMenu *menu) const;
-    QList<QAction*> zp_arrayActions() const;
+    QList<QAction*> zp_calibrationActions() const;
+    QList<QAction*> zp_calibrationVisibilityActions() const;
+    QList<QAction*> zp_calibrationContextMenuActions() const;
+
     QList<QAction*> zp_windowActions() const;
+    QList<QAction*> zp_windowContextMenuActions() const;
+
     QList<QAction*> zp_termActions() const;
+    QList<QAction*> zp_termContextMenuActions() const;
+
 
     bool zp_isEmpty() const;
     void zp_clear();
@@ -186,7 +193,7 @@ signals:
     void zg_startCurrentWindowEdition();
 
     void zg_normalizerChanged(qint64 calibrationId) const;
-    void zg_invokeCalibrationRecalc();
+    void zg_invokeCalibrationRecalc() const;
 
 public slots:
 
@@ -213,6 +220,17 @@ private slots:
     void zh_onNormalizerChange() const;
     void zh_onCalibrationFreeTermChange() const;
 
+    void zh_onSetCalibrationVisibleAction();
+    void zh_onSetCalibrationInvisibleAction();
+    void zh_onInvertCalibrationVisibilityAction();
+    void zh_onSetWindowsVisibleAction();
+    void zh_onSetWindowsInvisibleAction();
+    void zh_onInvertWindowsVisibilityAction();
+    void zh_onCopySelectedCalibrationAction();
+    void zh_onCopySelectedWindowsAction();
+    void zh_onPasteWindowsAction();
+    void zh_onResetTermStateAction();
+
 private:
 
     // VARS
@@ -232,6 +250,22 @@ private:
 
     QAction* zv_recalcEquationFactorsAction;
 
+    QAction* zv_setCalibrationVisibleAction;
+    QAction* zv_setCalibrationInvisibleAction;
+    QAction* zv_invertCalibrationVisibilityAction;
+
+    QAction* zv_setWindowsVisibleAction;
+    QAction* zv_setWindowsInvisibleAction;
+    QAction* zv_invertWindowsVisibilityAction;
+
+    QAction* zv_copySelectedCalibrationAction;
+
+    QAction* zv_copySelectedWindowsAction;
+    QAction* zv_pasteWindowsAction;
+
+    QAction* zv_resetTermStateAction;
+
+
     QString zv_defaultCalibrationName;
     ZCalibrationWindow::WindowType zv_defaultCalibrationWindowType;
     qint64 zv_currentArrayId;
@@ -247,7 +281,7 @@ private:
     bool zh_createCalibrationFromFile(const QString&);
     bool zh_createNewCalibration(const QString&);
     bool zh_appendCalibrationToList(ZCalibration*);
-    void zh_actionAvailabilityControl(int current);
+    void zh_actionEnablingControl();
 
     void zh_removeCalibrationWindow(int currentCalibrationIndex, int spectrumWindowIndex);
     ZCalibration* zh_calibrationForId(qint64) const;

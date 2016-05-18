@@ -75,6 +75,7 @@ void ZWindowTypeComboBoxDelegate::paint(QPainter *painter,
         return;
     }
     QStyleOptionViewItemV4 myOption = option;
+    myOption.state =  myOption.state | QStyle::State_Active;
 
     QString dataString = vData.toString();
     myOption.text = dataString;

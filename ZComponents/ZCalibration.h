@@ -91,6 +91,7 @@ public:
 
     qint64 zp_calibrationWindowId(int windowIndex) const;
     bool zp_removeCalibrationWindow(int);
+    void zp_removeCalibrationWindows();
 
     // terms
     int zp_termCount() const;

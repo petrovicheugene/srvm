@@ -32,7 +32,7 @@ public:
     void zp_connectToTermCorrelationWidget(ZTermCorrelationTableWidget*);
 
     void zp_setBottomRulerScaleMetrix(qreal scaleValue, const QString& rulerLabelString);
-
+    void zp_setCurrentSpectrum(qint64 id) const;
 signals:
 
     void zg_requestCurrentTermIndex(int&) const;
@@ -45,6 +45,9 @@ private slots:
 
     //    void zh_showTermCorrelationChart();
     //    void zh_showConcentrationChart();
+
+    void zh_currentSpectrumChanged(qint64 currentSpectrumId, int currentSpectrumIndex,
+                                   qint64 previousSpectrumId, int previousSpectrumIndex);
 
     void zh_onChartDataKindChange(int);
     void zh_currentSpectrumArrayChanged(qint64, int);

@@ -47,6 +47,7 @@ void	ZVisibilityStringDelegate::paint(QPainter* painter, const QStyleOptionViewI
 
     QStyleOptionViewItem newOption(option);
     initStyleOption(&newOption, index);
+    newOption.state =  newOption.state | QStyle::State_Active;
 
     if(newOption.features & QStyleOptionViewItem::HasDecoration)
     {

@@ -20,6 +20,7 @@ public:
     // FUNCS
    void zp_setModel(ZArrayModel* model);
    void zp_appendButtonActions(QList<QAction*>);
+   void zp_appendContextMenuActions(QList<QAction*> actionList);
 
    void zp_connectToSpectrumArrayRepository(ZSpectrumArrayRepository*);
    void zp_setMargin(int margin);
@@ -40,6 +41,7 @@ private:
     QTableView* zv_table;
     QHBoxLayout* zv_buttonLayout;
     QVBoxLayout* zv_mainLayout;
+    QList<QAction*> zv_contextMenuActionList;
 
     // FUNCS
     void zh_createComponents();
@@ -50,6 +52,7 @@ private slots:
 
     void zh_onCurrentArrayChanged(const QModelIndex & current,
                                   const QModelIndex & previous);
+    void zh_onContextMenuRequest(const QPoint &pos);
 
 };
 //==============================================================

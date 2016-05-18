@@ -41,6 +41,7 @@ private:
     ZJointSpectraDataManager* zv_dataManager;
     QMap<int, QMap<int, QModelIndex> > zv_selectedIndexMap;
 
+
 private slots:
 
     void zh_onDataManagerOperation(ZJointSpectraDataManager::OperationType, int, int);

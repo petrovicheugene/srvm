@@ -10,10 +10,12 @@
 #include <QHeaderView>
 #include <QPushButton>
 #include <QAction>
+#include <QMenu>
 //==============================================================
 ZChemElementWidget::ZChemElementWidget(QWidget *parent) : QWidget(parent)
 {
     zh_createComponents();
+    zh_createConnections();
 }
 //==============================================================
 void ZChemElementWidget::zh_createComponents()
@@ -24,10 +26,17 @@ void ZChemElementWidget::zh_createComponents()
     setLayout(zv_mainLayout);
 
     zv_table = new QTableView(this);
+    zv_table->setContextMenuPolicy(Qt::CustomContextMenu);
     zv_mainLayout->addWidget(zv_table);
 
     zv_buttonLayout = new QHBoxLayout(this);
     zv_mainLayout->addLayout(zv_buttonLayout);
+}
+//==============================================================
+void ZChemElementWidget::zh_createConnections()
+{
+    connect(zv_table, &QTableView::customContextMenuRequested,
+            this, &ZChemElementWidget::zh_onContextMenuRequest);
 }
 //==============================================================
 void ZChemElementWidget::zp_setModel(QAbstractItemModel* model)
@@ -56,6 +65,18 @@ void ZChemElementWidget::zp_appendButtonActions(QList<QAction*> actionList)
         connect(button, &QPushButton::clicked,
                 actionList[a], &QAction::trigger);
         zv_buttonLayout->addWidget(button);
+    }
+}
+//==============================================================
+void ZChemElementWidget::zp_appendContextMenuActions(QList<QAction*> actionList)
+{
+    foreach(QAction* action, actionList)
+    {
+        if(action != 0 && zv_contextMenuActionList.contains(action))
+        {
+            continue;
+        }
+        zv_contextMenuActionList.append(action);
     }
 }
 //==============================================================
@@ -117,5 +138,24 @@ void ZChemElementWidget::zh_onCurrentElementChanged(const QModelIndex & current,
                                                     const QModelIndex & previous)
 {
     emit zg_currentCalibrationChanged(current.row(), previous.row());
+}
+//==============================================================
+void ZChemElementWidget::zh_onContextMenuRequest(const QPoint &pos)
+{
+    QMenu *menu=new QMenu(this);
+    menu->setAttribute(Qt::WA_DeleteOnClose);
+
+    foreach(QAction* action, zv_contextMenuActionList)
+    {
+        if(action == 0)
+        {
+            menu->addSeparator();
+            continue;
+        }
+
+        menu->addAction(action);
+    }
+
+    menu->popup(zv_table->viewport()->mapToGlobal(pos));
 }
 //==============================================================

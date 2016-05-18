@@ -49,6 +49,7 @@ signals:
 public slots:
 
 
+
 private slots:
 
     void zh_onCurrentCalibrationChange(qreal calibrationId, int calibrationIndex);

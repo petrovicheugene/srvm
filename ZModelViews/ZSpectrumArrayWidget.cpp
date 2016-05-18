@@ -27,8 +27,9 @@ void ZSpectrumArrayWidget::zh_createComponents()
     setLayout(zv_mainLayout);
 
     zv_table = new QTableView(this);
-    zv_mainLayout->addWidget(zv_table, INT_MAX);
+    zv_table->setContextMenuPolicy(Qt::CustomContextMenu);
 
+    zv_mainLayout->addWidget(zv_table, INT_MAX);
     zv_buttonLayout = new QHBoxLayout(this);
     zv_mainLayout->addLayout(zv_buttonLayout);
 }
@@ -45,7 +46,6 @@ void ZSpectrumArrayWidget::zp_setModel(ZArrayModel *model)
     connect(model, &ZArrayModel::zg_checkCurrentArray,
             this, &ZSpectrumArrayWidget::zh_checkCurrentArray);
     zv_table->setSelectionMode(QAbstractItemView::SingleSelection);
-
 }
 //==============================================================
 void ZSpectrumArrayWidget::zp_appendButtonActions(QList<QAction*> actionList)
@@ -63,20 +63,32 @@ void ZSpectrumArrayWidget::zp_appendButtonActions(QList<QAction*> actionList)
     }
 }
 //==============================================================
+void ZSpectrumArrayWidget::zp_appendContextMenuActions(QList<QAction*> actionList)
+{
+    foreach(QAction* action, actionList)
+    {
+        if(action != 0 && zv_contextMenuActionList.contains(action))
+        {
+            continue;
+        }
+        zv_contextMenuActionList.append(action);
+    }
+}
+//==============================================================
 void ZSpectrumArrayWidget::zp_connectToSpectrumArrayRepository(ZSpectrumArrayRepository* repository)
 {
     zp_appendButtonActions(repository->zp_arrayActions());
+    zp_appendContextMenuActions(repository->zp_arrayContextMenuActions());
 
     connect(repository, &ZSpectrumArrayRepository::zg_setCurrentArrayIndex,
             this, &ZSpectrumArrayWidget::zp_setCurrentArrayIndex);
+
     connect(repository, &ZSpectrumArrayRepository::zg_startCurrentArrayEdition,
             this, &ZSpectrumArrayWidget::zp_startCurrentArrayEdition);
     connect(repository, &ZSpectrumArrayRepository::zg_requestCurrentArrayIndex,
             this, &ZSpectrumArrayWidget::zp_currentArrayIndex);
     connect(this, &ZSpectrumArrayWidget::zg_currentArrayChanged,
             repository, &ZSpectrumArrayRepository::zp_currentArrayChanged);
-
-
 }
 //==============================================================
 void ZSpectrumArrayWidget::zp_setMargin(int margin)
@@ -144,7 +156,8 @@ void ZSpectrumArrayWidget::zp_startCurrentArrayEdition()
 //==============================================================
 void ZSpectrumArrayWidget::zh_createConnections()
 {
-
+    connect(zv_table, &QTableView::customContextMenuRequested,
+            this, &ZSpectrumArrayWidget::zh_onContextMenuRequest);
 }
 //==============================================================
 void ZSpectrumArrayWidget::zh_checkCurrentArray()
@@ -186,5 +199,24 @@ void ZSpectrumArrayWidget::zh_onCurrentArrayChanged(const QModelIndex & current,
     }
 
     emit zg_currentArrayChanged(currentRow, previousRow);
+}
+//==============================================================
+void ZSpectrumArrayWidget::zh_onContextMenuRequest(const QPoint &pos)
+{
+    QMenu *menu=new QMenu(this);
+    menu->setAttribute(Qt::WA_DeleteOnClose);
+
+    foreach(QAction* action, zv_contextMenuActionList)
+    {
+        if(action == 0)
+        {
+            menu->addSeparator();
+            continue;
+        }
+
+        menu->addAction(action);
+    }
+
+    menu->popup(zv_table->viewport()->mapToGlobal(pos));
 }
 //==============================================================
