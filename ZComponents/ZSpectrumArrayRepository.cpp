@@ -818,6 +818,13 @@ void ZSpectrumArrayRepository::zp_appendSpectraToArray(int arrayIndex, QStringLi
         emit zg_currentFile(zv_dirty, zv_arrayFilePath);
     }
     zh_actionEnablingControl();
+
+    int currentArrayIndex;
+    emit zg_requestCurrentArrayIndex(currentArrayIndex);
+    if(arrayIndex == currentArrayIndex)
+    {
+
+    }
 }
 //==================================================================
 void ZSpectrumArrayRepository::zh_createArray(const ZRawSpectrumArray& rawArray)

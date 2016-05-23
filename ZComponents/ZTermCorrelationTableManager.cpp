@@ -406,6 +406,19 @@ void ZTermCorrelationTableManager::zh_onCalibrationValuesChanged(qint64 calibrat
     }
 
     zh_calcResidualTermCorrelation();
+    int factorCount = 0;
+    ZAbstractTerm::TermState termState;
+    for(int t = 0; t < zv_calibrationRepository->zp_termCount(zv_currentCalibrationId); t++)
+    {
+        termState = zv_calibrationRepository->zp_termState(zv_currentCalibrationId, t);
+        if(termState == ZAbstractTerm::TS_CONST_INCLUDED
+                || termState == ZAbstractTerm::TS_INCLUDED)
+        {
+            factorCount ++;
+        }
+    }
+
+    emit zg_calculateCalibrationQualityData(false, zv_currentCalibrationId, factorCount + 1, zv_sumSquareAverageConcentrationDispersion);
 }
 //=============================================================================
 void ZTermCorrelationTableManager::zh_currentSpectrumArrayChanged(qint64 currentArrayId, int currentArrayIndex)
@@ -681,25 +694,103 @@ void ZTermCorrelationTableManager::zh_onSpectrumOperation(ZSpectrumArrayReposito
     {
 
     }
-    else if(type == ZSpectrumArrayRepository::SOT_END_INSERT_SPECTRA)
+    else if(type == ZSpectrumArrayRepository::SOT_END_INSERT_SPECTRA
+            || type == ZSpectrumArrayRepository::SOT_END_REMOVE_SPECTRA
+            || type == ZSpectrumArrayRepository::SOT_CHECKED_CHANGED
+            || type == ZSpectrumArrayRepository::SOT_CONCENTRATION_CHANGED)
     {
         zh_startCalculationCorrelationsAndCovariations();
         emit zg_currentOperation(TOT_DATA_CHANGED, 0, zp_rowCount() -1);
+
+        // equation quality recalc
+        int factorCount = 0;
+        ZAbstractTerm::TermState termState;
+        for(int t = 0; t < zv_calibrationRepository->zp_termCount(zv_currentCalibrationId); t++)
+        {
+            termState = zv_calibrationRepository->zp_termState(zv_currentCalibrationId, t);
+            if(termState == ZAbstractTerm::TS_CONST_INCLUDED
+                    || termState == ZAbstractTerm::TS_INCLUDED)
+            {
+                factorCount ++;
+            }
+        }
+
+        emit zg_calculateCalibrationQualityData(false, zv_currentCalibrationId, factorCount + 1, zv_sumSquareAverageConcentrationDispersion);
+
     }
     else if(type == ZSpectrumArrayRepository::SOT_BEGIN_REMOVE_SPECTRA)
     {
 
     }
-    else if(type == ZSpectrumArrayRepository::SOT_END_REMOVE_SPECTRA)
+//    else if(type == ZSpectrumArrayRepository::SOT_END_REMOVE_SPECTRA)
+//    {
+//        zh_startCalculationCorrelationsAndCovariations();
+//        emit zg_currentOperation(TOT_DATA_CHANGED, 0, zp_rowCount() -1);
+//        // equation quality recalc
+//        int factorCount = 0;
+//        ZAbstractTerm::TermState termState;
+//        for(int t = 0; t < zv_calibrationRepository->zp_termCount(zv_currentCalibrationId); t++)
+//        {
+//            termState = zv_calibrationRepository->zp_termState(zv_currentCalibrationId, t);
+//            if(termState == ZAbstractTerm::TS_CONST_INCLUDED
+//                    || termState == ZAbstractTerm::TS_INCLUDED)
+//            {
+//                factorCount ++;
+//            }
+//        }
+
+//        emit zg_calculateCalibrationQualityData(false, zv_currentCalibrationId, factorCount + 1, zv_sumSquareAverageConcentrationDispersion);
+
+//    }
+//    else if(type == ZSpectrumArrayRepository::SOT_CHECKED_CHANGED)
+//    {
+//        zh_startCalculationCorrelationsAndCovariations();
+//        emit zg_currentOperation(TOT_DATA_CHANGED, 0, zp_rowCount() -1);
+//        // equation quality recalc
+//        int factorCount = 0;
+//        ZAbstractTerm::TermState termState;
+//        for(int t = 0; t < zv_calibrationRepository->zp_termCount(zv_currentCalibrationId); t++)
+//        {
+//            termState = zv_calibrationRepository->zp_termState(zv_currentCalibrationId, t);
+//            if(termState == ZAbstractTerm::TS_CONST_INCLUDED
+//                    || termState == ZAbstractTerm::TS_INCLUDED)
+//            {
+//                factorCount ++;
+//            }
+//        }
+
+//        emit zg_calculateCalibrationQualityData(false, zv_currentCalibrationId, factorCount + 1, zv_sumSquareAverageConcentrationDispersion);
+
+//    }
+
+
+    /*
+
+    // emit zg_currentOperation(TOT_BEGIN_RESET, -1, -1);
+
+    zv_currentArrayIndex = currentArrayIndex;
+    zv_currentArrayId = currentArrayId;
+    zh_startCalculationCorrelationsAndCovariations();
+    emit zg_currentOperation(TOT_DATA_CHANGED, 0, zp_rowCount() - 1);
+
+    // equation quality recalc
+    int factorCount = 0;
+    ZAbstractTerm::TermState termState;
+    for(int t = 0; t < zv_calibrationRepository->zp_termCount(zv_currentCalibrationId); t++)
     {
-        zh_startCalculationCorrelationsAndCovariations();
-        emit zg_currentOperation(TOT_DATA_CHANGED, 0, zp_rowCount() -1);
+        termState = zv_calibrationRepository->zp_termState(zv_currentCalibrationId, t);
+        if(termState == ZAbstractTerm::TS_CONST_INCLUDED
+                || termState == ZAbstractTerm::TS_INCLUDED)
+        {
+            factorCount ++;
+        }
     }
-    else if(type == ZSpectrumArrayRepository::SOT_CHECKED_CHANGED)
-    {
-        zh_startCalculationCorrelationsAndCovariations();
-        emit zg_currentOperation(TOT_DATA_CHANGED, 0, zp_rowCount() -1);
-    }
+
+    emit zg_calculateCalibrationQualityData(false, zv_currentCalibrationId, factorCount + 1, zv_sumSquareAverageConcentrationDispersion);
+
+    */
+
+
 }
 //=============================================================================
 void ZTermCorrelationTableManager::zh_onCalibrationNormalizerChange(qint64 calibrationId)
