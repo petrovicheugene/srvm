@@ -9,7 +9,7 @@
 #include "ZSpectrumArrayRepository.h"
 #include "ZEquationSettingsData.h"
 #include "ZNormaSettingsData.h"
-
+#include "ZCalibrationQualityData.h"
 //======================================================
 class QAction;
 class ZFileActionManager;
@@ -198,9 +198,11 @@ signals:
 public slots:
 
     void zp_appendCalibrationsToArray(const QStringList&fileNameList);
-    void zp_onCurrentCalibrationChanged(int current, int previous);
+    void zp_onSelectedCalibrationChange(QList<int>);
+    void zp_onCurrentCalibrationChange(int current, int previous);
     void zp_onCurrentCalibrationWindowChanged(int current, int previous);
     void zp_onCurrentTermChange(int currentTermIndex, int previousTermIndex);
+    void zp_calibrationQualityDataChanged(bool saveTocalibration, qint64 calibrationId, ZCalibrationQualityData);
 
 private slots:
 
@@ -286,7 +288,10 @@ private:
     void zh_removeCalibrationWindow(int currentCalibrationIndex, int spectrumWindowIndex);
     ZCalibration* zh_calibrationForId(qint64) const;
     int zh_calibrationIndexForId(qint64) const;
-
+    bool zh_copyCalibration(int calibrationIndex);
+    bool zh_copyWindowsTermsAndEquation(int calibrationIndex, ZCalibration *trgCalibration);
+    int zh_findCorrespondingTermIndex(int srcTermIndex,
+                                  const ZCalibration *srcCalibration, const ZCalibration *trgCalibration);
 };
 //======================================================
 #endif // ZCALIBRATIONARRAYREPOSITORY_H

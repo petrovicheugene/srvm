@@ -6,6 +6,7 @@
 #include "ZEquationDelegate.h"
 #include "ZNormaDelegate.h"
 #include "ZNumericDelegate.h"
+#include "globalVariables.h"
 
 #include <QTableView>
 #include <QHBoxLayout>
@@ -69,7 +70,10 @@ void ZCalibrationTableWidget::zp_setModel(QAbstractItemModel* model)
     zv_table->setAlternatingRowColors(true);
 
     connect(zv_table->selectionModel(), &QItemSelectionModel::currentChanged,
-            this, &ZCalibrationTableWidget::zh_onCurrentCalibrationChanged);
+            this, &ZCalibrationTableWidget::zh_onCurrentCalibrationChange);
+    connect(zv_table->selectionModel(), &QItemSelectionModel::selectionChanged,
+            this, &ZCalibrationTableWidget::zh_onSelectedCalibrationChange);
+
     connect(chemElementComboBoxDelegate, &ZChemElementComboBoxDelegate::zg_requestChemElementList,
             this, &ZCalibrationTableWidget::zg_requestChemElementList);
 
@@ -112,7 +116,10 @@ void ZCalibrationTableWidget::zp_connectToCalibrationRepository(ZCalibrationRepo
     connect(repository, &ZCalibrationRepository::zg_requestCurrentCalibrationIndex,
             this, &ZCalibrationTableWidget::zp_currentCalibrationIndex);
     connect(this, &ZCalibrationTableWidget::zg_currentCalibrationChanged,
-            repository, &ZCalibrationRepository::zp_onCurrentCalibrationChanged);
+            repository, &ZCalibrationRepository::zp_onCurrentCalibrationChange);
+    connect(this, &ZCalibrationTableWidget::zg_selectedCalibrationChanged,
+            repository, &ZCalibrationRepository::zp_onSelectedCalibrationChange);
+
     connect(repository, &ZCalibrationRepository::zg_setCurrentCalibrationIndex,
             this, &ZCalibrationTableWidget::zp_setCurrentCalibrationIndex);
     connect(repository, &ZCalibrationRepository::zg_startCurrentCalibrationEdition,
@@ -192,9 +199,19 @@ void ZCalibrationTableWidget::zp_startCurrentCalibrationEdition()
     zv_table->edit(currentIndex);
 }
 //==============================================================
-void ZCalibrationTableWidget::zh_onCurrentCalibrationChanged(const QModelIndex & current, const QModelIndex & previous)
+void ZCalibrationTableWidget::zh_onCurrentCalibrationChange(const QModelIndex & current, const QModelIndex & previous)
 {
     emit zg_currentCalibrationChanged(current.row(), previous.row());
+}
+//==============================================================
+void ZCalibrationTableWidget::zh_onSelectedCalibrationChange(const QItemSelection & selected, const QItemSelection & deselected)
+{
+#ifdef DBG
+    qDebug() << "SELECTIONS CHANGED";
+#endif
+    QList<int> selectedList;
+    zp_selectedCalibrationIndexList(selectedList);
+    emit zg_selectedCalibrationChanged(selectedList);
 }
 //==============================================================
 void ZCalibrationTableWidget::zh_onContextMenuRequest(const QPoint &pos)

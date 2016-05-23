@@ -56,7 +56,7 @@ public:
 signals:
 
     void zg_currentOperation(OperationType, int, int) const;
-    void zg_calibrationQualityData(qint64 calibrationId, ZCalibrationQualityData) const;
+    void zg_calibrationQualityData(bool saveToCalibration, qint64 calibrationId, ZCalibrationQualityData) const;
     void zg_calibrationValuesChanged(qint64 calibrationId);
     void zg_requestCurrentIndex(QModelIndex& index) const;
     void zg_onSelectionChange(bool selectionEnabled, bool concentrationSelected) const;
@@ -65,7 +65,7 @@ signals:
 
 public slots:
 
-    void zp_calculateCalibrationQualityData(qint64 calibrationId,
+    void zp_calculateCalibrationQualityData(bool saveToCalibration, qint64 calibrationId,
                                             int factorCount,
                                             qreal summSquareAverageConcentrationDispersion) const;
 

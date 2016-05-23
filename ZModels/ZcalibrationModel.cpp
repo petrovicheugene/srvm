@@ -333,7 +333,9 @@ void ZCalibrationModel::zp_connectToCalibrationRepository(ZCalibrationRepository
     endResetModel();
 }
 //==================================================================
-void ZCalibrationModel::zp_calibrationQualityDataChanged(qint64 calibrationId, ZCalibrationQualityData qualityData)
+void ZCalibrationModel::zp_calibrationQualityDataChanged(bool saveTocalibration,
+                                                         qint64 calibrationId,
+                                                         ZCalibrationQualityData qualityData)
 {
     zv_qualityData.insert(calibrationId, qualityData);
 

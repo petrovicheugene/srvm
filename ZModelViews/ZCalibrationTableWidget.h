@@ -3,6 +3,7 @@
 #define ZCALIBRATIONTABLEWIDGET_H
 //==============================================================
 #include <QWidget>
+#include <QItemSelection>
 //==============================================================
 class QTableView;
 class QAbstractItemModel;
@@ -28,6 +29,7 @@ public:
 signals:
 
     void zg_currentCalibrationChanged(int current, int previous);
+    void zg_selectedCalibrationChanged(QList<int>);
     void zg_requestChemElementList(QStringList&);
 
 public slots:
@@ -53,7 +55,9 @@ private:
 private slots:
 
     void zh_onContextMenuRequest(const QPoint &pos);
-    void zh_onCurrentCalibrationChanged(const QModelIndex & current, const QModelIndex & previous);
+    void zh_onCurrentCalibrationChange(const QModelIndex & current, const QModelIndex & previous);
+    void zh_onSelectedCalibrationChange(const QItemSelection &selected, const QItemSelection &deselected);
+
 };
 //==============================================================
 #endif // ZCALIBRATIONTABLEWIDGET_H

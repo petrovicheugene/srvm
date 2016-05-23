@@ -42,12 +42,11 @@ QWidget* ZVisibilityStringDelegate::createEditor(QWidget* parent, const QStyleOp
 //==========================================================
 void	ZVisibilityStringDelegate::paint(QPainter* painter, const QStyleOptionViewItem& option, const QModelIndex& index) const
 {
-    QStyledItemDelegate::paint(painter, option, index);
-
-
     QStyleOptionViewItem newOption(option);
     initStyleOption(&newOption, index);
     newOption.state =  newOption.state | QStyle::State_Active;
+
+    QStyledItemDelegate::paint(painter, newOption, index);
 
     if(newOption.features & QStyleOptionViewItem::HasDecoration)
     {

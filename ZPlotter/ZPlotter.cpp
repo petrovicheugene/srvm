@@ -656,10 +656,6 @@ bool ZPlotter::eventFilter(QObject *obj, QEvent *event)
     {
         zv_mouseButtonDown = true;
         bool res = QObject::eventFilter(obj, event);
-#ifdef DBG
-        qDebug() << "PLOTTER: Button PRESS Result:" << res;
-#endif
-
         return res;
     }else if(event->type() == QEvent::MouseButtonRelease
             || event->type() == QEvent::NonClientAreaMouseButtonRelease)
@@ -669,18 +665,11 @@ bool ZPlotter::eventFilter(QObject *obj, QEvent *event)
         zv_plotView->zp_setScaleViewWhenResizeFlag(false);
         zh_updateScrollBarsVisible();
         bool res = QObject::eventFilter(obj, event);
-#ifdef DBG
-        qDebug() << "PLOTTER: Button RELEASE Result:" << res;
-#endif
-
         return res;
     }
 
     bool res = QObject::eventFilter(obj, event);
-
     return res;
-
-    //return QObject::eventFilter(obj, event);
 }
 //====================================================
 void ZPlotter::zh_verticalDistortionChanged(int distortionValue)

@@ -41,6 +41,7 @@ public:
     QString zp_termName() const;
     ZAbstractTerm::TermType zp_termType() const;
     virtual bool zp_termBelongsToWindow(const ZCalibrationWindow*) const = 0;
+    virtual QList<qint64> zp_termWindowIdList() const = 0;
 
     qint64 zp_termId();
     qreal zp_termFactor() const;

@@ -78,24 +78,30 @@ void ZChemElementComboBoxDelegate::paint(QPainter *painter,
                                          const QStyleOptionViewItem &option,
                                          const QModelIndex &index) const
 {
+    QStyleOptionViewItem newOption(option);
+    initStyleOption(&newOption, index);
+    newOption.state =  newOption.state | QStyle::State_Active;
+
+//    QStyleOptionViewItemV4 myOption
+//            = option;
+//    newOption.state =  newOption.state | QStyle::State_Active;
+
+
     QVariant vData = index.data(Qt::DisplayRole);
     if(!vData.isValid() || vData.isNull() || !vData.canConvert<QString>())
     {
-        QStyledItemDelegate::paint(painter, option, index);
+        QStyledItemDelegate::paint(painter, newOption, index);
         return;
     }
-    QStyleOptionViewItemV4 myOption = option;
-    //myOption.state =  myOption.state | QStyle::State_Active;
-
-    QString dataString = vData.toString();
+     QString dataString = vData.toString();
     if(dataString == glDefaultChemElementString)
     {
-        myOption.text = zv_notDefinedDisplayString;
+        newOption.text = zv_notDefinedDisplayString;
     }
     else
     {
-        myOption.text = dataString;
+        newOption.text = dataString;
     }
-    QApplication::style()->drawControl(QStyle::CE_ItemViewItem, &myOption, painter);
+    QApplication::style()->drawControl(QStyle::CE_ItemViewItem, &newOption, painter);
 }
 //================================================

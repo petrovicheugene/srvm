@@ -9,36 +9,36 @@
 //===================================================================
 class ZSimpleTerm : public ZAbstractTerm
 {
-   Q_OBJECT
+    Q_OBJECT
 public:
-   explicit ZSimpleTerm(const ZCalibrationWindow* window,
-                             ZCalibration *parent);
+    explicit ZSimpleTerm(const ZCalibrationWindow* window,
+                         ZCalibration *parent);
 
-   // FUNCS
-   bool zp_calcValue(const ZAbstractSpectrum*, qreal&) override;
-   bool zp_calcTermVariablePart(const ZAbstractSpectrum*, qreal &value) override; // w/o factor
-   bool zp_termBelongsToWindow(const ZCalibrationWindow*) const override;
-
-   const ZCalibrationWindow* zp_window() const;
+    // FUNCS
+    bool zp_calcValue(const ZAbstractSpectrum*, qreal&) override;
+    bool zp_calcTermVariablePart(const ZAbstractSpectrum*, qreal &value) override; // w/o factor
+    bool zp_termBelongsToWindow(const ZCalibrationWindow*) const override;
+    QList<qint64> zp_termWindowIdList() const;
+    const ZCalibrationWindow* zp_window() const;
 
 signals:
 
-   void zg_requestWindowIntensity(const QObject* spectrum, qreal& intensityValue, bool useBuffer,  bool* ok = 0);
+    void zg_requestWindowIntensity(const QObject* spectrum, qreal& intensityValue, bool useBuffer,  bool* ok = 0);
 
 protected slots:
 
-   virtual void zh_updateTermNameForWindowName() override;
-   void zh_onWindowTypeChange(ZCalibrationWindow::WindowType previousType,
-                              ZCalibrationWindow::WindowType currentType) override;
+    virtual void zh_updateTermNameForWindowName() override;
+    void zh_onWindowTypeChange(ZCalibrationWindow::WindowType previousType,
+                               ZCalibrationWindow::WindowType currentType) override;
 private:
 
-   // VARS
-   const ZCalibrationWindow* zv_window;
+    // VARS
+    const ZCalibrationWindow* zv_window;
 
 
-   // FUNCS
+    // FUNCS
 
-   void zh_connectToWindow(const ZCalibrationWindow* window);
+    void zh_connectToWindow(const ZCalibrationWindow* window);
 
 };
 //===================================================================

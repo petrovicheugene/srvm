@@ -434,6 +434,8 @@ void MainWindow::zh_createConnections()
     zv_termCorrelationTableWidget->zp_appendContextMenuActions(zv_calibrationRepository->zp_termContextMenuActions());
     connect(zv_jointSpectraDataManager, &ZJointSpectraDataManager::zg_calibrationQualityData,
             zv_calibrationModel, &ZCalibrationModel::zp_calibrationQualityDataChanged);
+    connect(zv_jointSpectraDataManager, &ZJointSpectraDataManager::zg_calibrationQualityData,
+            zv_calibrationRepository, &ZCalibrationRepository::zp_calibrationQualityDataChanged);
 
     // equation dashboard
     //zv_equationSettingsPanelWidget->zp_connectToCalibrationRepository(zv_calibrationRepository);

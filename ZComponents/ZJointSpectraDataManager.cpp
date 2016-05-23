@@ -305,7 +305,8 @@ void ZJointSpectraDataManager::zh_currentChemConcentrationCellIndex(int& row, in
     }
 }
 //==================================================================
-void ZJointSpectraDataManager::zp_calculateCalibrationQualityData(qint64 calibrationId,
+void ZJointSpectraDataManager::zp_calculateCalibrationQualityData(bool saveToCalibration,
+                                                                  qint64 calibrationId,
                                                                   int factorCount,
                                                                   qreal summSquareAverageConcentrationDispersion) const
 {
@@ -320,7 +321,7 @@ void ZJointSpectraDataManager::zp_calculateCalibrationQualityData(qint64 calibra
 
     if(calibrationChemElementId < 0)
     {
-        emit zg_calibrationQualityData(calibrationId, qualityData);
+        emit zg_calibrationQualityData(saveToCalibration, calibrationId, qualityData);
         return;
     }
 
@@ -329,7 +330,7 @@ void ZJointSpectraDataManager::zp_calculateCalibrationQualityData(qint64 calibra
     QStringList calibrationConcentrationList = zv_calibrationConcentrationMap.value(calibrationId);
     if(calibrationConcentrationList.isEmpty() || calibrationConcentrationList.count() != zv_spectrumArrayRepository->zp_spectrumCount(zv_currentArrayIndex))
     {
-        emit zg_calibrationQualityData(calibrationId, qualityData);
+        emit zg_calibrationQualityData(saveToCalibration, calibrationId, qualityData);
         return;
     }
 
@@ -353,7 +354,7 @@ void ZJointSpectraDataManager::zp_calculateCalibrationQualityData(qint64 calibra
         calibrationConcentration = calibrationConcentrationList.at(s).toDouble(&ok);
         if(!ok)
         {
-            emit zg_calibrationQualityData(calibrationId, qualityData);
+            emit zg_calibrationQualityData(saveToCalibration, calibrationId, qualityData);
             return;
         }
 
@@ -362,7 +363,7 @@ void ZJointSpectraDataManager::zp_calculateCalibrationQualityData(qint64 calibra
 
     if(checkedSpectrumCount <= 1)
     {
-        emit zg_calibrationQualityData(calibrationId, qualityData);
+        emit zg_calibrationQualityData(saveToCalibration, calibrationId, qualityData);
         return;
     }
 
@@ -380,7 +381,7 @@ void ZJointSpectraDataManager::zp_calculateCalibrationQualityData(qint64 calibra
         //
         qualityData.determination = "Error";
         qualityData.adj_determination = "Error";
-        emit zg_calibrationQualityData(calibrationId, qualityData);
+        emit zg_calibrationQualityData(saveToCalibration, calibrationId, qualityData);
         return;
     }
 
@@ -392,13 +393,13 @@ void ZJointSpectraDataManager::zp_calculateCalibrationQualityData(qint64 calibra
     if(denominator == 0)
     {
         qualityData.adj_determination = "Error";
-        emit zg_calibrationQualityData(calibrationId, qualityData);
+        emit zg_calibrationQualityData(saveToCalibration, calibrationId, qualityData);
         return;
     }
 
     qreal adjDetermination = 1 - (1 - determination)*( (checkedSpectrumCount - 1)/(denominator) );
     qualityData.adj_determination = QString::number(adjDetermination);
-    emit zg_calibrationQualityData(calibrationId, qualityData);
+    emit zg_calibrationQualityData(saveToCalibration, calibrationId, qualityData);
 
 }
 //==================================================================

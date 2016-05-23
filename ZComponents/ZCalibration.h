@@ -7,7 +7,7 @@
 #include <QColor>
 #include "ZCalibrationWindow.h"
 #include "ZAbstractTerm.h"
-
+#include "ZCalibrationQualityData.h"
 //=========================================================
 class ZAbstractSpectrum;
 class ZSimpleTerm;
@@ -28,6 +28,8 @@ class ZCalibration : public QObject
 public:
 
     explicit ZCalibration(const QString& name, QObject *parent = 0);
+    explicit ZCalibration(const ZCalibration* calibration,
+                          const QString &name, QObject *parent = 0);
     virtual ~ZCalibration();
 
     // VARS
@@ -72,7 +74,9 @@ public:
     bool zp_calcConcentration(const ZAbstractSpectrum* const, qreal& concentration);
 
     // windows
-    void zp_createNewCalibrationWindow(int& ,  int firstChannel = 0, int lastChannel = 0,
+    void zp_createNewCalibrationWindow(int& windowNewIndex,
+                                       int firstChannel = 0,
+                                       int lastChannel = 0,
                                        ZCalibrationWindow::WindowType windowType = ZCalibrationWindow::WT_NOT_DEFINED);
     bool zp_isCalibrationWindowVisible(int windowIndex) const;
     bool zp_setCalibrationWindowVisible(int windowIndex, bool visibility);
@@ -95,12 +99,21 @@ public:
 
     // terms
     int zp_termCount() const;
+    QString zp_termDisplayName(int termIndex) const;
     QString zp_termName(int termIndex) const;
+
+    ZAbstractTerm::TermType zp_termType(int termIndex) const;
     qint64 zp_termId(int termIndex) const;
+    bool zp_setTermState(int termIndex, ZAbstractTerm::TermState zp_termStateForDisplay);
+    ZAbstractTerm::TermState zp_termStateForDisplay(int termIndex) const;
     ZAbstractTerm::TermState zp_termState(int termIndex) const;
+
     void zp_setNextUsersTermState(int) const;
     bool zp_termFactor(int termIndex, qreal &factor) const;
 
+    QList<int> zp_termWindowIndexList(int termIndex) const;
+
+    QString zp_termFactorString(int termIndex) const;
     bool zp_termFactorString(int termIndex, QString &factorString) const;
     bool zp_setTermFactorString(int termIndex, const QString& factorString) const;
     bool zp_termVariablePart(int termIndex, const ZAbstractSpectrum* spectrum,  qreal &value) const;
@@ -108,11 +121,16 @@ public:
     bool zp_createMixedTerms(int termIndex);
     bool zp_removeMixedTerms();
 
+    int zp_createTerm(QList<int>& windowIndexList,
+                      ZAbstractTerm::TermType termType,
+                      ZAbstractTerm::TermState termState,
+                      const QString& termFactor);
+
     // normalizer
     ZTermNormalizer::NormaType zp_normaType() const;
     bool zp_setNormaType(ZTermNormalizer::NormaType type);
     bool zp_setNormaCustomString(const QString& customString);
-    QString zp_customNormaString() const;
+    QString zp_normaCustomString() const;
 
     ZTermNormalizer::NormaType zp_baseTermNormaType() const;
     bool zp_setBaseTermNormaType(ZTermNormalizer::NormaType type);
@@ -141,6 +159,7 @@ public:
 
     void zh_notifyCalibrationRecalc();
     void zp_resetEquationTerms();
+    void zp_setCalibrationQualityData(ZCalibrationQualityData qualityData);
 
     // STATIC
     // VARS
@@ -177,10 +196,9 @@ private:
     QString zv_chemElement;
     QColor zv_color;
     qint64 zv_calibrationId;
-
+    ZCalibrationQualityData zv_calibrationQualityData;
     bool zv_visibility;
     bool zv_dirty;
-    QString zv_defaultWindowName;
 
     QList<ZCalibrationWindow*> zv_windowList;
     QList<ZAbstractTerm*> zv_termList;
@@ -193,15 +211,18 @@ private:
     ZTermNormalizer* zv_baseTermNormalizer;
     bool zv_useBaseTermInFractionalEquation;
 
+
     //qreal zv_
 
     // FUNCS
     bool zh_isWindowExist(const QString&);
     void zh_createTermsForWindow(const ZCalibrationWindow*);
-    bool zh_windowHasTerms(const ZCalibrationWindow*, ZAbstractTerm::TermType) const;
+    bool zh_windowHasTerms(const ZCalibrationWindow*,
+                           ZAbstractTerm::TermType) const;
     int zh_termIndex(const ZAbstractTerm*) const;
     void zh_chopTailZeroesFromInterceptString();
     qreal* zh_termFactorPointer(int termIndex) const;
+    int zh_findNextTermIndex(ZAbstractTerm::TermType) const;
 
     // STATIC
     // VARS
@@ -209,6 +230,7 @@ private:
     static qint64 zv_lastCalibrationId;
     static int zv_lastColorIndex;
     static int zv_precision;
+    static const QString zv_defaultWindowName;
 
     static QMap<ZCalibration::EquationType, QString> zv_eqationTypeStringMap;
     static bool zv_useBaseTermInFractionalEquationByDefault;

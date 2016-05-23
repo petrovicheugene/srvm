@@ -9,7 +9,7 @@ ZNormaSettingsData::ZNormaSettingsData()
 ZNormaSettingsData::ZNormaSettingsData(const ZCalibration *calibration)
 {
     normaType = calibration->zp_normaType();
-    customNormaString = calibration->zp_customNormaString();
+    customNormaString = calibration->zp_normaCustomString();
 
     QPair<qint64, QString> termData;
     for(int t = 0; t < calibration->zp_termCount(); t++)

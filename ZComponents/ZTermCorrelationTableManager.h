@@ -54,7 +54,8 @@ signals:
 
     void zg_message(QString);
     void zg_currentOperation(OperationType, int, int) const;
-    void zg_calculateCalibrationQualityData(qint64 calibrationId,
+    void zg_calculateCalibrationQualityData(bool saveToCalibration,
+                                            qint64 calibrationId,
                                             int factorCount,
                                             qreal sumSquareAverageConcentration) const;
 

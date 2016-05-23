@@ -22,3 +22,9 @@ bool ZCustomTerm::zp_termBelongsToWindow(const ZCalibrationWindow* window) const
     return false;
 }
 //===================================================================
+QList<qint64> ZCustomTerm::zp_termWindowIdList() const
+{
+    QList<qint64> windowIdList;
+    return windowIdList;
+}
+//===================================================================

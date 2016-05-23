@@ -422,6 +422,21 @@ void ZTermCorrelationTableManager::zh_currentSpectrumArrayChanged(qint64 current
     zv_currentArrayId = currentArrayId;
     zh_startCalculationCorrelationsAndCovariations();
     emit zg_currentOperation(TOT_DATA_CHANGED, 0, zp_rowCount() - 1);
+
+    // equation quality recalc
+    int factorCount = 0;
+    ZAbstractTerm::TermState termState;
+    for(int t = 0; t < zv_calibrationRepository->zp_termCount(zv_currentCalibrationId); t++)
+    {
+        termState = zv_calibrationRepository->zp_termState(zv_currentCalibrationId, t);
+        if(termState == ZAbstractTerm::TS_CONST_INCLUDED
+                || termState == ZAbstractTerm::TS_INCLUDED)
+        {
+            factorCount ++;
+        }
+    }
+
+    emit zg_calculateCalibrationQualityData(false, zv_currentCalibrationId, factorCount + 1, zv_sumSquareAverageConcentrationDispersion);
 }
 //==================================================================
 void ZTermCorrelationTableManager::zh_onRepositoryChemElementOperation(ZSpectrumArrayRepository::ChemElementOperationType type,
@@ -800,7 +815,7 @@ void ZTermCorrelationTableManager::zh_recalcCalibrationFactors()
         *freeTerm = averageBaseValue / averageConcentration;
         // force signal emit
         zv_calibrationRepository->zh_notifyCalibrationRecalc(zv_currentCalibrationId);
-        emit zg_calculateCalibrationQualityData(zv_currentCalibrationId, 1, zv_sumSquareAverageConcentrationDispersion);
+        emit zg_calculateCalibrationQualityData(true, zv_currentCalibrationId, 1, zv_sumSquareAverageConcentrationDispersion);
         return;
     }
 
@@ -876,7 +891,7 @@ void ZTermCorrelationTableManager::zh_recalcCalibrationFactors()
     zv_calibrationRepository->zh_notifyCalibrationRecalc(zv_currentCalibrationId);
     // factor count + 1 - free member
 
-    emit zg_calculateCalibrationQualityData(zv_currentCalibrationId, factorCount + 1, zv_sumSquareAverageConcentrationDispersion);
+    emit zg_calculateCalibrationQualityData(true, zv_currentCalibrationId, factorCount + 1, zv_sumSquareAverageConcentrationDispersion);
 }
 //=============================================================================
 bool ZTermCorrelationTableManager::zh_convertColRowForInterCorrelationMatrix(int& row, int& col) const

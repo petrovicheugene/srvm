@@ -69,6 +69,14 @@ bool ZMixedTerm::zp_termBelongsToWindow(const ZCalibrationWindow* window) const
     return window == zv_window1 || window == zv_window2;
 }
 //===================================================================
+QList<qint64> ZMixedTerm::zp_termWindowIdList() const
+{
+    QList<qint64> windowIdList;
+    windowIdList << zv_window1->zp_windowId();
+    windowIdList << zv_window2->zp_windowId();
+    return windowIdList;
+}
+//===================================================================
 void ZMixedTerm::zh_updateTermNameForWindowName()
 {
     if(!sender())

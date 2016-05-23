@@ -44,6 +44,13 @@ bool ZSimpleTerm::zp_termBelongsToWindow(const ZCalibrationWindow* window) const
     return window == zv_window;
 }
 //===================================================================
+QList<qint64> ZSimpleTerm::zp_termWindowIdList() const
+{
+    QList<qint64> windowIdList;
+    windowIdList << zv_window->zp_windowId();
+    return windowIdList;
+}
+//===================================================================
 const ZCalibrationWindow* ZSimpleTerm::zp_window() const
 {
     return zv_window;
