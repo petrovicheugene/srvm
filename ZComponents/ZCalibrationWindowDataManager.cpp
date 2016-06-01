@@ -164,7 +164,7 @@ QVariant ZCalibrationWindowDataManager::zp_data(QModelIndex index) const
     if(index.column() == 1)
     {
         ZCalibrationWindow::WindowType type = zv_calibrationRepository->zp_calibrationWindowType(zv_currentCalibrationId, index.row());
-        return QVariant(ZCalibrationWindow::zp_typeName(type));
+        return QVariant(ZCalibrationWindow::zp_displayTypeName(type));
     }
     if(index.column() == 2)
     {

@@ -95,7 +95,7 @@ bool ZTermNormalizer::zp_setCustomNormaString(const QString& customString)
     return true;
 }
 //======================================================================
-QString ZTermNormalizer::zp_customNormaString() const
+QString ZTermNormalizer::zp_normaCustomString() const
 {
     return zv_customNormaString;
 }

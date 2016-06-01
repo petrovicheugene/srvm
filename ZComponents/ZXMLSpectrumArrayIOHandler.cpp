@@ -49,6 +49,7 @@ bool ZXMLSpectrumArrayIOHandler::zp_readSpectrumArray (QFile& file, QList<ZRawSp
         }
 
         // root text data handling section
+
         if(reader.isCharacters())
         {
             if(reader.text().toString().simplified().isEmpty())
@@ -56,10 +57,13 @@ bool ZXMLSpectrumArrayIOHandler::zp_readSpectrumArray (QFile& file, QList<ZRawSp
                 continue;
             }
         }
-
-        if(reader.isStartElement())
+        else if(reader.isStartElement())
         {
             zh_parseXMLElement(rawArrayList, -1, -1, reader);
+        }
+        else if(reader.isEndElement())
+        {
+            // end of root level
         }
     }
 
@@ -79,6 +83,87 @@ bool ZXMLSpectrumArrayIOHandler::zp_readSpectrumArray (QFile& file, QList<ZRawSp
     return true;
 }
 //============================================================
+// returns true if closing tag opened in calling function is readed
+void ZXMLSpectrumArrayIOHandler::zh_parseXMLElement(QList<ZRawSpectrumArray> &array,
+                                                    int currentArrayIndex,
+                                                    int currentSpectrumIndex,
+                                                    QXmlStreamReader& reader) const
+{
+    QString currentChemElement = QString();
+    // bool insertedElementOpened = false;
+    // current start tag handling
+    // attributes handling
+    QString currentTagName = reader.name().toString();
+#ifdef DBG
+    qDebug() << "OPEN TAG" << currentTagName;
+#endif
+
+    if(currentTagName == zv_ARRAY)
+    {
+        ZRawSpectrumArray rawArray;
+        rawArray.name = reader.attributes().value(zv_NAME).toString();
+        array.append(rawArray);
+        currentArrayIndex = array.count() - 1;
+        //   array.zp_setArrayName(reader.attributes().value(zv_NAME).toString());
+    }
+    else if(currentTagName == zv_SPECTRUM)
+    {
+        if(currentArrayIndex >= 0 && currentArrayIndex < array.count())
+        {
+            ZRawSpectrum rawSpectrum;
+            rawSpectrum.path = reader.attributes().value(zv_PATH).toString();
+            array[currentArrayIndex].spectrumList.append(rawSpectrum);
+            currentSpectrumIndex = array[currentArrayIndex].spectrumList.count() - 1;
+        }
+    }
+    else if(currentTagName == zv_CONCENTRATION)
+    {
+        if(currentArrayIndex >= 0 && currentArrayIndex < array.count() &&
+                currentSpectrumIndex >= 0 && currentSpectrumIndex < array.value(currentArrayIndex).spectrumList.count())
+        {
+            currentChemElement = reader.attributes().value(zv_NAME).toString();
+            array[currentArrayIndex].spectrumList[currentSpectrumIndex].
+                    concentrationMap.insert(currentChemElement, QString());
+        }
+    }
+
+    while(!reader.atEnd())
+    {
+        reader.readNext();
+        if(reader.isStartElement())
+        {
+            // insertedElementOpened = true;
+            zh_parseXMLElement(array, currentArrayIndex, currentSpectrumIndex, reader);
+            continue;
+//            if(closingTagReadedFlag)
+//            {
+
+//                // continue;
+//                return false;
+//            }
+        }
+        else if(reader.isCharacters())
+        {
+            if(reader.text().toString().simplified().isEmpty())
+            {
+                continue;
+            }
+
+            if(currentTagName == zv_CONCENTRATION)
+            {
+                QString concentration = reader.text().toString();
+                array[currentArrayIndex].spectrumList[currentSpectrumIndex].
+                        concentrationMap[currentChemElement] = concentration;
+            }
+        }
+        else if(reader.isEndElement())
+        {
+            return;
+            // return insertedElementOpened;
+        }
+    }
+}
+//============================================================
 bool ZXMLSpectrumArrayIOHandler::zp_writeSpectrumArray(QFile& file, const QList<ZRawSpectrumArray>& rawArrayList) const
 {
     if(!(file.openMode() & QIODevice::WriteOnly))
@@ -92,6 +177,7 @@ bool ZXMLSpectrumArrayIOHandler::zp_writeSpectrumArray(QFile& file, const QList<
     writer.setAutoFormatting(true);
     // head
     writer.writeStartDocument();
+    // root
     writer.writeStartElement(zv_ROOT);
     writer.writeAttribute(zv_TYPE, zv_magicString);
     // data
@@ -154,90 +240,7 @@ bool ZXMLSpectrumArrayIOHandler::zh_detectRoot(const QXmlStreamReader& reader, b
 
     return true;
 }
-//============================================================
-// returns true if closing tag opened in calling function is readed
-bool ZXMLSpectrumArrayIOHandler::zh_parseXMLElement(QList<ZRawSpectrumArray> &array,
-                                                    int currentArrayIndex,
-                                                    int currentSpectrumIndex,
-                                                    QXmlStreamReader& reader) const
-{
-    QString currentChemElement = QString();
-    bool insertedElementOpened = false;
-    // current start tag handling
-    QString currentTagName = reader.name().toString();
-    if(currentTagName == zv_ARRAY)
-    {
-        ZRawSpectrumArray rawArray;
-        rawArray.name = reader.attributes().value(zv_NAME).toString();
-        array.append(rawArray);
-        currentArrayIndex = array.count() - 1;
-        //   array.zp_setArrayName(reader.attributes().value(zv_NAME).toString());
-    }
-    else if(currentTagName == zv_SPECTRUM)
-    {
-        if(currentArrayIndex >= 0 && currentArrayIndex < array.count())
-        {
-            ZRawSpectrum rawSpectrum;
-            rawSpectrum.path = reader.attributes().value(zv_PATH).toString();
-            array[currentArrayIndex].spectrumList.append(rawSpectrum);
-            currentSpectrumIndex = array[currentArrayIndex].spectrumList.count() - 1;
-        }
-    }
-    else if(currentTagName == zv_CONCENTRATION)
-    {
-        if(currentArrayIndex >= 0 && currentArrayIndex < array.count() &&
-                currentSpectrumIndex >= 0 && currentSpectrumIndex < array.value(currentArrayIndex).spectrumList.count())
-        {
-            currentChemElement = reader.attributes().value(zv_NAME).toString();
-            array[currentArrayIndex].spectrumList[currentSpectrumIndex].
-                    concentrationMap.insert(currentChemElement, QString());
-        }
-    }
 
-    while(!reader.atEnd())
-    {
-        reader.readNext();
-
-        if(reader.isStartElement())
-        {
-            insertedElementOpened = true;
-            bool closingTagReadedFlag = zh_parseXMLElement(array, currentArrayIndex, currentSpectrumIndex, reader);
-            continue;
-            if(closingTagReadedFlag)
-            {
-                continue;
-                // return false;
-            }
-        }
-
-        if(reader.isCharacters())
-        {
-            if(reader.text().toString().simplified().isEmpty())
-            {
-                continue;
-            }
-
-            if(currentTagName == zv_CONCENTRATION)
-            {
-                QString concentration = reader.text().toString();
-                array[currentArrayIndex].spectrumList[currentSpectrumIndex].
-                        concentrationMap[currentChemElement] = concentration;
-            }
-        }
-
-        if(reader.isEndElement())
-        {
-            return insertedElementOpened;
-        }
-    }
-
-    //    if(reader.hasError())
-    //    {
-    //        return false;
-    //    }
-
-    return false;
-}
 //============================================================
 bool ZXMLSpectrumArrayIOHandler::zh_checkfilePath(const QString& path) const
 {

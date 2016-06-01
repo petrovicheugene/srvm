@@ -303,6 +303,7 @@ void ZRulersAndGridManager::zh_recalcBottomRule()
         int scratchInEmptyMarkInterval = 0;
         RulePoint rulePoint;
         RulePoint::MarkType markType;
+
         // Marks
         for(qreal sc = newScScratchInterval; sc <= zv_sceneRectForPaint.right(); sc+= newScScratchInterval)
         {
@@ -436,7 +437,6 @@ void ZRulersAndGridManager::zh_recalcLeftRule()
             }
 
             // scratch interval calculation
-
             if(integralPart.at(0) == '1')
             {
                 QList<qreal> devisionList;

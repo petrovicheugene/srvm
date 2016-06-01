@@ -3,18 +3,30 @@
 #include "ZAbstractTerm.h"
 #include "ZAbstractSpectrum.h"
 #include <QPointer>
+
 //====================================================
 qint64 ZCalibrationWindow::zv_lastWindowId = 0;
-QMap<ZCalibrationWindow::WindowType, QString> ZCalibrationWindow::zv_typeNameMap = ZCalibrationWindow::zh_intTypeNameMap();
+QMap<ZCalibrationWindow::WindowType, QPair<QString, QString> > ZCalibrationWindow::zv_typeNameMap = ZCalibrationWindow::zh_intTypeNameMap();
 //====================================================
-QMap<ZCalibrationWindow::WindowType, QString> ZCalibrationWindow::zh_intTypeNameMap()
+QMap<ZCalibrationWindow::WindowType, QPair<QString, QString> > ZCalibrationWindow::zh_intTypeNameMap()
 {
-    QMap<ZCalibrationWindow::WindowType, QString> map;
-    map.insert(WT_NOT_DEFINED, QObject::tr("Not defined"));
-    //map.insert(WT_BASE_PEAK, QObject::tr("Base peak"));
-    map.insert(WT_PEAK, QObject::tr("Peak"));
-    map.insert(WT_COHERENT, QObject::tr("Coherent"));
-    map.insert(WT_INCOHERENT, QObject::tr("Incoherent"));
+    QMap<ZCalibrationWindow::WindowType, QPair<QString, QString> > map;
+    QPair<QString, QString> pair;
+    pair.first = "Not defined";
+    pair.second =  QObject::tr("Not defined");
+    map.insert(WT_NOT_DEFINED, pair);
+
+    pair.first = "Peak";
+    pair.second =  QObject::tr("Peak");
+    map.insert(WT_PEAK, pair);
+
+    pair.first = "Coherent";
+    pair.second =  QObject::tr("Coherent");
+    map.insert(WT_COHERENT, pair);
+
+    pair.first = "Incoherent";
+    pair.second =  QObject::tr("Incoherent");
+    map.insert(WT_INCOHERENT, pair);
 
     return map;
 }
@@ -166,23 +178,36 @@ qint64 ZCalibrationWindow::zp_windowId() const
     return zv_windowId;
 }
 //====================================================
+QString ZCalibrationWindow::zp_displayTypeName(WindowType type)
+{
+    if(!zv_typeNameMap.keys().contains(type))
+    {
+        return QString();
+    }
+    return zv_typeNameMap.value(type).second;
+}
+//====================================================
 QString ZCalibrationWindow::zp_typeName(WindowType type)
 {
     if(!zv_typeNameMap.keys().contains(type))
     {
         return QString();
     }
-    return zv_typeNameMap.value(type);
+    return zv_typeNameMap.value(type).first;
 }
 //====================================================
 ZCalibrationWindow::WindowType ZCalibrationWindow::zp_typeForName(const QString& typeName)
 {
-    if(!zv_typeNameMap.values().contains(typeName))
+    QMap<ZCalibrationWindow::WindowType, QPair<QString, QString> >::const_iterator it;
+    for(it = zv_typeNameMap.begin(); it != zv_typeNameMap.end(); it++)
     {
-        return ZCalibrationWindow::WT_NOT_DEFINED;
+        if(it.value().first == typeName || it.value().second == typeName )
+        {
+            return it.key();
+        }
     }
 
-    return zv_typeNameMap.key(typeName);
+    return ZCalibrationWindow::WT_NOT_DEFINED;
 }
 //====================================================
 void ZCalibrationWindow::zp_calcWindowIntensity(const QObject *spectrumObject, qreal& intensityValue, bool useBuffer, bool* ok)

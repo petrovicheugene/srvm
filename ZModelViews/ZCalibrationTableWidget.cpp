@@ -206,9 +206,6 @@ void ZCalibrationTableWidget::zh_onCurrentCalibrationChange(const QModelIndex & 
 //==============================================================
 void ZCalibrationTableWidget::zh_onSelectedCalibrationChange(const QItemSelection & selected, const QItemSelection & deselected)
 {
-#ifdef DBG
-    qDebug() << "SELECTIONS CHANGED";
-#endif
     QList<int> selectedList;
     zp_selectedCalibrationIndexList(selectedList);
     emit zg_selectedCalibrationChanged(selectedList);

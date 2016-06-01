@@ -148,7 +148,9 @@ SOURCES += main.cpp \
     ZComponents/ZCalibrationQualityData.cpp \
     ZComponents/ZPasteData.cpp \
     ZComponents/ZMixedTerm.cpp \
-    ZModelViews/ZActiveStyledItemDelegate.cpp
+    ZModelViews/ZActiveStyledItemDelegate.cpp \
+    ZComponents/ZRawTerm.cpp \
+    ZComponents/ZRawWindow.cpp
 
 
 HEADERS  += \
@@ -235,7 +237,9 @@ HEADERS  += \
     ZComponents/ZCalibrationQualityData.h \
     ZComponents/ZPasteData.h \
     ZComponents/ZMixedTerm.h \
-    ZModelViews/ZActiveStyledItemDelegate.h
+    ZModelViews/ZActiveStyledItemDelegate.h \
+    ZComponents/ZRawTerm.h \
+    ZComponents/ZRawWindow.h
 
 
 RESOURCES += \

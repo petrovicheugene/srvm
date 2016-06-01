@@ -551,7 +551,6 @@ void ZPlotGraphicsView::drawBackground(QPainter * painter, const QRectF & rect)
 
         int dPix = 1;
         const QRectF adjustedRect = rect.adjusted(-1*K_width*dPix, -1*K_height*dPix, K_width*dPix, K_height*dPix);
-
         // painter for MARK GRID
         painter->save();
 
@@ -573,7 +572,6 @@ void ZPlotGraphicsView::drawBackground(QPainter * painter, const QRectF & rect)
                     pen.setCosmetic(true);
                 }
                 painter->setPen(pen);
-
                 painter->drawLine(zv_XRuleList->value(i).scenePos, adjustedRect.top(),
                                   zv_XRuleList->value(i).scenePos, adjustedRect.bottom());
             }
@@ -597,7 +595,6 @@ void ZPlotGraphicsView::drawBackground(QPainter * painter, const QRectF & rect)
                     pen.setCosmetic(true);
                 }
                 painter->setPen(pen);
-
                 painter->drawLine(adjustedRect.left(), zv_YRuleList->value(i).scenePos,
                                   adjustedRect.right(), zv_YRuleList->value(i).scenePos);
             }

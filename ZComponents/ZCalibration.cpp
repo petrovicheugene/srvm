@@ -11,6 +11,7 @@
 #include "ZQrealToStringConverter.h"
 
 #include <QFileInfo>
+#include <QDir>
 #include <QPointer>
 //=========================================================
 // STATIC
@@ -133,15 +134,18 @@ ZCalibration::ZCalibration(const QString& name, QObject *parent) : QObject(paren
     zv_useBaseTermInFractionalEquation = zv_useBaseTermInFractionalEquationByDefault;
 
     QFileInfo fileInfo(name);
-    if(!fileInfo.exists())
+    if(fileInfo.exists())
     {
+
         zv_baseName = fileInfo.baseName();
+        zv_suffix = fileInfo.completeSuffix();
         zv_path = fileInfo.absolutePath();
         zv_dirty = false;
     }
     else
     {
         zv_path = QString();
+        zv_suffix = "clbx";
         zv_baseName = name;
         zv_dirty = true;
     }
@@ -160,6 +164,7 @@ ZCalibration::ZCalibration(const QString& name, QObject *parent) : QObject(paren
     zv_equationType = ET_POLYNOMIAL;
     zp_setEquationIntercept(0.0);
     zv_baseTermId = -1;
+    zv_dateTime = QDateTime::currentDateTime();
 }
 //=========================================================
 ZCalibration::ZCalibration(const ZCalibration *calibration, const QString& name, QObject *parent)  : QObject(parent)
@@ -168,6 +173,7 @@ ZCalibration::ZCalibration(const ZCalibration *calibration, const QString& name,
     zv_useBaseTermInFractionalEquation = calibration->zv_useBaseTermInFractionalEquationByDefault;
 
     zv_path = calibration->zv_path;
+    zv_suffix = calibration->zv_suffix;
     zv_baseName = name;
     zv_dirty = true;
 
@@ -187,6 +193,7 @@ ZCalibration::ZCalibration(const ZCalibration *calibration, const QString& name,
 
     zp_setEquationIntercept(0.0);
     zv_baseTermId = -1;
+    zv_dateTime = QDateTime::currentDateTime();
 }
 //=========================================================
 ZCalibration::~ZCalibration()
@@ -194,7 +201,12 @@ ZCalibration::~ZCalibration()
 
 }
 //=========================================================
-QString ZCalibration::zp_name() const
+QDateTime ZCalibration::zp_dateTime() const
+{
+    return zv_dateTime;
+}
+//=========================================================
+QString ZCalibration::zp_baseName() const
 {
     return zv_baseName;
 }
@@ -208,6 +220,27 @@ void ZCalibration::zp_setBaseName(const QString& name)
 
     zv_baseName = name;
     zv_dirty = true;
+    zv_dateTime = QDateTime::currentDateTime();
+    emit zg_dirtyChanged(zv_dirty);
+}
+//=========================================================
+QString ZCalibration::zp_fileName() const
+{
+    return zv_baseName + "." + zv_suffix;
+}
+//=========================================================
+QString ZCalibration::zp_suffix() const
+{
+    return zv_suffix;
+}
+//=========================================================
+void ZCalibration::zp_setName(const QString& name)
+{
+    QFileInfo fileInfo(QDir(zv_path), name);
+    zv_suffix = fileInfo.completeSuffix();
+    zp_setBaseName(fileInfo.baseName());
+    zv_dirty = true;
+    zv_dateTime = QDateTime::currentDateTime();
     emit zg_dirtyChanged(zv_dirty);
 }
 //=========================================================
@@ -229,8 +262,15 @@ void ZCalibration::zp_setPath(const QString& path)
     }
 
     zv_path = fileInfo.absolutePath();
-    zv_dirty = true;
 
+    if(fileInfo.isFile())
+    {
+        zv_baseName = fileInfo.baseName();
+        zv_suffix = fileInfo.completeSuffix();
+    }
+
+    zv_dirty = true;
+    zv_dateTime = QDateTime::currentDateTime();
     emit zg_dirtyChanged(zv_dirty);
 }
 //=========================================================
@@ -247,6 +287,10 @@ bool ZCalibration::zp_setChemElement(const QString& chemElement)
     }
 
     zv_chemElement = chemElement;
+    zv_dirty = true;
+    zv_dateTime = QDateTime::currentDateTime();
+    emit zg_dirtyChanged(zv_dirty);
+
     return true;
 }
 //=========================================================
@@ -267,6 +311,12 @@ void ZCalibration::zp_setVisible(bool visibility)
 bool ZCalibration::zp_isDirty() const
 {
     return zv_dirty;
+}
+//=========================================================
+void ZCalibration::zp_setDirty(bool dirty)
+{
+    zv_dirty = dirty;
+    emit zg_dirtyChanged(zv_dirty);
 }
 //=========================================================
 QColor ZCalibration::zp_color() const
@@ -341,9 +391,10 @@ bool ZCalibration::zp_calcConcentration(const ZAbstractSpectrum* const spectrum,
     return true;
 }
 //=========================================================
-void ZCalibration::zp_createNewCalibrationWindow(int& windowNewIndex,
-                                                 int firstChannel, int lastChannel, ZCalibrationWindow::WindowType windowType)
+int ZCalibration::zp_createNewCalibrationWindow(int firstChannel, int lastChannel,
+                                                ZCalibrationWindow::WindowType windowType)
 {
+    int windowNewIndex = -1;
     int maxWindowNumber = 1;
     for(int i = 0; i < zv_windowList.count(); i++)
     {
@@ -381,6 +432,11 @@ void ZCalibration::zp_createNewCalibrationWindow(int& windowNewIndex,
     {
         zh_createTermsForWindow(calibrationWindow);
     }
+    zv_dirty = true;
+    zv_dateTime = QDateTime::currentDateTime();
+    emit zg_dirtyChanged(zv_dirty);
+
+    return windowNewIndex;
     // zh_createTermsForWindow(calibrationWindow);
 }
 //=========================================================
@@ -423,7 +479,8 @@ void ZCalibration::zh_createTermsForWindow(const ZCalibrationWindow* window)
         emit zg_termOperation(TOT_BEGIN_INSERT_TERM, newTermIndex, newTermIndex);
         zv_termList.insert(newTermIndex, simpleTerm);
         emit zg_termOperation(TOT_END_INSERT_TERM, newTermIndex, newTermIndex);
-
+        zv_dirty = true;
+        emit zg_dirtyChanged(zv_dirty);
     }
 
     // quadratic
@@ -477,6 +534,9 @@ void ZCalibration::zh_createTermsForWindow(const ZCalibrationWindow* window)
         emit zg_termOperation(TOT_BEGIN_INSERT_TERM, newTermIndex, newTermIndex);
         zv_termList.insert(newTermIndex, quadraticTerm );
         emit zg_termOperation(TOT_END_INSERT_TERM, newTermIndex, newTermIndex);
+        zv_dirty = true;
+        zv_dateTime = QDateTime::currentDateTime();
+        emit zg_dirtyChanged(zv_dirty);
     }
 }
 //=========================================================
@@ -633,6 +693,23 @@ QList<int> ZCalibration::zp_termWindowIndexList(int termIndex) const
     return indexList;
 }
 //=========================================================
+QStringList ZCalibration::zp_termWindowsNameList(int termIndex) const
+{
+    QList<int> termIndexList = zp_termWindowIndexList(termIndex);
+    if(termIndexList.isEmpty())
+    {
+        return QStringList();
+    }
+
+    QStringList termWindowsNameList;
+    for(int w = 0; w < termIndexList.count(); w++)
+    {
+        termWindowsNameList.append(zv_windowList.at(termIndexList.at(w))->zp_windowName());
+    }
+
+    return termWindowsNameList;
+}
+//=========================================================
 QString ZCalibration::zp_termFactorString(int termIndex) const
 {
     if(termIndex < 0 || termIndex >= zv_termList.count() )
@@ -655,7 +732,7 @@ bool ZCalibration::zp_termFactorString(int termIndex, QString& factorString) con
     return true;
 }
 //=========================================================
-bool ZCalibration::zp_setTermFactorString(int termIndex, const QString& factorString) const
+bool ZCalibration::zp_setTermFactorString(int termIndex, const QString& factorString)
 {
     if(termIndex < 0 || termIndex >= zv_termList.count() )
     {
@@ -665,6 +742,7 @@ bool ZCalibration::zp_setTermFactorString(int termIndex, const QString& factorSt
     if(zv_termList.at(termIndex)->zh_setTermFactor(factorString))
     {
         emit zg_termOperation(TOT_TERM_FACTOR_CHANGED, termIndex, termIndex);
+        zv_dateTime = QDateTime::currentDateTime();
         return true;
     }
 
@@ -803,6 +881,9 @@ bool ZCalibration::zp_createMixedTerms(int termIndex)
         zv_termList.insert(t+i , mixedTermList.at(i));
     }
     emit zg_termOperation(TOT_END_INSERT_TERM, t, t + mixedTermList.count() - 1);
+    zv_dirty = true;
+    zv_dateTime = QDateTime::currentDateTime();
+    emit zg_dirtyChanged(zv_dirty);
 
     return true;
 }
@@ -819,6 +900,9 @@ bool ZCalibration::zp_removeMixedTerms()
         emit zg_termOperation(TOT_BEGIN_REMOVE_TERM, t, t);
         delete zv_termList.takeAt(t);
         emit zg_termOperation(TOT_END_REMOVE_TERM, t, t);
+        zv_dirty = true;
+        zv_dateTime = QDateTime::currentDateTime();
+        emit zg_dirtyChanged(zv_dirty);
     }
 
     return true;
@@ -903,8 +987,21 @@ int ZCalibration::zp_createTerm(QList<int>& windowIndexList,
     emit zg_termOperation(TOT_BEGIN_INSERT_TERM, termIndex, termIndex);
     zv_termList.insert(termIndex, term);
     emit zg_termOperation(TOT_END_INSERT_TERM, termIndex, termIndex);
+    zv_dirty = true;
+    zv_dateTime = QDateTime::currentDateTime();
+    emit zg_dirtyChanged(zv_dirty);
 
     return termIndex;
+}
+//=========================================================
+int ZCalibration::zp_createNewCalibrationWindow(const ZRawWindow& rawWindow)
+{
+
+}
+//=========================================================
+int ZCalibration::zp_createTerm(const ZRawTerm& rawTerm)
+{
+
 }
 //=========================================================
 ZTermNormalizer::NormaType ZCalibration::zp_normaType() const
@@ -914,17 +1011,31 @@ ZTermNormalizer::NormaType ZCalibration::zp_normaType() const
 //=========================================================
 bool ZCalibration::zp_setNormaType(ZTermNormalizer::NormaType type)
 {
-    return zv_termNormalizer->zp_setNormaType(type);
+    bool res = zv_termNormalizer->zp_setNormaType(type);
+    if(res)
+    {
+        zv_dirty = true;
+        zv_dateTime = QDateTime::currentDateTime();
+        emit zg_dirtyChanged(zv_dirty);
+    }
+    return res;
 }
 //=========================================================
 bool ZCalibration::zp_setNormaCustomString(const QString& customString)
 {
-    return zv_termNormalizer->zp_setCustomNormaString(customString);
+    bool res = zv_termNormalizer->zp_setCustomNormaString(customString);
+    if(res)
+    {
+        zv_dirty = true;
+        zv_dateTime = QDateTime::currentDateTime();
+        emit zg_dirtyChanged(zv_dirty);
+    }
+    return res;
 }
 //=========================================================
 QString ZCalibration::zp_normaCustomString() const
 {
-    return zv_termNormalizer->zp_customNormaString();
+    return zv_termNormalizer->zp_normaCustomString();
 }
 //=========================================================
 ZTermNormalizer::NormaType ZCalibration::zp_baseTermNormaType() const
@@ -934,23 +1045,44 @@ ZTermNormalizer::NormaType ZCalibration::zp_baseTermNormaType() const
 //=========================================================
 bool ZCalibration::zp_setBaseTermNormaType(ZTermNormalizer::NormaType type)
 {
-    return zv_baseTermNormalizer->zp_setNormaType(type);
+    bool res = zv_baseTermNormalizer->zp_setNormaType(type);
+    if(res)
+    {
+        zv_dirty = true;
+        zv_dateTime = QDateTime::currentDateTime();
+        emit zg_dirtyChanged(zv_dirty);
+    }
+    return res;
 }
 //=========================================================
 bool ZCalibration::zp_setBaseTermNormaCustomString(const QString& customString)
 {
-    return zv_baseTermNormalizer->zp_setCustomNormaString(customString);
+    bool res = zv_baseTermNormalizer->zp_setCustomNormaString(customString);
+    if(res)
+    {
+        zv_dirty = true;
+        zv_dateTime = QDateTime::currentDateTime();
+        emit zg_dirtyChanged(zv_dirty);
+    }
+    return res;
 }
 //=========================================================
 QString ZCalibration::zp_baseTermNormaCustomString() const
 {
-    return zv_baseTermNormalizer->zp_customNormaString();
+    return zv_baseTermNormalizer->zp_normaCustomString();
 }
 //=========================================================
 bool ZCalibration::zp_setBaseTermNormalizerParameters(ZTermNormalizer::NormaType type,
                                                       const QString& customString)
 {
-    return zv_baseTermNormalizer->zp_setNormalizerParameters(type, customString);
+    bool res = zv_baseTermNormalizer->zp_setNormalizerParameters(type, customString);
+    if(res)
+    {
+        zv_dirty = true;
+        zv_dateTime = QDateTime::currentDateTime();
+        emit zg_dirtyChanged(zv_dirty);
+    }
+    return res;
 }
 //=========================================================
 ZCalibration::EquationType ZCalibration::zp_equationType() const
@@ -965,6 +1097,10 @@ bool ZCalibration::zp_setEquationType(ZCalibration::EquationType type)
         return false;
     }
     zv_equationType = type;
+    zv_dateTime = QDateTime::currentDateTime();
+    zv_dirty = true;
+    emit zg_dirtyChanged(zv_dirty);
+
     return true;
 }
 //=========================================================
@@ -984,6 +1120,10 @@ bool ZCalibration::zp_setEquationIntercept(qreal value)
     zv_interceptString = QString::number(value, 'f', 15);
     zh_chopTailZeroesFromInterceptString();
     emit zg_interceptChanged();
+    zv_dateTime = QDateTime::currentDateTime();
+    zv_dirty = true;
+    emit zg_dirtyChanged(zv_dirty);
+
     return true;
 }
 //=========================================================
@@ -1001,10 +1141,19 @@ bool ZCalibration::zp_setEquationInterceptString(const QString& interceptString)
         return false;
     }
 
-    return zp_setEquationIntercept(intercept);
+    zv_dirty = true;
+    zv_dateTime = QDateTime::currentDateTime();
+    emit zg_dirtyChanged(zv_dirty);
+    bool res = zp_setEquationIntercept(intercept);
+    if(res)
+    {
+        zv_dirty = true;
+        emit zg_dirtyChanged(zv_dirty);
+    }
+    return res;
 }
 //=========================================================
-QString ZCalibration::zp_baseTermString() const
+QString ZCalibration::zp_baseTermDisplayString() const
 {
     if(zv_baseTermId < 0)
     {
@@ -1037,6 +1186,26 @@ QString ZCalibration::zp_baseTermString() const
     return baseTermString;
 }
 //=========================================================
+QString ZCalibration::zp_baseTermString() const
+{
+    if(zv_baseTermId < 0)
+    {
+        return QString();
+    }
+
+    QString baseTermString;
+    for(int t = 0; t < zv_termList.count(); t++)
+    {
+        if(zv_termList.at(t)->zp_termId() == zv_baseTermId)
+        {
+            baseTermString = zv_termList.at(t)->zp_termName();
+            break;
+        }
+    }
+
+    return baseTermString;
+}
+//=========================================================
 qint64 ZCalibration::zp_baseTermId() const
 {
     return zv_baseTermId;
@@ -1054,10 +1223,16 @@ bool ZCalibration::zp_setBaseTermId(qint64 id)
         if(zv_termList.at(i)->zp_termId() == id)
         {
             zv_baseTermId = id;
+            zv_dirty = true;
+            emit zg_dirtyChanged(zv_dirty);
             return true;
         }
     }
     zv_baseTermId = -1;
+    zv_dirty = true;
+    zv_dateTime = QDateTime::currentDateTime();
+    emit zg_dirtyChanged(zv_dirty);
+
     return true;
 }
 //=========================================================
@@ -1118,15 +1293,31 @@ void ZCalibration::zh_notifyCalibrationRecalc()
 //=========================================================
 void ZCalibration::zp_resetEquationTerms()
 {
+    bool res = false;
     for(int t = 0; t < zv_termList.count(); t++)
     {
+        if(zv_termList[t]->zv_termFactor != 0.0)
+        {
+            res = res || true;
+        }
         zv_termList[t]->zv_termFactor = 0.0;
         zv_termList[t]->zh_conformStringWithValue();
     }
 
     emit zg_termOperation(TOT_TERM_FACTOR_CHANGED, 0, zv_termList.count() - 1);
-    zp_setEquationIntercept(0.0);
+    res = res || zp_setEquationIntercept(0.0);
 
+    if(res)
+    {
+        zv_dirty = true;
+        emit zg_dirtyChanged(zv_dirty);
+        zv_dateTime = QDateTime::currentDateTime();
+    }
+}
+//=========================================================
+ZCalibrationQualityData ZCalibration::zp_calibrationQualityData() const
+{
+    return zv_calibrationQualityData;
 }
 //=========================================================
 void ZCalibration::zp_setCalibrationQualityData(ZCalibrationQualityData qualityData)
@@ -1134,7 +1325,32 @@ void ZCalibration::zp_setCalibrationQualityData(ZCalibrationQualityData qualityD
     zv_calibrationQualityData = qualityData;
 }
 //=========================================================
-void ZCalibration::zh_onTermNameChange() const
+void ZCalibration::zp_setDetermination(const QString& determination)
+{
+    zv_calibrationQualityData.determination = determination;
+}
+//=========================================================
+void ZCalibration::zp_setAdjustedDetermination(const QString& adjustedDetermination)
+{
+    zv_calibrationQualityData.adj_determination = adjustedDetermination;
+}
+//=========================================================
+void ZCalibration::zp_setStandardDeviation(const QString& standardDeviation)
+{
+    zv_calibrationQualityData.standardDeviation = standardDeviation;
+}
+//=========================================================
+void ZCalibration::zp_setCurrentDateTime()
+{
+    zv_dateTime = QDateTime::currentDateTime();
+}
+//=========================================================
+void ZCalibration::zp_setDateTime(QDateTime dateTime)
+{
+    zv_dateTime = dateTime;
+}
+//=========================================================
+void ZCalibration::zh_onTermNameChange()
 {
     ZAbstractTerm* term = qobject_cast<ZAbstractTerm*>(sender());
     if(term == 0)
@@ -1145,6 +1361,9 @@ void ZCalibration::zh_onTermNameChange() const
     int termIndex = zh_termIndex(term);
 
     emit zg_termOperation(TOT_TERM_NAME_CHANGED, termIndex, termIndex);
+    zv_dateTime = QDateTime::currentDateTime();
+    zv_dirty = true;
+    emit zg_dirtyChanged(zv_dirty);
 }
 //=========================================================
 void ZCalibration::zh_onTermWindowMarginChange()
@@ -1156,6 +1375,9 @@ void ZCalibration::zh_onTermWindowMarginChange()
     }
     int termIndex = zh_termIndex(term);
     emit zg_termOperation(TOT_TERM_WINDOW_MARGIN_CHANGED, termIndex, termIndex);
+    zv_dirty = true;
+    zv_dateTime = QDateTime::currentDateTime();
+    emit zg_dirtyChanged(zv_dirty);
 }
 //=========================================================
 void ZCalibration::zh_removeTerm(ZAbstractTerm* term)
@@ -1167,7 +1389,9 @@ void ZCalibration::zh_removeTerm(ZAbstractTerm* term)
             emit zg_termOperation(TOT_BEGIN_REMOVE_TERM, i, i);
             delete zv_termList.takeAt(i);
             emit zg_termOperation(TOT_END_REMOVE_TERM, i, i);
-
+            zv_dirty = true;
+            zv_dateTime = QDateTime::currentDateTime();
+            emit zg_dirtyChanged(zv_dirty);
             return;
         }
     }
@@ -1178,10 +1402,15 @@ void ZCalibration::zh_onNormalizerChange()
     if(sender() == zv_termNormalizer)
     {
         emit zg_normalizerChanged();
+        zv_dirty = true;
+        emit zg_dirtyChanged(zv_dirty);
     }
     else if(sender() == zv_baseTermNormalizer)
     {
         // TODO create signal base term changed and emit
+        zv_dirty = true;
+        zv_dateTime = QDateTime::currentDateTime();
+        emit zg_dirtyChanged(zv_dirty);
     }
 }
 //=========================================================
@@ -1259,6 +1488,9 @@ bool ZCalibration::zp_setCalibrationWindowName(int windowIndex, const QString& n
     if(res)
     {
         emit zg_windowOperation(WOT_WINDOW_CHANGED, windowIndex, windowIndex);
+        zv_dateTime = QDateTime::currentDateTime();
+        zv_dirty = true;
+        emit zg_dirtyChanged(zv_dirty);
     }
     return res;
 }
@@ -1288,6 +1520,9 @@ bool ZCalibration::zp_setCalibrationWindowType(int windowIndex, ZCalibrationWind
         {
             zh_createTermsForWindow(zv_windowList.at(windowIndex));
         }
+        zv_dateTime = QDateTime::currentDateTime();
+        zv_dirty = true;
+        emit zg_dirtyChanged(zv_dirty);
     }
     return res;
 }
@@ -1313,6 +1548,9 @@ bool ZCalibration::zp_setCalibrationWindowFirstChannel(int windowIndex, int chan
     if(res)
     {
         emit zg_windowOperation(WOT_WINDOW_CHANGED, windowIndex, windowIndex);
+        zv_dateTime = QDateTime::currentDateTime();
+        zv_dirty = true;
+        emit zg_dirtyChanged(zv_dirty);
     }
     return res;
 }
@@ -1338,6 +1576,9 @@ bool ZCalibration::zp_setCalibrationWindowLastChannel(int windowIndex, int chann
     if(res)
     {
         emit zg_windowOperation(WOT_WINDOW_CHANGED, windowIndex, windowIndex);
+        zv_dateTime = QDateTime::currentDateTime();
+        zv_dirty = true;
+        emit zg_dirtyChanged(zv_dirty);
     }
     return res;
 }
@@ -1362,6 +1603,9 @@ bool ZCalibration::zp_removeCalibrationWindow(int windowIndex)
     emit zg_windowOperation(WOT_BEGIN_REMOVE_WINDOWS, windowIndex, windowIndex);
     delete zv_windowList.takeAt(windowIndex);
     emit zg_windowOperation(WOT_END_REMOVE_WINDOWS, windowIndex, windowIndex);
+    zv_dateTime = QDateTime::currentDateTime();
+    zv_dirty = true;
+    emit zg_dirtyChanged(zv_dirty);
 
     return true;
 }
@@ -1433,10 +1677,16 @@ bool ZCalibration::zp_setTermState(int termIndex,
         return false;
     }
 
-    if(zv_termList.at(termIndex)->zp_setTermState(zp_termState))
+    bool res = zv_termList.at(termIndex)->zp_setTermState(zp_termState);
+    if(res)
     {
         emit zg_termOperation(TOT_TERM_STATE_CHANGED, termIndex, termIndex);
+        zv_dateTime = QDateTime::currentDateTime();
+        zv_dirty = true;
+        emit zg_dirtyChanged(zv_dirty);
     }
+
+    return res;
 }
 //=========================================================
 ZAbstractTerm::TermState ZCalibration::zp_termStateForDisplay(int termIndex) const
@@ -1464,7 +1714,7 @@ ZAbstractTerm::TermState ZCalibration::zp_termState(int termIndex) const
     return zv_termList.at(termIndex)->zp_termState();
 }
 //=========================================================
-void ZCalibration::zp_setNextUsersTermState(int termIndex) const
+void ZCalibration::zp_setNextUsersTermState(int termIndex)
 {
     if(termIndex < 0 || termIndex >= zv_termList.count() )
     {
@@ -1505,6 +1755,9 @@ void ZCalibration::zp_setNextUsersTermState(int termIndex) const
     if(res)
     {
         emit zg_termOperation(TOT_TERM_STATE_CHANGED, termIndex, termIndex);
+        zv_dateTime = QDateTime::currentDateTime();
+        zv_dirty = true;
+        emit zg_dirtyChanged(zv_dirty);
     }
 }
 //=========================================================

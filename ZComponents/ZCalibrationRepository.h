@@ -35,7 +35,8 @@ public:
                                    COT_CALIBRATION_FREE_MEMBER_CHANGED,
                                    COT_CALIBRATION_EQUATION_TYPE_CHANGED,
                                    COT_CALIBRATION_EQUATION_BASE_TERM_CHANGED,
-                                   COT_CALIBRATION_NORMA_CHANGED
+                                   COT_CALIBRATION_NORMA_CHANGED,
+                                   COT_CALIBRATION_DIRTY_CHANGED
                                   };
 
     enum WindowOperationType {WOT_WINDOW_CHANGED,
@@ -93,7 +94,7 @@ public:
 
     bool zp_isCalibrationVisible(int row);
     QColor zp_calibrationColor(int row);
-    bool zp_setVisible(int row, bool checked);
+    bool zp_setCalibrationVisible(int row, bool visibility);
 
     bool zp_isDirty(int row);
 
@@ -195,9 +196,12 @@ signals:
     void zg_normalizerChanged(qint64 calibrationId) const;
     void zg_invokeCalibrationRecalc() const;
 
+    void zg_currentCalibrationDirtyChanged(bool dirty) const;
+
+    void zg_saveCalibration(ZCalibration*calibration, QString path, QString name) const;
+
 public slots:
 
-    void zp_appendCalibrationsToArray(const QStringList&fileNameList);
     void zp_onSelectedCalibrationChange(QList<int>);
     void zp_onCurrentCalibrationChange(int current, int previous);
     void zp_onCurrentCalibrationWindowChanged(int current, int previous);
@@ -206,6 +210,7 @@ public slots:
 
 private slots:
 
+    void zh_appendCalibrationsToArray(const QStringList&fileNameList);
     void zh_onNewCalibrationAction();
     void zh_onRemoveCalibrationsAction();
     void zh_onNewWindowAction();
@@ -221,6 +226,9 @@ private slots:
     void zh_onTermOperation(ZCalibration::TremOperationType type, int first, int last);
     void zh_onNormalizerChange() const;
     void zh_onCalibrationFreeTermChange() const;
+    void zh_onCalibrationDirtyChange(bool dirty) const;
+    void zh_createCalibrationAndStartSaving(QString path, QString name) const;
+    void zh_onCalibrationSaving(const ZCalibration* calibration, QString absFilePath);
 
     void zh_onSetCalibrationVisibleAction();
     void zh_onSetCalibrationInvisibleAction();

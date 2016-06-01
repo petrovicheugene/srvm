@@ -128,16 +128,6 @@ QVariant ZTermCorrelationTableManager::zp_data(QModelIndex index) const
 
     if(index.column() == 0)
     {
-#ifdef DBG
-
-        if(index.row() == 1)
-        {
-            ZCalibration::EquationType et = zv_calibrationRepository->zp_equationType(zv_currentCalibrationIndex);
-            int bi = zv_calibrationRepository->zp_baseTermIndex(zv_currentCalibrationIndex);
-            qDebug() << "Equation Type" << et << "Base index" << bi;
-        }
-#endif
-
         QString factorString;
         if(zv_calibrationRepository->zp_equationType(zv_currentCalibrationIndex) == ZCalibration::ET_FRACTIONAL
                 && zv_calibrationRepository->zp_baseTermIndex(zv_currentCalibrationIndex) == index.row())
@@ -716,7 +706,6 @@ void ZTermCorrelationTableManager::zh_onSpectrumOperation(ZSpectrumArrayReposito
         }
 
         emit zg_calculateCalibrationQualityData(false, zv_currentCalibrationId, factorCount + 1, zv_sumSquareAverageConcentrationDispersion);
-
     }
     else if(type == ZSpectrumArrayRepository::SOT_BEGIN_REMOVE_SPECTRA)
     {
@@ -983,6 +972,7 @@ void ZTermCorrelationTableManager::zh_recalcCalibrationFactors()
     // factor count + 1 - free member
 
     emit zg_calculateCalibrationQualityData(true, zv_currentCalibrationId, factorCount + 1, zv_sumSquareAverageConcentrationDispersion);
+    calibration->zp_setCurrentDateTime();
 }
 //=============================================================================
 bool ZTermCorrelationTableManager::zh_convertColRowForInterCorrelationMatrix(int& row, int& col) const
@@ -1066,8 +1056,6 @@ void ZTermCorrelationTableManager::zh_startCalculationCorrelationsAndCovariation
         return;
     }
     zh_calcConcentrationCorrelationsAndCavariations();
-
-
 }
 //=============================================================================
 void ZTermCorrelationTableManager::zh_calcTermDispersions()

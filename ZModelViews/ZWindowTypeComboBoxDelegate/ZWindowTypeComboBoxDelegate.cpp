@@ -18,11 +18,11 @@ QWidget* ZWindowTypeComboBoxDelegate::createEditor(QWidget* parent,
     QComboBox* editor = new QComboBox(parent);
 
     QStringList typeNameList;
-    typeNameList << ZCalibrationWindow::zp_typeName(ZCalibrationWindow::WT_NOT_DEFINED);
+    typeNameList << ZCalibrationWindow::zp_displayTypeName(ZCalibrationWindow::WT_NOT_DEFINED);
     //typeNameList << ZCalibrationWindow::zp_typeName(ZCalibrationWindow::WT_BASE_PEAK);
-    typeNameList << ZCalibrationWindow::zp_typeName(ZCalibrationWindow::WT_PEAK);
-    typeNameList << ZCalibrationWindow::zp_typeName(ZCalibrationWindow::WT_COHERENT);
-    typeNameList << ZCalibrationWindow::zp_typeName(ZCalibrationWindow::WT_INCOHERENT);
+    typeNameList << ZCalibrationWindow::zp_displayTypeName(ZCalibrationWindow::WT_PEAK);
+    typeNameList << ZCalibrationWindow::zp_displayTypeName(ZCalibrationWindow::WT_COHERENT);
+    typeNameList << ZCalibrationWindow::zp_displayTypeName(ZCalibrationWindow::WT_INCOHERENT);
 
     editor->addItems(typeNameList);
     return editor;

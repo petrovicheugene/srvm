@@ -623,6 +623,11 @@ void ZPlotter::zp_fitInBoundingRect()
     {
         return;
     }
+
+    // block signals for scroll bar flicker prevention
+    zv_verticalScrollBar->blockSignals(true);
+    zv_horizontalScrollBar->blockSignals(true);
+
     QRectF itemBoundingRect = zv_plotScene->itemsBoundingRect();
     zv_plotScene->setSceneRect(itemBoundingRect);
     QRectF rectToFit;
@@ -635,6 +640,12 @@ void ZPlotter::zp_fitInBoundingRect()
         rectToFit = zv_plotScene->sceneRect();
     }
     zv_plotView->fitInView(rectToFit);
+
+    // deblock signals
+    zv_verticalScrollBar->blockSignals(false);
+    zv_horizontalScrollBar->blockSignals(false);
+
+    zh_updateScrollBarsVisible();
     //zv_plotView->ensureVisible(rectToFit);
 }
 //====================================================

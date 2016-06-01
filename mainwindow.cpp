@@ -374,6 +374,7 @@ void MainWindow::zh_createConnections()
     connect(zv_spectrumArrayRepository, &ZSpectrumArrayRepository::zg_fitPlotInBoundingRect,
             zv_plotter, &ZPlotter::zp_fitInBoundingRect);
 
+
     // spectra repository <-> joint spectrum view
     connect(zv_spectrumArrayRepository, &ZSpectrumArrayRepository::zg_requestSelectedSpectrumIndexList,
             zv_spectrumTableWidget, &ZJointSpectrumTableWidget::zp_selectedSpectrumIndexList);
