@@ -18,7 +18,7 @@ public:
         zv_id = zv_lastId++;
     }
 
-    ZChemElementItem(const QString& name)
+    explicit ZChemElementItem(const QString& name)
     {
         element = name;
         visibility = true;

@@ -9,9 +9,9 @@
 class ZAntialiasingLine : public QGraphicsLineItem
 {
 public:
-    ZAntialiasingLine(QGraphicsItem * parent = 0) : QGraphicsLineItem(parent){}
-    ZAntialiasingLine(const QLineF & line, QGraphicsItem * parent = 0) : QGraphicsLineItem(line, parent){}
-    ZAntialiasingLine(qreal x1, qreal y1, qreal x2, qreal y2, QGraphicsItem * parent = 0) : QGraphicsLineItem(x1, y1, x2, y2,parent){}
+    explicit ZAntialiasingLine(QGraphicsItem * parent = 0) : QGraphicsLineItem(parent){}
+    explicit ZAntialiasingLine(const QLineF & line, QGraphicsItem * parent = 0) : QGraphicsLineItem(line, parent){}
+    explicit ZAntialiasingLine(qreal x1, qreal y1, qreal x2, qreal y2, QGraphicsItem * parent = 0) : QGraphicsLineItem(x1, y1, x2, y2,parent){}
     virtual ~ZAntialiasingLine(){}
     void paint(QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget = 0) override
     {

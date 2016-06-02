@@ -8,7 +8,7 @@ class ZAbstractSpectrumAuxData
 {
 public:
     enum DataType {DT_SPE};
-    ZAbstractSpectrumAuxData(DataType type);
+    explicit ZAbstractSpectrumAuxData(DataType type);
 
     DataType zp_type() const;
 

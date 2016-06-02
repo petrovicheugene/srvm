@@ -452,8 +452,7 @@ int ZCalibration::zp_createNewCalibrationWindow(int firstChannel, int lastChanne
 //=========================================================
 int ZCalibration::zp_createNewCalibrationWindow(const ZRawWindow& rawWindow)
 {
-    int windowNewIndex = -1;
-    windowNewIndex = zv_windowList.count();
+    int windowNewIndex = zv_windowList.count();
     bool ok;
     int firstChannel = rawWindow.firstChannel.toInt(&ok);
     if(!ok)

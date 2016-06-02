@@ -9,7 +9,7 @@ class ZEquationSettingsData
 {
 public:
     ZEquationSettingsData();
-    ZEquationSettingsData(const ZCalibration* calibration);
+    explicit ZEquationSettingsData(const ZCalibration* calibration);
 
     // VARS
 

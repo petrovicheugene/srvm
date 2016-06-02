@@ -15,6 +15,7 @@ ZNumericDelegate::ZNumericDelegate(QWidget *parent) :
 {
     zv_editorMin = (double)std::numeric_limits<long>::min();
     zv_editorMax = (double)std::numeric_limits<long>::max();
+    zv_isEditorAlive = false;
     zv_inheritFontBoldFlag = true;
     zv_fontBoldFlag = false;
     zv_immediatellyValueChangeFlag = true;

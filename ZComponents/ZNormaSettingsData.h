@@ -8,7 +8,7 @@ class ZNormaSettingsData
 {
 public:
     ZNormaSettingsData();
-    ZNormaSettingsData(const ZCalibration* calibration);
+    explicit ZNormaSettingsData(const ZCalibration* calibration);
 
     // VARS
     ZTermNormalizer::NormaType normaType;

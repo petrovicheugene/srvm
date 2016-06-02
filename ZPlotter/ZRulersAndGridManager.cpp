@@ -12,6 +12,7 @@
 //========================================================
 ZRulersAndGridManager::ZRulersAndGridManager(ZPlotter *parent) : QObject(parent)
 {
+    zv_minVpMarkInterval = 0;
     zv_markIntervalList << 1 << 2 << 5 << 10;
     zv_plotView = 0;
     zv_rulerWidget = 0;

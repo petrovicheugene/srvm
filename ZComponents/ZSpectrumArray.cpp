@@ -13,9 +13,20 @@ qint64 ZSpectrumArray::zv_lastArrayId = 0;
 //===============================================
 ZSpectrumArray::ZSpectrumArray(QObject* parent)
 {
-    QString name;
-    ZSpectrumArray(name, parent) ;
-}
+    zv_maxArrayChannelCount = 0;
+    zv_maxArrayIntensity = 0;
+
+    zv_arrayName = QString();
+    zv_lastColorIndex = 0;
+
+    zv_energyK0 = 0;
+    zv_energyK1 = 0;
+    zv_energyK2 = 0;
+    zv_energyUnit = QString();
+
+    zv_arrayId = zv_lastArrayId++;
+    zh_createConnections();
+    zh_recalcArrayMaxParameters();}
 //===============================================
 ZSpectrumArray::ZSpectrumArray(const QString& name, QObject* parent)  : QObject(parent)
 {

@@ -32,7 +32,7 @@ public:
          K2 = 0.0;
     }
 
-    int rulerSize()
+    int rulerSize() const
     {
         if(!visibility || scratchLineSize + markLineSize < 1)
         {
