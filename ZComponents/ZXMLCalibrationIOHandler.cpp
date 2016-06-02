@@ -183,7 +183,11 @@ bool ZXMLCalibrationIOHandler::zp_writeCalibrationToFile(QFile& file, const ZCal
 bool ZXMLCalibrationIOHandler::zp_getCalibrationFromFile(QFile & file,
                                                          ZCalibration*& calibration)
 {
-    calibration = 0;
+    if(calibration == 0)
+    {
+        return false;
+    }
+
     if(!(file.openMode() & QIODevice::ReadOnly))
     {
         QString errorMsg = tr("File \"%1\" is not open in read mode!").arg(file.fileName());
@@ -217,7 +221,7 @@ bool ZXMLCalibrationIOHandler::zp_getCalibrationFromFile(QFile & file,
             }
 
             rootDetectedFlag = true;
-//            calibration = new ZCalibration(file.fileName(), zv_calibrationParent);
+            //calibration = new ZCalibration(file.fileName(), zv_calibrationParent);
         }
 
         // root text data handling section
@@ -231,6 +235,7 @@ bool ZXMLCalibrationIOHandler::zp_getCalibrationFromFile(QFile & file,
         else if(reader.isStartElement())
         {
             // handling inserted levels
+            parentTagStack.push(reader.name().toString());
             zh_parseXMLElement(calibration, reader);
         }
     }
@@ -248,7 +253,7 @@ bool ZXMLCalibrationIOHandler::zp_getCalibrationFromFile(QFile & file,
         return false;
     }
 
-    return false;
+    calibration->zp_setDirty(false);
     return true;
 }
 //============================================================
@@ -258,7 +263,7 @@ void ZXMLCalibrationIOHandler::zh_parseXMLElement(ZCalibration* calibration,
 {
     // current start tag handling
     QString currentTagName = reader.name().toString();
-    parentTagStack.push(currentTagName);
+//    parentTagStack.push(currentTagName);
 //    // attributes handling
     if(currentTagName == zv_WINDOW)
     {
@@ -270,14 +275,17 @@ void ZXMLCalibrationIOHandler::zh_parseXMLElement(ZCalibration* calibration,
     {
         // create new raw term
         zv_rawTerm = ZRawTerm();
+        zv_rawTerm.name = reader.attributes().value(zv_NAME).toString();
     }
 
+    QString readerText;
     while(!reader.atEnd())
     {
         reader.readNext();
 
         if(reader.isStartElement())
         {
+            parentTagStack.push(currentTagName);
             zh_parseXMLElement(calibration, reader);
             continue;
         }
@@ -288,78 +296,95 @@ void ZXMLCalibrationIOHandler::zh_parseXMLElement(ZCalibration* calibration,
                 continue;
             }
 
+            readerText = reader.text().toString().simplified();
             if(currentTagName == zv_DATE_TIME)
             {
-                QString dateTimeString = reader.text().toString();
+                QString dateTimeString = readerText;
                 QDateTime dateTime = QDateTime::fromString(dateTimeString, zv_dateTimeFormat);
                 calibration->zp_setDateTime(dateTime);
             }
             else if(currentTagName == zv_CHEMELEMENT)
             {
-                calibration->zp_setChemElement(reader.text().toString());
+                calibration->zp_setChemElement(readerText);
             }
             else if(currentTagName == zv_DETERMINATION_R2)
             {
-                calibration->zp_setChemElement(reader.text().toString());
+                calibration->zp_setDetermination(readerText);
             }
             else if(currentTagName == zv_ADJUSTED_DETERMINATION_R2ADJ)
             {
-                calibration->zp_setChemElement(reader.text().toString());
+                calibration->zp_setAdjustedDetermination(readerText);
             }
             else if(currentTagName == zv_STANDARD_DEVIATION)
             {
-                calibration->zp_setChemElement(reader.text().toString());
+                calibration->zp_setStandardDeviation(readerText);
             }
             else if(currentTagName == zv_TYPE)
             {
+
                 if(parentTagStack.last() == zv_WINDOW)
                 {
-                    zv_rawWindow.windowType = ZCalibrationWindow::zp_typeForName(reader.text().toString());
+                    zv_rawWindow.windowType = ZCalibrationWindow::zp_typeFromString(readerText);
                 }
                 else if(parentTagStack.last() == zv_TERM)
                 {
-
+                    zv_rawTerm.termType = ZAbstractTerm::zp_termTypeFromString(readerText);
                 }
                 else if(parentTagStack.last() == zv_NORMALIZER)
                 {
-
+                    calibration->zp_setNormaType(ZTermNormalizer::zp_normaTypeForString(readerText));
                 }
                 else if(parentTagStack.last() == zv_FRACTIONAL_BASE_NORMALIZER)
                 {
-
+                    calibration->zp_setBaseTermNormaType(ZTermNormalizer::zp_normaTypeForString(readerText));
+                }
+                else if(parentTagStack.last() == zv_EQUATION)
+                {
+                    calibration->zp_setEquationType(ZCalibration::zp_equationTypeFromString(readerText));
                 }
             }
             else if(currentTagName == zv_FIRST_CHANNEL)
             {
-                zv_rawWindow.firstChannel = reader.text().toString();
+                zv_rawWindow.firstChannel = readerText;
             }
             else if(currentTagName == zv_LAST_CHANNEL)
             {
-                zv_rawWindow.lastChannel = reader.text().toString();
+                zv_rawWindow.lastChannel = readerText;
             }
             else if(currentTagName == zv_STATE)
             {
-
+                zv_rawTerm.termState = ZAbstractTerm::zp_termStateFromString(readerText);
+            }
+            else if(currentTagName == zv_TERM_WINDOW)
+            {
+                zv_rawTerm.windowList.append(readerText);
             }
             else if(currentTagName == zv_FACTOR)
             {
+                zv_rawTerm.factor = readerText;
             }
             else if(currentTagName == zv_CUSTOM_STRING)
             {
                 if(parentTagStack.last() == zv_NORMALIZER)
                 {
-
+                    calibration->zp_setNormaCustomString(readerText);
                 }
                 else if(parentTagStack.last() == zv_FRACTIONAL_BASE_NORMALIZER)
                 {
-
+                    calibration->zp_setBaseTermNormaCustomString(readerText);
+                }
+                else if(parentTagStack.last() == zv_TERM)
+                {
+                    zv_rawTerm.customString = readerText;
                 }
             }
             else if(currentTagName == zv_BASE_TERM)
             {
+                calibration->zp_setBaseTermFromName(readerText);
             }
             else if(currentTagName == zv_INTERCEPT)
             {
+                calibration->zp_setEquationInterceptString(readerText);
             }
         }
         else  if(reader.isEndElement())

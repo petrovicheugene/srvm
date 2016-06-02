@@ -54,6 +54,9 @@ public:
     static bool zp_setPrecision(int);
     static QString zp_termTypeName(ZAbstractTerm::TermType);
     static QString zp_termStateName(ZAbstractTerm::TermState);
+    static ZAbstractTerm::TermType zp_termTypeFromString(const QString&);
+    static ZAbstractTerm::TermState zp_termStateFromString(const QString&);
+
 
 signals:
 

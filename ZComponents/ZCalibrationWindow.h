@@ -49,7 +49,7 @@ public:
     // STATIC FUNCS
     static QString zp_displayTypeName(WindowType);
     static QString zp_typeName(WindowType);
-    static WindowType zp_typeForName(const QString& );
+    static WindowType zp_typeFromString(const QString& );
 
 public slots:
 

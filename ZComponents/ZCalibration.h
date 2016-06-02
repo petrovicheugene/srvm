@@ -92,6 +92,7 @@ public:
     int zp_calibrationWindowCount() const;
     QString zp_calibrationWindowName(int windowIndex) const;
     const ZCalibrationWindow* zp_calibrationWindow(int windowIndex) const;
+    QString zp_calibrationWindowNameForId(qint64 windowId) const;
 
     bool zp_setCalibrationWindowName(int windowIndex, const QString&);
     ZCalibrationWindow::WindowType zp_calibrationWindowType(int windowIndex) const;
@@ -103,6 +104,7 @@ public:
     bool zp_setCalibrationWindowLastChannel(int windowIndex, int channel);
 
     qint64 zp_calibrationWindowId(int windowIndex) const;
+    int zp_windowIndexForName(const QString&windowName) const;
     bool zp_removeCalibrationWindow(int);
     void zp_removeCalibrationWindows();
 
@@ -167,6 +169,7 @@ public:
     qint64 zp_baseTermId() const;
     bool zp_setBaseTermId(qint64 id);
     int zp_baseTermIndex() const;
+    bool zp_setBaseTermFromName(const QString& baseTermName);
 
     void zp_createEquationDataForEquationRecalc(QMap<int, qreal *> &factorMap,
                                                 qreal *&freeTermPtr);
@@ -189,7 +192,7 @@ public:
     static const QString fractionalEquationString;
     // FUNCS
     static QString zp_equationTypeString(ZCalibration::EquationType type);
-
+    static ZCalibration::EquationType zp_equationTypeFromString(const QString&);
 signals:
 
     void zg_message(QString) const;

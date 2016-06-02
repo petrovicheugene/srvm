@@ -196,7 +196,7 @@ QString ZCalibrationWindow::zp_typeName(WindowType type)
     return zv_typeNameMap.value(type).first;
 }
 //====================================================
-ZCalibrationWindow::WindowType ZCalibrationWindow::zp_typeForName(const QString& typeName)
+ZCalibrationWindow::WindowType ZCalibrationWindow::zp_typeFromString(const QString& typeName)
 {
     QMap<ZCalibrationWindow::WindowType, QPair<QString, QString> >::const_iterator it;
     for(it = zv_typeNameMap.begin(); it != zv_typeNameMap.end(); it++)

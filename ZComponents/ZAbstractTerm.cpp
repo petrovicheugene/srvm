@@ -58,6 +58,26 @@ QString ZAbstractTerm::zp_termStateName(ZAbstractTerm::TermState termState)
     return zv_stateNameMap.value(termState);
 }
 //============================================================
+ZAbstractTerm::TermType ZAbstractTerm::zp_termTypeFromString(const QString& typeString)
+{
+    if(!zv_typeNameMap.values().contains(typeString))
+    {
+        return ZAbstractTerm::TT_NOT_DEFINED;
+    }
+
+    return zv_typeNameMap.key(typeString);
+}
+//============================================================
+ZAbstractTerm::TermState ZAbstractTerm::zp_termStateFromString(const QString& stateString)
+{
+    if(!zv_stateNameMap.values().contains(stateString))
+    {
+        return ZAbstractTerm::TS_NOT_DEFINED;
+    }
+
+    return zv_stateNameMap.key(stateString);
+}
+//============================================================
 // END STATIC
 //============================================================
 ZAbstractTerm::ZAbstractTerm(ZCalibration *parent) : QObject(parent)

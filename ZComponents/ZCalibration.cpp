@@ -125,6 +125,16 @@ QString ZCalibration::zp_equationTypeString(ZCalibration::EquationType type)
 {
     return zv_eqationTypeStringMap.value(type);
 }
+//=========================================================
+ZCalibration::EquationType ZCalibration::zp_equationTypeFromString(const QString& typestring)
+{
+    if(!zv_eqationTypeStringMap.values().contains(typestring))
+    {
+        return ZCalibration::ET_NOT_DEFINED;
+    }
+
+    return zv_eqationTypeStringMap.key(typestring);
+}
 // END STATIC
 //=========================================================
 //=========================================================
@@ -438,6 +448,45 @@ int ZCalibration::zp_createNewCalibrationWindow(int firstChannel, int lastChanne
 
     return windowNewIndex;
     // zh_createTermsForWindow(calibrationWindow);
+}
+//=========================================================
+int ZCalibration::zp_createNewCalibrationWindow(const ZRawWindow& rawWindow)
+{
+    int windowNewIndex = -1;
+    windowNewIndex = zv_windowList.count();
+    bool ok;
+    int firstChannel = rawWindow.firstChannel.toInt(&ok);
+    if(!ok)
+    {
+        firstChannel = 0;
+    }
+    int lastChannel = rawWindow.lastChannel.toInt(&ok);
+    if(!ok)
+    {
+        lastChannel = 0;
+    }
+
+
+    ZCalibrationWindow* calibrationWindow = new ZCalibrationWindow(rawWindow.name,
+                                                                   rawWindow.windowType,
+                                                                   firstChannel,
+                                                                   lastChannel,
+                                                                   this);
+
+    zv_termNormalizer->zp_connectToWindow(calibrationWindow);
+    zv_baseTermNormalizer->zp_connectToWindow(calibrationWindow);
+
+    emit zg_windowOperation(WOT_BRGIN_INSERT_WINDOWS, windowNewIndex, windowNewIndex);
+    zv_windowList.append(calibrationWindow);
+    emit zg_windowOperation(WOT_END_INSERT_WINDOWS, windowNewIndex, windowNewIndex);
+
+    if(calibrationWindow->zp_windowType() == ZCalibrationWindow::WT_PEAK)
+    {
+        zh_createTermsForWindow(calibrationWindow);
+    }
+    zv_dirty = false;
+    emit zg_dirtyChanged(zv_dirty);
+    return windowNewIndex;
 }
 //=========================================================
 void ZCalibration::zh_createTermsForWindow(const ZCalibrationWindow* window)
@@ -994,14 +1043,56 @@ int ZCalibration::zp_createTerm(QList<int>& windowIndexList,
     return termIndex;
 }
 //=========================================================
-int ZCalibration::zp_createNewCalibrationWindow(const ZRawWindow& rawWindow)
-{
-
-}
-//=========================================================
 int ZCalibration::zp_createTerm(const ZRawTerm& rawTerm)
 {
+    // check out is the term already exist
+    for(int t = 0; t < zv_termList.count(); t++)
+    {
+        if(rawTerm.name == zv_termList.at(t)->zp_termName()
+                && rawTerm.termType == zv_termList.at(t)->zp_termType())
+        {
+            QList<qint64> termWindowIdList =  zv_termList.at(t)->zp_termWindowIdList();
+            if(termWindowIdList.count() == rawTerm.windowList.count())
+            {
+                bool res = true;
+                foreach(qint64 id, termWindowIdList)
+                {
+                    if(!rawTerm.windowList.contains(zp_calibrationWindowNameForId(id)))
+                    {
+                        res = false;
+                        break;
+                    }
+                }
 
+                // term exists. set parameters to it
+                if(res)
+                {
+                    zv_termList.at(t)->zp_setTermState(rawTerm.termState);
+                    zv_termList.at(t)->zh_setTermFactor(rawTerm.factor) ;
+                    return t;
+                }
+            }
+        }
+    }
+
+    // create windowIndexList
+    QList<int> windowIndexList;
+    int index;
+    foreach(QString windowName, rawTerm.windowList)
+    {
+        index = zp_windowIndexForName(windowName);
+        if(index < 0 || index >= zv_windowList.count())
+        {
+            // TODO error msg
+            return -1;
+        }
+        windowIndexList.append(index);
+    }
+
+    return zp_createTerm(windowIndexList,
+                                    rawTerm.termType,
+                                    rawTerm.termState,
+                                    rawTerm.factor);
 }
 //=========================================================
 ZTermNormalizer::NormaType ZCalibration::zp_normaType() const
@@ -1253,6 +1344,20 @@ int ZCalibration::zp_baseTermIndex() const
     return -1;
 }
 //=========================================================
+bool ZCalibration::zp_setBaseTermFromName(const QString& baseTermName)
+{
+    for(int t = 0; t < zv_termList.count(); t++)
+    {
+        if(zv_termList.at(t)->zp_termName() == baseTermName)
+        {
+            zv_baseTermId = zv_termList.at(t)->zp_termId();
+            return true;
+        }
+    }
+
+    return false;
+}
+//=========================================================
 void ZCalibration::zp_createEquationDataForEquationRecalc(QMap<int, qreal*>& factorMap, qreal*& freeTermPtr)
 {
     ZAbstractTerm::TermState termState;
@@ -1477,6 +1582,19 @@ const ZCalibrationWindow* ZCalibration::zp_calibrationWindow(int windowIndex) co
     return zv_windowList.at(windowIndex);
 }
 //=========================================================
+QString ZCalibration::zp_calibrationWindowNameForId(qint64 windowId) const
+{
+    for(int w = 0; w < zv_windowList.count(); w++)
+    {
+        if(zv_windowList.at(w)->zp_windowId() == windowId)
+        {
+            return zv_windowList.at(w)->zp_windowName();
+        }
+    }
+
+    return QString();
+}
+//=========================================================
 bool ZCalibration::zp_setCalibrationWindowName(int windowIndex, const QString& name)
 {
     if(windowIndex < 0 || windowIndex >= zv_windowList.count())
@@ -1591,6 +1709,19 @@ qint64 ZCalibration::zp_calibrationWindowId(int windowIndex) const
     }
 
     return zv_windowList.at(windowIndex)->zp_windowId();
+}
+//=========================================================
+int ZCalibration::zp_windowIndexForName(const QString& windowName) const
+{
+    for(int w  = 0; w < zv_windowList.count(); w++)
+    {
+        if(zv_windowList.at(w)->zp_windowName() == windowName)
+        {
+            return w;
+        }
+    }
+
+    return -1;
 }
 //=========================================================
 bool ZCalibration::zp_removeCalibrationWindow(int windowIndex)

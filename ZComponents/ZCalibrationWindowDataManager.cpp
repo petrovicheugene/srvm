@@ -200,7 +200,7 @@ bool ZCalibrationWindowDataManager::zp_setData(QModelIndex index, QVariant data)
             return false;
         }
 
-        ZCalibrationWindow::WindowType type = ZCalibrationWindow::zp_typeForName(data.toString());
+        ZCalibrationWindow::WindowType type = ZCalibrationWindow::zp_typeFromString(data.toString());
         return zv_calibrationRepository->zp_setCalibrationWindowType(zv_currentCalibrationId, index.row(), type);
     }
     if(index.column() == 2)

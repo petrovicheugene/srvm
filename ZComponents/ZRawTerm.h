@@ -10,6 +10,7 @@ class ZRawTerm
 public:
     ZRawTerm();
     // VARS
+    QString name;
     ZAbstractTerm::TermType termType;
     ZAbstractTerm::TermState termState;
     QStringList windowList;

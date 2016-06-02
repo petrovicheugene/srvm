@@ -59,7 +59,6 @@ private:
     const QString zv_TERM_WINDOW = "term_window";
     const QString zv_FACTOR = "factor";
 
-
     const QString zv_EQUATION = "equation";
     const QString zv_POLYNOMIAL = "polynomial";
     const QString zv_FRACTIONAL = "fractional";

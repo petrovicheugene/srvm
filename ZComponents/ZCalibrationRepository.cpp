@@ -134,9 +134,9 @@ QList<QAction*> ZCalibrationRepository::zp_windowContextMenuActions() const
     QList<QAction*> actionList;
     actionList << zv_newWindowAction;
     actionList << zv_removeWindowAction;
-//    actionList << 0;
-//    actionList << zv_copySelectedWindowsAction;
-//    actionList << zv_pasteWindowsAction;
+    //    actionList << 0;
+    //    actionList << zv_copySelectedWindowsAction;
+    //    actionList << zv_pasteWindowsAction;
     actionList << 0;
     actionList << zv_setWindowsVisibleAction;
     actionList << zv_setWindowsInvisibleAction;
@@ -150,9 +150,9 @@ QList<QAction*> ZCalibrationRepository::zp_termActions() const
     QList<QAction*> actionList;
     actionList << zv_createMixedTermsAction;
     actionList << zv_removeMixedTermsAction;
-//    actionList << 0;
-//    actionList << zv_createCustomTermAction;
-//    actionList << zv_removeCustomTermAction;
+    //    actionList << 0;
+    //    actionList << zv_createCustomTermAction;
+    //    actionList << zv_removeCustomTermAction;
     return actionList;
 }
 //==================================================================
@@ -1070,8 +1070,8 @@ void ZCalibrationRepository::zp_onCurrentTermChange(int currentTermIndex, int pr
 }
 //======================================================
 void ZCalibrationRepository::zp_calibrationQualityDataChanged(bool saveTocalibration,
-                                                         qint64 calibrationId,
-                                                         ZCalibrationQualityData qualityData)
+                                                              qint64 calibrationId,
+                                                              ZCalibrationQualityData qualityData)
 {
     if(!saveTocalibration)
     {
@@ -1170,8 +1170,8 @@ void ZCalibrationRepository::zh_onNewWindowAction()
     }
 
     int newWindowIndex = zv_caibrationList.at(currentCalibrationIndex)->zp_createNewCalibrationWindow(firstChannel,
-                                                                                 lastChannel,
-                                                                                 zv_defaultCalibrationWindowType);
+                                                                                                      lastChannel,
+                                                                                                      zv_defaultCalibrationWindowType);
 
     emit zg_setCurrentWindowIndex(newWindowIndex);
     emit zg_startCurrentWindowEdition();
@@ -1846,15 +1846,26 @@ bool ZCalibrationRepository::zh_createCalibrationFromFile(const QString& fileNam
         return false;
     }
 
-
     ZXMLCalibrationIOHandler* ioHandler = new ZXMLCalibrationIOHandler(this, this);
-    ZCalibration* calibration;
-    bool res = ioHandler->zp_getCalibrationFromFile(file, calibration);
 
+    ZCalibration* calibration = new ZCalibration(fileName, this);
+    calibration->zp_setVisible(true);
+    bool res = zh_appendCalibrationToList(calibration);
     if(res)
     {
-        calibration->zp_setVisible(true);
-        res = zh_appendCalibrationToList(calibration);
+        res = ioHandler->zp_getCalibrationFromFile(file, calibration);
+
+    }
+
+    if(!res)
+    {
+        for(int c = 0; c < zv_caibrationList.count(); c++)
+        {
+            if(zv_caibrationList.at(c) == calibration)
+            {
+                zh_removeCalibration(c);
+            }
+        }
     }
 
     if(file.isOpen())
