@@ -130,9 +130,6 @@ bool ZVisibilityStringDelegate::editorEvent ( QEvent * event,
                                               const QStyleOptionViewItem & option,
                                               const QModelIndex & index )
 {
-#ifdef DBG
-    qDebug() << "EDITOR EVENT";
-#endif
     if(!index.isValid() || model == 0 || event->type() != QEvent::MouseButtonRelease)
     {
         return QStyledItemDelegate::editorEvent(event,

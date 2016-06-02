@@ -248,7 +248,7 @@ bool	ZCalibrationModel::setData(const QModelIndex & index, const QVariant & valu
             }
 
             bool visibility = value.toBool();
-            return zv_calibrationRepository->zp_setVisible(index.row(), visibility);
+            return zv_calibrationRepository->zp_setCalibrationVisible(index.row(), visibility);
         }
     }
 
@@ -333,7 +333,7 @@ void ZCalibrationModel::zp_connectToCalibrationRepository(ZCalibrationRepository
     endResetModel();
 }
 //==================================================================
-void ZCalibrationModel::zp_calibrationQualityDataChanged(bool saveTocalibration,
+void ZCalibrationModel::zp_calibrationQualityDataChanged(bool saveToCalibration,
                                                          qint64 calibrationId,
                                                          ZCalibrationQualityData qualityData)
 {
@@ -428,6 +428,12 @@ void ZCalibrationModel::zh_onCalibrationRepositoryOperation(ZCalibrationReposito
     {
         QModelIndex firstIndex = index(first, 3);
         QModelIndex lastIndex = index(last, 3);
+        emit dataChanged(firstIndex, lastIndex);
+    }
+    else if(type == ZCalibrationRepository::COT_CALIBRATION_DIRTY_CHANGED)
+    {
+        QModelIndex firstIndex = index(first, 0);
+        QModelIndex lastIndex = index(last, columnCount() - 1);
         emit dataChanged(firstIndex, lastIndex);
     }
 }

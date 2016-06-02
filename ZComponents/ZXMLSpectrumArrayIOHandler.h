@@ -42,7 +42,7 @@ private:
 
     // FUNCS
     bool zh_detectRoot(const QXmlStreamReader& reader, bool& magicStringDetectionFlag) const;
-    bool zh_parseXMLElement(QList<ZRawSpectrumArray>&,
+    void zh_parseXMLElement(QList<ZRawSpectrumArray>&,
                             int currentArrayIndex,
                             int currentSpectrumIndex,
                             QXmlStreamReader&) const;

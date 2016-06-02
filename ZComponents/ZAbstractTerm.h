@@ -52,6 +52,11 @@ public:
 
     // STATIC
     static bool zp_setPrecision(int);
+    static QString zp_termTypeName(ZAbstractTerm::TermType);
+    static QString zp_termStateName(ZAbstractTerm::TermState);
+    static ZAbstractTerm::TermType zp_termTypeFromString(const QString&);
+    static ZAbstractTerm::TermState zp_termStateFromString(const QString&);
+
 
 signals:
 
@@ -101,7 +106,14 @@ protected:
     // VARS
     static qint64 zv_lastTermId;
     static int zv_precision;
+
+    static QMap<ZAbstractTerm::TermType, QString> zv_typeNameMap;
+    static QMap<ZAbstractTerm::TermState, QString> zv_stateNameMap;
+
     // FUNCS
+    static QMap<ZAbstractTerm::TermType, QString> zh_intTypeNameMap();
+    static QMap<ZAbstractTerm::TermState, QString>zh_intStateNameMap();
+
 
 };
 //============================================================

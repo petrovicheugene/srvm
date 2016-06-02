@@ -4,10 +4,13 @@
 //=========================================================
 #include <QObject>
 #include <QMap>
+#include <QDateTime>
 #include <QColor>
 #include "ZCalibrationWindow.h"
 #include "ZAbstractTerm.h"
 #include "ZCalibrationQualityData.h"
+#include "ZRawTerm.h"
+#include "ZRawWindow.h"
 //=========================================================
 class ZAbstractSpectrum;
 class ZSimpleTerm;
@@ -56,8 +59,13 @@ public:
                        ET_FRACTIONAL
                       };
     // FUNCS
-    QString zp_name() const;
+    QDateTime zp_dateTime() const;
+    QString zp_baseName() const;
     void zp_setBaseName(const QString&);
+    QString zp_fileName() const;
+
+    QString zp_suffix() const;
+    void zp_setName(const QString &);
 
     QString zp_path() const;
     void zp_setPath(const QString&);
@@ -69,20 +77,22 @@ public:
     void zp_setVisible(bool);
 
     bool zp_isDirty() const;
+    void zp_setDirty(bool);
     QColor zp_color() const;
     qint64 zp_calibrationId() const;
     bool zp_calcConcentration(const ZAbstractSpectrum* const, qreal& concentration);
 
     // windows
-    void zp_createNewCalibrationWindow(int& windowNewIndex,
-                                       int firstChannel = 0,
+    int zp_createNewCalibrationWindow(int firstChannel = 0,
                                        int lastChannel = 0,
                                        ZCalibrationWindow::WindowType windowType = ZCalibrationWindow::WT_NOT_DEFINED);
+    int zp_createNewCalibrationWindow(const ZRawWindow& rawWindow);
     bool zp_isCalibrationWindowVisible(int windowIndex) const;
     bool zp_setCalibrationWindowVisible(int windowIndex, bool visibility);
     int zp_calibrationWindowCount() const;
     QString zp_calibrationWindowName(int windowIndex) const;
     const ZCalibrationWindow* zp_calibrationWindow(int windowIndex) const;
+    QString zp_calibrationWindowNameForId(qint64 windowId) const;
 
     bool zp_setCalibrationWindowName(int windowIndex, const QString&);
     ZCalibrationWindow::WindowType zp_calibrationWindowType(int windowIndex) const;
@@ -94,6 +104,7 @@ public:
     bool zp_setCalibrationWindowLastChannel(int windowIndex, int channel);
 
     qint64 zp_calibrationWindowId(int windowIndex) const;
+    int zp_windowIndexForName(const QString&windowName) const;
     bool zp_removeCalibrationWindow(int);
     void zp_removeCalibrationWindows();
 
@@ -108,14 +119,15 @@ public:
     ZAbstractTerm::TermState zp_termStateForDisplay(int termIndex) const;
     ZAbstractTerm::TermState zp_termState(int termIndex) const;
 
-    void zp_setNextUsersTermState(int) const;
+    void zp_setNextUsersTermState(int);
     bool zp_termFactor(int termIndex, qreal &factor) const;
 
     QList<int> zp_termWindowIndexList(int termIndex) const;
+    QStringList zp_termWindowsNameList(int termIndex) const;
 
     QString zp_termFactorString(int termIndex) const;
     bool zp_termFactorString(int termIndex, QString &factorString) const;
-    bool zp_setTermFactorString(int termIndex, const QString& factorString) const;
+    bool zp_setTermFactorString(int termIndex, const QString& factorString);
     bool zp_termVariablePart(int termIndex, const ZAbstractSpectrum* spectrum,  qreal &value) const;
     bool zp_calcBaseTermValue(const ZAbstractSpectrum* spectrum, qreal& value) const;
     bool zp_createMixedTerms(int termIndex);
@@ -125,6 +137,8 @@ public:
                       ZAbstractTerm::TermType termType,
                       ZAbstractTerm::TermState termState,
                       const QString& termFactor);
+
+    int zp_createTerm(const ZRawTerm& rawTerm);
 
     // normalizer
     ZTermNormalizer::NormaType zp_normaType() const;
@@ -149,17 +163,28 @@ public:
     QString zp_equationInterceptString() const;
     bool zp_setEquationInterceptString(const QString&);
 
+    QString zp_baseTermDisplayString() const;
     QString zp_baseTermString() const;
+
     qint64 zp_baseTermId() const;
     bool zp_setBaseTermId(qint64 id);
     int zp_baseTermIndex() const;
+    bool zp_setBaseTermFromName(const QString& baseTermName);
 
     void zp_createEquationDataForEquationRecalc(QMap<int, qreal *> &factorMap,
                                                 qreal *&freeTermPtr);
 
     void zh_notifyCalibrationRecalc();
     void zp_resetEquationTerms();
+    ZCalibrationQualityData zp_calibrationQualityData() const;
     void zp_setCalibrationQualityData(ZCalibrationQualityData qualityData);
+
+    void zp_setDetermination(const QString&);
+    void zp_setAdjustedDetermination(const QString&);
+    void zp_setStandardDeviation(const QString&);
+
+    void zp_setCurrentDateTime();
+    void zp_setDateTime(QDateTime);
 
     // STATIC
     // VARS
@@ -167,7 +192,7 @@ public:
     static const QString fractionalEquationString;
     // FUNCS
     static QString zp_equationTypeString(ZCalibration::EquationType type);
-
+    static ZCalibration::EquationType zp_equationTypeFromString(const QString&);
 signals:
 
     void zg_message(QString) const;
@@ -183,7 +208,7 @@ public slots:
 
 private slots:
 
-    void zh_onTermNameChange() const;
+    void zh_onTermNameChange();
     void zh_onTermWindowMarginChange();
     void zh_removeTerm(ZAbstractTerm*);
     void zh_onNormalizerChange();
@@ -192,6 +217,7 @@ private:
 
     // VARS
     QString zv_baseName;
+    QString zv_suffix;
     QString zv_path;
     QString zv_chemElement;
     QColor zv_color;
@@ -210,9 +236,7 @@ private:
     // qint64 zv_baseTermNormaId;
     ZTermNormalizer* zv_baseTermNormalizer;
     bool zv_useBaseTermInFractionalEquation;
-
-
-    //qreal zv_
+    QDateTime zv_dateTime;
 
     // FUNCS
     bool zh_isWindowExist(const QString&);

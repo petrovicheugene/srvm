@@ -10,6 +10,11 @@ ZCorrelationPlotterWidget::ZCorrelationPlotterWidget(QWidget *parent) : QWidget(
 {
    zh_createComponents();
    zh_createConnections();
+   if(zv_plotter != 0)
+   {
+       QMetaObject::invokeMethod(zv_plotter, "zp_fitInBoundingRect",
+                                 Qt::QueuedConnection);
+   }
 }
 //==============================================================
 ZPlotter* ZCorrelationPlotterWidget::zp_plotter()

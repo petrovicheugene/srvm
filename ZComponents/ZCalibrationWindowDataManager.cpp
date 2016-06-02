@@ -164,7 +164,7 @@ QVariant ZCalibrationWindowDataManager::zp_data(QModelIndex index) const
     if(index.column() == 1)
     {
         ZCalibrationWindow::WindowType type = zv_calibrationRepository->zp_calibrationWindowType(zv_currentCalibrationId, index.row());
-        return QVariant(ZCalibrationWindow::zp_typeName(type));
+        return QVariant(ZCalibrationWindow::zp_displayTypeName(type));
     }
     if(index.column() == 2)
     {
@@ -200,7 +200,7 @@ bool ZCalibrationWindowDataManager::zp_setData(QModelIndex index, QVariant data)
             return false;
         }
 
-        ZCalibrationWindow::WindowType type = ZCalibrationWindow::zp_typeForName(data.toString());
+        ZCalibrationWindow::WindowType type = ZCalibrationWindow::zp_typeFromString(data.toString());
         return zv_calibrationRepository->zp_setCalibrationWindowType(zv_currentCalibrationId, index.row(), type);
     }
     if(index.column() == 2)

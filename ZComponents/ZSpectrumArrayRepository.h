@@ -151,6 +151,8 @@ signals:
     void zg_requestClearSelected() const;
     void zg_requestSelectedString(QString&) const;
 
+    void zg_arrayListDirtyChanged(bool dirty) const;
+
 public slots:
 
     void zp_getArrayCount(int&) const;
@@ -162,7 +164,7 @@ public slots:
     void zp_chemElementListForCurrentArray(QStringList& chemElementList);
 
     void zp_onSelectionSpectraChange(bool selectionEnabled, bool concentrationSelected);
-//    void zp_onSelectionChemElementChange(bool selectionEnabled, bool concentrationSelected);
+    //    void zp_onSelectionChemElementChange(bool selectionEnabled, bool concentrationSelected);
 //    void zp_onSelectionArrayChange(bool selectionEnabled, bool concentrationSelected);
 
 private slots:
@@ -237,6 +239,8 @@ private:
     int zh_chemElementIndexForId(int arrayIndex, qint64 chemElementId);
     QList<ZRawSpectrumArray> zh_createRawArrayList() const;
     void zh_actionEnablingControl();
+
+    void zh_setDirty(bool dirty);
     //    void zh_pasteConcentrationData(int arrayIndex,
     //                                   int startSpectrumIndex,
     //                                   const QList<qint64>& chemElementIdList);

@@ -631,6 +631,7 @@ void ZRulerWidget::zh_paintLeftRule(QPainter* painter)
         ruleLabelRectForRotatedPainter.setTop(zv_leftRulerProperty.ruleLabelRect.left());
         ruleLabelRectForRotatedPainter.setRight(zv_leftRulerProperty.ruleLabelRect.top() * -1);
         ruleLabelRectForRotatedPainter.setLeft(zv_leftRulerProperty.ruleLabelRect.bottom() * -1);
+        painter->setRenderHint(QPainter::Antialiasing, true);
         painter->drawText(ruleLabelRectForRotatedPainter, Qt::AlignCenter, zv_leftRulerProperty.ruleLabel);
     }
 
@@ -701,6 +702,7 @@ void ZRulerWidget::zh_paintRightRule(QPainter* painter)
         ruleLabelRectForRotatedPainter.setTop(zv_rightRulerProperty.ruleLabelRect.left());
         ruleLabelRectForRotatedPainter.setRight(zv_rightRulerProperty.ruleLabelRect.top() * -1);
         ruleLabelRectForRotatedPainter.setLeft(zv_rightRulerProperty.ruleLabelRect.bottom() * -1);
+        painter->setRenderHint(QPainter::Antialiasing, true);
         painter->drawText(ruleLabelRectForRotatedPainter, Qt::AlignCenter, zv_rightRulerProperty.ruleLabel);
     }
     painter->restore();
@@ -762,6 +764,7 @@ void ZRulerWidget::zh_paintTopRule(QPainter* painter)
 
     if(zv_topRulerProperty.ruleLabelVisibility)
     {
+        painter->setRenderHint(QPainter::Antialiasing, true);
         painter->drawText(zv_topRulerProperty.ruleLabelRect, Qt::AlignCenter, zv_topRulerProperty.ruleLabel);
         //painter->fillRect(zv_topRulerProperty.ruleLabelRect, QBrush(QColor(Qt::blue)));
     }
@@ -825,6 +828,7 @@ void ZRulerWidget::zh_paintBottomRule(QPainter* painter)
 
     if(zv_bottomRulerProperty.ruleLabelVisibility)
     {
+        painter->setRenderHint(QPainter::Antialiasing, true);
         painter->drawText(zv_bottomRulerProperty.ruleLabelRect, Qt::AlignCenter, zv_bottomRulerProperty.ruleLabel);
         //painter->fillRect(zv_topRulerProperty.ruleLabelRect, QBrush(QColor(Qt::blue)));
     }

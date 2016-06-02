@@ -29,7 +29,7 @@ signals:
 
 public slots:
 
-    void zp_calibrationQualityDataChanged(bool saveTocalibration, qint64 calibrationId, ZCalibrationQualityData);
+    void zp_calibrationQualityDataChanged(bool saveToCalibration, qint64 calibrationId, ZCalibrationQualityData);
 
 private:
 

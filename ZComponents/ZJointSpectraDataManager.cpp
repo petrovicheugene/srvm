@@ -419,6 +419,7 @@ void ZJointSpectraDataManager::zh_onRepositoryArrayOperation(ZSpectrumArrayRepos
     else if(type == ZSpectrumArrayRepository::SOT_END_INSERT_SPECTRA)
     {
         emit zg_currentOperation(OT_END_INSERT_ROW, first, last);
+        zh_calculateCalibrationConcentrations();
     }
     else if(type == ZSpectrumArrayRepository::SOT_BEGIN_REMOVE_SPECTRA)
     {
@@ -427,6 +428,7 @@ void ZJointSpectraDataManager::zh_onRepositoryArrayOperation(ZSpectrumArrayRepos
     else if(type == ZSpectrumArrayRepository::SOT_END_REMOVE_SPECTRA)
     {
         emit zg_currentOperation(OT_END_REMOVE_ROW, first, last);
+        zh_calculateCalibrationConcentrations();
     }
     else if(type == ZSpectrumArrayRepository::SOT_VISIBLE_CHANGED)
     {

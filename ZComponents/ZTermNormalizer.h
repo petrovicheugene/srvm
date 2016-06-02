@@ -40,7 +40,7 @@ public:
     bool zp_setNormaType(NormaType);
 
     bool zp_setCustomNormaString(const QString &customString);
-    QString zp_customNormaString() const;
+    QString zp_normaCustomString() const;
     bool zp_setNormalizerParameters(ZTermNormalizer::NormaType type,
                                   const QString& customString);
 signals:

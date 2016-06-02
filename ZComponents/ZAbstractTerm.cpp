@@ -6,8 +6,79 @@
 #include "ZSpectrumArray.h"
 #include <QPointer>
 //============================================================
+// STATIC
 qint64 ZAbstractTerm::zv_lastTermId = 0;
 int ZAbstractTerm::zv_precision = 15;
+QMap<ZAbstractTerm::TermType, QString> ZAbstractTerm::zv_typeNameMap = ZAbstractTerm::zh_intTypeNameMap();
+QMap<ZAbstractTerm::TermState, QString> ZAbstractTerm::zv_stateNameMap = ZAbstractTerm::zh_intStateNameMap();
+//============================================================
+QMap<ZAbstractTerm::TermType, QString> ZAbstractTerm::zh_intTypeNameMap()
+{
+    QMap<ZAbstractTerm::TermType, QString> map;
+    map.insert(TT_NOT_DEFINED, "Not defined");
+    map.insert(TT_SIMPLE, "Simple");
+    map.insert(TT_QUADRATIC, "Quadratic");
+    map.insert(TT_MIXED, "Mixed");
+    map.insert(TT_CUSTOM, "Custom");
+
+    return map;
+}
+//============================================================
+QMap<ZAbstractTerm::TermState, QString> ZAbstractTerm::zh_intStateNameMap()
+{
+    QMap<ZAbstractTerm::TermState, QString> map;
+    map.insert(TS_NOT_DEFINED, "Not defined");
+    map.insert(TS_CONST_INCLUDED, "Constantly Included");
+    map.insert(TS_CONST_EXCLUDED, "Constantly Excluded");
+    map.insert(TS_EXAM_WAITING, "Exam Waiting");
+    map.insert(TS_EXCEPTED, "Excepted");
+    map.insert(TS_INCLUDED, "Included");
+    map.insert(TS_BASE, "Base");
+
+    return map;
+}
+//============================================================
+QString ZAbstractTerm::zp_termTypeName(ZAbstractTerm::TermType termType)
+{
+    if(!zv_typeNameMap.keys().contains(termType))
+    {
+        return QString();
+    }
+
+    return zv_typeNameMap.value(termType);
+}
+//============================================================
+QString ZAbstractTerm::zp_termStateName(ZAbstractTerm::TermState termState)
+{
+    if(!zv_stateNameMap.keys().contains(termState))
+    {
+        return QString();
+    }
+
+    return zv_stateNameMap.value(termState);
+}
+//============================================================
+ZAbstractTerm::TermType ZAbstractTerm::zp_termTypeFromString(const QString& typeString)
+{
+    if(!zv_typeNameMap.values().contains(typeString))
+    {
+        return ZAbstractTerm::TT_NOT_DEFINED;
+    }
+
+    return zv_typeNameMap.key(typeString);
+}
+//============================================================
+ZAbstractTerm::TermState ZAbstractTerm::zp_termStateFromString(const QString& stateString)
+{
+    if(!zv_stateNameMap.values().contains(stateString))
+    {
+        return ZAbstractTerm::TS_NOT_DEFINED;
+    }
+
+    return zv_stateNameMap.key(stateString);
+}
+//============================================================
+// END STATIC
 //============================================================
 ZAbstractTerm::ZAbstractTerm(ZCalibration *parent) : QObject(parent)
 {

@@ -176,6 +176,9 @@ void ZPlotterDataManager::zp_currentArrayChanged(qint64 currentArrayId,
     if(!isPlotScaled)
     {
         zv_plotter->zp_fitInBoundingRect();
+//        QMetaObject::invokeMethod(zv_plotter, "zp_fitInBoundingRect",
+//                                  Qt::QueuedConnection);
+
     }
 }
 //===========================================================
@@ -249,6 +252,8 @@ void ZPlotterDataManager::zh_onRepositoryArrayOperation(ZSpectrumArrayRepository
         if(!isPlotScaled)
         {
             zv_plotter->zp_fitInBoundingRect();
+//            QMetaObject::invokeMethod(zv_plotter, "zp_fitInBoundingRect",
+//                                      Qt::QueuedConnection);
         }
     }
     else if(type == ZSpectrumArrayRepository::SOT_BEGIN_REMOVE_SPECTRA)

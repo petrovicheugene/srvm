@@ -23,7 +23,8 @@ public:
     explicit ZCorrelationPlotterDataManager(QObject *parent = 0);
 
     enum ChartDataKind {CDK_TERM,
-                        CDK_CALIBRATION};
+                        CDK_CALIBRATION,
+                        CDK_DEVIATION};
 
     // FUNCS
     void zp_connectToPlotter(ZPlotter* plotter);
@@ -68,6 +69,7 @@ private:
     QComboBox* zv_chartDataKindComboBox;
     ZChartPointOptions zv_calibrationChartPointOptions;
     ZChartPointOptions zv_termChartPointOptions;
+    ZChartPointOptions zv_deviationChartPointOptions;
 
     QRectF zv_defaultSceneRect = QRectF(QPointF(0.0,-100.0), QSizeF(100.0, 100.0));
     ZDefaultRectGraphicsItem* zv_defaultItem;
@@ -83,18 +85,25 @@ private:
     QString zv_concentrationRulerLabelBaseString;
     QString zv_termRulerLabelBaseString;
     QString zv_calibrationRulerLabelBaseString;
+    QString zv_deviationRulerLabelBaseString;
 
     // FUNCS
     QWidget* zh_createChartDataKindComboBoxWidget();
     void zh_setUpChartPointOptions();
 
     void zh_rebuildChart();
-    bool zh_getTermToConcentrationData(QMap<qint64, ZVisibilityPointF> &chartPointMap, qreal& maxX, qreal& maxY);
-    bool zh_getCalibrationToConcentrationData(QMap<qint64, ZVisibilityPointF> &chartPointMap, qreal &maxX, qreal& maxY);
+    bool zh_getTermToConcentrationData(QMap<qint64, ZVisibilityPointF> &chartPointMap,
+                                       qreal& maxX, qreal &minX, qreal& maxY, qreal &minY);
+    bool zh_getCalibrationToConcentrationData(QMap<qint64, ZVisibilityPointF> &chartPointMap,
+                                              qreal &maxX, qreal &minX, qreal& maxY, qreal &minY);
+    bool zh_getDeviationToConcentrationData(QMap<qint64, ZVisibilityPointF> &chartPointMap,
+                                            qreal &maxX, qreal &minX, qreal& maxY, qreal &minY);
+
     void zh_recalcAndSetSceneRect(const QMap<qint64, ZVisibilityPointF>& chartPointMap,
                                   const ZChartPointOptions* chartPointOptions);
 
-    void zh_recalcAndSetSceneRect(qreal maxX, qreal maxY, const ZChartPointOptions* chartPointOptions);
+    void zh_recalcAndSetSceneRect(qreal maxX, qreal minX, qreal maxY, qreal minY, ChartDataKind chartDataKind,
+                                  const ZChartPointOptions* chartPointOptions);
     void zh_createAndPlaceChartPointItems(const QMap<qint64, ZVisibilityPointF> &chartPointMap,
                                           ZChartPointOptions* chartPointOptions);
     bool zh_setRulerMetrixAndPrecisionToPlot(const ZChartPointOptions &) const;

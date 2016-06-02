@@ -28,6 +28,7 @@ ZCorrelationPlotterDataManager::ZCorrelationPlotterDataManager(QObject *parent) 
     zv_concentrationRulerLabelBaseString = tr("Concentration");
     zv_termRulerLabelBaseString = tr("Term");
     zv_calibrationRulerLabelBaseString = tr("Calibration");
+    zv_deviationRulerLabelBaseString = tr("Deviation %");
 
     zh_setUpChartPointOptions();
 }
@@ -162,6 +163,7 @@ QWidget* ZCorrelationPlotterDataManager::zh_createChartDataKindComboBoxWidget()
 
     zv_chartDataKindComboBox->addItem(tr("Equation term"), CDK_TERM);
     zv_chartDataKindComboBox->addItem(tr("Calibration"), CDK_CALIBRATION);
+    zv_chartDataKindComboBox->addItem(tr("Deviation"), CDK_DEVIATION);
 
     zv_chartDataKindComboBox->setCurrentIndex(0);
     layout->addWidget(zv_chartDataKindComboBox);
@@ -180,8 +182,8 @@ void ZCorrelationPlotterDataManager::zh_setUpChartPointOptions()
     zv_calibrationChartPointOptions.zp_setRulerLabelString(Qt::Horizontal, zv_concentrationRulerLabelBaseString);
     zv_calibrationChartPointOptions.zp_setRulerLabelString(Qt::Vertical, zv_calibrationRulerLabelBaseString);
 
-    zv_calibrationChartPointOptions.zp_setRulerScaleValue(Qt::Vertical, 0.001);
-    zv_calibrationChartPointOptions.zp_setRulerScaleValue(Qt::Horizontal, 0.001);
+    zv_calibrationChartPointOptions.zp_setRulerScaleValue(Qt::Vertical, 0.01);
+    zv_calibrationChartPointOptions.zp_setRulerScaleValue(Qt::Horizontal, 0.01);
 
     zv_calibrationChartPointOptions.zp_setRulerMarkPrecision(Qt::Vertical, 4);
     zv_calibrationChartPointOptions.zp_setRulerMarkPrecision(Qt::Horizontal, 4);
@@ -194,11 +196,26 @@ void ZCorrelationPlotterDataManager::zh_setUpChartPointOptions()
     zv_termChartPointOptions.zp_setRulerLabelString(Qt::Horizontal, zv_concentrationRulerLabelBaseString);
     zv_termChartPointOptions.zp_setRulerLabelString(Qt::Vertical, zv_termRulerLabelBaseString);
 
-    zv_termChartPointOptions.zp_setRulerScaleValue(Qt::Vertical, 0.001);
-    zv_termChartPointOptions.zp_setRulerScaleValue(Qt::Horizontal, 0.001);
+    zv_termChartPointOptions.zp_setRulerScaleValue(Qt::Vertical, 0.1);
+    zv_termChartPointOptions.zp_setRulerScaleValue(Qt::Horizontal, 0.1);
 
     zv_termChartPointOptions.zp_setRulerMarkPrecision(Qt::Vertical, 4);
     zv_termChartPointOptions.zp_setRulerMarkPrecision(Qt::Horizontal, 4);
+
+    // deviation
+
+    zv_deviationChartPointOptions.zp_setPointType(ZChartPointOptions::PT_ROUND);
+    zv_deviationChartPointOptions.zp_setPointColor(QColor(Qt::yellow));
+    zv_deviationChartPointOptions.zp_setPointPixelSize(5);
+
+    zv_deviationChartPointOptions.zp_setRulerLabelString(Qt::Horizontal, zv_concentrationRulerLabelBaseString);
+    zv_deviationChartPointOptions.zp_setRulerLabelString(Qt::Vertical, zv_deviationRulerLabelBaseString);
+
+    zv_deviationChartPointOptions.zp_setRulerScaleValue(Qt::Vertical, 0.001);
+    zv_deviationChartPointOptions.zp_setRulerScaleValue(Qt::Horizontal, 0.001);
+
+    zv_deviationChartPointOptions.zp_setRulerMarkPrecision(Qt::Vertical, 4);
+    zv_deviationChartPointOptions.zp_setRulerMarkPrecision(Qt::Horizontal, 4);
 
 }
 //=====================================================================
@@ -228,19 +245,22 @@ void ZCorrelationPlotterDataManager::zh_rebuildChart()
     // getting chart data
     ZChartPointOptions* chartPointOptions = 0;
     QMap<qint64, ZVisibilityPointF> chartPointMap;
-    qreal maxX = 0;
-    qreal maxY = 0;
+    qreal maxX = 0.0;
+    qreal minX = 0.0;
+    qreal maxY = 0.0;
+    qreal minY = 0.0;
 
     if(chartDataKind == CDK_TERM)
     {
         zv_defaultItem->zp_setMedianaLineVisible(false);
-        if(!zh_getTermToConcentrationData(chartPointMap, maxX, maxY))
+        if(!zh_getTermToConcentrationData(chartPointMap, maxX, minX, maxY, minY))
         {
             // TODO ERROR msg
-            return;
+            // return;
         }
         zh_setRulerMetrixAndPrecisionToPlot(zv_termChartPointOptions);
-        zh_recalcAndSetSceneRect(maxX, maxY, &zv_termChartPointOptions);
+        zh_recalcAndSetSceneRect(maxX, minX, maxY, minY, chartDataKind,
+                                 &zv_termChartPointOptions);
 
         // assign chartPoinOptions
         chartPointOptions = &zv_termChartPointOptions;
@@ -248,16 +268,32 @@ void ZCorrelationPlotterDataManager::zh_rebuildChart()
     else if(chartDataKind == CDK_CALIBRATION)
     {
         zv_defaultItem->zp_setMedianaLineVisible(true);
-        if(!zh_getCalibrationToConcentrationData(chartPointMap, maxX, maxY))
+        if(!zh_getCalibrationToConcentrationData(chartPointMap, maxX, minX, maxY, minY))
         {
             // TODO ERROR msg
-            return;
+            // return;
         }
         zh_setRulerMetrixAndPrecisionToPlot(zv_calibrationChartPointOptions);
-        zh_recalcAndSetSceneRect(maxX, maxY, &zv_termChartPointOptions);
+        zh_recalcAndSetSceneRect(maxX, minX, maxY, minY, chartDataKind,
+                                 &zv_calibrationChartPointOptions);
 
         // assign chartPoinOptions
         chartPointOptions = &zv_calibrationChartPointOptions;
+    }
+    else if(chartDataKind == CDK_DEVIATION)
+    {
+        zv_defaultItem->zp_setMedianaLineVisible(false);
+        if(!zh_getDeviationToConcentrationData(chartPointMap, maxX, minX, maxY, minY))
+        {
+            // TODO ERROR msg
+            // return;
+        }
+        zh_setRulerMetrixAndPrecisionToPlot(zv_deviationChartPointOptions);
+        zh_recalcAndSetSceneRect(maxX, minX, maxY, minY, chartDataKind,
+                                 &zv_deviationChartPointOptions);
+
+        // assign chartPoinOptions
+        chartPointOptions = &zv_deviationChartPointOptions;
     }
     else
     {
@@ -308,10 +344,14 @@ void ZCorrelationPlotterDataManager::zh_rebuildChart()
     if(!plotScaled)
     {
         zv_plotter->zp_fitInBoundingRect();
+//        QMetaObject::invokeMethod(zv_plotter, "zp_fitInBoundingRect",
+//                                  Qt::QueuedConnection);
+
     }
 }
 //=====================================================================
-bool ZCorrelationPlotterDataManager::zh_getTermToConcentrationData(QMap<qint64, ZVisibilityPointF>& chartPointMap, qreal &maxX, qreal &maxY)
+bool ZCorrelationPlotterDataManager::zh_getTermToConcentrationData(QMap<qint64, ZVisibilityPointF>& chartPointMap,
+                                                                   qreal &maxX, qreal &minX, qreal &maxY, qreal& minY )
 {
     if(!zv_calibrationRepository || !zv_spectrumArrayRepository || zv_currentArrayId < 0)
     {
@@ -339,6 +379,11 @@ bool ZCorrelationPlotterDataManager::zh_getTermToConcentrationData(QMap<qint64, 
     ZVisibilityPointF point;
     bool isDataOk;
 
+    maxX = 0.0;
+    minX = 0.0;
+    maxY = 0.0;
+    minY = 0.0;
+
     for(int s = 0; s < zv_spectrumArrayRepository->zp_spectrumCount(zv_currentArrayIndex); s++)
     {
         isDataOk = true;
@@ -362,9 +407,19 @@ bool ZCorrelationPlotterDataManager::zh_getTermToConcentrationData(QMap<qint64, 
             maxX = concentration;
         }
 
+        if(minX > concentration)
+        {
+            minX = concentration;
+        }
+
         if(maxY < termValue)
         {
             maxY = termValue;
+        }
+
+        if(minY > termValue)
+        {
+            minY = termValue;
         }
 
         point = ZVisibilityPointF(concentration, termValue, spectrum->zp_isSpectrumChecked() && isDataOk);
@@ -373,14 +428,15 @@ bool ZCorrelationPlotterDataManager::zh_getTermToConcentrationData(QMap<qint64, 
     return true;
 }
 //=====================================================================
-bool ZCorrelationPlotterDataManager::zh_getCalibrationToConcentrationData(QMap<qint64, ZVisibilityPointF>& chartPointMap, qreal& maxX, qreal& maxY)
+bool ZCorrelationPlotterDataManager::zh_getCalibrationToConcentrationData(QMap<qint64, ZVisibilityPointF>& chartPointMap,
+                                                                          qreal& maxX, qreal &minX, qreal& maxY, qreal& minY)
 {
     if(!zv_calibrationRepository || !zv_spectrumArrayRepository || zv_currentArrayId < 0)
     {
         return false;
     }
 
-    // check out hast current spectra array appropriate chem element
+    // check out has current spectra array appropriate chem element
     QString calibrationChemElement = zv_calibrationRepository->zp_chemElementForCalibrationId(zv_currentCalibrationId);
     zv_calibrationChartPointOptions.zp_setRulerLabelString(Qt::Horizontal, zv_concentrationRulerLabelBaseString + " " +calibrationChemElement);
 
@@ -397,7 +453,9 @@ bool ZCorrelationPlotterDataManager::zh_getCalibrationToConcentrationData(QMap<q
     bool isDataOk;
 
     maxX = 0.0;
+    minX = 0.0;
     maxY = 0.0;
+    minY = 0.0;
     for(int s = 0; s < zv_spectrumArrayRepository->zp_spectrumCount(zv_currentArrayIndex); s++)
     {
         isDataOk = true;
@@ -421,19 +479,112 @@ bool ZCorrelationPlotterDataManager::zh_getCalibrationToConcentrationData(QMap<q
             maxX = concentration;
         }
 
+        if(minX > concentration)
+        {
+            minX = concentration;
+        }
+
         if(maxY < calibrationValue)
         {
             maxY = calibrationValue;
+        }
+
+        if(minY > calibrationValue)
+        {
+            minY = calibrationValue;
         }
 
         point = ZVisibilityPointF(concentration, calibrationValue, spectrum->zp_isSpectrumChecked() && isDataOk);
         chartPointMap.insert(spectrum->zp_spectrumId(), point);
     }
 
-    if(maxY < maxX)
+    //    if(maxY < maxX)
+    //    {
+    //        maxY = maxX;
+    //    }
+
+    return true;
+}
+//=====================================================================
+bool ZCorrelationPlotterDataManager::zh_getDeviationToConcentrationData(QMap<qint64, ZVisibilityPointF> &chartPointMap,
+                                                                        qreal &maxX, qreal &minX, qreal& maxY, qreal& minY )
+{
+    if(!zv_calibrationRepository || !zv_spectrumArrayRepository || zv_currentArrayId < 0)
     {
-        maxY = maxX;
+        return false;
     }
+
+    // check out has current spectra array appropriate chem element
+    QString calibrationChemElement = zv_calibrationRepository->zp_chemElementForCalibrationId(zv_currentCalibrationId);
+    zv_calibrationChartPointOptions.zp_setRulerLabelString(Qt::Horizontal, zv_concentrationRulerLabelBaseString + " " +calibrationChemElement);
+
+    QString calibrationName = zv_calibrationRepository->zp_calibrationName(zv_currentCalibrationIndex);
+    zv_calibrationChartPointOptions.zp_setRulerLabelString(Qt::Vertical, zv_calibrationRulerLabelBaseString + " " +calibrationName);
+
+    qint64 chemElementId = zv_spectrumArrayRepository->zp_chemElementIdForName(zv_currentArrayIndex, calibrationChemElement);
+
+    const ZAbstractSpectrum* spectrum;
+    qreal calibrationValue;
+    qreal concentration;
+    qreal deviationValue;
+    bool ok;
+    ZVisibilityPointF point;
+    bool isDataOk;
+
+    maxX = 0.0;
+    minX = 0.0;
+    maxY = 0.0;
+    minY = 0.0;
+    for(int s = 0; s < zv_spectrumArrayRepository->zp_spectrumCount(zv_currentArrayIndex); s++)
+    {
+        isDataOk = true;
+        spectrum = zv_spectrumArrayRepository->zp_spectrum(zv_currentArrayIndex, s);
+        // get term value for the spectrum
+        if(!zv_calibrationRepository->zp_calculateConcentrationForId(zv_currentCalibrationId, spectrum, calibrationValue))
+        {
+            isDataOk = false;
+            calibrationValue = 0.0;
+            deviationValue = 0.0;
+        }
+
+        concentration = spectrum->zp_concentrationString(chemElementId).toDouble(&ok);
+        if(!ok)
+        {
+            isDataOk = false;
+            concentration = 0.0;
+            deviationValue = 0.0;
+        }
+
+        deviationValue = ((calibrationValue - concentration) / concentration) * 100;
+
+        if(maxX < concentration)
+        {
+            maxX = concentration;
+        }
+
+        if(minX > concentration)
+        {
+            minX = concentration;
+        }
+
+        if(maxY < deviationValue)
+        {
+            maxY = deviationValue;
+        }
+
+        if(minY > deviationValue)
+        {
+            minY = deviationValue;
+        }
+
+        point = ZVisibilityPointF(concentration, deviationValue, spectrum->zp_isSpectrumChecked() && isDataOk);
+        chartPointMap.insert(spectrum->zp_spectrumId(), point);
+    }
+
+    //    if(maxY < maxX)
+    //    {
+    //        maxY = maxX;
+    //    }
 
     return true;
 }
@@ -495,22 +646,62 @@ void ZCorrelationPlotterDataManager::zh_recalcAndSetSceneRect(const QMap<qint64,
     zv_defaultItem->zp_fitItemInRect(sceneRect);
 }
 //=====================================================================
-void ZCorrelationPlotterDataManager::zh_recalcAndSetSceneRect(qreal maxX, qreal maxY, const ZChartPointOptions* chartPointOptions)
+void ZCorrelationPlotterDataManager::zh_recalcAndSetSceneRect(qreal maxX, qreal minX,
+                                                              qreal maxY, qreal minY, ChartDataKind chartDataKind,
+                                                              const ZChartPointOptions* chartPointOptions)
 {
-    if(maxX == 0)
+    // increase rect if necessary
+    if(maxX == minX && maxX == 0)
     {
         maxX = zv_defaultSceneRect.width();
+        minX = 0.0;
     }
-    if(maxY == 0)
+
+    if(maxY == minY && maxY == 0)
     {
-        maxY = zv_defaultSceneRect.height();
+        if(chartDataKind == CDK_DEVIATION)
+        {
+            qreal halfHeight = zv_defaultSceneRect.height() / 2;
+            maxY = maxY + halfHeight;
+            minY = minY - halfHeight;
+        }
+        else
+        {
+            maxY = zv_defaultSceneRect.height();
+            minY = 0.0;
+        }
+    }
+
+    // make one of rect corner as coordinate origin
+    // x - axis
+    if(maxX > 0.0 && minX > 0.0)
+    {
+        minX = 0.0;
+    }
+    else if(maxX < 0.0 && minX < 0.0)
+    {
+        maxX = 0.0;
+    }
+
+    // y - axis
+    if(maxY > 0.0 && minY > 0.0)
+    {
+        minY = 0.0;
+    }
+    else if(maxY < 0.0 && minY < 0.0)
+    {
+        maxY = 0.0;
     }
 
     maxY /= chartPointOptions->zp_rulerScaleValue(Qt::Vertical);
+    minY /= chartPointOptions->zp_rulerScaleValue(Qt::Vertical);
     maxX /= chartPointOptions->zp_rulerScaleValue(Qt::Horizontal);
+    minX /= chartPointOptions->zp_rulerScaleValue(Qt::Horizontal);
 
     QRectF sceneRect;
-    sceneRect = QRectF(0.0, maxY * -1, maxX, maxY);
+    // sceneRect = QRectF(0.0, maxY * -1, maxX, maxY);
+    // sceneRect = QRectF(0.0, maxY * -1, maxX, minY * -1);
+    sceneRect = QRectF(QPointF(minX, maxY * -1), QPointF(maxX, minY * -1));
     qreal borderYWidth = maxY * 0.03;
     qreal borderXWidth = maxX * 0.03;
     sceneRect.adjust(-1 * borderXWidth, -1 * borderYWidth, borderXWidth, borderYWidth);
@@ -518,7 +709,8 @@ void ZCorrelationPlotterDataManager::zh_recalcAndSetSceneRect(qreal maxX, qreal 
     zv_defaultItem->zp_fitItemInRect(sceneRect);
 }
 //=====================================================================
-void ZCorrelationPlotterDataManager::zh_createAndPlaceChartPointItems(const QMap<qint64, ZVisibilityPointF>& chartPointMap,
+void ZCorrelationPlotterDataManager::zh_createAndPlaceChartPointItems(const QMap<qint64,
+                                                                      ZVisibilityPointF>& chartPointMap,
                                                                       ZChartPointOptions* chartPointOptions)
 {
     ZChartPointGraphicsItem* pointItem;
@@ -536,9 +728,9 @@ void ZCorrelationPlotterDataManager::zp_currentTermChanged(int , int)
 }
 //=====================================================================
 void ZCorrelationPlotterDataManager::zh_currentSpectrumChanged(qint64 currentSpectrumId,
-                                                    int currentSpectrumIndex,
-                                                    qint64 previousSpectrumId,
-                                                    int previousSpectrumIndex)
+                                                               int currentSpectrumIndex,
+                                                               qint64 previousSpectrumId,
+                                                               int previousSpectrumIndex)
 {
     ZChartPointGraphicsItem::zp_setCurrentSpectrumId(currentSpectrumId);
 
@@ -611,7 +803,7 @@ void ZCorrelationPlotterDataManager::zh_onRepositoryCalibrationOperation(ZCalibr
         }
 
         ChartDataKind chartDataKind = static_cast<ChartDataKind>(vData.toInt());
-        if(chartDataKind == CDK_CALIBRATION)
+        if(chartDataKind == CDK_CALIBRATION || chartDataKind == CDK_DEVIATION)
         {
             if(type == ZCalibrationRepository::COT_CALIBRATION_NAME_CHANGED ||
                     type == ZCalibrationRepository::COT_CALIBRATION_CHEM_ELEMENT_CHANGED ||
@@ -638,7 +830,7 @@ void ZCorrelationPlotterDataManager::zh_onRepositoryTermOperation(ZCalibrationRe
         }
 
         ChartDataKind chartDataKind = static_cast<ChartDataKind>(vData.toInt());
-        if(chartDataKind == CDK_CALIBRATION)
+        if(chartDataKind == CDK_CALIBRATION || chartDataKind == CDK_DEVIATION)
         {
             if(type == ZCalibrationRepository::TOT_TERM_STATE_CHANGED ||
                     type == ZCalibrationRepository::TOT_TERM_WINDOW_MARGIN_CHANGED ||

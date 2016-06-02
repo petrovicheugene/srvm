@@ -5,6 +5,7 @@
 #include <QObject>
 #include <QString>
 #include <QMap>
+#include <QPair>
 //====================================================
 class ZAbstractTerm;
 class ZAbstractSpectrum;
@@ -46,8 +47,9 @@ public:
     qint64 zp_windowId() const;
 
     // STATIC FUNCS
+    static QString zp_displayTypeName(WindowType);
     static QString zp_typeName(WindowType);
-    static WindowType zp_typeForName(const QString& );
+    static WindowType zp_typeFromString(const QString& );
 
 public slots:
 
@@ -75,10 +77,11 @@ private:
     // STATIC
     // VARS
     static qint64 zv_lastWindowId;
-    static QMap<WindowType, QString> zv_typeNameMap;
+    static QMap<WindowType, QPair<QString, QString>> zv_typeNameMap;
+
 
     // FUNCS
-    static QMap<WindowType, QString> zh_intTypeNameMap();
+    static QMap<WindowType, QPair<QString, QString> > zh_intTypeNameMap();
 
 };
 //====================================================
