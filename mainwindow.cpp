@@ -208,8 +208,8 @@ void MainWindow::zh_createComponents()
 
     // Correlation Plotter View
     zv_correlationPlotterDock= new QDockWidget(this);
-    zv_correlationPlotterDock->setObjectName("CORRELATION_PLOT_DOCK");
-    zv_correlationPlotterDock->setWindowTitle(tr("Correlation plot"));
+    zv_correlationPlotterDock->setObjectName("PLOT_DOCK");
+    zv_correlationPlotterDock->setWindowTitle(tr("Plot"));
     zv_dockList << zv_correlationPlotterDock;
     addDockWidget(Qt::TopDockWidgetArea, zv_correlationPlotterDock);
 

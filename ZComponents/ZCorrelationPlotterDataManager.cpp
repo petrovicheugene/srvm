@@ -667,7 +667,14 @@ void ZCorrelationPlotterDataManager::zh_recalcAndSetSceneRect(qreal maxX, qreal 
         }
         else
         {
-            maxY = zv_defaultSceneRect.height();
+            if(chartDataKind == CDK_CALIBRATION)
+            {
+                maxY = maxX;
+            }
+            else
+            {
+                maxY = zv_defaultSceneRect.height();
+            }
             minY = 0.0;
         }
     }
@@ -810,7 +817,9 @@ void ZCorrelationPlotterDataManager::zh_onRepositoryCalibrationOperation(ZCalibr
                     type == ZCalibrationRepository::COT_CALIBRATION_FREE_MEMBER_CHANGED ||
                     type == ZCalibrationRepository::COT_CALIBRATION_EQUATION_TYPE_CHANGED ||
                     type == ZCalibrationRepository::COT_CALIBRATION_EQUATION_BASE_TERM_CHANGED ||
-                    type == ZCalibrationRepository::COT_CALIBRATION_NORMA_CHANGED)
+                    type == ZCalibrationRepository::COT_CALIBRATION_NORMA_CHANGED ||
+                    type == ZCalibrationRepository::COT_END_REMOVE_CALIBRATIONS ||
+                    type == ZCalibrationRepository::COT_END_INSERT_CALIBRATIONS)
             {
                 zh_rebuildChart();
             }

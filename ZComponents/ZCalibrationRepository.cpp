@@ -989,7 +989,7 @@ void ZCalibrationRepository::zh_appendCalibrationsToArray(const QStringList& fil
     bool res = false;
     foreach(QString fileName, fileNameList)
     {
-        res = res || zh_createCalibrationFromFile(fileName);
+        res = zh_createCalibrationFromFile(fileName) || res;
     }
 
     if(res)
@@ -1937,7 +1937,7 @@ void ZCalibrationRepository::zh_createActions()
 {
     // calibration actions
     zv_newCalibrationAction = new QAction(this);
-    zv_newCalibrationAction->setIcon(QIcon(glAddIconString));
+    zv_newCalibrationAction->setIcon(QIcon(glAddCalibrationIconString));
     zv_newCalibrationAction->setText(tr("Append a new calibration"));
     zv_newCalibrationAction->setToolTip(tr("Append a new calibration to the list"));
 
@@ -1953,12 +1953,12 @@ void ZCalibrationRepository::zh_createActions()
 
     // window actions
     zv_newWindowAction = new QAction(this);
-    zv_newWindowAction->setIcon(QIcon(glAddIconString));
+    zv_newWindowAction->setIcon(QIcon(glAddWindowIconString));
     zv_newWindowAction->setText(tr("Append a new calibration window"));
     zv_newWindowAction->setToolTip(tr("Append a new calibration window to the list"));
 
     zv_removeWindowAction = new QAction(this);
-    zv_removeWindowAction->setIcon(QIcon(glRemoveIconString));
+    zv_removeWindowAction->setIcon(QIcon(glRemoveWindowIconString));
     zv_removeWindowAction->setText(tr("Remove selected calibration windows"));
     zv_removeWindowAction->setToolTip(tr("Remove selected calibration windows from the list"));
 
@@ -1970,7 +1970,7 @@ void ZCalibrationRepository::zh_createActions()
 
     // terms actions
     zv_createMixedTermsAction = new QAction(this);
-    zv_createMixedTermsAction->setIcon(QIcon(glAddIconString));
+    zv_createMixedTermsAction->setIcon(QIcon(glAddTermIconString));
     zv_createMixedTermsAction->setText(tr("Create mixed terms"));
     zv_createMixedTermsAction->setToolTip(tr("Create mixed terms"));
 
@@ -1980,7 +1980,7 @@ void ZCalibrationRepository::zh_createActions()
     zv_removeMixedTermsAction->setToolTip(tr("Remove mixed terms from the list"));
 
     zv_createCustomTermAction = new QAction(this);
-    zv_createCustomTermAction->setIcon(QIcon(glAddIconString));
+    zv_createCustomTermAction->setIcon(QIcon(glAddTermIconString));
     zv_createCustomTermAction->setText(tr("Create custom term"));
     zv_createCustomTermAction->setToolTip(tr("Create custom term"));
 

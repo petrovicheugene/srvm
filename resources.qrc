@@ -65,5 +65,26 @@
         <file>eraser.png</file>
         <file>ECyan.png</file>
         <file>addGreen-1.png</file>
+        <file>SDC_TA3.png</file>
+        <file>A-Plus1.png</file>
+        <file>C-Plus1.png</file>
+        <file>E-Plus1.png</file>
+        <file>S-Plus1.png</file>
+        <file>T-Plus1.png</file>
+        <file>W-Plus1.png</file>
+        <file>addSpectrum-3.png</file>
+        <file>removeSpectrum-3.png</file>
+        <file>addChemElement-4.png</file>
+        <file>removeChemElement-4.png</file>
+        <file>addSpectrum-5.png</file>
+        <file>removeSpectrum-5.png</file>
+        <file>addSpectrum-7.png</file>
+        <file>addSpectrum-8.png</file>
+        <file>addSpectrum-9.png</file>
+        <file>addSpectrum-10.png</file>
+        <file>removeSpectrum-10.png</file>
+        <file>removeSpectrum-8.png</file>
+        <file>addChemElement-5.png</file>
+        <file>removeChemElement-5.png</file>
     </qresource>
 </RCC>

@@ -24,8 +24,19 @@ extern const QString glDefaultChemElementString;
 
 // icons
 extern const QString glOpenIconString;
-extern const QString glAddIconString;
+extern const QString glAddArrayIconString;
+extern const QString glAddSpectrumIconString;
+extern const QString glAddChemElementIconString;
+extern const QString glAddCalibrationIconString;
+extern const QString glAddWindowIconString;
+extern const QString glAddTermIconString;
+
 extern const QString glRemoveIconString;
+extern const QString glRemoveSpectrumIconString;
+extern const QString glRemoveChemElementIconString;
+extern const QString glRemoveArrayIconString;
+extern const QString glRemoveCalibrationIconString;
+extern const QString glRemoveWindowIconString;
 
 extern const QString glClearIconString;
 extern const QString glCopyIconString;
