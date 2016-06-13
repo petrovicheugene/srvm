@@ -711,7 +711,7 @@ bool ZCalibrationRepository::zp_setNormaTypeForCalibrationId(qint64 calibrationI
 //======================================================
 ZTermNormalizer::NormaType ZCalibrationRepository::zp_normaType(int calibrationIndex) const
 {
-    if(calibrationIndex < 0 || calibrationIndex > zv_caibrationList.count())
+    if(calibrationIndex < 0 || calibrationIndex >= zv_caibrationList.count())
     {
         return ZTermNormalizer::NT_NONE;
     }
@@ -721,7 +721,7 @@ ZTermNormalizer::NormaType ZCalibrationRepository::zp_normaType(int calibrationI
 //======================================================
 bool ZCalibrationRepository::zp_setNormaType(int calibrationIndex, ZTermNormalizer::NormaType type)
 {
-    if(calibrationIndex < 0 || calibrationIndex > zv_caibrationList.count())
+    if(calibrationIndex < 0 || calibrationIndex >= zv_caibrationList.count())
     {
         return false;
     }
@@ -754,7 +754,7 @@ bool ZCalibrationRepository::zp_setEquationTypeForCalibrationId(qint64 calibrati
 //======================================================
 ZCalibration::EquationType ZCalibrationRepository::zp_equationType(int calibrationIndex) const
 {
-    if(calibrationIndex < 0 || calibrationIndex > zv_caibrationList.count())
+    if(calibrationIndex < 0 || calibrationIndex >= zv_caibrationList.count())
     {
         return ZCalibration::ET_NOT_DEFINED;
     }
@@ -764,7 +764,7 @@ ZCalibration::EquationType ZCalibrationRepository::zp_equationType(int calibrati
 //======================================================
 bool ZCalibrationRepository::zp_setEquationType(int calibrationIndex, ZCalibration::EquationType type)
 {
-    if(calibrationIndex < 0 || calibrationIndex > zv_caibrationList.count())
+    if(calibrationIndex < 0 || calibrationIndex >= zv_caibrationList.count())
     {
         return false;
     }
@@ -774,7 +774,7 @@ bool ZCalibrationRepository::zp_setEquationType(int calibrationIndex, ZCalibrati
 //======================================================
 ZNormaSettingsData ZCalibrationRepository::zp_normaSettingsData(int calibrationIndex) const
 {
-    if(calibrationIndex < 0 || calibrationIndex > zv_caibrationList.count())
+    if(calibrationIndex < 0 || calibrationIndex >= zv_caibrationList.count())
     {
         return ZNormaSettingsData();
     }
@@ -784,7 +784,7 @@ ZNormaSettingsData ZCalibrationRepository::zp_normaSettingsData(int calibrationI
 //======================================================
 bool ZCalibrationRepository::zp_setNormaSettings(int calibrationIndex, ZNormaSettingsData settings)
 {
-    if(calibrationIndex < 0 || calibrationIndex > zv_caibrationList.count())
+    if(calibrationIndex < 0 || calibrationIndex >= zv_caibrationList.count())
     {
         return false;
     }
@@ -797,7 +797,7 @@ bool ZCalibrationRepository::zp_setNormaSettings(int calibrationIndex, ZNormaSet
 //======================================================
 ZEquationSettingsData ZCalibrationRepository::zp_equationDataForSettings(int calibrationIndex) const
 {
-    if(calibrationIndex < 0 || calibrationIndex > zv_caibrationList.count())
+    if(calibrationIndex < 0 || calibrationIndex >= zv_caibrationList.count())
     {
         return ZEquationSettingsData();
     }
@@ -807,7 +807,7 @@ ZEquationSettingsData ZCalibrationRepository::zp_equationDataForSettings(int cal
 //======================================================
 bool ZCalibrationRepository::zp_setEquationDataFromSettings(int calibrationIndex, ZEquationSettingsData settings)
 {
-    if(calibrationIndex < 0 || calibrationIndex > zv_caibrationList.count())
+    if(calibrationIndex < 0 || calibrationIndex >= zv_caibrationList.count())
     {
         return false;
     }
@@ -832,7 +832,7 @@ bool ZCalibrationRepository::zp_setEquationDataFromSettings(int calibrationIndex
 //======================================================
 qreal ZCalibrationRepository::zp_equationIntercept(int calibrationIndex) const
 {
-    if(calibrationIndex < 0 || calibrationIndex > zv_caibrationList.count())
+    if(calibrationIndex < 0 || calibrationIndex >= zv_caibrationList.count())
     {
         return 0.0;
     }
@@ -842,7 +842,7 @@ qreal ZCalibrationRepository::zp_equationIntercept(int calibrationIndex) const
 //======================================================
 bool ZCalibrationRepository::zp_setEquationIntercept(int calibrationIndex, qreal value)
 {
-    if(calibrationIndex < 0 || calibrationIndex > zv_caibrationList.count())
+    if(calibrationIndex < 0 || calibrationIndex >= zv_caibrationList.count())
     {
         return false;
     }
@@ -853,7 +853,7 @@ bool ZCalibrationRepository::zp_setEquationIntercept(int calibrationIndex, qreal
 //======================================================
 QString ZCalibrationRepository::zp_equationInterceptString(int calibrationIndex) const
 {
-    if(calibrationIndex < 0 || calibrationIndex > zv_caibrationList.count())
+    if(calibrationIndex < 0 || calibrationIndex >= zv_caibrationList.count())
     {
         return "0.0";
     }
@@ -863,7 +863,7 @@ QString ZCalibrationRepository::zp_equationInterceptString(int calibrationIndex)
 //======================================================
 bool ZCalibrationRepository::zp_setEquationInterceptString(int calibrationIndex, const QString& interceptString)
 {
-    if(calibrationIndex < 0 || calibrationIndex > zv_caibrationList.count())
+    if(calibrationIndex < 0 || calibrationIndex >= zv_caibrationList.count())
     {
         return false;
     }
@@ -884,7 +884,7 @@ int ZCalibrationRepository::zp_baseTermIndex(int calibrationIndex)
 //======================================================
 qint64 ZCalibrationRepository::zp_baseTermId(int calibrationIndex)
 {
-    if(calibrationIndex < 0 || calibrationIndex > zv_caibrationList.count())
+    if(calibrationIndex < 0 || calibrationIndex >= zv_caibrationList.count())
     {
         return -1;
     }
