@@ -114,6 +114,7 @@ public:
     QString zp_termName(int termIndex) const;
 
     ZAbstractTerm::TermType zp_termType(int termIndex) const;
+    bool zp_mixedTermExists() const;
     qint64 zp_termId(int termIndex) const;
     bool zp_setTermState(int termIndex, ZAbstractTerm::TermState zp_termStateForDisplay);
     ZAbstractTerm::TermState zp_termStateForDisplay(int termIndex) const;

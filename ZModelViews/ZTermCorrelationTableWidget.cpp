@@ -13,8 +13,8 @@
 //=============================================================
 ZTermCorrelationTableWidget::ZTermCorrelationTableWidget(QWidget *parent) : QWidget(parent)
 {
-   zh_createComponents();
-   zh_createConnections();
+    zh_createComponents();
+    zh_createConnections();
 }
 //=============================================================
 void ZTermCorrelationTableWidget::zp_setModel(ZTermCorrelationTableModel* model)
@@ -24,13 +24,13 @@ void ZTermCorrelationTableWidget::zp_setModel(ZTermCorrelationTableModel* model)
     connect(this, &ZTermCorrelationTableWidget::zg_userChangesTermState,
             model, &ZTermCorrelationTableModel::zp_onUserChangesTermState);
     ZNumericDelegate* numericDelegate = new ZNumericDelegate(zv_table);
-//    connect(numericDelegate, &ZNumericDelegate::zg_editNext,
-//            this, &ZTermCorrelationTableWidget::zh_editNext);
+    //    connect(numericDelegate, &ZNumericDelegate::zg_editNext,
+    //            this, &ZTermCorrelationTableWidget::zh_editNext);
     zv_table->setItemDelegate(numericDelegate);
-//    ZSpectrumTableDelegate* spectrumDelegate = new ZSpectrumTableDelegate(zv_table);
-//    zv_table->setItemDelegateForColumn(0, new ZVisibilityStringDelegate(zv_table));
-//    zv_table->setItemDelegateForColumn(1, spectrumDelegate);
-//    zv_table->setAlternatingRowColors(true);
+    //    ZSpectrumTableDelegate* spectrumDelegate = new ZSpectrumTableDelegate(zv_table);
+    //    zv_table->setItemDelegateForColumn(0, new ZVisibilityStringDelegate(zv_table));
+    //    zv_table->setItemDelegateForColumn(1, spectrumDelegate);
+    //    zv_table->setAlternatingRowColors(true);
 
     connect(zv_table->selectionModel(), &QItemSelectionModel::currentRowChanged,
             this, &ZTermCorrelationTableWidget::zh_onCurrentTermChanged);
@@ -40,23 +40,23 @@ void ZTermCorrelationTableWidget::zp_setModel(ZTermCorrelationTableModel* model)
 //=============================================================
 void ZTermCorrelationTableWidget::zp_appendButtonActions(QList<QAction*> actionList)
 {
-//    zv_buttonLayout->addStretch();
-//    for(int a = 0; a < actionList.count(); a++)
-//    {
-//        if(actionList.at(a) == 0)
-//        {
-//            // Separator for context menu
-//            continue;
-//        }
+    //    zv_buttonLayout->addStretch();
+    //    for(int a = 0; a < actionList.count(); a++)
+    //    {
+    //        if(actionList.at(a) == 0)
+    //        {
+    //            // Separator for context menu
+    //            continue;
+    //        }
 
-//        QPushButton* button = new QPushButton(this);
-//        button->setFlat(true);
-//        button->setIcon(actionList.at(a)->icon());
-//        button->setToolTip(actionList.at(a)->toolTip());
-//        connect(button, &QPushButton::clicked,
-//                actionList[a], &QAction::trigger);
-//        zv_buttonLayout->addWidget(button);
-//    }
+    //        QPushButton* button = new QPushButton(this);
+    //        button->setFlat(true);
+    //        button->setIcon(actionList.at(a)->icon());
+    //        button->setToolTip(actionList.at(a)->toolTip());
+    //        connect(button, &QPushButton::clicked,
+    //                actionList[a], &QAction::trigger);
+    //        zv_buttonLayout->addWidget(button);
+    //    }
 }
 //=============================================================
 void ZTermCorrelationTableWidget::zp_appendContextMenuActions(QList<QAction*> actionList)
@@ -90,6 +90,7 @@ void ZTermCorrelationTableWidget::zh_createComponents()
     connect(checkableHeader, &ZCustomCheckableVerticalHeaderView::zg_userChangesTermState,
             this, &ZTermCorrelationTableWidget::zg_userChangesTermState);
     zv_table->setVerticalHeader(checkableHeader);
+    zv_table->verticalHeader()->setContextMenuPolicy(Qt::CustomContextMenu);
 
     zv_mainLayout->addWidget(zv_table, INT_MAX);
 
@@ -101,7 +102,8 @@ void ZTermCorrelationTableWidget::zh_createConnections()
 {
     connect(zv_table, &QTableView::customContextMenuRequested,
             this, &ZTermCorrelationTableWidget::zh_onContextMenuRequest);
-
+    connect(zv_table->verticalHeader(), &QHeaderView::customContextMenuRequested,
+            this, &ZTermCorrelationTableWidget::zh_onContextMenuRequest);
 }
 //=============================================================
 void ZTermCorrelationTableWidget::zh_editNext(QModelIndex editedIndex)
@@ -160,6 +162,16 @@ void ZTermCorrelationTableWidget::zh_onContextMenuRequest(const QPoint &pos)
         menu->addAction(action);
     }
 
-    menu->popup(zv_table->viewport()->mapToGlobal(pos));
+    QPoint menuPos;
+    if(sender() == zv_table->verticalHeader())
+    {
+        menuPos = zv_table->verticalHeader()->mapToGlobal(pos);
+    }
+    else
+    {
+        menuPos = zv_table->viewport()->mapToGlobal(pos);
+    }
+
+    menu->popup(menuPos);
 }
 //=============================================================

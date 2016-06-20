@@ -3,6 +3,7 @@
 #define ZJOINTCALIBRATIONWINDOWTABLEWIDGET_H
 //==============================================================
 #include <QWidget>
+#include <QItemSelection>
 //==============================================================
 class ZCalibrationWindowModel;
 class ZChannelNumberDelegate;
@@ -29,6 +30,7 @@ public:
 signals:
 
     void zg_currentCalibrationWindowChanged(int, int);
+    void zg_calibrationWindowSelectionChanged();
 
 public slots:
 
@@ -57,6 +59,8 @@ private:
 private slots:
     void zh_onCurrentCalibrationWindowChanged(const QModelIndex & current,
                                      const QModelIndex & previous);
+    void zh_onCalibrationWindowSelectionChanged(const QItemSelection & selected,
+                                                                               const QItemSelection & deselected);
     void zh_onContextMenuRequest(const QPoint &pos);
 
 };

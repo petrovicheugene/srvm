@@ -151,7 +151,7 @@ signals:
     void zg_requestClearSelected() const;
     void zg_requestSelectedString(QString&) const;
 
-    void zg_arrayListDirtyChanged(bool dirty) const;
+    void zg_arrayListDirtyChanged(bool dirty, bool currentArrayExists) const;
 
 public slots:
 
@@ -209,6 +209,10 @@ private:
 
     QAction* zv_appendArrayAction;
     QAction* zv_removeArrayAction;
+    QAction* zv_openArrayAction;
+    QAction* zv_saveArrayAction;
+    QAction* zv_saveAsArrayAction;
+
     QAction* zv_appendSpectrumToArrayAction;
     QAction* zv_removeSpectrumFromArrayAction;
     QAction* zv_appendChemElementAction;

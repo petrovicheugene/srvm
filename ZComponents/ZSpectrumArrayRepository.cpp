@@ -25,24 +25,42 @@ void ZSpectrumArrayRepository::zp_appendActionsToMenu(QMenu* menu) const
 {
     if(menu->objectName() == "Edit")
     {
-        QMenu* arrayMenu = new QMenu(tr("Spectrum arrays"));
-        arrayMenu->setIcon(QIcon(glArrayIconString));
-        arrayMenu->addAction(zv_appendArrayAction);
-        arrayMenu->addAction(zv_removeArrayAction);
-        menu->addMenu(arrayMenu);
+//        QMenu* arrayMenu = new QMenu(tr("Spectrum arrays"));
+//        arrayMenu->setIcon(QIcon(glArrayIconString));
+//        arrayMenu->addAction(zv_appendArrayAction);
+//        arrayMenu->addAction(zv_removeArrayAction);
+//        menu->addMenu(arrayMenu);
 
-        QMenu* spectraMenu = new QMenu(tr("Spectra"));
-        spectraMenu->setIcon(QIcon(glSpectrumIconString));
-        spectraMenu->addAction(zv_appendSpectrumToArrayAction);
-        spectraMenu->addAction(zv_removeSpectrumFromArrayAction);
-        menu->addMenu(spectraMenu);
+//        QMenu* spectraMenu = new QMenu(tr("Spectra"));
+//        spectraMenu->setIcon(QIcon(glSpectrumIconString));
+//        spectraMenu->addAction(zv_appendSpectrumToArrayAction);
+//        spectraMenu->addAction(zv_removeSpectrumFromArrayAction);
+//        menu->addMenu(spectraMenu);
 
-        QMenu* elementMenu = new QMenu(tr("Chemical elements"));
-        elementMenu->setIcon(QIcon(glElementIconString));
-        elementMenu->addAction(zv_appendChemElementAction);
-        elementMenu->addAction(zv_removeChemElementAction);
-        menu->addMenu(elementMenu);
+//        QMenu* elementMenu = new QMenu(tr("Chemical elements"));
+//        elementMenu->setIcon(QIcon(glElementIconString));
+//        elementMenu->addAction(zv_appendChemElementAction);
+//        elementMenu->addAction(zv_removeChemElementAction);
+//        menu->addMenu(elementMenu);
 
+        // spectra array
+        menu->addAction(zv_appendArrayAction);
+        menu->addAction(zv_removeArrayAction);
+        menu->addSeparator();
+
+        // spectra
+        menu->addAction(zv_appendSpectrumToArrayAction);
+        menu->addAction(zv_removeSpectrumFromArrayAction);
+        menu->addSeparator();
+        menu->addAction(zv_copyConcentrationDataAction);
+        menu->addAction(zv_pasteConcentrationDataAction);
+        menu->addSeparator();
+        menu->addAction(zv_clearConcentrationDataAction);
+        menu->addSeparator();
+
+        // chemical
+        menu->addAction(zv_appendChemElementAction);
+        menu->addAction(zv_removeChemElementAction);
     }
 }
 //==================================================================
@@ -58,7 +76,12 @@ QList<QAction*> ZSpectrumArrayRepository::zp_arrayContextMenuActions() const
 {
     QList<QAction*> actionList;
     actionList << zv_appendArrayAction;
+    actionList << zv_openArrayAction;
     actionList << zv_removeArrayAction;
+    actionList << 0;
+    actionList << zv_saveArrayAction;
+    actionList << zv_saveAsArrayAction;
+
     return actionList;
 }
 //==================================================================
@@ -67,11 +90,11 @@ QList<QAction*> ZSpectrumArrayRepository::zp_spectrumActions() const
     QList<QAction*> actionList;
     actionList << zv_appendSpectrumToArrayAction;
     actionList << zv_removeSpectrumFromArrayAction;
-    actionList << 0; // separator
-    actionList << zv_copyConcentrationDataAction;
-    actionList << zv_pasteConcentrationDataAction;
-    actionList << 0; // separator
-    actionList << zv_clearConcentrationDataAction;
+//    actionList << 0; // separator
+//    actionList << zv_copyConcentrationDataAction;
+//    actionList << zv_pasteConcentrationDataAction;
+//    actionList << 0; // separator
+//    actionList << zv_clearConcentrationDataAction;
 
     return actionList;
 }
@@ -121,6 +144,10 @@ QList<QAction*> ZSpectrumArrayRepository::zp_chemElementContextMenuActions() con
 //==================================================================
 void ZSpectrumArrayRepository::zp_connectToFileActionManager(ZFileActionManager* manager)
 {
+    manager->zp_initOpenSpectrumArrayAction(zv_openArrayAction);
+    manager->zp_initSaveSpectrumArrayAction(zv_saveArrayAction);
+    manager->zp_initSaveAsSpectrumArrayAction(zv_saveAsArrayAction);
+
     connect(manager, &ZFileActionManager::zg_spectrumRawArrayList,
             this, &ZSpectrumArrayRepository::zp_appendArrays);
     connect(manager, &ZFileActionManager::zg_spectrumFileListToOpen,
@@ -1064,7 +1091,7 @@ void ZSpectrumArrayRepository::zp_onSelectionSpectraChange(bool selectionEnabled
 void ZSpectrumArrayRepository::zh_onSpectrumArraySaving(QString filePath)
 {
     zv_arrayFilePath = filePath;
-    zh_setDirty(true);
+    zh_setDirty(false);
 
 //    zv_dirty = false;
 //    emit zg_arrayListDirtyChanged(zv_dirty);
@@ -1797,6 +1824,8 @@ void ZSpectrumArrayRepository::zh_actionEnablingControl()
     if(arrayIndex < 0 || arrayIndex >= zv_arrayList.count())
     {
         zv_removeArrayAction->setEnabled(false);
+        zv_saveArrayAction->setEnabled(false);
+        zv_saveAsArrayAction->setEnabled(false);
 
         zv_appendChemElementAction->setEnabled(false);
         zv_removeChemElementAction->setEnabled(false);
@@ -1820,6 +1849,9 @@ void ZSpectrumArrayRepository::zh_actionEnablingControl()
     }
 
     zv_removeArrayAction->setEnabled(true);
+    zv_saveArrayAction->setEnabled(zv_dirty);
+    zv_saveAsArrayAction->setEnabled(true);
+
     zv_appendChemElementAction->setEnabled(true);
 
     if(zv_arrayList.at(arrayIndex)->zp_spectrumCount() > 0)
@@ -1858,14 +1890,15 @@ void ZSpectrumArrayRepository::zh_actionEnablingControl()
 //==================================================================
 void ZSpectrumArrayRepository::zh_setDirty(bool dirty)
 {
-    if(zv_dirty == dirty)
-    {
-        return;
-    }
+//    if(zv_dirty == dirty)
+//    {
+//        return;
+//    }
 
     zv_dirty = dirty;
-    emit zg_arrayListDirtyChanged(zv_dirty);
+    emit zg_arrayListDirtyChanged(zv_dirty, !zv_arrayList.isEmpty());
     emit zg_currentFile(zv_dirty, zv_arrayFilePath);
+    zh_actionEnablingControl();
 }
 //==================================================================
 //void ZSpectrumArrayRepository::zh_pasteConcentrationData(int arrayIndex,
@@ -1900,12 +1933,16 @@ void ZSpectrumArrayRepository::zh_createActions()
 {
     zv_appendArrayAction = new QAction(this);
     zv_appendArrayAction->setIcon(QIcon(glAddArrayIconString));
-    zv_appendArrayAction->setText(tr("Append a new spectrum array"));
+    zv_appendArrayAction->setText(tr("New spectrum array"));
     zv_appendArrayAction->setToolTip(tr("Append a new spectrum array to the list"));
     zv_appendArrayAction->setEnabled(true);
 
+    zv_openArrayAction = new QAction(this);
+    zv_saveArrayAction = new QAction(this);
+    zv_saveAsArrayAction = new QAction(this);
+
     zv_removeArrayAction = new QAction(this);
-    zv_removeArrayAction->setIcon(QIcon(glRemoveIconString));
+    zv_removeArrayAction->setIcon(QIcon(glRemoveArrayIconString));
     zv_removeArrayAction->setText(tr("Remove current spectrum array"));
     zv_removeArrayAction->setToolTip(tr("Remove current spectrum array from the list"));
     zv_removeArrayAction->setEnabled(false);
@@ -1924,7 +1961,7 @@ void ZSpectrumArrayRepository::zh_createActions()
 
     zv_appendChemElementAction = new QAction(this);
     zv_appendChemElementAction->setIcon(QIcon(glAddChemElementIconString));
-    zv_appendChemElementAction->setText(tr("Append a new chemical element"));
+    zv_appendChemElementAction->setText(tr("New chemical element"));
     zv_appendChemElementAction->setToolTip(tr("Append a new chemical element to the list"));
     zv_appendChemElementAction->setEnabled(false);
 
@@ -1936,7 +1973,7 @@ void ZSpectrumArrayRepository::zh_createActions()
 
     zv_copyConcentrationDataAction = new QAction(this);
     zv_copyConcentrationDataAction->setIcon(QIcon(glCopyIconString));
-    zv_copyConcentrationDataAction->setText(tr("Copy selected"));
+    zv_copyConcentrationDataAction->setText(tr("Copy selected concentrations"));
     zv_copyConcentrationDataAction->setEnabled(false);
 
     zv_pasteConcentrationDataAction = new QAction(this);
@@ -1951,32 +1988,32 @@ void ZSpectrumArrayRepository::zh_createActions()
 
     // visibility actions
     zv_setSpectraVisibleAction = new QAction(this);
-    zv_setSpectraVisibleAction->setIcon(QIcon());
+    zv_setSpectraVisibleAction->setIcon(QIcon(glVisibleIconString));
     zv_setSpectraVisibleAction->setText(tr("Set spectra visible"));
     zv_setSpectraVisibleAction->setEnabled(false);
 
     zv_setSpectraInvisibleAction = new QAction(this);
-    zv_setSpectraInvisibleAction->setIcon(QIcon());
+    zv_setSpectraInvisibleAction->setIcon(QIcon(glInvisibleIconString));
     zv_setSpectraInvisibleAction->setText(tr("Set spectra invisible"));
     zv_setSpectraInvisibleAction->setEnabled(false);
 
     zv_invertSpectraVisibilityAction = new QAction(this);
-    zv_invertSpectraVisibilityAction->setIcon(QIcon());
+    zv_invertSpectraVisibilityAction->setIcon(QIcon(glInverseVisibleIconString));
     zv_invertSpectraVisibilityAction->setText(tr("Invert spectra visibility"));
     zv_invertSpectraVisibilityAction->setEnabled(false);
 
     zv_setChemElementsVisibleAction = new QAction(this);
-    zv_setChemElementsVisibleAction->setIcon(QIcon());
+    zv_setChemElementsVisibleAction->setIcon(QIcon(glVisibleIconString));
     zv_setChemElementsVisibleAction->setText(tr("Set chemical elements visible"));
     zv_setChemElementsVisibleAction->setEnabled(false);
 
     zv_setChemElementsInvisibleAction = new QAction(this);
-    zv_setChemElementsInvisibleAction->setIcon(QIcon());
+    zv_setChemElementsInvisibleAction->setIcon(QIcon(glInvisibleIconString));
     zv_setChemElementsInvisibleAction->setText(tr("Set chemical elements invisible"));
     zv_setChemElementsInvisibleAction->setEnabled(false);
 
     zv_invertChemElementsVisibilityAction = new QAction(this);
-    zv_invertChemElementsVisibilityAction->setIcon(QIcon());
+    zv_invertChemElementsVisibilityAction->setIcon(QIcon(glInverseVisibleIconString));
     zv_invertChemElementsVisibilityAction->setText(tr("Invert chemical elements visibility"));
     zv_invertChemElementsVisibilityAction->setEnabled(false);
 }

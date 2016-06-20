@@ -36,6 +36,8 @@ void ZCalibrationWindowTableWidget::zp_setModel(ZCalibrationWindowModel* model)
     zv_table->setAlternatingRowColors(true);
     connect(zv_table->selectionModel(), &QItemSelectionModel::currentRowChanged,
             this, &ZCalibrationWindowTableWidget::zh_onCurrentCalibrationWindowChanged);
+    connect(zv_table->selectionModel(), &QItemSelectionModel::selectionChanged,
+            this, &ZCalibrationWindowTableWidget::zh_onCalibrationWindowSelectionChanged);
 
 }
 //==============================================================
@@ -72,7 +74,10 @@ void ZCalibrationWindowTableWidget::zp_connectToCalibrationRepository(ZCalibrati
    this->zp_appendContextMenuActions(repository->zp_windowContextMenuActions());
 
    connect(this, &ZCalibrationWindowTableWidget::zg_currentCalibrationWindowChanged,
-           repository, &ZCalibrationRepository::zp_onCurrentCalibrationWindowChanged);
+           repository, &ZCalibrationRepository::zp_onCurrentCalibrationWindowChange);
+   connect(this, &ZCalibrationWindowTableWidget::zg_calibrationWindowSelectionChanged,
+           repository, &ZCalibrationRepository::zp_onCalibrationWindowSelectionChange);
+
    connect(repository, &ZCalibrationRepository::zg_requestSelectedWindowIndexList,
            this, &ZCalibrationWindowTableWidget::zp_selectedSpectrumWindowIndexList);
 
@@ -199,6 +204,12 @@ void ZCalibrationWindowTableWidget::zh_onCurrentCalibrationWindowChanged(const Q
    }
 
    emit zg_currentCalibrationWindowChanged(currentRow, previousRow);
+}
+//==============================================================
+void ZCalibrationWindowTableWidget::zh_onCalibrationWindowSelectionChanged(const QItemSelection & selected,
+                                                                           const QItemSelection & deselected)
+{
+    emit zg_calibrationWindowSelectionChanged();
 }
 //==============================================================
 void ZCalibrationWindowTableWidget::zh_onContextMenuRequest(const QPoint &pos)

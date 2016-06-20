@@ -1789,6 +1789,19 @@ ZAbstractTerm::TermType ZCalibration::zp_termType(int termIndex) const
     return zv_termList.at(termIndex)->zp_termType();
 }
 //=========================================================
+bool ZCalibration::zp_mixedTermExists() const
+{
+    for(int t = 0; t < zv_termList.count(); t++)
+    {
+        if(zv_termList.at(t)->zp_termType() == ZAbstractTerm::TT_MIXED)
+        {
+            return true;
+        }
+    }
+
+    return false;
+}
+//=========================================================
 qint64 ZCalibration::zp_termId(int termIndex) const
 {
     if(termIndex < 0 || termIndex >= zv_termList.count())

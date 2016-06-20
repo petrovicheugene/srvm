@@ -177,7 +177,9 @@ signals:
 
     void zg_requestSelectedCalibrationIndexList(QList<int>&);
     void zg_requestCurrentCalibrationIndex(int&);
-    void zg_openCalibrationsActionTriggered() const;
+//    void zg_openCalibrationsActionTriggered() const;
+//    void zg_saveCalibrationsActionTriggered() const;
+//    void zg_saveAsCalibrationsActionTriggered() const;
 
     void zg_setCurrentCalibrationIndex(int calibrationIndex);
     void zg_startCurrentCalibrationEdition();
@@ -196,15 +198,15 @@ signals:
     void zg_normalizerChanged(qint64 calibrationId) const;
     void zg_invokeCalibrationRecalc() const;
 
-    void zg_currentCalibrationDirtyChanged(bool dirty) const;
-
+    void zg_currentCalibrationDirtyChanged(bool dirty, bool currentCalibrationExists) const;
     void zg_saveCalibration(ZCalibration*calibration, QString path, QString name) const;
 
 public slots:
 
     void zp_onSelectedCalibrationChange(QList<int>);
     void zp_onCurrentCalibrationChange(int current, int previous);
-    void zp_onCurrentCalibrationWindowChanged(int current, int previous);
+    void zp_onCurrentCalibrationWindowChange(int current, int previous);
+    void zp_onCalibrationWindowSelectionChange();
     void zp_onCurrentTermChange(int currentTermIndex, int previousTermIndex);
     void zp_calibrationQualityDataChanged(bool saveTocalibration, qint64 calibrationId, ZCalibrationQualityData);
 
@@ -248,6 +250,8 @@ private:
     QList<ZCalibration*> zv_caibrationList;
     QAction* zv_newCalibrationAction;
     QAction* zv_openCalibrationsAction;
+    QAction* zv_saveCalibrationsAction;
+    QAction* zv_saveAsCalibrationsAction;
     QAction* zv_removeCalibrationAction;
 
     QAction* zv_newWindowAction;
@@ -281,6 +285,7 @@ private:
     qint64 zv_currentArrayId;
     int zv_currentArrayIndex;
     int zv_currentCalibrationIndex;
+    int zv_currentWindowIndex;
     int zv_currentTermIndex;
 
     // FUNCS

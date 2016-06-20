@@ -20,6 +20,14 @@ public:
     void zp_appendActionsToMenu(QMenu*) const;
     QList<QAction*> zp_actionList() const;
 
+    void zp_initOpenCalibrationFromFileAction(QAction*&) const;
+    void zp_initSaveCalibrationFromFileAction(QAction*&) const;
+    void zp_initSaveAsCalibrationFromFileAction(QAction*&) const;
+
+    void zp_initOpenSpectrumArrayAction(QAction*&) const;
+    void zp_initSaveSpectrumArrayAction(QAction*&) const;
+    void zp_initSaveAsSpectrumArrayAction(QAction*&) const;
+
 signals:
 
     void zg_message(QString) const;
@@ -39,11 +47,12 @@ public slots:
     void zp_defineSpectrumFilesAndInitAppending(int arrayIndex);
     void zp_saveSettings() const;
     void zp_openCalibrations() const;
+
     void zp_saveSpectraArrayListToFile(QString filePath, QList<ZRawSpectrumArray> rawArrayList);
     void zp_saveCalibrationToFile(const ZCalibration *calibration, QString filePath, QString name);
 
-    void zp_onArrayListDirtyChange(bool dirty);
-    void zp_onCurrentCalibrationDirtyChange(bool dirty);
+    void zp_onArrayListDirtyChange(bool dirty, bool currentArrayExists);
+    void zp_onCurrentCalibrationDirtyChange(bool dirty, bool currentCalibrationExists);
 
 private:
 

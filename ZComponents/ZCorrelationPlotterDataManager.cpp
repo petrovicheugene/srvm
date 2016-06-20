@@ -713,7 +713,7 @@ void ZCorrelationPlotterDataManager::zh_recalcAndSetSceneRect(qreal maxX, qreal 
     qreal borderXWidth = maxX * 0.03;
     sceneRect.adjust(-1 * borderXWidth, -1 * borderYWidth, borderXWidth, borderYWidth);
 
-    zv_defaultItem->zp_fitItemInRect(sceneRect);
+    zv_defaultItem->zp_fitItemInRect(sceneRect.normalized());
 }
 //=====================================================================
 void ZCorrelationPlotterDataManager::zh_createAndPlaceChartPointItems(const QMap<qint64,

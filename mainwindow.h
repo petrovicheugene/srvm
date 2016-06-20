@@ -20,6 +20,7 @@ class ZMessagePanel;
 class QAction;
 class QFrame;
 class ZPlotter;
+class ZHelpBrowser;
 
 class ZArrayModel;
 class ZJointSpectraModel;
@@ -92,6 +93,7 @@ private:
     ZTermCorrelationTableModel* zv_termCorrelationTableModel;
 
     // components
+    ZHelpBrowser* mv_helpBrowser;
     ZFileActionManager* zv_fileActionManager;
     ZSpectrumArrayRepository* zv_spectrumArrayRepository;
     ZJointSpectraDataManager* zv_jointSpectraDataManager;

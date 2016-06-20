@@ -26,13 +26,13 @@ void ZHelpBrowser::zp_createComponents(const QStringList& pathList, const QUrl& 
     setLayout(mainLayout);
 
     mv_homeAction = new QAction(this);
-    mv_homeAction->setIcon(QIcon(":/images/blue_home.ico"));
+    mv_homeAction->setIcon(QIcon(":/images/ZWidgets/blue_home.ico"));
 
     mv_backwardAction = new QAction(this);
-    mv_backwardAction->setIcon(QIcon(":/images/blue_left.ico"));
+    mv_backwardAction->setIcon(QIcon(":/images/ZWidgets/blue_left.ico"));
 
     mv_forwardAction = new QAction(this);
-    mv_forwardAction->setIcon(QIcon(":/images/blue_right.ico"));
+    mv_forwardAction->setIcon(QIcon(":/images/ZWidgets/blue_right.ico"));
 
     QToolBar* toolBar = new QToolBar(this);
     toolBar->setIconSize(QSize(32, 32));

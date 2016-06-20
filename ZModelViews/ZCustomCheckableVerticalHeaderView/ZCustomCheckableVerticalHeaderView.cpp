@@ -175,11 +175,11 @@ void ZCustomCheckableVerticalHeaderView::paintSection(QPainter *painter, const Q
         newOption.decorationSize = QSize(pm, pm);
 
         QRect decorationSignRect = style()->subElementRect(QStyle::SE_ItemViewItemDecoration, &newOption);
-        decorationSignRect.adjust(1, 0, -2, 0);
+        // decorationSignRect.adjusted(1, 0, -2, 0);
         painter->save();
         painter->setPen(newOption.palette.color(QPalette::Mid));
         painter->setBrush(QBrush(newOption.palette.color(QPalette::Base)));
-        painter->drawRect(decorationSignRect);
+        painter->drawRect(decorationSignRect.adjusted(1, 0, -1, 0));
 
         // draw the sign in deco rect
         QVariant vData = model()->headerData(logicalIndex, Qt::Vertical, IconRole);
@@ -187,10 +187,18 @@ void ZCustomCheckableVerticalHeaderView::paintSection(QPainter *painter, const Q
         {
             QPixmap iconPixmap = vData.value<QPixmap>();
             // iconPixmap.scaled(decorationSignRect.adjusted(1, 0, -2, 0).size());
-            painter->drawPixmap(decorationSignRect/*.adjusted(2, 1, -3, -1)*/,
-                                iconPixmap/*.scaled(decorationSignRect.adjusted(3, 2, -3, -1).size(),
-                                                                      Qt::KeepAspectRatio,
-                                                                      Qt::SmoothTransformation)*/);
+
+            QRect iconRect = iconPixmap.rect();
+            iconRect.moveCenter(decorationSignRect.center());
+            //            painter->drawPixmap( decorationSignRect /*.adjusted(2, 1, -3, -1)*/,
+            //                                iconPixmap/*.scaled(decorationSignRect.adjusted(3, 2, -3, -1).size(),
+            //                                                                      Qt::KeepAspectRatio,
+            //                                                                      Qt::SmoothTransformation)*/);
+
+            painter->drawPixmap( iconRect /*.adjusted(2, 1, -3, -1)*/,
+                                 iconPixmap/*.scaled(decorationSignRect.adjusted(3, 2, -3, -1).size(),
+                                                                                                                Qt::KeepAspectRatio,
+                                                                                                                Qt::SmoothTransformation)*/);
         }
 
         painter->restore();
@@ -205,25 +213,31 @@ void ZCustomCheckableVerticalHeaderView::paintSection(QPainter *painter, const Q
 //=========================================================
 void ZCustomCheckableVerticalHeaderView::mousePressEvent(QMouseEvent* event)
 {
-    int logIndex = logicalIndexAt(event->pos());
-    if(!isSectionHidden(logIndex))
+    if(event->button() == Qt::LeftButton)
     {
-        int sectionPos = sectionViewportPosition(logIndex);
-        if(sectionPos >= 0 && sectionPos < length())
+        int logIndex = logicalIndexAt(event->pos());
+        if(!isSectionHidden(logIndex))
         {
-            int sectionHeight  = sectionSize(logIndex);
-            QSize sectionRectSize = QSize(viewport()->width(), sectionHeight);
-            QRect itemRect = QRect(QPoint(0, sectionPos), sectionRectSize);
-            QRect decorationRect = zh_decorationRect(itemRect);
-            if(decorationRect.contains(event->pos()))
+            int sectionPos = sectionViewportPosition(logIndex);
+            if(sectionPos >= 0 && sectionPos < length())
             {
-                // edit
-                emit zg_userChangesTermState(logIndex);
-                return;
+                int sectionHeight  = sectionSize(logIndex);
+                QSize sectionRectSize = QSize(viewport()->width(), sectionHeight);
+                QRect itemRect = QRect(QPoint(0, sectionPos), sectionRectSize);
+                QRect decorationRect = zh_decorationRect(itemRect);
+                if(decorationRect.contains(event->pos()))
+                {
+                    // edit
+                    emit zg_userChangesTermState(logIndex);
+                    return;
+                }
             }
         }
     }
+
     zv_pressedIndex = logicalIndexAt(event->pos());
+    QModelIndex pressedIndex = model()->index(zv_pressedIndex, 0);
+    setCurrentIndex(pressedIndex);
     QHeaderView::mousePressEvent(event);
 }
 //=========================================================

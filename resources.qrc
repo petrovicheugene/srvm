@@ -2,23 +2,14 @@
     <qresource prefix="/images">
         <file>SDC.ico</file>
         <file>ZWidgets/editclear.png</file>
-        <file>ZWidgets/sidebarRightBlueClose.png</file>
-        <file>ZWidgets/sidebarRightBlueOpen.png</file>
+        <file>ZWidgets/sidebarRightClose.png</file>
+        <file>ZWidgets/sidebarRightOpen.png</file>
         <file>SDC1.ico</file>
         <file>addGreen.png</file>
         <file>document-save.png</file>
         <file>document-save-as.png</file>
         <file>edit.png</file>
         <file>trashBasket.png</file>
-        <file>ATrashBasket2Red.png</file>
-        <file>CTrashBasket2Green.png</file>
-        <file>STrashBasket2Blue.png</file>
-        <file>ABlueRemove.png</file>
-        <file>CGreenRemove.png</file>
-        <file>SPurpleRemove.png</file>
-        <file>ARemove3Green.png</file>
-        <file>CRemove3Blue.png</file>
-        <file>SRemove3Purple.png</file>
         <file>Cursor.bmp</file>
         <file>CursorBlack.bmp</file>
         <file>CursorBlueGray.bmp</file>
@@ -47,7 +38,6 @@
         <file>thinCrossOrange.bmp</file>
         <file>thinCrossRed.bmp</file>
         <file>thinCrossWhite.bmp</file>
-        <file>eyeSignBlack.png</file>
         <file>cancel-red-1s.png</file>
         <file>check-green-1s.png</file>
         <file>minus-magenta-1s.png</file>
@@ -55,8 +45,8 @@
         <file>question-yellow-1s.png</file>
         <file>hSplitterHandle.png</file>
         <file>vSplitterHandle.png</file>
-        <file>ZWidgets/sidebarLeftBlueClose.png</file>
-        <file>ZWidgets/sidebarLeftBlueOpen.png</file>
+        <file>ZWidgets/sidebarLeftClose.png</file>
+        <file>ZWidgets/sidebarLeftOpen.png</file>
         <file>calc.png</file>
         <file>AGreen.png</file>
         <file>CBlue.png</file>
@@ -66,25 +56,94 @@
         <file>ECyan.png</file>
         <file>addGreen-1.png</file>
         <file>SDC_TA3.png</file>
-        <file>A-Plus1.png</file>
-        <file>C-Plus1.png</file>
-        <file>E-Plus1.png</file>
-        <file>S-Plus1.png</file>
-        <file>T-Plus1.png</file>
-        <file>W-Plus1.png</file>
         <file>addSpectrum-3.png</file>
         <file>removeSpectrum-3.png</file>
-        <file>addChemElement-4.png</file>
-        <file>removeChemElement-4.png</file>
-        <file>addSpectrum-5.png</file>
-        <file>removeSpectrum-5.png</file>
-        <file>addSpectrum-7.png</file>
         <file>addSpectrum-8.png</file>
-        <file>addSpectrum-9.png</file>
         <file>addSpectrum-10.png</file>
         <file>removeSpectrum-10.png</file>
         <file>removeSpectrum-8.png</file>
+        <file>addChemElement-5.ico</file>
         <file>addChemElement-5.png</file>
+        <file>removeChemElement-5.ico</file>
         <file>removeChemElement-5.png</file>
+        <file>addSpectrum-9.png</file>
+        <file>removeSpectrum-9.png</file>
+        <file>addSpeFolder-2.png</file>
+        <file>newSpeFolder-2.png</file>
+        <file>openSpeFolder-2.png</file>
+        <file>removeSpeFolder-2.png</file>
+        <file>saveAsSpeArray-1.png</file>
+        <file>saveSpeArray-1.png</file>
+        <file>help.png</file>
+        <file>info.png</file>
+        <file>exitApp.png</file>
+        <file>close.png</file>
+        <file>SDC_TA4.png</file>
+        <file>addCalibration.png</file>
+        <file>newCalibration-1.png</file>
+        <file>openCalibration-1.png</file>
+        <file>openCalibration-2.png</file>
+        <file>removeCalibration-1.png</file>
+        <file>saveAsCalibration-1.png</file>
+        <file>saveCalibration.png</file>
+        <file>clear-1.png</file>
+        <file>addCalibration-3.png</file>
+        <file>newCalibration-3.png</file>
+        <file>openCalibration-3.png</file>
+        <file>removeCalibration-3.png</file>
+        <file>saveAsCalibration-3.png</file>
+        <file>saveCalibration-3.png</file>
+        <file>copy-1.png</file>
+        <file>paste-1.png</file>
+        <file>duplicateCalibration-3.png</file>
+        <file>inverseBlue-1.png</file>
+        <file>inverseGreen-1.png</file>
+        <file>eyeSignBlack.png</file>
+        <file>checked-16.png</file>
+        <file>Unchecked-16.png</file>
+        <file>question.png</file>
+        <file>inverseRed-2.png</file>
+        <file>invisible-1.png</file>
+        <file>visible-1.png</file>
+        <file>horizontalDecrease-1.png</file>
+        <file>horizontalIncrease-1.png</file>
+        <file>verticalDecrease-1.png</file>
+        <file>verticalIncrease-1.png</file>
+        <file>horizontalDecrease-2.png</file>
+        <file>horizontalIncrease-2.png</file>
+        <file>verticalDecrease-2.png</file>
+        <file>verticalIncrease-2.png</file>
+        <file>verticalIncrease-3.png</file>
+        <file>energy.png</file>
+        <file>fitInSceneRect.png</file>
+        <file>gridVisible-2.png</file>
+        <file>gridVisible-3.png</file>
+        <file>ZWidgets/sidebarLeftClose-1.png</file>
+        <file>ZWidgets/sidebarLeftOpen-1.png</file>
+        <file>ZWidgets/sidebarRightClose-1.png</file>
+        <file>ZWidgets/sidebarRightOpen-1.png</file>
+        <file>addWindow-1.png</file>
+        <file>removeWindow-1.png</file>
+        <file>addChemElement-6.png</file>
+        <file>addSpeFolder-3.png</file>
+        <file>addWindow-2.png</file>
+        <file>removeChemElement-6.png</file>
+        <file>removeSpeFolder-3.png</file>
+        <file>removeWindow-2.png</file>
+        <file>newSpeFolder-3.png</file>
+        <file>openSpeFolder-3.png</file>
+        <file>saveAsSpeArray-2.png</file>
+        <file>saveSpeArray-2.png</file>
+        <file>reset.png</file>
+        <file>addMixedTerm.png</file>
+        <file>newMixedTerm.png</file>
+        <file>removeMixedTerm.png</file>
+        <file>addCustomTerm.png</file>
+        <file>newCustomTerm.png</file>
+        <file>removeCustomTerm.png</file>
+        <file>SDC1.png</file>
+        <file>ZWidgets/blue_home.ico</file>
+        <file>ZWidgets/blue_left.ico</file>
+        <file>ZWidgets/blue_right.ico</file>
     </qresource>
 </RCC>

@@ -354,19 +354,19 @@ QPixmap ZTermCorrelationTableManager::zp_termStateIcon(int row) const
         pixmap = QPixmap(":/images/calc.png");
         break;
     case ZAbstractTerm::TS_CONST_INCLUDED :
-        pixmap = QPixmap(":/images/check-green-1s.png");
+        pixmap = QPixmap(glConstIncludedIconString);
         break;
     case ZAbstractTerm::TS_EXAM_WAITING :
-        pixmap = QPixmap(":/images/question-yellow-1s.png");
+        pixmap = QPixmap(glExamWaitingIconString);
         break;
     case ZAbstractTerm::TS_INCLUDED :
-        pixmap = QPixmap(":/images/plus-blue-1s.png");
+        pixmap = QPixmap(glIncludedIconString);
         break;
     case ZAbstractTerm::TS_EXCEPTED :
-        pixmap = QPixmap(":/images/minus-magenta-1s.png");
+        pixmap = QPixmap(glExcludedIconString);
         break;
     case ZAbstractTerm::TS_CONST_EXCLUDED :
-        pixmap = QPixmap(":/images/cancel-red-1s.png");
+        pixmap = QPixmap(glConstExcludedIconString);
         break;
 
     case ZAbstractTerm::TS_NOT_DEFINED :

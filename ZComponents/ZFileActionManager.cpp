@@ -56,18 +56,112 @@ QList<QAction*> ZFileActionManager::zp_actionList() const
     return actionList;
 }
 //======================================================
+void ZFileActionManager::zp_initOpenCalibrationFromFileAction(QAction*& action) const
+{
+    action->setIcon(zv_openCalibrationFromFileAction->icon());
+    action->setText(zv_openCalibrationFromFileAction->text());
+    action->setIconText(zv_openCalibrationFromFileAction->iconText());
+
+    action->setToolTip(zv_openCalibrationFromFileAction->toolTip());
+    action->setCheckable(zv_openCalibrationFromFileAction->isCheckable());
+    action->setChecked(zv_openCalibrationFromFileAction->isChecked());
+    action->setEnabled(zv_openCalibrationFromFileAction->isEnabled());
+
+    connect (action, &QAction::triggered,
+             zv_openCalibrationFromFileAction, &QAction::trigger);
+}
+//======================================================
+void ZFileActionManager::zp_initSaveCalibrationFromFileAction(QAction*& action) const
+{
+    action->setIcon(zv_saveCalibrationToFileAction->icon());
+    action->setText(zv_saveCalibrationToFileAction->text());
+    action->setIconText(zv_saveCalibrationToFileAction->iconText());
+
+    action->setToolTip(zv_saveCalibrationToFileAction->toolTip());
+    action->setCheckable(zv_saveCalibrationToFileAction->isCheckable());
+    action->setChecked(zv_saveCalibrationToFileAction->isChecked());
+    action->setEnabled(zv_saveCalibrationToFileAction->isEnabled());
+
+    connect (action, &QAction::triggered,
+             zv_saveCalibrationToFileAction, &QAction::trigger);
+}
+//======================================================
+void ZFileActionManager::zp_initSaveAsCalibrationFromFileAction(QAction*& action) const
+{
+    action->setIcon(zv_saveCalibrationAsFileAction->icon());
+    action->setText(zv_saveCalibrationAsFileAction->text());
+    action->setIconText(zv_saveCalibrationAsFileAction->iconText());
+
+    action->setToolTip(zv_saveCalibrationAsFileAction->toolTip());
+    action->setCheckable(zv_saveCalibrationAsFileAction->isCheckable());
+    action->setChecked(zv_saveCalibrationAsFileAction->isChecked());
+    action->setEnabled(zv_saveCalibrationAsFileAction->isEnabled());
+
+    connect (action, &QAction::triggered,
+             zv_saveCalibrationAsFileAction, &QAction::trigger);
+
+}
+//======================================================
+void ZFileActionManager::zp_initOpenSpectrumArrayAction(QAction*& action) const
+{
+    action->setIcon(zv_openArrayFromFileAction->icon());
+    action->setText(zv_openArrayFromFileAction->text());
+    action->setIconText(zv_openArrayFromFileAction->iconText());
+
+    action->setToolTip(zv_openArrayFromFileAction->toolTip());
+    action->setCheckable(zv_openArrayFromFileAction->isCheckable());
+    action->setChecked(zv_openArrayFromFileAction->isChecked());
+    action->setEnabled(zv_openArrayFromFileAction->isEnabled());
+
+    connect (action, &QAction::triggered,
+             zv_openArrayFromFileAction, &QAction::trigger);
+
+}
+//======================================================
+void ZFileActionManager::zp_initSaveSpectrumArrayAction(QAction*& action) const
+{
+    action->setIcon(zv_saveArrayToFileAction->icon());
+    action->setText(zv_saveArrayToFileAction->text());
+    action->setIconText(zv_saveArrayToFileAction->iconText());
+
+    action->setToolTip(zv_saveArrayToFileAction->toolTip());
+    action->setCheckable(zv_saveArrayToFileAction->isCheckable());
+    action->setChecked(zv_saveArrayToFileAction->isChecked());
+    action->setEnabled(zv_saveArrayToFileAction->isEnabled());
+
+    connect (action, &QAction::triggered,
+             zv_saveArrayToFileAction, &QAction::trigger);
+
+}
+//======================================================
+void ZFileActionManager::zp_initSaveAsSpectrumArrayAction(QAction*& action) const
+{
+    action->setIcon(zv_saveArrayAsFileAction->icon());
+    action->setText(zv_saveArrayAsFileAction->text());
+    action->setIconText(zv_saveArrayAsFileAction->iconText());
+
+    action->setToolTip(zv_saveArrayAsFileAction->toolTip());
+    action->setCheckable(zv_saveArrayAsFileAction->isCheckable());
+    action->setChecked(zv_saveArrayAsFileAction->isChecked());
+    action->setEnabled(zv_saveArrayAsFileAction->isEnabled());
+
+    connect (action, &QAction::triggered,
+             zv_saveArrayAsFileAction, &QAction::trigger);
+
+}
+//======================================================
 void ZFileActionManager::zh_createActions()
 {
-    zv_openArrayFromFileAction = new QAction(QIcon(":/images/document-open.png"), tr("&Open spectrum array list"), this);
-    zv_saveArrayToFileAction = new QAction(QIcon(":/images/document-open.png"), tr("&Save spectrum array list"), this);
+    zv_openArrayFromFileAction = new QAction(QIcon(glOpenArrayIconString), tr("&Open spectrum array list"), this);
+    zv_saveArrayToFileAction = new QAction(QIcon(glSaveArrayIconString), tr("&Save spectrum array list"), this);
     zv_saveArrayToFileAction->setEnabled(false);
-    zv_saveArrayAsFileAction = new QAction(QIcon(":/images/document-open.png"), tr("Save spectrum array list &as..."), this);
+    zv_saveArrayAsFileAction = new QAction(QIcon(glSaveAsArrayIconString), tr("Save spectrum array list &as..."), this);
     zv_saveArrayAsFileAction->setEnabled(false);
 
-    zv_openCalibrationFromFileAction = new QAction(QIcon(":/images/document-open.png"), tr("Open &calibrations"), this);
-    zv_saveCalibrationToFileAction = new QAction(QIcon(":/images/document-open.png"), tr("Save calibration"), this);
+    zv_openCalibrationFromFileAction = new QAction(QIcon(glOpenCalibrationIconString), tr("Open &calibrations"), this);
+    zv_saveCalibrationToFileAction = new QAction(QIcon(glSaveCalibrationIconString), tr("Save calibration"), this);
     zv_saveCalibrationToFileAction->setEnabled(false);
-    zv_saveCalibrationAsFileAction = new QAction(QIcon(":/images/document-open.png"), tr("Save calibration as..."), this);
+    zv_saveCalibrationAsFileAction = new QAction(QIcon(glSaveAsCalibrationIconString), tr("Save calibration as..."), this);
     zv_saveCalibrationAsFileAction->setEnabled(false);
     // zv_loadSpectrumFromFileAction = new QAction(QIcon(":/images/document-open.png"), tr("Append &spectra to array"), this);
 }
@@ -469,16 +563,16 @@ void ZFileActionManager::zp_saveCalibrationToFile(const ZCalibration* calibratio
     // TODO signal that saving has been completed
 }
 //======================================================
-void ZFileActionManager::zp_onArrayListDirtyChange(bool dirty)
+void ZFileActionManager::zp_onArrayListDirtyChange(bool dirty, bool currentArrayExists)
 {
-    zv_saveArrayToFileAction->setEnabled(dirty); ;
-    zv_saveArrayAsFileAction->setEnabled(dirty);
+    zv_saveArrayToFileAction->setEnabled(dirty);
+    zv_saveArrayAsFileAction->setEnabled(dirty || currentArrayExists);
 }
 //======================================================
-void ZFileActionManager::zp_onCurrentCalibrationDirtyChange(bool dirty)
+void ZFileActionManager::zp_onCurrentCalibrationDirtyChange(bool dirty, bool currentCalibrationExists)
 {
     zv_saveCalibrationToFileAction->setEnabled(dirty);
-    zv_saveCalibrationAsFileAction->setEnabled(dirty);
+    zv_saveCalibrationAsFileAction->setEnabled(dirty || currentCalibrationExists);
 }
 //======================================================
 void ZFileActionManager::zp_defineSpectrumFilesAndInitAppending(int arrayIndex)

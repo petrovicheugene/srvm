@@ -208,6 +208,7 @@ void ZPlotterDataManager::zp_currentSpectrumChanged(qint64 currentSpectrumId,
 void ZPlotterDataManager::zh_createComponents()
 {
     zv_switchRuleMetrixAction = new QAction(this);
+    zv_switchRuleMetrixAction->setIcon(QIcon(glAxisToEnergyIconString));
     zv_switchRuleMetrixAction->setCheckable(true);
 }
 //===========================================================

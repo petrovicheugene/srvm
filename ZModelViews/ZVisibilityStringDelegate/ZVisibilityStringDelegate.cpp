@@ -71,14 +71,16 @@ void	ZVisibilityStringDelegate::paint(QPainter* painter, const QStyleOptionViewI
         painter->save();
         painter->setPen(newOption.palette.color(QPalette::Mid));
         painter->setBrush(QBrush(decorationColor));
-        painter->drawRect(decorationRect.adjusted(1, 0, -2, 0));
+        painter->drawRect(decorationRect.adjusted(1, 0, -1, 0));
 
         bool visible = index.data(VisibleRole).toBool();
         if(visible)
         {
             QPixmap pixmap(":/images/eyeSignBlack.png");
             QRect paintRect = pixmap.rect();
-            paintRect.moveCenter(decorationRect.adjusted(1, 0, -2, 0).center());
+            //paintRect.moveCenter(decorationRect.adjusted(1, 0, -2, 0).center());
+            paintRect.moveCenter(decorationRect.center());
+
             painter->drawPixmap(paintRect, pixmap);
         }
     }

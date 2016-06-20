@@ -151,15 +151,15 @@ void ZWidgetWithSidebar::zh_createComponents(QString title)
 
     if(zv_sideBarOnLeft)
     {
-        zv_closePixmap = QPixmap(":/images/ZWidgets/sidebarRightBlueClose.png");
-        zv_openPixmap = QPixmap(":/images/ZWidgets/sidebarRightBlueOpen.png");
+        zv_closePixmap = QPixmap(glSidebarRightCloseIconString);
+        zv_openPixmap = QPixmap(glSidebarRightOpenIconString);
         basementLayout->addWidget(zv_hideLabel, 0, Qt::AlignLeft);
         basementLayout->addWidget(zv_infoLabel, 999999, Qt::AlignLeft);
     }
     else
     {
-        zv_closePixmap = QPixmap(":/images/ZWidgets/sidebarLeftBlueClose.png");
-        zv_openPixmap = QPixmap(":/images/ZWidgets/sidebarLeftBlueOpen.png");
+        zv_closePixmap = QPixmap(glSidebarLeftCloseIconString);
+        zv_openPixmap = QPixmap(glSidebarLeftOpenIconString);
         basementLayout->addWidget(zv_infoLabel, 999999, Qt::AlignRight);
         basementLayout->addWidget(zv_hideLabel, 0, Qt::AlignRight);
     }
