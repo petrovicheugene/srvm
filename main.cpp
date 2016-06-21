@@ -38,6 +38,8 @@ extern const QString glExitAppIconString = ":/images/close.png";
 extern const QString glAboutIconString = ":/images/info.png";
 extern const QString glHelpIconString = ":/images/help.png";
 
+extern const QString glVisibleSignIconString = ":/images/eyeSignBlack-1.png";
+
 extern const QString glVisibleIconString = ":/images/visible-1.png";
 extern const QString glInvisibleIconString = ":/images/invisible-1.png";
 extern const QString glInverseVisibleIconString = ":/images/inverseRed-2.png";
@@ -47,6 +49,7 @@ extern const QString glConstIncludedIconString = ":/images/checked-16.png";
 extern const QString glExamWaitingIconString = ":/images/question.png";
 extern const QString glIncludedIconString = ":/images/openSpeFolder-2.png";
 extern const QString glExcludedIconString = ":/images/openSpeFolder-2.png";
+extern const QString glBaseTermIconString = ":/images/B-sign-16.png";
 
 extern const QString glOpenArrayIconString = ":/images/openSpeFolder-3.png";
 extern const QString glSaveArrayIconString = ":/images/saveSpeArray-2.png";

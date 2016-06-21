@@ -130,11 +130,29 @@ QVariant	ZTermCorrelationTableModel::headerData(int section, Qt::Orientation ori
         }
     }
 
-    if(role == Qt::DecorationRole)
+    //    if(role == Qt::DecorationRole)
+    //    {
+    //        if(orientation == Qt::Vertical)
+    //        {
+    //            return QVariant(QColor(Qt::red));
+    //        }
+    //    }
+
+    if(role == Qt::FontRole)
     {
-        if(orientation == Qt::Vertical)
+        if(orientation == Qt::Horizontal)
         {
-            return QVariant(QColor(Qt::red));
+            QFont font = QAbstractItemModel::headerData(section, orientation, role).value<QFont>();
+            font.setBold(true);
+            return QVariant(font);
+        }
+    }
+
+    if(role == Qt::ForegroundRole)
+    {
+        if(orientation == Qt::Horizontal)
+        {
+            return QVariant(QColor(Qt::darkGreen));
         }
     }
 

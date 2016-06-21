@@ -42,6 +42,8 @@ extern const QString glExitAppIconString;
 extern const QString glAboutIconString;
 extern const QString glHelpIconString;
 
+extern const QString glVisibleSignIconString;
+
 extern const QString glVisibleIconString;
 extern const QString glInvisibleIconString;
 extern const QString glInverseVisibleIconString;
@@ -51,7 +53,7 @@ extern const QString glConstIncludedIconString;
 extern const QString glExamWaitingIconString;
 extern const QString glIncludedIconString;
 extern const QString glExcludedIconString;
-
+extern const QString glBaseTermIconString;
 
 extern const QString glOpenArrayIconString;
 extern const QString glSaveArrayIconString;

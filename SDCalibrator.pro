@@ -10,13 +10,13 @@ greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
 #PRO VARS
 #Application version
-RC_ICONS = "SDC1.ico"
+RC_ICONS = "SDC2.ico"
 
 VER_MAJ=0
 VER_MIN=0
-VER_PAT=23
+VER_PAT=25
 
-VER_RELEASE=a
+VER_RELEASE=b
 
 EXE_BASE_NAME=SDCalibrator
 QMAKE_TARGET_PRODUCT="SD Calibrator"

@@ -351,7 +351,7 @@ QPixmap ZTermCorrelationTableManager::zp_termStateIcon(int row) const
     switch(state)
     {
     case ZAbstractTerm::TS_BASE :
-        pixmap = QPixmap(":/images/calc.png");
+        pixmap = QPixmap(glBaseTermIconString);
         break;
     case ZAbstractTerm::TS_CONST_INCLUDED :
         pixmap = QPixmap(glConstIncludedIconString);

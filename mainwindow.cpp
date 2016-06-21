@@ -576,7 +576,7 @@ void MainWindow::zh_onAboutAction()
      QString htmlText = QString(
                  "<table border=0 cellspacing = 15>"
                  "<tr>"
-                 "<td align = left><img src=:/images/SDC1.png></td>"
+                 "<td align = left><img src=:/images/SDC2.png></td>"
                  "<td align = left><h1 align = center>%1</h1>"
                  "</td>"
                  "</tr>"

@@ -76,7 +76,7 @@ void	ZVisibilityStringDelegate::paint(QPainter* painter, const QStyleOptionViewI
         bool visible = index.data(VisibleRole).toBool();
         if(visible)
         {
-            QPixmap pixmap(":/images/eyeSignBlack.png");
+            QPixmap pixmap(glVisibleSignIconString);
             QRect paintRect = pixmap.rect();
             //paintRect.moveCenter(decorationRect.adjusted(1, 0, -2, 0).center());
             paintRect.moveCenter(decorationRect.center());
