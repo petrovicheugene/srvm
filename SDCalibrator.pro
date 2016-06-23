@@ -14,13 +14,13 @@ RC_ICONS = "SDC2.ico"
 
 VER_MAJ=0
 VER_MIN=0
-VER_PAT=25
+VER_PAT=26
 
 VER_RELEASE=b
 
 EXE_BASE_NAME=SDCalibrator
 QMAKE_TARGET_PRODUCT="SD Calibrator"
-QMAKE_TARGET_DESCRIPTION="Creates calibrations for spectrometers"
+QMAKE_TARGET_DESCRIPTION="Creation of spectrometer calibration"
 QMAKE_TARGET_COMPANY="TechnoAnalyt"
 QMAKE_TARGET_COPYRIGHT="Copyright © $${QMAKE_TARGET_COMPANY} Ltd. 2015, 2016.  All rights reserved."
 COMPANY_URL=tehnoanalit.com
@@ -37,7 +37,7 @@ TARGET=$${EXE_BASE_NAME}-$${VERSION}
 TARGET=$${EXE_BASE_NAME}-$${VERSION}.$${VER_RELEASE}
 }
 
-#Define the preprocessor macro to get the application version in our application.
+#Define the preprocessor macro to get the application version in the application.
 DEFINES += APP_PRODUCT=\"\\\"$${QMAKE_TARGET_PRODUCT}\\\"\"
 DEFINES += APP_EXE_BASE_NAME=\"\\\"$${EXE_BASE_NAME}\\\"\"
 DEFINES += APP_VERSION=\"\\\"$${VERSION}.$${VER_RELEASE}\\\"\"
@@ -246,6 +246,4 @@ RESOURCES += \
     resources.qrc
 
 DISTFILES += \
-    PLAN \
-    SettingsToDo.txt \
     myBacklog.txt

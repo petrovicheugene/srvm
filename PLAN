@@ -1,6 +1,0 @@
-1. Storing calibration to file and load calibration from file
-2. Correlation in case fractional equation is not to concentration but to (Base/N)/C
-3. Fractional equation settings: Normalization, Using Base term as an influence term
-4. Recalculation calibration factors after a single change in calibration
-5. Copy calibration or windows
-6. Mixed and Custom terms

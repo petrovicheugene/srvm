@@ -563,7 +563,7 @@ void MainWindow::zh_onAboutAction()
      //    QString htmlText = QString(
      //                "<table border=0 cellspacing = 15>"
      //                "<tr>"
-     //                "<td align = left><img src=:/images/CR3_64.png></td>"
+     //                "<td align = left><img src=:/images/Images/CR3_64.png></td>"
      //                "<td align = left><h2 align = center>CRecalc 2.3</h2>"
      //                "<p>Copyright &copy; TechnoAnalyt Ltd., 2014.  All rights reserved.</p>"
      //                "<p>%1</p>"
@@ -576,7 +576,7 @@ void MainWindow::zh_onAboutAction()
      QString htmlText = QString(
                  "<table border=0 cellspacing = 15>"
                  "<tr>"
-                 "<td align = left><img src=:/images/SDC2.png></td>"
+                 "<td align = left><img src=:/images/Images/SDC2.png></td>"
                  "<td align = left><h1 align = center>%1</h1>"
                  "</td>"
                  "</tr>"
