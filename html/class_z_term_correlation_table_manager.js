@@ -1,0 +1,36 @@
+var class_z_term_correlation_table_manager =
+[
+    [ "OperationType", "class_z_term_correlation_table_manager.html#a8f85bb56c692644bffdfd7a495d5a572", [
+      [ "TOT_BEGIN_RESET", "class_z_term_correlation_table_manager.html#a8f85bb56c692644bffdfd7a495d5a572addd55a8852ea75f25122b832013319a3", null ],
+      [ "TOT_END_RESET", "class_z_term_correlation_table_manager.html#a8f85bb56c692644bffdfd7a495d5a572a5e9900810766939e8e67171dfac89003", null ],
+      [ "TOT_BEGIN_INSERT_ROW", "class_z_term_correlation_table_manager.html#a8f85bb56c692644bffdfd7a495d5a572abce53a4ac93175e82720f8dd88e67a57", null ],
+      [ "TOT_END_INSERT_ROW", "class_z_term_correlation_table_manager.html#a8f85bb56c692644bffdfd7a495d5a572a511cd9413d91c08384749e9500a0d8ed", null ],
+      [ "TOT_BEGIN_REMOVE_ROW", "class_z_term_correlation_table_manager.html#a8f85bb56c692644bffdfd7a495d5a572a209044eba825d1f02a01aa7aef36c1b1", null ],
+      [ "TOT_END_REMOVE_ROW", "class_z_term_correlation_table_manager.html#a8f85bb56c692644bffdfd7a495d5a572aaba03fed5465cf416d1f5342cca10a7d", null ],
+      [ "TOT_BEGIN_INSERT_COLUMN", "class_z_term_correlation_table_manager.html#a8f85bb56c692644bffdfd7a495d5a572abcd2b432d953d92414b621ea8d35b013", null ],
+      [ "TOT_END_INSERT_COLUMN", "class_z_term_correlation_table_manager.html#a8f85bb56c692644bffdfd7a495d5a572a7813692a012e990ae43b1afe7d1eec70", null ],
+      [ "TOT_BEGIN_REMOVE_COLUMN", "class_z_term_correlation_table_manager.html#a8f85bb56c692644bffdfd7a495d5a572a034a952e872cc0c119f5f7fbc5b202bd", null ],
+      [ "TOT_END_REMOVE_COLUMN", "class_z_term_correlation_table_manager.html#a8f85bb56c692644bffdfd7a495d5a572a1e43a91dd4289db9dcfe27e386b9ea86", null ],
+      [ "TOT_DATA_CHANGED", "class_z_term_correlation_table_manager.html#a8f85bb56c692644bffdfd7a495d5a572a5eaaa4fbbef181260ed4bdf936630982", null ],
+      [ "TOT_HORIZONTAL_HEADER_CHANGED", "class_z_term_correlation_table_manager.html#a8f85bb56c692644bffdfd7a495d5a572ad935d67d580eb7ba0aa2a37a3ca5d472", null ],
+      [ "TOT_VERTICAL_HEADER_CHANGED", "class_z_term_correlation_table_manager.html#a8f85bb56c692644bffdfd7a495d5a572a68883aa7e71d1e2963dd1fe144ed3f63", null ]
+    ] ],
+    [ "ZTermCorrelationTableManager", "class_z_term_correlation_table_manager.html#a4d9017dfb241522e60ab209434e7905b", null ],
+    [ "zg_calculateCalibrationQualityData", "class_z_term_correlation_table_manager.html#a2627f4e67867cdea6cdd2eb099e2ee48", null ],
+    [ "zg_currentOperation", "class_z_term_correlation_table_manager.html#a620b19670310908fe2d61d7734c100af", null ],
+    [ "zg_currentTermChanged", "class_z_term_correlation_table_manager.html#a1819cb001ef6dc7ab3cf344d37634d59", null ],
+    [ "zg_message", "class_z_term_correlation_table_manager.html#a70a301500f478c07e8b5c5d3546887ac", null ],
+    [ "zp_cellColor", "class_z_term_correlation_table_manager.html#af560bd52a4424e6d63f716a9a47b8091", null ],
+    [ "zp_columnCount", "class_z_term_correlation_table_manager.html#a51b910e8fdccb086dfa613d05e99febd", null ],
+    [ "zp_connectToCalibrationRepository", "class_z_term_correlation_table_manager.html#ad3eb770cd78631cc49da886625bde62c", null ],
+    [ "zp_connectToJointSpectraDataManager", "class_z_term_correlation_table_manager.html#ab9f772eed8bf7103aca3a0b49fa19a4c", null ],
+    [ "zp_connectToSpectrumArrayRepository", "class_z_term_correlation_table_manager.html#a1e27373c25566b95593bc822f94625ec", null ],
+    [ "zp_data", "class_z_term_correlation_table_manager.html#abcb8760dbb385f22e35eae2c641df649", null ],
+    [ "zp_horizontalColumnName", "class_z_term_correlation_table_manager.html#a67c7423820374f9308ce45dba7c53898", null ],
+    [ "zp_isRowEditable", "class_z_term_correlation_table_manager.html#adf90a9cccb82e2ca43c6b16cbc0ea2cf", null ],
+    [ "zp_rowCount", "class_z_term_correlation_table_manager.html#aaa74d6310a7dc147e401269c3a3ffd0f", null ],
+    [ "zp_setData", "class_z_term_correlation_table_manager.html#ad34a917758fd6330c3ad4806d8faace3", null ],
+    [ "zp_setNextUsersTermState", "class_z_term_correlation_table_manager.html#ad4a51ce00b73c4d8f00854108b9014f7", null ],
+    [ "zp_termStateIcon", "class_z_term_correlation_table_manager.html#ade8b1716767133b9cbc3bf4b54378a79", null ],
+    [ "zp_verticalColumnName", "class_z_term_correlation_table_manager.html#a1da876dc22c26e2d4c53852417c627e4", null ]
+];
