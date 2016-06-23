@@ -964,7 +964,7 @@ int ZCalibration::zp_createTerm(QList<int>& windowIndexList,
 
     // define next term index
     int termIndex = zh_findNextTermIndex(termType);
-    ZAbstractTerm* term;
+    ZAbstractTerm* term = 0;
     if(termType == ZAbstractTerm::TT_SIMPLE)
     {
         if(windowIndexList.isEmpty())

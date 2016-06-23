@@ -215,7 +215,7 @@ bool ZVisibilityStringDelegate::eventFilter(QObject *object, QEvent *event)
         }
 
         QRect itemRect = itemView->visualRect(itemIndex);
-        QStyleOptionViewItemV4 newOption;
+        QStyleOptionViewItem newOption;
         newOption.initFrom(itemView);
         newOption.widget = itemView;
 

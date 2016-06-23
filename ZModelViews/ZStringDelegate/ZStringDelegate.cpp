@@ -19,7 +19,7 @@ QWidget* ZStringDelegate::createEditor(QWidget* parent, const QStyleOptionViewIt
 //=====================================================
 void	ZStringDelegate::paint(QPainter* painter, const QStyleOptionViewItem& option, const QModelIndex& index) const
 {
-    QStyleOptionViewItemV4 newOption(option);
+    QStyleOptionViewItem newOption(option);
     newOption.state =  newOption.state | QStyle::State_Active;
 
     QStyledItemDelegate::paint(painter, option, index);

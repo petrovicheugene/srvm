@@ -166,7 +166,7 @@ void ZCustomCheckableVerticalHeaderView::paintSection(QPainter *painter, const Q
     if(decorationRect.normalized().isValid())
     {
         // draw the empty decoration rect
-        QStyleOptionViewItemV4 newOption;
+        QStyleOptionViewItem newOption;
         newOption.palette = this->palette();
         newOption.rect = opt.rect;
         newOption.features |= QStyleOptionViewItem::HasDecoration;
@@ -269,7 +269,7 @@ QRect ZCustomCheckableVerticalHeaderView::zh_decorationRect(const QRect& section
         style = QApplication::style();
     }
 
-    QStyleOptionViewItemV4 option;
+    QStyleOptionViewItem option;
     option.features |= QStyleOptionViewItem::HasDecoration;
     int pm = style->pixelMetric(QStyle::PM_SmallIconSize, 0);
     option.decorationSize = QSize(pm, pm);

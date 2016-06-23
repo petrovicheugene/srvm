@@ -44,7 +44,7 @@ QWidget* ZNumericDelegate::createEditor ( QWidget * parent, const QStyleOptionVi
 //=================================================================
 void	ZNumericDelegate::paint ( QPainter * painter, const QStyleOptionViewItem & option, const QModelIndex & index ) const
 {
-    QStyleOptionViewItemV4 newOption(option);
+    QStyleOptionViewItem newOption(option);
 
     if(!zv_inheritFontBoldFlag)
     {

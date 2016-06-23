@@ -40,7 +40,7 @@ void ZSpectrumTableDelegate::paint(QPainter* painter, const QStyleOptionViewItem
 
     QPalette palette = option.palette;
 
-    QStyleOptionViewItemV4 newOption(option);
+    QStyleOptionViewItem newOption(option);
     newOption.state =  newOption.state | QStyle::State_Active;
     newOption.rect = pixmap.rect();
     initStyleOption(&newOption, index);
@@ -244,7 +244,7 @@ bool ZSpectrumTableDelegate::eventFilter(QObject *object, QEvent *event)
         }
 
         QRect itemRect = itemView->visualRect(itemIndex);
-        QStyleOptionViewItemV4 newOption;
+        QStyleOptionViewItem newOption;
         newOption.initFrom(itemView);
         newOption.widget = itemView;
 

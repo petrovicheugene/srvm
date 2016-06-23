@@ -14,7 +14,7 @@ bool ZCustomTerm::zp_calcValue(const ZAbstractSpectrum * spectrum, qreal& value)
 //===================================================================
 bool ZCustomTerm::zp_calcTermVariablePart(const ZAbstractSpectrum* spectrum, qreal &value)  // w/o factor
 {
-
+    return false;
 }
 //===================================================================
 bool ZCustomTerm::zp_termBelongsToWindow(const ZCalibrationWindow* window) const

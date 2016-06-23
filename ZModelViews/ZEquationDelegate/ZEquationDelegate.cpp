@@ -24,7 +24,7 @@ QWidget* ZEquationDelegate::createEditor(QWidget* parent, const QStyleOptionView
 //======================================================================
 void	ZEquationDelegate::paint(QPainter* painter, const QStyleOptionViewItem& option, const QModelIndex& index) const
 {
-    QStyleOptionViewItemV4 newOption(option);
+    QStyleOptionViewItem newOption(option);
     newOption.state =  newOption.state | QStyle::State_Active;
 
     QStyledItemDelegate::paint(painter, newOption, index);
