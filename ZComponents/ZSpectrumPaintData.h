@@ -5,6 +5,7 @@
 #include <QVector>
 #include <QPointF>
 #include <QMetaType>
+#include <QColor>
 //==========================================================
 struct ZSpectrumPaintData
 {

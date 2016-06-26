@@ -344,8 +344,8 @@ void ZCorrelationPlotterDataManager::zh_rebuildChart()
     if(!plotScaled)
     {
         zv_plotter->zp_fitInBoundingRect();
-//        QMetaObject::invokeMethod(zv_plotter, "zp_fitInBoundingRect",
-//                                  Qt::QueuedConnection);
+        //        QMetaObject::invokeMethod(zv_plotter, "zp_fitInBoundingRect",
+        //                                  Qt::QueuedConnection);
 
     }
 }
@@ -651,7 +651,7 @@ void ZCorrelationPlotterDataManager::zh_recalcAndSetSceneRect(qreal maxX, qreal 
                                                               const ZChartPointOptions* chartPointOptions)
 {
     // increase rect if necessary
-    if(maxX == minX && maxX == 0)
+    if(maxX == minX && maxX == 0.0)
     {
         maxX = zv_defaultSceneRect.width();
         minX = 0.0;

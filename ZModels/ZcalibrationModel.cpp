@@ -155,7 +155,7 @@ QVariant ZCalibrationModel::data(const QModelIndex & index, int role) const
     {
         if(zv_calibrationRepository->zp_isDirty(index.row()))
         {
-            return QVariant(QColor(Qt::red));
+            return QVariant(QColor(Qt::darkRed));
         }
         else
         {

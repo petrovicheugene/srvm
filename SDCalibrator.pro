@@ -14,7 +14,7 @@ RC_ICONS = "SDC2.ico"
 
 VER_MAJ=0
 VER_MIN=0
-VER_PAT=26
+VER_PAT=28
 
 VER_RELEASE=b
 
@@ -152,7 +152,6 @@ SOURCES += main.cpp \
     ZComponents/ZRawTerm.cpp \
     ZComponents/ZRawWindow.cpp
 
-
 HEADERS  += \
     MainWindow.h \
     ZComponents/ZSpectrumArray.h \
@@ -240,7 +239,6 @@ HEADERS  += \
     ZModelViews/ZActiveStyledItemDelegate.h \
     ZComponents/ZRawTerm.h \
     ZComponents/ZRawWindow.h
-
 
 RESOURCES += \
     resources.qrc

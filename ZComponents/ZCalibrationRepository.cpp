@@ -1156,7 +1156,25 @@ void ZCalibrationRepository::zh_onRemoveCalibrationsAction()
 {
     QList<int> selectedCalibrationIndexList;
     emit zg_requestSelectedCalibrationIndexList(selectedCalibrationIndexList);
+
+    QString calibrationString;
+
     if(selectedCalibrationIndexList.isEmpty())
+    {
+        return;
+    }
+    else if(selectedCalibrationIndexList.count() == 1)
+    {
+        calibrationString = tr("calibration");
+    }
+    else
+    {
+        calibrationString = tr("calibrations");
+    }
+
+    QString question = tr("Do you want to remove selected %1 from the list?").arg(calibrationString);
+    if(QMessageBox::question(0, tr("Calibration removing"), question, QMessageBox::Yes, QMessageBox::No)
+            == QMessageBox::No)
     {
         return;
     }
@@ -1222,14 +1240,23 @@ void ZCalibrationRepository::zh_onRemoveWindowAction()
 
     QList<int> selectedWindowList;
     emit zg_requestSelectedWindowIndexList(selectedWindowList);
+    QString windowString;
     if(selectedWindowList.isEmpty())
     {
-        QString string = tr("There is no window to remove!");
-        QMessageBox::critical(0, tr("Window removing"), string, QMessageBox::Ok);
+//        QString string = tr("There is no window to remove!");
+//        QMessageBox::critical(0, tr("Window removing"), string, QMessageBox::Ok);
         return;
     }
+    else if(selectedWindowList.count() == 1)
+    {
+        windowString = tr("window");
+    }
+    else
+    {
+        windowString = tr("windows");
+    }
 
-    QString question = tr("Do you want to remove the selected windows from the list?");
+    QString question = tr("Do you want to remove the selected %1 from the list?").arg(windowString);
     if(QMessageBox::question(0, tr("Window removing"), question, QMessageBox::Yes, QMessageBox::No)
             == QMessageBox::No)
     {
