@@ -163,7 +163,7 @@ void ZFileActionManager::zh_createActions()
     zv_saveCalibrationToFileAction->setEnabled(false);
     zv_saveCalibrationAsFileAction = new QAction(QIcon(glSaveAsCalibrationIconString), tr("Save calibration as..."), this);
     zv_saveCalibrationAsFileAction->setEnabled(false);
-    // zv_loadSpectrumFromFileAction = new QAction(QIcon(":/images/Images/document-open.png"), tr("Append &spectra to array"), this);
+    // zv_loadSpectrumFromFileAction = new QAction(QIcon(":/images/ZImages/document-open.png"), tr("Append &spectra to array"), this);
 }
 //======================================================
 void ZFileActionManager::zh_createConnections()
