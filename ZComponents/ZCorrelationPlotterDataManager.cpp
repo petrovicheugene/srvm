@@ -303,7 +303,7 @@ void ZCorrelationPlotterDataManager::zh_rebuildChart()
     QMap<qint64, ZVisibilityPointF>::const_iterator it;
     for(it = chartPointMap.begin(); it != chartPointMap.end(); it++)
     {
-        ZChartPointGraphicsItem* pointItem;
+        ZChartPointGraphicsItem* pointItem = 0;
         bool itemExists = false;
         for(int i = 0; i < chartPointItemList.count(); i++ )
         {
@@ -332,6 +332,10 @@ void ZCorrelationPlotterDataManager::zh_rebuildChart()
         else
         {
             pointItem = new ZChartPointGraphicsItem(this, it.value(), chartPointOptions, it.key());
+#ifdef DBG
+        qDebug() << "Rebuild: new point" << it.value().x() << it.value().y();
+#endif
+
             zv_plotter->zp_addItem(pointItem);
         }
     }
@@ -555,7 +559,11 @@ bool ZCorrelationPlotterDataManager::zh_getDeviationToConcentrationData(QMap<qin
             deviationValue = 0.0;
         }
 
-        deviationValue = ((calibrationValue - concentration) / concentration) * 100;
+        deviationValue = calibrationValue - concentration;
+        if(deviationValue != 0.0)
+        {
+            deviationValue = ((calibrationValue - concentration) / concentration) * 100;
+        }
 
         if(maxX < concentration)
         {
@@ -609,6 +617,9 @@ void ZCorrelationPlotterDataManager::zh_recalcAndSetSceneRect(const QMap<qint64,
 
     qreal maxX = 0.0;
     qreal maxY = 0.0;
+    qreal minX = 0.0;
+    qreal minY = 0.0;
+
     bool visiblePointsPresented = false;
     foreach(ZVisibilityPointF point, pointList)
     {
@@ -621,27 +632,43 @@ void ZCorrelationPlotterDataManager::zh_recalcAndSetSceneRect(const QMap<qint64,
         {
             maxY = point.y();
         }
+        if(minX > point.x())
+        {
+            minX = point.x();
+        }
+        if(minY > point.y())
+        {
+            minY = point.y();
+        }
     }
 
     if(visiblePointsPresented)
     {
         maxY /= chartPointOptions->zp_rulerScaleValue(Qt::Vertical);
         maxX /= chartPointOptions->zp_rulerScaleValue(Qt::Horizontal);
+        minY /= chartPointOptions->zp_rulerScaleValue(Qt::Vertical);
+        minX /= chartPointOptions->zp_rulerScaleValue(Qt::Horizontal);
     }
     else
     {
         maxY = 100.0;
         maxX = 100.0;
+        minY = 0.0;
+        minX = 0.0;
     }
 
-    if(maxY == 0)
+    if(maxY == 0.0)
     {
         maxY = maxX;
     }
 
-    qreal borderYWidth = maxY * 0.03;
-    qreal borderXWidth = maxX * 0.03;
-    QRectF sceneRect = QRectF(0.0, maxY * -1, maxX, maxY);
+    qreal borderYWidth = qAbs(maxY - minY) * 0.03;
+    qreal borderXWidth = qAbs(maxX - minX) * 0.03;
+
+    maxY = maxY == 0.0? 0.0 : maxY * -1;
+    minY = minY == 0.0? 0.0 : minY * -1;
+
+    QRectF sceneRect = QRectF(minX, maxY, maxX, minY);
     sceneRect.adjust(-1 * borderXWidth, -1 * borderYWidth, borderXWidth, borderYWidth);
     zv_defaultItem->zp_fitItemInRect(sceneRect);
 }
@@ -651,13 +678,13 @@ void ZCorrelationPlotterDataManager::zh_recalcAndSetSceneRect(qreal maxX, qreal 
                                                               const ZChartPointOptions* chartPointOptions)
 {
     // increase rect if necessary
-    if(maxX == minX && maxX == 0.0)
+    if(qAbs(maxX - minX) == 0.0 && maxX == 0.0)
     {
         maxX = zv_defaultSceneRect.width();
         minX = 0.0;
     }
 
-    if(maxY == minY && maxY == 0)
+    if(qAbs(maxY - minY) == 0.0 && maxY == 0.0)
     {
         if(chartDataKind == CDK_DEVIATION)
         {
@@ -708,10 +735,14 @@ void ZCorrelationPlotterDataManager::zh_recalcAndSetSceneRect(qreal maxX, qreal 
     QRectF sceneRect;
     // sceneRect = QRectF(0.0, maxY * -1, maxX, maxY);
     // sceneRect = QRectF(0.0, maxY * -1, maxX, minY * -1);
-    sceneRect = QRectF(QPointF(minX, maxY * -1), QPointF(maxX, minY * -1));
-    qreal borderYWidth = maxY * 0.03;
-    qreal borderXWidth = maxX * 0.03;
+    maxY = maxY == 0.0 ? 0.0 : maxY * -1;
+    minY = minY == 0.0 ? 0.0 : minY * -1;
+    sceneRect = QRectF(QPointF(minX, maxY), QPointF(maxX, minY));
+    qreal borderYWidth = qAbs((maxY - minY) * 0.03);
+    qreal borderXWidth = qAbs((maxX - minX) * 0.03);
     sceneRect.adjust(-1 * borderXWidth, -1 * borderYWidth, borderXWidth, borderYWidth);
+
+    qDebug() << sceneRect.normalized();
 
     zv_defaultItem->zp_fitItemInRect(sceneRect.normalized());
 }
@@ -725,6 +756,9 @@ void ZCorrelationPlotterDataManager::zh_createAndPlaceChartPointItems(const QMap
     for(it = chartPointMap.begin(); it != chartPointMap.end(); it++)
     {
         pointItem = new ZChartPointGraphicsItem(this, it.value(), chartPointOptions, it.key());
+#ifdef DBG
+        qDebug() << "New point" << it.value().x() << it.value().y();
+#endif
         zv_plotter->zp_addItem(pointItem);
     }
 }
