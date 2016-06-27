@@ -844,7 +844,7 @@ void ZCorrelationPlotterDataManager::zh_onRepositoryCalibrationOperation(ZCalibr
         }
 
         ChartDataKind chartDataKind = static_cast<ChartDataKind>(vData.toInt());
-        if(chartDataKind == CDK_CALIBRATION || chartDataKind == CDK_DEVIATION)
+        if(chartDataKind == CDK_CALIBRATION || chartDataKind == CDK_DEVIATION || chartDataKind == CDK_TERM)
         {
             if(type == ZCalibrationRepository::COT_CALIBRATION_NAME_CHANGED ||
                     type == ZCalibrationRepository::COT_CALIBRATION_CHEM_ELEMENT_CHANGED ||
