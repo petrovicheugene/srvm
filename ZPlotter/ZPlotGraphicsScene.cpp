@@ -3,7 +3,7 @@
 #include "ZGraphicsItemUserTypes.h"
 #include "ZWindowGraphicsItem.h"
 #include "ZSpectrumGraphicsItem.h"
-#include "globalVariables.h"
+#include "ZConstants.h"
 #include "QPushButton"
 
 #include <QGraphicsItem>

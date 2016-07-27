@@ -83,7 +83,7 @@ void ZCalibrationWindowTableWidget::zp_connectToCalibrationRepository(ZCalibrati
 
 }
 //=============================================================
-void ZCalibrationWindowTableWidget::zp_setMargin(int margin)
+void ZCalibrationWindowTableWidget::zp_setMainLayoutMargin(int margin)
 {
     zv_mainLayout->setMargin(margin);
 }

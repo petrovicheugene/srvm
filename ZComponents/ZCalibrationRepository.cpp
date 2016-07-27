@@ -1,6 +1,6 @@
 //======================================================
 #include "ZCalibrationRepository.h"
-#include "globalVariables.h"
+#include "ZConstants.h"
 #include "ZXMLCalibrationIOHandler.h"
 #include "ZCalibration.h"
 #include "ZFileActionManager.h"
@@ -442,6 +442,18 @@ bool ZCalibrationRepository::zp_isDirty(int row)
     }
 
     return zv_caibrationList.value(row)->zp_isDirty();
+}
+//======================================================
+void ZCalibrationRepository::zp_hasDirtyCalibrations(QList<int>& dirtyRowList) const
+{
+    dirtyRowList.clear();
+    for(int row = 0; row < zv_caibrationList.count(); row++)
+    {
+        if(zv_caibrationList.at(row)->zp_isDirty())
+        {
+            dirtyRowList.append(row);
+        }
+    }
 }
 //======================================================
 bool ZCalibrationRepository::zp_isCalibrationWindowVisible(qint64 calibrationId, int windowIndex) const
@@ -1906,15 +1918,16 @@ bool ZCalibrationRepository::zh_createCalibrationFromFile(const QString& fileNam
         return false;
     }
 
-    ZXMLCalibrationIOHandler* ioHandler = new ZXMLCalibrationIOHandler(this, this);
+    //ZXMLCalibrationIOHandler* ioHandler = new ZXMLCalibrationIOHandler(this);
+    ZXMLCalibrationIOHandler ioHandler;
 
     ZCalibration* calibration = new ZCalibration(fileName, this);
     calibration->zp_setVisible(true);
     bool res = zh_appendCalibrationToList(calibration);
     if(res)
     {
-        res = ioHandler->zp_getCalibrationFromFile(file, calibration);
-
+        // res = ioHandler->zp_getCalibrationFromFile(file, calibration);
+        res = ioHandler.zp_getCalibrationFromFile(file, calibration);
     }
 
     if(!res)
@@ -1933,7 +1946,7 @@ bool ZCalibrationRepository::zh_createCalibrationFromFile(const QString& fileNam
         file.close();
     }
 
-    delete ioHandler;
+    // delete ioHandler;
     return res;
 }
 //======================================================

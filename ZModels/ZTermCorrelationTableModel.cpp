@@ -1,6 +1,6 @@
 //==================================================================
 #include "ZTermCorrelationTableModel.h"
-#include "globalVariables.h"
+#include "ZConstants.h"
 #include <QFont>
 #include <QApplication>
 #include <QStyle>

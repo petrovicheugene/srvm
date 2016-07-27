@@ -62,6 +62,7 @@ public:
 
     bool zp_isEmpty() const;
     void zp_clear();
+    bool zp_isDirty() const;
 
     const ZSpectrumArray* zp_array(int arrayIndex);
     int zp_arrayCount() const;
@@ -164,8 +165,6 @@ public slots:
     void zp_chemElementListForCurrentArray(QStringList& chemElementList);
 
     void zp_onSelectionSpectraChange(bool selectionEnabled, bool concentrationSelected);
-    //    void zp_onSelectionChemElementChange(bool selectionEnabled, bool concentrationSelected);
-//    void zp_onSelectionArrayChange(bool selectionEnabled, bool concentrationSelected);
 
 private slots:
 
@@ -245,10 +244,6 @@ private:
     void zh_actionEnablingControl();
 
     void zh_setDirty(bool dirty);
-    //    void zh_pasteConcentrationData(int arrayIndex,
-    //                                   int startSpectrumIndex,
-    //                                   const QList<qint64>& chemElementIdList);
-
 };
 //==================================================================
 #endif // ZSPECTRAARRAYREPOSITORY_H

@@ -1,6 +1,6 @@
 //==========================================================
 #include "MainWindow.h"
-#include "globalVariables.h"
+#include "ZConstants.h"
 #include <QApplication>
 #include <QDir>
 // components
@@ -57,7 +57,7 @@
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
 {
-        qRegisterMetaType<ZEquationSettingsData>("ZEquationSettingsData");
+    qRegisterMetaType<ZEquationSettingsData>("ZEquationSettingsData");
     //    qRegisterMetaType<ZSpeSpectrum>("ZSpeSpectrum");
 
     setWindowTitle(glAppProduct);
@@ -105,12 +105,71 @@ MainWindow::~MainWindow()
 //==========================================================
 void MainWindow::closeEvent(QCloseEvent* e)
 {
-    QString questionString = tr("Quit the application?");
-    if(QMessageBox::question(this, tr("Quit the application"), questionString,
-                             QMessageBox::Yes, QMessageBox::No) == QMessageBox::No)
+    //    QString questionString = tr("Quit the application?");
+    //    if(QMessageBox::question(this, tr("Quit the application"), questionString,
+    //                             QMessageBox::Yes, QMessageBox::No) == QMessageBox::No)
+    //    {
+    //        e->ignore();
+    //        return;
+    //    }
+
+    // check diry of the spectrum array repo
+    if(zv_spectrumArrayRepository->zp_isDirty())
     {
-        e->ignore();
-        return;
+        QMessageBox msgBox(this);
+        msgBox.setIcon(QMessageBox::Warning);
+        msgBox.setText("The spectrum array list has been modified.");
+        msgBox.setInformativeText("Do you want to save your changes?");
+        msgBox.setStandardButtons(QMessageBox::Save | QMessageBox::Discard | QMessageBox::Cancel);
+        msgBox.setDefaultButton(QMessageBox::Save);
+        int res = msgBox.exec();
+
+        switch (res)
+        {
+        case QMessageBox::Save:
+            zv_fileActionManager->zp_triggerSaveArrayToFileAction();
+            break;
+        case QMessageBox::Discard:
+            // Don't Save was clicked
+            break;
+        case QMessageBox::Cancel:
+        default:
+            e->ignore();
+            return;
+        }
+    }
+
+    // check dirty of the calibration repo
+    QList<int> dirtyRowList;
+    zv_calibrationRepository->zp_hasDirtyCalibrations(dirtyRowList);
+    if(!dirtyRowList.isEmpty())
+    {
+        QMessageBox msgBox(this);
+        msgBox.setIcon(QMessageBox::Warning);
+        msgBox.setText("There are calibrations that have been modified.");
+        msgBox.setInformativeText("Do you want to save them?");
+        msgBox.setStandardButtons(QMessageBox::Save | QMessageBox::Discard | QMessageBox::Cancel);
+        msgBox.setDefaultButton(QMessageBox::Save);
+        int res = msgBox.exec();
+
+        switch (res)
+        {
+        case QMessageBox::Save:
+            for(int i = 0; i < dirtyRowList.count(); i++ )
+            {
+                zv_calibrationTableWidget->zp_setCurrentCalibrationIndex(dirtyRowList.at(i));
+                zv_fileActionManager->zp_triggerSaveCalibrationsToFile();
+            }
+
+            break;
+        case QMessageBox::Discard:
+            // Don't Save was clicked
+            break;
+        case QMessageBox::Cancel:
+        default:
+            e->ignore();
+            return;
+        }
     }
 
     zh_saveSettings();
@@ -330,8 +389,8 @@ void MainWindow::zh_createConnections()
             zv_spectraSidebarWidget, &ZWidgetWithSidebar::zp_saveSettings);
     connect(this, &MainWindow::zg_saveSettings,
             zv_calibrationSidebarWidget, &ZWidgetWithSidebar::zp_saveSettings);
-//    connect(this, &MainWindow::zg_saveSettings,
-//            zv_termCorrelationTableSidebarWidget, &ZWidgetWithSidebar::zp_saveSettings);
+    //    connect(this, &MainWindow::zg_saveSettings,
+    //            zv_termCorrelationTableSidebarWidget, &ZWidgetWithSidebar::zp_saveSettings);
 
     connect(this, &MainWindow::zg_saveSettings,
             zv_fileActionManager, &ZFileActionManager::zp_saveSettings);
@@ -384,10 +443,10 @@ void MainWindow::zh_createConnections()
     // spectra repository <-> joint spectrum view
     connect(zv_spectrumArrayRepository, &ZSpectrumArrayRepository::zg_requestSelectedSpectrumIndexList,
             zv_spectrumTableWidget, &ZJointSpectrumTableWidget::zp_selectedSpectrumIndexList);
-//    connect(zv_spectrumArrayRepository, &ZSpectrumArrayRepository::zg_requestSelectionToStringConversion,
-//            zv_spectrumTableWidget, &ZJointSpectrumTableWidget::zp_selectionToString);
-//    connect(zv_spectrumTableWidget, &ZJointSpectrumTableWidget::zg_selectionEnable,
-//            zv_spectrumArrayRepository, &ZSpectrumArrayRepository::zp_onSelectionEnable );
+    //    connect(zv_spectrumArrayRepository, &ZSpectrumArrayRepository::zg_requestSelectionToStringConversion,
+    //            zv_spectrumTableWidget, &ZJointSpectrumTableWidget::zp_selectionToString);
+    //    connect(zv_spectrumTableWidget, &ZJointSpectrumTableWidget::zg_selectionEnable,
+    //            zv_spectrumArrayRepository, &ZSpectrumArrayRepository::zp_onSelectionEnable );
 
     // spectra repository <-> chemical element view
     connect(zv_spectrumArrayRepository, &ZSpectrumArrayRepository::zg_requestSelectedChemElementIndexList,
@@ -531,73 +590,73 @@ void MainWindow::zh_saveSettings()
 //==========================================================
 void MainWindow::zh_onAboutAction()
 {
-//    QString title = tr("About %1").arg(glAppProduct);
+    //    QString title = tr("About %1").arg(glAppProduct);
 
-//    QString text = tr("%1 is an application that displays in graphical form values of concentration of chemical elements technological streams contain. "
-//                      "It works with a X-ray spectrometer SRV.").arg(glAppProduct);
+    //    QString text = tr("%1 is an application that displays in graphical form values of concentration of chemical elements technological streams contain. "
+    //                      "It works with a X-ray spectrometer SRV.").arg(glAppProduct);
 
-//    QString htmlText = QString("<h2><font color=darkblue>%1</font></h2>"
-//                               "<p>%6 - %2</p>"
-//                               "<p>%3</p>"
-//                               //"<p>Copyright &copy;  <b>TechnoAnalyt Ltd.</b> 2014, 2015. All rights reserved.<br>"
-//                               //"<a href=\"http://tehnoanalit.com/\">tehnoanalit.com</a><br>"
-//                               "<p>%7<br> "
-//                               "Company website: <a href=\"http://tehnoanalit.com/\">tehnoanalit.com</a><br>"
-//                               "%5: %4.<br>"
-//                               "Author's email: <a href=mailto:petrovich.eugene@gmail.com?Subject=My%20Subject>petrovich.eugene@gmail.com</a></p>"
-//                               ).arg(glAppProduct,
-//                                     glAppVersion,
-//                                     //qApp->applicationVersion(),
-//                                     text,
-//                                     tr("Eugene Petrovich"),
-//                                     tr("Author"),
-//                                     tr("Version"),
-//                                     glAppCopyright
-//                                     );
+    //    QString htmlText = QString("<h2><font color=darkblue>%1</font></h2>"
+    //                               "<p>%6 - %2</p>"
+    //                               "<p>%3</p>"
+    //                               //"<p>Copyright &copy;  <b>TechnoAnalyt Ltd.</b> 2014, 2015. All rights reserved.<br>"
+    //                               //"<a href=\"http://tehnoanalit.com/\">tehnoanalit.com</a><br>"
+    //                               "<p>%7<br> "
+    //                               "Company website: <a href=\"http://tehnoanalit.com/\">tehnoanalit.com</a><br>"
+    //                               "%5: %4.<br>"
+    //                               "Author's email: <a href=mailto:petrovich.eugene@gmail.com?Subject=My%20Subject>petrovich.eugene@gmail.com</a></p>"
+    //                               ).arg(glAppProduct,
+    //                                     glAppVersion,
+    //                                     //qApp->applicationVersion(),
+    //                                     text,
+    //                                     tr("Eugene Petrovich"),
+    //                                     tr("Author"),
+    //                                     tr("Version"),
+    //                                     glAppCopyright
+    //                                     );
 
-//    QMessageBox::about(centralWidget(), title, htmlText);
+    //    QMessageBox::about(centralWidget(), title, htmlText);
 
     QString title = tr("About %1").arg(glAppProduct);
-     //    QString text = tr("The application is a supplement to a SRV spectrometer software. It provides to make extra calculation of chemical concentration that cannot be directly  measured."
-     //                      "");
-     //    QString htmlText = QString(
-     //                "<table border=0 cellspacing = 15>"
-     //                "<tr>"
-     //                "<td align = left><img src=:/images/ZImages/CR3_64.png></td>"
-     //                "<td align = left><h2 align = center>CRecalc 2.3</h2>"
-     //                "<p>Copyright &copy; TechnoAnalyt Ltd., 2014.  All rights reserved.</p>"
-     //                "<p>%1</p>"
-     //                "</td>"
-     //                "</tr>"
-     //                "</table>").arg(text);
+    //    QString text = tr("The application is a supplement to a SRV spectrometer software. It provides to make extra calculation of chemical concentration that cannot be directly  measured."
+    //                      "");
+    //    QString htmlText = QString(
+    //                "<table border=0 cellspacing = 15>"
+    //                "<tr>"
+    //                "<td align = left><img src=:/images/ZImages/CR3_64.png></td>"
+    //                "<td align = left><h2 align = center>CRecalc 2.3</h2>"
+    //                "<p>Copyright &copy; TechnoAnalyt Ltd., 2014.  All rights reserved.</p>"
+    //                "<p>%1</p>"
+    //                "</td>"
+    //                "</tr>"
+    //                "</table>").arg(text);
 
-     QString text = QString();//tr("%1 is an application that controls other console application.").arg(glAppProduct);
+    QString text = QString();//tr("%1 is an application that controls other console application.").arg(glAppProduct);
 
-     QString htmlText = QString(
-                 "<table border=0 cellspacing = 15>"
-                 "<tr>"
-                 "<td align = left><img src=:/images/ZImages/SDC2.png></td>"
-                 "<td align = left><h1 align = center>%1</h1>"
-                 "</td>"
-                 "</tr>"
-                 "</table>"
-                 "<p>%6 - %2</p>"
-                 "<p>%3</p>"
-                 "<p>%7<br> "
-                 "Company website: <a href=\"http://%8/\">%8</a><br>"
-                 "%5: %4.<br>"
-                 "Author's email: <a href=mailto:petrovich.eugene@gmail.com?Subject=My%20Subject>petrovich.eugene@gmail.com</a></p>"
-                 ).arg(glAppProduct,
-                       qApp->applicationVersion(),
-                       text,
-                       tr("Eugene Petrovich"),
-                       tr("Author"),
-                       tr("Version"),
-                       glAppCopyright,
-                       glAppCompanyURL
-                       );
+    QString htmlText = QString(
+                "<table border=0 cellspacing = 15>"
+                "<tr>"
+                "<td align = left><img src=:/images/ZImages/SDC2.png></td>"
+                "<td align = left><h1 align = center>%1</h1>"
+                "</td>"
+                "</tr>"
+                "</table>"
+                "<p>%6 - %2</p>"
+                "<p>%3</p>"
+                "<p>%7<br> "
+                "Company website: <a href=\"http://%8/\">%8</a><br>"
+                "%5: %4.<br>"
+                "Author's email: <a href=mailto:petrovich.eugene@gmail.com?Subject=My%20Subject>petrovich.eugene@gmail.com</a></p>"
+                ).arg(glAppProduct,
+                      qApp->applicationVersion(),
+                      text,
+                      tr("Eugene Petrovich"),
+                      tr("Author"),
+                      tr("Version"),
+                      glAppCopyright,
+                      glAppCompanyURL
+                      );
 
-     QMessageBox::about(centralWidget(), title, htmlText);
+    QMessageBox::about(centralWidget(), title, htmlText);
 }
 //==========================================================
 void MainWindow::zh_onHelpAction()

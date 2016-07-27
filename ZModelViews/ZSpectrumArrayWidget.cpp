@@ -1,6 +1,6 @@
 //==============================================================
 #include "ZSpectrumArrayWidget.h"
-#include "globalVariables.h"
+#include "ZConstants.h"
 #include "ZArrayModel.h"
 #include "ZStringDelegate.h"
 #include "ZVisibilityStringDelegate.h"
@@ -91,7 +91,7 @@ void ZSpectrumArrayWidget::zp_connectToSpectrumArrayRepository(ZSpectrumArrayRep
             repository, &ZSpectrumArrayRepository::zp_currentArrayChanged);
 }
 //==============================================================
-void ZSpectrumArrayWidget::zp_setMargin(int margin)
+void ZSpectrumArrayWidget::zp_setMainLayoutMargin(int margin)
 {
     zv_mainLayout->setMargin(margin);
 }

@@ -2,13 +2,15 @@
 #include "ZXMLCalibrationIOHandler.h"
 #include "ZCalibration.h"
 #include <QFileInfo>
+#include <QFileDialog>
+#include <QStandardPaths>
 #include <QXmlStreamReader>
 #include <QDateTime>
 //==========================================================
-ZXMLCalibrationIOHandler::ZXMLCalibrationIOHandler(QObject *calibrationParent,QObject *parent)
+ZXMLCalibrationIOHandler::ZXMLCalibrationIOHandler(QObject *parent)
     : QObject(parent)
 {
-    zv_calibrationParent = calibrationParent;
+    // zv_calibrationParent = calibrationParent;
 }
 //==========================================================
 ZXMLCalibrationIOHandler::~ZXMLCalibrationIOHandler()
@@ -16,12 +18,58 @@ ZXMLCalibrationIOHandler::~ZXMLCalibrationIOHandler()
 
 }
 //==========================================================
+QString ZXMLCalibrationIOHandler::zp_getCalibrationOpenFile(const QString& calibrationFolderPath)
+{
+    QString locationDirString = zp_checkDirPath(calibrationFolderPath);
+    QString fileName = QFileDialog::getOpenFileName(0, tr("Select file to open"),
+                                              locationDirString,
+                                              tr("XML Calibration files(*.clbx);;XML files(*.xml);;All files(*.*)"));
+    return fileName;
+}
+//==========================================================
+QStringList ZXMLCalibrationIOHandler::zp_getCalibrationOpenFiles(const QString& calibrationFolderPath)
+{
+    QString locationDirString = zp_checkDirPath(calibrationFolderPath);
+    QStringList fileNames = QFileDialog::getOpenFileNames(0, tr("Open file"),
+                                              locationDirString,
+                                              tr("XML Calibration files(*.clbx);;XML files(*.xml);;All files(*.*)"));
+    return fileNames;
+}
+//==========================================================
+QString ZXMLCalibrationIOHandler::zp_getCalibrationSaveFile(const QString& calibrationFilePath)
+{
+    QString fileName = QFileDialog::getSaveFileName(0, tr("Save file"),
+                                              calibrationFilePath,
+                                              tr("XML Calibration files(*.clbx);;XML files(*.xml);;All files(*.*)"));
+    return fileName;
+}
+//==========================================================
+QString ZXMLCalibrationIOHandler::zp_checkDirPath(const QString& calibrationFolderPath)
+{
+    QString locationDirString = calibrationFolderPath;
+    QFileInfo fileInfo(locationDirString);
+    if(!fileInfo.exists() || !fileInfo.isDir())
+    {
+        QStringList docLocations = QStandardPaths::standardLocations(QStandardPaths::DocumentsLocation);
+        if(docLocations.isEmpty())
+        {
+            locationDirString = QDir::currentPath();
+        }
+        else
+        {
+            locationDirString = docLocations.value(0);
+        }
+    }
+
+    return locationDirString;
+}
+//==========================================================
 bool ZXMLCalibrationIOHandler::zp_writeCalibrationToFile(QFile& file, const ZCalibration* calibration)
 {
     if(!(file.openMode() & QIODevice::WriteOnly))
     {
-        QString errorMsg = tr("File \"%1\" is not open in write mode!").arg(file.fileName());
-        emit zg_message(errorMsg);
+        zv_message = tr("File \"%1\" is not open in write mode!").arg(file.fileName());
+        emit zg_message(zv_message);
         return false;
     }
 
@@ -172,12 +220,17 @@ bool ZXMLCalibrationIOHandler::zp_writeCalibrationToFile(QFile& file, const ZCal
 
     if(file.error() != QFile::NoError)
     {
-        QString errorMsg = tr("Cannot write to file \"%1\"! %2").arg(file.fileName(), file.errorString());
-        emit zg_message(errorMsg);
+        zv_message = tr("Cannot write to file \"%1\"! %2").arg(file.fileName(), file.errorString());
+        emit zg_message(zv_message);
         return false;
     }
 
     return true;
+}
+//==========================================================
+QString ZXMLCalibrationIOHandler::zp_message() const
+{
+    return zv_message;
 }
 //==========================================================
 bool ZXMLCalibrationIOHandler::zp_getCalibrationFromFile(QFile & file,
@@ -190,8 +243,8 @@ bool ZXMLCalibrationIOHandler::zp_getCalibrationFromFile(QFile & file,
 
     if(!(file.openMode() & QIODevice::ReadOnly))
     {
-        QString errorMsg = tr("File \"%1\" is not open in read mode!").arg(file.fileName());
-        emit zg_message(errorMsg);
+        zv_message = tr("File \"%1\" is not open in read mode!").arg(file.fileName());
+        emit zg_message(zv_message);
         return false;
     }
 
@@ -215,8 +268,8 @@ bool ZXMLCalibrationIOHandler::zp_getCalibrationFromFile(QFile & file,
 
             if(!magicStringDetectionFlag)
             {
-                QString errorMsg = tr("File \"%1\" is not recognized!").arg(file.fileName());
-                emit zg_message(errorMsg);
+                zv_message = tr("File \"%1\" is not recognized!").arg(file.fileName());
+                emit zg_message(zv_message);
                 return false;
             }
 
@@ -242,14 +295,14 @@ bool ZXMLCalibrationIOHandler::zp_getCalibrationFromFile(QFile & file,
 
     if(reader.hasError())
     {
-        QString errorMsg = tr("File \"%1\" parsing failed! %2").arg(file.fileName(), reader.errorString());
-        emit zg_message(errorMsg);
+        zv_message = tr("File \"%1\" parsing failed! %2").arg(file.fileName(), reader.errorString());
+        emit zg_message(zv_message);
         return false;
     }
     else if(file.error() != QFile::NoError)
     {
-        QString errorMsg = tr("Cannot read file \"%1\"! %2").arg(file.fileName(), file.errorString());
-        emit zg_message(errorMsg);
+        zv_message = tr("Cannot read file \"%1\"! %2").arg(file.fileName(), file.errorString());
+        emit zg_message(zv_message);
         return false;
     }
 

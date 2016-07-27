@@ -23,7 +23,7 @@ public:
    void zp_appendContextMenuActions(QList<QAction*> actionList);
 
    void zp_connectToSpectrumArrayRepository(ZSpectrumArrayRepository*);
-   void zp_setMargin(int margin);
+   void zp_setMainLayoutMargin(int margin);
 
 signals:
 

@@ -1,6 +1,6 @@
 //==================================================================
 #include "ZCalibrationWindowModel.h"
-#include "globalVariables.h"
+#include "ZConstants.h"
 //==================================================================
 ZCalibrationWindowModel::ZCalibrationWindowModel(QObject *parent)
     : QAbstractTableModel(parent)

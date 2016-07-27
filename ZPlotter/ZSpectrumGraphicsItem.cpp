@@ -1,7 +1,7 @@
 //======================================================
 #include "ZSpectrumGraphicsItem.h"
 #include "ZAbstractSpectrum.h"
-#include "globalVariables.h"
+#include "ZConstants.h"
 #include "ZPlotterDefaulVariables.h"
 
 #include <QPainter>

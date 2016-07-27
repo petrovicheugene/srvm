@@ -1,6 +1,6 @@
 //===============================================
 #include "MainWindow.h"
-#include "globalVariables.h"
+#include "ZConstants.h"
 
 #include <windows.h>
 #include <QApplication>

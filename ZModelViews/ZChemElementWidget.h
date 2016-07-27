@@ -21,7 +21,7 @@ public:
     void zp_appendButtonActions(QList<QAction*>);
     void zp_appendContextMenuActions(QList<QAction*> actionList);
 
-    void zp_setMargin(int margin);
+    void zp_setMainLayoutMargin(int margin);
 
 signals:
 

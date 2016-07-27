@@ -97,6 +97,7 @@ public:
     bool zp_setCalibrationVisible(int row, bool visibility);
 
     bool zp_isDirty(int row);
+    void zp_hasDirtyCalibrations(QList<int>& dirtyRowList) const;
 
     // Windows
     bool zp_isCalibrationWindowVisible(qint64, int) const;

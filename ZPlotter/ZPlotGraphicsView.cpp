@@ -1,7 +1,7 @@
 //=============================================================
 #include "ZPlotGraphicsView.h"
 #include "ZRulersAndGridManager.h"
-#include "globalVariables.h"
+#include "ZConstants.h"
 
 #include <QApplication>
 #include <QRubberBand>

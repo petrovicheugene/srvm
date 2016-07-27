@@ -4,7 +4,7 @@
 //================================
 #include <QString>
 #include <QIcon>
-#define DBG
+//#define DBG
 #ifdef DBG
 #include <QDebug>
 #endif

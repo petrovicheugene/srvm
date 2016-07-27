@@ -1,7 +1,7 @@
 //=====================================================================
 #include "ZCorrelationPlotterDataManager.h"
 #include "ZPlotter.h"
-#include "globalVariables.h"
+#include "ZConstants.h"
 #include "ZGraphicsItemUserTypes.h"
 #include "ZDefaultRectGraphicsItem.h"
 #include "ZChartPointGraphicsItem.h"
@@ -741,8 +741,6 @@ void ZCorrelationPlotterDataManager::zh_recalcAndSetSceneRect(qreal maxX, qreal 
     qreal borderYWidth = qAbs((maxY - minY) * 0.03);
     qreal borderXWidth = qAbs((maxX - minX) * 0.03);
     sceneRect.adjust(-1 * borderXWidth, -1 * borderYWidth, borderXWidth, borderYWidth);
-
-    qDebug() << sceneRect.normalized();
 
     zv_defaultItem->zp_fitItemInRect(sceneRect.normalized());
 }

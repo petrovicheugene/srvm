@@ -2,7 +2,7 @@
 #include "ZSpectrumTableDelegate.h"
 #include "ZPrimitivePlot.h"
 #include "ZSpectrumPaintData.h"
-#include "globalVariables.h"
+#include "ZConstants.h"
 
 #include <QPainter>
 #include <QStyle>

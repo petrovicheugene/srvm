@@ -28,6 +28,9 @@ public:
     void zp_initSaveSpectrumArrayAction(QAction*&) const;
     void zp_initSaveAsSpectrumArrayAction(QAction*&) const;
 
+    void zp_triggerSaveArrayToFileAction();
+    void zp_triggerSaveCalibrationsToFile();
+
 signals:
 
     void zg_message(QString) const;

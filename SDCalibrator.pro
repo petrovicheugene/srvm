@@ -14,7 +14,7 @@ RC_ICONS = "SDC2.ico"
 
 VER_MAJ=0
 VER_MIN=0
-VER_PAT=30
+VER_PAT=31
 
 VER_RELEASE=b
 
@@ -190,7 +190,6 @@ HEADERS  += \
     ZModelViews/ZChemElementComboBoxDelegate/ZChemElementComboBoxDelegate.h \
     ZModelViews/ZWindowTypeComboBoxDelegate/ZWindowTypeComboBoxDelegate.h \
     ZComponents/ZSpectrumPaintData.h \
-    globalVariables.h \
     ZComponents/ZPlotterDataManager.h \
     ZComponents/ZAdvancedAction.h \
     ZPlotter/ZGraphicsItemUserTypes.h \
@@ -238,7 +237,8 @@ HEADERS  += \
     ZComponents/ZMixedTerm.h \
     ZModelViews/ZActiveStyledItemDelegate.h \
     ZComponents/ZRawTerm.h \
-    ZComponents/ZRawWindow.h
+    ZComponents/ZRawWindow.h \
+    ZConstants.h
 
 RESOURCES += \
     resources.qrc

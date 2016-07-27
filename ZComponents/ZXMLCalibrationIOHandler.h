@@ -6,7 +6,7 @@
 #include <QFile>
 #include <QStack>
 #include "ZCalibration.h"
-#include "globalVariables.h"
+#include "ZConstants.h"
 //==========================================================
 class QXmlStreamReader;
 //==========================================================
@@ -14,11 +14,18 @@ class ZXMLCalibrationIOHandler : public QObject
 {
     Q_OBJECT
 public:
-    explicit ZXMLCalibrationIOHandler(QObject* calibrationParent, QObject *parent = 0);
+    explicit ZXMLCalibrationIOHandler(/*QObject* calibrationParent,*/ QObject *parent = 0);
     virtual ~ZXMLCalibrationIOHandler();
+
+    static QString zp_getCalibrationOpenFile(const QString& calibrationFolderPath);
+    static QStringList zp_getCalibrationOpenFiles(const QString& calibrationFolderPath);
+    static QString zp_getCalibrationSaveFile(const QString& calibrationFolderPath);
+    static QString zp_checkDirPath(const QString& calibrationFolderPath);
 
     bool zp_getCalibrationFromFile(QFile&, ZCalibration*&);
     bool zp_writeCalibrationToFile(QFile&file, const ZCalibration*calibration);
+
+    QString zp_message() const;
 
 public slots:
 
@@ -30,11 +37,12 @@ signals:
 private:
 
     // VARS
-    QObject* zv_calibrationParent;
+    // QObject* zv_calibrationParent;
     // QString parentTagName;
     QStack<QString> parentTagStack;
     ZRawTerm zv_rawTerm;
     ZRawWindow zv_rawWindow;
+    QString zv_message;
 
     const QString zv_magicString = glAppCompany + " 7D385RTNOW9SH31JZQL";
     // elment names
@@ -73,6 +81,7 @@ private:
     const QString zv_NO = "no";
 
     const QString zv_dateTimeFormat = "dd.MM.yyyy hh:mm:ss";
+
     // FUNCS
     bool zh_detectRoot(const QXmlStreamReader& reader, bool& magicStringDetectionFlag) const;
     void zh_parseXMLElement(ZCalibration*,

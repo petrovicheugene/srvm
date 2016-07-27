@@ -1,6 +1,6 @@
 //=============================================================================
 #include "ZCalibrationWindowDataManager.h"
-#include "globalVariables.h"
+#include "ZConstants.h"
 //=============================================================================
 ZCalibrationWindowDataManager::ZCalibrationWindowDataManager(QObject *parent) : QObject(parent)
 {

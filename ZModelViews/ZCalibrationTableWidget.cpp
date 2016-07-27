@@ -6,7 +6,7 @@
 #include "ZEquationDelegate.h"
 #include "ZNormaDelegate.h"
 #include "ZNumericDelegate.h"
-#include "globalVariables.h"
+#include "ZConstants.h"
 
 #include <QTableView>
 #include <QHBoxLayout>
@@ -127,7 +127,7 @@ void ZCalibrationTableWidget::zp_connectToCalibrationRepository(ZCalibrationRepo
 
 }
 //==============================================================
-void ZCalibrationTableWidget::zp_setMargin(int margin)
+void ZCalibrationTableWidget::zp_setMainLayoutMargin(int margin)
 {
     zv_mainLayout->setMargin(margin);
 }

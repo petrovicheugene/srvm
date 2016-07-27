@@ -1,6 +1,6 @@
 //==================================================================
 #include "ZCalibrationModel.h"
-#include "globalVariables.h"
+#include "ZConstants.h"
 
 #include <QFont>
 #include <QColor>
@@ -155,7 +155,7 @@ QVariant ZCalibrationModel::data(const QModelIndex & index, int role) const
     {
         if(zv_calibrationRepository->zp_isDirty(index.row()))
         {
-            return QVariant(QColor(Qt::darkRed));
+            return QVariant(QColor(Qt::red));
         }
         else
         {

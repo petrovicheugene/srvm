@@ -1,6 +1,6 @@
 //============================================================
 #include "ZNormaSettingsDialog.h"
-#include "globalVariables.h"
+#include "ZConstants.h"
 
 #include <QLabel>
 #include <QPushButton>

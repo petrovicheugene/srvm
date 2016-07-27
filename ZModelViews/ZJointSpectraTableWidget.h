@@ -29,7 +29,7 @@ public:
     void zp_connectToSpectrumArrayRepository(ZSpectrumArrayRepository*);
     void zp_connectToCalibrationRepository(ZCalibrationRepository*);
 
-    void zp_setMargin(int margin);
+    void zp_setMainLayoutMargin(int margin);
 
 signals:
 

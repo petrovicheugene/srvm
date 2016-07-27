@@ -1,7 +1,7 @@
 //=============================================================================
 #include "ZTermCorrelationTableManager.h"
 #include "ZLSEGaussSolver.h"
-#include "globalVariables.h"
+#include "ZConstants.h"
 #include "ZJointSpectraDataManager.h"
 #include <QPair>
 //=============================================================================

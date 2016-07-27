@@ -1,6 +1,6 @@
 //==================================================================
 #include "ZJointSpectraModel.h"
-#include "globalVariables.h"
+#include "ZConstants.h"
 
 #include <QFont>
 #include <QColor>

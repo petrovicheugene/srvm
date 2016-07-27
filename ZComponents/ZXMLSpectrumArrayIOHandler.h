@@ -5,7 +5,7 @@
 #include <QObject>
 #include <QFile>
 #include "ZRawSpectrumArray.h"
-#include "globalVariables.h"
+#include "ZConstants.h"
 //============================================================
 class QXmlStreamReader;
 //============================================================

@@ -80,7 +80,7 @@ void ZChemElementWidget::zp_appendContextMenuActions(QList<QAction*> actionList)
     }
 }
 //==============================================================
-void ZChemElementWidget::zp_setMargin(int margin)
+void ZChemElementWidget::zp_setMainLayoutMargin(int margin)
 {
     zv_mainLayout->setMargin(margin);
 }

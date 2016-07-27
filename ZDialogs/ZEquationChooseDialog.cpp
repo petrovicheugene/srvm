@@ -1,6 +1,6 @@
 //============================================================
 #include "ZEquationChooseDialog.h"
-#include "globalVariables.h"
+#include "ZConstants.h"
 #include "ZCalibration.h"
 #include "ZNormaSettingsDialog.h"
 #include "ZTermNormalizer.h"

@@ -71,7 +71,7 @@ void ZTermCorrelationTableWidget::zp_appendContextMenuActions(QList<QAction*> ac
     }
 }
 //=============================================================
-void ZTermCorrelationTableWidget::zp_setMargin(int margin)
+void ZTermCorrelationTableWidget::zp_setMainLayoutMargin(int margin)
 {
     zv_mainLayout->setMargin(margin);
 }

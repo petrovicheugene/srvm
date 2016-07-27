@@ -1,6 +1,6 @@
 //==========================================================
 #include "ZVisibilityStringDelegate.h"
-#include "globalVariables.h"
+#include "ZConstants.h"
 
 #include <QLineEdit>
 #include <QStyleOption>

@@ -1,6 +1,6 @@
 //===========================================================
 #include "ZSpeIOHandler.h"
-#include "globalVariables.h"
+#include "ZConstants.h"
 #include <QFileInfo>
 #include <QFile>
 #include <QTextStream>

@@ -6,7 +6,7 @@
 #include <QToolBar>
 #include <QUrl>
 #include <QSettings>
-#include <globalVariables.h>
+#include <ZConstants.h>
 //==============================================
 ZHelpBrowser* ZHelpBrowser::mv_this = 0;
 int ZHelpBrowser::mv_refCount = 0;

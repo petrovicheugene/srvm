@@ -6,7 +6,7 @@
 #include "ZXMLCalibrationIOHandler.h"
 #include "ZSpeIOHandler.h"
 #include "ZCalibration.h"
-#include "globalVariables.h"
+#include "ZConstants.h"
 
 #include <QMenu>
 #include <QFileDialog>
@@ -150,6 +150,16 @@ void ZFileActionManager::zp_initSaveAsSpectrumArrayAction(QAction*& action) cons
 
 }
 //======================================================
+void ZFileActionManager::zp_triggerSaveArrayToFileAction()
+{
+    zv_saveArrayToFileAction->trigger();
+}
+//======================================================
+void ZFileActionManager::zp_triggerSaveCalibrationsToFile()
+{
+    zv_saveCalibrationToFileAction->trigger();
+}
+//======================================================
 void ZFileActionManager::zh_createActions()
 {
     zv_openArrayFromFileAction = new QAction(QIcon(glOpenArrayIconString), tr("&Open spectrum array list"), this);
@@ -207,10 +217,13 @@ bool ZFileActionManager::zh_defineSpectrumArrayFileNameToSave(QString& fileName)
 bool ZFileActionManager::zh_defineCalibrationFileNamesToOpen(QStringList& fileNames) const
 {
     // opening
-    fileNames = QFileDialog::getOpenFileNames(0, tr("Select file to open"),
-                                              zv_calibrationFolderPath,
-                                              tr("XML Calibration files(*.clbx);;XML files(*.xml);;All files(*.*)"));
-    if(fileNames.count() <= 0 )
+    //    fileNames = QFileDialog::getOpenFileNames(0, tr("Select file to open"),
+    //                                              zv_calibrationFolderPath,
+    //                                              tr("XML Calibration files(*.clbx);;XML files(*.xml);;All files(*.*)"));
+
+    fileNames = ZXMLCalibrationIOHandler::zp_getCalibrationOpenFiles(zv_calibrationFolderPath);
+
+    if(fileNames.isEmpty())
     {
         return false;
     }
@@ -220,9 +233,12 @@ bool ZFileActionManager::zh_defineCalibrationFileNamesToOpen(QStringList& fileNa
 //======================================================
 bool ZFileActionManager::zh_defineCalibrationFileNameToSave(QString& fileName) const
 {
-    fileName = QFileDialog::getSaveFileName(0, tr("Select file to save"),
-                                              fileName,
-                                              tr("XML Calibration files(*.clbx);;XML files(*.xml);;All files(*.*)"));
+    //    fileName = QFileDialog::getSaveFileName(0, tr("Select file to save"),
+    //                                              fileName,
+    //                                              tr("XML Calibration files(*.clbx);;XML files(*.xml);;All files(*.*)"));
+
+    fileName = ZXMLCalibrationIOHandler::zp_getCalibrationSaveFile(fileName);
+
     if(fileName.isEmpty())
     {
         return false;
@@ -511,14 +527,14 @@ void ZFileActionManager::zp_saveCalibrationToFile(const ZCalibration* calibratio
     qDebug() << "SAVE CALIBRATION" << absFileName;
 #endif
 
-//    QFileInfo fileInfo(absFileName);
-//    if(fileInfo.suffix() != "xml" && fileInfo.suffix() != "spar")
-//    {
-//        QString msg = tr("Error handling file \"%1\"! Cannot handle \"%2\" files.").arg(filePath, fileInfo.suffix());
-//        QMessageBox::critical(0, tr("File handling error"), msg);
-//        emit zg_message(msg);
-//        return;
-//    }
+    //    QFileInfo fileInfo(absFileName);
+    //    if(fileInfo.suffix() != "xml" && fileInfo.suffix() != "spar")
+    //    {
+    //        QString msg = tr("Error handling file \"%1\"! Cannot handle \"%2\" files.").arg(filePath, fileInfo.suffix());
+    //        QMessageBox::critical(0, tr("File handling error"), msg);
+    //        emit zg_message(msg);
+    //        return;
+    //    }
 
     // file opening
     QFile file(absFileName);
@@ -537,23 +553,23 @@ void ZFileActionManager::zp_saveCalibrationToFile(const ZCalibration* calibratio
         return;
     }
 
-    ZXMLCalibrationIOHandler* ioHandler = new ZXMLCalibrationIOHandler(this);
-
+    // ZXMLCalibrationIOHandler* ioHandler = new ZXMLCalibrationIOHandler(this);
+    ZXMLCalibrationIOHandler ioHandler;
     // saving current directory
     zv_calibrationFolderPath = QFileInfo(absFileName).absolutePath();
 
     // ability of message receiving
-    connect(ioHandler, &ZXMLCalibrationIOHandler::zg_message,
+    connect(&ioHandler, &ZXMLCalibrationIOHandler::zg_message,
             this, &ZFileActionManager::zg_message);
 
     // saving
-    bool res = ioHandler->zp_writeCalibrationToFile(file, calibration);
-
+    //bool res = ioHandler->zp_writeCalibrationToFile(file, calibration);
+    bool res = ioHandler.zp_writeCalibrationToFile(file, calibration);
     if(file.isOpen())
     {
         file.close();
     }
-    delete ioHandler;
+    // delete ioHandler;
 
     if(res)
     {
@@ -632,6 +648,7 @@ void ZFileActionManager::zh_onOpenCalibrationAction()
         return;
     }
 
+    zv_calibrationFolderPath = QFileInfo(fileNames.at(0)).absolutePath();
     emit zg_calibrationFileListToOpen(fileNames);
 
     //    QList<ZRawCalibrationArray> rawArrayList;

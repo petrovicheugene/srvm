@@ -1,6 +1,6 @@
 //=============================================================
 #include "ZJointSpectraTableWidget.h"
-#include "globalVariables.h"
+#include "ZConstants.h"
 #include "ZNumericDelegate.h"
 #include "ZSpectrumTableDelegate.h"
 #include "ZActiveStyledItemDelegate.h"
@@ -188,7 +188,7 @@ void ZJointSpectrumTableWidget::zp_connectToCalibrationRepository(ZCalibrationRe
     zp_appendContextMenuActions(repository->zp_calibrationVisibilityActions());
 }
 //==============================================================
-void ZJointSpectrumTableWidget::zp_setMargin(int margin)
+void ZJointSpectrumTableWidget::zp_setMainLayoutMargin(int margin)
 {
     zv_mainLayout->setMargin(margin);
 }

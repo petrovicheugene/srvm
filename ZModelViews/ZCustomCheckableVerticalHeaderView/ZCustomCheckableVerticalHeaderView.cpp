@@ -1,6 +1,6 @@
 //=========================================================
 #include "ZCustomCheckableVerticalHeaderView.h"
-#include "globalVariables.h"
+#include "ZConstants.h"
 
 #include <QPainter>
 #include <QApplication>

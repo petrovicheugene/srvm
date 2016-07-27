@@ -5,7 +5,7 @@
 #include "ZSpectrumGraphicsItem.h"
 #include "ZWindowGraphicsItem.h"
 #include "ZDefaultRectGraphicsItem.h"
-#include "globalVariables.h"
+#include "ZConstants.h"
 #include <QSet>
 //===========================================================
 ZPlotterDataManager::ZPlotterDataManager(QObject *parent) : QObject(parent)
