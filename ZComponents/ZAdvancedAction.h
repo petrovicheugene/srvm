@@ -6,11 +6,11 @@
 //=========================================-------------------------------
 
 //=========================================-------------------------------
-class ZAdvancedAction : public QAction
+class ZControlAction : public QAction
 {
     Q_OBJECT
 public:
-    explicit ZAdvancedAction(QObject *parent = 0);
+    explicit ZControlAction(QObject *parent = 0);
     
 signals:
     

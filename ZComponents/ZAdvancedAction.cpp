@@ -1,12 +1,12 @@
 //=========================================-------------------------------
 #include "ZAdvancedAction.h"
 //=========================================-------------------------------
-ZAdvancedAction::ZAdvancedAction(QObject *parent) :
+ZControlAction::ZControlAction(QObject *parent) :
     QAction(parent)
 {
 }
 //=========================================-------------------------------
-void	ZAdvancedAction::setActionDisabled (bool disableFlag)
+void	ZControlAction::setActionDisabled (bool disableFlag)
 {
     emit setControlDisabled(disableFlag);
     setDisabled(disableFlag);

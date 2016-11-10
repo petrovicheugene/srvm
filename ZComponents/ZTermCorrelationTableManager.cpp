@@ -711,46 +711,46 @@ void ZTermCorrelationTableManager::zh_onSpectrumOperation(ZSpectrumArrayReposito
     {
 
     }
-//    else if(type == ZSpectrumArrayRepository::SOT_END_REMOVE_SPECTRA)
-//    {
-//        zh_startCalculationCorrelationsAndCovariations();
-//        emit zg_currentOperation(TOT_DATA_CHANGED, 0, zp_rowCount() -1);
-//        // equation quality recalc
-//        int factorCount = 0;
-//        ZAbstractTerm::TermState termState;
-//        for(int t = 0; t < zv_calibrationRepository->zp_termCount(zv_currentCalibrationId); t++)
-//        {
-//            termState = zv_calibrationRepository->zp_termState(zv_currentCalibrationId, t);
-//            if(termState == ZAbstractTerm::TS_CONST_INCLUDED
-//                    || termState == ZAbstractTerm::TS_INCLUDED)
-//            {
-//                factorCount ++;
-//            }
-//        }
+    //    else if(type == ZSpectrumArrayRepository::SOT_END_REMOVE_SPECTRA)
+    //    {
+    //        zh_startCalculationCorrelationsAndCovariations();
+    //        emit zg_currentOperation(TOT_DATA_CHANGED, 0, zp_rowCount() -1);
+    //        // equation quality recalc
+    //        int factorCount = 0;
+    //        ZAbstractTerm::TermState termState;
+    //        for(int t = 0; t < zv_calibrationRepository->zp_termCount(zv_currentCalibrationId); t++)
+    //        {
+    //            termState = zv_calibrationRepository->zp_termState(zv_currentCalibrationId, t);
+    //            if(termState == ZAbstractTerm::TS_CONST_INCLUDED
+    //                    || termState == ZAbstractTerm::TS_INCLUDED)
+    //            {
+    //                factorCount ++;
+    //            }
+    //        }
 
-//        emit zg_calculateCalibrationQualityData(false, zv_currentCalibrationId, factorCount + 1, zv_sumSquareAverageConcentrationDispersion);
+    //        emit zg_calculateCalibrationQualityData(false, zv_currentCalibrationId, factorCount + 1, zv_sumSquareAverageConcentrationDispersion);
 
-//    }
-//    else if(type == ZSpectrumArrayRepository::SOT_CHECKED_CHANGED)
-//    {
-//        zh_startCalculationCorrelationsAndCovariations();
-//        emit zg_currentOperation(TOT_DATA_CHANGED, 0, zp_rowCount() -1);
-//        // equation quality recalc
-//        int factorCount = 0;
-//        ZAbstractTerm::TermState termState;
-//        for(int t = 0; t < zv_calibrationRepository->zp_termCount(zv_currentCalibrationId); t++)
-//        {
-//            termState = zv_calibrationRepository->zp_termState(zv_currentCalibrationId, t);
-//            if(termState == ZAbstractTerm::TS_CONST_INCLUDED
-//                    || termState == ZAbstractTerm::TS_INCLUDED)
-//            {
-//                factorCount ++;
-//            }
-//        }
+    //    }
+    //    else if(type == ZSpectrumArrayRepository::SOT_CHECKED_CHANGED)
+    //    {
+    //        zh_startCalculationCorrelationsAndCovariations();
+    //        emit zg_currentOperation(TOT_DATA_CHANGED, 0, zp_rowCount() -1);
+    //        // equation quality recalc
+    //        int factorCount = 0;
+    //        ZAbstractTerm::TermState termState;
+    //        for(int t = 0; t < zv_calibrationRepository->zp_termCount(zv_currentCalibrationId); t++)
+    //        {
+    //            termState = zv_calibrationRepository->zp_termState(zv_currentCalibrationId, t);
+    //            if(termState == ZAbstractTerm::TS_CONST_INCLUDED
+    //                    || termState == ZAbstractTerm::TS_INCLUDED)
+    //            {
+    //                factorCount ++;
+    //            }
+    //        }
 
-//        emit zg_calculateCalibrationQualityData(false, zv_currentCalibrationId, factorCount + 1, zv_sumSquareAverageConcentrationDispersion);
+    //        emit zg_calculateCalibrationQualityData(false, zv_currentCalibrationId, factorCount + 1, zv_sumSquareAverageConcentrationDispersion);
 
-//    }
+    //    }
 
 
     /*
@@ -807,7 +807,7 @@ void ZTermCorrelationTableManager::zh_recalcCalibrationFactors()
         return;
     }
 
-    // check average free term
+    // check average free term (if a != a  then a == nan)
     if(zv_averageEquationIntercept != zv_averageEquationIntercept)
     {
         // TODO Error report
@@ -831,6 +831,34 @@ void ZTermCorrelationTableManager::zh_recalcCalibrationFactors()
 
     // before solvation reset all termFactors of the calibration
     calibration->zp_resetEquationTerms();
+
+    // set to calibration exposition and energy calibration factors
+    if(zv_spectrumArrayRepository != 0)
+    {
+        qreal K0 = 0.0;
+        qreal K1 = 0.0;
+        qreal K2 = 0.0;
+        QString energyUnit;
+        if(zv_spectrumArrayRepository->zp_energyCalibration(zv_currentArrayIndex,
+                                                            K0, K1, K2, energyUnit))
+        {
+            calibration->zp_setEnergyCalibration(K0, K1, K2, energyUnit);
+        }
+
+        int exposition;
+        if(zv_spectrumArrayRepository->zp_exposition(zv_currentArrayIndex, exposition))
+        {
+            calibration->zp_setExposition(exposition);
+        }
+
+#ifdef DBG
+        qDebug() <<  "VVVV";
+        qDebug() <<  "K0:" << K0 << "K1:" << K1 <<"K2:" << K2 << "Unit" << energyUnit;
+        qDebug() <<  "EXPO:" << exposition;
+        qDebug() <<  "====";
+#endif
+    }
+
 
     // pointers to factors and free term
     QMap<int, qreal*> factorToIndexMap;

@@ -113,6 +113,9 @@ public:
     bool zp_energyCalibration(int arrayIndex, qreal& K0, qreal& K1, qreal& K2, QString& energyUnit);
     bool zp_energyCalibrationForArrayId(qint64 arrayId, qreal& K0, qreal& K1, qreal& K2, QString& energyUnit);
 
+    bool zp_exposition(int arrayIndex, int& exposition);
+    bool zp_expositionForArrayId(qint64 arrayId, int& exposition);
+
     qint64 zp_arrayIdForArrayIndex(int arrayIndex) const;
 
 signals:

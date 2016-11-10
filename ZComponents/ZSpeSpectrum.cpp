@@ -23,8 +23,8 @@ const ZAbstractSpectrumAuxData* ZSpeSpectrum::zp_auxData() const
     return &zv_auxData;
 }
 //===================================================
-QStringList ZSpeSpectrum::zp_isEnergyCalibrationSuitable(const QString& energyUnit,
-                                    qreal K0, qreal K1, qreal K2)
+QStringList ZSpeSpectrum::zp_isEnergyCalibrationAndExpositionSuitable(const QString& energyUnit,
+                                    qreal K0, qreal K1, qreal K2, int exposition)
 {
     QStringList inconsistenciesList;
 
@@ -37,14 +37,22 @@ QStringList ZSpeSpectrum::zp_isEnergyCalibrationSuitable(const QString& energyUn
     {
         inconsistenciesList << tr("energy factor K0");
     }
+
     if(zv_auxData.zp_energyK1() != K1)
     {
         inconsistenciesList << tr("energy factor K1");
     }
+
     if(zv_auxData.zp_energyK2() != K2)
     {
         inconsistenciesList << tr("energy factor K2");
     }
+
+    if(zv_auxData.zp_exposition() != exposition)
+    {
+        inconsistenciesList << tr("exposition");
+    }
+
     return inconsistenciesList;
 }
 //===================================================

@@ -119,7 +119,7 @@ private:
 
 private slots:
 
-    void zh_onAboutAction();
+    void zh_onAboutAction() const;
     void zh_onHelpAction();
 
 };

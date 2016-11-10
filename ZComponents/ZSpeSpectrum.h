@@ -17,8 +17,8 @@ public:
     virtual ~ZSpeSpectrum();
 
     const ZAbstractSpectrumAuxData *zp_auxData() const;
-    QStringList zp_isEnergyCalibrationSuitable(const QString&,
-                                        qreal K0, qreal K1, qreal K2);
+    QStringList zp_isEnergyCalibrationAndExpositionSuitable(const QString&,
+                                        qreal K0, qreal K1, qreal K2, int exposition);
 
 private:
 

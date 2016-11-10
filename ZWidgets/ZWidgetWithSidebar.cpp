@@ -168,7 +168,7 @@ void ZWidgetWithSidebar::zh_createComponents(QString title)
 void ZWidgetWithSidebar::zh_createConnections()
 {
     connect(zv_hideLabel, &ZClickableLabel::clicked,
-            this, zh_onHideSidePanelButtonClick);
+            this, &ZWidgetWithSidebar::zh_onHideSidePanelButtonClick);
 }
 //=======================================================
 void ZWidgetWithSidebar::zh_restoreSettings()

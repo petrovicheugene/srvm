@@ -90,6 +90,29 @@ bool ZXMLCalibrationIOHandler::zp_writeCalibrationToFile(QFile& file, const ZCal
     writer.writeCharacters(calibration->zp_chemElement());
     writer.writeEndElement(); // chem element
 
+    // Energy calibration
+    writer.writeStartElement(zv_ENERGY_K0);
+    writer.writeCharacters(QString::number(calibration->zp_energyCalibrationK0()));
+    writer.writeEndElement(); // k0
+
+    writer.writeStartElement(zv_ENERGY_K1);
+    writer.writeCharacters(QString::number(calibration->zp_energyCalibrationK1()));
+    writer.writeEndElement(); // k1
+
+    writer.writeStartElement(zv_ENERGY_K2);
+    writer.writeCharacters(QString::number(calibration->zp_energyCalibrationK2()));
+    writer.writeEndElement(); // k2
+
+    // energy unit
+    writer.writeStartElement(zv_ENERGY_UNIT);
+    writer.writeCharacters(calibration->zp_energyUnit());
+    writer.writeEndElement(); // energy unit
+
+    // exposition
+    writer.writeStartElement(zv_EXPOSITION);
+    writer.writeCharacters(QString::number(calibration->zp_exposition()));
+    writer.writeEndElement(); // exposition
+
     // Quality data
     // R2
     writer.writeStartElement(zv_DETERMINATION_R2);
@@ -359,6 +382,54 @@ void ZXMLCalibrationIOHandler::zh_parseXMLElement(ZCalibration* calibration,
             else if(currentTagName == zv_CHEMELEMENT)
             {
                 calibration->zp_setChemElement(readerText);
+            }
+            else if(currentTagName == zv_ENERGY_K0)
+            {
+                bool ok;
+                qreal realValue = readerText.toDouble(&ok);
+                if(!ok)
+                {
+                    realValue = 0;
+                }
+
+                calibration->zp_setEnergyCalibrationK0(realValue);
+            }
+            else if(currentTagName == zv_ENERGY_K1)
+            {
+                bool ok;
+                qreal realValue = readerText.toDouble(&ok);
+                if(!ok)
+                {
+                    realValue = 0;
+                }
+
+                calibration->zp_setEnergyCalibrationK1(realValue);
+            }
+            else if(currentTagName == zv_ENERGY_K2)
+            {
+                bool ok;
+                qreal realValue = readerText.toDouble(&ok);
+                if(!ok)
+                {
+                    realValue = 0;
+                }
+
+                calibration->zp_setEnergyCalibrationK2(realValue);
+            }
+            else if(currentTagName == zv_ENERGY_UNIT)
+            {
+                calibration->zp_setEnergyUnit(readerText);
+            }
+            else if(currentTagName == zv_EXPOSITION)
+            {
+                bool ok;
+                int intValue = readerText.toInt(&ok);
+                if(!ok)
+                {
+                    intValue = -1;
+                }
+
+                calibration->zp_setExposition(intValue);
             }
             else if(currentTagName == zv_DETERMINATION_R2)
             {

@@ -55,6 +55,7 @@ public:
     bool zp_setChemConcentration(qint64 chemElementId,
                                  int spectrumIndex, const QString& concentration);
     bool zp_energyCalibration(qreal& K0, qreal& K1, qreal& K2, QString& energyUnit);
+    bool zp_exposition(int& exposition);
 
     QString zp_spectrumFileName(int index) const;
     qint64 zp_spectrumId(int index) const;
@@ -112,6 +113,7 @@ private:
     qreal zv_energyK1;
     qreal zv_energyK2;
     QString zv_energyUnit;
+    int zv_exposition;
 
     // spectrum color
     int zv_lastColorIndex;

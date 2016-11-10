@@ -51,6 +51,12 @@ private:
     const QString zv_STATE = "state";
 
     const QString zv_DATE_TIME = "date-time";
+    const QString zv_ENERGY_K0 = "energy_K0";
+    const QString zv_ENERGY_K1 = "energy_K1";
+    const QString zv_ENERGY_K2 = "energy_K2";
+    const QString zv_ENERGY_UNIT = "energy_unit";
+    const QString zv_EXPOSITION = "exposition";
+
     const QString zv_CHEMELEMENT = "chem_element";
     const QString zv_DETERMINATION_R2 = "R2";
     const QString zv_ADJUSTED_DETERMINATION_R2ADJ = "R2adj";

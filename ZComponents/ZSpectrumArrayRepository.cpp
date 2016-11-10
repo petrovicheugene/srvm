@@ -25,23 +25,23 @@ void ZSpectrumArrayRepository::zp_appendActionsToMenu(QMenu* menu) const
 {
     if(menu->objectName() == "Edit")
     {
-//        QMenu* arrayMenu = new QMenu(tr("Spectrum arrays"));
-//        arrayMenu->setIcon(QIcon(glArrayIconString));
-//        arrayMenu->addAction(zv_appendArrayAction);
-//        arrayMenu->addAction(zv_removeArrayAction);
-//        menu->addMenu(arrayMenu);
+        //        QMenu* arrayMenu = new QMenu(tr("Spectrum arrays"));
+        //        arrayMenu->setIcon(QIcon(glArrayIconString));
+        //        arrayMenu->addAction(zv_appendArrayAction);
+        //        arrayMenu->addAction(zv_removeArrayAction);
+        //        menu->addMenu(arrayMenu);
 
-//        QMenu* spectraMenu = new QMenu(tr("Spectra"));
-//        spectraMenu->setIcon(QIcon(glSpectrumIconString));
-//        spectraMenu->addAction(zv_appendSpectrumToArrayAction);
-//        spectraMenu->addAction(zv_removeSpectrumFromArrayAction);
-//        menu->addMenu(spectraMenu);
+        //        QMenu* spectraMenu = new QMenu(tr("Spectra"));
+        //        spectraMenu->setIcon(QIcon(glSpectrumIconString));
+        //        spectraMenu->addAction(zv_appendSpectrumToArrayAction);
+        //        spectraMenu->addAction(zv_removeSpectrumFromArrayAction);
+        //        menu->addMenu(spectraMenu);
 
-//        QMenu* elementMenu = new QMenu(tr("Chemical elements"));
-//        elementMenu->setIcon(QIcon(glElementIconString));
-//        elementMenu->addAction(zv_appendChemElementAction);
-//        elementMenu->addAction(zv_removeChemElementAction);
-//        menu->addMenu(elementMenu);
+        //        QMenu* elementMenu = new QMenu(tr("Chemical elements"));
+        //        elementMenu->setIcon(QIcon(glElementIconString));
+        //        elementMenu->addAction(zv_appendChemElementAction);
+        //        elementMenu->addAction(zv_removeChemElementAction);
+        //        menu->addMenu(elementMenu);
 
         // spectra array
         menu->addAction(zv_appendArrayAction);
@@ -90,11 +90,11 @@ QList<QAction*> ZSpectrumArrayRepository::zp_spectrumActions() const
     QList<QAction*> actionList;
     actionList << zv_appendSpectrumToArrayAction;
     actionList << zv_removeSpectrumFromArrayAction;
-//    actionList << 0; // separator
-//    actionList << zv_copyConcentrationDataAction;
-//    actionList << zv_pasteConcentrationDataAction;
-//    actionList << 0; // separator
-//    actionList << zv_clearConcentrationDataAction;
+    //    actionList << 0; // separator
+    //    actionList << zv_copyConcentrationDataAction;
+    //    actionList << zv_pasteConcentrationDataAction;
+    //    actionList << 0; // separator
+    //    actionList << zv_clearConcentrationDataAction;
 
     return actionList;
 }
@@ -408,6 +408,30 @@ bool ZSpectrumArrayRepository::zp_energyCalibrationForArrayId(qint64 arrayId, qr
             return zp_energyCalibration(i, K0, K1, K2, energyUnit);
         }
     }
+
+    return false;
+}
+//==================================================================
+bool ZSpectrumArrayRepository::zp_exposition(int arrayIndex, int& exposition)
+{
+    if(arrayIndex < 0 || arrayIndex >= zv_arrayList.count())
+    {
+        return false;
+    }
+
+    return zv_arrayList.at(arrayIndex)->zp_exposition(exposition);
+}
+//==================================================================
+bool ZSpectrumArrayRepository::zp_expositionForArrayId(qint64 arrayId, int& exposition)
+{
+    for(int i = 0; i < zv_arrayList.count(); i++)
+    {
+        if(zv_arrayList.at(i)->zp_arrayId() == arrayId)
+        {
+            return zp_exposition(i, exposition);
+        }
+    }
+
     return false;
 }
 //==================================================================
@@ -1772,8 +1796,8 @@ void ZSpectrumArrayRepository::zh_actionEnablingControl()
     int arrayIndex = -1;
     emit zg_requestCurrentArrayIndex(arrayIndex);
 
-//    zv_appendArrayAction->setEnabled(true);
-//    zv_appendSpectrumToArrayAction->setEnabled(true);
+    //    zv_appendArrayAction->setEnabled(true);
+    //    zv_appendSpectrumToArrayAction->setEnabled(true);
 
     if(arrayIndex < 0 || arrayIndex >= zv_arrayList.count())
     {
@@ -1787,9 +1811,9 @@ void ZSpectrumArrayRepository::zh_actionEnablingControl()
         zv_appendChemElementAction->setEnabled(false);
         zv_removeChemElementAction->setEnabled(false);
 
-//        zv_pasteConcentrationDataAction->setEnabled(false);
-//        zv_copyConcentrationDataAction->setEnabled(false);
-//        zv_clearConcentrationDataAction->setEnabled(false);
+        //        zv_pasteConcentrationDataAction->setEnabled(false);
+        //        zv_copyConcentrationDataAction->setEnabled(false);
+        //        zv_clearConcentrationDataAction->setEnabled(false);
 
         zv_setSpectraVisibleAction->setEnabled(false);
         zv_setSpectraInvisibleAction->setEnabled(false);

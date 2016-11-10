@@ -22,6 +22,7 @@ ZSpectrumArray::ZSpectrumArray(QObject* parent)
     zv_energyK0 = 0;
     zv_energyK1 = 0;
     zv_energyK2 = 0;
+    zv_exposition = -1;
     zv_energyUnit = QString();
 
     zv_arrayId = zv_lastArrayId++;
@@ -36,6 +37,7 @@ ZSpectrumArray::ZSpectrumArray(const QString& name, QObject* parent)  : QObject(
     zv_energyK0 = 0;
     zv_energyK1 = 0;
     zv_energyK2 = 0;
+    zv_exposition = -1;
     zv_energyUnit = QString();
 
     zv_arrayId = zv_lastArrayId++;
@@ -292,6 +294,17 @@ bool ZSpectrumArray::zp_energyCalibration(qreal& K0, qreal& K1, qreal& K2, QStri
     return true;
 }
 //===============================================
+bool ZSpectrumArray::zp_exposition(int& exposition)
+{
+    if(zv_exposition < 0)
+    {
+        return false;
+    }
+
+    exposition = zv_exposition;
+    return true;
+}
+//===============================================
 QString ZSpectrumArray::zp_spectrumFileName(int index) const
 {
     if(index < 0 || index >= zv_spectrumList.count())
@@ -395,6 +408,7 @@ bool ZSpectrumArray::zp_removeSpectrum(int index)
         zv_energyK0 = 0;
         zv_energyK1 = 0;
         zv_energyK2 = 0;
+        zv_exposition = -1;
         emit zg_energyCalibrationChanged(zv_arrayId);
     }
     return true;
@@ -456,7 +470,7 @@ bool ZSpectrumArray::zp_appendSpectrum(const ZRawSpectrum& rawSpectrum, bool las
 
         if(zp_isEnergyCalibrationValid() && !dontAsk)
         {
-            QStringList inconsistenciesList = speSpectrum->zp_isEnergyCalibrationSuitable(zv_energyUnit, zv_energyK0, zv_energyK1, zv_energyK2);
+            QStringList inconsistenciesList = speSpectrum->zp_isEnergyCalibrationAndExpositionSuitable(zv_energyUnit, zv_energyK0, zv_energyK1, zv_energyK2, zv_exposition);
             if(!inconsistenciesList.isEmpty())
             {
                 // QString question = tr("Energy calibration in spectrum %1% is different to calibration that have other spectra in the array.\r\n").arg(rawSpectrum.path);
@@ -477,7 +491,7 @@ bool ZSpectrumArray::zp_appendSpectrum(const ZRawSpectrum& rawSpectrum, bool las
                 question += "Do you want to continue loading?";
 
                 QMessageBox msgBox;
-                msgBox.setText(tr("Energy calibration in spectrum \"%1\" is different to calibration that have other spectra in the array.\r\n").arg(rawSpectrum.path));
+                msgBox.setText(tr("Energy calibration and exposition in spectrum \"%1\" is different to calibration that have other spectra in the array.\r\n").arg(rawSpectrum.path));
                 msgBox.setInformativeText(question);
 
                 if(last)
@@ -524,6 +538,7 @@ bool ZSpectrumArray::zp_appendSpectrum(const ZRawSpectrum& rawSpectrum, bool las
                 zv_energyK0 = auxData->zp_energyK0();
                 zv_energyK1 = auxData->zp_energyK1();
                 zv_energyK2 = auxData->zp_energyK2();
+                zv_exposition = auxData->zp_exposition();
                 emit zg_energyCalibrationChanged(zv_arrayId);
             }
 

@@ -229,7 +229,7 @@ void MainWindow::zh_createComponents()
     zv_spectrumArrayDock->setWidget(zv_spectraSidebarWidget);
 
     // Calibration View
-    zv_calibrationDock= new QDockWidget(this);
+    zv_calibrationDock = new QDockWidget(this);
     zv_calibrationDock->setObjectName("CALIBRATION_DOCK");
     zv_calibrationDock->setWindowTitle(tr("Calibrations"));
     zv_dockList << zv_calibrationDock;
@@ -588,7 +588,7 @@ void MainWindow::zh_saveSettings()
     emit zg_saveSettings();
 }
 //==========================================================
-void MainWindow::zh_onAboutAction()
+void MainWindow::zh_onAboutAction() const
 {
     //    QString title = tr("About %1").arg(glAppProduct);
 
