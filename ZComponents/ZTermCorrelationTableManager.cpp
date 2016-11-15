@@ -845,11 +845,12 @@ void ZTermCorrelationTableManager::zh_recalcCalibrationFactors()
             calibration->zp_setEnergyCalibration(K0, K1, K2, energyUnit);
         }
 
-        int exposition;
-        if(zv_spectrumArrayRepository->zp_exposition(zv_currentArrayIndex, exposition))
-        {
-            calibration->zp_setExposition(exposition);
-        }
+        int exposition = zv_spectrumArrayRepository->zp_exposition(zv_currentArrayIndex);
+        calibration->zp_setExposition(exposition);
+
+        int gainFactor = zv_spectrumArrayRepository->zp_gainFactor(zv_currentArrayIndex);
+        calibration->zp_setGainFactor(gainFactor);
+
 
 #ifdef DBG
         qDebug() <<  "VVVV";

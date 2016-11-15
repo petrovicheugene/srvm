@@ -412,14 +412,41 @@ bool ZSpectrumArrayRepository::zp_energyCalibrationForArrayId(qint64 arrayId, qr
     return false;
 }
 //==================================================================
-bool ZSpectrumArrayRepository::zp_exposition(int arrayIndex, int& exposition)
+int ZSpectrumArrayRepository::zp_gainFactor(int arrayIndex) const
+{
+    if(arrayIndex < 0 || arrayIndex >= zv_arrayList.count())
+    {
+        return -1;
+    }
+
+    return zv_arrayList.at(arrayIndex)->zp_gainFactor();
+}
+//==================================================================
+bool ZSpectrumArrayRepository::zp_setGainFactor(int arrayIndex, int gainFactor)
 {
     if(arrayIndex < 0 || arrayIndex >= zv_arrayList.count())
     {
         return false;
     }
 
-    return zv_arrayList.at(arrayIndex)->zp_exposition(exposition);
+    bool res = zv_arrayList.at(arrayIndex)->zp_setGainFactor(gainFactor);
+    if(res)
+    {
+        emit zg_spectrumArrayOperation(AOT_DATA_CHANGED, arrayIndex, arrayIndex);
+        zh_setDirty(true);
+    }
+
+    return res;
+}
+//==================================================================
+int ZSpectrumArrayRepository::zp_exposition(int arrayIndex)
+{
+    if(arrayIndex < 0 || arrayIndex >= zv_arrayList.count())
+    {
+        return -1;
+    }
+
+    return zv_arrayList.at(arrayIndex)->zp_exposition();
 }
 //==================================================================
 bool ZSpectrumArrayRepository::zp_expositionForArrayId(qint64 arrayId, int& exposition)
@@ -428,7 +455,8 @@ bool ZSpectrumArrayRepository::zp_expositionForArrayId(qint64 arrayId, int& expo
     {
         if(zv_arrayList.at(i)->zp_arrayId() == arrayId)
         {
-            return zp_exposition(i, exposition);
+            exposition = zp_exposition(i);
+            return true;
         }
     }
 
@@ -811,6 +839,7 @@ void ZSpectrumArrayRepository::zp_appendArrays(QString path, QList<ZRawSpectrumA
 
     }
 
+
     emit zg_currentFile(zv_dirty, zv_arrayFilePath);
     emit zg_fitPlotInBoundingRect();
     zh_actionEnablingControl();
@@ -896,6 +925,7 @@ void ZSpectrumArrayRepository::zh_createArray(const ZRawSpectrumArray& rawArray)
     emit zg_spectrumArrayOperation(AOT_INSERT_ARRAYS, nextArrayIndex, nextArrayIndex);
 
     ZSpectrumArray* array = new ZSpectrumArray(rawArray.name, this);
+    array->zp_setGainFactor(rawArray.gainFactor);
     zv_arrayList << array;
 
     connect(array, &ZSpectrumArray::zg_message,
@@ -1802,8 +1832,8 @@ void ZSpectrumArrayRepository::zh_actionEnablingControl()
     if(arrayIndex < 0 || arrayIndex >= zv_arrayList.count())
     {
         zv_removeArrayAction->setEnabled(false);
-        zv_saveArrayAction->setEnabled(false);
-        zv_saveAsArrayAction->setEnabled(false);
+        zv_saveArrayAction->setEnabled(zv_dirty);
+        zv_saveAsArrayAction->setEnabled(!zv_arrayList.isEmpty());
 
         zv_appendChemElementAction->setEnabled(false);
         zv_removeChemElementAction->setEnabled(false);
@@ -1828,7 +1858,7 @@ void ZSpectrumArrayRepository::zh_actionEnablingControl()
 
     zv_removeArrayAction->setEnabled(true);
     zv_saveArrayAction->setEnabled(zv_dirty);
-    zv_saveAsArrayAction->setEnabled(true);
+    zv_saveAsArrayAction->setEnabled(!zv_arrayList.isEmpty());
 
     zv_appendChemElementAction->setEnabled(true);
 
@@ -1863,6 +1893,8 @@ void ZSpectrumArrayRepository::zh_actionEnablingControl()
         zv_setChemElementsInvisibleAction->setEnabled(false);
         zv_invertChemElementsVisibilityAction->setEnabled(false);
     }
+
+    emit zg_arrayListDirtyChanged(zv_dirty, !zv_arrayList.isEmpty());
 }
 //==================================================================
 void ZSpectrumArrayRepository::zh_setDirty(bool dirty)

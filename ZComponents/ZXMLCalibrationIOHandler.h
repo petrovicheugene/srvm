@@ -22,7 +22,7 @@ public:
     static QString zp_getCalibrationSaveFile(const QString& calibrationFolderPath);
     static QString zp_checkDirPath(const QString& calibrationFolderPath);
 
-    bool zp_getCalibrationFromFile(QFile&, ZCalibration*&);
+    bool zp_getCalibrationFromFile(QFile&, ZCalibration*);
     bool zp_writeCalibrationToFile(QFile&file, const ZCalibration*calibration);
 
     QString zp_message() const;
@@ -56,6 +56,7 @@ private:
     const QString zv_ENERGY_K2 = "energy_K2";
     const QString zv_ENERGY_UNIT = "energy_unit";
     const QString zv_EXPOSITION = "exposition";
+    const QString zv_GAIN_FACTOR = "gainFactor";
 
     const QString zv_CHEMELEMENT = "chem_element";
     const QString zv_DETERMINATION_R2 = "R2";

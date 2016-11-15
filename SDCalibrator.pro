@@ -14,7 +14,7 @@ RC_ICONS = "SDC2.ico"
 
 VER_MAJ=0
 VER_MIN=0
-VER_PAT=32
+VER_PAT=33
 
 VER_RELEASE=b
 
@@ -150,7 +150,8 @@ SOURCES += main.cpp \
     ZComponents/ZMixedTerm.cpp \
     ZModelViews/ZActiveStyledItemDelegate.cpp \
     ZComponents/ZRawTerm.cpp \
-    ZComponents/ZRawWindow.cpp
+    ZComponents/ZRawWindow.cpp \
+    ZDialogs/ZSetGainFactorToCalibrationDialog.cpp
 
 HEADERS  += \
     MainWindow.h \
@@ -238,7 +239,8 @@ HEADERS  += \
     ZModelViews/ZActiveStyledItemDelegate.h \
     ZComponents/ZRawTerm.h \
     ZComponents/ZRawWindow.h \
-    ZConstants.h
+    ZConstants.h \
+    ZDialogs/ZSetGainFactorToCalibrationDialog.h
 
 RESOURCES += \
     resources.qrc

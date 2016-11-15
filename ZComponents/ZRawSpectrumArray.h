@@ -23,10 +23,12 @@ struct ZRawSpectrumArray
     ZRawSpectrumArray()
     {
         name = QString();
+        gainFactor = 0;
         spectrumList = QList<ZRawSpectrum>();
     }
 
     QString name;
+    int gainFactor;
     QList<ZRawSpectrum> spectrumList;
 };
 //========================================================

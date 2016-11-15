@@ -103,6 +103,11 @@ bool ZXMLCalibrationIOHandler::zp_writeCalibrationToFile(QFile& file, const ZCal
     writer.writeCharacters(QString::number(calibration->zp_energyCalibrationK2()));
     writer.writeEndElement(); // k2
 
+    // gain factor
+    writer.writeStartElement(zv_GAIN_FACTOR);
+    writer.writeCharacters(QString::number(calibration->zp_gainFactor()));
+    writer.writeEndElement(); // gainFactor
+
     // energy unit
     writer.writeStartElement(zv_ENERGY_UNIT);
     writer.writeCharacters(calibration->zp_energyUnit());
@@ -256,8 +261,8 @@ QString ZXMLCalibrationIOHandler::zp_message() const
     return zv_message;
 }
 //==========================================================
-bool ZXMLCalibrationIOHandler::zp_getCalibrationFromFile(QFile & file,
-                                                         ZCalibration*& calibration)
+bool ZXMLCalibrationIOHandler::zp_getCalibrationFromFile(QFile& file,
+                                                         ZCalibration* calibration)
 {
     if(calibration == 0)
     {
@@ -416,6 +421,18 @@ void ZXMLCalibrationIOHandler::zh_parseXMLElement(ZCalibration* calibration,
 
                 calibration->zp_setEnergyCalibrationK2(realValue);
             }
+            else if(currentTagName == zv_GAIN_FACTOR)
+            {
+                bool ok;
+                int intValue = readerText.toInt(&ok);
+                if(!ok)
+                {
+                    intValue = -1;
+                }
+
+                calibration->zp_setGainFactor(intValue);
+            }
+
             else if(currentTagName == zv_ENERGY_UNIT)
             {
                 calibration->zp_setEnergyUnit(readerText);

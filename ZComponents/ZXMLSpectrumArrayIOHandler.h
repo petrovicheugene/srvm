@@ -31,6 +31,8 @@ private:
     const QString zv_ROOT = "root";
     const QString zv_TYPE = "type";
     const QString zv_NAME = "name";
+    const QString zv_GAIN_FACTOR = "gainFactor";
+
     const QString zv_ARRAY = "array";
     const QString zv_SPECTRUM = "spectrum";
     const QString zv_PATH = "path";

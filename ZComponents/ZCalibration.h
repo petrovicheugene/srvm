@@ -78,13 +78,14 @@ public:
     void zp_setEnergyCalibrationK1(qreal K1);
     void zp_setEnergyCalibrationK2(qreal K2);
     void zp_setEnergyUnit(const QString& energyUnit);
-
+    void zp_setGainFactor(int gainFactor);
     void zp_setExposition(int exposition);
 
     qreal zp_energyCalibrationK0() const;
     qreal zp_energyCalibrationK1() const;
     qreal zp_energyCalibrationK2() const;
     QString zp_energyUnit() const;
+    int zp_gainFactor() const;
     int zp_exposition() const;
 
     bool zp_isVisible() const;
@@ -208,6 +209,7 @@ public:
     // FUNCS
     static QString zp_equationTypeString(ZCalibration::EquationType type);
     static ZCalibration::EquationType zp_equationTypeFromString(const QString&);
+
 signals:
 
     void zg_message(QString) const;
@@ -239,6 +241,7 @@ private:
     qreal zv_energyCalibrationFactorK0;
     qreal zv_energyCalibrationFactorK1;
     qreal zv_energyCalibrationFactorK2;
+    int zv_gainFactor;
     QString zv_energyUnit;
 
     QColor zv_color;

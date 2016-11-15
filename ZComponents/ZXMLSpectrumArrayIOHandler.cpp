@@ -106,6 +106,25 @@ void ZXMLSpectrumArrayIOHandler::zh_parseXMLElement(QList<ZRawSpectrumArray> &ar
         currentArrayIndex = array.count() - 1;
         //   array.zp_setArrayName(reader.attributes().value(zv_NAME).toString());
     }
+    else if(currentTagName == zv_GAIN_FACTOR)
+    {
+        if(currentArrayIndex >= 0 && currentArrayIndex < array.count())
+        {
+            // read gainfactor value
+            if(!reader.atEnd())
+            {
+                reader.readNext();
+            }
+            QString gainFactorString = reader.text().toString();
+            bool ok;
+            int gainFactor = gainFactorString.toInt(&ok);
+            if(!ok)
+            {
+                gainFactor = 0;
+            }
+            array[currentArrayIndex].gainFactor = gainFactor;
+        }
+    }
     else if(currentTagName == zv_SPECTRUM)
     {
         if(currentArrayIndex >= 0 && currentArrayIndex < array.count())
@@ -186,6 +205,10 @@ bool ZXMLSpectrumArrayIOHandler::zp_writeSpectrumArray(QFile& file, const QList<
     {
         writer.writeStartElement(zv_ARRAY);
         writer.writeAttribute(zv_NAME, rawArrayList.at(a).name);
+
+        writer.writeStartElement(zv_GAIN_FACTOR);
+        writer.writeCharacters(QString::number(rawArrayList.at(a).gainFactor));
+        writer.writeEndElement(); // gain factor
 
         for(int s = 0; s < rawArrayList.at(a).spectrumList.count(); s++)
         {

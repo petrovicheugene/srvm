@@ -4,6 +4,7 @@
 #include "ZXMLCalibrationIOHandler.h"
 #include "ZCalibration.h"
 #include "ZFileActionManager.h"
+#include "ZSetGainFactorToCalibrationDialog.h"
 
 #include <QMessageBox>
 #include <QFileInfo>
@@ -1255,8 +1256,8 @@ void ZCalibrationRepository::zh_onRemoveWindowAction()
     QString windowString;
     if(selectedWindowList.isEmpty())
     {
-//        QString string = tr("There is no window to remove!");
-//        QMessageBox::critical(0, tr("Window removing"), string, QMessageBox::Ok);
+        //        QString string = tr("There is no window to remove!");
+        //        QMessageBox::critical(0, tr("Window removing"), string, QMessageBox::Ok);
         return;
     }
     else if(selectedWindowList.count() == 1)
@@ -1458,14 +1459,28 @@ void ZCalibrationRepository::zh_onCalibrationFreeTermChange() const
 
     ZCalibration* calibration = static_cast<ZCalibration*>(sender());
     qint64 calibrationId = calibration->zp_calibrationId();
-    emit zg_calibrationOperation(COT_CALIBRATION_FREE_MEMBER_CHANGED, calibrationId, calibrationId);
+
+    int calibrationIndex = zh_calibrationIndexForId(calibrationId);
+    emit zg_calibrationOperation(COT_CALIBRATION_FREE_MEMBER_CHANGED, calibrationIndex, calibrationIndex);
 }
 //======================================================
 void ZCalibrationRepository::zh_onCalibrationDirtyChange(bool dirty) const
 {
-    emit zg_currentCalibrationDirtyChanged(dirty,
-                                           zv_currentCalibrationIndex >= 0 && zv_currentCalibrationIndex < zv_caibrationList.count());
-    emit zg_calibrationOperation(COT_CALIBRATION_DIRTY_CHANGED, zv_currentCalibrationIndex, zv_currentArrayIndex);
+    // find calibrationIndex
+    ZCalibration* calibration = qobject_cast<ZCalibration*>(sender());
+    if(calibration == 0)
+    {
+        return;
+    }
+
+    int calibrationIndex = zh_calibrationIndexForId(calibration->zp_calibrationId());
+
+    emit zg_currentCalibrationDirtyChanged(dirty, calibrationIndex >= 0);
+    emit zg_calibrationOperation(COT_CALIBRATION_DIRTY_CHANGED, calibrationIndex, zv_currentArrayIndex);
+
+    //    emit zg_currentCalibrationDirtyChanged(dirty,
+    //                                           zv_currentCalibrationIndex >= 0 && zv_currentCalibrationIndex < zv_caibrationList.count());
+    //    emit zg_calibrationOperation(COT_CALIBRATION_DIRTY_CHANGED, zv_currentCalibrationIndex, zv_currentArrayIndex);
 }
 //======================================================
 void ZCalibrationRepository::zh_createCalibrationAndStartSaving(QString path, QString name) const
@@ -1475,14 +1490,37 @@ void ZCalibrationRepository::zh_createCalibrationAndStartSaving(QString path, QS
         return;
     }
 
+    ZCalibration* calibration = zv_caibrationList.value(zv_currentCalibrationIndex);
+    if(!calibration)
+    {
+        return;
+    }
+
     if(path.isEmpty())
     {
-        path = zv_caibrationList.at(zv_currentCalibrationIndex)->zp_path();
+        path = calibration->zp_path();
     }
 
     if(name.isEmpty())
     {
-        name = zv_caibrationList.at(zv_currentCalibrationIndex)->zp_fileName();
+        name = calibration->zp_fileName();
+    }
+
+    // check gain factor
+    int gainFactor = calibration->zp_gainFactor();
+    if(gainFactor < 1)
+    {
+        ZSetGainFactorToCalibrationDialog dialog(name);
+        if(dialog.exec())
+        {
+            gainFactor = dialog.zp_gainFactor();
+        }
+        else
+        {
+            gainFactor = 0;
+        }
+
+        calibration->zp_setGainFactor(gainFactor);
     }
 
     emit zg_saveCalibration(zv_caibrationList.value(zv_currentCalibrationIndex), path, name);
@@ -1987,6 +2025,10 @@ bool ZCalibrationRepository::zh_appendCalibrationToList(ZCalibration* calibratio
     emit zg_calibrationOperation(COT_INSERT_CALIBRATIONS, insertIndex, insertIndex);
     zv_caibrationList << calibration;
     emit zg_calibrationOperation(COT_END_INSERT_CALIBRATIONS, -1, -1);
+
+    // set new calibration current
+    emit zg_setCurrentCalibrationIndex(insertIndex);
+
     return true;
 }
 //======================================================

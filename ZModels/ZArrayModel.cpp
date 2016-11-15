@@ -11,14 +11,18 @@ ZArrayModel::ZArrayModel(QObject* parent) : QAbstractTableModel(parent)
 Qt::ItemFlags	ZArrayModel::flags(const QModelIndex & index) const
 {
     Qt::ItemFlags flags;
-    flags |= Qt::ItemIsEnabled | Qt::ItemIsEditable | Qt::ItemIsSelectable;
+    flags |= Qt::ItemIsEnabled |Qt::ItemIsSelectable;
+    if(index.column() < 2)
+    {
+        flags |= Qt::ItemIsEditable;
+    }
     return flags;
 }
 //==================================================================
 QModelIndex ZArrayModel::index(int row, int column, const QModelIndex &parent) const
 {
     if(zv_repositiry == 0 || row < 0 || row >= zv_repositiry->zp_arrayCount()
-            || column != 0)
+            || column < 0 || column >= columnCount())
     {
         return QModelIndex();
     }
@@ -28,7 +32,7 @@ QModelIndex ZArrayModel::index(int row, int column, const QModelIndex &parent) c
 //==================================================================
 int ZArrayModel::columnCount(const QModelIndex & parent) const
 {
-    return 1;
+    return 3;
 }
 //==================================================================
 int ZArrayModel::rowCount(const QModelIndex & parent) const
@@ -55,7 +59,26 @@ QVariant ZArrayModel::data(const QModelIndex & index, int role) const
 
     if(role == Qt::DisplayRole)
     {
-        return QVariant(zv_repositiry->zp_arrayName(index.row()));
+        if(index.column() == 0)
+        {
+            return QVariant(zv_repositiry->zp_arrayName(index.row()));
+        }
+        if(index.column() == 1)
+        {
+            int gainFactor = zv_repositiry->zp_gainFactor(index.row());
+            if(gainFactor >= 0)
+            {
+                return QVariant(gainFactor);
+            }
+        }
+        if(index.column() == 2)
+        {
+            int exposition = zv_repositiry->zp_exposition(index.row());
+            if(exposition >= 0)
+            {
+                return QVariant(exposition);
+            }
+        }
     }
 
     return QVariant();
@@ -79,6 +102,14 @@ bool	ZArrayModel::setData(const QModelIndex & index, const QVariant & value, int
             }
             return zv_repositiry->zp_setSpectrumArrayName(index.row(), value.toString());
         }
+        if(index.column() == 1)
+        {
+            if(!value.canConvert<int>())
+            {
+                return false;
+            }
+            return zv_repositiry->zp_setGainFactor(index.row(), value.toInt());
+        }
     }
 
     return false;
@@ -93,6 +124,14 @@ QVariant ZArrayModel::headerData(int section, Qt::Orientation orientation, int r
             if(section == 0)
             {
                 return QVariant(tr("Array"));
+            }
+            if(section == 1)
+            {
+                return QVariant(tr("Gain Factor"));
+            }
+            if(section == 2)
+            {
+                return QVariant(tr("Exposition"));
             }
 
             return QVariant();
@@ -145,6 +184,12 @@ void ZArrayModel::zh_onRepositoryOperation(ZSpectrumArrayRepository::ArrayOperat
     else if(type == ZSpectrumArrayRepository::AOT_END_REMOVE_ARRAYS)
     {
         endRemoveRows();
+    }
+    else if(type == ZSpectrumArrayRepository::AOT_DATA_CHANGED)
+    {
+        QModelIndex firstIndex = index(first, 0, QModelIndex());
+        QModelIndex lastIndex = index(last, columnCount() - 1, QModelIndex());
+        emit dataChanged(firstIndex, lastIndex);
     }
 
     emit zg_checkCurrentArray();

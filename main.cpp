@@ -19,6 +19,7 @@ extern const QString glAppCopyright = APP_COPYRIGHT;
 extern const QString glAppCompanyURL = APP_COMPANY_URL;
 
 extern const QString glDefaultChemElementString = "Not defined";
+extern const int glMaxGainFactor = 255;
 
 extern const QString glHorizontalDecreaseIconString = ":/images/ZImages/horizontalDecrease-2.png";
 extern const QString glHorizontalIncreaseIconString = ":/images/ZImages/horizontalIncrease-2.png";
