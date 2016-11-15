@@ -166,10 +166,11 @@ ZCalibration::ZCalibration(const QString& name, QObject *parent) : QObject(paren
         zv_lastColorIndex = 0;
     }
 
-    zv_exposition = -1;
+    zv_exposition = 0;
     zv_energyCalibrationFactorK0 = 0;
     zv_energyCalibrationFactorK1 = 0;
     zv_energyCalibrationFactorK2 = 0;
+    zv_gainFactor = 0;
     zv_energyUnit = "not defined";
 
     zv_calibrationId = zv_lastCalibrationId++;
@@ -204,6 +205,7 @@ ZCalibration::ZCalibration(const ZCalibration *calibration, const QString& name,
     zv_energyCalibrationFactorK0 =  calibration->zv_energyCalibrationFactorK0;
     zv_energyCalibrationFactorK1 = calibration->zv_energyCalibrationFactorK1;
     zv_energyCalibrationFactorK2 = calibration->zv_energyCalibrationFactorK2;
+    zv_gainFactor = calibration->zv_gainFactor;
     zv_energyUnit = calibration->zv_energyUnit;
 
     zv_calibrationId = zv_lastCalibrationId++;
@@ -346,6 +348,11 @@ void ZCalibration::zp_setEnergyUnit(const QString& energyUnit)
     zv_energyUnit = energyUnit;
 }
 //=========================================================
+void ZCalibration::zp_setGainFactor(int gainFactor)
+{
+    zv_gainFactor = gainFactor;
+}
+//=========================================================
 void ZCalibration::zp_setExposition(int exposition)
 {
     zv_exposition = exposition;
@@ -369,6 +376,11 @@ qreal ZCalibration::zp_energyCalibrationK2() const
 QString ZCalibration::zp_energyUnit() const
 {
     return zv_energyUnit;
+}
+//=========================================================
+int ZCalibration::zp_gainFactor() const
+{
+    return zv_gainFactor;
 }
 //=========================================================
 int ZCalibration::zp_exposition() const

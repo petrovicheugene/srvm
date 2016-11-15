@@ -32,6 +32,7 @@ void ZTermCorrelationTableWidget::zp_setModel(ZTermCorrelationTableModel* model)
     //    zv_table->setItemDelegateForColumn(1, spectrumDelegate);
     //    zv_table->setAlternatingRowColors(true);
 
+
     connect(zv_table->selectionModel(), &QItemSelectionModel::currentRowChanged,
             this, &ZTermCorrelationTableWidget::zh_onCurrentTermChanged);
     connect(this, &ZTermCorrelationTableWidget::zg_currentTermChanged,

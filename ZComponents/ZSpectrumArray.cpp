@@ -22,7 +22,8 @@ ZSpectrumArray::ZSpectrumArray(QObject* parent)
     zv_energyK0 = 0;
     zv_energyK1 = 0;
     zv_energyK2 = 0;
-    zv_exposition = -1;
+    zv_exposition = 0;
+    zv_gainFactor = 0;
     zv_energyUnit = QString();
 
     zv_arrayId = zv_lastArrayId++;
@@ -37,7 +38,8 @@ ZSpectrumArray::ZSpectrumArray(const QString& name, QObject* parent)  : QObject(
     zv_energyK0 = 0;
     zv_energyK1 = 0;
     zv_energyK2 = 0;
-    zv_exposition = -1;
+    zv_exposition = 0;
+    zv_gainFactor = 0;
     zv_energyUnit = QString();
 
     zv_arrayId = zv_lastArrayId++;
@@ -120,6 +122,7 @@ ZRawSpectrumArray ZSpectrumArray::zp_createRawSpectrumArray()
 {
     ZRawSpectrumArray rawSpectrumArray;
     rawSpectrumArray.name = zv_arrayName;
+    rawSpectrumArray.gainFactor = zv_gainFactor;
 
     for(int s = 0; s < zv_spectrumList.count(); s++)
     {
@@ -294,15 +297,24 @@ bool ZSpectrumArray::zp_energyCalibration(qreal& K0, qreal& K1, qreal& K2, QStri
     return true;
 }
 //===============================================
-bool ZSpectrumArray::zp_exposition(int& exposition)
+int ZSpectrumArray::zp_gainFactor() const
 {
-    if(zv_exposition < 0)
+    return zv_gainFactor;
+}
+//===============================================
+bool ZSpectrumArray::zp_setGainFactor(int gainFactor)
+{
+    if(gainFactor < 0 || gainFactor > glMaxGainFactor)
     {
         return false;
     }
-
-    exposition = zv_exposition;
+    zv_gainFactor = gainFactor;
     return true;
+}
+//===============================================
+int ZSpectrumArray::zp_exposition() const
+{
+    return zv_exposition;
 }
 //===============================================
 QString ZSpectrumArray::zp_spectrumFileName(int index) const

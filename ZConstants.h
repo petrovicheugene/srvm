@@ -4,7 +4,7 @@
 //================================
 #include <QString>
 #include <QIcon>
-//#define DBG
+// #define DBG
 #ifdef DBG
 #include <QDebug>
 #endif
@@ -21,7 +21,7 @@ extern const QString glAppCopyright;
 extern const QString glAppCompanyURL;
 
 extern const QString glDefaultChemElementString;
-
+extern const int glMaxGainFactor;
 // icons
 
 extern const QString glHorizontalDecreaseIconString;
@@ -36,7 +36,6 @@ extern const QString glSidebarLeftOpenIconString;
 extern const QString glSidebarLeftCloseIconString;
 extern const QString glSidebarRightOpenIconString;
 extern const QString glSidebarRightCloseIconString;
-
 
 extern const QString glExitAppIconString;
 extern const QString glAboutIconString;

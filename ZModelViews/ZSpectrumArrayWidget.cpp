@@ -1,6 +1,7 @@
 //==============================================================
 #include "ZSpectrumArrayWidget.h"
 #include "ZConstants.h"
+#include "ZChannelNumberDelegate.h"
 #include "ZArrayModel.h"
 #include "ZStringDelegate.h"
 #include "ZVisibilityStringDelegate.h"
@@ -37,7 +38,11 @@ void ZSpectrumArrayWidget::zh_createComponents()
 void ZSpectrumArrayWidget::zp_setModel(ZArrayModel *model)
 {
     zv_table->setModel(model);
-    zv_table->setItemDelegate(new ZStringDelegate(zv_table));
+    zv_table->setItemDelegateForColumn(0, new ZStringDelegate(zv_table));
+    ZChannelNumberDelegate* intDelegate = new ZChannelNumberDelegate;
+    intDelegate->zp_setEditorMinMax(0, glMaxGainFactor);
+    zv_table->setItemDelegateForColumn(1, intDelegate);
+    zv_table->setItemDelegateForColumn(2, new ZStringDelegate(zv_table));
 
     zv_table->horizontalHeader()->setSectionResizeMode(0, QHeaderView::Stretch);
     zv_table->setAlternatingRowColors(true);
