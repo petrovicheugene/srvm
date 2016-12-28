@@ -503,6 +503,7 @@ bool ZSpectrumArray::zp_appendSpectrum(const ZRawSpectrum& rawSpectrum, bool las
                 question += "Do you want to continue loading?";
 
                 QMessageBox msgBox;
+                msgBox.setIcon(QMessageBox::Question);
                 msgBox.setText(tr("Energy calibration and exposition in spectrum \"%1\" is different to calibration that have other spectra in the array.\r\n").arg(rawSpectrum.path));
                 msgBox.setInformativeText(question);
 
