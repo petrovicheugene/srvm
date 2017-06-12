@@ -20,6 +20,8 @@ public:
     QStringList zp_isEnergyCalibrationAndExpositionSuitable(const QString&,
                                         qreal K0, qreal K1, qreal K2, int exposition);
 
+    const ZSpeAuxData *zp_speAuxData() const;
+
 private:
 
     // VARS

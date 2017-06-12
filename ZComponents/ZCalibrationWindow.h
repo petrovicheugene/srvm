@@ -79,7 +79,6 @@ private:
     static qint64 zv_lastWindowId;
     static QMap<WindowType, QPair<QString, QString>> zv_typeNameMap;
 
-
     // FUNCS
     static QMap<WindowType, QPair<QString, QString> > zh_intTypeNameMap();
 

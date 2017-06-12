@@ -106,7 +106,6 @@ int main(int argc, char *argv[])
     QTextCodec* codec = QTextCodec::codecForName("windows-1251");
     QTextCodec::setCodecForLocale(codec);
 
-
     QApplication::setOrganizationName(glAppCompany);
     QApplication::setApplicationName(glAppExeBaseName);
     QApplication::setApplicationVersion(glAppVersion);

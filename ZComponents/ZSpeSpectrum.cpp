@@ -23,6 +23,11 @@ const ZAbstractSpectrumAuxData* ZSpeSpectrum::zp_auxData() const
     return &zv_auxData;
 }
 //===================================================
+const ZSpeAuxData* ZSpeSpectrum::zp_speAuxData() const
+{
+    return &zv_auxData;
+}
+//===================================================
 QStringList ZSpeSpectrum::zp_isEnergyCalibrationAndExpositionSuitable(const QString& energyUnit,
                                     qreal K0, qreal K1, qreal K2, int exposition)
 {

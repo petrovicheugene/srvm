@@ -89,6 +89,7 @@ void ZWidgetWithSidebar::zp_setInfoLabelText(bool dirty, const QString& text)
         infoText = "<font color=red><b>" + infoText + "</b></font>";
     }
     zv_infoLabel->setText(infoText);
+    zv_infoLabel->setToolTip(infoText);
 }
 //=======================================================
 void ZWidgetWithSidebar::zh_createComponents(QString title)
@@ -146,6 +147,7 @@ void ZWidgetWithSidebar::zh_createComponents(QString title)
     basementLayout->addWidget(zv_hideLabel);
 
     zv_infoLabel = new QLabel(this);
+    zv_infoLabel->setSizePolicy(QSizePolicy::Ignored , QSizePolicy::Expanding);
     basementLayout->addWidget(zv_infoLabel);
     //basementLayout->addSpacing(margin);
 
