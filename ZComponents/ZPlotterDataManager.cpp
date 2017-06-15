@@ -176,8 +176,8 @@ void ZPlotterDataManager::zp_currentArrayChanged(qint64 currentArrayId,
     if(!isPlotScaled)
     {
         zv_plotter->zp_fitInBoundingRect();
-//        QMetaObject::invokeMethod(zv_plotter, "zp_fitInBoundingRect",
-//                                  Qt::QueuedConnection);
+        //        QMetaObject::invokeMethod(zv_plotter, "zp_fitInBoundingRect",
+        //                                  Qt::QueuedConnection);
 
     }
 }
@@ -253,8 +253,8 @@ void ZPlotterDataManager::zh_onRepositoryArrayOperation(ZSpectrumArrayRepository
         if(!isPlotScaled)
         {
             zv_plotter->zp_fitInBoundingRect();
-//            QMetaObject::invokeMethod(zv_plotter, "zp_fitInBoundingRect",
-//                                      Qt::QueuedConnection);
+            //            QMetaObject::invokeMethod(zv_plotter, "zp_fitInBoundingRect",
+            //                                      Qt::QueuedConnection);
         }
     }
     else if(type == ZSpectrumArrayRepository::SOT_BEGIN_REMOVE_SPECTRA)
@@ -438,10 +438,10 @@ void ZPlotterDataManager::zh_onRepositoryCalibrationWindowOperation(ZCalibration
                 }
             }
 
-//            if(windowItem)
-//            {
-//                zv_plotter->zp_addItem(windowItem);
-//            }
+            //            if(windowItem)
+            //            {
+            //                zv_plotter->zp_addItem(windowItem);
+            //            }
         }
     }
 }
@@ -567,50 +567,107 @@ void ZPlotterDataManager::zh_definePlotScaling(bool& plotIsScaled)
 //===========================================================
 void ZPlotterDataManager::zh_findItemInCursorAreaImage(QImage cursorAreaImage)
 {
-
     // TODO CURRENT SPECTRUM BY CLICK ON PLOT
-
 #ifdef DBG
     qDebug() << "zh_findItemInCursorAreaImage";
 #endif
 
     // central pixel
-    //   QPoint centralPixel = QPoint(cursorAreaImage.width()/2, cursorAreaImage.height()/2);
-    //   QColor centralPixelColor = cursorAreaImage.pixel(centralPixel);
+    int centralPointRow = cursorAreaImage.height()/2;
+    int centralPointColumn = cursorAreaImage.width()/2;
 
-    //QList<QGraphicsItem*>itemList = zv_plotter->zp_itemListForType();
-    //   ZSpectrumGraphicsItem* spectrumItem;
-    //   qint64 spectrumId = spectrumItem;
-    //   QColor spectrumColor;
+    QPoint centralPixel = QPoint(centralPointColumn, centralPointRow);
+    QColor centralPixelColor = cursorAreaImage.pixel(centralPixel);
 
-    //   for(int i = 0; i < spectrumItemList.count(); i++)
-    //   {
-    //      spectrumItem = qgraphicsitem_cast<ZSpectrumGraphicsItem*>(spectrumItemList.at(i));
-    //      if(spectrumItem == 0)
-    //      {
-    //         continue;
-    //      }
-    //      spectrumId = spectrumItem->zp_spectrumId();
-    //      spectrumColor = zv_;
-    //      if()
-    //      {
+    QList<QGraphicsItem*>itemList = zv_plotter->zp_itemListForType(SpectrumItemType);
+    ZSpectrumGraphicsItem* spectrumItem;
+    qint64 spectrumId = -1;// = spectrumItem;
+    QColor spectrumColor;
+    bool spectrumFound = false;
+    // buffer map for futher search in peripheal points of image
+    QMap<qint64, QColor> itemColorIdBufferMap;
 
-    //      }
-    //   }
+    for(int i = 0; i < itemList.count(); i++)
+    {
+        spectrumItem = qgraphicsitem_cast<ZSpectrumGraphicsItem*>(itemList.at(i));
+        if(spectrumItem == 0)
+        {
+            continue;
+        }
+        spectrumColor = spectrumItem->zp_spectrumColor();
+        if(spectrumColor != centralPixelColor)
+        {
+            // set spe color and spe id in buffer map and continue
+            itemColorIdBufferMap.insert( spectrumItem->zp_spectrumId(), spectrumColor);
+            continue;
+        }
 
+        spectrumId = spectrumItem->zp_spectrumId();
+        zv_spectrumArrayRepositiry->zp_setSpectrumCurrent(spectrumId);
+        return;
+    }
 
-    //   //qDebug() << "central pixel" << QColor(cursorAreaImage->pixel(zv_colorPickUpAuxCoverageSize, zv_colorPickUpAuxCoverageSize));
+    if(!spectrumFound)
+    {
+        QList<QPoint> checkedPointList;
+        checkedPointList.append(centralPixel);
 
-    //   for(int row = 0; row < cursorAreaImage->size().height(); row++)
-    //   {
-    //      for(int col = 0; col < cursorAreaImage->size().width(); col++)
-    //      {
-    //         QColor currentColor(cursorAreaImage->pixel(row, col));
-    //         if(currentColor != backgroundColor && currentColor != gridColor)
-    //         {
-    //            qDebug() << "pixel" << currentColor << "Row" << row << "Col" << col;
-    //         }
-    //      }
-    //   }
+        QPoint currentPoint = QPoint();
+        int periphialCircleStartRow = centralPointRow;
+        int periphialCircleStartColumn = centralPointColumn;
+        int periphialCircleLastRow = centralPointRow;
+        int periphialCircleLastCol = centralPointColumn;
+        // circle on peripheral points
+        for(;;)
+        {
+            periphialCircleStartRow = periphialCircleStartRow <= 0 ? 0 : periphialCircleStartRow -1;
+            periphialCircleStartColumn = periphialCircleStartColumn <= 0 ? 0 : periphialCircleStartColumn -1;
+
+            periphialCircleLastRow = (periphialCircleLastRow >= cursorAreaImage.height() - 1)? cursorAreaImage.height() - 1 : periphialCircleLastRow + 1;
+            periphialCircleLastCol = (periphialCircleLastCol >= cursorAreaImage.width() - 1)? cursorAreaImage.width() - 1 : periphialCircleLastCol + 1;
+            // spe color corcle
+            QMap<qint64, QColor>::iterator it;
+            for(it = itemColorIdBufferMap.begin(); it != itemColorIdBufferMap.end(); it++)
+            {
+                spectrumColor = it.value();
+                // periphial circle
+                // rows
+                for(int row = periphialCircleStartRow; row <= periphialCircleLastRow; row++ )
+                {
+                    // columns
+                    for(int col = periphialCircleStartColumn; col <= periphialCircleLastCol; col++)
+                    {
+                        // current point
+                        currentPoint = QPoint(col, row);
+                        if(checkedPointList.contains(currentPoint) || cursorAreaImage.width() <= col
+                                || cursorAreaImage.height() <= row)
+                        {
+                            continue;
+                        }
+
+                        if(spectrumColor == QColor(cursorAreaImage.pixel(currentPoint)))
+                        {
+                            spectrumId = it.key();
+                            zv_spectrumArrayRepositiry->zp_setSpectrumCurrent(spectrumId);
+                            return;
+                        }
+
+                        if(it + 1 == itemColorIdBufferMap.end())
+                        {
+                            // last spe. Insert point into checkedPointSet
+                            checkedPointList.append(currentPoint);
+                        }
+                    }
+                }
+            }
+
+            //
+            if(periphialCircleStartRow == 0 && periphialCircleStartColumn == 0)
+            {
+                // last circle
+                break;
+            }
+        }
+    }
 }
 //===========================================================

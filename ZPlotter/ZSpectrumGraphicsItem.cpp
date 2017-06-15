@@ -202,6 +202,11 @@ void ZSpectrumGraphicsItem::zp_updateCurrentSpectrum(bool visible)
     }
 }
 //======================================================
+QColor ZSpectrumGraphicsItem::zp_spectrumColor() const
+{
+    return zv_color;
+}
+//======================================================
 void ZSpectrumGraphicsItem::mouseReleaseEvent(QGraphicsSceneMouseEvent * event)
 {
 #ifdef DBG

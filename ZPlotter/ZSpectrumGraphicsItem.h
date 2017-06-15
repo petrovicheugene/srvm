@@ -31,14 +31,15 @@ public:
     bool zp_isSpectrumCurrent();
 
     void zp_updateCurrentSpectrum(bool visible);
+    QColor zp_spectrumColor() const;
 
 protected:
 
     // FUNCS
-    void mouseReleaseEvent(QGraphicsSceneMouseEvent * event);
-    void mousePressEvent(QGraphicsSceneMouseEvent *event);
-    void focusInEvent(QFocusEvent *event);
-    void focusOutEvent(QFocusEvent *event);
+    void mouseReleaseEvent(QGraphicsSceneMouseEvent * event) override;
+    void mousePressEvent(QGraphicsSceneMouseEvent *event) override;
+    void focusInEvent(QFocusEvent *event) override;
+    void focusOutEvent(QFocusEvent *event) override;
 
 private:
 
