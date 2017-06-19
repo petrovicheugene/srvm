@@ -116,7 +116,6 @@ void ZNormaSettingsDialog::zp_setNormaSettings(const ZNormaSettingsData& setting
     case ZTermNormalizer::NT_CUSTOM:
         zv_customNormaRadioButton->setChecked(true);
         break;
-
     }
 
     zv_customNormaLineEdit->setText(settings.customNormaString);
