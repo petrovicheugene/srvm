@@ -14,7 +14,11 @@ RC_ICONS = "SDC2.ico"
 
 VER_MAJ=0
 VER_MIN=0
+<<<<<<< HEAD
 VER_PAT=35
+=======
+VER_PAT=33
+>>>>>>> 65cefbb9c9ceb1f5ba6bf069bab7c7b5c4c13722
 
 VER_RELEASE=b
 
