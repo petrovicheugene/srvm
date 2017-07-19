@@ -14,19 +14,19 @@ RC_ICONS = "SDC2.ico"
 
 VER_MAJ=0
 VER_MIN=0
-<<<<<<< HEAD
 VER_PAT=35
-=======
-VER_PAT=33
->>>>>>> 65cefbb9c9ceb1f5ba6bf069bab7c7b5c4c13722
 
 VER_RELEASE=b
+
+#DEBUG SETTINGS
+CONFIG(release, debug|release):DEFINES += QT_NO_DEBUG_OUTPUT
+#by default defined: in Debug mode QT_DEBUG, in Release mode QT_NO_DEBUG
 
 EXE_BASE_NAME=SDCalibrator
 QMAKE_TARGET_PRODUCT="SD Calibrator"
 QMAKE_TARGET_DESCRIPTION="Creation of spectrometer calibration"
 QMAKE_TARGET_COMPANY="TechnoAnalyt"
-QMAKE_TARGET_COPYRIGHT="Copyright © $${QMAKE_TARGET_COMPANY} Ltd. 2015, 2016.  All rights reserved."
+QMAKE_TARGET_COPYRIGHT="Copyright © $${QMAKE_TARGET_COMPANY} Ltd. 2015 - 2017.  All rights reserved."
 COMPANY_URL=tehnoanalit.com
 
 CONFIG += $$VER_RELEASE
@@ -35,7 +35,7 @@ CONFIG += c++11
 VERSION=$${VER_MAJ}.$${VER_MIN}.$${VER_PAT}
 
 #Target version
-r{
+CONFIG(debug, debug|release):{
 TARGET=$${EXE_BASE_NAME}-$${VERSION}
 }else{
 TARGET=$${EXE_BASE_NAME}-$${VERSION}.$${VER_RELEASE}

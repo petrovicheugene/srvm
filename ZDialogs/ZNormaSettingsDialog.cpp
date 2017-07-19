@@ -120,7 +120,7 @@ void ZNormaSettingsDialog::zp_setNormaSettings(const ZNormaSettingsData& setting
 
     zv_customNormaLineEdit->setText(settings.customNormaString);
     // TODO zp_setNormaSettings termList
-    settings.termList;
+    // settings.termList;
 }
 //============================================================
 ZNormaSettingsData ZNormaSettingsDialog::zp_normaSettings() const
