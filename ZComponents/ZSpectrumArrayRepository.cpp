@@ -942,7 +942,7 @@ void ZSpectrumArrayRepository::zh_createArray(const ZRawSpectrumArray& rawArray)
     bool dontAsk = false;
     for(int s = 0; s < rawArray.spectrumList.count(); s++)
     {
-        if(array->zp_appendSpectrum(rawArray.spectrumList.value(s), rawArray.spectrumList.count()-1 == s, dontAsk))
+        if(!array->zp_appendSpectrum(rawArray.spectrumList.value(s), rawArray.spectrumList.count()-1 == s, dontAsk))
         {
             if(dontAsk)
             {
