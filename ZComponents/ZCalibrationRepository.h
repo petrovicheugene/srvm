@@ -40,6 +40,7 @@ public:
                                   };
 
     enum WindowOperationType {WOT_WINDOW_CHANGED,
+                              WOT_WINDOW_VISIBLE_CHANGED,
                               WOT_INSERT_WINDOWS,
                               WOT_END_INSERT_WINDOWS,
                               WOT_REMOVE_WINDOWS,
@@ -169,6 +170,8 @@ public:
 
     void zh_notifyCalibrationRecalc(qint64 calibrationId) const;
 
+    ZCalibrationQualityData zp_calibrationQualityData(qint64 calibrationId) const;
+
 signals:
 
     void zg_message(QString) const;
@@ -288,6 +291,8 @@ private:
     int zv_currentCalibrationIndex;
     int zv_currentWindowIndex;
     int zv_currentTermIndex;
+
+    bool zv_blockCalibrationRecalc;
 
     // FUNCS
     void zh_createActions();

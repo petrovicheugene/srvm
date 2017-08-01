@@ -5,7 +5,7 @@
 #include <QWidget>
 //==============================================================
 class ZPlotter;
-
+class QVBoxLayout;
 //==============================================================
 class ZCorrelationPlotterWidget : public QWidget
 {
@@ -15,16 +15,19 @@ public:
 
    // FUNCS
    ZPlotter* zp_plotter();
+   void zp_rebuildPlotter();
 
 signals:
 
 public slots:
 
 
+
 private:
 
 
    // VARS
+   QVBoxLayout* frameLayout;
    ZPlotter* zv_plotter;
    // FUNCS
    void zh_createComponents();

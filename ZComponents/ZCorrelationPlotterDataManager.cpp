@@ -9,8 +9,12 @@
 
 #include <QGraphicsView>
 #include <QLabel>
+#include <QMap>
 #include <QComboBox>
 #include <QHBoxLayout>
+#include <QPushButton>
+#include <QDebug>
+
 //=====================================================================
 ZCorrelationPlotterDataManager::ZCorrelationPlotterDataManager(QObject *parent) : QObject(parent)
 {
@@ -166,7 +170,14 @@ QWidget* ZCorrelationPlotterDataManager::zh_createChartDataKindComboBoxWidget()
     zv_chartDataKindComboBox->addItem(tr("Deviation"), CDK_DEVIATION);
 
     zv_chartDataKindComboBox->setCurrentIndex(0);
+
     layout->addWidget(zv_chartDataKindComboBox);
+
+//    zv_rebuildPlotterButton = new QPushButton();
+//    zv_rebuildPlotterButton->setText("Update");
+//    connect(zv_rebuildPlotterButton, &QPushButton::clicked,
+//            this, &ZCorrelationPlotterDataManager::zg_initPlotRebuild);
+//    layout->addWidget(zv_rebuildPlotterButton);
     layout->addStretch();
 
     return widget;
@@ -226,7 +237,7 @@ void ZCorrelationPlotterDataManager::zh_rebuildChart()
         return;
     }
 
-    bool plotScaled = zv_plotter->zp_isPlotScaled();
+    // bool plotScaled = zv_plotter->zp_isPlotScaled();
     //    zv_plotter->zp_clearItemsExeptType(DefaultRectItemType);
 
     // chartPointItemList
@@ -259,6 +270,7 @@ void ZCorrelationPlotterDataManager::zh_rebuildChart()
             // return;
         }
         zh_setRulerMetrixAndPrecisionToPlot(zv_termChartPointOptions);
+         //zh_setRulerMetrixAndPrecisionToPlot(zv_deviationChartPointOptions);
         zh_recalcAndSetSceneRect(maxX, minX, maxY, minY, chartDataKind,
                                  &zv_termChartPointOptions);
 
@@ -345,13 +357,14 @@ void ZCorrelationPlotterDataManager::zh_rebuildChart()
         zv_plotter->zp_removeItem(item);
     }
 
-    if(!plotScaled)
-    {
+    // if(!plotScaled)
+    //{
         zv_plotter->zp_fitInBoundingRect();
         //        QMetaObject::invokeMethod(zv_plotter, "zp_fitInBoundingRect",
         //                                  Qt::QueuedConnection);
 
-    }
+    //}
+
 }
 //=====================================================================
 bool ZCorrelationPlotterDataManager::zh_getTermToConcentrationData(QMap<qint64, ZVisibilityPointF>& chartPointMap,
@@ -429,6 +442,7 @@ bool ZCorrelationPlotterDataManager::zh_getTermToConcentrationData(QMap<qint64, 
         point = ZVisibilityPointF(concentration, termValue, spectrum->zp_isSpectrumChecked() && isDataOk);
         chartPointMap.insert(spectrum->zp_spectrumId(), point);
     }
+
     return true;
 }
 //=====================================================================
@@ -455,6 +469,7 @@ bool ZCorrelationPlotterDataManager::zh_getCalibrationToConcentrationData(QMap<q
     bool ok;
     ZVisibilityPointF point;
     bool isDataOk;
+    qreal maxConcentrationValue;
 
     maxX = 0.0;
     minX = 0.0;
@@ -488,9 +503,11 @@ bool ZCorrelationPlotterDataManager::zh_getCalibrationToConcentrationData(QMap<q
             minX = concentration;
         }
 
-        if(maxY < calibrationValue)
+        // in order to show green line
+        maxConcentrationValue = qMax(calibrationValue, concentration);
+        if(maxY < maxConcentrationValue)
         {
-            maxY = calibrationValue;
+            maxY = maxConcentrationValue;
         }
 
         if(minY > calibrationValue)
@@ -500,6 +517,11 @@ bool ZCorrelationPlotterDataManager::zh_getCalibrationToConcentrationData(QMap<q
 
         point = ZVisibilityPointF(concentration, calibrationValue, spectrum->zp_isSpectrumChecked() && isDataOk);
         chartPointMap.insert(spectrum->zp_spectrumId(), point);
+    }
+
+    if(qAbs(minY) > qAbs(maxY))
+    {
+        maxY = minY * -1;
     }
 
     //    if(maxY < maxX)
@@ -559,11 +581,19 @@ bool ZCorrelationPlotterDataManager::zh_getDeviationToConcentrationData(QMap<qin
             deviationValue = 0.0;
         }
 
-        deviationValue = calibrationValue - concentration;
-        if(deviationValue != 0.0)
+        if(concentration == 0.0)
+        {
+            deviationValue = 0.0;
+        }
+        else
         {
             deviationValue = ((calibrationValue - concentration) / concentration) * 100;
         }
+
+//        if(deviationValue != 0.0)
+//        {
+//            deviationValue = ((calibrationValue - concentration) / concentration) * 100;
+//        }
 
         if(maxX < concentration)
         {
@@ -589,10 +619,14 @@ bool ZCorrelationPlotterDataManager::zh_getDeviationToConcentrationData(QMap<qin
         chartPointMap.insert(spectrum->zp_spectrumId(), point);
     }
 
-    //    if(maxY < maxX)
-    //    {
-    //        maxY = maxX;
-    //    }
+    if(qAbs(maxY) > qAbs(minY))
+    {
+        minY = maxY * -1;
+    }
+    else
+    {
+        maxY = minY * -1;
+    }
 
     return true;
 }
