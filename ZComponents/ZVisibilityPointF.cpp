@@ -6,7 +6,7 @@ ZVisibilityPointF::ZVisibilityPointF() : QPointF()
     zv_visibility = true;
 }
 //===============================================================
-ZVisibilityPointF::ZVisibilityPointF(const QPoint & point, bool visible) : QPointF(point)
+ZVisibilityPointF::ZVisibilityPointF(const QPoint &point, bool visible) : QPointF(point)
 {
     zv_visibility = visible;
 }

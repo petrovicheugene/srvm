@@ -40,7 +40,8 @@ public:
                               WOT_END_INSERT_WINDOWS,
                               WOT_BEGIN_REMOVE_WINDOWS,
                               WOT_END_REMOVE_WINDOWS,
-                              WOT_WINDOW_CHANGED
+                              WOT_WINDOW_CHANGED,
+                              WOT_WINDOW_VISIBLE_CHANGED
                              };
 
 

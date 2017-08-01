@@ -13,6 +13,7 @@ class ZPlotter;
 class ZDefaultRectGraphicsItem;
 class ZTermCorrelationTableWidget;
 class QComboBox;
+class QPushButton;
 //=====================================================================
 
 //=====================================================================
@@ -34,9 +35,12 @@ public:
 
     void zp_setBottomRulerScaleMetrix(qreal scaleValue, const QString& rulerLabelString);
     void zp_setCurrentSpectrum(qint64 id) const;
+    void zh_rebuildChart();
+
 signals:
 
     void zg_requestCurrentTermIndex(int&) const;
+    void zg_initPlotRebuild();
 
 public slots:
 
@@ -62,11 +66,13 @@ private slots:
     void zh_currentCalibrationChanged(qint64 calibrationId, int calibrationIndex);
     void zh_onNormalizerChange(qint64 calibrationId);
 
+
 private:
 
     // VARS
     ZPlotter* zv_plotter;
     QComboBox* zv_chartDataKindComboBox;
+    // QPushButton* zv_rebuildPlotterButton;
     ZChartPointOptions zv_calibrationChartPointOptions;
     ZChartPointOptions zv_termChartPointOptions;
     ZChartPointOptions zv_deviationChartPointOptions;
@@ -91,7 +97,7 @@ private:
     QWidget* zh_createChartDataKindComboBoxWidget();
     void zh_setUpChartPointOptions();
 
-    void zh_rebuildChart();
+    // void zh_rebuildChart();
     bool zh_getTermToConcentrationData(QMap<qint64, ZVisibilityPointF> &chartPointMap,
                                        qreal& maxX, qreal &minX, qreal& maxY, qreal &minY);
     bool zh_getCalibrationToConcentrationData(QMap<qint64, ZVisibilityPointF> &chartPointMap,

@@ -8,7 +8,7 @@ class ZVisibilityPointF : public QPointF
 {
 public:
     ZVisibilityPointF();
-    ZVisibilityPointF(const QPoint & point, bool visible = true);
+    ZVisibilityPointF(const QPoint &point, bool visible = true);
     ZVisibilityPointF(qreal xpos, qreal ypos, bool visible = true);
 
     bool zp_isVisible() const;

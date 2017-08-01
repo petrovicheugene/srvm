@@ -93,8 +93,10 @@ QVariant ZCalibrationModel::data(const QModelIndex & index, int role) const
             {
                 return QVariant();
             }
+            ZCalibrationQualityData calibrationQualityData = zv_calibrationRepository->zp_calibrationQualityData(calibrationId);
+            return calibrationQualityData.determination;
 
-            return zv_qualityData.value(calibrationId).determination;
+            // return zv_qualityData.value(calibrationId).determination;
         }
         else if(index.column() == 6)
         {
@@ -104,7 +106,10 @@ QVariant ZCalibrationModel::data(const QModelIndex & index, int role) const
                 return QVariant();
             }
 
-            return zv_qualityData.value(calibrationId).adj_determination;
+            ZCalibrationQualityData calibrationQualityData = zv_calibrationRepository->zp_calibrationQualityData(calibrationId);
+            return calibrationQualityData.adj_determination;
+
+            //return zv_qualityData.value(calibrationId).adj_determination;
         }
         else if(index.column() == 7)
         {
@@ -114,7 +119,10 @@ QVariant ZCalibrationModel::data(const QModelIndex & index, int role) const
                 return QVariant();
             }
 
-            return zv_qualityData.value(calibrationId).standardDeviation;
+            ZCalibrationQualityData calibrationQualityData = zv_calibrationRepository->zp_calibrationQualityData(calibrationId);
+            return calibrationQualityData.standardDeviation;
+
+            //return zv_qualityData.value(calibrationId).standardDeviation;
         }
     }
 

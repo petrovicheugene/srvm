@@ -1635,7 +1635,7 @@ bool ZCalibration::zp_setCalibrationWindowVisible(int windowIndex, bool visibili
     bool res = zv_windowList[windowIndex]->zp_setWindowVisible(visibility);
     if(res)
     {
-        emit zg_windowOperation(WOT_WINDOW_CHANGED, windowIndex, windowIndex);
+        emit zg_windowOperation(WOT_WINDOW_VISIBLE_CHANGED, windowIndex, windowIndex);
     }
     return res;
 }

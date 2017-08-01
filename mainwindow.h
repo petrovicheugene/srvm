@@ -122,6 +122,8 @@ private slots:
     void zh_onAboutAction() const;
     void zh_onHelpAction();
 
+    void zh_rebuildCorrelationPlot();
+
 };
 //==========================================================
 #endif // MAINWINDOW_H

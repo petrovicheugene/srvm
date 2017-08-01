@@ -53,6 +53,8 @@
 #include <QSplitter>
 #include <QStatusBar>
 #include <QMetaType>
+
+#include <QDebug>
 //==========================================================
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -485,11 +487,13 @@ void MainWindow::zh_createConnections()
             zv_calibrationWindowTableWidget, &ZCalibrationWindowTableWidget::zp_setChannelNumberMinMax);
 
     // term correlation table and calculation plotter
-
     zv_calculationPlotterManager->zp_connectToPlotter(zv_correlationPlotterWidget->zp_plotter());
     zv_calculationPlotterManager->zp_connectToCalibrationRepository(zv_calibrationRepository);
     zv_calculationPlotterManager->zp_connectToSpectrumArrayRepository(zv_spectrumArrayRepository);
     zv_calculationPlotterManager->zp_connectToTermCorrelationWidget(zv_termCorrelationTableWidget);
+
+    connect(zv_calculationPlotterManager, &ZCorrelationPlotterDataManager::zg_initPlotRebuild,
+            this, &MainWindow::zh_rebuildCorrelationPlot, Qt::QueuedConnection);
 
     zv_termCorrelationTableModel->zp_connectToTermCorrelationTableManager(zv_termCorrelationTableManager);
     zv_termCorrelationTableManager->zp_connectToCalibrationRepository(zv_calibrationRepository);
@@ -693,5 +697,14 @@ void MainWindow::zh_onHelpAction()
         mv_helpBrowser->setVisible(true);
         mv_helpBrowser->mf_restoreGeometry();
     }
+}
+//==========================================================
+void MainWindow::zh_rebuildCorrelationPlot()
+{
+    qDebug() << "REBUILD PLOT";
+    zv_correlationPlotterWidget->zp_rebuildPlotter();
+    zv_calculationPlotterManager->zp_connectToPlotter(zv_correlationPlotterWidget->zp_plotter());
+    zv_correlationPlotterWidget->zp_plotter()->zp_fitInBoundingRect();
+    zv_calculationPlotterManager-> zh_rebuildChart();
 }
 //==========================================================

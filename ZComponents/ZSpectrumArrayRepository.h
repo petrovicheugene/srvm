@@ -85,7 +85,7 @@ public:
     bool zp_setSpectrumCheckedForId(qint64 arrayId, qint64 spectrumId, bool checked);
     void zp_setSpectrumCurrent(qint64 spectrumId) const;
 
-    const ZAbstractSpectrum * zp_spectrum(int arrayIndex, int spectrumIndex) const;
+    const ZAbstractSpectrum* zp_spectrum(int arrayIndex, int spectrumIndex) const;
     QList<ZAbstractSpectrum*> zp_spectrumListForArray(int arrayIndex) const;
     QList<int> zp_spectrumData(int arrayIndex, int spectrumIndex) const;
     int zp_arrayChannelCount(int arrayIndex);
