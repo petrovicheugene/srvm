@@ -1887,6 +1887,8 @@ bool ZCalibrationRepository::zh_copyWindowsTermsAndEquation(int srcCalibrationIn
         trgCalibration->zp_setTermFactorString(trgTermIndex, termFactorString);
     }
 
+    // equation quality data
+    trgCalibration->zp_setCalibrationQualityData(srcCalibration->zp_calibrationQualityData());
     return true;
 }
 //======================================================

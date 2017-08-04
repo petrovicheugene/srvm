@@ -44,7 +44,6 @@ public:
                               WOT_WINDOW_VISIBLE_CHANGED
                              };
 
-
     enum TremOperationType {TOT_BEGIN_INSERT_TERM,
                             TOT_END_INSERT_TERM,
                             TOT_BEGIN_REMOVE_TERM,
@@ -100,8 +99,8 @@ public:
 
     // windows
     int zp_createNewCalibrationWindow(int firstChannel = 0,
-                                       int lastChannel = 0,
-                                       ZCalibrationWindow::WindowType windowType = ZCalibrationWindow::WT_NOT_DEFINED);
+                                      int lastChannel = 0,
+                                      ZCalibrationWindow::WindowType windowType = ZCalibrationWindow::WT_NOT_DEFINED);
     int zp_createNewCalibrationWindow(const ZRawWindow& rawWindow);
     bool zp_isCalibrationWindowVisible(int windowIndex) const;
     bool zp_setCalibrationWindowVisible(int windowIndex, bool visibility);
@@ -168,7 +167,7 @@ public:
     bool zp_setBaseTermNormaCustomString(const QString& customString);
     QString zp_baseTermNormaCustomString() const;
     bool zp_setBaseTermNormalizerParameters(ZTermNormalizer::NormaType type,
-                                  const QString& customString);
+                                            const QString& customString);
 
 
     EquationType zp_equationType() const;
