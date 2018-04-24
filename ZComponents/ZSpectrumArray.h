@@ -62,7 +62,7 @@ public:
     QString zp_spectrumFileName(int index) const;
     qint64 zp_spectrumId(int index) const;
     QColor zp_spectrumColor(int index) const;
-    QList<int> zp_spectrumData(int index) const;
+    QList<quint32> zp_spectrumData(int index) const;
     bool zp_isSpectrumVisible(int index) const;
     bool zp_setSpectrumVisible(int index, bool visible);
 

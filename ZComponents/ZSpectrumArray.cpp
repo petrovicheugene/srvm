@@ -344,11 +344,11 @@ QColor ZSpectrumArray::zp_spectrumColor(int index) const
     return zv_spectrumList.at(index)->zp_color();
 }
 //===============================================
-QList<int> ZSpectrumArray::zp_spectrumData(int index) const
+QList<quint32> ZSpectrumArray::zp_spectrumData(int index) const
 {
     if(index < 0 || index >= zv_spectrumList.count())
     {
-        return QList<int>();
+        return QList<quint32>();
     }
     return zv_spectrumList.at(index)->zp_spectrumData();
 }
@@ -551,7 +551,9 @@ bool ZSpectrumArray::zp_appendSpectrum(const ZRawSpectrum& rawSpectrum, bool las
                 zv_energyK0 = auxData->zp_energyK0();
                 zv_energyK1 = auxData->zp_energyK1();
                 zv_energyK2 = auxData->zp_energyK2();
+
                 zv_exposition = auxData->zp_exposition();
+                zv_gainFactor = static_cast<int>(auxData->zp_gainFactor());
                 emit zg_energyCalibrationChanged(zv_arrayId);
             }
 

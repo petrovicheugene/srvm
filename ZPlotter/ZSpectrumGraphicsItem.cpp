@@ -90,7 +90,7 @@ void ZSpectrumGraphicsItem::zp_setCurrentSpectrumId(qint64 id)
     zv_currentSpectrumId = id;
 }
 //======================================================
-void ZSpectrumGraphicsItem::zp_setSpectrumData(const QList<int>& data)
+void ZSpectrumGraphicsItem::zp_setSpectrumData(const QList<quint32>& data)
 {
     zv_spectrumData = data;
     // painter path calculation

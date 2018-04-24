@@ -6,9 +6,9 @@
 //    zv_type = ST_SPE;
 //}
 //===================================================
-ZSpeSpectrum::ZSpeSpectrum(const QList<int>& intensityList, const ZSpeAuxData& speAuxData,
-                           const QString& name, QColor color, QObject *parent)
-    : ZAbstractSpectrum(intensityList, name, color, parent)
+ZSpeSpectrum::ZSpeSpectrum(const QList<quint32>& intensityList, const ZSpeAuxData& speAuxData,
+                           const QString& name, QColor color, bool completed, QObject *parent)
+    : ZAbstractSpectrum(intensityList, name, color, completed, parent)
 {
     zv_auxData = speAuxData;
 }
@@ -29,7 +29,7 @@ const ZSpeAuxData* ZSpeSpectrum::zp_speAuxData() const
 }
 //===================================================
 QStringList ZSpeSpectrum::zp_isEnergyCalibrationAndExpositionSuitable(const QString& energyUnit,
-                                    qreal K0, qreal K1, qreal K2, int exposition)
+                                                                      qreal K0, qreal K1, qreal K2, int exposition)
 {
     QStringList inconsistenciesList;
 
@@ -38,7 +38,7 @@ QStringList ZSpeSpectrum::zp_isEnergyCalibrationAndExpositionSuitable(const QStr
         inconsistenciesList << tr("energy unit");
     }
 
-    if(zv_auxData.zp_energyK0() != K0)
+    if(zv_auxData.zp_energyK0() - K0 == 0.0)
     {
         inconsistenciesList << tr("energy factor K0");
     }
@@ -59,5 +59,30 @@ QStringList ZSpeSpectrum::zp_isEnergyCalibrationAndExpositionSuitable(const QStr
     }
 
     return inconsistenciesList;
+}
+//===================================================
+void ZSpeSpectrum::zp_setSpectrumDateTime(QDateTime datetime)
+{
+    zv_auxData.zp_setDateTime(datetime);
+}
+//===================================================
+void ZSpeSpectrum::zp_setExposition(int exposition)
+{
+    zv_auxData.zp_setExposition(exposition);
+}
+//===================================================
+void ZSpeSpectrum::zp_setGainFactor(quint8 gainFactor)
+{
+    zv_auxData.zp_setGainFactor(gainFactor);
+}
+//===================================================
+void ZSpeSpectrum::zp_setAliveTime(quint32 aliveTime)
+{
+    zv_auxData.zp_setAliveTime(aliveTime);
+}
+//===================================================
+void ZSpeSpectrum::zp_setEnergyUnit(const QString& energyUnit)
+{
+    zv_auxData.zp_setEnergyUnit(energyUnit);
 }
 //===================================================

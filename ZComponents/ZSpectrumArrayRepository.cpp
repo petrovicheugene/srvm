@@ -756,11 +756,11 @@ QList<ZAbstractSpectrum*> ZSpectrumArrayRepository::zp_spectrumListForArray(int 
     return zv_arrayList.value(arrayIndex)->zp_spectrumList();
 }
 //==================================================================
-QList<int> ZSpectrumArrayRepository::zp_spectrumData(int arrayIndex, int spectrumIndex) const
+QList<quint32> ZSpectrumArrayRepository::zp_spectrumData(int arrayIndex, int spectrumIndex) const
 {
     if(arrayIndex < 0 || arrayIndex >= zv_arrayList.count() )
     {
-        return QList<int>();
+        return QList<quint32>();
     }
 
     return zv_arrayList.at(arrayIndex)->zp_spectrumData(spectrumIndex);

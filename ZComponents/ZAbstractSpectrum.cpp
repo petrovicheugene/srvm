@@ -5,8 +5,8 @@
 //==========================================================
 qint64 ZAbstractSpectrum::zv_lastSpectrumId = 0;
 //==========================================================
-ZAbstractSpectrum::ZAbstractSpectrum(const QList<int> &intensityList,
-                                     const QString& path, QColor color, QObject *parent)
+ZAbstractSpectrum::ZAbstractSpectrum(const QList<quint32> &intensityList,
+                                     const QString& path, QColor color, bool completed, QObject *parent)
     : QObject(parent)
 {
     zv_visible = true;
@@ -14,6 +14,8 @@ ZAbstractSpectrum::ZAbstractSpectrum(const QList<int> &intensityList,
     zv_color = color;
     zv_spectrumId = zv_lastSpectrumId++;
     zv_checked = true;
+    zv_completed = completed;
+    zv_maxIntensity = 15;
 
     QFileInfo fileInfo(path);
     QString suffix = fileInfo.suffix();
@@ -140,14 +142,35 @@ bool ZAbstractSpectrum::zp_setConcentration(qint64 chemElementId,
     return true;
 }
 //==========================================================
-QList<int> ZAbstractSpectrum::zp_spectrumData() const
+QList<quint32> ZAbstractSpectrum::zp_spectrumData() const
 {
     return zv_spectrumData;
+}
+//==========================================================
+void ZAbstractSpectrum::zp_setSpectrumData(QList<quint32> data)
+{
+    zv_spectrumData = data;
+    zv_channelCount = data.count();
+    zv_maxIntensity = 0;
+    for(int i = 0; i < zv_channelCount; i++)
+    {
+        if(zv_maxIntensity < data.value(i))
+        {
+            zv_maxIntensity = data.value(i);
+        }
+    }
+
+    zh_recalcSpectrumPainterPath();
 }
 //==========================================================
 QString ZAbstractSpectrum::zp_name() const
 {
     return zv_name;
+}
+//==========================================================
+void ZAbstractSpectrum::zp_setSpectrumName(const QString& name)
+{
+    zv_name = name;
 }
 //==========================================================
 QString ZAbstractSpectrum::zp_path() const
@@ -232,6 +255,16 @@ qint64 ZAbstractSpectrum::zp_spectrumId() const
 QPainterPath ZAbstractSpectrum::zp_spectrumPainterPath() const
 {
     return zv_spectrumPaintPath;
+}
+//==========================================================
+void ZAbstractSpectrum::zp_setCompleted(bool completed)
+{
+    zv_completed = completed;
+}
+//==========================================================
+bool ZAbstractSpectrum::zp_isCompleted() const
+{
+    return zv_completed;
 }
 //==========================================================
 void ZAbstractSpectrum::zh_recalcSpectrumPainterPath()

@@ -87,7 +87,7 @@ public:
 
     const ZAbstractSpectrum* zp_spectrum(int arrayIndex, int spectrumIndex) const;
     QList<ZAbstractSpectrum*> zp_spectrumListForArray(int arrayIndex) const;
-    QList<int> zp_spectrumData(int arrayIndex, int spectrumIndex) const;
+    QList<quint32> zp_spectrumData(int arrayIndex, int spectrumIndex) const;
     int zp_arrayChannelCount(int arrayIndex);
     int zp_arrayMaxIntensity(int arrayIndex);
 
