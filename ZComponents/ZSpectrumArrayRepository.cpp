@@ -473,6 +473,22 @@ qint64 ZSpectrumArrayRepository::zp_arrayIdForArrayIndex(int arrayIndex) const
     return zv_arrayList.at(arrayIndex)->zp_arrayId();
 }
 //==================================================================
+const ZAbstractSpectrum* ZSpectrumArrayRepository::zp_spectrumForId(qint64 id) const
+{
+    for(int a = 0; a < zv_arrayList.count(); a++)
+    {
+        for(int s = 0; s < zv_arrayList.at(a)->zp_spectrumCount(); s++)
+        {
+            if(zv_arrayList.at(a)->zp_spectrumId(s) == id)
+            {
+                return zv_arrayList.at(a)->zp_spectrum(s);
+            }
+        }
+    }
+
+    return nullptr;
+}
+//==================================================================
 //bool ZSpectrumArrayRepository::zp_averageChemConcentration(int arrayIndex, const QString& chemElement, qreal& averageValue ) const
 //{
 //    return zv_arrayList.at(arrayIndex)->zp_averageChemConcentration(chemElement, averageValue);

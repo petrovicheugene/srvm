@@ -50,8 +50,11 @@ ZSpectrumGraphicsItem::ZSpectrumGraphicsItem(const ZAbstractSpectrum *spectrum,
     setFlags(flags);
     setZValue(gl_defaultSpectrumZValue);
 
+
+    //qDebug() << "SPE VIS" << spectrum->zp_isSpectrumVisible();
+    //setVisible(spectrum->zp_isSpectrumVisible());
     zp_updateSpectrumData(spectrum);
-    zp_updateCurrentSpectrum(true);
+    zp_updateCurrentSpectrum(spectrum->zp_isSpectrumVisible());
 }
 //======================================================
 QRectF ZSpectrumGraphicsItem::boundingRect() const
@@ -67,6 +70,7 @@ void ZSpectrumGraphicsItem::paint(QPainter * painter, const QStyleOptionGraphics
     pen.setCosmetic(true);
     painter->setPen(pen);
     painter->drawPath(zv_spectrumPainterPath);
+
     painter->restore();
 }
 //======================================================
@@ -88,6 +92,11 @@ void ZSpectrumGraphicsItem::zp_setCurrentSpectrumColor(QColor color)
 void ZSpectrumGraphicsItem::zp_setCurrentSpectrumId(qint64 id)
 {
     zv_currentSpectrumId = id;
+}
+//======================================================
+qint64 ZSpectrumGraphicsItem::zp_currentSpectrumId()
+{
+    return zv_currentSpectrumId;
 }
 //======================================================
 void ZSpectrumGraphicsItem::zp_setSpectrumData(const QList<quint32>& data)
@@ -139,6 +148,7 @@ void ZSpectrumGraphicsItem::zh_calculatePainterPath()
     // last point
     point = QPointF((qreal)(zv_spectrumData.count() - 1),  0);
     newShape.lineTo(point);
+    zv_spectrumPainterPath = QPainterPath();
     zv_spectrumPainterPath = newShape;
     zv_boundingRect = zv_spectrumPainterPath.boundingRect();
     // rect top and bottom extension
@@ -183,6 +193,11 @@ bool ZSpectrumGraphicsItem::zp_isSpectrumCurrent()
     return zv_currentSpectrumId == zv_spectrumId;
 }
 //======================================================
+QColor ZSpectrumGraphicsItem::zp_spectrumColor() const
+{
+    return zv_color;
+}
+//======================================================
 void ZSpectrumGraphicsItem::zp_updateCurrentSpectrum(bool visible)
 {
     if(zv_currentSpectrumId == zv_spectrumId)
@@ -202,40 +217,24 @@ void ZSpectrumGraphicsItem::zp_updateCurrentSpectrum(bool visible)
     }
 }
 //======================================================
-QColor ZSpectrumGraphicsItem::zp_spectrumColor() const
-{
-    return zv_color;
-}
-//======================================================
 void ZSpectrumGraphicsItem::mouseReleaseEvent(QGraphicsSceneMouseEvent * event)
 {
-#ifdef DBG
-    qDebug() << "RELEASE";
-#endif
     QGraphicsItem::mouseReleaseEvent(event);
 }
 //======================================================
 void ZSpectrumGraphicsItem::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
-#ifdef DBG
-    qDebug() << "PRESS";
-#endif
+
     QGraphicsItem::mousePressEvent(event);
 }
 //======================================================
 void ZSpectrumGraphicsItem::focusInEvent(QFocusEvent *event)
 {
-#ifdef DBG
-    qDebug() << "FOCUS IN";
-#endif
     QGraphicsItem::focusInEvent(event);
 }
 //======================================================
 void ZSpectrumGraphicsItem::focusOutEvent(QFocusEvent *event)
 {
-#ifdef DBG
-    qDebug() << "FOCUS OUT";
-#endif
     QGraphicsItem::focusOutEvent(event);
 }
 //======================================================

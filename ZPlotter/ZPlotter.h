@@ -97,11 +97,19 @@ public:
 
    QBrush zp_backgroundBrush();
 
+   void zp_setContextMenu(QList<QAction *> &actionList);
+
+   void zp_setEnergyCalibration(QList<double> energyCalibrationFactorList);
+
+   QRectF zp_viewportSceneRect() const;
+   QSize zp_viewportPixelSize() const;
+
 signals:
 
    void zg_cursorAreaImage(QImage);
    void zg_mousePressedAt(QPointF mousePos) const;
    void zg_viewportRectChanged(QRectF) const;
+   void zg_rulerToolChanged(QPointF startPoint, QPointF endPoint, bool visibility) const;
 
 public slots:
 
@@ -131,6 +139,9 @@ private slots:
    void zh_verticalDistortionChanged(int);
    void zh_scrollBarVisible(Qt::Orientation, bool&);
 
+   void zh_mouseScenePositionChanged(QPointF scenePos) const;
+   void zh_mouseLeaved() const;
+
 private:
 
    // VARS
@@ -145,6 +156,8 @@ private:
    bool zv_autoDefineVerticalAbsMax;
    qreal zv_verticalDistortionFactor;
    qreal zv_verticalDistortionCorrectionFactor;
+   QList<double> zv_energyCalibrationFactorList;
+
    // recalc when max or log base are changed
    //
    //

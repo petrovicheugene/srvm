@@ -9,6 +9,8 @@
 //===========================================================
 class ZPlotter;
 class ZDefaultRectGraphicsItem;
+
+typedef int EnergyLineOperationType;
 //===========================================================
 class ZPlotterDataManager : public QObject
 {
@@ -24,15 +26,28 @@ public:
 
 signals:
 
+    void zg_requestCurrentMeasuringConditions(quint8 gainFactor, int exposition) const;
+
+    void zg_requestEnergyLineEnergyValue(const QString& elementSymbol,
+                                         const QString& lineName, double& energyValue) const;
+    void zg_requestEnergyLineRelativeIntensity(const QString& elementSymbol,
+                                               const QString& lineName, int& reletiveIntensity) const;
+
+    void zg_requestEnergyLineVisibility(QString elementSymbol, QString lineName, bool& visibility) const;
+    void zg_requestEnergyLineColor(QString elementSymbol, QString lineName, QColor& color) const;
+
+
 
 public slots:
 
-//    void zp_currentCalibrationChanged(qint64 currentCalibrationId, int currentCalibrationIndex);
-//    void zp_currentCalibrationWindowChanged(qint64 currentWindowId, int currentWindowIndex,
-//                                            qint64 previousWindowId, int previousWindowIndex);
-//    void zp_currentArrayChanged(qint64 currentArrayId, int currentArrayIndex);
-//    void zp_currentSpectrumChanged(qint64 currentSpectrumId, int currentSpectrumIndex,
-//                                   qint64 previousSpectrumId, int previousSpectrumIndex);
+
+    void zp_onEnergyLineOperation(QString elementSymbol, QString lineName,
+                                  EnergyLineOperationType operationType);
+    void zp_onPlotterViewPortRectChange(QRectF rect);
+
+private slots:
+
+    void zh_updateRulerTool(QPointF startPoint, QPointF endPoint, bool visibility);
 
 private:
 
@@ -51,10 +66,12 @@ private:
     QString zv_verticalRuleLabel;
     QString zv_horizontalRuleLabel;
     QString zv_horizontalRecalcedRuleLabel;
+    bool zv_energyRuleMetrixFlag;
 
     qreal zv_boundingRectTopFactor;
     QRectF zv_defaultSceneRect = QRectF(QPointF(0.0,-100.0), QPointF(2048.0, 0.0));
     //QList<QGraphicsItem*> zv_spectrumGraphicsItemList;
+    QList<double> zv_calibrationFactors;
 
     // FUNCS
     void zh_createComponents();
@@ -81,6 +98,9 @@ private slots:
     void zp_currentArrayChanged(qint64 currentArrayId, int currentArrayIndex);
     void zp_currentSpectrumChanged(qint64 currentSpectrumId, int currentSpectrumIndex,
                                    qint64 previousSpectrumId, int previousSpectrumIndex);
+
+    bool zh_convertEnergyToChannel(double energyValue, double& channel);
+    void zh_updateRuleMetrix();
 
 };
 //===========================================================

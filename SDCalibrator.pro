@@ -154,7 +154,11 @@ SOURCES += main.cpp \
     ZComponents/ZRawTerm.cpp \
     ZComponents/ZRawWindow.cpp \
     ZDialogs/ZSetGainFactorToCalibrationDialog.cpp \
-    ZComponents/ZLESGaussSolver.cpp
+    ZComponents/ZLESGaussSolver.cpp \
+    ZPlotter/ZEnergyLineGraphicsItem.cpp \
+    ZComponents/ZEnergyCalibrationLine.cpp \
+    ZPlotter/ZTextGraphicsItem.cpp \
+    ZPlotter/ZRulerToolGraphicsItem.cpp
 
 HEADERS  += \
     MainWindow.h \
@@ -243,7 +247,11 @@ HEADERS  += \
     ZComponents/ZRawWindow.h \
     ZConstants.h \
     ZDialogs/ZSetGainFactorToCalibrationDialog.h \
-    ZComponents/ZLESGaussSolver.h
+    ZComponents/ZLESGaussSolver.h \
+    ZPlotter/ZEnergyLineGraphicsItem.h \
+    ZComponents/ZEnergyCalibrationLine.h \
+    ZPlotter/ZTextGraphicsItem.h \
+    ZPlotter/ZRulerToolGraphicsItem.h
 
 RESOURCES += \
     resources.qrc

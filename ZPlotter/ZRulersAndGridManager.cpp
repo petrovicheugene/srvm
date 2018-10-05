@@ -121,8 +121,8 @@ void ZRulersAndGridManager::zp_recalcRulesAndGrid()
     if(zv_viewportGlobalRect == viewportGlobalRect
             && zv_viewportSceneRect == viewportSceneRect
             && zv_globalZeroPoint == globalZeroPoint
-            && zv_distortionFactor == distortionFactor
-            && zv_distortionCorrectionFactor == distortionCorrectionFactor)
+            && zv_distortionFactor - distortionFactor == 0.0
+            && zv_distortionCorrectionFactor - distortionCorrectionFactor == 0.0)
     {
         // coordinates are not changed
         return;
@@ -138,7 +138,7 @@ void ZRulersAndGridManager::zp_recalcRulesAndGrid()
     // bottom rule haven't be distorted
     zh_recalcBottomRule();
 
-    if(distortionFactor == 0 || distortionFactor == 1 || distortionCorrectionFactor == 0)
+    if(distortionFactor == 0.0 || distortionFactor == 1.0 || distortionCorrectionFactor == 0.0)
     {
         zh_recalcLeftRule();
     }
@@ -148,6 +148,19 @@ void ZRulersAndGridManager::zp_recalcRulesAndGrid()
     }
 
     zv_rulerWidget->update();
+}
+//========================================================
+double ZRulersAndGridManager::zp_recalcSceneVerticalPos(double scenePosition) const
+{
+    if(zv_distortionFactor == 0.0 || zv_distortionFactor == 1.0 || zv_distortionCorrectionFactor == 0.0)
+    {
+        return -scenePosition;
+    }
+    else
+    {
+        double posValue = pow((qAbs(scenePosition) / zv_distortionCorrectionFactor), 1/zv_distortionFactor);
+        return posValue;
+    }
 }
 //========================================================
 void ZRulersAndGridManager::zh_recalcBottomRule()

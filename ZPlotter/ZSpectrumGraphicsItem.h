@@ -22,6 +22,7 @@ public:
     int type() const override;
     static void zp_setCurrentSpectrumColor(QColor);
     static void zp_setCurrentSpectrumId(qint64);
+    static qint64 zp_currentSpectrumId();
     //
     void zp_setSpectrumData(const QList<quint32> &);
     qint64 zp_spectrumId();
@@ -31,15 +32,16 @@ public:
     bool zp_isSpectrumCurrent();
 
     void zp_updateCurrentSpectrum(bool visible);
+
     QColor zp_spectrumColor() const;
 
 protected:
 
     // FUNCS
-    void mouseReleaseEvent(QGraphicsSceneMouseEvent * event) override;
-    void mousePressEvent(QGraphicsSceneMouseEvent *event) override;
-    void focusInEvent(QFocusEvent *event) override;
-    void focusOutEvent(QFocusEvent *event) override;
+    void mouseReleaseEvent(QGraphicsSceneMouseEvent * event);
+    void mousePressEvent(QGraphicsSceneMouseEvent *event);
+    void focusInEvent(QFocusEvent *event);
+    void focusOutEvent(QFocusEvent *event);
 
 private:
 

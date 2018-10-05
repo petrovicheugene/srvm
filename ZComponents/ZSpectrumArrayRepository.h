@@ -121,6 +121,8 @@ public:
 
     qint64 zp_arrayIdForArrayIndex(int arrayIndex) const;
 
+    const ZAbstractSpectrum *zp_spectrumForId(qint64 id) const;
+
 signals:
 
     void zg_message(QString) const;
