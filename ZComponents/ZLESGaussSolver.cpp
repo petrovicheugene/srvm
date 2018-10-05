@@ -1,27 +1,28 @@
 //==============================================================
-#include "ZLSEGaussSolver.h"
+#include "ZLESGaussSolver.h"
 //==============================================================
-ZLSEGaussSolver::ZLSEGaussSolver(QObject *parent) : QObject(parent)
+ZLESGaussSolver::ZLESGaussSolver(QObject *parent) : QObject(parent)
 {
 
 }
 //==============================================================
-int ZLSEGaussSolver::zp_rowCount() const
+int ZLESGaussSolver::zp_rowCount() const
 {
     return zv_freeTermList.count();
 }
 //==============================================================
-int ZLSEGaussSolver::zp_columnCount() const
+int ZLESGaussSolver::zp_columnCount() const
 {
     return zv_columnList.count();
 }
 //==============================================================
-bool ZLSEGaussSolver::zp_solve()
+bool ZLESGaussSolver::zp_solve()
 {
+    zv_lastErrorString.clear();
     if(zv_freeTermList.count() != zv_columnList.count())
     {
-        QString error = "LSE solver: The number of factor is not equal to the number of equation. The system has no solution.";
-        emit zg_message(error);
+        zv_lastErrorString = "LES solver: The number of factor is not equal to the number of equation. The system has no solution.";
+        emit zg_message(zv_lastErrorString);
         return false;
     }
 
@@ -51,10 +52,10 @@ bool ZLSEGaussSolver::zp_solve()
     qreal numerator;
     for(int i = zv_freeTermList.count() - 1; i >= 0; i--)
     {
-        if(zv_columnList.at(i).elements.at(i) == 0)
+        if(zv_columnList.at(i).elements.at(i) == 0.0)
         {
-            QString error = "LSE solver: Attempt of dividing by zero. The system has no solution. ";
-            emit zg_message(error);
+            zv_lastErrorString = "LES solver: Attempt of dividing by zero. The system has no solution. ";
+            emit zg_message(zv_lastErrorString);
             return false;
         }
 
@@ -73,24 +74,29 @@ bool ZLSEGaussSolver::zp_solve()
     return true;
 }
 //==============================================================
-void ZLSEGaussSolver::zp_clear()
+QString ZLESGaussSolver::zp_lastError() const
+{
+    return zv_lastErrorString;
+}
+//==============================================================
+void ZLESGaussSolver::zp_clear()
 {
     zv_columnList.clear();
     zv_freeTermList.clear();
 }
 //==============================================================
-void ZLSEGaussSolver::zp_appendTermColumn(qreal* factorPtr, const QList<qreal>& termVriableValueList)
+void ZLESGaussSolver::zp_appendTermColumn(qreal* factorPtr, const QList<qreal>& termVriableValueList)
 {
     ZColumn column(factorPtr, termVriableValueList);
     zv_columnList.append(column);
 }
 //==============================================================
-void ZLSEGaussSolver::zp_appendFreeTermList(const QList<qreal>& freeTermList)
+void ZLESGaussSolver::zp_appendFreeTermList(const QList<qreal>& freeTermList)
 {
     zv_freeTermList = freeTermList;
 }
 //==============================================================
-void ZLSEGaussSolver::zh_swapRows(int row1, int row2)
+void ZLESGaussSolver::zh_swapRows(int row1, int row2)
 {
     for(int col = 0; col < zv_columnList.count(); col++)
     {
@@ -100,12 +106,12 @@ void ZLSEGaussSolver::zh_swapRows(int row1, int row2)
     zv_freeTermList.swap(row1, row2);
 }
 //==============================================================
-void ZLSEGaussSolver::zh_swapColumns(int col1, int col2)
+void ZLESGaussSolver::zh_swapColumns(int col1, int col2)
 {
     zv_columnList.swap(col1, col2);
 }
 //==============================================================
-bool ZLSEGaussSolver::zh_putMaxValueOnDiagonal(int startIndex)
+bool ZLESGaussSolver::zh_putMaxValueOnDiagonal(int startIndex)
 {
     qreal maxAbsValue = 0.0;
     int maxValueColumn = -1;
@@ -128,15 +134,15 @@ bool ZLSEGaussSolver::zh_putMaxValueOnDiagonal(int startIndex)
     if(maxValueRow < startIndex || maxValueRow > zv_freeTermList.count()
             || maxValueColumn < startIndex || maxValueColumn > zv_columnList.count())
     {
-        QString error = "LSE solver: Error matrix element manipulation.";
-        emit zg_message(error);
+        zv_lastErrorString = "LES solver: Error matrix element manipulation.";
+        emit zg_message(zv_lastErrorString);
         return false;
     }
 
-    if(maxAbsValue == 0)
+    if(maxAbsValue == 0.0)
     {
-        QString error = "LSE solver: The system has no solution.";
-        emit zg_message(error);
+        zv_lastErrorString = "LES solver: The system has no solution.";
+        emit zg_message(zv_lastErrorString);
         return false;
     }
 
@@ -145,7 +151,7 @@ bool ZLSEGaussSolver::zh_putMaxValueOnDiagonal(int startIndex)
     return true;
 }
 //==============================================================
-void ZLSEGaussSolver::zh_addMultipliedRow(int targetRow, int sourceRow, qreal factor)
+void ZLESGaussSolver::zh_addMultipliedRow(int targetRow, int sourceRow, qreal factor)
 {
     for(int col = 0; col < zv_columnList.count(); col++)
     {

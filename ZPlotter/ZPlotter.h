@@ -100,6 +100,8 @@ public:
 signals:
 
    void zg_cursorAreaImage(QImage);
+   void zg_mousePressedAt(QPointF mousePos) const;
+   void zg_viewportRectChanged(QRectF) const;
 
 public slots:
 
@@ -166,6 +168,8 @@ private:
    void zh_updateScrollBarsVisible();
 
    void zh_scrollBarVisibleControl(int min , int max);
+   void zh_notifySceneRect(int value);
+
    bool zh_recalcVerticalDistortionFactors(qreal distortionValue);
    void zh_recalcRulesAndItemCoordinates();
 

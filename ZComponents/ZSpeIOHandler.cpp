@@ -324,6 +324,7 @@ bool ZSpeIOHandler::zp_saveSpectrumToFile(QFile& file, ZSpeSpectrum*& spectrum)
 
     file.close();
     return true;
+
 //    int lineNumber = 0;
 //    bool ok;
 //    while (!ts.atEnd())

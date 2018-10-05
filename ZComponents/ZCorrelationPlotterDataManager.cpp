@@ -788,9 +788,6 @@ void ZCorrelationPlotterDataManager::zh_createAndPlaceChartPointItems(const QMap
     for(it = chartPointMap.begin(); it != chartPointMap.end(); it++)
     {
         pointItem = new ZChartPointGraphicsItem(this, it.value(), chartPointOptions, it.key());
-#ifdef DBG
-        qDebug() << "New point" << it.value().x() << it.value().y();
-#endif
         zv_plotter->zp_addItem(pointItem);
     }
 }

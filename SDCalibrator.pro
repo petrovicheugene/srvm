@@ -14,7 +14,7 @@ RC_ICONS = "SDC2.ico"
 
 VER_MAJ=0
 VER_MIN=0
-VER_PAT=38
+VER_PAT=39
 
 VER_RELEASE=b
 
@@ -146,7 +146,6 @@ SOURCES += main.cpp \
     ZComponents/ZVisibilityPointF.cpp \
     ZPlotter/ZChartPointGraphicsItem.cpp \
     ZPlotter/ZChartPointOptions.cpp \
-    ZComponents/ZLSEGaussSolver.cpp \
     ZComponents/ZQrealToStringConverter.cpp \
     ZComponents/ZCalibrationQualityData.cpp \
     ZComponents/ZPasteData.cpp \
@@ -154,7 +153,8 @@ SOURCES += main.cpp \
     ZModelViews/ZActiveStyledItemDelegate.cpp \
     ZComponents/ZRawTerm.cpp \
     ZComponents/ZRawWindow.cpp \
-    ZDialogs/ZSetGainFactorToCalibrationDialog.cpp
+    ZDialogs/ZSetGainFactorToCalibrationDialog.cpp \
+    ZComponents/ZLESGaussSolver.cpp
 
 HEADERS  += \
     MainWindow.h \
@@ -234,7 +234,6 @@ HEADERS  += \
     ZComponents/ZVisibilityPointF.h \
     ZPlotter/ZChartPointGraphicsItem.h \
     ZPlotter/ZChartPointOptions.h \
-    ZComponents/ZLSEGaussSolver.h \
     ZComponents/ZQrealToStringConverter.h \
     ZComponents/ZCalibrationQualityData.h \
     ZComponents/ZPasteData.h \
@@ -243,7 +242,8 @@ HEADERS  += \
     ZComponents/ZRawTerm.h \
     ZComponents/ZRawWindow.h \
     ZConstants.h \
-    ZDialogs/ZSetGainFactorToCalibrationDialog.h
+    ZDialogs/ZSetGainFactorToCalibrationDialog.h \
+    ZComponents/ZLESGaussSolver.h
 
 RESOURCES += \
     resources.qrc

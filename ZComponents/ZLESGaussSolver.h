@@ -1,6 +1,6 @@
 //==============================================================
-#ifndef ZLSEGAUSSSOLVER_H
-#define ZLSEGAUSSSOLVER_H
+#ifndef ZLESGAUSSSOLVER_H
+#define ZLESGAUSSSOLVER_H
 //==============================================================
 #include <QObject>
 //==============================================================
@@ -20,11 +20,11 @@ public:
     QList<qreal> elements;
 };
 //==============================================================
-class ZLSEGaussSolver : public QObject
+class ZLESGaussSolver : public QObject
 {
     Q_OBJECT
 public:
-    explicit ZLSEGaussSolver(QObject *parent = 0);
+    explicit ZLESGaussSolver(QObject *parent = 0);
 
     int zp_rowCount() const;
     int zp_columnCount() const;
@@ -34,6 +34,8 @@ public:
     void zp_clear();
     void zp_appendTermColumn(qreal* factorPtr, const QList<qreal>& termVriableValueList);
     void zp_appendFreeTermList(const QList<qreal> &);
+
+    QString zp_lastError() const;
 
 signals:
 
@@ -46,6 +48,7 @@ private:
     // VARS
     QList<ZColumn> zv_columnList;
     QList<qreal> zv_freeTermList;
+    QString zv_lastErrorString;
 
     // FUNCS
     void zh_swapRows(int row1, int row2);
@@ -55,4 +58,4 @@ private:
 
 };
 //==============================================================
-#endif // ZLSEGAUSSSOLVER_H
+#endif // ZLESGAUSSSOLVER_H

@@ -1,6 +1,6 @@
 //=============================================================================
 #include "ZTermCorrelationTableManager.h"
-#include "ZLSEGaussSolver.h"
+#include "ZLESGaussSolver.h"
 #include "ZConstants.h"
 #include "ZJointSpectraDataManager.h"
 #include <QPair>
@@ -928,8 +928,8 @@ void ZTermCorrelationTableManager::zh_recalcCalibrationFactors()
         return;
     }
 
-    ZLSEGaussSolver solver;
-    connect(&solver, &ZLSEGaussSolver::zg_message,
+    ZLESGaussSolver solver;
+    connect(&solver, &ZLESGaussSolver::zg_message,
             this, &ZTermCorrelationTableManager::zg_message);
 
     // create cov column for each factor

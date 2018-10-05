@@ -518,7 +518,7 @@ void ZPlotter::zp_verticalDistortionFactors(qreal& distortionFactor, qreal& dist
 bool ZPlotter::zp_isPlotScaled()
 {
     return zv_horizontalScrollBar->isVisible()
-            && zv_verticalScrollBar->isVisible();
+            || zv_verticalScrollBar->isVisible();
 }
 //====================================================
 void ZPlotter::zp_updatePlot()
@@ -639,7 +639,7 @@ void ZPlotter::zp_fitInBoundingRect()
     {
         rectToFit = zv_plotScene->sceneRect();
     }
-    zv_plotView->fitInView(rectToFit);
+    zv_plotView->zp_fitInView(rectToFit);
 
     // deblock signals
     zv_verticalScrollBar->blockSignals(false);
@@ -779,6 +779,11 @@ void ZPlotter::zh_connectScrollBars()
             this, &ZPlotter::zh_scrollBarVisibleControl);
     connect(zv_verticalScrollBar, &QScrollBar::rangeChanged,
             this, &ZPlotter::zh_scrollBarVisibleControl);
+
+    connect(zv_horizontalScrollBar, &QScrollBar::valueChanged,
+            this, &ZPlotter::zh_notifySceneRect);
+    connect(zv_verticalScrollBar, &QScrollBar::valueChanged,
+            this, &ZPlotter::zh_notifySceneRect);
 }
 //====================================================
 void ZPlotter::zh_updateScrollBarsVisible()
@@ -800,9 +805,15 @@ void ZPlotter::zh_scrollBarVisibleControl(int min , int max)
     scrollBar->setHidden(min == 0 && max == 0);
 }
 //====================================================
+void ZPlotter::zh_notifySceneRect(int value)
+{
+    QRectF viewportRect = zv_plotView->sceneRect();
+    emit zg_viewportRectChanged(viewportRect);
+}
+//====================================================
 bool ZPlotter::zh_recalcVerticalDistortionFactors(qreal distortionValue)
 {
-    if(zv_verticalAbsMax == 0)
+    if(zv_verticalAbsMax == 0.0)
     {
         return false;
     }
