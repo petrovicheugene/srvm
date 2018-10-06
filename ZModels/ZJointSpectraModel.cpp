@@ -1,6 +1,6 @@
 //==================================================================
 #include "ZJointSpectraModel.h"
-#include "ZConstants.h"
+#include "ZGeneral.h"
 
 #include <QFont>
 #include <QColor>
@@ -78,7 +78,7 @@ QVariant ZJointSpectraModel::data(const QModelIndex & index, int role) const
         }
     }
 
-    if(role == VisibleRole)
+    if(role == NS_DataRole::VisibleRole)
     {
         if(index.column() == 1)
         {
@@ -126,7 +126,7 @@ bool	ZJointSpectraModel::setData(const QModelIndex & index, const QVariant & val
         }
     }
 
-    if(role == VisibleRole)
+    if(role == NS_DataRole::VisibleRole)
     {
         if(index.column() == 1 && value.canConvert<bool>())
         {

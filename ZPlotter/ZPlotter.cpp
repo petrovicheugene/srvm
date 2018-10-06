@@ -8,7 +8,7 @@
 #include "ZSpectrumGraphicsItem.h"
 #include "ZWindowGraphicsItem.h"
 #include "ZChartPointGraphicsItem.h"
-#include "ZConstants.h"
+#include "ZGeneral.h"
 #include "ZPlotterDefaulVariables.h"
 
 #include <QApplication>
@@ -671,6 +671,11 @@ void ZPlotter::zp_fitInBoundingRect()
 
     zh_updateScrollBarsVisible();
     //zv_plotView->ensureVisible(rectToFit);
+}
+//====================================================
+QRectF ZPlotter::zp_boundingRect() const
+{
+    return zv_plotScene->itemsBoundingRect();
 }
 //====================================================
 void ZPlotter::resizeEvent(QResizeEvent* event)

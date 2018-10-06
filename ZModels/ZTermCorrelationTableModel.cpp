@@ -1,6 +1,6 @@
 //==================================================================
 #include "ZTermCorrelationTableModel.h"
-#include "ZConstants.h"
+#include "ZGeneral.h"
 #include <QFont>
 #include <QApplication>
 #include <QStyle>
@@ -156,7 +156,7 @@ QVariant	ZTermCorrelationTableModel::headerData(int section, Qt::Orientation ori
         }
     }
 
-    if(role == IconRole)
+    if(role == NS_DataRole::IconRole)
     {
         if(orientation == Qt::Vertical)
         {

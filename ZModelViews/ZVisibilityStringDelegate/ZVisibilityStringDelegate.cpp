@@ -1,6 +1,6 @@
 //==========================================================
 #include "ZVisibilityStringDelegate.h"
-#include "ZConstants.h"
+#include "ZGeneral.h"
 
 #include <QLineEdit>
 #include <QStyleOption>
@@ -73,10 +73,10 @@ void	ZVisibilityStringDelegate::paint(QPainter* painter, const QStyleOptionViewI
         painter->setBrush(QBrush(decorationColor));
         painter->drawRect(decorationRect.adjusted(1, 0, -1, 0));
 
-        bool visible = index.data(VisibleRole).toBool();
+        bool visible = index.data(NS_DataRole::VisibleRole).toBool();
         if(visible)
         {
-            QPixmap pixmap(glVisibleSignIconString);
+            QPixmap pixmap(NS_Icons::glIconVisible);
             QRect paintRect = pixmap.rect();
             //paintRect.moveCenter(decorationRect.adjusted(1, 0, -2, 0).center());
             paintRect.moveCenter(decorationRect.center());
@@ -171,7 +171,7 @@ bool ZVisibilityStringDelegate::editorEvent ( QEvent * event,
                                                 index);
     }
 
-    QVariant vData = index.data(VisibleRole);
+    QVariant vData = index.data(NS_DataRole::VisibleRole);
     if(!vData.isValid() || vData.isNull() || !vData.canConvert<bool>())
     {
         return QStyledItemDelegate::editorEvent(event,
@@ -181,7 +181,7 @@ bool ZVisibilityStringDelegate::editorEvent ( QEvent * event,
     }
 
     bool visible = vData.toBool();
-    model->setData(index, QVariant(!visible), VisibleRole);
+    model->setData(index, QVariant(!visible), NS_DataRole::VisibleRole);
     return true;
 }
 //==========================================================

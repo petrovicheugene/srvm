@@ -1,6 +1,6 @@
 //==============================================================
 #include "ZSpectrumArrayWidget.h"
-#include "ZConstants.h"
+#include "ZGeneral.h"
 #include "ZChannelNumberDelegate.h"
 #include "ZArrayModel.h"
 #include "ZStringDelegate.h"

@@ -1,6 +1,6 @@
 //==================================================================
 #include "ZCalibrationWindowModel.h"
-#include "ZConstants.h"
+#include "ZGeneral.h"
 //==================================================================
 ZCalibrationWindowModel::ZCalibrationWindowModel(QObject *parent)
     : QAbstractTableModel(parent)
@@ -63,7 +63,7 @@ QVariant ZCalibrationWindowModel::data(const QModelIndex & index, int role) cons
         }
     }
 
-    if(role == VisibleRole)
+    if(role == NS_DataRole::VisibleRole)
     {
         if(index.column() == 0)
         {
@@ -89,7 +89,7 @@ bool	ZCalibrationWindowModel::setData(const QModelIndex & index, const QVariant 
         return zv_dataManager->zp_setData(index, value);
     }
 
-    if(role == VisibleRole)
+    if(role == NS_DataRole::VisibleRole)
     {
         if(index.column() == 0 && value.canConvert<bool>())
         {

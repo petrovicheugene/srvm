@@ -6,7 +6,7 @@
 #include <QFile>
 #include <QStack>
 #include "ZCalibration.h"
-#include "ZConstants.h"
+#include "ZGeneral.h"
 //==========================================================
 class QXmlStreamReader;
 //==========================================================

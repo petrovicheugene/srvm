@@ -1,6 +1,6 @@
 //==================================================================
 #include "ZJointSpectraDataManager.h"
-#include "ZConstants.h"
+#include "ZGeneral.h"
 #include "ZSpectrumPaintData.h"
 //==================================================================
 ZJointSpectraDataManager::ZJointSpectraDataManager(QObject *parent) : QObject(parent)

@@ -1,6 +1,6 @@
 //==========================================================
 #include "MainWindow.h"
-#include "ZConstants.h"
+#include "ZGeneral.h"
 #include <QApplication>
 #include <QDir>
 // components
@@ -180,17 +180,17 @@ void MainWindow::closeEvent(QCloseEvent* e)
 void MainWindow::zh_createActions()
 {
     zv_exitAction = new QAction(this);
-    zv_exitAction->setIcon(QIcon(glExitAppIconString));
+    zv_exitAction->setIcon(QIcon(NS_CommonStrings::glExit));
     zv_exitAction->setText(tr("Exit"));
     zv_exitAction->setToolTip(tr("Exit the application"));
 
     zv_aboutAction = new QAction(this);
-    zv_aboutAction->setIcon(QIcon(glAboutIconString));
+    zv_aboutAction->setIcon(QIcon(NS_CommonStrings::glAbout));
     zv_aboutAction->setText(tr("About"));
     zv_aboutAction->setToolTip(tr("About the application"));
 
     zv_helpAction = new QAction(this);
-    zv_helpAction->setIcon(QIcon(glHelpIconString));
+    zv_helpAction->setIcon(QIcon(NS_CommonStrings::glHelp));
     zv_helpAction->setText(tr("Help"));
     zv_helpAction->setToolTip(tr("Show user guide"));
 

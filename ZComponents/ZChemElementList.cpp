@@ -1,6 +1,6 @@
 //=====================================================
 #include "ZChemElementList.h"
-#include "ZConstants.h"
+#include "ZGeneral.h"
 //=====================================================
 qint64 ZChemElementItem::zv_lastId = 0;
 

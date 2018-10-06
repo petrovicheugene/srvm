@@ -1,6 +1,6 @@
 //======================================================
 #include "ZCalibrationRepository.h"
-#include "ZConstants.h"
+#include "ZGeneral.h"
 #include "ZXMLCalibrationIOHandler.h"
 #include "ZCalibration.h"
 #include "ZFileActionManager.h"
@@ -2139,7 +2139,7 @@ void ZCalibrationRepository::zh_createActions()
 {
     // calibration actions
     zv_newCalibrationAction = new QAction(this);
-    zv_newCalibrationAction->setIcon(QIcon(glAddCalibrationIconString));
+    zv_newCalibrationAction->setIcon(QIcon(NS_Icons::glIconAddCalibration));
     zv_newCalibrationAction->setText(tr("New calibration"));
     zv_newCalibrationAction->setToolTip(tr("Append a new calibration to the list"));
 
@@ -2160,115 +2160,115 @@ void ZCalibrationRepository::zh_createActions()
 
     zv_removeCalibrationAction = new QAction(this);
     zv_removeCalibrationAction->setDisabled(true);
-    zv_removeCalibrationAction->setIcon(QIcon(glRemoveCalibrationIconString));
+    zv_removeCalibrationAction->setIcon(QIcon(NS_Icons::glIconRemoveCalibration));
     zv_removeCalibrationAction->setText(tr("Remove selected calibrations"));
     zv_removeCalibrationAction->setToolTip(tr("Remove selected calibrations from the list"));
 
     // window actions
     zv_newWindowAction = new QAction(this);
     zv_newWindowAction->setDisabled(true);
-    zv_newWindowAction->setIcon(QIcon(glAddWindowIconString));
+    zv_newWindowAction->setIcon(QIcon(NS_Icons::glIconAddWindow));
     zv_newWindowAction->setText(tr("New window"));
     zv_newWindowAction->setToolTip(tr("Append a new window to the list"));
 
     zv_removeWindowAction = new QAction(this);
     zv_removeWindowAction->setDisabled(true);
-    zv_removeWindowAction->setIcon(QIcon(glRemoveWindowIconString));
+    zv_removeWindowAction->setIcon(QIcon(NS_Icons::glIconRemoveWindow));
     zv_removeWindowAction->setText(tr("Remove selected windows"));
     zv_removeWindowAction->setToolTip(tr("Remove selected windows from the list"));
 
     // action actions
     zv_recalcEquationFactorsAction = new QAction(this);
     zv_recalcEquationFactorsAction->setDisabled(true);
-    zv_recalcEquationFactorsAction->setIcon(QIcon(glCalcIconString));
+    zv_recalcEquationFactorsAction->setIcon(QIcon(NS_Icons::glIconCalc));
     zv_recalcEquationFactorsAction->setText(tr("Recalculate calibration"));
     zv_recalcEquationFactorsAction->setToolTip(tr("Recalculate equation factors for current calibration"));
 
     // terms actions
     zv_createMixedTermsAction = new QAction(this);
     zv_createMixedTermsAction->setDisabled(true);
-    zv_createMixedTermsAction->setIcon(QIcon(glAddMixedTermsIconString));
+    zv_createMixedTermsAction->setIcon(QIcon(NS_Icons::glIconAddMixedTerms));
     zv_createMixedTermsAction->setText(tr("Create mixed terms"));
     zv_createMixedTermsAction->setToolTip(tr("Create mixed terms"));
 
     zv_removeMixedTermsAction = new QAction(this);
     zv_removeMixedTermsAction->setDisabled(true);
-    zv_removeMixedTermsAction->setIcon(QIcon(glRemoveMixedTermsIconString));
+    zv_removeMixedTermsAction->setIcon(QIcon(NS_Icons::glIconRemoveMixedTerms));
     zv_removeMixedTermsAction->setText(tr("Remove mixed terms"));
     zv_removeMixedTermsAction->setToolTip(tr("Remove mixed terms from the list"));
 
     zv_createCustomTermAction = new QAction(this);
     zv_createCustomTermAction->setDisabled(true);
-    zv_createCustomTermAction->setIcon(QIcon(glAddCustomTermIconString));
+    zv_createCustomTermAction->setIcon(QIcon(NS_Icons::glIconAddCustomTerm));
     zv_createCustomTermAction->setText(tr("Create custom term"));
     zv_createCustomTermAction->setToolTip(tr("Create custom term"));
 
     zv_removeCustomTermAction = new QAction(this);
     zv_removeCustomTermAction->setDisabled(true);
-    zv_removeCustomTermAction->setIcon(QIcon(glRemoveCustomTermIconString));
+    zv_removeCustomTermAction->setIcon(QIcon(NS_Icons::glIconRemoveCustomTerm));
     zv_removeCustomTermAction->setText(tr("Remove selected custom term"));
     zv_removeCustomTermAction->setToolTip(tr("Remove selected custom term from the list"));
 
     // new actions
     zv_setCalibrationVisibleAction = new QAction(this);
     zv_setCalibrationVisibleAction->setDisabled(true);
-    zv_setCalibrationVisibleAction->setIcon(QIcon(glVisibleIconString));
+    zv_setCalibrationVisibleAction->setIcon(QIcon(NS_Icons::glIconVisible));
     zv_setCalibrationVisibleAction->setText(tr("Set calibration visible"));
     zv_setCalibrationVisibleAction->setToolTip(tr("Set visible calibration column"));
 
     zv_setCalibrationInvisibleAction = new QAction(this);
     zv_setCalibrationInvisibleAction->setDisabled(true);
-    zv_setCalibrationInvisibleAction->setIcon(QIcon(glInvisibleIconString));
+    zv_setCalibrationInvisibleAction->setIcon(QIcon(NS_Icons::glIconInvisible));
     zv_setCalibrationInvisibleAction->setText(tr("Set calibration invisible"));
     zv_setCalibrationInvisibleAction->setToolTip(tr("Set invisible calibration column"));
 
     zv_invertCalibrationVisibilityAction = new QAction(this);
     zv_invertCalibrationVisibilityAction->setDisabled(true);
-    zv_invertCalibrationVisibilityAction->setIcon(QIcon(glInverseVisibleIconString));
+    zv_invertCalibrationVisibilityAction->setIcon(QIcon(NS_Icons::glIconInverseVisible));
     zv_invertCalibrationVisibilityAction->setText(tr("Invert calibration visibility"));
     zv_invertCalibrationVisibilityAction->setToolTip(tr("Invert calibration visibility"));
 
 
     zv_setWindowsVisibleAction = new QAction(this);
     zv_setWindowsVisibleAction->setDisabled(true);
-    zv_setWindowsVisibleAction->setIcon(QIcon(glVisibleIconString));
+    zv_setWindowsVisibleAction->setIcon(QIcon(NS_Icons::glIconVisible));
     zv_setWindowsVisibleAction->setText(tr("Set window visible"));
     zv_setWindowsVisibleAction->setToolTip(tr("Set window visible"));
 
     zv_setWindowsInvisibleAction = new QAction(this);
     zv_setWindowsInvisibleAction->setDisabled(true);
-    zv_setWindowsInvisibleAction->setIcon(QIcon(glInvisibleIconString));
+    zv_setWindowsInvisibleAction->setIcon(QIcon(NS_Icons::glIconInvisible));
     zv_setWindowsInvisibleAction->setText(tr("Set window invisible"));
     zv_setWindowsInvisibleAction->setToolTip(tr("Set window invisible"));
 
     zv_invertWindowsVisibilityAction = new QAction(this);
     zv_invertWindowsVisibilityAction->setDisabled(true);
-    zv_invertWindowsVisibilityAction->setIcon(QIcon(glInverseVisibleIconString));
+    zv_invertWindowsVisibilityAction->setIcon(QIcon(NS_Icons::glIconInverseVisible));
     zv_invertWindowsVisibilityAction->setText(tr("Invert window visibility"));
     zv_invertWindowsVisibilityAction->setToolTip(tr("Invert window visibility"));
 
 
     zv_copySelectedCalibrationAction = new QAction(this);
     zv_copySelectedCalibrationAction->setDisabled(true);
-    zv_copySelectedCalibrationAction->setIcon(QIcon(glDuplicateCalibrationIconString));
+    zv_copySelectedCalibrationAction->setIcon(QIcon(NS_Icons::glIconDuplicateCalibration));
     zv_copySelectedCalibrationAction->setText(tr("Duplicate selected calibrations"));
     zv_copySelectedCalibrationAction->setToolTip(tr("Duplicate selected calibrations"));
 
     zv_copySelectedWindowsAction = new QAction(this);
     zv_copySelectedWindowsAction->setDisabled(true);
-    zv_copySelectedWindowsAction->setIcon(QIcon(glRemoveIconString));
+    zv_copySelectedWindowsAction->setIcon(QIcon(NS_Icons::glIconRemove));
     zv_copySelectedWindowsAction->setText(tr("Copy selected windows"));
     zv_copySelectedWindowsAction->setToolTip(tr("Copy selected windows"));
 
     zv_pasteWindowsAction = new QAction(this);
     zv_pasteWindowsAction->setDisabled(true);
-    zv_pasteWindowsAction->setIcon(QIcon(glRemoveIconString));
+    zv_pasteWindowsAction->setIcon(QIcon(NS_Icons::glIconRemove));
     zv_pasteWindowsAction->setText(tr("Paste windows"));
     zv_pasteWindowsAction->setToolTip(tr("Paste windows"));
 
     zv_resetTermStateAction = new QAction(this);
     zv_resetTermStateAction->setDisabled(true);
-    zv_resetTermStateAction->setIcon(QIcon(glResetIconString));
+    zv_resetTermStateAction->setIcon(QIcon(NS_Icons::glIconReset));
     zv_resetTermStateAction->setText(tr("Reset terms"));
     zv_resetTermStateAction->setToolTip(tr("Reset equation terms"));
 

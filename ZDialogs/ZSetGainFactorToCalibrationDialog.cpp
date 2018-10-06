@@ -1,6 +1,6 @@
 //=========================================================
 #include "ZSetGainFactorToCalibrationDialog.h"
-#include "ZConstants.h"
+#include "ZGeneral.h"
 
 #include <QDialogButtonBox>
 #include <QHBoxLayout>

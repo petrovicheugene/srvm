@@ -2,7 +2,7 @@
 #include "ZHorizontalDashBoard.h"
 #include "ZPlotGraphicsView.h"
 #include "ZPlotGraphicsScene.h"
-#include "ZConstants.h"
+#include "ZGeneral.h"
 
 #include <QToolButton>
 #include <QHBoxLayout>
@@ -37,28 +37,28 @@ void ZHorizontalDashBoard::zh_createComponents()
     zv_mainLayout->addWidget(zv_distortionSlider);
 
     zv_hideGridButton = new QToolButton(this);
-    zv_hideGridButton->setIcon(QIcon(glShowGridIconString));
+    zv_hideGridButton->setIcon(QIcon(NS_Icons::glIconShowGrid));
     zv_hideGridButton->setCheckable(true);
     zv_mainLayout->addWidget(zv_hideGridButton, 0, Qt::AlignRight);
 
     zv_increaseVerticalButton = new QToolButton(this);
-    zv_increaseVerticalButton->setIcon(QIcon(glVerticalIncreaseIconString));
+    zv_increaseVerticalButton->setIcon(QIcon(NS_Icons::glIconVerticalIncrease));
     zv_mainLayout->addWidget(zv_increaseVerticalButton, 0, Qt::AlignRight);
 
     zv_decreaseVerticalButton = new QToolButton(this);
-    zv_decreaseVerticalButton->setIcon(QIcon(glVerticalDecreaseIconString));
+    zv_decreaseVerticalButton->setIcon(QIcon(NS_Icons::glIconVerticalDecrease));
     zv_mainLayout->addWidget(zv_decreaseVerticalButton, 0, Qt::AlignRight);
 
     zv_increaseHorizontalButton = new QToolButton(this);
-    zv_increaseHorizontalButton->setIcon(QIcon(glHorizontalIncreaseIconString));
+    zv_increaseHorizontalButton->setIcon(QIcon(NS_Icons::glIconHorizontalIncrease));
     zv_mainLayout->addWidget(zv_increaseHorizontalButton, 0, Qt::AlignRight);
 
     zv_decreaseHorizontalButton = new QToolButton(this);
-    zv_decreaseHorizontalButton->setIcon(QIcon(glHorizontalDecreaseIconString));
+    zv_decreaseHorizontalButton->setIcon(QIcon(NS_Icons::glIconHorizontalDecrease));
     zv_mainLayout->addWidget(zv_decreaseHorizontalButton, 0, Qt::AlignRight);
 
     zv_fitViewInSceneButton = new QToolButton(this);
-    zv_fitViewInSceneButton->setIcon(QIcon(glFitInRectIconString));
+    zv_fitViewInSceneButton->setIcon(QIcon(NS_Icons::glIconFitInRect));
     zv_mainLayout->addWidget(zv_fitViewInSceneButton, 0, Qt::AlignRight);
 
 }

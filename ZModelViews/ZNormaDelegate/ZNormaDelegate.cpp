@@ -1,7 +1,7 @@
 //=======================================================
 #include "ZNormaDelegate.h"
 #include "ZNormaSettingsDialog.h"
-#include "ZConstants.h"
+#include "ZGeneral.h"
 #include <QStyle>
 #include <QApplication>
 

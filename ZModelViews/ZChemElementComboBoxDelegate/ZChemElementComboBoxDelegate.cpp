@@ -1,6 +1,6 @@
 //==================================================
 #include "ZChemElementComboBoxDelegate.h"
-#include "ZConstants.h"
+#include "ZGeneral.h"
 #include <QComboBox>
 #include <QStyle>
 #include <QApplication>

@@ -1,6 +1,6 @@
 //=============================================================
 #include "ZJointSpectraTableWidget.h"
-#include "ZConstants.h"
+#include "ZGeneral.h"
 #include "ZNumericDelegate.h"
 #include "ZSpectrumTableDelegate.h"
 #include "ZActiveStyledItemDelegate.h"

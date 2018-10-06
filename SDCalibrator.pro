@@ -71,9 +71,14 @@ INCLUDEPATH += ZPlotter \
     ZModelViews/ZCustomCheckableVerticalHeaderView \
     ZModelViews/ZEquationDelegate \
     ZModelViews/ZNormaDelegate \
+    ZPeriodicTableDialog \
+    ZPeriodicTable \
+    ZEnergyLineManager \
+    ZEnergyCalibrator
 
 SOURCES += main.cpp \
     MainWindow.cpp \
+    ZGeneral.cpp \
     ZComponents/ZSpectrumArray.cpp \
     ZComponents/ZFileActionManager.cpp \
     ZComponents/ZAbstractSpectrumIOHandler.cpp \
@@ -109,7 +114,6 @@ SOURCES += main.cpp \
     ZModelViews/ZChemElementComboBoxDelegate/ZChemElementComboBoxDelegate.cpp \
     ZModelViews/ZWindowTypeComboBoxDelegate/ZWindowTypeComboBoxDelegate.cpp \
     ZComponents/ZPlotterDataManager.cpp \
-    ZComponents/ZAdvancedAction.cpp \
     ZPlotter/ZPlotGraphicsScene.cpp \
     ZPlotter/ZPlotGraphicsView.cpp \
     ZPlotter/ZPlotter.cpp \
@@ -158,10 +162,39 @@ SOURCES += main.cpp \
     ZPlotter/ZEnergyLineGraphicsItem.cpp \
     ZComponents/ZEnergyCalibrationLine.cpp \
     ZPlotter/ZTextGraphicsItem.cpp \
-    ZPlotter/ZRulerToolGraphicsItem.cpp
+    ZPlotter/ZRulerToolGraphicsItem.cpp \
+    ZEnergyCalibrator/ZEnergyCalibrationDialog.cpp \
+    ZEnergyCalibrator/ZEnergyCalibrationDialogV2.cpp \
+    ZEnergyCalibrator/ZEnergyCalibrationSpectrumTableModel.cpp \
+    ZEnergyCalibrator/ZEnergyCalibrator.cpp \
+    ZEnergyCalibrator/ZPeakWindow.cpp \
+    ZEnergyCalibrator/ZPeakWindowTableModel.cpp \
+    ZEnergyLineManager/ZEnergyLineDelegate.cpp \
+    ZEnergyLineManager/ZEnergyLineManager.cpp \
+    ZEnergyLineManager/ZEnergyLineSetItem.cpp \
+    ZEnergyLineManager/ZEnergyLineTableWidget.cpp \
+    ZEnergyLineManager/ZSelectedEnergyLineTableModel.cpp \
+    ZPeriodicTable/ZAbstractChemicalElementPropertyRepository.cpp \
+    ZPeriodicTable/ZBaseDialog.cpp \
+    ZPeriodicTable/ZCaptionFormatter.cpp \
+    ZPeriodicTable/ZChemicalElementButton.cpp \
+    ZPeriodicTable/ZChemicalElementPropertyIOManager.cpp \
+    ZPeriodicTable/ZChemicalElementPropertyItem.cpp \
+    ZPeriodicTable/ZChemicalElementPropertyTreeModel.cpp \
+    ZPeriodicTable/ZChemicalElementProprtyEditor.cpp \
+    ZPeriodicTable/ZChemicalPropertyProxyTableModel.cpp \
+    ZPeriodicTable/ZPeriodicTableWidget.cpp \
+    ZPeriodicTable/ZPropertyEditDialog.cpp \
+    ZPeriodicTable/ZPropertySectionEditDialog.cpp \
+    ZPeriodicTableDialog/ZEnergyLineSelectionDialog.cpp \
+    ZWidgets/ZColorButton.cpp \
+    ZPlotter/ZVerticalLineGraphicsItem.cpp \
+    ZModelViews/ZBaseTableWidget.cpp \
+    ZComponents/ZControlAction.cpp
 
 HEADERS  += \
     MainWindow.h \
+    ZGeneral.h \
     ZComponents/ZSpectrumArray.h \
     ZComponents/ZFileActionManager.h \
     ZComponents/ZAbstractSpectrumIOHandler.h \
@@ -199,7 +232,6 @@ HEADERS  += \
     ZModelViews/ZWindowTypeComboBoxDelegate/ZWindowTypeComboBoxDelegate.h \
     ZComponents/ZSpectrumPaintData.h \
     ZComponents/ZPlotterDataManager.h \
-    ZComponents/ZAdvancedAction.h \
     ZPlotter/ZGraphicsItemUserTypes.h \
     ZPlotter/ZPlotGraphicsScene.h \
     ZPlotter/ZPlotGraphicsView.h \
@@ -245,16 +277,46 @@ HEADERS  += \
     ZModelViews/ZActiveStyledItemDelegate.h \
     ZComponents/ZRawTerm.h \
     ZComponents/ZRawWindow.h \
-    ZConstants.h \
     ZDialogs/ZSetGainFactorToCalibrationDialog.h \
     ZComponents/ZLESGaussSolver.h \
     ZPlotter/ZEnergyLineGraphicsItem.h \
     ZComponents/ZEnergyCalibrationLine.h \
     ZPlotter/ZTextGraphicsItem.h \
-    ZPlotter/ZRulerToolGraphicsItem.h
+    ZPlotter/ZRulerToolGraphicsItem.h \
+    ZEnergyCalibrator/ZEnergyCalibrationDialog.h \
+    ZEnergyCalibrator/ZEnergyCalibrationDialogV2.h \
+    ZEnergyCalibrator/ZEnergyCalibrationSpectrumTableModel.h \
+    ZEnergyCalibrator/ZEnergyCalibrator.h \
+    ZEnergyCalibrator/ZPeakWindow.h \
+    ZEnergyCalibrator/ZPeakWindowTableModel.h \
+    ZEnergyLineManager/ZEnergyLineDelegate.h \
+    ZEnergyLineManager/ZEnergyLineManager.h \
+    ZEnergyLineManager/ZEnergyLineSetItem.h \
+    ZEnergyLineManager/ZEnergyLineTableWidget.h \
+    ZEnergyLineManager/ZSelectedEnergyLineTableModel.h \
+    ZPeriodicTable/ZAbstractChemicalElementPropertyRepository.h \
+    ZPeriodicTable/ZBaseDialog.h \
+    ZPeriodicTable/ZCaptionFormatter.h \
+    ZPeriodicTable/ZChemicalElementButton.h \
+    ZPeriodicTable/ZChemicalElementPropertyIOManager.h \
+    ZPeriodicTable/ZChemicalElementPropertyItem.h \
+    ZPeriodicTable/ZChemicalElementPropertyTreeModel.h \
+    ZPeriodicTable/ZChemicalElementProprtyEditor.h \
+    ZPeriodicTable/ZChemicalPropertyProxyTableModel.h \
+    ZPeriodicTable/ZPeriodicTableWidget.h \
+    ZPeriodicTable/ZPropertyEditDialog.h \
+    ZPeriodicTable/ZPropertySectionEditDialog.h \
+    ZPeriodicTableDialog/ZEnergyLineSelectionDialog.h \
+    ZWidgets/ZColorButton.h \
+    ZPlotter/ZVerticalLineGraphicsItem.h \
+    ZModelViews/ZBaseTableWidget.h \
+    ZComponents/ZControlAction.h
 
 RESOURCES += \
-    resources.qrc
+    resources.qrc \
+    ZPeriodicTable/ChemicalElementModelResources.qrc
 
 DISTFILES += \
-    myBacklog.txt
+    myBacklog.txt \
+    ZPeriodicTable/chemicalElementBasicProperties.xml \
+    ZPeriodicTable/chemicalElementBasicProperties.csv

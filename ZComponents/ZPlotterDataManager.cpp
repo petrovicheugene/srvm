@@ -10,7 +10,7 @@
 #include "ZEnergyLineGraphicsItem.h"
 #include "ZSpeSpectrum.h"
 
-#include "ZConstants.h"
+#include "ZGeneral.h"
 #include <QSet>
 //===========================================================
 ZPlotterDataManager::ZPlotterDataManager(QObject *parent) : QObject(parent)
@@ -467,7 +467,7 @@ void ZPlotterDataManager::zh_updateRuleMetrix()
 void ZPlotterDataManager::zh_createComponents()
 {
     zv_switchRuleMetrixAction = new QAction(this);
-    zv_switchRuleMetrixAction->setIcon(QIcon(glAxisToEnergyIconString));
+    zv_switchRuleMetrixAction->setIcon(QIcon(NS_Icons::glIconAxisToEnergy));
     zv_switchRuleMetrixAction->setCheckable(true);
 }
 //===========================================================

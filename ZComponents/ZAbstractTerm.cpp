@@ -1,6 +1,6 @@
 //============================================================
 #include "ZAbstractTerm.h"
-#include "ZConstants.h"
+#include "ZGeneral.h"
 #include "ZCalibrationWindow.h"
 #include "ZCalibration.h"
 #include "ZSpectrumArray.h"

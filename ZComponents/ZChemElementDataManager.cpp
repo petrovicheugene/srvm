@@ -1,6 +1,6 @@
 //=========================================================
 #include "ZChemElementDataManager.h"
-#include "ZConstants.h"
+#include "ZGeneral.h"
 //=========================================================
 ZChemElementDataManager::ZChemElementDataManager(QObject *parent) : QObject(parent)
 {

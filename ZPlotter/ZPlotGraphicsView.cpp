@@ -1,7 +1,7 @@
 //=============================================================
 #include "ZPlotGraphicsView.h"
 #include "ZRulersAndGridManager.h"
-#include "ZConstants.h"
+#include "ZGeneral.h"
 
 #include <QApplication>
 #include <QDebug>

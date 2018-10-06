@@ -1,7 +1,7 @@
 //=====================================================================
 #include "ZCorrelationPlotterDataManager.h"
 #include "ZPlotter.h"
-#include "ZConstants.h"
+#include "ZGeneral.h"
 #include "ZGraphicsItemUserTypes.h"
 #include "ZDefaultRectGraphicsItem.h"
 #include "ZChartPointGraphicsItem.h"

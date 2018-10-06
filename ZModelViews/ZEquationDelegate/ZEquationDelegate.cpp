@@ -2,7 +2,7 @@
 #include "ZEquationDelegate.h"
 #include "ZEquationChooseDialog.h"
 #include "ZEquationSettingsData.h"
-#include "ZConstants.h"
+#include "ZGeneral.h"
 #include <QStyle>
 #include <QApplication>
 

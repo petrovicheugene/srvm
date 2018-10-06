@@ -2,7 +2,7 @@
 #include "ZChartPointGraphicsItem.h"
 #include "ZGraphicsItemUserTypes.h"
 #include "ZChartPointOptions.h"
-#include "ZConstants.h"
+#include "ZGeneral.h"
 #include "ZPlotterDefaulVariables.h"
 #include "ZCorrelationPlotterDataManager.h"
 

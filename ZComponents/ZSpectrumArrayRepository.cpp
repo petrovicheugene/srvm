@@ -1,6 +1,6 @@
 //==================================================================
 #include "ZSpectrumArrayRepository.h"
-#include "ZConstants.h"
+#include "ZGeneral.h"
 #include "ZFileActionManager.h"
 
 #include <QMessageBox>
@@ -1924,7 +1924,7 @@ void ZSpectrumArrayRepository::zh_setDirty(bool dirty)
 void ZSpectrumArrayRepository::zh_createActions()
 {
     zv_appendArrayAction = new QAction(this);
-    zv_appendArrayAction->setIcon(QIcon(glAddArrayIconString));
+    zv_appendArrayAction->setIcon(QIcon(NS_Icons::glAddArray));
     zv_appendArrayAction->setText(tr("New spectrum array"));
     zv_appendArrayAction->setToolTip(tr("Append a new spectrum array to the list"));
     zv_appendArrayAction->setEnabled(true);
@@ -1934,78 +1934,78 @@ void ZSpectrumArrayRepository::zh_createActions()
     zv_saveAsArrayAction = new QAction(this);
 
     zv_removeArrayAction = new QAction(this);
-    zv_removeArrayAction->setIcon(QIcon(glRemoveArrayIconString));
+    zv_removeArrayAction->setIcon(QIcon(NS_Icons::glRemoveArrayIconString));
     zv_removeArrayAction->setText(tr("Remove current spectrum array"));
     zv_removeArrayAction->setToolTip(tr("Remove current spectrum array from the list"));
     zv_removeArrayAction->setEnabled(false);
 
     zv_appendSpectrumToArrayAction = new QAction(this);
-    zv_appendSpectrumToArrayAction->setIcon(QIcon(glAddSpectrumIconString));
+    zv_appendSpectrumToArrayAction->setIcon(QIcon(NS_Icons::glAddSpectrumIconString));
     zv_appendSpectrumToArrayAction->setText(tr("Append spectra"));
     zv_appendSpectrumToArrayAction->setToolTip(tr("Append spectra to current array"));
     zv_appendSpectrumToArrayAction->setEnabled(true);
 
     zv_removeSpectrumFromArrayAction = new QAction(this);
-    zv_removeSpectrumFromArrayAction->setIcon(QIcon(glRemoveSpectrumIconString));
+    zv_removeSpectrumFromArrayAction->setIcon(QIcon(NS_Icons::glRemoveSpectrumIconString));
     zv_removeSpectrumFromArrayAction->setText(tr("Remove selected spectra"));
     zv_removeSpectrumFromArrayAction->setToolTip(tr("Remove selected spectra from the array"));
     zv_removeSpectrumFromArrayAction->setEnabled(false);
 
     zv_appendChemElementAction = new QAction(this);
-    zv_appendChemElementAction->setIcon(QIcon(glAddChemElementIconString));
+    zv_appendChemElementAction->setIcon(QIcon(NS_Icons::glAddChemElementIconString));
     zv_appendChemElementAction->setText(tr("New chemical element"));
     zv_appendChemElementAction->setToolTip(tr("Append a new chemical element to the list"));
     zv_appendChemElementAction->setEnabled(false);
 
     zv_removeChemElementAction = new QAction(this);
-    zv_removeChemElementAction->setIcon(QIcon(glRemoveChemElementIconString));
+    zv_removeChemElementAction->setIcon(QIcon(NS_Icons::glRemoveChemElementIconString));
     zv_removeChemElementAction->setText(tr("Remove current chemical element"));
     zv_removeChemElementAction->setToolTip(tr("Remove current chemical element from the list"));
     zv_removeChemElementAction->setEnabled(false);
 
     zv_copyConcentrationDataAction = new QAction(this);
-    zv_copyConcentrationDataAction->setIcon(QIcon(glCopyIconString));
+    zv_copyConcentrationDataAction->setIcon(QIcon(NS_Icons::glCopyIconString));
     zv_copyConcentrationDataAction->setText(tr("Copy selected concentrations"));
     zv_copyConcentrationDataAction->setEnabled(false);
 
     zv_pasteConcentrationDataAction = new QAction(this);
-    zv_pasteConcentrationDataAction->setIcon(QIcon(glPasteIconString));
+    zv_pasteConcentrationDataAction->setIcon(QIcon(NS_Icons::glPasteIconString));
     zv_pasteConcentrationDataAction->setText(tr("Paste concentrations"));
     zv_pasteConcentrationDataAction->setEnabled(false);
 
     zv_clearConcentrationDataAction = new QAction(this);
-    zv_clearConcentrationDataAction->setIcon(QIcon(glClearIconString));
+    zv_clearConcentrationDataAction->setIcon(QIcon(NS_Icons::glClearIconString));
     zv_clearConcentrationDataAction->setText(tr("Clear selected concentrations"));
     zv_clearConcentrationDataAction->setEnabled(false);
 
     // visibility actions
     zv_setSpectraVisibleAction = new QAction(this);
-    zv_setSpectraVisibleAction->setIcon(QIcon(glVisibleIconString));
+    zv_setSpectraVisibleAction->setIcon(QIcon(NS_Icons::glIconVisible));
     zv_setSpectraVisibleAction->setText(tr("Set spectra visible"));
     zv_setSpectraVisibleAction->setEnabled(false);
 
     zv_setSpectraInvisibleAction = new QAction(this);
-    zv_setSpectraInvisibleAction->setIcon(QIcon(glInvisibleIconString));
+    zv_setSpectraInvisibleAction->setIcon(QIcon(NS_Icons::glIconInvisible));
     zv_setSpectraInvisibleAction->setText(tr("Set spectra invisible"));
     zv_setSpectraInvisibleAction->setEnabled(false);
 
     zv_invertSpectraVisibilityAction = new QAction(this);
-    zv_invertSpectraVisibilityAction->setIcon(QIcon(glInverseVisibleIconString));
+    zv_invertSpectraVisibilityAction->setIcon(QIcon(NS_Icons::glIconInverseVisible));
     zv_invertSpectraVisibilityAction->setText(tr("Invert spectra visibility"));
     zv_invertSpectraVisibilityAction->setEnabled(false);
 
     zv_setChemElementsVisibleAction = new QAction(this);
-    zv_setChemElementsVisibleAction->setIcon(QIcon(glVisibleIconString));
+    zv_setChemElementsVisibleAction->setIcon(QIcon(NS_Icons::glIconVisible));
     zv_setChemElementsVisibleAction->setText(tr("Set chemical elements visible"));
     zv_setChemElementsVisibleAction->setEnabled(false);
 
     zv_setChemElementsInvisibleAction = new QAction(this);
-    zv_setChemElementsInvisibleAction->setIcon(QIcon(glInvisibleIconString));
+    zv_setChemElementsInvisibleAction->setIcon(QIcon(NS_Icons::glIconInvisible));
     zv_setChemElementsInvisibleAction->setText(tr("Set chemical elements invisible"));
     zv_setChemElementsInvisibleAction->setEnabled(false);
 
     zv_invertChemElementsVisibilityAction = new QAction(this);
-    zv_invertChemElementsVisibilityAction->setIcon(QIcon(glInverseVisibleIconString));
+    zv_invertChemElementsVisibilityAction->setIcon(QIcon(NS_Icons::glIconInverseVisible));
     zv_invertChemElementsVisibilityAction->setText(tr("Invert chemical elements visibility"));
     zv_invertChemElementsVisibilityAction->setEnabled(false);
 }

@@ -2,7 +2,7 @@
 #include "ZSpectrumTableDelegate.h"
 #include "ZPrimitivePlot.h"
 #include "ZSpectrumPaintData.h"
-#include "ZConstants.h"
+#include "ZGeneral.h"
 
 #include <QPainter>
 #include <QStyle>
@@ -107,10 +107,10 @@ void ZSpectrumTableDelegate::paint(QPainter* painter, const QStyleOptionViewItem
         pixmapPainter.setBrush(QBrush(decorationColor));
         pixmapPainter.drawRect(decorationRect.adjusted(1, 0, -2, 0));
 
-        bool visible = index.data(VisibleRole).toBool();
+        bool visible = index.data(NS_DataRole::VisibleRole).toBool();
         if(visible)
         {
-            QPixmap pixmap(glVisibleSignIconString);
+            QPixmap pixmap(NS_Icons::glIconVisible);
             QRect paintRect = pixmap.rect();
             paintRect.moveCenter(decorationRect.adjusted(1, 0, -2, 0).center());
             pixmapPainter.drawPixmap(paintRect, pixmap);
@@ -198,7 +198,7 @@ bool ZSpectrumTableDelegate::editorEvent ( QEvent * event,
                                                 index);
     }
 
-    QVariant vData = index.data(VisibleRole);
+    QVariant vData = index.data(NS_DataRole::VisibleRole);
     if(!vData.isValid() || vData.isNull() || !vData.canConvert<bool>())
     {
         return QStyledItemDelegate::editorEvent(event,
@@ -208,7 +208,7 @@ bool ZSpectrumTableDelegate::editorEvent ( QEvent * event,
     }
 
     bool visible = vData.toBool();
-    model->setData(index, QVariant(!visible), VisibleRole);
+    model->setData(index, QVariant(!visible), NS_DataRole::VisibleRole);
 
     return true;
 }

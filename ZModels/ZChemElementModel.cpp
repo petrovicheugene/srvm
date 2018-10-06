@@ -1,6 +1,6 @@
 //==================================================================
 #include "ZChemElementModel.h"
-#include "ZConstants.h"
+#include "ZGeneral.h"
 
 #include <QFont>
 #include <QColor>
@@ -62,7 +62,7 @@ QVariant ZChemElementModel::data(const QModelIndex & index, int role) const
 //        return QVariant();
 //    }
 
-    if(role == VisibleRole)
+    if(role == NS_DataRole::VisibleRole)
     {
         if(index.column() == 0)
         {
@@ -92,7 +92,7 @@ bool	ZChemElementModel::setData(const QModelIndex & index, const QVariant & valu
         return false;
     }
 
-    if(role == VisibleRole)
+    if(role == NS_DataRole::VisibleRole)
     {
         if(index.column() == 0)
         {

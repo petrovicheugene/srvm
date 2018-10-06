@@ -6,7 +6,7 @@
 #include "ZXMLCalibrationIOHandler.h"
 #include "ZSpeIOHandler.h"
 #include "ZCalibration.h"
-#include "ZConstants.h"
+#include "ZGeneral.h"
 
 #include <QMenu>
 #include <QFileDialog>
@@ -162,16 +162,16 @@ void ZFileActionManager::zp_triggerSaveCalibrationsToFile()
 //======================================================
 void ZFileActionManager::zh_createActions()
 {
-    zv_openArrayFromFileAction = new QAction(QIcon(glOpenArrayIconString), tr("&Open spectrum array list"), this);
-    zv_saveArrayToFileAction = new QAction(QIcon(glSaveArrayIconString), tr("&Save spectrum array list"), this);
+    zv_openArrayFromFileAction = new QAction(QIcon(NS_Icons::glIconOpenArray), tr("&Open spectrum array list"), this);
+    zv_saveArrayToFileAction = new QAction(QIcon(NS_Icons::glIconSaveArray), tr("&Save spectrum array list"), this);
     zv_saveArrayToFileAction->setEnabled(false);
-    zv_saveArrayAsFileAction = new QAction(QIcon(glSaveAsArrayIconString), tr("Save spectrum array list &as..."), this);
+    zv_saveArrayAsFileAction = new QAction(QIcon(NS_Icons::glIconSaveAsArray), tr("Save spectrum array list &as..."), this);
     zv_saveArrayAsFileAction->setEnabled(false);
 
-    zv_openCalibrationFromFileAction = new QAction(QIcon(glOpenCalibrationIconString), tr("Open &calibrations"), this);
-    zv_saveCalibrationToFileAction = new QAction(QIcon(glSaveCalibrationIconString), tr("Save calibration"), this);
+    zv_openCalibrationFromFileAction = new QAction(QIcon(NS_Icons::glIconOpenCalibration), tr("Open &calibrations"), this);
+    zv_saveCalibrationToFileAction = new QAction(QIcon(NS_Icons::glIconSaveCalibration), tr("Save calibration"), this);
     zv_saveCalibrationToFileAction->setEnabled(false);
-    zv_saveCalibrationAsFileAction = new QAction(QIcon(glSaveAsCalibrationIconString), tr("Save calibration as..."), this);
+    zv_saveCalibrationAsFileAction = new QAction(QIcon(NS_Icons::glIconSaveAsCalibration), tr("Save calibration as..."), this);
     zv_saveCalibrationAsFileAction->setEnabled(false);
     // zv_loadSpectrumFromFileAction = new QAction(QIcon(":/images/ZImages/document-open.png"), tr("Append &spectra to array"), this);
 }

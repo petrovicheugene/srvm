@@ -1,6 +1,6 @@
 //===========================================================
 #include "ZSpeIOHandler.h"
-#include "ZConstants.h"
+#include "ZGeneral.h"
 
 #include <QDir>
 #include <QFileInfo>

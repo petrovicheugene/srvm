@@ -2,7 +2,7 @@
 #include "ZSpectrumArray.h"
 #include "ZSpeSpectrum.h"
 #include "ZSpeIOHandler.h"
-#include "ZConstants.h"
+#include "ZGeneral.h"
 
 #include <QFileInfo>
 #include <QFile>

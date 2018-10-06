@@ -1,6 +1,6 @@
 //=========================================================
 #include "ZCustomCheckableVerticalHeaderView.h"
-#include "ZConstants.h"
+#include "ZGeneral.h"
 
 #include <QPainter>
 #include <QApplication>
@@ -182,7 +182,7 @@ void ZCustomCheckableVerticalHeaderView::paintSection(QPainter *painter, const Q
         painter->drawRect(decorationSignRect.adjusted(1, 0, -1, 0));
 
         // draw the sign in deco rect
-        QVariant vData = model()->headerData(logicalIndex, Qt::Vertical, IconRole);
+        QVariant vData = model()->headerData(logicalIndex, Qt::Vertical, NS_DataRole::IconRole);
         if(vData.isValid() && !vData.isNull() && vData.canConvert<QPixmap>())
         {
             QPixmap iconPixmap = vData.value<QPixmap>();

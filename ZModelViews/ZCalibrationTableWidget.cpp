@@ -6,7 +6,7 @@
 #include "ZEquationDelegate.h"
 #include "ZNormaDelegate.h"
 #include "ZNumericDelegate.h"
-#include "ZConstants.h"
+#include "ZGeneral.h"
 
 #include <QTableView>
 #include <QHBoxLayout>

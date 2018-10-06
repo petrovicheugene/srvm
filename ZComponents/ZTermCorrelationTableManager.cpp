@@ -1,7 +1,7 @@
 //=============================================================================
 #include "ZTermCorrelationTableManager.h"
 #include "ZLESGaussSolver.h"
-#include "ZConstants.h"
+#include "ZGeneral.h"
 #include "ZJointSpectraDataManager.h"
 #include <QPair>
 //=============================================================================
@@ -351,22 +351,22 @@ QPixmap ZTermCorrelationTableManager::zp_termStateIcon(int row) const
     switch(state)
     {
     case ZAbstractTerm::TS_BASE :
-        pixmap = QPixmap(glBaseTermIconString);
+        pixmap = QPixmap(NS_Icons::glBaseTermIconString);
         break;
     case ZAbstractTerm::TS_CONST_INCLUDED :
-        pixmap = QPixmap(glConstIncludedIconString);
+        pixmap = QPixmap(NS_Icons::glConstIncludedIconString);
         break;
     case ZAbstractTerm::TS_EXAM_WAITING :
-        pixmap = QPixmap(glExamWaitingIconString);
+        pixmap = QPixmap(NS_Icons::glExamWaitingIconString);
         break;
     case ZAbstractTerm::TS_INCLUDED :
-        pixmap = QPixmap(glIncludedIconString);
+        pixmap = QPixmap(NS_Icons::glIncludedIconString);
         break;
     case ZAbstractTerm::TS_EXCEPTED :
-        pixmap = QPixmap(glExcludedIconString);
+        pixmap = QPixmap(NS_Icons::glExcludedIconString);
         break;
     case ZAbstractTerm::TS_CONST_EXCLUDED :
-        pixmap = QPixmap(glConstExcludedIconString);
+        pixmap = QPixmap(NS_Icons::glConstExcludedIconString);
         break;
 
     case ZAbstractTerm::TS_NOT_DEFINED :

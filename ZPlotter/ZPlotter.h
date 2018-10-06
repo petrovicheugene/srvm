@@ -127,6 +127,7 @@ public slots:
 
    void zp_currentVisibleSceneRect(QRectF& sceneRect);
    void zp_fitInBoundingRect();
+   QRectF zp_boundingRect() const;
 
 protected:
 

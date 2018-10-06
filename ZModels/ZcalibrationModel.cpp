@@ -1,6 +1,6 @@
 //==================================================================
 #include "ZCalibrationModel.h"
-#include "ZConstants.h"
+#include "ZGeneral.h"
 
 #include <QFont>
 #include <QColor>
@@ -151,7 +151,7 @@ QVariant ZCalibrationModel::data(const QModelIndex & index, int role) const
 
     }
 
-    if(role == VisibleRole)
+    if(role == NS_DataRole::VisibleRole)
     {
         if(index.column() == 0)
         {
@@ -246,7 +246,7 @@ bool	ZCalibrationModel::setData(const QModelIndex & index, const QVariant & valu
 
         return false;
     }
-    else if(role == VisibleRole)
+    else if(role == NS_DataRole::VisibleRole)
     {
         if(index.column() == 0)
         {
