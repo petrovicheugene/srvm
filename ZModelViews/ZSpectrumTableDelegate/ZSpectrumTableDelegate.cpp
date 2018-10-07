@@ -137,9 +137,8 @@ void ZSpectrumTableDelegate::paint(QPainter* painter, const QStyleOptionViewItem
     {
         ZSpectrumPaintData paintData = vData.value<ZSpectrumPaintData>();
         zv_plot->zp_paintData(paintData);
+        zv_plot->render(&plotPixmap);
     }
-
-    zv_plot->render(&plotPixmap);
 
     // painting plot pixmap on the item's common pixmap
     pixmapPainter.drawPixmap(plotRect, plotPixmap, plotPixmap.rect());

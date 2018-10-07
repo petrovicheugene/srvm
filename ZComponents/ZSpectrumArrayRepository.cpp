@@ -2,7 +2,10 @@
 #include "ZSpectrumArrayRepository.h"
 #include "ZGeneral.h"
 #include "ZFileActionManager.h"
+#include "ZEnergyCalibrationDialogV2.h"
 
+#include <QApplication>
+#include <QDebug>
 #include <QMessageBox>
 #include <QFileInfo>
 #include <QtAlgorithms>
@@ -62,6 +65,12 @@ void ZSpectrumArrayRepository::zp_appendActionsToMenu(QMenu* menu) const
         menu->addAction(zv_appendChemElementAction);
         menu->addAction(zv_removeChemElementAction);
     }
+    else if(menu->objectName() == "Actions")
+    {
+        menu->addAction(zv_energyCalibrationAction);
+        menu->addSeparator();
+    }
+
 }
 //==================================================================
 QList<QAction*> ZSpectrumArrayRepository::zp_arrayActions() const
@@ -117,7 +126,8 @@ QList<QAction*> ZSpectrumArrayRepository::zp_spectrumContextMenuActions() const
     actionList << zv_setChemElementsVisibleAction;
     actionList << zv_setChemElementsInvisibleAction;
     actionList << zv_invertChemElementsVisibilityAction;
-
+    actionList << 0; // separator
+    actionList << zv_energyCalibrationAction;
     return actionList;
 }
 //==================================================================
@@ -1139,10 +1149,14 @@ void ZSpectrumArrayRepository::zp_chemElementListForCurrentArray(QStringList& ch
     chemElementList = zp_chemElementList(currentArray);
 }
 //==================================================================
-void ZSpectrumArrayRepository::zp_onSelectionSpectraChange(bool selectionEnabled, bool concentrationSelected)
+void ZSpectrumArrayRepository::zp_onSelectionSpectraChange(bool selectionEnabled,
+                                                           bool concentrationSelected,
+                                                           bool spectrumSelected)
 {
     // zh_actionEnablingControl();
     zv_removeSpectrumFromArrayAction->setEnabled(selectionEnabled);
+    zv_energyCalibrationAction->setEnabled(spectrumSelected);
+
     zv_copyConcentrationDataAction->setEnabled(selectionEnabled);
     zv_clearConcentrationDataAction->setEnabled(concentrationSelected);
 }
@@ -1825,6 +1839,56 @@ void ZSpectrumArrayRepository::zh_onInvertChemElementsVisibilityAction()
     }
 }
 //==================================================================
+void ZSpectrumArrayRepository::zh_onEnergyCalibrationAction()
+{
+    // create selected spectrum map
+    QList<int> selectedSpectrumList;
+    emit zg_requestSelectedSpectrumIndexList(selectedSpectrumList);
+
+    if(selectedSpectrumList.isEmpty())
+    {
+        QString string = tr("There is no spectra for energy calibration!");
+        QMessageBox::critical(0, tr("Spectra removing"), string, QMessageBox::Ok);
+        return;
+    }
+
+    int currentArrayIndex;
+    emit zg_requestCurrentArrayIndex(currentArrayIndex);
+    if(currentArrayIndex < 0 || currentArrayIndex >= zv_arrayList.count())
+    {
+        return;
+    }
+
+    ZSpeSpectrum* spectrum;
+    QMap<quint8, QList<ZSpeSpectrum*> > spectrumMap;
+
+    quint8 gainFactor = static_cast<quint8>(zv_arrayList.at(currentArrayIndex)->zp_gainFactor());
+    QList<ZAbstractSpectrum*> spectrumList = zv_arrayList.at(currentArrayIndex)->zp_spectrumList();
+
+    if(!spectrumMap.keys().contains(gainFactor))
+    {
+        spectrumMap.insert(gainFactor, QList<ZSpeSpectrum*>());
+    }
+
+    for(int s = 0; s < spectrumList.count(); s++)
+    {
+        if(!selectedSpectrumList.contains(static_cast<int>(spectrumList.at(s)->zp_spectrumId())))
+        {
+            continue;
+        }
+
+        spectrum = qobject_cast<ZSpeSpectrum*>(spectrumList.at(s));
+        if(spectrum)
+        {
+            spectrumMap[gainFactor].append(spectrum);
+        }
+    }
+
+
+    ZEnergyCalibrationDialogV2 dialog(spectrumMap);
+    dialog.exec();
+}
+//==================================================================
 QList<ZRawSpectrumArray> ZSpectrumArrayRepository::zh_createRawArrayList() const
 {
     QList<ZRawSpectrumArray> rawSpectrumArrayList;
@@ -1951,6 +2015,12 @@ void ZSpectrumArrayRepository::zh_createActions()
     zv_removeSpectrumFromArrayAction->setToolTip(tr("Remove selected spectra from the array"));
     zv_removeSpectrumFromArrayAction->setEnabled(false);
 
+    zv_energyCalibrationAction = new QAction(this);
+    zv_energyCalibrationAction->setEnabled(false);
+    zv_energyCalibrationAction->setIcon(QIcon(NS_Icons::glIconEnergyCalibration));
+    zv_energyCalibrationAction->setText(tr("Energy calibration"));
+    zv_energyCalibrationAction->setToolTip(tr("Recalculate energy calibration for selected spectra"));
+
     zv_appendChemElementAction = new QAction(this);
     zv_appendChemElementAction->setIcon(QIcon(NS_Icons::glAddChemElementIconString));
     zv_appendChemElementAction->setText(tr("New chemical element"));
@@ -2044,6 +2114,9 @@ void ZSpectrumArrayRepository::zh_createConnections()
             this, &ZSpectrumArrayRepository::zh_onSetChemElementsInvisibleAction);
     connect(zv_invertChemElementsVisibilityAction, &QAction::triggered,
             this, &ZSpectrumArrayRepository::zh_onInvertChemElementsVisibilityAction);
+
+    connect(zv_energyCalibrationAction, &QAction::triggered,
+            this, &ZSpectrumArrayRepository::zh_onEnergyCalibrationAction);
 
 
     connect(qApp->clipboard(), &QClipboard::dataChanged,

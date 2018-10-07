@@ -341,6 +341,8 @@ void MainWindow::zh_createMenu()
     // menu->setCursor(Qt::PointingHandCursor);
     menu->setObjectName("File");
     zv_fileActionManager->zp_appendActionsToMenu(menu);
+    zv_spectrumArrayRepository->zp_appendActionsToMenu(menu);
+    zv_calibrationRepository->zp_appendActionsToMenu(menu);
     zh_appendActionsToMenu(menu);
 
     // Edit
@@ -355,12 +357,15 @@ void MainWindow::zh_createMenu()
     menu = menuBar()->addMenu(tr("View"));
     // menu->setCursor(Qt::PointingHandCursor);
     menu->setObjectName("View");
+    zv_spectrumArrayRepository->zp_appendActionsToMenu(menu);
+    zv_calibrationRepository->zp_appendActionsToMenu(menu);
     zh_appendActionsToMenu(menu);
 
     // Actions
     menu = menuBar()->addMenu(tr("Actions"));
     // menu->setCursor(Qt::PointingHandCursor);
     menu->setObjectName("Actions");
+    zv_spectrumArrayRepository->zp_appendActionsToMenu(menu);
     zv_calibrationRepository->zp_appendActionsToMenu(menu);
     zh_appendActionsToMenu(menu);
 

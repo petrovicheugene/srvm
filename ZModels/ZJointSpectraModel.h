@@ -33,7 +33,7 @@ public slots:
 signals:
 
     void zg_requestCurrentIndex(QModelIndex& currentIndex) const;
-    void zg_selectionChanged(bool selectionEnabled, bool concentrationSelected) const;
+    void zg_selectionChanged(bool selectionEnabled, bool concentrationSelected, bool spectrumSelected ) const;
 
 private:
 

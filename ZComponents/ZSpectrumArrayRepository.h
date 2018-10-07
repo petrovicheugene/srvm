@@ -172,7 +172,9 @@ public slots:
     void zp_currentSpectrumChanged(int currentSpectrumIndex, int previousSpectrumIndex);
     void zp_chemElementListForCurrentArray(QStringList& chemElementList);
 
-    void zp_onSelectionSpectraChange(bool selectionEnabled, bool concentrationSelected);
+    void zp_onSelectionSpectraChange(bool selectionEnabled,
+                                     bool concentrationSelected,
+                                     bool spectrumSelected);
 
 private slots:
 
@@ -204,6 +206,7 @@ private slots:
     void zh_onSetChemElementsVisibleAction();
     void zh_onSetChemElementsInvisibleAction();
     void zh_onInvertChemElementsVisibilityAction();
+    void zh_onEnergyCalibrationAction();
 
 private:
 
@@ -219,6 +222,7 @@ private:
     QAction* zv_openArrayAction;
     QAction* zv_saveArrayAction;
     QAction* zv_saveAsArrayAction;
+    QAction* zv_energyCalibrationAction;
 
     QAction* zv_appendSpectrumToArrayAction;
     QAction* zv_removeSpectrumFromArrayAction;

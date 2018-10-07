@@ -43,6 +43,7 @@ extern const QString glIconAddWindow = ":/images/ZImages/addWindow-2.png";
 extern const QString glIconRemoveWindow = ":/images/ZImages/removeWindow-2.png";
 
 extern const QString glIconCalc = ":/images/ZImages/calc.png";
+extern const QString glIconEnergyCalibration = "";
 extern const QString glIconAddMixedTerms = ":/images/ZImages/addMixedTerm.png";
 extern const QString glIconRemoveMixedTerms = ":/images/ZImages/removeMixedTerm.png";
 

@@ -55,6 +55,7 @@ extern const QString glIconAddWindow;
 extern const QString glIconRemoveWindow;
 
 extern const QString glIconCalc;
+extern const QString glIconEnergyCalibration;
 extern const QString glIconAddMixedTerms;
 extern const QString glIconRemoveMixedTerms;
 

@@ -59,7 +59,7 @@ signals:
     void zg_calibrationQualityData(bool saveToCalibration, qint64 calibrationId, ZCalibrationQualityData) const;
     void zg_calibrationValuesChanged(qint64 calibrationId);
     void zg_requestCurrentIndex(QModelIndex& index) const;
-    void zg_onSelectionChange(bool selectionEnabled, bool concentrationSelected) const;
+    void zg_onSelectionChange(bool selectionEnabled, bool concentrationSelected, bool spectrumSelected) const;
     void zg_requestClearSelected() const;
     void zg_requestSelectedString(QString&) const;
 

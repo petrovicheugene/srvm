@@ -283,11 +283,13 @@ void ZJointSpectraModel::zp_onSelectedIndexListChange(QModelIndexList selectedIn
 {
     zv_selectedIndexMap.clear();
     bool concentrationSelected = false;
+    bool spectrumSelected = false;
     foreach(QModelIndex index, selectedIndexList)
     {
         // skip spectrum
         if(index.column() == 1)
         {
+            spectrumSelected = true;
             continue;
         }
 
@@ -301,10 +303,11 @@ void ZJointSpectraModel::zp_onSelectedIndexListChange(QModelIndexList selectedIn
                 concentrationSelected = true;
             }
         }
+
         zv_selectedIndexMap[index.row()].insert(index.column(), index);
     }
 
-    emit zg_selectionChanged(!zv_selectedIndexMap.isEmpty(), concentrationSelected);
+    emit zg_selectionChanged(!zv_selectedIndexMap.isEmpty(), concentrationSelected, spectrumSelected);
 }
 //==================================================================
 void ZJointSpectraModel::zp_clearSelectedConcentrations()

@@ -657,7 +657,7 @@ bool ZSpectrumArray::zp_removeChemElement(int chemElementIndex)
     return res;
 }
 //===============================================
-const ZAbstractSpectrum* ZSpectrumArray::zp_spectrum(int index) const
+const ZAbstractSpectrum *ZSpectrumArray::zp_spectrum(int index) const
 {
     if(index < 0 || index >= zv_spectrumList.count())
     {
