@@ -4,6 +4,7 @@
 #include "ZSpeIOHandler.h"
 #include "ZGeneral.h"
 
+#include <QDebug>
 #include <QFileInfo>
 #include <QFile>
 #include <QMessageBox>
@@ -451,7 +452,7 @@ void ZSpectrumArray::zp_clearChemElements()
     zv_chemElementList.zp_clearList();
 }
 //===============================================
-bool ZSpectrumArray::zp_appendSpectrum(const ZRawSpectrum& rawSpectrum, bool last, bool& dontAsk)
+bool ZSpectrumArray::zp_appendSpectrum(const ZRawSpectrum& rawSpectrum, bool last, bool& dontAsk, bool& continueAppend)
 {
     QFileInfo fileInfo(rawSpectrum.path);
     ZAbstractSpectrumIOHandler* ioHandler;
@@ -461,6 +462,7 @@ bool ZSpectrumArray::zp_appendSpectrum(const ZRawSpectrum& rawSpectrum, bool las
     {
         QString error = tr("Error: \"%1\" is not a file!").arg(rawSpectrum.path);
         emit zg_message(error);
+        qCritical() <<  error;
         return false;
     }
     else if(suffix == "spe")
@@ -471,6 +473,7 @@ bool ZSpectrumArray::zp_appendSpectrum(const ZRawSpectrum& rawSpectrum, bool las
     {
         QString error = QObject::tr("Cannot handle file of type \"%1\"!").arg(suffix);
         emit zg_message(error);
+        qCritical() <<  error;
         return false;
     }
 
@@ -479,7 +482,6 @@ bool ZSpectrumArray::zp_appendSpectrum(const ZRawSpectrum& rawSpectrum, bool las
     if(res)
     {
         ZSpeSpectrum* speSpectrum = qobject_cast<ZSpeSpectrum*>(abstractSpectrum);
-
         if(zp_isEnergyCalibrationValid() && !dontAsk)
         {
             QStringList inconsistenciesList = speSpectrum->zp_isEnergyCalibrationAndExpositionSuitable(zv_energyUnit, zv_energyK0, zv_energyK1, zv_energyK2, zv_exposition);
@@ -517,22 +519,26 @@ bool ZSpectrumArray::zp_appendSpectrum(const ZRawSpectrum& rawSpectrum, bool las
                 }
                 msgBox.setDefaultButton(QMessageBox::Yes );
                 int ret = msgBox.exec();
-
+                qDebug() << "ASK FOR CONTINUE";
                 switch (ret)
                 {
                 case QMessageBox::Yes:
                     res = true;
+                    continueAppend = true;
                     break;
                 case QMessageBox::YesToAll:
                     dontAsk = true;
+                    continueAppend = true;
                     res = true;
                     break;
                 case QMessageBox::No:
                     res = false;
+                    continueAppend = true;
                     break;
                 case QMessageBox::NoToAll:
                 default:
                     dontAsk = true;
+                    continueAppend = false;
                     res = false;
                     // should never be reached
                     break;
@@ -560,7 +566,9 @@ bool ZSpectrumArray::zp_appendSpectrum(const ZRawSpectrum& rawSpectrum, bool las
             int spectrumIndex = zv_spectrumList.count();
             emit zg_spectrumOperation(OT_INSERT_SPECTRA, spectrumIndex, spectrumIndex);
             zv_spectrumList.append(speSpectrum);
+            qDebug() << "APPEND SPE" << rawSpectrum.path;
             emit zg_spectrumOperation(OT_END_INSERT_SPECTRA, spectrumIndex, spectrumIndex);
+
             // color index increment
             if(++zv_lastColorIndex >= zv_colorList.count())
             {
@@ -590,12 +598,34 @@ bool ZSpectrumArray::zp_appendSpectrum(const ZRawSpectrum& rawSpectrum, bool las
 
                 speSpectrum->zp_insertConcentration(chemElementId, it.value());
             }
+
+            connect(speSpectrum, &ZSpeSpectrum::zg_energyCalibrationChanged,
+                    this, &ZSpectrumArray::zh_saveSpectrumToFile);
+            connect(speSpectrum, &ZSpeSpectrum::zg_gainFactorChanged,
+                    this, &ZSpectrumArray::zh_saveSpectrumToFile);
         }
     }
 
     delete ioHandler;
     zh_recalcArrayMaxParameters();
     return res;
+}
+//===============================================
+void ZSpectrumArray::zh_saveSpectrumToFile() const
+{
+    ZSpeSpectrum* spectrum = qobject_cast<ZSpeSpectrum*>(sender());
+    if(!spectrum)
+    {
+        return;
+    }
+
+    ZSpeIOHandler speIOHandler(nullptr);
+
+    QFileInfo fileInfo(spectrum->zp_path());
+    QString folderPath = fileInfo.absolutePath();
+    QString fileName = fileInfo.fileName();
+
+    speIOHandler.zp_saveSpectrumToFile(folderPath, fileName, spectrum);
 }
 //===============================================
 bool ZSpectrumArray::zp_appendNewChemElement(QString chemElement)

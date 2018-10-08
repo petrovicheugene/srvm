@@ -208,6 +208,8 @@ private slots:
     void zh_onInvertChemElementsVisibilityAction();
     void zh_onEnergyCalibrationAction();
 
+    void zh_writeEnergyCalibrationToSpectra(int gainFactor,
+                                   const QList<double> &energyCalibrationFactors);
 private:
 
     // VARS

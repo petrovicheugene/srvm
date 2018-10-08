@@ -4,6 +4,7 @@
 //=================================================
 #include "ZAbstractSpectrumAuxData.h"
 #include <QDateTime>
+#include <QMap>
 #include <QString>
 //=================================================
 class ZSpeAuxData : public ZAbstractSpectrumAuxData
@@ -11,6 +12,7 @@ class ZSpeAuxData : public ZAbstractSpectrumAuxData
 public:
     ZSpeAuxData();
 
+    void zp_setSrvN(const QString&);
     bool zp_setDate(const QString&);
     bool zp_setTime(const QString&);
     void zp_setDate(const QDate&);
@@ -42,6 +44,11 @@ public:
     bool zp_setPeakWidthK1(const QString&);
     bool zp_setPeakWidthK2(const QString&);
 
+
+    void zp_setComment(int lineNumber, const QString& comment);
+    QString zp_comment(int lineNumber) const;
+
+    QString zp_srvN() const;
     QDateTime zp_dateTime() const;
     QDate zp_date() const;
     QTime zp_time() const;
@@ -61,6 +68,8 @@ public:
 private:
 
     // VARS
+    QMap<int, QString> zv_commentMap;
+    QString zv_srvN;
     QDate zv_date;
     QTime zv_time;
     int zv_exposition;

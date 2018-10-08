@@ -880,6 +880,7 @@ void ZSpectrumArrayRepository::zp_appendSpectraToArray(int arrayIndex, QStringLi
 
     int spectraStartCount = zv_arrayList.at(arrayIndex)->zp_spectrumCount();
     bool dontAsk = false;
+    bool continueAppend = true;
     for(int i = 0; i < fileNameList.count(); i++)
     {
         QFileInfo fileInfo(fileNameList.at(i));
@@ -887,6 +888,7 @@ void ZSpectrumArrayRepository::zp_appendSpectraToArray(int arrayIndex, QStringLi
         {
             QString msg = tr("File \"%1\" does not exist!").arg(zv_arrayList.at(arrayIndex)->zp_arrayName());
             emit zg_message(msg);
+            qCritical() <<  msg;
             continue;
         }
 
@@ -894,6 +896,7 @@ void ZSpectrumArrayRepository::zp_appendSpectraToArray(int arrayIndex, QStringLi
         {
             QString msg = tr("\"%1\" is a folder!").arg(zv_arrayList.at(arrayIndex)->zp_arrayName());
             emit zg_message(msg);
+            qCritical() <<  msg;
             continue;
         }
 
@@ -902,13 +905,16 @@ void ZSpectrumArrayRepository::zp_appendSpectraToArray(int arrayIndex, QStringLi
 
         // int spectrumIndex = zv_arrayList[arrayIndex]->zp_spectrumCount();
         // emit zg_currentSpectrumOperation(SOT_INSERT_SPECTRA, arrayIndex, spectrumIndex, spectrumIndex);
-        if(!zv_arrayList[arrayIndex]->zp_appendSpectrum(rawSpectrum, fileNameList.count()-1 == i, dontAsk))
+        if(!zv_arrayList[arrayIndex]->zp_appendSpectrum(rawSpectrum, fileNameList.count()-1 == i, dontAsk, continueAppend))
         {
-            if(dontAsk)
-            {
-                break;
-            }
+
         }
+
+        if(!continueAppend)
+        {
+            break;
+        }
+
         // emit zg_currentSpectrumOperation(SOT_END_INSERT_SPECTRA, arrayIndex, spectrumIndex, spectrumIndex);
     }
 
@@ -917,6 +923,7 @@ void ZSpectrumArrayRepository::zp_appendSpectraToArray(int arrayIndex, QStringLi
     {
         QString msg = tr("%1 spectra loaded", "", 3).arg(QString::number(loaded));
         emit zg_message(msg);
+        qCritical() <<  msg;
 
         if(spectraStartCount < 1)
         {
@@ -966,14 +973,17 @@ void ZSpectrumArrayRepository::zh_createArray(const ZRawSpectrumArray& rawArray)
             this, &ZSpectrumArrayRepository::zg_arrayMaxParametersChanged);
 
     bool dontAsk = false;
+    bool continueAppend = true;
     for(int s = 0; s < rawArray.spectrumList.count(); s++)
     {
-        if(!array->zp_appendSpectrum(rawArray.spectrumList.value(s), rawArray.spectrumList.count()-1 == s, dontAsk))
+        if(!array->zp_appendSpectrum(rawArray.spectrumList.value(s), rawArray.spectrumList.count()-1 == s, dontAsk, continueAppend))
         {
-            if(dontAsk)
-            {
-                break;
-            }
+
+        }
+
+        if(!continueAppend)
+        {
+            break;
         }
     }
 
@@ -1886,7 +1896,28 @@ void ZSpectrumArrayRepository::zh_onEnergyCalibrationAction()
 
 
     ZEnergyCalibrationDialogV2 dialog(spectrumMap);
+//    connect(&dialog, &ZEnergyCalibrationDialogV2::zg_energyCalibrationChanged,
+//            this, &ZSpectrumArrayRepository::zh_writeEnergyCalibrationToSpectra);
     dialog.exec();
+}
+//==================================================================
+void ZSpectrumArrayRepository::zh_writeEnergyCalibrationToSpectra(int gainFactor,
+                                                                  const QList<double>& energyCalibrationFactors)
+{
+    for(int a = 0; a < zv_arrayList.count(); a++)
+    {
+        QList<ZAbstractSpectrum*>spectrumList = zv_arrayList.at(a)->zp_spectrumList();
+        for(int s = 0; s <spectrumList.count(); s++)
+        {
+            ZSpeSpectrum* spectrum = qobject_cast<ZSpeSpectrum*>(spectrumList.at(s));
+            if(!spectrum || spectrum->zp_gainFactor() != gainFactor)
+            {
+                continue;
+            }
+
+            spectrum->zp_setEnergyCalibration(energyCalibrationFactors);
+        }
+    }
 }
 //==================================================================
 QList<ZRawSpectrumArray> ZSpectrumArrayRepository::zh_createRawArrayList() const

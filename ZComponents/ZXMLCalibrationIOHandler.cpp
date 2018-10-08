@@ -1,6 +1,8 @@
 //==========================================================
 #include "ZXMLCalibrationIOHandler.h"
 #include "ZCalibration.h"
+#include <QDebug>
+
 #include <QFileInfo>
 #include <QFileDialog>
 #include <QStandardPaths>
@@ -70,6 +72,7 @@ bool ZXMLCalibrationIOHandler::zp_writeCalibrationToFile(QFile& file, const ZCal
     {
         zv_message = tr("File \"%1\" is not open in write mode!").arg(file.fileName());
         emit zg_message(zv_message);
+        qCritical() <<  zv_message;
         return false;
     }
 
@@ -250,6 +253,7 @@ bool ZXMLCalibrationIOHandler::zp_writeCalibrationToFile(QFile& file, const ZCal
     {
         zv_message = tr("Cannot write to file \"%1\"! %2").arg(file.fileName(), file.errorString());
         emit zg_message(zv_message);
+        qCritical() <<  zv_message;
         return false;
     }
 
@@ -273,6 +277,7 @@ bool ZXMLCalibrationIOHandler::zp_getCalibrationFromFile(QFile& file,
     {
         zv_message = tr("File \"%1\" is not open in read mode!").arg(file.fileName());
         emit zg_message(zv_message);
+        qCritical() <<  zv_message;
         return false;
     }
 
@@ -325,12 +330,14 @@ bool ZXMLCalibrationIOHandler::zp_getCalibrationFromFile(QFile& file,
     {
         zv_message = tr("File \"%1\" parsing failed! %2").arg(file.fileName(), reader.errorString());
         emit zg_message(zv_message);
+        qCritical() <<  zv_message;
         return false;
     }
     else if(file.error() != QFile::NoError)
     {
         zv_message = tr("Cannot read file \"%1\"! %2").arg(file.fileName(), file.errorString());
         emit zg_message(zv_message);
+        qCritical() <<  zv_message;
         return false;
     }
 

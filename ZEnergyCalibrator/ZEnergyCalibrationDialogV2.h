@@ -31,12 +31,14 @@ public:
     explicit ZEnergyCalibrationDialogV2(QMap<quint8, QList<ZSpeSpectrum *> > &spectrumMap,
                                         QWidget *parent = nullptr);
     ~ZEnergyCalibrationDialogV2();
+    void zp_setAskSaveForGainfactorFlag(bool flag);
 
 signals:
 
     void zg_energyCalibrationChanged(int gainFactor, const QList<double>& energyCalibrationFactors) const;
 
 public slots:
+
 
 private slots:
 
@@ -79,8 +81,9 @@ private:
     QPushButton* zv_closeButton;
 
     QList<QList<QWidget*> > zv_elementLinesWidgetList;
-    // FUNCS
+    bool zv_askSaveForGainFactor;
 
+    // FUNCS
     void zh_createComponents();
     void zh_createContextMenu();
 

@@ -20,6 +20,11 @@ ZSpeAuxData::ZSpeAuxData()
 
 }
 //=================================================
+void ZSpeAuxData::zp_setSrvN(const QString& srvN)
+{
+    zv_srvN = srvN;
+}
+//=================================================
 bool ZSpeAuxData::zp_setDate(const QString& string)
 {
     if(string.isEmpty())
@@ -27,7 +32,7 @@ bool ZSpeAuxData::zp_setDate(const QString& string)
         return false;
     }
 
-    zv_date = QDate::fromString(string);
+    zv_date = QDate::fromString(string, "dd.MM.yyyy");
     return zv_date.isValid();
 }
 //=================================================
@@ -219,6 +224,21 @@ bool ZSpeAuxData::zp_setPeakWidthK2(const QString& string)
     bool ok;
     zv_peakWidthK2 = string.toDouble(&ok);
     return ok;
+}
+//=================================================
+void ZSpeAuxData::zp_setComment(int lineNumber, const QString& comment)
+{
+    zv_commentMap[lineNumber] = comment;
+}
+//=================================================
+QString ZSpeAuxData::zp_comment(int lineNumber) const
+{
+    return zv_commentMap.value(lineNumber, QString());
+}
+//=================================================
+QString ZSpeAuxData::zp_srvN() const
+{
+    return zv_srvN;
 }
 //=================================================
 QDateTime ZSpeAuxData::zp_dateTime() const

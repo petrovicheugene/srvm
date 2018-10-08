@@ -1,5 +1,6 @@
 //==============================================================
 #include "ZLESGaussSolver.h"
+#include <QDebug>
 //==============================================================
 ZLESGaussSolver::ZLESGaussSolver(QObject *parent) : QObject(parent)
 {
@@ -23,6 +24,8 @@ bool ZLESGaussSolver::zp_solve()
     {
         zv_lastErrorString = "LES solver: The number of factor is not equal to the number of equation. The system has no solution.";
         emit zg_message(zv_lastErrorString);
+        qCritical() <<  zv_lastErrorString;
+
         return false;
     }
 
@@ -56,6 +59,7 @@ bool ZLESGaussSolver::zp_solve()
         {
             zv_lastErrorString = "LES solver: Attempt of dividing by zero. The system has no solution. ";
             emit zg_message(zv_lastErrorString);
+            qCritical() <<  zv_lastErrorString;
             return false;
         }
 
@@ -136,6 +140,7 @@ bool ZLESGaussSolver::zh_putMaxValueOnDiagonal(int startIndex)
     {
         zv_lastErrorString = "LES solver: Error matrix element manipulation.";
         emit zg_message(zv_lastErrorString);
+        qCritical() <<  zv_lastErrorString;
         return false;
     }
 
@@ -143,6 +148,7 @@ bool ZLESGaussSolver::zh_putMaxValueOnDiagonal(int startIndex)
     {
         zv_lastErrorString = "LES solver: The system has no solution.";
         emit zg_message(zv_lastErrorString);
+        qCritical() <<  zv_lastErrorString;
         return false;
     }
 

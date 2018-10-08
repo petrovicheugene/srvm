@@ -49,14 +49,18 @@ ZEnergyCalibrationDialogV2::ZEnergyCalibrationDialogV2(QMap<quint8, QList<ZSpeSp
     zh_setElementLineControlsAndComponentVisibility();
     zh_restoreSettings();
     zh_loadSpectrumData(spectrumMap);
-
+    zv_askSaveForGainFactor = false;
 
     if(zv_plotter != 0)
     {
         QMetaObject::invokeMethod(zv_plotter, "zp_fitInBoundingRect",
                                   Qt::QueuedConnection);
     }
-
+}
+//======================================================
+void ZEnergyCalibrationDialogV2::zp_setAskSaveForGainfactorFlag(bool flag)
+{
+    zv_askSaveForGainFactor = flag;
 }
 //======================================================
 ZEnergyCalibrationDialogV2::~ZEnergyCalibrationDialogV2()
@@ -457,11 +461,14 @@ void ZEnergyCalibrationDialogV2::zh_calculateAndWriteEnergyCalibration()
     // write energy calibration to checked files
     zv_spectrumModel->zp_writeEnergyCalibrationToCheckedSpectra(energyCalibrationFactorList);
 
-    // write energy calibration to gain factor
-    QString msg = tr("Do you want to bind the energy calibration to the current gain factor equals %1?").arg(zv_gainFactorComboBox->currentText());
-    if(QMessageBox::question(this, tr("Energy calibration error"), msg, QMessageBox::Yes | QMessageBox::No) == QMessageBox::No)
+    if(zv_askSaveForGainFactor)
     {
-        return;
+        // write energy calibration to gain factor
+        QString msg = tr("Do you want to bind the energy calibration to the current gain factor equals %1?").arg(zv_gainFactorComboBox->currentText());
+        if(QMessageBox::question(this, tr("Energy calibration error"), msg, QMessageBox::Yes | QMessageBox::No) == QMessageBox::No)
+        {
+            return;
+        }
     }
 
 //    //  current gain factor value

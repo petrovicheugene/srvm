@@ -73,7 +73,7 @@ public:
     void zp_clearArray();
     void zp_clearChemElements();
 
-    bool zp_appendSpectrum(const ZRawSpectrum& rawSpectrum, bool last, bool& dontAsk);
+    bool zp_appendSpectrum(const ZRawSpectrum& rawSpectrum, bool last, bool& dontAsk, bool &continueAppend);
     bool zp_appendNewChemElement(QString chemElement = QString());
     bool zp_removeChemElement(int);
 
@@ -135,6 +135,7 @@ private:
 
 private slots:
 
+    void zh_saveSpectrumToFile() const;
 
 };
 //===============================================
