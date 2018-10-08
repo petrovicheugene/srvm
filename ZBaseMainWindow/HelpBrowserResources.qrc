@@ -1,0 +1,17 @@
+<RCC>
+    <qresource prefix="/images">
+        <file>blue_home.ico</file>
+        <file>blue_home.png</file>
+        <file>blue_left.ico</file>
+        <file>blue_left.png</file>
+        <file>blue_right.ico</file>
+        <file>blue_right.png</file>
+        <file>editclear.png</file>
+        <file>green_home.ico</file>
+        <file>green_home.png</file>
+        <file>green_left.ico</file>
+        <file>green_left.png</file>
+        <file>green_right.ico</file>
+        <file>green_right.png</file>
+    </qresource>
+</RCC>

@@ -2,8 +2,8 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 //==========================================================
-#include <QMainWindow>
-#include <ZTermCorrelationTableWidget.h>
+#include "ZBaseMainWindow.h"
+#include "ZTermCorrelationTableWidget.h"
 //==========================================================
 class ZFileActionManager;
 class ZSpectrumArrayWidget;
@@ -16,6 +16,7 @@ class ZEquationSettingsDashBoard;
 class ZCorrelationPlotterWidget;
 class ZWidgetWithSidebar;
 class ZMessagePanel;
+class ZMessageWidget;
 
 class QAction;
 class QFrame;
@@ -39,7 +40,7 @@ class ZPlotterDataManager;
 class ZCorrelationPlotterDataManager;
 class ZTermCorrelationTableManager;
 //==========================================================
-class MainWindow : public QMainWindow
+class MainWindow : public ZBaseMainWindow
 {
     Q_OBJECT
 
@@ -51,13 +52,26 @@ signals:
 
     void zg_saveSettings();
 
+    void zg_plainLogMessage(int msgType,
+                            const QString &msg);
+
+private slots:
+
+    void zh_messageIconPixmap(int type,
+                              QSize size,
+                              QStyle *style,
+                              QPixmap& pixmap,
+                              bool &ok) const;
+
+
+
 private:
 
     // VARS
     // actions
     QAction* zv_exitAction;
-    QAction* zv_aboutAction;
-    QAction* zv_helpAction;
+    //    QAction* zv_aboutQtAction;
+    //    QAction* zv_helpAction;
 
     // docks
     QList<QDockWidget*> zv_dockList;
@@ -81,7 +95,7 @@ private:
     ZEquationSettingsDashBoard* zv_equationSettingsPanelWidget;
     ZCorrelationPlotterWidget* zv_correlationPlotterWidget;
 
-    ZMessagePanel* zv_messagePanel;
+    ZMessageWidget* zv_messageWidget;
     ZPlotter* zv_plotter;
 
     // models
@@ -119,11 +133,11 @@ private:
 
 private slots:
 
-    void zh_onAboutAction() const;
-    void zh_onHelpAction();
 
     void zh_rebuildCorrelationPlot();
 
 };
+Q_DECLARE_METATYPE(QtMsgType)
+
 //==========================================================
 #endif // MAINWINDOW_H

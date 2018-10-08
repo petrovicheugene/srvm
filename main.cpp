@@ -9,152 +9,264 @@
 #include <QDir>
 #include <QSplashScreen>
 #include <QPixmap>
+#include <iostream>
+#include <QSet>
 //===============================================
+//======================================================
+/*!
+\brief  This module contains a function "messageHandler" for receiving standard
+ messages qDebug, qInfo, qWarning, qCritical and qFatal.
 
+ Further these messages are redirected to MainWindow that should have a receive function
+ "zp_handleStandardLogMessage(QtMsgType type,
+                         const QMessageLogContext &context,
+                         const QString &msg)".
+ At the same time the messages are outputing in standard output stream
+ std and are displayed in Qt Creator.
+
+ In class MainWindow the messages may be handled as log messages.
+
+ In main function qApp object gets new properties that hold the defines
+ created in .pro file. These defines becomes accessable from every point
+ of the code.
+
+*/
+//======================================================
 extern const QString glAppExeBaseName =  APP_EXE_BASE_NAME; // w/o version
 extern const QString glAppProduct =  APP_PRODUCT;
 extern const QString glAppVersion = APP_VERSION;
 extern const QString glAppCompany = APP_COMPANY;
 extern const QString glAppCopyright = APP_COPYRIGHT;
 extern const QString glAppCompanyURL = APP_COMPANY_URL;
-
-//extern const QString glDefaultChemElementString = "Not defined";
-//extern const int glMaxGainFactor = 255;
-
-//extern const QString glHorizontalDecreaseIconString = ":/images/ZImages/horizontalDecrease-2.png";
-//extern const QString glHorizontalIncreaseIconString = ":/images/ZImages/horizontalIncrease-2.png";
-//extern const QString glVerticalDecreaseIconString = ":/images/ZImages/verticalDecrease-2.png";
-//extern const QString glVerticalIncreaseIconString = ":/images/ZImages/verticalIncrease-2.png";
-//extern const QString glFitInRectIconString = ":/images/ZImages/fitInSceneRect.png";
-//extern const QString glAxisToEnergyIconString = ":/images/ZImages/energy.png";
-//extern const QString glShowGridIconString = ":/images/ZImages/gridVisible-3.png";
-
-//extern const QString glSidebarLeftOpenIconString = ":/images/ZWidgets/sidebarLeftOpen-1.png";
-//extern const QString glSidebarLeftCloseIconString = ":/images/ZWidgets/sidebarLeftClose-1.png";
-//extern const QString glSidebarRightOpenIconString = ":/images/ZWidgets/sidebarRightOpen-1.png";
-//extern const QString glSidebarRightCloseIconString = ":/images/ZWidgets/sidebarRightClose-1.png";
-
-
-//extern const QString glExitAppIconString = ":/images/ZImages/close.png";
-//extern const QString glAboutIconString = ":/images/ZImages/info.png";
-//extern const QString glHelpIconString = ":/images/ZImages/help.png";
-
-//extern const QString glVisibleSignIconString = ":/images/ZImages/eyeSignBlack-1.png";
-
-//extern const QString glVisibleIconString = ":/images/ZImages/visible-1.png";
-//extern const QString glInvisibleIconString = ":/images/ZImages/invisible-1.png";
-//extern const QString glInverseVisibleIconString = ":/images/ZImages/inverseRed-2.png";
-
-//extern const QString glConstExcludedIconString = ":/images/ZImages/Unchecked-16.png";
-//extern const QString glConstIncludedIconString = ":/images/ZImages/checked-16.png";
-//extern const QString glExamWaitingIconString = ":/images/ZImages/question.png";
-//extern const QString glIncludedIconString = ":/images/ZImages/openSpeFolder-2.png";
-//extern const QString glExcludedIconString = ":/images/ZImages/openSpeFolder-2.png";
-//extern const QString glBaseTermIconString = ":/images/ZImages/B-sign-16.png";
-
-//extern const QString glOpenArrayIconString = ":/images/ZImages/openSpeFolder-3.png";
-//extern const QString glSaveArrayIconString = ":/images/ZImages/saveSpeArray-2.png";
-//extern const QString glSaveAsArrayIconString = ":/images/ZImages/saveAsSpeArray-2.png";
-
-//extern const QString glOpenCalibrationIconString = ":/images/ZImages/openCalibration-3.png";
-//extern const QString glSaveCalibrationIconString = ":/images/ZImages/saveCalibration-3.png";
-//extern const QString glSaveAsCalibrationIconString = ":/images/ZImages/saveAsCalibration-3.png";
-//extern const QString glDuplicateCalibrationIconString = ":/images/ZImages/duplicateCalibration-3.png";
-
-//extern const QString glAddArrayIconString = ":/images/ZImages/addSpeFolder-3.png";
-//extern const QString glAddSpectrumIconString = ":/images/ZImages/addSpectrum-10.png";
-//extern const QString glAddChemElementIconString = ":/images/ZImages/addChemElement-6.png";
-//extern const QString glAddCalibrationIconString = ":/images/ZImages/addCalibration-3.png";
-//extern const QString glAddWindowIconString = ":/images/ZImages/addWindow-2.png";
-//extern const QString glAddTermIconString = ":/images/ZImages/T-Plus1.png";
-
-//extern const QString glRemoveIconString = ":/images/ZImages/cancel-red-1s.png";
-//extern const QString glRemoveSpectrumIconString = ":/images/ZImages/removeSpectrum-10.png";
-//extern const QString glRemoveChemElementIconString = ":/images/ZImages/removeChemElement-6.png";
-//extern const QString glRemoveArrayIconString = ":/images/ZImages/removeSpeFolder-3.png";
-//extern const QString glRemoveCalibrationIconString = ":/images/ZImages/removeCalibration-3.png";
-//extern const QString glRemoveWindowIconString = ":/images/ZImages/removeWindow-2.png";
-
-//extern const QString glClearIconString = ":/images/ZImages/clear-1.png";
-//extern const QString glCopyIconString = ":/images/ZImages/copy-1.png";
-//extern const QString glPasteIconString = ":/images/ZImages/paste-1.png";
-//extern const QString glCalcIconString = ":/images/ZImages/calc.png";
-
-//extern const QString glResetIconString = ":/images/ZImages/reset.png";
-//extern const QString glAddMixedTermsIconString = ":/images/ZImages/addMixedTerm.png";
-//extern const QString glRemoveMixedTermsIconString = ":/images/ZImages/removeMixedTerm.png";
-//extern const QString glAddCustomTermIconString = ":/images/ZImages/addCustomTerm.png";
-//extern const QString glRemoveCustomTermIconString = ":/images/ZImages/removeCustomTerm.png";
-
-
-//extern const QString glArrayIconString = ":/images/ZImages/AGreen.png";
-//extern const QString glSpectrumIconString = ":/images/ZImages/SPurple.png";
-//extern const QString glCalibrationIconString = ":/images/ZImages/CBlue.png";
-//extern const QString glWindowIconString = ":/images/ZImages/WBrown.png";
-//extern const QString glElementIconString = ":/images/ZImages/ECyan.png";
-
-//===============================================
-int main(int argc, char *argv[])
+//======================================================
+namespace
 {
-    QApplication a(argc, argv);
-    QPixmap pixmap(":/images/ZImages/SDC_TA3.png");
-    QSplashScreen splash(pixmap);
-    splash.show();
-    splash.showMessage("Loading codecs...", Qt::AlignBottom | Qt::AlignRight, Qt::white );
-    a.processEvents();
+// main window pointer
+static MainWindow* pMainWindow = nullptr;
+static QSet<QtMsgType> msgTypesToHandleInMainWindowSet;
 
-    QTextCodec* codec = QTextCodec::codecForName("windows-1251");
-    QTextCodec::setCodecForLocale(codec);
+// settings of format of debug output mssages to stderr
+enum DebugOutputOption {
+    DO_MsgOnly = 0x0,
+    DO_ShowFile = 0x1,
+    DO_ShowFunction = 0x2,
+    DO_ShowLine = 0x4,
+    DO_ShowVersion = 0x8};
 
-    QApplication::setOrganizationName(glAppCompany);
-    QApplication::setApplicationName(glAppExeBaseName);
-    QApplication::setApplicationVersion(glAppVersion);
+Q_DECLARE_FLAGS(DebugOutputOptions, DebugOutputOption)
+Q_DECLARE_OPERATORS_FOR_FLAGS(DebugOutputOptions)
 
-    splash.showMessage("Loading translations...", Qt::AlignBottom | Qt::AlignRight, Qt::white );
-    a.processEvents();
+static DebugOutputOptions debugOutputOption =
+        DO_MsgOnly
+        // | DO_ShowFile
+        | DO_ShowFunction
+        | DO_ShowLine
+        // | DO_ShowVersion
+        ;
 
-    QTranslator appTranslator;
-    QDir appDir(QApplication::applicationDirPath());
-
-    bool res = appTranslator.load(appDir.absoluteFilePath(QString("%1_%2").arg(glAppExeBaseName, QLocale::system().name())));
-    if(!res)
+}
+//======================================================
+void initMsgTypesToHandleInMainWindowSet()
+{
+#ifndef QT_NO_DEBUG_OUTPUT
+    msgTypesToHandleInMainWindowSet.insert(QtDebugMsg);
+#endif
+    msgTypesToHandleInMainWindowSet.insert(QtInfoMsg);
+    msgTypesToHandleInMainWindowSet.insert(QtWarningMsg);
+    msgTypesToHandleInMainWindowSet.insert(QtCriticalMsg);
+    msgTypesToHandleInMainWindowSet.insert(QtFatalMsg);
+}
+//======================================================
+void messageHandler(QtMsgType type, const QMessageLogContext &context, const QString &msg)
+{
+    if(pMainWindow != 0 && (msgTypesToHandleInMainWindowSet.contains(type)))
     {
-        res = appTranslator.load(QString(":/trans/%1_%2").arg(glAppExeBaseName, QLocale::system().name()));
+        // let the application handles message (for example for saving in log)
+        pMainWindow->zp_handleStandardLogMessage(type, context, msg);
     }
 
-    if(res)
+    // Standard output
+    QString outputMsg = msg;
+    // it msg type is debug add context to message
+    if(type == QtDebugMsg)
+    {
+        QString contextString;
+        if(debugOutputOption & DO_ShowFile)
+        {
+            contextString += QString(context.file);
+        }
+        if(debugOutputOption & DO_ShowFunction)
+        {
+            if(!contextString.isEmpty())
+            {
+                contextString += "; ";
+            }
+            contextString += QString(context.function);
+        }
+        if(debugOutputOption & DO_ShowLine)
+        {
+            if(!contextString.isEmpty())
+            {
+                contextString += "; ";
+            }
+            contextString += "line:" + QString::number(context.line);
+        }
+        if(debugOutputOption & DO_ShowVersion)
+        {
+            if(!contextString.isEmpty())
+            {
+                contextString += "; ";
+            }
+            contextString +=  "ver:" + QString::number(context.version);
+        }
+
+        if(!contextString.isEmpty())
+        {
+            outputMsg += " | " + contextString;
+        }
+    }
+
+    std::cerr <<  outputMsg.toStdString() <<  std::endl;
+
+    if(type == QtFatalMsg)
+    {
+        abort();
+    }
+}
+//======================================================
+//======================================================
+int main(int argc, char *argv[])
+{
+//    QApplication a(argc, argv);
+//    QPixmap pixmap(":/images/ZImages/SDC_TA3.png");
+//    QSplashScreen splash(pixmap);
+//    splash.show();
+//    splash.showMessage("Loading codecs...", Qt::AlignBottom | Qt::AlignRight, Qt::white );
+//    a.processEvents();
+
+//    QTextCodec* codec = QTextCodec::codecForName("windows-1251");
+//    QTextCodec::setCodecForLocale(codec);
+
+//    QApplication::setOrganizationName(glAppCompany);
+//    QApplication::setApplicationName(glAppExeBaseName);
+//    QApplication::setApplicationVersion(glAppVersion);
+
+//    splash.showMessage("Loading translations...", Qt::AlignBottom | Qt::AlignRight, Qt::white );
+//    a.processEvents();
+
+//    QTranslator appTranslator;
+//    QDir appDir(QApplication::applicationDirPath());
+
+//    bool res = appTranslator.load(appDir.absoluteFilePath(QString("%1_%2").arg(glAppExeBaseName, QLocale::system().name())));
+//    if(!res)
+//    {
+//        res = appTranslator.load(QString(":/trans/%1_%2").arg(glAppExeBaseName, QLocale::system().name()));
+//    }
+
+//    if(res)
+//    {
+//        a.installTranslator(&appTranslator);
+//    }
+
+//    QTranslator qtTranslator;
+//    res = qtTranslator.load(appDir.absoluteFilePath(QString("%1_%2").arg("qtbase", QLocale::system().name())));
+
+//    if(!res)
+//    {
+//        res = qtTranslator.load(QString(":/trans/qtbase_%2").arg(QLocale::system().name()));
+//    }
+
+//    if(res)
+//    {
+//        a.installTranslator(&qtTranslator);
+//    }
+
+//    splash.showMessage("Loading styles...", Qt::AlignBottom | Qt::AlignRight, Qt::white );
+//    a.processEvents();
+
+//    qApp->setStyleSheet(
+//                "QSplitter::handle:vertical   {height: 6px; image: url(:/images/ZImages/vSplitterHandle.png);}"
+//                "QSplitter::handle:horizontal {width:  6px; image: url(:/images/ZImages/hSplitterHandle.png);}"
+//                );
+
+//    splash.showMessage("Loading modules...", Qt::AlignBottom | Qt::AlignRight, Qt::white );
+//    a.processEvents();
+
+//    MainWindow w;
+//    w.show();
+//    splash.finish(&w);
+
+//    return a.exec();
+    QApplication a(argc, argv);
+    //
+    initMsgTypesToHandleInMainWindowSet();
+    // custom message handler for logging via qInfo qWarning qCritical
+    qInstallMessageHandler(messageHandler);
+
+    // set translators
+    // translator attempts to load from expernal file first and if not from resources
+    QDir appDir(QApplication::applicationDirPath());
+    QTranslator appTranslator;
+    if(appTranslator.load(appDir.absoluteFilePath(QString("%1_%2").arg(APP_EXE_BASE_NAME, QLocale::system().name())))
+            || appTranslator.load(QString(":/translators/%1_%2").arg(APP_EXE_BASE_NAME, QLocale::system().name())))
     {
         a.installTranslator(&appTranslator);
     }
 
     QTranslator qtTranslator;
-    res = qtTranslator.load(appDir.absoluteFilePath(QString("%1_%2").arg("qtbase", QLocale::system().name())));
-
-    if(!res)
-    {
-        res = qtTranslator.load(QString(":/trans/qtbase_%2").arg(QLocale::system().name()));
-    }
-
-    if(res)
+    if(qtTranslator.load(appDir.absoluteFilePath(QString("%1_%2").arg("qtbase", QLocale::system().name())))
+            || qtTranslator.load(QString(":/translators/qtbase_%2").arg(QLocale::system().name())))
     {
         a.installTranslator(&qtTranslator);
     }
 
-    splash.showMessage("Loading styles...", Qt::AlignBottom | Qt::AlignRight, Qt::white );
-    a.processEvents();
+    // set application properties
+    QApplication::setOrganizationName(APP_COMPANY);
+    QApplication::setApplicationName(APP_EXE_BASE_NAME);
+    QApplication::setApplicationVersion(APP_VERSION);
 
+    // create qApp properties and set .pro defines into them
+#ifdef APP_EXE_BASE_NAME
+    qApp->setProperty("glAppExeBaseName", QString(APP_EXE_BASE_NAME));
+#endif
+#ifdef APP_PRODUCT
+    qApp->setProperty("glAppProduct", QString(APP_PRODUCT));
+#endif
+#ifdef APP_VERSION
+    qApp->setProperty("glAppVersion", QString(APP_VERSION));
+#endif
+#ifdef APP_COMPANY
+    qApp->setProperty("glAppCompany", QString(APP_COMPANY));
+#endif
+#ifdef APP_COPYRIGHT
+    qApp->setProperty("glAppCopyright", QString(APP_COPYRIGHT));
+#endif
+#ifdef APP_COMPANY_URL
+    qApp->setProperty("glAppCompanyURL", QString(APP_COMPANY_URL));
+#endif
+#ifdef APP_ICON
+    qApp->setProperty("glAppIcon", QString(APP_ICON));
+#endif
+
+    // set dots on the splitter handle
     qApp->setStyleSheet(
-                "QSplitter::handle:vertical   {height: 6px; image: url(:/images/ZImages/vSplitterHandle.png);}"
-                "QSplitter::handle:horizontal {width:  6px; image: url(:/images/ZImages/hSplitterHandle.png);}"
+                "QSplitter::handle:vertical {height: 3px; image: url(:/images/hSplitterHandle.png);}"
+                "QSplitter::handle:horizontal {width: 3px; image: url(:/images/vSplitterHandle.png);}"
                 );
 
-    splash.showMessage("Loading modules...", Qt::AlignBottom | Qt::AlignRight, Qt::white );
-    a.processEvents();
+    // launch app
 
+    //  pixmap = QPixmap(":/images/ZImages/Chemistry.png");
+    //  QSplashScreen dbSplash(pixmap);
+    //  dbSplash.show();
+    //  dbSplash.showMessage("Connecting to database...", Qt::AlignBottom | Qt::AlignRight, Qt::white );
+
+    // main window
     MainWindow w;
-    w.show();
-    splash.finish(&w);
 
+    // pointer to main window for message handler
+    pMainWindow = &w;
+    w.show();
     return a.exec();
 }
 //===============================================

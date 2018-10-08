@@ -74,7 +74,8 @@ INCLUDEPATH += ZPlotter \
     ZPeriodicTableDialog \
     ZPeriodicTable \
     ZEnergyLineManager \
-    ZEnergyCalibrator
+    ZEnergyCalibrator \
+    ZBaseMainWindow
 
 SOURCES += main.cpp \
     MainWindow.cpp \
@@ -97,7 +98,7 @@ SOURCES += main.cpp \
     ZModelViews/ZJointSpectraTableWidget.cpp \
     ZWidgets/ZClickableLabel.cpp \
     ZWidgets/ZMessagePanel.cpp \
-    ZWidgets/ZHelpBrowser.cpp \
+    #ZWidgets/ZHelpBrowser.cpp \
     ZWidgets/ZWidgetWithSidebar.cpp \
     ZComponents/ZXMLSpectrumArrayIOHandler.cpp \
     ZComponents/ZXMLCalibrationIOHandler.cpp \
@@ -190,7 +191,11 @@ SOURCES += main.cpp \
     ZWidgets/ZColorButton.cpp \
     ZPlotter/ZVerticalLineGraphicsItem.cpp \
     ZModelViews/ZBaseTableWidget.cpp \
-    ZComponents/ZControlAction.cpp
+    ZComponents/ZControlAction.cpp \
+    ZBaseMainWindow/ZBaseMainWindow.cpp \
+    ZBaseMainWindow/ZHelpBrowser.cpp \
+    ZWidgets/ZMessageWidget.cpp \
+    ZComponents/ZStandardMessagePictureDispatcher.cpp
 
 HEADERS  += \
     MainWindow.h \
@@ -213,7 +218,7 @@ HEADERS  += \
     ZModelViews/ZJointSpectraTableWidget.h \
     ZWidgets/ZClickableLabel.h \
     ZWidgets/ZMessagePanel.h \
-    ZWidgets/ZHelpBrowser.h \
+    #ZWidgets/ZHelpBrowser.h \
     ZWidgets/ZWidgetWithSidebar.h \
     ZComponents/ZRawSpectrumArray.h \
     ZComponents/ZXMLSpectrumArrayIOHandler.h \
@@ -310,13 +315,32 @@ HEADERS  += \
     ZWidgets/ZColorButton.h \
     ZPlotter/ZVerticalLineGraphicsItem.h \
     ZModelViews/ZBaseTableWidget.h \
-    ZComponents/ZControlAction.h
+    ZComponents/ZControlAction.h \
+    ZBaseMainWindow/ZBaseMainWindow.h \
+    ZBaseMainWindow/ZHelpBrowser.h \
+    ZWidgets/ZMessageWidget.h \
+    ZComponents/ZStandardMessagePictureDispatcher.h
+
 
 RESOURCES += \
     resources.qrc \
-    ZPeriodicTable/ChemicalElementModelResources.qrc
+    ZPeriodicTable/ChemicalElementModelResources.qrc \
+    ZBaseMainWindow/HelpBrowserResources.qrc
 
 DISTFILES += \
     myBacklog.txt \
     ZPeriodicTable/chemicalElementBasicProperties.xml \
-    ZPeriodicTable/chemicalElementBasicProperties.csv
+    ZPeriodicTable/chemicalElementBasicProperties.csv \
+    ZBaseMainWindow/blue_home.png \
+    ZBaseMainWindow/blue_left.png \
+    ZBaseMainWindow/blue_right.png \
+    ZBaseMainWindow/editclear.png \
+    ZBaseMainWindow/green_home.png \
+    ZBaseMainWindow/green_left.png \
+    ZBaseMainWindow/green_right.png \
+    ZBaseMainWindow/blue_home.ico \
+    ZBaseMainWindow/blue_left.ico \
+    ZBaseMainWindow/blue_right.ico \
+    ZBaseMainWindow/green_home.ico \
+    ZBaseMainWindow/green_left.ico \
+    ZBaseMainWindow/green_right.ico

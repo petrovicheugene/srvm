@@ -16,6 +16,8 @@
 #include "ZSpeSpectrum.h"
 #include "ZEquationSettingsData.h"
 #include "ZHelpBrowser.h"
+#include "ZStandardMessagePictureDispatcher.h"
+
 // views
 #include "ZWidgetWithSidebar.h"
 #include "ZSpectrumArrayWidget.h"
@@ -27,6 +29,8 @@
 #include "ZTermCorrelationTableWidget.h"
 #include "ZPlotter.h"
 #include "ZMessagePanel.h"
+#include "ZMessageWidget.h"
+
 // models
 #include "ZArrayModel.h"
 #include "ZCalibrationModel.h"
@@ -36,28 +40,29 @@
 #include "ZTermCorrelationTableModel.h"
 
 // qt
-#include <QHBoxLayout>
-#include <QVBoxLayout>
-#include <QFrame>
-#include <QMessageBox>
-#include <QCloseEvent>
 #include <QAction>
-#include <QSettings>
 #include <QByteArray>
-#include <QPalette>
+#include <QCloseEvent>
+#include <QDebug>
+#include <QDockWidget>
+#include <QFrame>
+#include <QHBoxLayout>
+#include <QMessageBox>
 #include <QMenu>
 #include <QMenuBar>
+#include <QMetaType>
+#include <QPalette>
 #include <QStatusBar>
 #include <QToolBar>
-#include <QDockWidget>
+#include <QSettings>
 #include <QSplitter>
 #include <QStatusBar>
-#include <QMetaType>
+#include <QStyle>
+#include <QVBoxLayout>
 
-#include <QDebug>
 //==========================================================
 MainWindow::MainWindow(QWidget *parent)
-    : QMainWindow(parent)
+    : ZBaseMainWindow(parent)
 {
     qRegisterMetaType<ZEquationSettingsData>("ZEquationSettingsData");
     //    qRegisterMetaType<ZSpeSpectrum>("ZSpeSpectrum");
@@ -292,8 +297,8 @@ void MainWindow::zh_createComponents()
     zv_dockList << zv_messagePanelDock;
     addDockWidget(Qt::LeftDockWidgetArea, zv_messagePanelDock);
 
-    zv_messagePanel = new ZMessagePanel(this);
-    frame = zh_setWidgetToFrame(zv_messagePanel);
+    zv_messageWidget = new ZMessageWidget(this);
+    frame = zh_setWidgetToFrame(zv_messageWidget);
     // setting to dock
     zv_messagePanelDock->setWidget(frame);
 
@@ -383,13 +388,22 @@ void MainWindow::zh_createToolbar()
 //==========================================================
 void MainWindow::zh_createConnections()
 {
+
+    connect(this, &MainWindow::zg_standardLogMessage,
+            zv_messageWidget, &ZMessageWidget::zp_appendMessage, Qt::QueuedConnection);
+    connect(this, &MainWindow::zg_plainLogMessage,
+            zv_messageWidget, &ZMessageWidget::zp_appendPlainMessage, Qt::QueuedConnection);
+    connect(zv_messageWidget, &ZMessageWidget::zg_requestMessageIconPixmap,
+            this, &MainWindow::zh_messageIconPixmap);
+
+
     // main window actions
     connect(zv_exitAction, &QAction::triggered,
             this, &MainWindow::close);
-    connect(zv_aboutAction, &QAction::triggered,
-            this, &MainWindow::zh_onAboutAction);
-    connect(zv_helpAction, &QAction::triggered,
-            this, &MainWindow::zh_onHelpAction);
+//    connect(zv_aboutAction, &QAction::triggered,
+//            this, &MainWindow::zh_onAboutAction);
+//    connect(zv_helpAction, &QAction::triggered,
+//            this, &MainWindow::zh_onHelpAction);
 
     // main window save settings command
     connect(this, &MainWindow::zg_saveSettings,
@@ -515,6 +529,38 @@ void MainWindow::zh_createConnections()
     // equation dashboard
     //zv_equationSettingsPanelWidget->zp_connectToCalibrationRepository(zv_calibrationRepository);
 }
+//======================================================
+void MainWindow::zh_messageIconPixmap(int type,
+                                      QSize size,
+                                      QStyle* style,
+                                      QPixmap& pixmap,
+                                      bool& ok) const
+{
+    if(//type == QtDebugMsg ||
+            type == QtInfoMsg ||
+            type == QtWarningMsg ||
+            type == QtCriticalMsg ||
+            type == QtFatalMsg)
+    {
+        ok = ZStandardMessagePictureDispatcher::zp_pictureForStandardMessage(static_cast<QtMsgType>(type),
+                                                                             size,
+                                                                             style,
+                                                                             pixmap);
+        return;
+    }
+
+    if(type == QtDebugMsg)
+    {
+        pixmap = QPixmap(":/images/Images/Bug.png").scaled(size,
+                                                           Qt::KeepAspectRatio,
+                                                           Qt::FastTransformation);
+        ok = true;
+        return;
+    }
+
+    // No Pixmap
+    ok = false;
+}
 //==========================================================
 void MainWindow::zh_appendActionsToMenu(QMenu* menu)
 {
@@ -597,112 +643,112 @@ void MainWindow::zh_saveSettings()
     emit zg_saveSettings();
 }
 //==========================================================
-void MainWindow::zh_onAboutAction() const
-{
-    //    QString title = tr("About %1").arg(glAppProduct);
+//void MainWindow::zh_about()
+//{
+//    //    QString title = tr("About %1").arg(glAppProduct);
 
-    //    QString text = tr("%1 is an application that displays in graphical form values of concentration of chemical elements technological streams contain. "
-    //                      "It works with a X-ray spectrometer SRV.").arg(glAppProduct);
+//    //    QString text = tr("%1 is an application that displays in graphical form values of concentration of chemical elements technological streams contain. "
+//    //                      "It works with a X-ray spectrometer SRV.").arg(glAppProduct);
 
-    //    QString htmlText = QString("<h2><font color=darkblue>%1</font></h2>"
-    //                               "<p>%6 - %2</p>"
-    //                               "<p>%3</p>"
-    //                               //"<p>Copyright &copy;  <b>TechnoAnalyt Ltd.</b> 2014, 2015. All rights reserved.<br>"
-    //                               //"<a href=\"http://tehnoanalit.com/\">tehnoanalit.com</a><br>"
-    //                               "<p>%7<br> "
-    //                               "Company website: <a href=\"http://tehnoanalit.com/\">tehnoanalit.com</a><br>"
-    //                               "%5: %4.<br>"
-    //                               "Author's email: <a href=mailto:petrovich.eugene@gmail.com?Subject=My%20Subject>petrovich.eugene@gmail.com</a></p>"
-    //                               ).arg(glAppProduct,
-    //                                     glAppVersion,
-    //                                     //qApp->applicationVersion(),
-    //                                     text,
-    //                                     tr("Eugene Petrovich"),
-    //                                     tr("Author"),
-    //                                     tr("Version"),
-    //                                     glAppCopyright
-    //                                     );
+//    //    QString htmlText = QString("<h2><font color=darkblue>%1</font></h2>"
+//    //                               "<p>%6 - %2</p>"
+//    //                               "<p>%3</p>"
+//    //                               //"<p>Copyright &copy;  <b>TechnoAnalyt Ltd.</b> 2014, 2015. All rights reserved.<br>"
+//    //                               //"<a href=\"http://tehnoanalit.com/\">tehnoanalit.com</a><br>"
+//    //                               "<p>%7<br> "
+//    //                               "Company website: <a href=\"http://tehnoanalit.com/\">tehnoanalit.com</a><br>"
+//    //                               "%5: %4.<br>"
+//    //                               "Author's email: <a href=mailto:petrovich.eugene@gmail.com?Subject=My%20Subject>petrovich.eugene@gmail.com</a></p>"
+//    //                               ).arg(glAppProduct,
+//    //                                     glAppVersion,
+//    //                                     //qApp->applicationVersion(),
+//    //                                     text,
+//    //                                     tr("Eugene Petrovich"),
+//    //                                     tr("Author"),
+//    //                                     tr("Version"),
+//    //                                     glAppCopyright
+//    //                                     );
 
-    //    QMessageBox::about(centralWidget(), title, htmlText);
+//    //    QMessageBox::about(centralWidget(), title, htmlText);
 
-    QString title = tr("About %1").arg(glAppProduct);
-    //    QString text = tr("The application is a supplement to a SRV spectrometer software. It provides to make extra calculation of chemical concentration that cannot be directly  measured."
-    //                      "");
-    //    QString htmlText = QString(
-    //                "<table border=0 cellspacing = 15>"
-    //                "<tr>"
-    //                "<td align = left><img src=:/images/ZImages/CR3_64.png></td>"
-    //                "<td align = left><h2 align = center>CRecalc 2.3</h2>"
-    //                "<p>Copyright &copy; TechnoAnalyt Ltd., 2014.  All rights reserved.</p>"
-    //                "<p>%1</p>"
-    //                "</td>"
-    //                "</tr>"
-    //                "</table>").arg(text);
+//    QString title = tr("About %1").arg(glAppProduct);
+//    //    QString text = tr("The application is a supplement to a SRV spectrometer software. It provides to make extra calculation of chemical concentration that cannot be directly  measured."
+//    //                      "");
+//    //    QString htmlText = QString(
+//    //                "<table border=0 cellspacing = 15>"
+//    //                "<tr>"
+//    //                "<td align = left><img src=:/images/ZImages/CR3_64.png></td>"
+//    //                "<td align = left><h2 align = center>CRecalc 2.3</h2>"
+//    //                "<p>Copyright &copy; TechnoAnalyt Ltd., 2014.  All rights reserved.</p>"
+//    //                "<p>%1</p>"
+//    //                "</td>"
+//    //                "</tr>"
+//    //                "</table>").arg(text);
 
-    QString text = QString();//tr("%1 is an application that controls other console application.").arg(glAppProduct);
+//    QString text = QString();//tr("%1 is an application that controls other console application.").arg(glAppProduct);
 
-    QString htmlText = QString(
-                "<table border=0 cellspacing = 15>"
-                "<tr>"
-                "<td align = left><img src=:/images/ZImages/SDC2.png></td>"
-                "<td align = left><h1 align = center>%1</h1>"
-                "</td>"
-                "</tr>"
-                "</table>"
-                "<p>%6 - %2</p>"
-                "<p>%3</p>"
-                "<p>%7<br> "
-                "Company website: <a href=\"http://%8/\">%8</a><br>"
-                "%5: %4.<br>"
-                "Author's email: <a href=mailto:petrovich.eugene@gmail.com?Subject=My%20Subject>petrovich.eugene@gmail.com</a></p>"
-                ).arg(glAppProduct,
-                      qApp->applicationVersion(),
-                      text,
-                      tr("Eugene Petrovich"),
-                      tr("Author"),
-                      tr("Version"),
-                      glAppCopyright,
-                      glAppCompanyURL
-                      );
+//    QString htmlText = QString(
+//                "<table border=0 cellspacing = 15>"
+//                "<tr>"
+//                "<td align = left><img src=:/images/ZImages/SDC2.png></td>"
+//                "<td align = left><h1 align = center>%1</h1>"
+//                "</td>"
+//                "</tr>"
+//                "</table>"
+//                "<p>%6 - %2</p>"
+//                "<p>%3</p>"
+//                "<p>%7<br> "
+//                "Company website: <a href=\"http://%8/\">%8</a><br>"
+//                "%5: %4.<br>"
+//                "Author's email: <a href=mailto:petrovich.eugene@gmail.com?Subject=My%20Subject>petrovich.eugene@gmail.com</a></p>"
+//                ).arg(glAppProduct,
+//                      qApp->applicationVersion(),
+//                      text,
+//                      tr("Eugene Petrovich"),
+//                      tr("Author"),
+//                      tr("Version"),
+//                      glAppCopyright,
+//                      glAppCompanyURL
+//                      );
 
-    QMessageBox::about(centralWidget(), title, htmlText);
-}
+//    QMessageBox::about(centralWidget(), title, htmlText);
+//}
 //==========================================================
-void MainWindow::zh_onHelpAction()
-{
-    if(mv_helpBrowser == 0)
-    {
-        QUrl source = QUrl("StreamControl.htm");
-        QStringList searchList;
+//void MainWindow::zh_help()
+//{
+//    if(mv_helpBrowser == 0)
+//    {
+//        QUrl source = QUrl("StreamControl.htm");
+//        QStringList searchList;
 
-        QDir dir = QApplication::applicationDirPath();
-        dir.cd("Doc");
-        searchList << dir.absolutePath(); // << ":/docs"; Streams.files
-        dir.cd("StreamControl.files");
-        searchList << dir.absolutePath() << ":/docs";
+//        QDir dir = QApplication::applicationDirPath();
+//        dir.cd("Doc");
+//        searchList << dir.absolutePath(); // << ":/docs"; Streams.files
+//        dir.cd("StreamControl.files");
+//        searchList << dir.absolutePath() << ":/docs";
 
-        mv_helpBrowser = ZHelpBrowser::mf_instance(searchList, source, centralWidget());
-        mv_helpBrowser->setAttribute(Qt::WA_GroupLeader);
-        QSettings settings;
-        settings.beginGroup(glAppVersion);
+//        mv_helpBrowser = ZHelpBrowser::mf_instance(searchList, source, centralWidget());
+//        mv_helpBrowser->setAttribute(Qt::WA_GroupLeader);
+//        QSettings settings;
+//        settings.beginGroup(glAppVersion);
 
-        settings.beginGroup("AppState");
-        QVariant vData = settings.value("help browser geometry");
-        settings.endGroup();
-        settings.endGroup();
+//        settings.beginGroup("AppState");
+//        QVariant vData = settings.value("help browser geometry");
+//        settings.endGroup();
+//        settings.endGroup();
 
-        if(vData.isValid() && !vData.isNull() && vData.canConvert<QByteArray>())
-        {
-            mv_helpBrowser->restoreGeometry(vData.toByteArray());
-        }
-        mv_helpBrowser->show();
-    }
-    else if(!mv_helpBrowser->isVisible())
-    {
-        mv_helpBrowser->setVisible(true);
-        mv_helpBrowser->mf_restoreGeometry();
-    }
-}
+//        if(vData.isValid() && !vData.isNull() && vData.canConvert<QByteArray>())
+//        {
+//            mv_helpBrowser->restoreGeometry(vData.toByteArray());
+//        }
+//        mv_helpBrowser->show();
+//    }
+//    else if(!mv_helpBrowser->isVisible())
+//    {
+//        mv_helpBrowser->setVisible(true);
+//        mv_helpBrowser->mf_restoreGeometry();
+//    }
+//}
 //==========================================================
 void MainWindow::zh_rebuildCorrelationPlot()
 {
