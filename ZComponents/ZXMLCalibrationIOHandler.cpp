@@ -72,7 +72,7 @@ bool ZXMLCalibrationIOHandler::zp_writeCalibrationToFile(QFile& file, const ZCal
     {
         zv_message = tr("File \"%1\" is not open in write mode!").arg(file.fileName());
         emit zg_message(zv_message);
-        qCritical() <<  zv_message;
+        qCritical().noquote() <<  zv_message;
         return false;
     }
 
@@ -94,17 +94,17 @@ bool ZXMLCalibrationIOHandler::zp_writeCalibrationToFile(QFile& file, const ZCal
     writer.writeEndElement(); // chem element
 
     // Energy calibration
-    writer.writeStartElement(zv_ENERGY_K0);
-    writer.writeCharacters(QString::number(calibration->zp_energyCalibrationK0()));
-    writer.writeEndElement(); // k0
+//    writer.writeStartElement(zv_ENERGY_K0);
+//    writer.writeCharacters(QString::number(calibration->zp_energyCalibrationK0()));
+//    writer.writeEndElement(); // k0
 
-    writer.writeStartElement(zv_ENERGY_K1);
-    writer.writeCharacters(QString::number(calibration->zp_energyCalibrationK1()));
-    writer.writeEndElement(); // k1
+//    writer.writeStartElement(zv_ENERGY_K1);
+//    writer.writeCharacters(QString::number(calibration->zp_energyCalibrationK1()));
+//    writer.writeEndElement(); // k1
 
-    writer.writeStartElement(zv_ENERGY_K2);
-    writer.writeCharacters(QString::number(calibration->zp_energyCalibrationK2()));
-    writer.writeEndElement(); // k2
+//    writer.writeStartElement(zv_ENERGY_K2);
+//    writer.writeCharacters(QString::number(calibration->zp_energyCalibrationK2()));
+//    writer.writeEndElement(); // k2
 
     // gain factor
     writer.writeStartElement(zv_GAIN_FACTOR);
@@ -112,9 +112,9 @@ bool ZXMLCalibrationIOHandler::zp_writeCalibrationToFile(QFile& file, const ZCal
     writer.writeEndElement(); // gainFactor
 
     // energy unit
-    writer.writeStartElement(zv_ENERGY_UNIT);
-    writer.writeCharacters(calibration->zp_energyUnit());
-    writer.writeEndElement(); // energy unit
+//    writer.writeStartElement(zv_ENERGY_UNIT);
+//    writer.writeCharacters(calibration->zp_energyUnit());
+//    writer.writeEndElement(); // energy unit
 
     // exposition
     writer.writeStartElement(zv_EXPOSITION);
@@ -253,7 +253,7 @@ bool ZXMLCalibrationIOHandler::zp_writeCalibrationToFile(QFile& file, const ZCal
     {
         zv_message = tr("Cannot write to file \"%1\"! %2").arg(file.fileName(), file.errorString());
         emit zg_message(zv_message);
-        qCritical() <<  zv_message;
+        qCritical().noquote() <<  zv_message;
         return false;
     }
 
@@ -277,7 +277,7 @@ bool ZXMLCalibrationIOHandler::zp_getCalibrationFromFile(QFile& file,
     {
         zv_message = tr("File \"%1\" is not open in read mode!").arg(file.fileName());
         emit zg_message(zv_message);
-        qCritical() <<  zv_message;
+        qCritical().noquote() <<  zv_message;
         return false;
     }
 
@@ -330,14 +330,14 @@ bool ZXMLCalibrationIOHandler::zp_getCalibrationFromFile(QFile& file,
     {
         zv_message = tr("File \"%1\" parsing failed! %2").arg(file.fileName(), reader.errorString());
         emit zg_message(zv_message);
-        qCritical() <<  zv_message;
+        qCritical().noquote() <<  zv_message;
         return false;
     }
     else if(file.error() != QFile::NoError)
     {
         zv_message = tr("Cannot read file \"%1\"! %2").arg(file.fileName(), file.errorString());
         emit zg_message(zv_message);
-        qCritical() <<  zv_message;
+        qCritical().noquote() <<  zv_message;
         return false;
     }
 
@@ -395,39 +395,39 @@ void ZXMLCalibrationIOHandler::zh_parseXMLElement(ZCalibration* calibration,
             {
                 calibration->zp_setChemElement(readerText);
             }
-            else if(currentTagName == zv_ENERGY_K0)
-            {
-                bool ok;
-                qreal realValue = readerText.toDouble(&ok);
-                if(!ok)
-                {
-                    realValue = 0;
-                }
+//            else if(currentTagName == zv_ENERGY_K0)
+//            {
+//                bool ok;
+//                qreal realValue = readerText.toDouble(&ok);
+//                if(!ok)
+//                {
+//                    realValue = 0;
+//                }
 
-                calibration->zp_setEnergyCalibrationK0(realValue);
-            }
-            else if(currentTagName == zv_ENERGY_K1)
-            {
-                bool ok;
-                qreal realValue = readerText.toDouble(&ok);
-                if(!ok)
-                {
-                    realValue = 0;
-                }
+//                calibration->zp_setEnergyCalibrationK0(realValue);
+//            }
+//            else if(currentTagName == zv_ENERGY_K1)
+//            {
+//                bool ok;
+//                qreal realValue = readerText.toDouble(&ok);
+//                if(!ok)
+//                {
+//                    realValue = 0;
+//                }
 
-                calibration->zp_setEnergyCalibrationK1(realValue);
-            }
-            else if(currentTagName == zv_ENERGY_K2)
-            {
-                bool ok;
-                qreal realValue = readerText.toDouble(&ok);
-                if(!ok)
-                {
-                    realValue = 0;
-                }
+//                calibration->zp_setEnergyCalibrationK1(realValue);
+//            }
+//            else if(currentTagName == zv_ENERGY_K2)
+//            {
+//                bool ok;
+//                qreal realValue = readerText.toDouble(&ok);
+//                if(!ok)
+//                {
+//                    realValue = 0;
+//                }
 
-                calibration->zp_setEnergyCalibrationK2(realValue);
-            }
+//                calibration->zp_setEnergyCalibrationK2(realValue);
+//            }
             else if(currentTagName == zv_GAIN_FACTOR)
             {
                 bool ok;
@@ -440,10 +440,10 @@ void ZXMLCalibrationIOHandler::zh_parseXMLElement(ZCalibration* calibration,
                 calibration->zp_setGainFactor(intValue);
             }
 
-            else if(currentTagName == zv_ENERGY_UNIT)
-            {
-                calibration->zp_setEnergyUnit(readerText);
-            }
+//            else if(currentTagName == zv_ENERGY_UNIT)
+//            {
+//                calibration->zp_setEnergyUnit(readerText);
+//            }
             else if(currentTagName == zv_EXPOSITION)
             {
                 bool ok;

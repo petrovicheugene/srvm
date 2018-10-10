@@ -430,6 +430,11 @@ void ZPlotter::zp_removeItemsForType(int type)
 //====================================================
 QList<QGraphicsItem*> ZPlotter::zp_itemListForType(int type) const
 {
+    if(!zv_plotScene)
+    {
+        return QList<QGraphicsItem*>();
+    }
+
     QList<QGraphicsItem*> itemList = zv_plotScene->items();
     for(int i = itemList.count()-1; i >= 0; i--)
     {
@@ -553,6 +558,11 @@ QRectF ZPlotter::zp_viewportSceneRect() const
 QSize ZPlotter::zp_viewportPixelSize() const
 {
     return zv_plotView->viewport()->size();
+}
+//====================================================
+void ZPlotter::zp_setInfoLabelVisible(bool visible)
+{
+    zv_rulerWidget->zp_setInfoLabelVisible(visible);
 }
 //====================================================
 void ZPlotter::zp_setLeftRuleVisible(bool visible)
@@ -792,12 +802,12 @@ void ZPlotter::zh_createComponents()
     zv_dashBoard->setSizePolicy(QSizePolicy::Maximum, QSizePolicy::Maximum);
 
     // Layout
-    QVBoxLayout* mainLayout = new QVBoxLayout(this);
+    QVBoxLayout* mainLayout = new QVBoxLayout;
     mainLayout->setMargin(0);
     mainLayout->setSpacing(0);
     setLayout(mainLayout);
 
-    QHBoxLayout* mainScrollLayout = new QHBoxLayout(this);
+    QHBoxLayout* mainScrollLayout = new QHBoxLayout;
     mainScrollLayout->setMargin(0);
     mainScrollLayout->setSpacing(0);
     mainLayout->addLayout(mainScrollLayout);
@@ -806,7 +816,7 @@ void ZPlotter::zh_createComponents()
     mainScrollLayout->addWidget(zv_rulerWidget);
     mainScrollLayout->addWidget(zv_verticalScrollBar);
 
-    QHBoxLayout* bottomScrollLayout = new QHBoxLayout(this);
+    QHBoxLayout* bottomScrollLayout = new QHBoxLayout;
     bottomScrollLayout->setMargin(0);
     bottomScrollLayout->setSpacing(0);
     mainLayout->addLayout(bottomScrollLayout);

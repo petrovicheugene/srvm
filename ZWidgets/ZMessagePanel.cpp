@@ -15,7 +15,7 @@ ZMessagePanel::ZMessagePanel(QWidget *parent) : QWidget(parent)
 //==================================================
 void ZMessagePanel::zh_createComponents()
 {
-    QVBoxLayout* mainLayout = new QVBoxLayout(this);
+    QVBoxLayout* mainLayout = new QVBoxLayout;
     setLayout(mainLayout);
 
     zv_msgTextEdit = new QTextEdit(this);
@@ -23,7 +23,7 @@ void ZMessagePanel::zh_createComponents()
 
     mainLayout->addWidget(zv_msgTextEdit);
 
-    QDialogButtonBox* buttonBox = new QDialogButtonBox(this);
+    QDialogButtonBox* buttonBox = new QDialogButtonBox;
     mainLayout->addWidget(buttonBox);
 
     zv_clearButton = new QPushButton(this);

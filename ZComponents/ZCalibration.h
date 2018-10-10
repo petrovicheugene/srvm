@@ -73,18 +73,18 @@ public:
     QString zp_chemElement() const;
     bool zp_setChemElement(const QString&);
 
-    void zp_setEnergyCalibration(qreal K0, qreal K1, qreal K2, const QString& energyUnit);
-    void zp_setEnergyCalibrationK0(qreal K0);
-    void zp_setEnergyCalibrationK1(qreal K1);
-    void zp_setEnergyCalibrationK2(qreal K2);
-    void zp_setEnergyUnit(const QString& energyUnit);
+//    void zp_setEnergyCalibration(qreal K0, qreal K1, qreal K2, const QString& energyUnit);
+//    void zp_setEnergyCalibrationK0(qreal K0);
+//    void zp_setEnergyCalibrationK1(qreal K1);
+//    void zp_setEnergyCalibrationK2(qreal K2);
+//    void zp_setEnergyUnit(const QString& energyUnit);
     void zp_setGainFactor(int gainFactor);
     void zp_setExposition(int exposition);
 
-    qreal zp_energyCalibrationK0() const;
-    qreal zp_energyCalibrationK1() const;
-    qreal zp_energyCalibrationK2() const;
-    QString zp_energyUnit() const;
+//    qreal zp_energyCalibrationK0() const;
+//    qreal zp_energyCalibrationK1() const;
+//    qreal zp_energyCalibrationK2() const;
+//    QString zp_energyUnit() const;
     int zp_gainFactor() const;
     int zp_exposition() const;
 
@@ -238,11 +238,11 @@ private:
     QString zv_path;
     QString zv_chemElement;
     int zv_exposition;
-    qreal zv_energyCalibrationFactorK0;
-    qreal zv_energyCalibrationFactorK1;
-    qreal zv_energyCalibrationFactorK2;
+//    qreal zv_energyCalibrationFactorK0;
+//    qreal zv_energyCalibrationFactorK1;
+//    qreal zv_energyCalibrationFactorK2;
     int zv_gainFactor;
-    QString zv_energyUnit;
+//    QString zv_energyUnit;
 
     QColor zv_color;
     qint64 zv_calibrationId;

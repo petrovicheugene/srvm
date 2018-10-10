@@ -40,8 +40,8 @@ void ZPlotterDataManager::zp_connectToSpectraArrayRepository(ZSpectrumArrayRepos
     // array repository <->  model
     connect(repository, &ZSpectrumArrayRepository::zg_spectrumOperation,
             this, &ZPlotterDataManager::zh_onRepositoryArrayOperation);
-    connect(repository, &ZSpectrumArrayRepository::zg_energyCalibrationChanged,
-            this, &ZPlotterDataManager::zh_changeEnergyCalibrationOnRule);
+//    connect(repository, &ZSpectrumArrayRepository::zg_energyCalibrationChanged,
+//            this, &ZPlotterDataManager::zh_updateEnergyCalibrationOnRule);
     connect(repository, &ZSpectrumArrayRepository::zg_arrayMaxParametersChanged,
             this, &ZPlotterDataManager::zh_onArrayMaxParametersChanged);
     connect(repository, &ZSpectrumArrayRepository::zg_requestIsPlotScaled,
@@ -50,6 +50,8 @@ void ZPlotterDataManager::zp_connectToSpectraArrayRepository(ZSpectrumArrayRepos
             this, &ZPlotterDataManager::zp_currentArrayChanged);
     connect(repository, &ZSpectrumArrayRepository::zg_currentSpectrumChanged,
             this, &ZPlotterDataManager::zp_currentSpectrumChanged);
+    connect(repository, &ZSpectrumArrayRepository::zg_energyCalibrationChanged,
+            this, &ZPlotterDataManager::zh_onCurrentEnergyCalibrationChange);
 
 
 }
@@ -110,10 +112,10 @@ void ZPlotterDataManager::zp_connectToPlotter(ZPlotter* plotter)
 void ZPlotterDataManager::zp_onEnergyLineOperation(QString elementSymbol, QString lineName,
                                                    EnergyLineOperationType operationType)
 {
-    //    enum EnergyLineOperation{EL_REMOVED,
-    //                            EL_INSERTED,
-    //                            EL_VISIBILITY_CHANGED,
-    //                            EL_COLOR_CHANGED};
+    if(!zv_plotter)
+    {
+        return;
+    }
     // find item
     ZEnergyLineGraphicsItem* energyLineItem = nullptr;
     QList<QGraphicsItem*> energyLineList = zv_plotter->zp_itemListForType(EnergyLineItemType);
@@ -284,6 +286,36 @@ void ZPlotterDataManager::zh_updateRulerTool(QPointF startPoint, QPointF endPoin
                                 plotterPixelSize,
                                 infoString);
 }
+//======================================================
+void ZPlotterDataManager::zh_onCurrentEnergyCalibrationChange(QList<double> calibrationFactors)
+{
+    zv_calibrationFactors = calibrationFactors;
+    zv_plotter->zp_setEnergyCalibration(zv_calibrationFactors);
+    zh_updateEnergyLines();
+    zh_updateRuleMetrix();
+}
+//======================================================
+void ZPlotterDataManager::zh_updateEnergyLines()
+{
+    ZEnergyLineGraphicsItem* energyLineItem = nullptr;
+    QList<QGraphicsItem*> energyLineList = zv_plotter->zp_itemListForType(EnergyLineItemType);
+    for(int i = 0; i < energyLineList.count(); i++)
+    {
+        energyLineItem = qgraphicsitem_cast<ZEnergyLineGraphicsItem*>(energyLineList.at(i));
+        if(energyLineItem == nullptr)
+        {
+            continue;
+        }
+
+        double channel = 0.0;
+        if(!zh_convertEnergyToChannel(energyLineItem->zp_energyValue(), channel))
+        {
+            channel = 0.0;
+        }
+
+        energyLineItem->zp_setXPosition(channel);
+    }
+}
 //===========================================================
 void ZPlotterDataManager::zp_currentCalibrationChanged(qint64 currentCalibrationId,
                                                        int currentCalibrationIndex)
@@ -362,7 +394,9 @@ void ZPlotterDataManager::zp_currentArrayChanged(qint64 currentArrayId,
         zv_plotter->zp_addItem(spectrumItem);
     }
 
-    zh_changeEnergyCalibrationOnRule(zv_currentArrayId);
+    zh_updateRuleMetrix();
+    zh_updateEnergyLines();
+
     if(!isPlotScaled)
     {
         zv_plotter->zp_fitInBoundingRect();
@@ -436,32 +470,6 @@ bool ZPlotterDataManager::zh_convertEnergyToChannel(double energyValue, double& 
     }
 
     return true;
-}
-//===========================================================
-void ZPlotterDataManager::zh_updateRuleMetrix()
-{
-    if(!zv_energyRuleMetrixFlag || zv_calibrationFactors.isEmpty() ||
-            (!(zv_calibrationFactors.value(1, 0.0) ||
-               zv_calibrationFactors.value(2, 0.0))))
-    {
-        zv_plotter->zp_setBottomMarkRecalcFlag(false);
-        zv_plotter->zp_setTopMarkRecalcFlag(false);
-        zv_plotter->zp_setHorizontalMarkRecalcFactors(zv_horizontalRuleLabel,
-                                                      0, 1, 0);
-        return;
-    }
-
-    qreal K0 = zv_calibrationFactors.value(0, 0.0);
-    qreal K1 = zv_calibrationFactors.value(1, 1.0);
-    qreal K2 = zv_calibrationFactors.value(2, 0.0);
-    QString energyUnit = tr("kEv");
-
-    QString labelString = zv_horizontalRecalcedRuleLabel + " " + energyUnit;
-    zv_plotter->zp_setBottomMarkRecalcFlag(true);
-    zv_plotter->zp_setTopMarkRecalcFlag(true);
-    zv_plotter->zp_setHorizontalMarkRecalcFactors(labelString,
-                                                  K0, K1, K2);
-
 }
 //===========================================================
 void ZPlotterDataManager::zh_createComponents()
@@ -705,49 +713,49 @@ void ZPlotterDataManager::zh_onRepositoryCalibrationWindowOperation(ZCalibration
         }
     }
 }
+
 //===========================================================
 void ZPlotterDataManager::zh_switchRuleMetrix(bool toggled)
 {
-    if(zv_currentArrayIndex < 0 || !zv_spectrumArrayRepositiry || zv_plotter == 0 || !toggled)
-    {
-        zv_plotter->zp_setBottomMarkRecalcFlag(false);
-        zv_plotter->zp_setTopMarkRecalcFlag(false);
-        zv_plotter->zp_setHorizontalMarkRecalcFactors(zv_horizontalRuleLabel,
-                                                      0, 1, 0);
-        return;
-    }
-
-    qreal K0;
-    qreal K1;
-    qreal K2;
-    QString energyUnit;
-    if(!zv_spectrumArrayRepositiry->zp_energyCalibrationForArrayId(zv_currentArrayId,
-                                                                   K0, K1, K2, energyUnit))
-    {
-        zv_plotter->zp_setBottomMarkRecalcFlag(false);
-        zv_plotter->zp_setTopMarkRecalcFlag(false);
-        zv_plotter->zp_setHorizontalMarkRecalcFactors(zv_horizontalRuleLabel,
-                                                      0, 1, 0);
-    }
-    else
-    {
-        QString labelString = zv_horizontalRecalcedRuleLabel + " " + energyUnit;
-        zv_plotter->zp_setBottomMarkRecalcFlag(true);
-        zv_plotter->zp_setTopMarkRecalcFlag(true);
-        zv_plotter->zp_setHorizontalMarkRecalcFactors(labelString,
-                                                      K0, K1, K2);
-    }
+    zv_energyRuleMetrixFlag = toggled;
+    zh_updateRuleMetrix();
 }
-//===========================================================
-void ZPlotterDataManager::zh_changeEnergyCalibrationOnRule(qint64 arrayId)
+//======================================================
+void ZPlotterDataManager::zh_updateRuleMetrix()
 {
-    if(!zv_switchRuleMetrixAction->isChecked() || zv_currentArrayId != arrayId)
+    if(!zv_energyRuleMetrixFlag || zv_calibrationFactors.isEmpty() ||
+            (!(zv_calibrationFactors.value(1, 0.0) == 0.0 ||
+               zv_calibrationFactors.value(2, 0.0) == 0.0 )))
     {
+        zv_plotter->zp_setBottomMarkRecalcFlag(false);
+        zv_plotter->zp_setTopMarkRecalcFlag(false);
+        zv_plotter->zp_setHorizontalMarkRecalcFactors(zv_horizontalRuleLabel,
+                                                      0, 1, 0);
         return;
     }
 
-    zh_switchRuleMetrix(zv_switchRuleMetrixAction->isChecked());
+    qreal K0 = zv_calibrationFactors.value(0, 0.0);
+    qreal K1 = zv_calibrationFactors.value(1, 1.0);
+    qreal K2 = zv_calibrationFactors.value(2, 0.0);
+    QString energyUnit = tr("kEv");
+
+    QString labelString = zv_horizontalRecalcedRuleLabel + " " + energyUnit;
+    zv_plotter->zp_setBottomMarkRecalcFlag(true);
+    zv_plotter->zp_setTopMarkRecalcFlag(true);
+    zv_plotter->zp_setHorizontalMarkRecalcFactors(labelString,
+                                                  K0, K1, K2);
+
 }
+////===========================================================
+//void ZPlotterDataManager::zh_updateEnergyCalibrationOnRule(qint64 arrayId)
+//{
+//    if(!zv_switchRuleMetrixAction->isChecked() || zv_currentArrayId != arrayId)
+//    {
+//        return;
+//    }
+
+//    zh_switchRuleMetrix(zv_switchRuleMetrixAction->isChecked());
+//}
 //===========================================================
 void ZPlotterDataManager::zh_onArrayMaxParametersChanged(int arrayId, int maxIntensity, int channelCount)
 {

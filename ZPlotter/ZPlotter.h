@@ -104,6 +104,8 @@ public:
    QRectF zp_viewportSceneRect() const;
    QSize zp_viewportPixelSize() const;
 
+   void zp_setInfoLabelVisible(bool visible);
+
 signals:
 
    void zg_cursorAreaImage(QImage);

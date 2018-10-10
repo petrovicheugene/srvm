@@ -284,16 +284,20 @@ bool ZSpectrumArray::zp_setChemConcentration(qint64 chemElementId,
     return res;
 }
 //===============================================
-bool ZSpectrumArray::zp_energyCalibration(qreal& K0, qreal& K1, qreal& K2, QString& energyUnit)
+bool ZSpectrumArray::zp_energyCalibration(int spectrumIndex, QList<double>& energyCalibration, QString& energyUnit) const
 {
-    if(!zp_isEnergyCalibrationValid())
+    if(spectrumIndex < 0 || spectrumIndex >= zv_spectrumList.count())
     {
         return false;
     }
 
-    K0 = zv_energyK0;
-    K1 = zv_energyK1;
-    K2 = zv_energyK2;
+    ZSpeSpectrum* spectrum = qobject_cast<ZSpeSpectrum*>(zv_spectrumList.at(spectrumIndex));
+    if(!spectrum)
+    {
+        return false;
+    }
+
+    energyCalibration = spectrum->zp_energyCalibration();
     energyUnit = zv_energyUnit;
     return true;
 }
@@ -418,11 +422,10 @@ bool ZSpectrumArray::zp_removeSpectrum(int index)
     if(zv_spectrumList.count() < 1 )
     {
         zv_energyUnit = QString();
-        zv_energyK0 = 0;
-        zv_energyK1 = 0;
-        zv_energyK2 = 0;
+        zv_energyK0 = 0.0;
+        zv_energyK1 = 0.0;
+        zv_energyK2 = 0.0;
         zv_exposition = -1;
-        emit zg_energyCalibrationChanged(zv_arrayId);
     }
     return true;
 }
@@ -462,7 +465,7 @@ bool ZSpectrumArray::zp_appendSpectrum(const ZRawSpectrum& rawSpectrum, bool las
     {
         QString error = tr("Error: \"%1\" is not a file!").arg(rawSpectrum.path);
         emit zg_message(error);
-        qCritical() <<  error;
+        qCritical().noquote() <<  error;
         return false;
     }
     else if(suffix == "spe")
@@ -473,7 +476,7 @@ bool ZSpectrumArray::zp_appendSpectrum(const ZRawSpectrum& rawSpectrum, bool las
     {
         QString error = QObject::tr("Cannot handle file of type \"%1\"!").arg(suffix);
         emit zg_message(error);
-        qCritical() <<  error;
+        qCritical().noquote() <<  error;
         return false;
     }
 
@@ -519,7 +522,6 @@ bool ZSpectrumArray::zp_appendSpectrum(const ZRawSpectrum& rawSpectrum, bool las
                 }
                 msgBox.setDefaultButton(QMessageBox::Yes );
                 int ret = msgBox.exec();
-                qDebug() << "ASK FOR CONTINUE";
                 switch (ret)
                 {
                 case QMessageBox::Yes:
@@ -560,13 +562,12 @@ bool ZSpectrumArray::zp_appendSpectrum(const ZRawSpectrum& rawSpectrum, bool las
 
                 zv_exposition = auxData->zp_exposition();
                 zv_gainFactor = static_cast<int>(auxData->zp_gainFactor());
-                emit zg_energyCalibrationChanged(zv_arrayId);
+
             }
 
             int spectrumIndex = zv_spectrumList.count();
             emit zg_spectrumOperation(OT_INSERT_SPECTRA, spectrumIndex, spectrumIndex);
             zv_spectrumList.append(speSpectrum);
-            qDebug() << "APPEND SPE" << rawSpectrum.path;
             emit zg_spectrumOperation(OT_END_INSERT_SPECTRA, spectrumIndex, spectrumIndex);
 
             // color index increment

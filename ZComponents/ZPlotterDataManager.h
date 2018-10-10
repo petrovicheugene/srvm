@@ -48,6 +48,8 @@ public slots:
 private slots:
 
     void zh_updateRulerTool(QPointF startPoint, QPointF endPoint, bool visibility);
+    void zh_onCurrentEnergyCalibrationChange(QList<double> calibrationFactors);
+    void zh_updateEnergyLines();
 
 private:
 
@@ -86,7 +88,7 @@ private slots:
     void zh_onRepositoryCalibrationWindowOperation(ZCalibrationRepository::WindowOperationType,
                                                    int calibrationIndex, int first, int last);
     void zh_switchRuleMetrix(bool toggled);
-    void zh_changeEnergyCalibrationOnRule(qint64 arrayId);
+    //void zh_updateEnergyCalibrationOnRule(qint64 arrayId);
     void zh_onArrayMaxParametersChanged(int arrayId, int maxIntensity, int channelCount);
     void zh_setMaxParametersToDefaultItem(qreal, qreal);
     void zh_definePlotScaling(bool& plotIsScaled);

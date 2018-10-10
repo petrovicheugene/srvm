@@ -89,7 +89,6 @@
         <file>ZImages/horizontalDecrease-2.png</file>
         <file>ZImages/horizontalIncrease-1.png</file>
         <file>ZImages/horizontalIncrease-2.png</file>
-        <file>ZImages/hSplitterHandle.png</file>
         <file>ZImages/info.png</file>
         <file>ZImages/inverseBlue-1.png</file>
         <file>ZImages/inverseGreen-1.png</file>
@@ -198,6 +197,8 @@
         <file>ZImages/visible-1.png</file>
         <file>ZImages/visible-2.ico</file>
         <file>ZImages/visible-2.png</file>
-        <file>ZImages/vSplitterHandle.png</file>
+        <file>ZImages/Bug.png</file>
+        <file>ZImages/vSplitterHandler.png</file>
+        <file>ZImages/hSplitterHandler.png</file>
     </qresource>
 </RCC>

@@ -110,8 +110,8 @@ public:
     bool zp_setChemConcentration(int arrayIndex,
                                  int spectrumIndex, int visibleChemElementIndex, const QString &concentration);
     bool zp_setChemElementName(int arrayIndex, int chemElementIndex, const QString&);
-    bool zp_energyCalibration(int arrayIndex, qreal& K0, qreal& K1, qreal& K2, QString& energyUnit);
-    bool zp_energyCalibrationForArrayId(qint64 arrayId, qreal& K0, qreal& K1, qreal& K2, QString& energyUnit);
+ //   bool zp_energyCalibration(int arrayIndex, qreal& K0, qreal& K1, qreal& K2, QString& energyUnit);
+   // bool zp_energyCalibrationForArrayId(qint64 arrayId, qreal& K0, qreal& K1, qreal& K2, QString& energyUnit);
 
     int zp_gainFactor(int arrayIndex) const;
     bool zp_setGainFactor(int arrayIndex, int gainFactor);
@@ -153,7 +153,7 @@ signals:
     void zg_currentSpectrumChanged(qint64 currentSpectrumId, int currentSpectrumIndex,
                                    qint64 previousSpectrumId, int previousSpectrumIndex);
 
-    void zg_energyCalibrationChanged(qint64 arrayId);
+    void zg_energyCalibrationChanged(QList<double> energyCalibration);
     void zg_arrayMaxParametersChanged(qint64 arrayId, int intensity, int channels);
     void zg_requestIsPlotScaled(bool& isScaled);
 

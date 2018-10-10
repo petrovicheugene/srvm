@@ -23,7 +23,7 @@ ZNormaSettingsDialog::ZNormaSettingsDialog(QWidget *parent) : QDialog(parent)
 //============================================================
 void ZNormaSettingsDialog::zh_createComponents()
 {
-    QVBoxLayout* mainLayout = new QVBoxLayout(this);
+    QVBoxLayout* mainLayout = new QVBoxLayout;
     setLayout(mainLayout);
 
     zv_noNormaRadioButton = new QRadioButton(this);

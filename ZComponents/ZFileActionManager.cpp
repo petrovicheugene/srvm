@@ -261,7 +261,7 @@ bool ZFileActionManager::zh_checkFile(const QString& fileName) const
         QString msg = tr("File \"%1\" does not exist!").arg(fileName);
         QMessageBox::critical(0, tr("File open error"), msg);
         emit zg_message(msg);
-        qCritical() <<  msg;
+        qCritical().noquote() <<  msg;
         return false;
     }
 
@@ -270,7 +270,7 @@ bool ZFileActionManager::zh_checkFile(const QString& fileName) const
         QString msg = tr("\"%1\" is a folder!").arg(fileName);
         QMessageBox::critical(0, tr("File open error"), msg);
         emit zg_message(msg);
-        qCritical() <<  msg;
+        qCritical().noquote() <<  msg;
         return false;
     }
 
@@ -289,7 +289,7 @@ bool ZFileActionManager::zh_getRawSpectrumArrayFromFile(const QString& fileName,
         QString msg = tr("Error: \"%1\" is not a file!").arg(fileName);
         // QMessageBox::critical(0, tr("File handling error"), msg);
         emit zg_message(msg);
-        qCritical() <<  msg;
+        qCritical().noquote() <<  msg;
         return false;
     }
     else if(fileInfo.suffix() != "xml" && fileInfo.suffix() != "spar")
@@ -297,7 +297,7 @@ bool ZFileActionManager::zh_getRawSpectrumArrayFromFile(const QString& fileName,
         QString msg = tr("Error handling file \"%1\"! Cannot handle \"%2\" files.").arg(fileName, fileInfo.suffix());
         QMessageBox::critical(0, tr("File handling error"), msg);
         emit zg_message(msg);
-        qCritical() <<  msg;
+        qCritical().noquote() <<  msg;
         return false;
     }
 
@@ -315,7 +315,7 @@ bool ZFileActionManager::zh_getRawSpectrumArrayFromFile(const QString& fileName,
             errorMsg = tr("Cannot read file \"%1\"! %2").arg(file.fileName(), tr("Unknown error"));
         }
         emit zg_message(errorMsg);
-        qCritical() <<  errorMsg;
+        qCritical().noquote() <<  errorMsg;
         return false;
     }
 
@@ -465,7 +465,7 @@ void ZFileActionManager::zp_saveSpectraArrayListToFile(QString filePath, QList<Z
     {
         QString msg = tr("Error handling file \"%1\"! Cannot handle \"%2\" files.").arg(filePath, fileInfo.suffix());
         QMessageBox::critical(0, tr("File handling error"), msg);
-        qCritical() <<  msg;
+        qCritical().noquote() <<  msg;
         emit zg_message(msg);
         return;
     }
@@ -484,7 +484,7 @@ void ZFileActionManager::zp_saveSpectraArrayListToFile(QString filePath, QList<Z
             errorMsg = tr("Cannot read file \"%1\"! %2").arg(file.fileName(), tr("Unknown error"));
         }
         emit zg_message(errorMsg);
-        qCritical() <<  errorMsg;
+        qCritical().noquote() <<  errorMsg;
         return;
     }
 
@@ -557,7 +557,7 @@ void ZFileActionManager::zp_saveCalibrationToFile(const ZCalibration* calibratio
             errorMsg = tr("Cannot read file \"%1\"! %2").arg(file.fileName(), tr("Unknown error"));
         }
         emit zg_message(errorMsg);
-        qCritical() <<  errorMsg;
+        qCritical().noquote() <<  errorMsg;
         return;
     }
 
@@ -628,7 +628,7 @@ void ZFileActionManager::zh_onOpenSpectrumArrayAction() // outputs RawArray
         QString msg = tr("Data loading from file \"%1\" failed.").arg(fileName);
         QMessageBox::critical(0, tr("Loading error"), msg, QMessageBox::Ok);
         emit zg_message(msg);
-        qCritical() <<  msg;
+        qCritical().noquote() <<  msg;
         return;
     }
 

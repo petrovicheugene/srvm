@@ -20,7 +20,7 @@ bool ZXMLSpectrumArrayIOHandler::zp_readSpectrumArray (QFile& file, QList<ZRawSp
     {
         QString errorMsg = tr("File \"%1\" is not open in read mode!").arg(file.fileName());
         emit zg_message(errorMsg);
-        qCritical() <<  errorMsg;
+        qCritical().noquote() <<  errorMsg;
         return false;
     }
 
@@ -45,7 +45,7 @@ bool ZXMLSpectrumArrayIOHandler::zp_readSpectrumArray (QFile& file, QList<ZRawSp
             {
                 QString errorMsg = tr("File \"%1\" is not recognized!").arg(file.fileName());
                 emit zg_message(errorMsg);
-                qCritical() <<  errorMsg;
+                qCritical().noquote() <<  errorMsg;
                 return false;
             }
             rootDetectedFlag = true;
@@ -74,14 +74,14 @@ bool ZXMLSpectrumArrayIOHandler::zp_readSpectrumArray (QFile& file, QList<ZRawSp
     {
         QString errorMsg = tr("File \"%1\" parsing failed! %2").arg(file.fileName(), reader.errorString());
         emit zg_message(errorMsg);
-        qCritical() << errorMsg;
+        qCritical().noquote() << errorMsg;
         return false;
     }
     else if(file.error() != QFile::NoError)
     {
         QString errorMsg = tr("Cannot read file \"%1\"! %2").arg(file.fileName(), file.errorString());
         emit zg_message(errorMsg);
-        qCritical() << errorMsg;
+        qCritical().noquote() << errorMsg;
         return false;
     }
 
@@ -194,7 +194,7 @@ bool ZXMLSpectrumArrayIOHandler::zp_writeSpectrumArray(QFile& file, const QList<
     {
         QString errorMsg = tr("File \"%1\" is not open in write mode!").arg(file.fileName());
         emit zg_message(errorMsg);
-        qCritical() << errorMsg;
+        qCritical().noquote() << errorMsg;
         return false;
     }
 
@@ -243,7 +243,7 @@ bool ZXMLSpectrumArrayIOHandler::zp_writeSpectrumArray(QFile& file, const QList<
     {
         QString errorMsg = tr("Cannot write to file \"%1\"! %2").arg(file.fileName(), file.errorString());
         emit zg_message(errorMsg);
-        qCritical() << errorMsg;
+        qCritical().noquote() << errorMsg;
         return false;
     }
 

@@ -835,15 +835,15 @@ void ZTermCorrelationTableManager::zh_recalcCalibrationFactors()
     // set to calibration exposition and energy calibration factors
     if(zv_spectrumArrayRepository != 0)
     {
-        qreal K0 = 0.0;
-        qreal K1 = 0.0;
-        qreal K2 = 0.0;
-        QString energyUnit;
-        if(zv_spectrumArrayRepository->zp_energyCalibration(zv_currentArrayIndex,
-                                                            K0, K1, K2, energyUnit))
-        {
-            calibration->zp_setEnergyCalibration(K0, K1, K2, energyUnit);
-        }
+//        qreal K0 = 0.0;
+//        qreal K1 = 0.0;
+//        qreal K2 = 0.0;
+//        QString energyUnit;
+//        if(zv_spectrumArrayRepository->zp_energyCalibration(zv_currentArrayIndex,
+//                                                            K0, K1, K2, energyUnit))
+//        {
+//            calibration->zp_setEnergyCalibration(K0, K1, K2, energyUnit);
+//        }
 
         int exposition = zv_spectrumArrayRepository->zp_exposition(zv_currentArrayIndex);
         calibration->zp_setExposition(exposition);
@@ -1478,7 +1478,7 @@ void ZTermCorrelationTableManager::zh_calcResidualTermCorrelation()
             rDenominator += pow(rDispersion, 2);
         }
 
-        if(tDenominator == 0 || rDenominator == 0)
+        if(tDenominator < 0.0 || rDenominator < 0.0)
         {
             zv_residualCorrelationList.append("Error");
         }

@@ -50,11 +50,11 @@ bool ZEquationChooseDialog::eventFilter(QObject * receiver, QEvent *event)
 //============================================================
 void ZEquationChooseDialog::zh_createComponents()
 {
-    QVBoxLayout* mainLayout = new QVBoxLayout(this);
+    QVBoxLayout* mainLayout = new QVBoxLayout;
     setLayout(mainLayout);
 
     // simple polynom
-    QHBoxLayout* simplePolynomLayout = new QHBoxLayout(this);
+    QHBoxLayout* simplePolynomLayout = new QHBoxLayout;
     mainLayout->addLayout(simplePolynomLayout);
 
     zv_simplePolynomEquationRadioButton = new QRadioButton(this);
@@ -67,7 +67,7 @@ void ZEquationChooseDialog::zh_createComponents()
     simplePolynomLayout->addStretch();
 
     // fractional
-    QHBoxLayout* fractionalLayout = new QHBoxLayout(this);
+    QHBoxLayout* fractionalLayout = new QHBoxLayout;
     mainLayout->addLayout(fractionalLayout);
 
     zv_fractionalEquationRadioButton = new QRadioButton(this);
@@ -80,7 +80,7 @@ void ZEquationChooseDialog::zh_createComponents()
     fractionalLayout->addStretch();
 
     // base term
-    QHBoxLayout* baseTermLayout = new QHBoxLayout(this);
+    QHBoxLayout* baseTermLayout = new QHBoxLayout;
     mainLayout->addLayout(baseTermLayout);
 
     label = new QLabel(this);

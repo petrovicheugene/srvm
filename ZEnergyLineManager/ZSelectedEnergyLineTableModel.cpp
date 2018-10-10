@@ -14,7 +14,8 @@ ZSelectedEnergyLineTableModel::ZSelectedEnergyLineTableModel(QObject *parent)
 //=============================================================
 ZSelectedEnergyLineTableModel::~ZSelectedEnergyLineTableModel()
 {
-    qDeleteAll(zv_itemMap.values());
+
+    // zv_itemMap.values();
 }
 //=============================================================
 Qt::ItemFlags	ZSelectedEnergyLineTableModel::flags(const QModelIndex & index) const
@@ -172,7 +173,7 @@ void ZSelectedEnergyLineTableModel::zp_onSelectedChemicalElementChange(int ZNumb
 
             beginInsertRows(QModelIndex(), row, row);
             ZEnergyLineSetItem* item = new ZEnergyLineSetItem(ZNumber,
-                                                              symbol);
+                                                              symbol, this);
             connect(item, &ZEnergyLineSetItem::zg_energyLineOperation,
                     this, &ZSelectedEnergyLineTableModel::zg_energyLineOperation);
 

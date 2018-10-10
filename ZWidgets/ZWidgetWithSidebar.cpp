@@ -95,7 +95,7 @@ void ZWidgetWithSidebar::zp_setInfoLabelText(bool dirty, const QString& text)
 void ZWidgetWithSidebar::zh_createComponents(QString title)
 {
     // Main Layout
-    zv_mainLayout = new QVBoxLayout(this);
+    zv_mainLayout = new QVBoxLayout;
     zv_margin = zv_mainLayout->margin();
     // zv_mainLayout->setMargin(0);
     zv_mainLayout->setSpacing(0);
@@ -108,7 +108,7 @@ void ZWidgetWithSidebar::zh_createComponents(QString title)
         titleLabel->setText(title);
         titleLabel->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
 
-        QHBoxLayout* titleLayout = new QHBoxLayout(this);
+        QHBoxLayout* titleLayout = new QHBoxLayout;
         titleLayout->addSpacing(zv_margin);
         titleLayout->addWidget(titleLabel);
         titleLayout->addStretch();
@@ -125,7 +125,7 @@ void ZWidgetWithSidebar::zh_createComponents(QString title)
     //basement->setFrameShape(QFrame::HLine);
     //basement->setFrameStyle(QFrame::HLine | QFrame::Sunken);
     // basement layout
-    QHBoxLayout* basementLayout = new QHBoxLayout(this);
+    QHBoxLayout* basementLayout = new QHBoxLayout;
     basement->setLayout(basementLayout);
     // int margin = basementLayout->margin();
     basementLayout->setMargin(0);

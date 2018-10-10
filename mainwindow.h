@@ -17,6 +17,7 @@ class ZCorrelationPlotterWidget;
 class ZWidgetWithSidebar;
 class ZMessagePanel;
 class ZMessageWidget;
+class ZEnergyLineTableWidget;
 
 class QAction;
 class QFrame;
@@ -80,6 +81,7 @@ private:
     QDockWidget* zv_correlationPlotterDock;
     QDockWidget* zv_chemElementArrayDock;
     QDockWidget* zv_messagePanelDock;
+    QDockWidget* zv_energyLineTableDock;
 
     // views
     ZWidgetWithSidebar* zv_spectraSidebarWidget;
@@ -94,6 +96,7 @@ private:
     ZTermCorrelationTableWidget* zv_termCorrelationTableWidget;
     ZEquationSettingsDashBoard* zv_equationSettingsPanelWidget;
     ZCorrelationPlotterWidget* zv_correlationPlotterWidget;
+    ZEnergyLineTableWidget* zv_energyLineTableWidget;
 
     ZMessageWidget* zv_messageWidget;
     ZPlotter* zv_plotter;

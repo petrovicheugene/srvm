@@ -54,7 +54,9 @@ public:
                                int spectrumIndex) const;
     bool zp_setChemConcentration(qint64 chemElementId,
                                  int spectrumIndex, const QString& concentration);
-    bool zp_energyCalibration(qreal& K0, qreal& K1, qreal& K2, QString& energyUnit);
+    bool zp_energyCalibration(int spectrumIndex,
+                              QList<double> &energyCalibration,
+                              QString& energyUnit) const;
     int zp_gainFactor() const;
     bool zp_setGainFactor(int gainFactor);
     int zp_exposition() const;
@@ -94,7 +96,6 @@ signals:
     void zg_message(QString) const;
     void zg_chemElementOperation(ZChemElementList::OperationType, int, int) const;
     void zg_spectrumOperation(ZSpectrumArray::OperationType, int first, int last) const;
-    void zg_energyCalibrationChanged(qint64 arrayId);
     void zg_arrayMaxParametersChanged(qint64 arrayId, int intensity, int channels);
     void zg_averageConcentrationChanged(qint64 chemElementId);
 

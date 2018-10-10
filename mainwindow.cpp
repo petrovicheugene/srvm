@@ -30,7 +30,7 @@
 #include "ZPlotter.h"
 #include "ZMessagePanel.h"
 #include "ZMessageWidget.h"
-
+#include "ZEnergyLineTableWidget.h"
 // models
 #include "ZArrayModel.h"
 #include "ZCalibrationModel.h"
@@ -71,24 +71,25 @@ MainWindow::MainWindow(QWidget *parent)
 
     //    QPalette palette = QPalette(Qt::darkBlue);
     //    this->setPalette(palette);
-    mv_helpBrowser = 0;
-    zv_fileActionManager = 0;
-    zv_spectrumArrayRepository = 0;
-    zv_calibrationRepository = 0;
-    zv_jointSpectraDataManager = 0;
-    zv_chemElementDataManager = 0;
-    zv_jointCalibrationWindowDataManager = 0;
-    zv_plotterDataManager = 0;
-    zv_calculationPlotterManager = 0;
-    zv_termCorrelationTableManager = 0;
+    mv_helpBrowser = nullptr;
+    zv_fileActionManager = nullptr;
+    zv_spectrumArrayRepository = nullptr;
+    zv_calibrationRepository = nullptr;
+    zv_jointSpectraDataManager = nullptr;
+    zv_chemElementDataManager = nullptr;
+    zv_jointCalibrationWindowDataManager = nullptr;
+    zv_plotterDataManager = nullptr;
+    zv_calculationPlotterManager = nullptr;
+    zv_termCorrelationTableManager = nullptr;
+    zv_energyLineTableWidget = nullptr;
 
-    zv_arrayModel = 0;
-    zv_jointSpectraModel = 0;
-    zv_chemElementModel = 0;
-    zv_calibrationModel = 0;
-    zv_jointCalibrationWindowModel = 0;
-    zv_termCorrelationTableModel = 0;
-    zv_plotter = 0;
+    zv_arrayModel = nullptr;
+    zv_jointSpectraModel = nullptr;
+    zv_chemElementModel = nullptr;
+    zv_calibrationModel = nullptr;
+    zv_jointCalibrationWindowModel = nullptr;
+    zv_termCorrelationTableModel = nullptr;
+    zv_plotter = nullptr;
 
     zh_createActions();
     zh_createComponents();
@@ -98,7 +99,7 @@ MainWindow::MainWindow(QWidget *parent)
     zh_restoreSettings();
 
     // plotter starting settings
-    if(zv_plotter != 0)
+    if(zv_plotter != nullptr)
     {
         QMetaObject::invokeMethod(zv_plotter, "zp_fitInBoundingRect",
                                   Qt::QueuedConnection);
@@ -129,6 +130,7 @@ void MainWindow::closeEvent(QCloseEvent* e)
         msgBox.setInformativeText("Do you want to save your changes?");
         msgBox.setStandardButtons(QMessageBox::Save | QMessageBox::Discard | QMessageBox::Cancel);
         msgBox.setDefaultButton(QMessageBox::Save);
+        msgBox.resize(msgBox.sizeHint());
         int res = msgBox.exec();
 
         switch (res)
@@ -259,7 +261,7 @@ void MainWindow::zh_createComponents()
 
     // left side widget
     QWidget* calibrationWidget = new QWidget();
-    QVBoxLayout*leftWidgetLayout = new QVBoxLayout(calibrationWidget);
+    QVBoxLayout*leftWidgetLayout = new QVBoxLayout;
     leftWidgetLayout->setMargin(0);
     calibrationWidget->setLayout(leftWidgetLayout);
 
@@ -302,6 +304,22 @@ void MainWindow::zh_createComponents()
     // setting to dock
     zv_messagePanelDock->setWidget(frame);
 
+    // energy line table
+    zv_energyLineTableDock = new QDockWidget(this);
+    zv_energyLineTableDock->setObjectName("ENERGY_LINE_TABLE_DOCK");
+    zv_energyLineTableDock->setWindowTitle(tr("Energy lines"));
+    zv_dockList << zv_energyLineTableDock;
+    addDockWidget(Qt::RightDockWidgetArea, zv_energyLineTableDock);
+
+    // create widget
+    zv_energyLineTableWidget = new ZEnergyLineTableWidget(this);
+    zv_energyLineTableWidget->show();
+    frame = zh_setWidgetToFrame(zv_energyLineTableWidget);
+
+    // setting to widget dock
+    zv_energyLineTableDock->setWidget(frame);
+
+
     // tabblifying docks by default
     // this->tabifyDockWidget(zv_messagePanelDock, zv_calibrationArrayDock);
 
@@ -330,7 +348,7 @@ void MainWindow::zh_createComponents()
 QFrame* MainWindow::zh_setWidgetToFrame(QWidget* widget)
 {
     QFrame* frame = new QFrame();
-    QVBoxLayout* frameLayout = new QVBoxLayout(frame);
+    QVBoxLayout* frameLayout = new QVBoxLayout;
     frame->setLayout(frameLayout);
     frame->setFrameStyle(QFrame::StyledPanel | QFrame::Plain);
     frame->setLineWidth(1);
@@ -526,6 +544,20 @@ void MainWindow::zh_createConnections()
     connect(zv_jointSpectraDataManager, &ZJointSpectraDataManager::zg_calibrationQualityData,
             zv_calibrationRepository, &ZCalibrationRepository::zp_calibrationQualityDataChanged);
 
+    // energy line widget
+    connect(zv_energyLineTableWidget, &ZEnergyLineTableWidget::zg_energyLineOperation,
+            zv_plotterDataManager, &ZPlotterDataManager::zp_onEnergyLineOperation);
+    connect(zv_plotterDataManager, &ZPlotterDataManager::zg_requestEnergyLineEnergyValue,
+            zv_energyLineTableWidget, &ZEnergyLineTableWidget::zp_energyLineEnergyValue);
+    connect(zv_plotterDataManager, &ZPlotterDataManager::zg_requestEnergyLineRelativeIntensity,
+            zv_energyLineTableWidget, &ZEnergyLineTableWidget::zp_energyLineRelativeIntensity);
+
+    connect(zv_plotterDataManager, &ZPlotterDataManager::zg_requestEnergyLineVisibility,
+            zv_energyLineTableWidget, &ZEnergyLineTableWidget::zp_energyLineVisibility);
+    connect(zv_plotterDataManager, &ZPlotterDataManager::zg_requestEnergyLineColor,
+            zv_energyLineTableWidget, &ZEnergyLineTableWidget::zp_energyLineColor);
+
+
     // equation dashboard
     //zv_equationSettingsPanelWidget->zp_connectToCalibrationRepository(zv_calibrationRepository);
 }
@@ -551,11 +583,15 @@ void MainWindow::zh_messageIconPixmap(int type,
 
     if(type == QtDebugMsg)
     {
-        pixmap = QPixmap(":/images/Images/Bug.png").scaled(size,
+        QPixmap debugPixmap = QPixmap(":/images/ZImages/Bug.png").scaled(size,
                                                            Qt::KeepAspectRatio,
                                                            Qt::FastTransformation);
-        ok = true;
-        return;
+        if(!debugPixmap.isNull())
+        {
+            pixmap = debugPixmap;
+            ok = true;
+            return;
+        }
     }
 
     // No Pixmap

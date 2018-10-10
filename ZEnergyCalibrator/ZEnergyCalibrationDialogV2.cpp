@@ -17,6 +17,7 @@
 #include <QAction>
 #include <QCheckBox>
 #include <QComboBox>
+#include <QDebug>
 #include <QDialogButtonBox>
 #include <QDoubleSpinBox>
 #include <QGroupBox>
@@ -152,7 +153,7 @@ QWidget* ZEnergyCalibrationDialogV2::zh_createElementLinesWidgetAndComponents()
     // mainLayout->setMargin(0);
     mainControlWidget->setLayout(mainLayout);
 
-    QHBoxLayout* peakCountLayout = new QHBoxLayout(this);
+    QHBoxLayout* peakCountLayout = new QHBoxLayout;
     mainLayout->addLayout(peakCountLayout);
 
     QLabel* label = new QLabel(this);
@@ -470,41 +471,6 @@ void ZEnergyCalibrationDialogV2::zh_calculateAndWriteEnergyCalibration()
             return;
         }
     }
-
-//    //  current gain factor value
-//    bool ok;
-//    int currentGainFactor = zv_gainFactorComboBox->currentData().toInt(&ok);
-//    if(!ok)
-//    {
-//        QString msg = tr("Cannot get current gain factor!").arg(zv_gainFactorComboBox->currentText());
-//        QMessageBox::critical(this, tr("Energy calibration error"), msg, QMessageBox::Yes);
-//        return;
-//    }
-
-//    QSqlQuery query;
-//    QString queryString = QString("UPDATE gain_factors SET energyFactorK0 = %1, "
-//                                  "energyFactorK1 = %2, "
-//                                  "energyFactorK2 = %3 "
-//                                  "WHERE gain_factor=%4").arg(QString::number(energyCalibrationFactorList.value(0, 0.0)),
-//                                                              QString::number(energyCalibrationFactorList.value(1, 0.0)),
-//                                                              QString::number(energyCalibrationFactorList.value(2, 0.0)),
-//                                                              QString::number(currentGainFactor));
-
-//    if(!query.prepare(queryString))
-//    {
-//        msg = query.lastError().text();
-//        QMessageBox::critical(this, tr("Energy calibration error"), msg, QMessageBox::Yes);
-//        return;
-//    }
-
-//    if(!query.exec())
-//    {
-//        msg = query.lastError().text();
-//        QMessageBox::critical(this, tr("Energy calibration error"), msg, QMessageBox::Yes);
-//        return;
-//    }
-
-//    emit zg_energyCalibrationChanged(currentGainFactor, energyCalibrationFactorList);
 }
 //======================================================
 void ZEnergyCalibrationDialogV2::zh_onCurrentGainFactorIndexChange(int currentIndex)
@@ -726,8 +692,9 @@ bool ZEnergyCalibrationDialogV2::zh_calculateEnergyFactors(QList<double>& energy
                       zv_energyCalibrationLineList.at(e)->zp_energyValue() -
                       zv_energyCalibrationLineList.at(k)->zp_energyValue() != 0.0))
             {
-                QString msg = tr("Ambiguity in source data of energy lines.");
+                QString msg = tr("Cannot calculate energy calibration.<br>Ambiguity in source data of energy lines.");
                 QMessageBox::critical(this, tr("Error"), msg, QMessageBox::Ok);
+                qCritical().noquote() << msg;
                 return false;
             }
         }
@@ -748,8 +715,9 @@ bool ZEnergyCalibrationDialogV2::zh_calculateEnergyFactors(QList<double>& energy
 
     if(calibrationLineSrcDataList.count() < 2)
     {
-        QString msg = tr("Insufficient source data of energy lines.");
+        QString msg = tr("Cannot calculate energy calibration.<br>Insufficient source data of energy lines.");
         QMessageBox::critical(this, tr("Error"), msg, QMessageBox::Ok);
+        qCritical().noquote() << msg;
         return false;
     }
 
@@ -789,6 +757,7 @@ bool ZEnergyCalibrationDialogV2::zh_calculateEnergyFactors(QList<double>& energy
     {
         QString msg = tr("Calculation of energy calibration factors fails. Error: %1.").arg(solver.zp_lastError());
         QMessageBox::critical(this, tr("Error"), msg, QMessageBox::Ok);
+        qCritical().noquote() << msg;
         return false;
     }
 
@@ -797,6 +766,13 @@ bool ZEnergyCalibrationDialogV2::zh_calculateEnergyFactors(QList<double>& energy
         energyCalibrationFactorList.append(matrixColumnList[mc].first);
     }
 
+    QString msg = tr("Energy calibration has been calculated successfully<br>"
+                     "K0 - %1<br>"
+                     "K1 - %2<br>"
+                     "K2 - %3<br>").arg(QString::number(energyCalibrationFactorList.value(0, 0.0), 'E', 14),
+                                        QString::number(energyCalibrationFactorList.value(1, 0.0), 'E', 14),
+                                        QString::number(energyCalibrationFactorList.value(2, 0.0), 'E', 14));
+    qInfo().noquote() << msg;
     return true;
 }
 //======================================================

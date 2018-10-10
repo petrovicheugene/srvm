@@ -83,7 +83,7 @@ void ZJointSpectrumTableWidget::zp_currentIndex(QModelIndex& index) const
 //=============================================================
 void ZJointSpectrumTableWidget::zh_createComponents()
 {
-    zv_mainLayout = new QVBoxLayout(this);
+    zv_mainLayout = new QVBoxLayout;
     zv_mainLayout->setMargin(0);
 
     setLayout(zv_mainLayout);
@@ -93,7 +93,7 @@ void ZJointSpectrumTableWidget::zh_createComponents()
 
     zv_mainLayout->addWidget(zv_table, INT_MAX);
 
-    zv_buttonLayout = new QHBoxLayout(this);
+    zv_buttonLayout = new QHBoxLayout;
     zv_mainLayout->addLayout(zv_buttonLayout);
 
 }

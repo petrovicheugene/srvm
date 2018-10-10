@@ -210,12 +210,13 @@ ZSpeSpectrum* ZEnergyCalibrationSpectrumTableModel::zp_spectrumForRow(int row)
 void ZEnergyCalibrationSpectrumTableModel::zp_writeEnergyCalibrationToCheckedSpectra(QList<double>& factorList)
 {
     QList<ZSpeSpectrum*> spectrumList = zv_spectrumMap.value(zv_gainFactorFilter, QList<ZSpeSpectrum*>());
-
     foreach(ZSpeSpectrum* spectrum, spectrumList)
     {
         if(spectrum->zp_isSpectrumChecked())
         {
             spectrum->zp_setEnergyCalibration(factorList);
+            QString msg = tr("Energy calibration in spectrum %1 has been changed").arg(spectrum->zp_name());
+            qInfo().noquote() << msg;
         }
     }
 }

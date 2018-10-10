@@ -58,7 +58,7 @@ Q_DECLARE_OPERATORS_FOR_FLAGS(DebugOutputOptions)
 
 static DebugOutputOptions debugOutputOption =
         DO_MsgOnly
-        // | DO_ShowFile
+        | DO_ShowFile
         | DO_ShowFunction
         | DO_ShowLine
         // | DO_ShowVersion
@@ -184,11 +184,6 @@ int main(int argc, char *argv[])
 //    splash.showMessage("Loading styles...", Qt::AlignBottom | Qt::AlignRight, Qt::white );
 //    a.processEvents();
 
-//    qApp->setStyleSheet(
-//                "QSplitter::handle:vertical   {height: 6px; image: url(:/images/ZImages/vSplitterHandle.png);}"
-//                "QSplitter::handle:horizontal {width:  6px; image: url(:/images/ZImages/hSplitterHandle.png);}"
-//                );
-
 //    splash.showMessage("Loading modules...", Qt::AlignBottom | Qt::AlignRight, Qt::white );
 //    a.processEvents();
 
@@ -250,9 +245,10 @@ int main(int argc, char *argv[])
 
     // set dots on the splitter handle
     qApp->setStyleSheet(
-                "QSplitter::handle:vertical {height: 3px; image: url(:/images/hSplitterHandle.png);}"
-                "QSplitter::handle:horizontal {width: 3px; image: url(:/images/vSplitterHandle.png);}"
+                "QSplitter::handle:vertical {height: 4px; image: url(:/images/ZImages/vSplitterHandler.png);}"
+                "QSplitter::handle:horizontal {width: 4px; image: url(:/images/ZImages/hSplitterHandler.png);}"
                 );
+
 
     // launch app
 

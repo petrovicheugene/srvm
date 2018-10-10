@@ -92,7 +92,7 @@ QPixmap ZStandardMessagePictureDispatcher::zh_getStandardMessageBoxPixmap(QtMsgT
         break;
     }
 
-    QIcon icon = style->standardIcon (standardIcon);
+    QIcon icon = style->standardIcon(standardIcon);
     return icon.pixmap(size);
 }
 //===================================================

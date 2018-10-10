@@ -1977,14 +1977,14 @@ bool ZCalibrationRepository::zh_createCalibrationFromFile(const QString& fileNam
     {
         QString error = tr("Error: \"%1\" is not a file!").arg(fileName);
         emit zg_message(error);
-        qCritical() <<  error;
+        qCritical().noquote() <<  error;
         return false;
     }
     else if(suffix != "clbx" && suffix != "xml")
     {
         QString error = QObject::tr("Cannot handle file of type \"%1\"!").arg(suffix);
         emit zg_message(error);
-        qCritical() <<  error;
+        qCritical().noquote() <<  error;
         return false;
     }
 
@@ -2002,7 +2002,7 @@ bool ZCalibrationRepository::zh_createCalibrationFromFile(const QString& fileNam
             errorMsg = tr("Cannot read file \"%1\"! %2").arg(file.fileName(), tr("Unknown error"));
         }
         emit zg_message(errorMsg);
-        qCritical() <<  errorMsg;
+        qCritical().noquote() <<  errorMsg;
         return false;
     }
 

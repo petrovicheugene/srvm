@@ -152,7 +152,7 @@ bool ZCorrelationPlotterDataManager::zh_setRulerMetrixAndPrecisionToPlot(const Z
 QWidget* ZCorrelationPlotterDataManager::zh_createChartDataKindComboBoxWidget()
 {
     QWidget* widget = new QWidget();
-    QHBoxLayout* layout = new QHBoxLayout(widget);
+    QHBoxLayout* layout = new QHBoxLayout;
     widget->setLayout(layout);
     layout->setMargin(0);
 

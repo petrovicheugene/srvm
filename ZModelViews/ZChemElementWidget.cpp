@@ -20,7 +20,7 @@ ZChemElementWidget::ZChemElementWidget(QWidget *parent) : QWidget(parent)
 //==============================================================
 void ZChemElementWidget::zh_createComponents()
 {
-    zv_mainLayout = new QVBoxLayout(this);
+    zv_mainLayout = new QVBoxLayout;
     zv_mainLayout->setMargin(0);
 
     setLayout(zv_mainLayout);
@@ -29,7 +29,7 @@ void ZChemElementWidget::zh_createComponents()
     zv_table->setContextMenuPolicy(Qt::CustomContextMenu);
     zv_mainLayout->addWidget(zv_table);
 
-    zv_buttonLayout = new QHBoxLayout(this);
+    zv_buttonLayout = new QHBoxLayout;
     zv_mainLayout->addLayout(zv_buttonLayout);
 }
 //==============================================================
