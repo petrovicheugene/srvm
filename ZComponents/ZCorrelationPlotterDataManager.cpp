@@ -344,10 +344,6 @@ void ZCorrelationPlotterDataManager::zh_rebuildChart()
         else
         {
             pointItem = new ZChartPointGraphicsItem(this, it.value(), chartPointOptions, it.key());
-#ifdef DBG
-        qDebug() << "Rebuild: new point" << it.value().x() << it.value().y();
-#endif
-
             zv_plotter->zp_addItem(pointItem);
         }
     }

@@ -144,10 +144,6 @@ void ZChartPointGraphicsItem::mousePressEvent(QGraphicsSceneMouseEvent* event)
 //======================================================
 void ZChartPointGraphicsItem::mouseReleaseEvent(QGraphicsSceneMouseEvent* event)
 {
-#ifdef DBG
-    qDebug() << "ITEM MOUSE RELEASE";
-#endif
-
     zv_dataManager->zp_setCurrentSpectrum(zv_relatedObjectId);
 }
 //======================================================

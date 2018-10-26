@@ -530,9 +530,6 @@ void ZFileActionManager::zp_saveCalibrationToFile(const ZCalibration* calibratio
         absFileName = QFileInfo(QDir(filePath), name).absoluteFilePath();
     }
 
-#ifdef DBG
-    qDebug() << "SAVE CALIBRATION" << absFileName;
-#endif
 
     //    QFileInfo fileInfo(absFileName);
     //    if(fileInfo.suffix() != "xml" && fileInfo.suffix() != "spar")

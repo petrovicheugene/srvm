@@ -126,19 +126,19 @@ void MainWindow::closeEvent(QCloseEvent* e)
     {
         QMessageBox msgBox(this);
         msgBox.setIcon(QMessageBox::Warning);
-        msgBox.setText("The spectrum array list has been modified.");
-        msgBox.setInformativeText("Do you want to save your changes?");
-        msgBox.setStandardButtons(QMessageBox::Save | QMessageBox::Discard | QMessageBox::Cancel);
-        msgBox.setDefaultButton(QMessageBox::Save);
+        msgBox.setText(tr("The spectrum array list has been modified."));
+        msgBox.setInformativeText(tr("Do you want to save your changes?"));
+        msgBox.setStandardButtons(QMessageBox::Yes | QMessageBox::No | QMessageBox::Cancel);
+        msgBox.setDefaultButton(QMessageBox::Yes);
         msgBox.resize(msgBox.sizeHint());
         int res = msgBox.exec();
 
         switch (res)
         {
-        case QMessageBox::Save:
+        case QMessageBox::Yes:
             zv_fileActionManager->zp_triggerSaveArrayToFileAction();
             break;
-        case QMessageBox::Discard:
+        case QMessageBox::No:
             // Don't Save was clicked
             break;
         case QMessageBox::Cancel:
@@ -157,13 +157,13 @@ void MainWindow::closeEvent(QCloseEvent* e)
         msgBox.setIcon(QMessageBox::Warning);
         msgBox.setText("There are calibrations that have been modified.");
         msgBox.setInformativeText("Do you want to save them?");
-        msgBox.setStandardButtons(QMessageBox::Save | QMessageBox::Discard | QMessageBox::Cancel);
-        msgBox.setDefaultButton(QMessageBox::Save);
+        msgBox.setStandardButtons(QMessageBox::Yes | QMessageBox::No | QMessageBox::Cancel);
+        msgBox.setDefaultButton(QMessageBox::Yes);
         int res = msgBox.exec();
 
         switch (res)
         {
-        case QMessageBox::Save:
+        case QMessageBox::Yes:
             for(int i = 0; i < dirtyRowList.count(); i++ )
             {
                 zv_calibrationTableWidget->zp_setCurrentCalibrationIndex(dirtyRowList.at(i));
@@ -171,7 +171,7 @@ void MainWindow::closeEvent(QCloseEvent* e)
             }
 
             break;
-        case QMessageBox::Discard:
+        case QMessageBox::No:
             // Don't Save was clicked
             break;
         case QMessageBox::Cancel:
@@ -187,19 +187,19 @@ void MainWindow::closeEvent(QCloseEvent* e)
 void MainWindow::zh_createActions()
 {
     zv_exitAction = new QAction(this);
-    zv_exitAction->setIcon(QIcon(NS_CommonStrings::glExit));
+    zv_exitAction->setIcon(QIcon(NS_Icons::glIconExitApp));
     zv_exitAction->setText(tr("Exit"));
     zv_exitAction->setToolTip(tr("Exit the application"));
 
-    zv_aboutAction = new QAction(this);
-    zv_aboutAction->setIcon(QIcon(NS_CommonStrings::glAbout));
-    zv_aboutAction->setText(tr("About"));
-    zv_aboutAction->setToolTip(tr("About the application"));
-
-    zv_helpAction = new QAction(this);
-    zv_helpAction->setIcon(QIcon(NS_CommonStrings::glHelp));
-    zv_helpAction->setText(tr("Help"));
-    zv_helpAction->setToolTip(tr("Show user guide"));
+//    zv_aboutAction = new QAction(this);
+    zv_aboutAction->setIcon(QIcon(NS_Icons::glIconAbout));
+//    zv_aboutAction->setText(tr("About"));
+//    zv_aboutAction->setToolTip(tr("About the application"));
+    zv_aboutQtAction->setIcon(QIcon(NS_Icons::glIconQt));
+//    zv_helpAction = new QAction(this);
+    zv_helpAction->setIcon(QIcon(NS_Icons::glIconHelp));
+//    zv_helpAction->setText(tr("Help"));
+//    zv_helpAction->setToolTip(tr("Show user guide"));
 
 }
 //==========================================================
@@ -633,6 +633,8 @@ void MainWindow::zh_appendActionsToMenu(QMenu* menu)
     {
         menu->addAction(zv_helpAction);
         menu->addAction(zv_aboutAction);
+        menu->addAction(zv_aboutQtAction);
+
         menu->addSeparator();
         return;
     }
@@ -788,7 +790,6 @@ void MainWindow::zh_saveSettings()
 //==========================================================
 void MainWindow::zh_rebuildCorrelationPlot()
 {
-    qDebug() << "REBUILD PLOT";
     zv_correlationPlotterWidget->zp_rebuildPlotter();
     zv_calculationPlotterManager->zp_connectToPlotter(zv_correlationPlotterWidget->zp_plotter());
     zv_correlationPlotterWidget->zp_plotter()->zp_fitInBoundingRect();

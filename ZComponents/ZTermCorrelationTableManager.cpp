@@ -316,7 +316,6 @@ QString ZTermCorrelationTableManager::zp_horizontalColumnName(int column) const
         return zv_calibrationRepository->zp_termName(zv_currentCalibrationId, column - zv_firstNonTermColumnCount);
     }
 
-    return QString();
 }
 //=============================================================================
 QString ZTermCorrelationTableManager::zp_verticalColumnName(int row) const
@@ -850,16 +849,7 @@ void ZTermCorrelationTableManager::zh_recalcCalibrationFactors()
 
         int gainFactor = zv_spectrumArrayRepository->zp_gainFactor(zv_currentArrayIndex);
         calibration->zp_setGainFactor(gainFactor);
-
-
-#ifdef DBG
-        qDebug() <<  "VVVV";
-        qDebug() <<  "K0:" << K0 << "K1:" << K1 <<"K2:" << K2 << "Unit" << energyUnit;
-        qDebug() <<  "EXPO:" << exposition;
-        qDebug() <<  "====";
-#endif
     }
-
 
     // pointers to factors and free term
     QMap<int, qreal*> factorToIndexMap;

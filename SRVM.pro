@@ -10,11 +10,11 @@ greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
 #PRO VARS
 #Application version
-RC_ICONS = "SDC2.ico"
+RC_ICONS = "ZImages/SRVM-8.ico"
 
 VER_MAJ=0
 VER_MIN=0
-VER_PAT=39
+VER_PAT=40
 
 VER_RELEASE=b
 
@@ -22,8 +22,8 @@ VER_RELEASE=b
 CONFIG(release, debug|release):DEFINES += QT_NO_DEBUG_OUTPUT
 #by default defined: in Debug mode QT_DEBUG, in Release mode QT_NO_DEBUG
 
-EXE_BASE_NAME=SDCalibrator
-QMAKE_TARGET_PRODUCT="SD Calibrator"
+EXE_BASE_NAME=SRVM
+QMAKE_TARGET_PRODUCT="SRV M"
 QMAKE_TARGET_DESCRIPTION="Creation of spectrometer calibration"
 QMAKE_TARGET_COMPANY="TechnoAnalyt"
 QMAKE_TARGET_COPYRIGHT="Copyright © $${QMAKE_TARGET_COMPANY} Ltd. 2015 - 2017.  All rights reserved."

@@ -137,61 +137,61 @@ void messageHandler(QtMsgType type, const QMessageLogContext &context, const QSt
 //======================================================
 int main(int argc, char *argv[])
 {
-//    QApplication a(argc, argv);
-//    QPixmap pixmap(":/images/ZImages/SDC_TA3.png");
-//    QSplashScreen splash(pixmap);
-//    splash.show();
-//    splash.showMessage("Loading codecs...", Qt::AlignBottom | Qt::AlignRight, Qt::white );
-//    a.processEvents();
+    //    QApplication a(argc, argv);
+    //    QPixmap pixmap(":/images/ZImages/SDC_TA3.png");
+    //    QSplashScreen splash(pixmap);
+    //    splash.show();
+    //    splash.showMessage("Loading codecs...", Qt::AlignBottom | Qt::AlignRight, Qt::white );
+    //    a.processEvents();
 
-//    QTextCodec* codec = QTextCodec::codecForName("windows-1251");
-//    QTextCodec::setCodecForLocale(codec);
+    //    QTextCodec* codec = QTextCodec::codecForName("windows-1251");
+    //    QTextCodec::setCodecForLocale(codec);
 
-//    QApplication::setOrganizationName(glAppCompany);
-//    QApplication::setApplicationName(glAppExeBaseName);
-//    QApplication::setApplicationVersion(glAppVersion);
+    //    QApplication::setOrganizationName(glAppCompany);
+    //    QApplication::setApplicationName(glAppExeBaseName);
+    //    QApplication::setApplicationVersion(glAppVersion);
 
-//    splash.showMessage("Loading translations...", Qt::AlignBottom | Qt::AlignRight, Qt::white );
-//    a.processEvents();
+    //    splash.showMessage("Loading translations...", Qt::AlignBottom | Qt::AlignRight, Qt::white );
+    //    a.processEvents();
 
-//    QTranslator appTranslator;
-//    QDir appDir(QApplication::applicationDirPath());
+    //    QTranslator appTranslator;
+    //    QDir appDir(QApplication::applicationDirPath());
 
-//    bool res = appTranslator.load(appDir.absoluteFilePath(QString("%1_%2").arg(glAppExeBaseName, QLocale::system().name())));
-//    if(!res)
-//    {
-//        res = appTranslator.load(QString(":/trans/%1_%2").arg(glAppExeBaseName, QLocale::system().name()));
-//    }
+    //    bool res = appTranslator.load(appDir.absoluteFilePath(QString("%1_%2").arg(glAppExeBaseName, QLocale::system().name())));
+    //    if(!res)
+    //    {
+    //        res = appTranslator.load(QString(":/trans/%1_%2").arg(glAppExeBaseName, QLocale::system().name()));
+    //    }
 
-//    if(res)
-//    {
-//        a.installTranslator(&appTranslator);
-//    }
+    //    if(res)
+    //    {
+    //        a.installTranslator(&appTranslator);
+    //    }
 
-//    QTranslator qtTranslator;
-//    res = qtTranslator.load(appDir.absoluteFilePath(QString("%1_%2").arg("qtbase", QLocale::system().name())));
+    //    QTranslator qtTranslator;
+    //    res = qtTranslator.load(appDir.absoluteFilePath(QString("%1_%2").arg("qtbase", QLocale::system().name())));
 
-//    if(!res)
-//    {
-//        res = qtTranslator.load(QString(":/trans/qtbase_%2").arg(QLocale::system().name()));
-//    }
+    //    if(!res)
+    //    {
+    //        res = qtTranslator.load(QString(":/trans/qtbase_%2").arg(QLocale::system().name()));
+    //    }
 
-//    if(res)
-//    {
-//        a.installTranslator(&qtTranslator);
-//    }
+    //    if(res)
+    //    {
+    //        a.installTranslator(&qtTranslator);
+    //    }
 
-//    splash.showMessage("Loading styles...", Qt::AlignBottom | Qt::AlignRight, Qt::white );
-//    a.processEvents();
+    //    splash.showMessage("Loading styles...", Qt::AlignBottom | Qt::AlignRight, Qt::white );
+    //    a.processEvents();
 
-//    splash.showMessage("Loading modules...", Qt::AlignBottom | Qt::AlignRight, Qt::white );
-//    a.processEvents();
+    //    splash.showMessage("Loading modules...", Qt::AlignBottom | Qt::AlignRight, Qt::white );
+    //    a.processEvents();
 
-//    MainWindow w;
-//    w.show();
-//    splash.finish(&w);
+    //    MainWindow w;
+    //    w.show();
+    //    splash.finish(&w);
 
-//    return a.exec();
+    //    return a.exec();
     QApplication a(argc, argv);
     //
     initMsgTypesToHandleInMainWindowSet();

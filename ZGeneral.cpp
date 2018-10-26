@@ -12,9 +12,10 @@ extern const QString glAppStateKeyName = "AppState";
 namespace NS_Icons
 {
 extern const QString glIconSettings = "";
-extern const QString glIconExitApp = ":/images/ZImages/close.png";
-extern const QString glIconAbout = ":/images/ZImages/info.png";
-extern const QString glIconHelp = ":/images/ZImages/help.png";
+extern const QString glIconExitApp = ":/images/ZImages/exit-1.png";
+extern const QString glIconAbout = ":/images/ZImages/info-1.png";
+extern const QString glIconHelp = ":/images/ZImages/help-1.png";
+extern const QString glIconQt = ":/images/ZImages/Qt_logo.png";
 
 extern const QString glIconSidebarLeftOpen = ":/images/ZWidgets/sidebarLeftOpen-1.png";
 extern const QString glIconSidebarLeftClose = ":/images/ZWidgets/sidebarLeftClose-1.png";
@@ -30,42 +31,42 @@ extern const QString glIconHorizontalDecrease = ":/images/ZImages/horizontalDecr
 extern const QString glIconFitInRect = ":/images/ZImages/fitInSceneRect.png";
 
 
-extern const QString glIconOpenArray = ":/images/ZImages/openSpeFolder-3.png";
-extern const QString glIconSaveArray = ":/images/ZImages/saveSpeArray-2.png";
-extern const QString glIconSaveAsArray = ":/images/ZImages/saveAsSpeArray-2.png";
-extern const QString glIconOpenCalibration = ":/images/ZImages/openCalibration-3.png";
-extern const QString glIconSaveCalibration = ":/images/ZImages/saveCalibration-3.png";
-extern const QString glIconSaveAsCalibration = ":/images/ZImages/saveAsCalibration-3.png";
+extern const QString glIconOpenArray = ":/images/ZImages/openArray-1.png";
+extern const QString glIconSaveArray = ":/images/ZImages/save-1.png";
+extern const QString glIconSaveAsArray = "";
+extern const QString glIconOpenCalibration = ":/images/ZImages/openCalibration-1.png";
+extern const QString glIconSaveCalibration = ":/images/ZImages/saveCalibration-1.png";
+extern const QString glIconSaveAsCalibration = "";
 
-extern const QString glIconAddCalibration = ":/images/ZImages/addCalibration-3.png";
-extern const QString glIconRemoveCalibration = ":/images/ZImages/removeCalibration-3.png";
-extern const QString glIconAddWindow = ":/images/ZImages/addWindow-2.png";
-extern const QString glIconRemoveWindow = ":/images/ZImages/removeWindow-2.png";
+extern const QString glIconAddCalibration = ":/images/ZImages/addCalibration-1.png";
+extern const QString glIconRemoveCalibration = ":/images/ZImages/removeCalibration-1.png";
+extern const QString glIconAddWindow = ":/images/ZImages/addWindow-1.png";
+extern const QString glIconRemoveWindow = ":/images/ZImages/removeWindow-1.png";
 
-extern const QString glIconCalc = ":/images/ZImages/calc.png";
+extern const QString glIconCalc = ":/images/ZImages/calculate-1.png";
 extern const QString glIconEnergyCalibration = "";
-extern const QString glIconAddMixedTerms = ":/images/ZImages/addMixedTerm.png";
-extern const QString glIconRemoveMixedTerms = ":/images/ZImages/removeMixedTerm.png";
+extern const QString glIconAddMixedTerms = "";
+extern const QString glIconRemoveMixedTerms = "";
 
-extern const QString glIconAddCustomTerm = ":/images/ZImages/addCustomTerm.png";
-extern const QString glIconRemoveCustomTerm = ":/images/ZImages/removeCustomTerm.png";
+extern const QString glIconAddCustomTerm = "";
+extern const QString glIconRemoveCustomTerm = "";
 
-extern const QString glIconVisible = ":/images/ZImages/eyeSignBlack-1.png";
+extern const QString glIconVisible = ":/images/ZImages/visible-1.png";
 extern const QString glIconInvisible = ":/images/ZImages/invisible-1.png";
-extern const QString glIconInverseVisible = ":/images/ZImages/inverseRed-2.png";
-extern const QString glIconDuplicateCalibration = ":/images/ZImages/duplicateCalibration-3.png";
+extern const QString glIconInverseVisible = "";
+extern const QString glIconDuplicateCalibration = ":/images/ZImages/copy-1.png";
 extern const QString glIconRemove = ":/images/ZImages/remove-16.png";
-extern const QString glIconReset = ":/images/ZImages/reset.png";
+extern const QString glIconReset = "";
 
-extern const QString glAddArray = ":/images/ZImages/addSpeFolder-3.png";
-extern const QString glRemoveArrayIconString = ":/images/ZImages/removeSpeFolder-3.png";
-extern const QString glAddSpectrumIconString = ":/images/ZImages/addSpectrum-3.png";
-extern const QString glRemoveSpectrumIconString = ":/images/ZImages/removeSpectrum-3.png";
-extern const QString glAddChemElementIconString = ":/images/ZImages/addChemElement-6.png";
-extern const QString glRemoveChemElementIconString = ":/images/ZImages/removeChemElement-6.png";
+extern const QString glAddArray = ":/images/ZImages/addArray-3.png";
+extern const QString glRemoveArrayIconString = ":/images/ZImages/removeArray-4.png";
+extern const QString glAddSpectrumIconString = ":/images/ZImages/addSpectrum-2.png";
+extern const QString glRemoveSpectrumIconString = ":/images/ZImages/removeSpectrum-4.png";
+extern const QString glAddChemElementIconString = ":/images/ZImages/addElement-2.png";
+extern const QString glRemoveChemElementIconString = ":/images/ZImages/removeElement-2.png";
 extern const QString glCopyIconString = ":/images/ZImages/copy-1.png";
 extern const QString glPasteIconString = ":/images/ZImages/paste-1.png";
-extern const QString glClearIconString = ":/images/ZImages/clear-1.png";
+extern const QString glClearIconString = ":/images/ZImages/clear-8.png";
 
 extern const QString glConstExcludedIconString = ":/images/ZImages/Unchecked-16.png";
 extern const QString glConstIncludedIconString = ":/images/ZImages/checked-16.png";

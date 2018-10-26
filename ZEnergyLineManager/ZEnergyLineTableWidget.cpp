@@ -89,11 +89,6 @@ void ZEnergyLineTableWidget::zh_energyLinesRelativeIntensityForZNumber(int ZNumb
     QStringList propertySectionBranch;
     propertySectionBranch << "Relative Intensity";
     zv_chemicalElementPropertyTreeModel->zp_chemicalElementProperties(ZNumber, propertySectionBranch, propertyList);
-
-    for(auto& property : propertyList)
-    {
-        qDebug() << property.first << property.second;
-    }
 }
 //======================================================
 void ZEnergyLineTableWidget::zh_chemicalElementSymbol(int ZNumber, QString& symbol)

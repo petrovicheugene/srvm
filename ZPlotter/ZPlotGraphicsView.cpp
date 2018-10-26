@@ -514,14 +514,11 @@ void ZPlotGraphicsView::mouseMoveEvent(QMouseEvent* event)
             zv_plotMode = PM_RULER;
             emit zg_rulerToolChanged(mapToScene(zv_mousePressStartViewPos),
                                      mapToScene(zv_currentMousePos), true);
-            qDebug() << "RULER";
         }
         else
         {
             zv_plotMode = PM_REGULAR;
             emit zg_rulerToolChanged(QPointF(), QPointF(), false);
-            qDebug() << "REG";
-
         }
     }
     else if(zv_plotMode == PM_REGULAR && event->buttons() == Qt::LeftButton)
@@ -564,13 +561,11 @@ void ZPlotGraphicsView::mouseMoveEvent(QMouseEvent* event)
         {
             emit zg_rulerToolChanged(mapToScene(zv_mousePressStartViewPos),
                                      mapToScene(zv_currentMousePos), true);
-            qDebug() << "RULER";
         }
         else
         {
             zv_plotMode = PM_REGULAR;
             emit zg_rulerToolChanged(QPointF(), QPointF(), false);
-            qDebug() << "REG";
         }
     }
     QGraphicsView::mouseMoveEvent(event);

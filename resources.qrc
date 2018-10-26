@@ -33,7 +33,6 @@
         <file>ZImages/addSpeFolder-1.png</file>
         <file>ZImages/addSpeFolder-2.png</file>
         <file>ZImages/addSpeFolder-3.png</file>
-        <file>ZImages/addWindow-1.png</file>
         <file>ZImages/addWindow-2.png</file>
         <file>ZImages/AGreen.png</file>
         <file>ZImages/arrow_leftdown.bmp</file>
@@ -135,7 +134,6 @@
         <file>ZImages/remove.ico</file>
         <file>ZImages/remove-16.png</file>
         <file>ZImages/removeCalibration.png</file>
-        <file>ZImages/removeCalibration-1.png</file>
         <file>ZImages/removeCalibration-3.png</file>
         <file>ZImages/removeChemElement-5.ico</file>
         <file>ZImages/removeChemElement-5.png</file>
@@ -150,7 +148,6 @@
         <file>ZImages/removeSpeFolder-1.png</file>
         <file>ZImages/removeSpeFolder-2.png</file>
         <file>ZImages/removeSpeFolder-3.png</file>
-        <file>ZImages/removeWindow-1.png</file>
         <file>ZImages/removeWindow-2.png</file>
         <file>ZImages/reset.png</file>
         <file>ZImages/RoundScalingBlack.bmp</file>
@@ -200,5 +197,40 @@
         <file>ZImages/Bug.png</file>
         <file>ZImages/vSplitterHandler.png</file>
         <file>ZImages/hSplitterHandler.png</file>
+        <file>ZImages/SRVM-8.ico</file>
+        <file>ZImages/SRVM-8.png</file>
+        <file>appIcon.png</file>
+        <file>ZImages/addArray-3.png</file>
+        <file>ZImages/addSpectrum-1.png</file>
+        <file>ZImages/addSpectrum-2.png</file>
+        <file>ZImages/removeArray-3.png</file>
+        <file>ZImages/removeSpectrum-1.png</file>
+        <file>ZImages/removeSpectrum-2.png</file>
+        <file>ZImages/SRVM-9.png</file>
+        <file>ZImages/removeArray-4.png</file>
+        <file>ZImages/removeSpectrum-4.png</file>
+        <file>ZImages/removeSpectrum-5.png</file>
+        <file>ZImages/addElement-2.png</file>
+        <file>ZImages/removeElement-2.png</file>
+        <file>ZImages/addCalibration-1.png</file>
+        <file>ZImages/removeCalibration-1.png</file>
+        <file>ZImages/SRVM-1.png</file>
+        <file>ZImages/addWindow-1.png</file>
+        <file>ZImages/removeWindow-1.png</file>
+        <file>ZImages/clear-8.png</file>
+        <file>ZImages/openArray-1.png</file>
+        <file>ZImages/save-1.png</file>
+        <file>ZImages/saveCalibration-1.png</file>
+        <file>ZImages/calculate-1.png</file>
+        <file>ZImages/exit-1.png</file>
+        <file>ZImages/help-1.png</file>
+        <file>ZImages/info-1.png</file>
+        <file>ZImages/Qt_logo.png</file>
+    </qresource>
+    <qresource prefix="/translators">
+        <file>SRVM_ru.qm</file>
+        <file>SRVM_ru.ts</file>
+        <file>qtbase_en.qm</file>
+        <file>qtbase_ru.qm</file>
     </qresource>
 </RCC>
