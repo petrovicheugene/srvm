@@ -12,9 +12,9 @@ greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 #Application version
 RC_ICONS = "ZImages/SRVM-8.ico"
 
-VER_MAJ=0
+VER_MAJ=1
 VER_MIN=0
-VER_PAT=40
+VER_PAT=0
 
 VER_RELEASE=b
 

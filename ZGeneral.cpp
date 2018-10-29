@@ -51,8 +51,8 @@ extern const QString glIconRemoveMixedTerms = "";
 extern const QString glIconAddCustomTerm = "";
 extern const QString glIconRemoveCustomTerm = "";
 
-extern const QString glIconVisible = ":/images/ZImages/visible-1.png";
-extern const QString glIconInvisible = ":/images/ZImages/invisible-1.png";
+extern const QString glIconVisible = ":/images/ZImages/eyeSignBlack-1.png";
+extern const QString glIconInvisible = "";
 extern const QString glIconInverseVisible = "";
 extern const QString glIconDuplicateCalibration = ":/images/ZImages/copy-1.png";
 extern const QString glIconRemove = ":/images/ZImages/remove-16.png";

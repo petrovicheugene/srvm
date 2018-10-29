@@ -155,8 +155,8 @@ void MainWindow::closeEvent(QCloseEvent* e)
     {
         QMessageBox msgBox(this);
         msgBox.setIcon(QMessageBox::Warning);
-        msgBox.setText("There are calibrations that have been modified.");
-        msgBox.setInformativeText("Do you want to save them?");
+        msgBox.setText(tr("There are calibrations that have been modified."));
+        msgBox.setInformativeText(tr("Do you want to save them?"));
         msgBox.setStandardButtons(QMessageBox::Yes | QMessageBox::No | QMessageBox::Cancel);
         msgBox.setDefaultButton(QMessageBox::Yes);
         int res = msgBox.exec();

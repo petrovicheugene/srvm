@@ -206,7 +206,7 @@ void ZCalibrationRepository::zp_clear()
         emit zg_calibrationOperation(COT_REMOVE_CALIBRATIONS, 0, zv_caibrationList.count() - 1);
         for(int i = zv_caibrationList.count()-1; i >= 0; i-- )
         {
-            delete zv_caibrationList.takeAt(i);
+            zv_caibrationList.takeAt(i)->deleteLater();
         }
         emit zg_calibrationOperation(COT_END_REMOVE_CALIBRATIONS, 0, 0);
     }
@@ -1964,7 +1964,7 @@ void ZCalibrationRepository::zh_removeCalibration(int index)
     zv_caibrationList.at(index)->zp_removeCalibrationWindows();
 
     emit zg_calibrationOperation(COT_REMOVE_CALIBRATIONS, index, index);
-    delete zv_caibrationList.takeAt(index);
+    zv_caibrationList.takeAt(index)->deleteLater();
     emit zg_calibrationOperation(COT_END_REMOVE_CALIBRATIONS, index, index);
 }
 //======================================================

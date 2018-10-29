@@ -47,6 +47,16 @@
         <translation>Сохранить изменения?</translation>
     </message>
     <message>
+        <location filename="MainWindow.cpp" line="158"/>
+        <source>There are calibrations that have been modified.</source>
+        <translation>Градуировки были изменены.</translation>
+    </message>
+    <message>
+        <location filename="MainWindow.cpp" line="159"/>
+        <source>Do you want to save them?</source>
+        <translation>Сохранить изменения?</translation>
+    </message>
+    <message>
         <location filename="MainWindow.cpp" line="191"/>
         <source>Exit</source>
         <translation>Выход</translation>
@@ -57,25 +67,21 @@
         <translation>Выйти из приложения</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="196"/>
         <source>About</source>
-        <translation>О программе</translation>
+        <translation type="vanished">О программе</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="197"/>
         <source>About the application</source>
-        <translation>Информация о программе</translation>
+        <translation type="vanished">Информация о программе</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="201"/>
         <location filename="MainWindow.cpp" line="396"/>
         <source>Help</source>
         <translation>Помощь</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="202"/>
         <source>Show user guide</source>
-        <translation>Открыть руководство пользователя</translation>
+        <translation type="vanished">Открыть руководство пользователя</translation>
     </message>
     <message>
         <location filename="MainWindow.cpp" line="218"/>
@@ -268,123 +274,123 @@
         <translation>Невозможно обработать файл типа &quot;%1&quot;!</translation>
     </message>
     <message>
-        <location filename="ZGeneral.cpp" line="94"/>
+        <location filename="ZGeneral.cpp" line="95"/>
         <source>Settings</source>
         <translation>Настройки</translation>
     </message>
     <message>
-        <location filename="ZGeneral.cpp" line="95"/>
+        <location filename="ZGeneral.cpp" line="96"/>
         <source>Run settings of the application</source>
         <translation>Настройки приложения</translation>
     </message>
     <message>
-        <location filename="ZGeneral.cpp" line="96"/>
+        <location filename="ZGeneral.cpp" line="97"/>
         <source>Exit</source>
         <translation>Выход</translation>
     </message>
     <message>
-        <location filename="ZGeneral.cpp" line="97"/>
+        <location filename="ZGeneral.cpp" line="98"/>
         <source>Exit the application</source>
         <translation>Выйти из приложения</translation>
     </message>
     <message>
-        <location filename="ZGeneral.cpp" line="98"/>
+        <location filename="ZGeneral.cpp" line="99"/>
         <source>About</source>
         <translation>О программе</translation>
     </message>
     <message>
-        <location filename="ZGeneral.cpp" line="99"/>
+        <location filename="ZGeneral.cpp" line="100"/>
         <source>About the application</source>
         <translation>Информация о программе</translation>
     </message>
     <message>
-        <location filename="ZGeneral.cpp" line="100"/>
-        <location filename="ZGeneral.cpp" line="118"/>
+        <location filename="ZGeneral.cpp" line="101"/>
+        <location filename="ZGeneral.cpp" line="119"/>
         <source>Help</source>
         <translation>Помощь</translation>
     </message>
     <message>
-        <location filename="ZGeneral.cpp" line="101"/>
+        <location filename="ZGeneral.cpp" line="102"/>
         <source>Show user guide</source>
         <translation>Открыть руководство пользователя</translation>
     </message>
     <message>
-        <location filename="ZGeneral.cpp" line="103"/>
+        <location filename="ZGeneral.cpp" line="104"/>
         <source>Error</source>
         <translation>Ошибка</translation>
     </message>
     <message>
-        <location filename="ZGeneral.cpp" line="104"/>
+        <location filename="ZGeneral.cpp" line="105"/>
         <source>Warning</source>
         <translation>Предупреждение</translation>
     </message>
     <message>
-        <location filename="ZGeneral.cpp" line="105"/>
+        <location filename="ZGeneral.cpp" line="106"/>
         <source>Common</source>
         <translation>Общие</translation>
     </message>
     <message>
-        <location filename="ZGeneral.cpp" line="106"/>
+        <location filename="ZGeneral.cpp" line="107"/>
         <source>Color</source>
         <translation>Цвет</translation>
     </message>
     <message>
-        <location filename="ZGeneral.cpp" line="107"/>
+        <location filename="ZGeneral.cpp" line="108"/>
         <source>Color...</source>
         <translation>Цвет...</translation>
     </message>
     <message>
-        <location filename="ZGeneral.cpp" line="114"/>
+        <location filename="ZGeneral.cpp" line="115"/>
         <source>File</source>
         <translation>Файл</translation>
     </message>
     <message>
-        <location filename="ZGeneral.cpp" line="115"/>
+        <location filename="ZGeneral.cpp" line="116"/>
         <source>Edit</source>
         <translation>Редактирование</translation>
     </message>
     <message>
-        <location filename="ZGeneral.cpp" line="116"/>
+        <location filename="ZGeneral.cpp" line="117"/>
         <source>View</source>
         <translation>Вид</translation>
     </message>
     <message>
-        <location filename="ZGeneral.cpp" line="117"/>
+        <location filename="ZGeneral.cpp" line="118"/>
         <source>Actions</source>
         <translation>Действия</translation>
     </message>
     <message>
-        <location filename="ZGeneral.cpp" line="123"/>
+        <location filename="ZGeneral.cpp" line="124"/>
         <source>OK</source>
         <translation>Ок</translation>
     </message>
     <message>
-        <location filename="ZGeneral.cpp" line="124"/>
+        <location filename="ZGeneral.cpp" line="125"/>
         <source>Apply</source>
         <translation>Применить</translation>
     </message>
     <message>
-        <location filename="ZGeneral.cpp" line="125"/>
+        <location filename="ZGeneral.cpp" line="126"/>
         <source>Cancel</source>
         <translation>Отмена</translation>
     </message>
     <message>
-        <location filename="ZGeneral.cpp" line="126"/>
+        <location filename="ZGeneral.cpp" line="127"/>
         <source>Browse</source>
         <translation>Просмотр</translation>
     </message>
     <message>
-        <location filename="ZGeneral.cpp" line="127"/>
+        <location filename="ZGeneral.cpp" line="128"/>
         <source>New</source>
         <translation>Новый</translation>
     </message>
     <message>
-        <location filename="ZGeneral.cpp" line="133"/>
+        <location filename="ZGeneral.cpp" line="134"/>
         <source>Open file</source>
         <translation>Открыть файл</translation>
     </message>
     <message>
-        <location filename="ZGeneral.cpp" line="134"/>
+        <location filename="ZGeneral.cpp" line="135"/>
         <source>Select color</source>
         <translation>Выбор цвета</translation>
     </message>
@@ -2150,35 +2156,35 @@
         <location filename="ZComponents/ZFileActionManager.cpp" line="315"/>
         <location filename="ZComponents/ZFileActionManager.cpp" line="480"/>
         <location filename="ZComponents/ZFileActionManager.cpp" line="484"/>
-        <location filename="ZComponents/ZFileActionManager.cpp" line="553"/>
-        <location filename="ZComponents/ZFileActionManager.cpp" line="557"/>
+        <location filename="ZComponents/ZFileActionManager.cpp" line="550"/>
+        <location filename="ZComponents/ZFileActionManager.cpp" line="554"/>
         <source>Cannot read file &quot;%1&quot;! %2</source>
         <translation>Невозможно прочитать файл &quot;%1&quot;! %2</translation>
     </message>
     <message>
         <location filename="ZComponents/ZFileActionManager.cpp" line="315"/>
         <location filename="ZComponents/ZFileActionManager.cpp" line="484"/>
-        <location filename="ZComponents/ZFileActionManager.cpp" line="557"/>
+        <location filename="ZComponents/ZFileActionManager.cpp" line="554"/>
         <source>Unknown error</source>
         <translation>Неизвестная ошибка</translation>
     </message>
     <message>
-        <location filename="ZComponents/ZFileActionManager.cpp" line="604"/>
+        <location filename="ZComponents/ZFileActionManager.cpp" line="601"/>
         <source>Select spectrum file</source>
         <translation>Выбор файлов спектров</translation>
     </message>
     <message>
-        <location filename="ZComponents/ZFileActionManager.cpp" line="606"/>
+        <location filename="ZComponents/ZFileActionManager.cpp" line="603"/>
         <source>SRV spectrum files(*.spe);;All files(*.*)</source>
         <translation>СРВ спектры(*.spe);;Все файлы(*.*)</translation>
     </message>
     <message>
-        <location filename="ZComponents/ZFileActionManager.cpp" line="628"/>
+        <location filename="ZComponents/ZFileActionManager.cpp" line="625"/>
         <source>Data loading from file &quot;%1&quot; failed.</source>
         <translation>Не удалось загрузить данные из файла &quot;%1&quot;.</translation>
     </message>
     <message>
-        <location filename="ZComponents/ZFileActionManager.cpp" line="629"/>
+        <location filename="ZComponents/ZFileActionManager.cpp" line="626"/>
         <source>Loading error</source>
         <translation>Ошибка загрузки данных</translation>
     </message>
@@ -2578,7 +2584,7 @@ Do you want to replace them?</source>
     <message>
         <location filename="ZWidgets/ZMessageWidget.cpp" line="200"/>
         <source>Clear messages</source>
-        <translation></translation>
+        <translation>Очистить сообщения</translation>
     </message>
 </context>
 <context>
@@ -4004,12 +4010,12 @@ Do you want to continue?</source>
         <translation>Невозможно прочитать файл &quot;%1&quot;! %2</translation>
     </message>
     <message>
-        <location filename="ZComponents/ZXMLSpectrumArrayIOHandler.cpp" line="195"/>
+        <location filename="ZComponents/ZXMLSpectrumArrayIOHandler.cpp" line="192"/>
         <source>File &quot;%1&quot; is not open in write mode!</source>
         <translation>Файл &quot;%1&quot; не открыт в режиме записи!</translation>
     </message>
     <message>
-        <location filename="ZComponents/ZXMLSpectrumArrayIOHandler.cpp" line="244"/>
+        <location filename="ZComponents/ZXMLSpectrumArrayIOHandler.cpp" line="241"/>
         <source>Cannot write to file &quot;%1&quot;! %2</source>
         <translation>SНевозможно записать в файл &quot;%1&quot;! %2</translation>
     </message>
