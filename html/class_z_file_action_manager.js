@@ -1,0 +1,27 @@
+var class_z_file_action_manager =
+[
+    [ "ZFileActionManager", "class_z_file_action_manager.html#adc16dd6b31acb26eb8ec6197f87778f0", null ],
+    [ "zg_calibrationFileListToOpen", "class_z_file_action_manager.html#a9834f77d4002df1970bb32a6e302de5c", null ],
+    [ "zg_calibrationSaved", "class_z_file_action_manager.html#a76dc124e8c10b6d6b41b31dea1883844", null ],
+    [ "zg_message", "class_z_file_action_manager.html#af96dc9304ede6ed176d88636d6ab9601", null ],
+    [ "zg_requestCalibrationDataAndInitSaving", "class_z_file_action_manager.html#ab22f37ccef4979cf32bde8f8b3a0135b", null ],
+    [ "zg_requestRawArrayListAndInitSaving", "class_z_file_action_manager.html#aadc2be34b47d9de0c0014baca4ea6b78", null ],
+    [ "zg_spectrumArraySaved", "class_z_file_action_manager.html#ac70a966af3e7a9ea441b9202d2be6420", null ],
+    [ "zg_spectrumFileListToOpen", "class_z_file_action_manager.html#a8341398b4aef71cdab0d9040e2bbe6f8", null ],
+    [ "zg_spectrumRawArrayList", "class_z_file_action_manager.html#ad382fa630c43873d8524ab252d552bd8", null ],
+    [ "zp_actionList", "class_z_file_action_manager.html#a6e188ce29edd7b6ec6b1b7aab582cc3b", null ],
+    [ "zp_appendActionsToMenu", "class_z_file_action_manager.html#aef645781f23ee46e3088dcabc7a5ca46", null ],
+    [ "zp_defineSpectrumFilesAndInitAppending", "class_z_file_action_manager.html#a08a999987ebb4743795279224e5c46f7", null ],
+    [ "zp_initOpenCalibrationFromFileAction", "class_z_file_action_manager.html#a3296684f5825a578c3d62040b999ae5a", null ],
+    [ "zp_initOpenSpectrumArrayAction", "class_z_file_action_manager.html#aff158e412635c0a42c3f837e10cd8fea", null ],
+    [ "zp_initSaveAsCalibrationFromFileAction", "class_z_file_action_manager.html#a53b60e54a4320c47786789386d43f4cc", null ],
+    [ "zp_initSaveAsSpectrumArrayAction", "class_z_file_action_manager.html#ae06d8cff6a5bddae7e74ace42fd06dad", null ],
+    [ "zp_initSaveCalibrationFromFileAction", "class_z_file_action_manager.html#a1fbe64952a5b727740d0dfd0b91dd1e3", null ],
+    [ "zp_initSaveSpectrumArrayAction", "class_z_file_action_manager.html#a24a5555ac66e1036a01fd1227e3e84ef", null ],
+    [ "zp_onArrayListDirtyChange", "class_z_file_action_manager.html#a62afeb7fbf68cbd85647ffeceaf34f50", null ],
+    [ "zp_onCurrentCalibrationDirtyChange", "class_z_file_action_manager.html#a63fe3f5219b54c56b5a7f754d33a55e9", null ],
+    [ "zp_openCalibrations", "class_z_file_action_manager.html#ad6e7fe4d99c852dc5e51957f0813c0b0", null ],
+    [ "zp_saveCalibrationToFile", "class_z_file_action_manager.html#a6a9bf3d1f6861d0fa0b3416d8bef6d6b", null ],
+    [ "zp_saveSettings", "class_z_file_action_manager.html#a66183a12e4608be86071b5442be560ec", null ],
+    [ "zp_saveSpectraArrayListToFile", "class_z_file_action_manager.html#a0ea377860c65463e37d3dfa9a856d8f2", null ]
+];
