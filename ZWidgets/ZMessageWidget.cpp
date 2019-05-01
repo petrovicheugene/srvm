@@ -196,7 +196,8 @@ void ZMessageWidget::zh_createComponents()
 
     zv_clearButton = new QPushButton(this);
     zv_clearButton->setFocusPolicy(Qt::NoFocus);
-    zv_clearButton->setIcon(QIcon(":/images/Images/editclear.png"));
+    zv_clearButton->setIcon(QIcon(":/images/ZImages/clear-8.png"));
+    zv_clearButton->setFlat(true);
     zv_clearButton->setToolTip(tr("Clear messages"));
     //zv_clearButton->setFlat(true);
     buttonBox->addButton(zv_clearButton, QDialogButtonBox::ActionRole);

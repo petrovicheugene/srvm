@@ -228,9 +228,9 @@
         <file>ZImages/Qt_logo.png</file>
     </qresource>
     <qresource prefix="/translators">
-        <file>SRVM_ru.qm</file>
-        <file>SRVM_ru.ts</file>
         <file>qtbase_en.qm</file>
         <file>qtbase_ru.qm</file>
+        <file>SRVM_ru.qm</file>
+        <file>SRVM_ru.ts</file>
     </qresource>
 </RCC>

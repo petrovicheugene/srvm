@@ -27,7 +27,7 @@ void ZMessagePanel::zh_createComponents()
     mainLayout->addWidget(buttonBox);
 
     zv_clearButton = new QPushButton(this);
-    zv_clearButton->setIcon(QIcon(":/images/ZWidgets/editclear.png"));
+    zv_clearButton->setIcon(QIcon(":/images/ZImages/clear-8.png"));
 //    zv_clearButton->setIconSize(glPanelButtonIconSize);
 //    zv_clearButton->setMinimumHeight(glPanelButtonMinHeight);
     zv_clearButton->setToolTip(tr("Clear messages"));

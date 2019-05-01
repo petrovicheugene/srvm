@@ -8,13 +8,14 @@
 #include "ZAbstractSpectrum.h"
 #include "ZRawSpectrumArray.h"
 #include "ZChemElementList.h"
-
+//===============================================
+class ZSpeSpectrum;
 //===============================================
 class ZSpectrumArray : public QObject
 {
     Q_OBJECT
 public:
-    explicit ZSpectrumArray(QObject* parent = 0);
+    explicit ZSpectrumArray(QObject* parent = nullptr);
     explicit ZSpectrumArray(const QString&, QObject* parent);
     ~ZSpectrumArray();
     enum OperationType {OT_INSERT_SPECTRA,
@@ -22,10 +23,9 @@ public:
                         OT_REMOVE_SPECTRA,
                         OT_END_REMOVE_SPECTRA,
                         OT_CHANGED,
-                        OT_CONCENTRATION_CHANGED
+                        OT_CONCENTRATION_CHANGED,
+                        OT_SPECTRUM_ENERGY_CALIBRATION_CHANGED
                        };
-
-
 
     QString zp_arrayName() const;
     void zp_setArrayName(const QString&);
@@ -51,7 +51,7 @@ public:
     QString zp_chemConcentration(qint64 chemElementId,
                                  int spectrumIndex) const;
     qreal zp_chemConcentrationValue(qint64 chemElementId,
-                               int spectrumIndex) const;
+                                    int spectrumIndex) const;
     bool zp_setChemConcentration(qint64 chemElementId,
                                  int spectrumIndex, const QString& concentration);
     bool zp_energyCalibration(int spectrumIndex,
@@ -87,9 +87,9 @@ public:
     bool zp_isEnergyCalibrationValid() const;
 
     qint64 zp_arrayId() const;
-//    bool zp_averageChemConcentrationForChemElementId(qint64 chemElementId, qreal&) const;
-//    bool zp_averageChemConcentration(const QString&, qreal&) const;
-//    bool zp_averageChemConcentration(int, qreal&) const;
+    //    bool zp_averageChemConcentrationForChemElementId(qint64 chemElementId, qreal&) const;
+    //    bool zp_averageChemConcentration(const QString&, qreal&) const;
+    //    bool zp_averageChemConcentration(int, qreal&) const;
 
 signals:
 
@@ -127,8 +127,12 @@ private:
     // FUNCS
     void zh_createConnections();
     void zh_recalcArrayMaxParameters();
-//    bool zh_calcAverageChemConcentration(qint64 chemElementId);
-//    void zh_calcAverageChemConcentrations();
+
+    void zh_saveSpectrumToFile(ZSpeSpectrum* spectrum) const;
+    int zh_indexForSpectrum(ZSpeSpectrum* spectrum, bool *ok) const;
+
+    //    bool zh_calcAverageChemConcentration(qint64 chemElementId);
+    //    void zh_calcAverageChemConcentrations();
 
     static QList<QColor> zp_createColorList();
     static bool checkColor(QColor color);
@@ -136,7 +140,8 @@ private:
 
 private slots:
 
-    void zh_saveSpectrumToFile() const;
+    void zh_onSpectrumEnergyCalibrationChange() const;
+    void zh_onSpectrumGainFactorChange() const;
 
 };
 //===============================================

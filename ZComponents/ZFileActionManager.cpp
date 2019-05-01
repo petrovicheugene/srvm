@@ -8,6 +8,7 @@
 #include "ZCalibration.h"
 #include "ZGeneral.h"
 
+#include <QApplication>
 #include <QDebug>
 #include <QMenu>
 #include <QFileDialog>
@@ -406,7 +407,7 @@ void ZFileActionManager::zh_restoreSettings()
 {
     QSettings settings;
     QVariant vData;
-    settings.beginGroup(glAppVersion);
+    settings.beginGroup(qApp->applicationVersion());
     settings.beginGroup("Common");
 
     vData = settings.value("spectrumArrayFolderPath");
@@ -434,7 +435,8 @@ void ZFileActionManager::zh_restoreSettings()
 void ZFileActionManager::zp_saveSettings() const
 {
     QSettings settings;
-    settings.beginGroup(glAppVersion);
+
+    settings.beginGroup(qApp->applicationVersion());
     settings.beginGroup("Common");
 
     settings.setValue("spectrumArrayFolderPath", QVariant(zv_spectrumArrayFolderPath));

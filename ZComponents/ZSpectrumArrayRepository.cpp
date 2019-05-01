@@ -766,7 +766,7 @@ const ZAbstractSpectrum* ZSpectrumArrayRepository::zp_spectrum(int arrayIndex, i
 {
     if(arrayIndex < 0 || arrayIndex >= zv_arrayList.count() )
     {
-        return 0;
+        return nullptr;
     }
 
     return zv_arrayList.value(arrayIndex)->zp_spectrum(spectrumIndex);
@@ -1152,7 +1152,6 @@ void ZSpectrumArrayRepository::zp_currentSpectrumChanged(int currentSpectrumInde
     }
 
     emit zg_currentSpectrumChanged(currentSpectrumId, currentSpectrumIndex, previousSpectrumId, previousSpectrumIndex);
-
     emit zg_energyCalibrationChanged(energyCalibration);
 }
 //==================================================================
@@ -1481,6 +1480,33 @@ void ZSpectrumArrayRepository::zh_onSpectrumOperation(ZSpectrumArray::OperationT
         else if(type == ZSpectrumArray::OT_CONCENTRATION_CHANGED)
         {
             emit zg_spectrumOperation(SOT_CONCENTRATION_CHANGED, arrayIndex, first, last);
+        }
+        else if(type == ZSpectrumArray::OT_SPECTRUM_ENERGY_CALIBRATION_CHANGED)
+        {
+            // if calling spectrum is current then get energy calibration and emit signal
+
+            // define current spectrum
+            int currentArrayIndex = -1;
+            emit zg_requestCurrentArrayIndex(currentArrayIndex);
+
+            if(currentArrayIndex >= 0 && currentArrayIndex < zv_arrayList.count() &&
+                    currentArrayIndex == arrayIndex)
+            {
+                // get current spectrum
+                int currentRow = -1;
+                bool ok = false;
+                emit zg_requestCurrentRow(currentRow, &ok);
+
+                if(ok && currentRow >= first && currentRow <= last)
+                {
+                    QList<double> energyCalibration;
+                    QString energyUnit;
+                    array->zp_energyCalibration(currentRow, energyCalibration, energyUnit);
+
+                    qDebug() << "ENERGY CALIBRATION CHANGED";
+                    emit zg_energyCalibrationChanged(energyCalibration);
+                }
+            }
         }
 
         break;
@@ -1862,7 +1888,7 @@ void ZSpectrumArrayRepository::zh_onEnergyCalibrationAction()
     if(selectedSpectrumList.isEmpty())
     {
         QString string = tr("There is no spectra for energy calibration!");
-        QMessageBox::critical(0, tr("Spectra removing"), string, QMessageBox::Ok);
+        QMessageBox::critical(nullptr, tr("Spectra removing"), string, QMessageBox::Ok);
         return;
     }
 
@@ -1886,7 +1912,7 @@ void ZSpectrumArrayRepository::zh_onEnergyCalibrationAction()
 
     for(int s = 0; s < spectrumList.count(); s++)
     {
-        if(!selectedSpectrumList.contains(static_cast<int>(spectrumList.at(s)->zp_spectrumId())))
+        if(!selectedSpectrumList.contains(s))
         {
             continue;
         }
@@ -1898,10 +1924,9 @@ void ZSpectrumArrayRepository::zh_onEnergyCalibrationAction()
         }
     }
 
-
     ZEnergyCalibrationDialogV2 dialog(spectrumMap);
-//    connect(&dialog, &ZEnergyCalibrationDialogV2::zg_energyCalibrationChanged,
-//            this, &ZSpectrumArrayRepository::zh_writeEnergyCalibrationToSpectra);
+    //    connect(&dialog, &ZEnergyCalibrationDialogV2::zg_energyCalibrationChanged,
+    //            this, &ZSpectrumArrayRepository::zh_writeEnergyCalibrationToSpectra);
     dialog.exec();
 }
 //==================================================================

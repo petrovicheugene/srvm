@@ -15,7 +15,7 @@ int ZHelpBrowser::zv_refCount = 0;
 ZHelpBrowser::ZHelpBrowser(QWidget *parent ) :
     QDialog(parent)
 {
-    QString winTitle = QString("%1 - %2").arg(qApp->property("glAppProduct").toString(),
+    QString winTitle = QString("%1 - %2").arg(qApp->applicationDisplayName(),
                                               tr("Help"));
     setWindowTitle(winTitle);
 
@@ -115,10 +115,9 @@ bool ZHelpBrowser::zh_openSettingsGroup(QSettings* settings) const
         return false;
     }
     // open version group
-    QString verString = qApp->property("glAppVersion").toString();
-    if(!verString.isEmpty())
+    if(!qApp->applicationVersion().isEmpty())
     {
-        settings->beginGroup(verString);
+        settings->beginGroup(qApp->applicationVersion());
     }
 
     // open dialog group
@@ -201,7 +200,7 @@ void ZHelpBrowser::zp_freeInstance()
     if(zv_refCount < 1)
     {
         QSettings settings;
-        settings.beginGroup(qApp->property("glAppVersion").toString());
+        settings.beginGroup(qApp->applicationVersion());
         settings.setValue("help geometry", saveGeometry());
         settings.endGroup();
 

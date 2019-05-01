@@ -1030,7 +1030,7 @@ bool ZCalibration::zp_removeMixedTerms()
         }
 
         emit zg_termOperation(TOT_BEGIN_REMOVE_TERM, t, t);
-        delete zv_termList.takeAt(t);
+        zv_termList.takeAt(t)->deleteLater();
         emit zg_termOperation(TOT_END_REMOVE_TERM, t, t);
         zv_dirty = true;
         zv_dateTime = QDateTime::currentDateTime();
@@ -1575,7 +1575,7 @@ void ZCalibration::zh_removeTerm(ZAbstractTerm* term)
         if(zv_termList.at(i) == term)
         {
             emit zg_termOperation(TOT_BEGIN_REMOVE_TERM, i, i);
-            delete zv_termList.takeAt(i);
+            zv_termList.takeAt(i)->deleteLater();
             emit zg_termOperation(TOT_END_REMOVE_TERM, i, i);
             zv_dirty = true;
             zv_dateTime = QDateTime::currentDateTime();
@@ -1815,7 +1815,7 @@ bool ZCalibration::zp_removeCalibrationWindow(int windowIndex)
     }
 
     emit zg_windowOperation(WOT_BEGIN_REMOVE_WINDOWS, windowIndex, windowIndex);
-    delete zv_windowList.takeAt(windowIndex);
+    zv_windowList.takeAt(windowIndex)->deleteLater();
     emit zg_windowOperation(WOT_END_REMOVE_WINDOWS, windowIndex, windowIndex);
     zv_dateTime = QDateTime::currentDateTime();
     zv_dirty = true;

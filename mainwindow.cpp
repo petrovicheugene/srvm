@@ -40,6 +40,7 @@
 #include "ZTermCorrelationTableModel.h"
 
 // qt
+#include <QApplication>
 #include <QAction>
 #include <QByteArray>
 #include <QCloseEvent>
@@ -67,7 +68,7 @@ MainWindow::MainWindow(QWidget *parent)
     qRegisterMetaType<ZEquationSettingsData>("ZEquationSettingsData");
     //    qRegisterMetaType<ZSpeSpectrum>("ZSpeSpectrum");
 
-    setWindowTitle(glAppProduct);
+    setWindowTitle(qApp->applicationDisplayName());
 
     //    QPalette palette = QPalette(Qt::darkBlue);
     //    this->setPalette(palette);
@@ -155,8 +156,8 @@ void MainWindow::closeEvent(QCloseEvent* e)
     {
         QMessageBox msgBox(this);
         msgBox.setIcon(QMessageBox::Warning);
-        msgBox.setText("There are calibrations that have been modified.");
-        msgBox.setInformativeText("Do you want to save them?");
+        msgBox.setText(tr("There are calibrations that have been modified."));
+        msgBox.setInformativeText(tr("Do you want to save them?"));
         msgBox.setStandardButtons(QMessageBox::Yes | QMessageBox::No | QMessageBox::Cancel);
         msgBox.setDefaultButton(QMessageBox::Yes);
         int res = msgBox.exec();
@@ -644,7 +645,7 @@ void MainWindow::zh_restoreSettings()
 {
     QSettings settings;
     QVariant vData;
-    settings.beginGroup(glAppVersion);
+    settings.beginGroup(qApp->applicationVersion());
     settings.beginGroup("Common");
 
     // app geometry
@@ -661,14 +662,14 @@ void MainWindow::zh_restoreSettings()
     }
 
     settings.endGroup(); // Common
-    settings.endGroup(); // glAppVersion
+    settings.endGroup(); // qApp->applicationVersion()
 
 }
 //==========================================================
 void MainWindow::zh_saveSettings()
 {
     QSettings settings;
-    settings.beginGroup(glAppVersion);
+    settings.beginGroup(qApp->applicationVersion());
     settings.beginGroup("Common");
 
     settings.setValue("appGeometry", saveGeometry());
@@ -676,7 +677,7 @@ void MainWindow::zh_saveSettings()
 
     // central widget
     settings.endGroup(); // Common
-    settings.endGroup(); // glAppVersion
+    settings.endGroup(); // qApp->applicationVersion()
 
     emit zg_saveSettings();
 }
@@ -698,7 +699,7 @@ void MainWindow::zh_saveSettings()
 //    //                               "%5: %4.<br>"
 //    //                               "Author's email: <a href=mailto:petrovich.eugene@gmail.com?Subject=My%20Subject>petrovich.eugene@gmail.com</a></p>"
 //    //                               ).arg(glAppProduct,
-//    //                                     glAppVersion,
+//    //                                     qApp->applicationVersion(),
 //    //                                     //qApp->applicationVersion(),
 //    //                                     text,
 //    //                                     tr("Eugene Petrovich"),
@@ -768,7 +769,7 @@ void MainWindow::zh_saveSettings()
 //        mv_helpBrowser = ZHelpBrowser::mf_instance(searchList, source, centralWidget());
 //        mv_helpBrowser->setAttribute(Qt::WA_GroupLeader);
 //        QSettings settings;
-//        settings.beginGroup(glAppVersion);
+//        settings.beginGroup(qApp->applicationVersion());
 
 //        settings.beginGroup("AppState");
 //        QVariant vData = settings.value("help browser geometry");

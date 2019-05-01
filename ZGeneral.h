@@ -7,12 +7,12 @@
 //#include <QMessageBox>
 
 //==========================================================
-extern const QString glAppExeBaseName; /*!< Exe file name without version */
-extern const QString glAppProduct; /*!< Application representation name that appears in window title*/
-extern const QString glAppVersion; /*!< Application version like 1.2.3.b or 1.2.3 if release version*/
-extern const QString glAppCompany; /*!< Application company name like TechnoAnalyt Ltd.*/
-extern const QString glAppCopyright; /*!< Copyright string */
-extern const QString glAppCompanyURL; /*!< Company URL */
+//extern const QString glAppExeBaseName; /*!< Exe file name without version */
+//extern const QString glAppProduct; /*!< Application representation name that appears in window title*/
+//extern const QStrinqApp->applicationVersion()on; /*!< Application version like 1.2.3.b or 1.2.3 if release version*/
+//extern const QString glAppCompany; /*!< Application company name like TechnoAnalyt Ltd.*/
+//extern const QString glAppCopyright; /*!< Copyright string */
+//extern const QString glAppCompanyURL; /*!< Company URL */
 
 extern const QString glDefaultDBSuffixString;
 extern const QString glDefaultChemElementString; /*!< TODO: describe */
