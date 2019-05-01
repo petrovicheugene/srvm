@@ -12,7 +12,7 @@
 //======================================================
 ZBaseMainWindow::ZBaseMainWindow(QWidget *parent) : QMainWindow(parent)
 {
-    setWindowTitle(qApp->property("glAppProduct").toString());
+    setWindowTitle(qApp->applicationDisplayName());
 
     zv_helpBrowser = nullptr;
 
@@ -52,10 +52,9 @@ bool ZBaseMainWindow::zh_openSettingsGroup(QSettings* settings)
         return false;
     }
     // open version group
-    QString verString = qApp->property("glAppVersion").toString();
-    if(!verString.isEmpty())
+    if(!qApp->applicationVersion().isEmpty())
     {
-        settings->beginGroup(verString);
+        settings->beginGroup(qApp->applicationVersion());
     }
 
     settings->beginGroup("AppState");

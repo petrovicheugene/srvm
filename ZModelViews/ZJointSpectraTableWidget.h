@@ -41,6 +41,7 @@ public slots:
     void zp_setCurrentSpectrumIndex(int spectrumIndex);
     void zp_selectedSpectrumIndexList(QList<int>&);
     void zp_currentIndex(QModelIndex& ) const;
+    void zp_currentRow(int& row, bool* ok) const;
 
 private:
 

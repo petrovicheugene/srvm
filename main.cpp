@@ -1,6 +1,7 @@
 //===============================================
 #include "MainWindow.h"
 #include "ZGeneral.h"
+#include "ZTranslatorManager.h"
 
 #include <windows.h>
 #include <QApplication>
@@ -32,12 +33,12 @@
 
 */
 //======================================================
-extern const QString glAppExeBaseName =  APP_EXE_BASE_NAME; // w/o version
-extern const QString glAppProduct =  APP_PRODUCT;
-extern const QString glAppVersion = APP_VERSION;
-extern const QString glAppCompany = APP_COMPANY;
-extern const QString glAppCopyright = APP_COPYRIGHT;
-extern const QString glAppCompanyURL = APP_COMPANY_URL;
+//extern const QString glAppExeBaseName =  APP_EXE_BASE_NAME; // w/o version
+//extern const QString glAppProduct =  APP_PRODUCT;
+//extern const QString glAppVersion = APP_VERSION;
+//extern const QString glAppCompany = APP_COMPANY;
+//extern const QString glAppCopyright = APP_COPYRIGHT;
+//extern const QString glAppCompanyURL = APP_COMPANY_URL;
 //======================================================
 namespace
 {
@@ -200,48 +201,81 @@ int main(int argc, char *argv[])
 
     // set translators
     // translator attempts to load from expernal file first and if not from resources
-    QDir appDir(QApplication::applicationDirPath());
-    QTranslator appTranslator;
-    if(appTranslator.load(appDir.absoluteFilePath(QString("%1_%2").arg(APP_EXE_BASE_NAME, QLocale::system().name())))
-            || appTranslator.load(QString(":/translators/%1_%2").arg(APP_EXE_BASE_NAME, QLocale::system().name())))
-    {
-        a.installTranslator(&appTranslator);
-    }
+//    QDir appDir(QApplication::applicationDirPath());
+//    QTranslator appTranslator;
+//    if(appTranslator.load(appDir.absoluteFilePath(QString("%1_%2").arg(APP_EXE_BASE_NAME, QLocale::system().name())))
+//            || appTranslator.load(QString(":/translators/%1_%2").arg(APP_EXE_BASE_NAME, QLocale::system().name())))
+//    {
+//        a.installTranslator(&appTranslator);
+//    }
 
-    QTranslator qtTranslator;
-    if(qtTranslator.load(appDir.absoluteFilePath(QString("%1_%2").arg("qtbase", QLocale::system().name())))
-            || qtTranslator.load(QString(":/translators/qtbase_%2").arg(QLocale::system().name())))
-    {
-        a.installTranslator(&qtTranslator);
-    }
+//    QTranslator qtTranslator;
+//    if(qtTranslator.load(appDir.absoluteFilePath(QString("%1_%2").arg("qtbase", QLocale::system().name())))
+//            || qtTranslator.load(QString(":/translators/qtbase_%2").arg(QLocale::system().name())))
+//    {
+//        a.installTranslator(&qtTranslator);
+//    }
 
-    // set application properties
-    QApplication::setOrganizationName(APP_COMPANY);
-    QApplication::setApplicationName(APP_EXE_BASE_NAME);
-    QApplication::setApplicationVersion(APP_VERSION);
+//    // set application properties
+//    QApplication::setOrganizationName(APP_COMPANY);
+//    QApplication::setApplicationName(APP_EXE_BASE_NAME);
+//    QApplication::setApplicationVersion(APP_VERSION);
 
     // create qApp properties and set .pro defines into them
-#ifdef APP_EXE_BASE_NAME
-    qApp->setProperty("glAppExeBaseName", QString(APP_EXE_BASE_NAME));
+//#ifdef APP_EXE_BASE_NAME
+//    qApp->setProperty("glAppExeBaseName", QString(APP_EXE_BASE_NAME));
+//#endif
+//#ifdef APP_PRODUCT
+//    qApp->setProperty("glAppProduct", QString(APP_PRODUCT));
+//#endif
+//#ifdef APP_VERSION
+//    qApp->setProperty("glAppVersion", QString(APP_VERSION));
+//#endif
+//#ifdef APP_COMPANY
+//    qApp->setProperty("glAppCompany", QString(APP_COMPANY));
+//#endif
+//#ifdef APP_COPYRIGHT
+//    qApp->setProperty("glAppCopyright", QString(APP_COPYRIGHT));
+//#endif
+//#ifdef APP_COMPANY_URL
+//    qApp->setProperty("glAppCompanyURL", QString(APP_COMPANY_URL));
+//#endif
+//#ifdef APP_ICON
+//    qApp->setProperty("glAppIcon", QString(APP_ICON));
+//#endif
+
+    // create qApp properties and set .pro defines into them
+#ifdef APP_DISPLAY_NAME
+    QApplication::setApplicationDisplayName(APP_DISPLAY_NAME);
 #endif
+
 #ifdef APP_PRODUCT
-    qApp->setProperty("glAppProduct", QString(APP_PRODUCT));
+    QApplication::setApplicationName(APP_PRODUCT);
 #endif
+
 #ifdef APP_VERSION
-    qApp->setProperty("glAppVersion", QString(APP_VERSION));
+    QApplication::setApplicationVersion(APP_VERSION);
 #endif
+
 #ifdef APP_COMPANY
-    qApp->setProperty("glAppCompany", QString(APP_COMPANY));
+    QApplication::setOrganizationName(APP_COMPANY);
 #endif
-#ifdef APP_COPYRIGHT
-    qApp->setProperty("glAppCopyright", QString(APP_COPYRIGHT));
-#endif
+
 #ifdef APP_COMPANY_URL
-    qApp->setProperty("glAppCompanyURL", QString(APP_COMPANY_URL));
+    QApplication::setOrganizationDomain(APP_COMPANY_URL);
 #endif
+
+#ifdef APP_COPYRIGHT
+    qApp->setProperty("appCopyright", QString(APP_COPYRIGHT));
+#endif
+
 #ifdef APP_ICON
-    qApp->setProperty("glAppIcon", QString(APP_ICON));
+    qApp->setProperty("appIcon", QString(APP_ICON));
 #endif
+
+    ZTranslatorManager languageManager;
+    languageManager.zp_installTranslatorsToApplication();
+
 
     // set dots on the splitter handle
     qApp->setStyleSheet(

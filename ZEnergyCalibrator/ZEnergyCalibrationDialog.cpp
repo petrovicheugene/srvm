@@ -6,6 +6,7 @@
 #include "ZSpeSpectrum.h"
 #include "ZPeakWindowTableModel.h"
 
+#include <QApplication>
 #include <limits>
 #include <QDialogButtonBox>
 #include <QFrame>
@@ -120,7 +121,7 @@ void ZEnergyCalibrationDialog::zh_restoreSettings()
 {
     QSettings settings;
     QVariant vData;
-    settings.beginGroup(glAppVersion);
+    settings.beginGroup(qApp->applicationVersion());
     settings.beginGroup("EnergyCalibratorWidget");
 
     vData = settings.value("widgetGeometry");
@@ -136,7 +137,7 @@ void ZEnergyCalibrationDialog::zh_restoreSettings()
 void ZEnergyCalibrationDialog::zh_saveSettings() const
 {
     QSettings settings;
-    settings.beginGroup(glAppVersion);
+    settings.beginGroup(qApp->applicationVersion());
     settings.beginGroup("EnergyCalibratorWidget");
 
     settings.setValue("widgetGeometry", QVariant::fromValue<QByteArray>(this->saveGeometry()));

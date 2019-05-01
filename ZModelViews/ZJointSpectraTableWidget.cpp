@@ -81,6 +81,19 @@ void ZJointSpectrumTableWidget::zp_currentIndex(QModelIndex& index) const
     index = zv_table->currentIndex();
 }
 //=============================================================
+void ZJointSpectrumTableWidget::zp_currentRow(int& row, bool* ok) const
+{
+    QModelIndex currentIndex;
+    zp_currentIndex(currentIndex);
+
+    if(ok)
+    {
+        *ok = currentIndex.isValid();
+    }
+
+    row = currentIndex.row();
+}
+//=============================================================
 void ZJointSpectrumTableWidget::zh_createComponents()
 {
     zv_mainLayout = new QVBoxLayout;
@@ -141,7 +154,7 @@ void ZJointSpectrumTableWidget::zp_appendButtonActions(QList<QAction*> actionLis
 
     for(int a = 0; a < actionList.count(); a++)
     {
-        if(actionList.at(a) == 0)
+        if(actionList.at(a) == nullptr)
         {
             // Separator for context menu
             continue;
@@ -160,7 +173,7 @@ void ZJointSpectrumTableWidget::zp_appendContextMenuActions(QList<QAction*> acti
 {
     foreach(QAction* action, actionList)
     {
-        if(action != 0 && zv_contextMenuActionList.contains(action))
+        if(action != nullptr && zv_contextMenuActionList.contains(action))
         {
             continue;
         }
@@ -177,13 +190,15 @@ void ZJointSpectrumTableWidget::zp_connectToSpectrumArrayRepository(ZSpectrumArr
             repository, &ZSpectrumArrayRepository::zp_currentSpectrumChanged);
     connect(repository, &ZSpectrumArrayRepository::zg_setCurrentSpectrumIndex,
             this, &ZJointSpectrumTableWidget::zp_setCurrentSpectrumIndex);
+    connect(repository, &ZSpectrumArrayRepository::zg_requestCurrentRow,
+            this, &ZJointSpectrumTableWidget::zp_currentRow);
 
 }
 //==============================================================
 void ZJointSpectrumTableWidget::zp_connectToCalibrationRepository(ZCalibrationRepository* repository)
 {
     QList<QAction*> separatorList;
-    separatorList << 0;
+    separatorList << nullptr;
     zp_appendContextMenuActions(separatorList);
     zp_appendContextMenuActions(repository->zp_calibrationVisibilityActions());
 }
@@ -250,7 +265,7 @@ void ZJointSpectrumTableWidget::zh_onContextMenuRequest(const QPoint &pos)
 
     foreach(QAction* action, zv_contextMenuActionList)
     {
-        if(action == 0)
+        if(action == nullptr)
         {
             menu->addSeparator();
             continue;

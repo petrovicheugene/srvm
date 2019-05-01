@@ -23,7 +23,7 @@ class ZChemicalElementProprtyEditor : public ZBaseDialog
     Q_OBJECT
 public:
     explicit ZChemicalElementProprtyEditor(QWidget *parent = nullptr);
-    ~ZChemicalElementProprtyEditor();
+    ~ZChemicalElementProprtyEditor() override;
 
     void zp_setModel(QAbstractItemModel* model);
 

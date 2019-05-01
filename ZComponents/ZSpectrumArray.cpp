@@ -600,10 +600,12 @@ bool ZSpectrumArray::zp_appendSpectrum(const ZRawSpectrum& rawSpectrum, bool las
                 speSpectrum->zp_insertConcentration(chemElementId, it.value());
             }
 
+//            connect(speSpectrum, &ZSpeSpectrum::zg_energyCalibrationChanged,
+//                    this, &ZSpectrumArray::zh_saveSpectrumToFile);
             connect(speSpectrum, &ZSpeSpectrum::zg_energyCalibrationChanged,
-                    this, &ZSpectrumArray::zh_saveSpectrumToFile);
+                    this, &ZSpectrumArray::zh_onSpectrumEnergyCalibrationChange);
             connect(speSpectrum, &ZSpeSpectrum::zg_gainFactorChanged,
-                    this, &ZSpectrumArray::zh_saveSpectrumToFile);
+                    this, &ZSpectrumArray::zh_onSpectrumGainFactorChange);
         }
     }
 
@@ -612,7 +614,7 @@ bool ZSpectrumArray::zp_appendSpectrum(const ZRawSpectrum& rawSpectrum, bool las
     return res;
 }
 //===============================================
-void ZSpectrumArray::zh_saveSpectrumToFile() const
+void ZSpectrumArray::zh_onSpectrumEnergyCalibrationChange() const
 {
     ZSpeSpectrum* spectrum = qobject_cast<ZSpeSpectrum*>(sender());
     if(!spectrum)
@@ -620,6 +622,30 @@ void ZSpectrumArray::zh_saveSpectrumToFile() const
         return;
     }
 
+    zh_saveSpectrumToFile(spectrum);
+
+    bool ok = false;
+    int spectrumIndex = zh_indexForSpectrum(spectrum, &ok);
+
+    if(ok)
+    {
+        emit zg_spectrumOperation(ZSpectrumArray::OT_SPECTRUM_ENERGY_CALIBRATION_CHANGED, spectrumIndex, spectrumIndex);
+    }
+}
+//===============================================
+void ZSpectrumArray::zh_onSpectrumGainFactorChange() const
+{
+    ZSpeSpectrum* spectrum = qobject_cast<ZSpeSpectrum*>(sender());
+    if(!spectrum)
+    {
+        return;
+    }
+
+    zh_saveSpectrumToFile(spectrum);
+}
+//===============================================
+void ZSpectrumArray::zh_saveSpectrumToFile(ZSpeSpectrum* spectrum) const
+{
     ZSpeIOHandler speIOHandler(nullptr);
 
     QFileInfo fileInfo(spectrum->zp_path());
@@ -627,6 +653,28 @@ void ZSpectrumArray::zh_saveSpectrumToFile() const
     QString fileName = fileInfo.fileName();
 
     speIOHandler.zp_saveSpectrumToFile(folderPath, fileName, spectrum);
+}
+//===============================================
+int ZSpectrumArray::zh_indexForSpectrum(ZSpeSpectrum* spectrum, bool* ok) const
+{
+    for(int i = 0; i < zv_spectrumList.count(); i++)
+    {
+        if(zv_spectrumList.at(i) == spectrum)
+        {
+            if(ok)
+            {
+                *ok = true;
+            }
+            return i;
+        }
+    }
+
+    if(ok)
+    {
+        *ok = false;
+    }
+
+    return -1;
 }
 //===============================================
 bool ZSpectrumArray::zp_appendNewChemElement(QString chemElement)

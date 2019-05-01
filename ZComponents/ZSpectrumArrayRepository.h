@@ -153,7 +153,7 @@ signals:
     void zg_currentSpectrumChanged(qint64 currentSpectrumId, int currentSpectrumIndex,
                                    qint64 previousSpectrumId, int previousSpectrumIndex);
 
-    void zg_energyCalibrationChanged(QList<double> energyCalibration);
+    void zg_energyCalibrationChanged(QList<double> energyCalibration) const;
     void zg_arrayMaxParametersChanged(qint64 arrayId, int intensity, int channels);
     void zg_requestIsPlotScaled(bool& isScaled);
 
@@ -161,6 +161,8 @@ signals:
     void zg_requestSelectedString(QString&) const;
 
     void zg_arrayListDirtyChanged(bool dirty, bool currentArrayExists) const;
+
+    void zg_requestCurrentRow(int& currentRow, bool* ok) const;
 
 public slots:
 
@@ -210,6 +212,7 @@ private slots:
 
     void zh_writeEnergyCalibrationToSpectra(int gainFactor,
                                    const QList<double> &energyCalibrationFactors);
+
 private:
 
     // VARS
