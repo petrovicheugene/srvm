@@ -138,6 +138,7 @@ private slots:
 
 
     void zh_rebuildCorrelationPlot();
+    void zh_createPlotterWidget();
 
 };
 Q_DECLARE_METATYPE(QtMsgType)

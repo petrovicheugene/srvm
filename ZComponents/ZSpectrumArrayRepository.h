@@ -18,7 +18,7 @@ class ZSpectrumArrayRepository : public QObject
 {
     Q_OBJECT
 public:
-    explicit ZSpectrumArrayRepository(QObject *parent = 0);
+    explicit ZSpectrumArrayRepository(QObject *parent = nullptr);
 
     // VARS
     enum ArrayOperationType {AOT_INSERT_ARRAYS,
@@ -162,7 +162,7 @@ signals:
 
     void zg_arrayListDirtyChanged(bool dirty, bool currentArrayExists) const;
 
-    void zg_requestCurrentRow(int& currentRow, bool* ok) const;
+    void zg_requestCurrentSpectrumRow(int& currentRow, bool* ok) const;
 
 public slots:
 
@@ -177,6 +177,10 @@ public slots:
     void zp_onSelectionSpectraChange(bool selectionEnabled,
                                      bool concentrationSelected,
                                      bool spectrumSelected);
+
+    void zp_currentSpectrumWindowIntensity(int firstChannel,
+                                           int lastChennel, qreal &intensity) const;
+
 
 private slots:
 

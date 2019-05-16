@@ -600,8 +600,8 @@ bool ZSpectrumArray::zp_appendSpectrum(const ZRawSpectrum& rawSpectrum, bool las
                 speSpectrum->zp_insertConcentration(chemElementId, it.value());
             }
 
-//            connect(speSpectrum, &ZSpeSpectrum::zg_energyCalibrationChanged,
-//                    this, &ZSpectrumArray::zh_saveSpectrumToFile);
+            //            connect(speSpectrum, &ZSpeSpectrum::zg_energyCalibrationChanged,
+            //                    this, &ZSpectrumArray::zh_saveSpectrumToFile);
             connect(speSpectrum, &ZSpeSpectrum::zg_energyCalibrationChanged,
                     this, &ZSpectrumArray::zh_onSpectrumEnergyCalibrationChange);
             connect(speSpectrum, &ZSpeSpectrum::zg_gainFactorChanged,
@@ -740,7 +740,7 @@ const ZAbstractSpectrum *ZSpectrumArray::zp_spectrum(int index) const
 {
     if(index < 0 || index >= zv_spectrumList.count())
     {
-        return 0;
+        return nullptr;
     }
 
     return zv_spectrumList.at(index);

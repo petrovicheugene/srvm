@@ -38,7 +38,7 @@ QStringList ZSpeSpectrum::zp_isEnergyCalibrationAndExpositionSuitable(const QStr
         inconsistenciesList << tr("energy unit");
     }
 
-    if(zv_auxData.zp_energyK0() - K0 == 0.0)
+    if(zv_auxData.zp_energyK0() - K0 != 0.0)
     {
         inconsistenciesList << tr("energy factor K0");
     }

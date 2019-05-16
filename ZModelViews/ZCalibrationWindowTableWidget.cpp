@@ -30,8 +30,8 @@ void ZCalibrationWindowTableWidget::zp_setModel(ZCalibrationWindowModel* model)
 
     zv_channelDelegate = new ZChannelNumberDelegate(zv_table);
     zp_setChannelNumberMinMax(0,zv_defaultChannelCount);
-    zv_table->setItemDelegateForColumn(2, zv_channelDelegate);
     zv_table->setItemDelegateForColumn(3, zv_channelDelegate);
+    zv_table->setItemDelegateForColumn(4, zv_channelDelegate);
 
     zv_table->setAlternatingRowColors(true);
     connect(zv_table->selectionModel(), &QItemSelectionModel::currentRowChanged,

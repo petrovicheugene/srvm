@@ -8,7 +8,7 @@ class ZChannelNumberDelegate : public QStyledItemDelegate
 {
    Q_OBJECT
 public:
-   explicit ZChannelNumberDelegate(QObject *parent = 0);
+   explicit ZChannelNumberDelegate(QObject *parent = nullptr);
 
    QWidget * createEditor(QWidget* parent, const QStyleOptionViewItem & option, const QModelIndex & index ) const;
    virtual void	paint ( QPainter * painter, const QStyleOptionViewItem & option, const QModelIndex & index ) const;

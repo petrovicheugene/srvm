@@ -1174,6 +1174,42 @@ void ZSpectrumArrayRepository::zp_onSelectionSpectraChange(bool selectionEnabled
     zv_clearConcentrationDataAction->setEnabled(concentrationSelected);
 }
 //==================================================================
+void ZSpectrumArrayRepository::zp_currentSpectrumWindowIntensity(int firstChannel,
+                                                                 int lastChennel, qreal& intensity) const
+{
+    intensity = sqrt(-1); // NAN value
+
+    // get current spectrum array
+    int currentArrayIndex = -1;
+    emit zg_requestCurrentArrayIndex(currentArrayIndex);
+
+    if(currentArrayIndex < 0 || currentArrayIndex >= zv_arrayList.count())
+    {
+        // RETURN ERROR
+        return;
+    }
+
+    int currentSpectrumIndex = -1;
+    bool ok = false;
+    emit zg_requestCurrentSpectrumRow(currentSpectrumIndex, &ok);
+
+    if(!ok || currentSpectrumIndex < 0 || currentSpectrumIndex >= zv_arrayList.at(currentArrayIndex)->zp_spectrumCount())
+    {
+        // RETURN ERROR
+        return;
+    }
+
+
+    const ZAbstractSpectrum* spectrum =  zv_arrayList.at(currentArrayIndex)->zp_spectrum(currentSpectrumIndex);
+    if(!spectrum)
+    {
+        // RETURN ERROR
+        return;
+    }
+
+    spectrum->zp_intensityInWindow(firstChannel, lastChennel, intensity);
+}
+//==================================================================
 void ZSpectrumArrayRepository::zh_onSpectrumArraySaving(QString filePath)
 {
     zv_arrayFilePath = filePath;
@@ -1495,15 +1531,13 @@ void ZSpectrumArrayRepository::zh_onSpectrumOperation(ZSpectrumArray::OperationT
                 // get current spectrum
                 int currentRow = -1;
                 bool ok = false;
-                emit zg_requestCurrentRow(currentRow, &ok);
+                emit zg_requestCurrentSpectrumRow(currentRow, &ok);
 
                 if(ok && currentRow >= first && currentRow <= last)
                 {
                     QList<double> energyCalibration;
                     QString energyUnit;
                     array->zp_energyCalibration(currentRow, energyCalibration, energyUnit);
-
-                    qDebug() << "ENERGY CALIBRATION CHANGED";
                     emit zg_energyCalibrationChanged(energyCalibration);
                 }
             }

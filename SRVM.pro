@@ -14,8 +14,7 @@ RC_ICONS = "ZImages/SRVM-8.ico"
 #Application version
 VER_MAJ=1
 VER_MIN=0
-VER_PAT=1
-VER_BUILD=b
+VER_PAT=2
 
 PRODUCT_DISPLAY_NAME="SRV M"
 PRODUCT_FILE_BASE_NAME="SRVM"
@@ -53,6 +52,7 @@ VERSION=$${VER_MAJ}.$${VER_MIN}.$${VER_PAT}
 CONFIG(debug, debug|release) {
     BUILD_FLAG = debug
     LIB_SUFFIX = d
+
 } else {
     BUILD_FLAG = release
 }
@@ -97,9 +97,9 @@ linux-g++: QMAKE_CXXFLAGS += -std=c++11
 linux-g++: QMAKE_LFLAGS += -Wl,--rpath=\\\$\$ORIGIN/../../lib.$${OS_SUFFIX}/
 
 CONFIG(debug, debug|release) {
-    TARGET=$${PRODUCT_FILE_BASE_NAME}-$${VERSION}.$${VER_BUILD}
+    TARGET=$${PRODUCT_FILE_BASE_NAME}-$${VERSION}.$${BUILD_FLAG}
 } else {
-    TARGET=$${PRODUCT_FILE_BASE_NAME}-$${VERSION}
+    TARGET=$${PRODUCT_FILE_BASE_NAME}
 }
 
 #END
