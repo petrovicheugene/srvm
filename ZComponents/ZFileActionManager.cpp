@@ -201,18 +201,18 @@ void ZFileActionManager::zh_createConnections()
 bool ZFileActionManager::zh_defineSpectrumArrayFileNameToOpen(QString& fileName) const
 {
     // opening
-    fileName = QFileDialog::getOpenFileName(0, tr("Select file to open"),
+    fileName = QFileDialog::getOpenFileName(nullptr, tr("Select file to open"),
                                             zv_spectrumArrayFolderPath,
-                                            tr("Spectrum array files(*.spar);;XML files(*.xml);;All files(*.*)"));
+                                            tr("Spectrum array files(%1);;XML files(%2);;All files(%3)").arg("*.spar", "*.xml", "*.*"));
     return zh_checkFile(fileName);
 }
 //======================================================
 bool ZFileActionManager::zh_defineSpectrumArrayFileNameToSave(QString& fileName) const
 {
     // opening
-    fileName = QFileDialog::getSaveFileName(0, tr("Select file to save"),
+    fileName = QFileDialog::getSaveFileName(nullptr, tr("Select file to save"),
                                             zv_spectrumArrayFolderPath,
-                                            tr("Spectrum array files(*.spar);;XML files(*.xml);;All files(*.*)"));
+                                            tr("Spectrum array files(%1);;XML files(%2);;All files(%3)").arg("*.spar", "*.xml", "*.*"));
     return !fileName.isEmpty();
 }
 //======================================================
@@ -260,7 +260,7 @@ bool ZFileActionManager::zh_checkFile(const QString& fileName) const
     if(!fileInfo.exists())
     {
         QString msg = tr("File \"%1\" does not exist!").arg(fileName);
-        QMessageBox::critical(0, tr("File open error"), msg);
+        QMessageBox::critical(nullptr, tr("File open error"), msg);
         emit zg_message(msg);
         qCritical().noquote() <<  msg;
         return false;
@@ -269,7 +269,7 @@ bool ZFileActionManager::zh_checkFile(const QString& fileName) const
     if(fileInfo.isDir())
     {
         QString msg = tr("\"%1\" is a folder!").arg(fileName);
-        QMessageBox::critical(0, tr("File open error"), msg);
+        QMessageBox::critical(nullptr, tr("File open error"), msg);
         emit zg_message(msg);
         qCritical().noquote() <<  msg;
         return false;
@@ -296,7 +296,7 @@ bool ZFileActionManager::zh_getRawSpectrumArrayFromFile(const QString& fileName,
     else if(fileInfo.suffix() != "xml" && fileInfo.suffix() != "spar")
     {
         QString msg = tr("Error handling file \"%1\"! Cannot handle \"%2\" files.").arg(fileName, fileInfo.suffix());
-        QMessageBox::critical(0, tr("File handling error"), msg);
+        QMessageBox::critical(nullptr, tr("File handling error"), msg);
         emit zg_message(msg);
         qCritical().noquote() <<  msg;
         return false;
@@ -466,7 +466,7 @@ void ZFileActionManager::zp_saveSpectraArrayListToFile(QString filePath, QList<Z
     if(fileInfo.suffix() != "xml" && fileInfo.suffix() != "spar")
     {
         QString msg = tr("Error handling file \"%1\"! Cannot handle \"%2\" files.").arg(filePath, fileInfo.suffix());
-        QMessageBox::critical(0, tr("File handling error"), msg);
+        QMessageBox::critical(nullptr, tr("File handling error"), msg);
         qCritical().noquote() <<  msg;
         emit zg_message(msg);
         return;
@@ -600,9 +600,9 @@ void ZFileActionManager::zp_onCurrentCalibrationDirtyChange(bool dirty, bool cur
 //======================================================
 void ZFileActionManager::zp_defineSpectrumFilesAndInitAppending(int arrayIndex)
 {
-    QStringList fileNameList = QFileDialog::getOpenFileNames(0, tr("Select spectrum file"),
+    QStringList fileNameList = QFileDialog::getOpenFileNames(nullptr, tr("Select spectrum file"),
                                                              zv_spectrumFolderPath,
-                                                             tr("SRV spectrum files(*.spe);;All files(*.*)"));
+                                                             tr("SRV spectrum files(%1);;All files(%2)").arg("*.spe", "*.*"));
     if(fileNameList.isEmpty())
     {
         return;
@@ -625,9 +625,9 @@ void ZFileActionManager::zh_onOpenSpectrumArrayAction() // outputs RawArray
     if(!zh_getRawSpectrumArrayFromFile(fileName, rawArrayList))
     {
         QString msg = tr("Data loading from file \"%1\" failed.").arg(fileName);
-        QMessageBox::critical(0, tr("Loading error"), msg, QMessageBox::Ok);
+        QMessageBox::critical(nullptr, tr("Loading error"), msg, QMessageBox::Ok);
         emit zg_message(msg);
-        qCritical().noquote() <<  msg;
+        qCritical().noquote() << msg;
         return;
     }
 

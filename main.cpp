@@ -145,8 +145,8 @@ int main(int argc, char *argv[])
     //    splash.showMessage("Loading codecs...", Qt::AlignBottom | Qt::AlignRight, Qt::white );
     //    a.processEvents();
 
-    //    QTextCodec* codec = QTextCodec::codecForName("windows-1251");
-    //    QTextCodec::setCodecForLocale(codec);
+    QTextCodec* codec = QTextCodec::codecForName("windows-1251");
+    QTextCodec::setCodecForLocale(codec);
 
     //    QApplication::setOrganizationName(glAppCompany);
     //    QApplication::setApplicationName(glAppExeBaseName);
@@ -201,48 +201,48 @@ int main(int argc, char *argv[])
 
     // set translators
     // translator attempts to load from expernal file first and if not from resources
-//    QDir appDir(QApplication::applicationDirPath());
-//    QTranslator appTranslator;
-//    if(appTranslator.load(appDir.absoluteFilePath(QString("%1_%2").arg(APP_EXE_BASE_NAME, QLocale::system().name())))
-//            || appTranslator.load(QString(":/translators/%1_%2").arg(APP_EXE_BASE_NAME, QLocale::system().name())))
-//    {
-//        a.installTranslator(&appTranslator);
-//    }
+    //    QDir appDir(QApplication::applicationDirPath());
+    //    QTranslator appTranslator;
+    //    if(appTranslator.load(appDir.absoluteFilePath(QString("%1_%2").arg(APP_EXE_BASE_NAME, QLocale::system().name())))
+    //            || appTranslator.load(QString(":/translators/%1_%2").arg(APP_EXE_BASE_NAME, QLocale::system().name())))
+    //    {
+    //        a.installTranslator(&appTranslator);
+    //    }
 
-//    QTranslator qtTranslator;
-//    if(qtTranslator.load(appDir.absoluteFilePath(QString("%1_%2").arg("qtbase", QLocale::system().name())))
-//            || qtTranslator.load(QString(":/translators/qtbase_%2").arg(QLocale::system().name())))
-//    {
-//        a.installTranslator(&qtTranslator);
-//    }
+    //    QTranslator qtTranslator;
+    //    if(qtTranslator.load(appDir.absoluteFilePath(QString("%1_%2").arg("qtbase", QLocale::system().name())))
+    //            || qtTranslator.load(QString(":/translators/qtbase_%2").arg(QLocale::system().name())))
+    //    {
+    //        a.installTranslator(&qtTranslator);
+    //    }
 
-//    // set application properties
-//    QApplication::setOrganizationName(APP_COMPANY);
-//    QApplication::setApplicationName(APP_EXE_BASE_NAME);
-//    QApplication::setApplicationVersion(APP_VERSION);
+    //    // set application properties
+    //    QApplication::setOrganizationName(APP_COMPANY);
+    //    QApplication::setApplicationName(APP_EXE_BASE_NAME);
+    //    QApplication::setApplicationVersion(APP_VERSION);
 
     // create qApp properties and set .pro defines into them
-//#ifdef APP_EXE_BASE_NAME
-//    qApp->setProperty("glAppExeBaseName", QString(APP_EXE_BASE_NAME));
-//#endif
-//#ifdef APP_PRODUCT
-//    qApp->setProperty("glAppProduct", QString(APP_PRODUCT));
-//#endif
-//#ifdef APP_VERSION
-//    qApp->setProperty("glAppVersion", QString(APP_VERSION));
-//#endif
-//#ifdef APP_COMPANY
-//    qApp->setProperty("glAppCompany", QString(APP_COMPANY));
-//#endif
-//#ifdef APP_COPYRIGHT
-//    qApp->setProperty("glAppCopyright", QString(APP_COPYRIGHT));
-//#endif
-//#ifdef APP_COMPANY_URL
-//    qApp->setProperty("glAppCompanyURL", QString(APP_COMPANY_URL));
-//#endif
-//#ifdef APP_ICON
-//    qApp->setProperty("glAppIcon", QString(APP_ICON));
-//#endif
+    //#ifdef APP_EXE_BASE_NAME
+    //    qApp->setProperty("glAppExeBaseName", QString(APP_EXE_BASE_NAME));
+    //#endif
+    //#ifdef APP_PRODUCT
+    //    qApp->setProperty("glAppProduct", QString(APP_PRODUCT));
+    //#endif
+    //#ifdef APP_VERSION
+    //    qApp->setProperty("glAppVersion", QString(APP_VERSION));
+    //#endif
+    //#ifdef APP_COMPANY
+    //    qApp->setProperty("glAppCompany", QString(APP_COMPANY));
+    //#endif
+    //#ifdef APP_COPYRIGHT
+    //    qApp->setProperty("glAppCopyright", QString(APP_COPYRIGHT));
+    //#endif
+    //#ifdef APP_COMPANY_URL
+    //    qApp->setProperty("glAppCompanyURL", QString(APP_COMPANY_URL));
+    //#endif
+    //#ifdef APP_ICON
+    //    qApp->setProperty("glAppIcon", QString(APP_ICON));
+    //#endif
 
     // create qApp properties and set .pro defines into them
 #ifdef APP_DISPLAY_NAME

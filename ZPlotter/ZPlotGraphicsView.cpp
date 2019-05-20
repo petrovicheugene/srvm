@@ -18,17 +18,17 @@ ZPlotGraphicsView::ZPlotGraphicsView(QWidget* parent) : QGraphicsView(parent)
     zv_sceneCenterPos = QPointF();
     zv_sceneMousePos = QPointF();
     zv_mousePressStartViewPos = QPoint();
-    zv_rubberBand = 0;
+    zv_rubberBand = nullptr;
     zv_scaleViewWhenResizeFlag = false;
     zv_drawGridFlag = true;
-    zv_rulersAndGreedManager = 0;
+    zv_rulersAndGreedManager = nullptr;
     zv_minSideSizeOfVisibleScene = 15;
     zv_rubberBandSideMinSize = 5;
     zv_colorPickUpAuxCoverageSize = 1;
     zv_gridColor = viewport()->palette().color(QPalette::Mid);
 
-    zv_XRuleList = 0;
-    zv_YRuleList = 0;
+    zv_XRuleList = nullptr;
+    zv_YRuleList = nullptr;
 
     setViewportUpdateMode(QGraphicsView::FullViewportUpdate);
     //setViewportUpdateMode(QGraphicsView::SmartViewportUpdate);
