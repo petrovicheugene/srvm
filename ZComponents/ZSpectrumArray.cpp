@@ -106,6 +106,7 @@ QList<QColor> ZSpectrumArray::zp_createColorList()
             colorList << color;
         }
     }
+
     return colorList;
 }
 //===============================================
@@ -145,6 +146,8 @@ ZRawSpectrumArray ZSpectrumArray::zp_createRawSpectrumArray()
             QString concentration = zv_spectrumList.value(s)->zp_concentrationString(chemElementId);
             rawSpectrum.concentrationMap.insert(chemElement, concentration);
         }
+        rawSpectrum.checked = zv_spectrumList.value(s)->zp_isSpectrumChecked();
+        rawSpectrum.visible = zv_spectrumList.value(s)->zp_isSpectrumVisible();
 
         rawSpectrumArray.spectrumList << rawSpectrum;
     }
@@ -570,6 +573,9 @@ bool ZSpectrumArray::zp_appendSpectrum(const ZRawSpectrum& rawSpectrum, bool las
             zv_spectrumList.append(speSpectrum);
             emit zg_spectrumOperation(OT_END_INSERT_SPECTRA, spectrumIndex, spectrumIndex);
 
+            speSpectrum->zp_setSpectrumChecked(rawSpectrum.checked);
+            speSpectrum->zp_setSpectrumVisible(rawSpectrum.visible);
+
             // color index increment
             if(++zv_lastColorIndex >= zv_colorList.count())
             {
@@ -769,7 +775,7 @@ int ZSpectrumArray::zp_maxChannelCount() const
 //===============================================
 bool ZSpectrumArray::zp_isEnergyCalibrationValid() const
 {
-    return !(zv_energyK1 == 0 && zv_energyK2 == 0);
+    return !(zv_energyK1 == 0.0 && zv_energyK2 == 0.0);
 }
 //===============================================
 qint64 ZSpectrumArray::zp_arrayId() const

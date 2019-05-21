@@ -71,7 +71,7 @@ private:
     // VARS
     // actions
     QAction* zv_exitAction;
-    //    QAction* zv_aboutQtAction;
+    // QAction* zv_openCalibrationProjectAction;
     //    QAction* zv_helpAction;
 
     // docks
