@@ -14,14 +14,14 @@ RC_ICONS = "ZImages/SRVM-8.ico"
 #Application version
 VER_MAJ=1
 VER_MIN=0
-VER_PAT=2
+VER_PAT=4
 
 PRODUCT_DISPLAY_NAME="SRV M"
 PRODUCT_FILE_BASE_NAME="SRVM"
 QMAKE_TARGET_PRODUCT="SRVM"
 QMAKE_TARGET_DESCRIPTION="Creation of spectrometer calibration"
 QMAKE_TARGET_COMPANY="TechnoAnalyt"
-QMAKE_TARGET_COPYRIGHT="Copyright © $${QMAKE_TARGET_COMPANY} Ltd. 2015 - 2019.  All rights reserved."
+QMAKE_TARGET_COPYRIGHT="Copyright © $${QMAKE_TARGET_COMPANY} Ltd. 2015 - 2019. All rights reserved."
 COMPANY_URL=www.tehnoanalit.com
 
 #-------------------------------------------------

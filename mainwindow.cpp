@@ -17,6 +17,7 @@
 #include "ZEquationSettingsData.h"
 #include "ZHelpBrowser.h"
 #include "ZStandardMessagePictureDispatcher.h"
+#include "ZTranslatorManager.h"
 
 // views
 #include "ZWidgetWithSidebar.h"
@@ -190,6 +191,11 @@ void MainWindow::closeEvent(QCloseEvent* e)
 //==========================================================
 void MainWindow::zh_createActions()
 {
+    //    zv_languageControlAction = new QAction(this);
+    //    zv_languageControlAction->setIcon(QIcon(":/images/ZImages/earthGlobe-16.png"));
+    //    zv_languageControlAction->setText(tr("Language"));
+    //    zv_languageControlAction->setToolTip(tr("Application language"));
+
     zv_exitAction = new QAction(this);
     zv_exitAction->setIcon(QIcon(NS_Icons::glIconExitApp));
     zv_exitAction->setText(tr("Exit"));
@@ -229,6 +235,65 @@ void MainWindow::zh_createPlotterWidget()
     connect(zv_calibrationRepository, &ZCalibrationRepository::zg_requestCurrentVisibleSceneRect,
             zv_plotter, &ZPlotter::zp_currentVisibleSceneRect);
 
+}
+//==========================================================
+void MainWindow::zh_appLanguageControl()
+{
+    if(!sender())
+    {
+        return;
+    }
+
+    QAction* action = dynamic_cast<QAction*>(sender());
+    if(!action)
+    {
+        return;
+    }
+
+    ZTranslatorManager translatorManager;
+    QString currentLanguageName;
+    bool ok = false;
+    translatorManager.zp_currentLanguageName(currentLanguageName, &ok);
+
+    qDebug() << "Current lang" << currentLanguageName << "Installied lang" << action->text();
+
+    if(ok && action->text() == currentLanguageName)
+    {
+        return;
+    }
+
+    ok = false;
+    translatorManager.zp_setApplicationLanguage(action->text(), &ok);
+    QString msg;
+    if(ok)
+    {
+        msg = tr("The language of application has been changed.\n"
+                 "In order for the changes to take effect, please restart the application.");
+    }
+    else
+    {
+        msg = translatorManager.zp_lastError().isEmpty() ?
+                    tr("Unknown language settings error.") : translatorManager.zp_lastError();
+
+    }
+
+    QString title = tr("Language settings");
+    QMessageBox::information(this, title, msg, QMessageBox::Ok);
+}
+//==========================================================
+void MainWindow::zh_fillLanguageMenu()
+{
+    zv_languageMenu->clear();
+    ZTranslatorManager translatorManager;
+    QStringList availableLanguageNameList;
+    translatorManager.zp_availableLanguageNameList(availableLanguageNameList);
+
+    foreach(QString languageName, availableLanguageNameList)
+    {
+        QAction* action = zv_languageMenu->addAction(languageName);
+        connect(action, &QAction::triggered,
+                this, &MainWindow::zh_appLanguageControl);
+    }
 }
 //==========================================================
 void MainWindow::zh_createComponents()
@@ -425,6 +490,9 @@ void MainWindow::zh_createMenu()
     // menu->setCursor(Qt::PointingHandCursor);
     menu->setObjectName("Help");
     zh_appendActionsToMenu(menu);
+
+
+
 }
 //==========================================================
 void MainWindow::zh_createToolbar()
@@ -446,6 +514,11 @@ void MainWindow::zh_createConnections()
     // main window actions
     connect(zv_exitAction, &QAction::triggered,
             this, &MainWindow::close);
+    //    connect(zv_languageControlAction, &QAction::triggered,
+    //            this, &MainWindow::zh_appLanguageControl);
+    connect(zv_languageMenu, &QMenu::aboutToShow,
+            this, &MainWindow::zh_fillLanguageMenu);
+
     //    connect(zv_aboutAction, &QAction::triggered,
     //            this, &MainWindow::zh_onAboutAction);
     //    connect(zv_helpAction, &QAction::triggered,
@@ -630,6 +703,22 @@ void MainWindow::zh_appendActionsToMenu(QMenu* menu)
 {
     if(menu->objectName() == "File")
     {
+        // language
+        // menu->addAction(zv_languageControlAction);
+        zv_languageMenu = new QMenu;
+        zv_languageMenu->setIcon(QIcon(":/images/ZImages/earthGlobe-16.png"));
+        ZTranslatorManager translatorManager;
+        QString currentLanguage;
+        bool ok = false;
+        translatorManager.zp_currentLanguageName(currentLanguage, &ok);
+        if(ok)
+        {
+            zv_languageMenu->setTitle(currentLanguage);
+        }
+
+        zv_languageMenu->setToolTip(tr("Application language"));
+
+        menu->addMenu(zv_languageMenu);
         menu->addAction(zv_exitAction);
         menu->addSeparator();
         return;

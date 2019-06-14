@@ -226,6 +226,7 @@
         <file>ZImages/help-1.png</file>
         <file>ZImages/info-1.png</file>
         <file>ZImages/Qt_logo.png</file>
+        <file>ZImages/earthGlobe-16.png</file>
     </qresource>
     <qresource prefix="/translators">
         <file>qtbase_en.qm</file>

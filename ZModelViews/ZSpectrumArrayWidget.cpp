@@ -44,7 +44,7 @@ void ZSpectrumArrayWidget::zp_setModel(ZArrayModel *model)
     zv_table->setItemDelegateForColumn(1, intDelegate);
     zv_table->setItemDelegateForColumn(2, new ZStringDelegate(zv_table));
 
-    zv_table->horizontalHeader()->setSectionResizeMode(0, QHeaderView::Stretch);
+    //zv_table->horizontalHeader()->setSectionResizeMode(0, QHeaderView::Stretch);
     zv_table->setAlternatingRowColors(true);
     connect(zv_table->selectionModel(), &QItemSelectionModel::currentRowChanged,
             this, &ZSpectrumArrayWidget::zh_onCurrentArrayChanged);
@@ -72,7 +72,7 @@ void ZSpectrumArrayWidget::zp_appendContextMenuActions(QList<QAction*> actionLis
 {
     foreach(QAction* action, actionList)
     {
-        if(action != 0 && zv_contextMenuActionList.contains(action))
+        if(action != nullptr && zv_contextMenuActionList.contains(action))
         {
             continue;
         }
@@ -208,12 +208,12 @@ void ZSpectrumArrayWidget::zh_onCurrentArrayChanged(const QModelIndex & current,
 //==============================================================
 void ZSpectrumArrayWidget::zh_onContextMenuRequest(const QPoint &pos)
 {
-    QMenu *menu=new QMenu(this);
+    QMenu *menu = new QMenu(this);
     menu->setAttribute(Qt::WA_DeleteOnClose);
 
     foreach(QAction* action, zv_contextMenuActionList)
     {
-        if(action == 0)
+        if(!action)
         {
             menu->addSeparator();
             continue;
@@ -225,3 +225,6 @@ void ZSpectrumArrayWidget::zh_onContextMenuRequest(const QPoint &pos)
     menu->popup(zv_table->viewport()->mapToGlobal(pos));
 }
 //==============================================================
+// Хороший  набор  пользовательских  требований  (stakeholder  requirements)  может
+// обеспечить  краткое  и  не  техническое  описание  того,  что  будет  разработано,
+// на  уровне, который доступен для понимания высокого руководства.
