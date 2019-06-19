@@ -544,7 +544,7 @@ void MainWindow::zh_createConnections()
     zv_termCorrelationTableWidget->zp_setModel(zv_termCorrelationTableModel);
 
     // File Action Manager <-> other components
-    zv_calibrationRepository->zp_connectToFileManager(zv_fileActionManager);
+    zv_calibrationRepository->zp_connectToFileActionManager(zv_fileActionManager);
     //zv_calibrationRepository->zp_connectToSpectrumArrayRepository(zv_spectrumArrayRepository);
     zv_spectrumArrayRepository->zp_connectToFileActionManager(zv_fileActionManager);
 

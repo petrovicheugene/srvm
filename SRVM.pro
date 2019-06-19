@@ -179,6 +179,7 @@ INCLUDEPATH += ZPlotter \
 
 SOURCES += main.cpp \
     MainWindow.cpp \
+    ZComponents/ZXMLCalibrationProjectIOHandler.cpp \
     ZGeneral.cpp \
     ZComponents/ZSpectrumArray.cpp \
     ZComponents/ZFileActionManager.cpp \
@@ -300,6 +301,7 @@ SOURCES += main.cpp \
 
 HEADERS  += \
     MainWindow.h \
+    ZComponents/ZXMLCalibrationProjectIOHandler.h \
     ZGeneral.h \
     ZComponents/ZSpectrumArray.h \
     ZComponents/ZFileActionManager.h \

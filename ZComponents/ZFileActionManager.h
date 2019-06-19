@@ -35,7 +35,7 @@ signals:
 
     void zg_message(QString) const;
     void zg_spectrumRawArrayList(QString, QList<ZRawSpectrumArray>) const;
-    void zg_requestRawArrayListAndInitSaving(QString) const;
+    void zg_requestRawArrayListAndInitSaving(QString&, bool& res) const;
 
     void zg_spectrumFileListToOpen(int, QStringList) const;
 
@@ -45,13 +45,14 @@ signals:
     void zg_spectrumArraySaved(QString) const;
     void zg_calibrationSaved(const ZCalibration* calibration, QString absFilePath) const;
 
+
 public slots:
 
     void zp_defineSpectrumFilesAndInitAppending(int arrayIndex);
     void zp_saveSettings() const;
     void zp_openCalibrations() const;
 
-    void zp_saveSpectraArrayListToFile(QString filePath, QList<ZRawSpectrumArray> rawArrayList);
+    void zp_saveSpectraArrayListToFile(QString &filePath, QList<ZRawSpectrumArray> rawArrayList, bool &res);
     void zp_saveCalibrationToFile(const ZCalibration *calibration, QString filePath, QString name);
 
     void zp_onArrayListDirtyChange(bool dirty, bool currentArrayExists);
@@ -68,11 +69,15 @@ private:
     QAction* zv_saveCalibrationToFileAction;
     QAction* zv_saveCalibrationAsFileAction;
 
-    //QAction* zv_loadSpectrumFromFileAction;
+    QAction* zv_openCalibrationProjectAction;
 
     QString zv_spectrumArrayFolderPath;
     QString zv_calibrationFolderPath;
     QString zv_spectrumFolderPath;
+
+    const QString zv_projectFileSuffix = "proc";
+    const QString zv_spectrumArrayFileSuffix = "spar";
+    const QString zv_calibrationFileSuffix = "clbx";
 
     // FUNCS
     void zh_createActions();
@@ -92,6 +97,8 @@ private:
     // bool zh_getSpectrumFromFile(const QString&, ZAbstractSpectrum *&);
     bool zh_getRawSpectrumArrayFromFile(const QString& fileName, QList<ZRawSpectrumArray>& rawArray);
     // bool zh_getRawCalibrationArrayFromFile(const QString& fileName, QList<ZRawCalibrationArray>& rawArray);
+    void zh_saveCalibrationProjectFile(const QString& absFileName);
+
 
 private slots:
 
@@ -102,7 +109,7 @@ private slots:
     void zh_onOpenCalibrationAction();
     void zh_onSaveCalibrationAction() const;
     void zh_onSaveCalibrationAsAction() const;
-    // void zh_onOpenSpectraAction() const;
+    void zh_onOpenCalibrationProjectAction();
 
 };
 //======================================================

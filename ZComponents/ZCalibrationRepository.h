@@ -62,7 +62,7 @@ public:
                            };
 
     // FUNCS
-    void zp_connectToFileManager(ZFileActionManager*);
+    void zp_connectToFileActionManager(ZFileActionManager*);
 
     void zp_appendActionsToMenu(QMenu *menu) const;
     QList<QAction*> zp_calibrationActions() const;
@@ -103,7 +103,7 @@ public:
     // Windows
     bool zp_isCalibrationWindowVisible(qint64, int) const;
     bool zp_isCalibrationWindowVisible(qint64) const;
-    bool zp_setCalibrationWindowVisible(qreal, int windowIndex, bool visibility);
+    bool zp_setCalibrationWindowVisible(qint64, int windowIndex, bool visibility);
 
     int zp_calibrationWindowCount(qint64) const;
     QString zp_calibrationWindowName(qint64 calibrationId, int windowIndex) const;
