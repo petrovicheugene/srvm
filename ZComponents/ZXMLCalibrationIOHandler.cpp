@@ -23,7 +23,7 @@ ZXMLCalibrationIOHandler::~ZXMLCalibrationIOHandler()
 QString ZXMLCalibrationIOHandler::zp_getCalibrationOpenFile(const QString& calibrationFolderPath)
 {
     QString locationDirString = zp_checkDirPath(calibrationFolderPath);
-    QString fileName = QFileDialog::getOpenFileName(0, tr("Select file to open"),
+    QString fileName = QFileDialog::getOpenFileName(nullptr, tr("Select file to open"),
                                               locationDirString,
                                               tr("XML Calibration files(*.clbx);;XML files(*.xml);;All files(*.*)"));
     return fileName;
@@ -32,7 +32,7 @@ QString ZXMLCalibrationIOHandler::zp_getCalibrationOpenFile(const QString& calib
 QStringList ZXMLCalibrationIOHandler::zp_getCalibrationOpenFiles(const QString& calibrationFolderPath)
 {
     QString locationDirString = zp_checkDirPath(calibrationFolderPath);
-    QStringList fileNames = QFileDialog::getOpenFileNames(0, tr("Open file"),
+    QStringList fileNames = QFileDialog::getOpenFileNames(nullptr, tr("Open file"),
                                               locationDirString,
                                               tr("XML Calibration files(*.clbx);;XML files(*.xml);;All files(*.*)"));
     return fileNames;
@@ -40,7 +40,7 @@ QStringList ZXMLCalibrationIOHandler::zp_getCalibrationOpenFiles(const QString& 
 //==========================================================
 QString ZXMLCalibrationIOHandler::zp_getCalibrationSaveFile(const QString& calibrationFilePath)
 {
-    QString fileName = QFileDialog::getSaveFileName(0, tr("Save file"),
+    QString fileName = QFileDialog::getSaveFileName(nullptr, tr("Save file"),
                                               calibrationFilePath,
                                               tr("XML Calibration files(*.clbx);;XML files(*.xml);;All files(*.*)"));
     return fileName;
@@ -268,7 +268,7 @@ QString ZXMLCalibrationIOHandler::zp_message() const
 bool ZXMLCalibrationIOHandler::zp_getCalibrationFromFile(QFile& file,
                                                          ZCalibration* calibration)
 {
-    if(calibration == 0)
+    if(calibration == nullptr)
     {
         return false;
     }

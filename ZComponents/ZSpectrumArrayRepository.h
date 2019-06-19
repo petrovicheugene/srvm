@@ -145,7 +145,7 @@ signals:
     void zg_startCurrentArrayEdition();
     void zg_startCurrentChemElementEdition();
 
-    void zg_saveSpectraArrayList(QString, QList<ZRawSpectrumArray>) const;
+    void zg_saveSpectraArrayList(QString&, QList<ZRawSpectrumArray>, bool& res) const;
     void zg_initSpectraAppending(int);
 
     void zg_currentArrayIsAboutChange(qint64 arrayId, int arrayIndex);
@@ -196,7 +196,7 @@ private slots:
     void zh_onRemoveChemElementAction();
 
     void zh_onChemElementOperation(ZChemElementList::OperationType, int, int);
-    void zh_createRawArrayListAndStartSaving(QString filePath) const;
+    void zh_createRawArrayListAndStartSaving(QString &filePath, bool &res) const;
     void zh_onSpectrumOperation(ZSpectrumArray::OperationType type, int first, int last) const;
 
     void zh_onClipboardContentChange();

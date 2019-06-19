@@ -1470,7 +1470,7 @@ void ZSpectrumArrayRepository::zh_onChemElementOperation(ZChemElementList::Opera
     }
 }
 //==================================================================
-void ZSpectrumArrayRepository::zh_createRawArrayListAndStartSaving(QString filePath) const
+void ZSpectrumArrayRepository::zh_createRawArrayListAndStartSaving(QString& filePath, bool& res) const
 {
     if(filePath.isEmpty())
     {
@@ -1478,7 +1478,7 @@ void ZSpectrumArrayRepository::zh_createRawArrayListAndStartSaving(QString fileP
     }
 
     QList<ZRawSpectrumArray> rawSpectrumArrayList = zh_createRawArrayList();
-    emit zg_saveSpectraArrayList(filePath, rawSpectrumArrayList);
+    emit zg_saveSpectraArrayList(filePath, rawSpectrumArrayList, res);
     // TODO after saving FileActionManager must send back a signal for reset dirty flag
     // TODO signal from fileActionManager with saved filePath. zv_path have to be canged
 }

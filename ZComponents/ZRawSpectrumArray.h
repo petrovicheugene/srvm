@@ -11,10 +11,14 @@ struct ZRawSpectrum
     {
         path = QString();
         concentrationMap = QMap<QString, QString>();
+        checked = true;
+        visible = true;
     }
 
     QString path;
     QMap<QString, QString> concentrationMap; // QMap<Chem element, Concentration value>
+    bool checked;
+    bool visible;
 };
 
 //========================================================
