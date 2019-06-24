@@ -30,9 +30,9 @@ class ZCalibration : public QObject
 
 public:
 
-    explicit ZCalibration(const QString& name, QObject *parent = 0);
+    explicit ZCalibration(const QString& name, QObject *parent = nullptr);
     explicit ZCalibration(const ZCalibration* calibration,
-                          const QString &name, QObject *parent = 0);
+                          const QString &name, QObject *parent = nullptr);
     virtual ~ZCalibration();
 
     // VARS

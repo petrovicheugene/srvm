@@ -19,7 +19,7 @@ class ZCalibrationRepository : public QObject
     Q_OBJECT
     friend class ZTermCorrelationTableManager;
 public:
-    explicit ZCalibrationRepository(QObject *parent = 0);
+    explicit ZCalibrationRepository(QObject *parent = nullptr);
 
     // VARS
     enum CalibrationOperationType {COT_CALIBRATION_VISIBILITY_CHANGE,
@@ -181,9 +181,9 @@ signals:
 
     void zg_requestSelectedCalibrationIndexList(QList<int>&);
     void zg_requestCurrentCalibrationIndex(int&);
-//    void zg_openCalibrationsActionTriggered() const;
-//    void zg_saveCalibrationsActionTriggered() const;
-//    void zg_saveAsCalibrationsActionTriggered() const;
+    //    void zg_openCalibrationsActionTriggered() const;
+    //    void zg_saveCalibrationsActionTriggered() const;
+    //    void zg_saveAsCalibrationsActionTriggered() const;
 
     void zg_setCurrentCalibrationIndex(int calibrationIndex);
     void zg_startCurrentCalibrationEdition();
@@ -310,7 +310,7 @@ private:
     bool zh_copyCalibration(int calibrationIndex);
     bool zh_copyWindowsTermsAndEquation(int calibrationIndex, ZCalibration *trgCalibration);
     int zh_findCorrespondingTermIndex(int srcTermIndex,
-                                  const ZCalibration *srcCalibration, const ZCalibration *trgCalibration);
+                                      const ZCalibration *srcCalibration, const ZCalibration *trgCalibration);
 };
 //======================================================
 #endif // ZCALIBRATIONARRAYREPOSITORY_H
