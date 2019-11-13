@@ -1,5 +1,5 @@
 //===============================================
-#include "MainWindow.h"
+#include "mainwindow.h"
 #include "ZGeneral.h"
 #include "ZTranslatorManager.h"
 
@@ -35,7 +35,7 @@
 //======================================================
 //extern const QString glAppExeBaseName =  APP_EXE_BASE_NAME; // w/o version
 //extern const QString glAppProduct =  APP_PRODUCT;
-//extern const QString glAppVersion = APP_VERSION;
+//extern const QString qApp->applicationVersion() = APP_VERSION;
 //extern const QString glAppCompany = APP_COMPANY;
 //extern const QString glAppCopyright = APP_COPYRIGHT;
 //extern const QString glAppCompanyURL = APP_COMPANY_URL;
@@ -67,7 +67,7 @@ static DebugOutputOptions debugOutputOption =
 
 }
 //======================================================
-void initMsgTypesToHandleInMainWindowSet()
+void initMsgTypesToHandleInMainWindow()
 {
 #ifndef QT_NO_DEBUG_OUTPUT
     msgTypesToHandleInMainWindowSet.insert(QtDebugMsg);
@@ -80,7 +80,7 @@ void initMsgTypesToHandleInMainWindowSet()
 //======================================================
 void messageHandler(QtMsgType type, const QMessageLogContext &context, const QString &msg)
 {
-    if(pMainWindow != 0 && (msgTypesToHandleInMainWindowSet.contains(type)))
+    if(pMainWindow != nullptr && (msgTypesToHandleInMainWindowSet.contains(type)))
     {
         // let the application handles message (for example for saving in log)
         pMainWindow->zp_handleStandardLogMessage(type, context, msg);
@@ -135,7 +135,6 @@ void messageHandler(QtMsgType type, const QMessageLogContext &context, const QSt
     }
 }
 //======================================================
-//======================================================
 int main(int argc, char *argv[])
 {
     //    QApplication a(argc, argv);
@@ -150,7 +149,7 @@ int main(int argc, char *argv[])
 
     //    QApplication::setOrganizationName(glAppCompany);
     //    QApplication::setApplicationName(glAppExeBaseName);
-    //    QApplication::setApplicationVersion(glAppVersion);
+    //    QApplication::setApplicationVersion(qApp->applicationVersion());
 
     //    splash.showMessage("Loading translations...", Qt::AlignBottom | Qt::AlignRight, Qt::white );
     //    a.processEvents();
@@ -195,7 +194,7 @@ int main(int argc, char *argv[])
     //    return a.exec();
     QApplication a(argc, argv);
     //
-    initMsgTypesToHandleInMainWindowSet();
+    initMsgTypesToHandleInMainWindow();
     // custom message handler for logging via qInfo qWarning qCritical
     qInstallMessageHandler(messageHandler);
 
@@ -229,7 +228,7 @@ int main(int argc, char *argv[])
     //    qApp->setProperty("glAppProduct", QString(APP_PRODUCT));
     //#endif
     //#ifdef APP_VERSION
-    //    qApp->setProperty("glAppVersion", QString(APP_VERSION));
+    //    qApp->setProperty("qApp->applicationVersion()", QString(APP_VERSION));
     //#endif
     //#ifdef APP_COMPANY
     //    qApp->setProperty("glAppCompany", QString(APP_COMPANY));

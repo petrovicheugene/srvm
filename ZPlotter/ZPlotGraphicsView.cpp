@@ -30,6 +30,8 @@ ZPlotGraphicsView::ZPlotGraphicsView(QWidget* parent) : QGraphicsView(parent)
     zv_XRuleList = nullptr;
     zv_YRuleList = nullptr;
 
+    viewport()->setMinimumSize(QSize(100, 100));
+
     setViewportUpdateMode(QGraphicsView::FullViewportUpdate);
     //setViewportUpdateMode(QGraphicsView::SmartViewportUpdate);
     setMouseTracking(true);

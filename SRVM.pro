@@ -14,11 +14,11 @@ RC_ICONS = "ZImages/SRVM-8.ico"
 #Application version
 VER_MAJ=1
 VER_MIN=0
-VER_PAT=4
+VER_PAT=6
 
-PRODUCT_DISPLAY_NAME="SRV M"
+PRODUCT_SHORT_NAME="SRVM"
 PRODUCT_FILE_BASE_NAME="SRVM"
-QMAKE_TARGET_PRODUCT="SRVM"
+QMAKE_TARGET_PRODUCT="SRV M"
 QMAKE_TARGET_DESCRIPTION="Creation of spectrometer calibration"
 QMAKE_TARGET_COMPANY="TechnoAnalyt"
 QMAKE_TARGET_COPYRIGHT="Copyright © $${QMAKE_TARGET_COMPANY} Ltd. 2015 - 2019. All rights reserved."
@@ -58,8 +58,8 @@ CONFIG(debug, debug|release) {
 }
 
 #Define the preprocessor macro to get the application version in the application.
-DEFINES += APP_DISPLAY_NAME=\"\\\"$${PRODUCT_DISPLAY_NAME}\\\"\"
-DEFINES += APP_PRODUCT=\"\\\"$${QMAKE_TARGET_PRODUCT}\\\"\"
+DEFINES += APP_DISPLAY_NAME=\"\\\"$${QMAKE_TARGET_PRODUCT}\\\"\"
+DEFINES += APP_PRODUCT=\"\\\"$${PRODUCT_SHORT_NAME}\\\"\"
 DEFINES += APP_VERSION=\"\\\"$${VERSION}.$${VER_RELEASE}\\\"\"
 DEFINES += APP_COMPANY=\"\\\"$${QMAKE_TARGET_COMPANY}\\\"\"
 DEFINES += APP_COMPANY_URL=\"\\\"$${COMPANY_URL}\\\"\"
