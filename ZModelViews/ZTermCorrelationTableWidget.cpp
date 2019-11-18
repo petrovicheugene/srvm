@@ -64,7 +64,7 @@ void ZTermCorrelationTableWidget::zp_appendContextMenuActions(QList<QAction*> ac
 {
     foreach(QAction* action, actionList)
     {
-        if(action != 0 && zv_contextMenuActionList.contains(action))
+        if(action != nullptr && zv_contextMenuActionList.contains(action))
         {
             continue;
         }
@@ -154,7 +154,7 @@ void ZTermCorrelationTableWidget::zh_onContextMenuRequest(const QPoint &pos)
 
     foreach(QAction* action, zv_contextMenuActionList)
     {
-        if(action == 0)
+        if(action == nullptr)
         {
             menu->addSeparator();
             continue;

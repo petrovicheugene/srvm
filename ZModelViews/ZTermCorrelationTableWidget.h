@@ -16,7 +16,7 @@ class ZTermCorrelationTableWidget : public QWidget
 {
     Q_OBJECT
 public:
-    explicit ZTermCorrelationTableWidget(QWidget *parent = 0);
+    explicit ZTermCorrelationTableWidget(QWidget *parent = nullptr);
 
     // FUNCS
     void zp_setModel(ZTermCorrelationTableModel* model);
