@@ -1,4 +1,5 @@
 //==================================================================
+#include <math.h>
 #include "ZJointSpectraDataManager.h"
 #include "ZGeneral.h"
 #include "ZSpectrumPaintData.h"

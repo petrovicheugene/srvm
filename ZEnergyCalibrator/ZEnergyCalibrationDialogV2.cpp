@@ -14,6 +14,7 @@
 #include "ZVerticalLineGraphicsItem.h"
 #include "ZCaptionFormatter.h"
 
+#include <math.h>
 #include <QApplication>
 #include <QAction>
 #include <QCheckBox>

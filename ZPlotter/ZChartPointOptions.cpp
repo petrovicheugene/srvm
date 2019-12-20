@@ -1,6 +1,7 @@
 //====================================================
 #include "ZChartPointOptions.h"
 #include "ZChartPointGraphicsItem.h"
+#include <math.h>
 //====================================================
 ZChartPointOptions::ZChartPointOptions()
 {

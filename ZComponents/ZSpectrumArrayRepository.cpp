@@ -4,6 +4,7 @@
 #include "ZFileActionManager.h"
 #include "ZEnergyCalibrationDialogV2.h"
 
+#include <math.h>
 #include <QApplication>
 #include <QDebug>
 #include <QMessageBox>

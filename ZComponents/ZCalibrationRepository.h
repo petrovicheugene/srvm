@@ -191,6 +191,7 @@ signals:
 
     void zg_currentCalibrationWindowChanged(qint64 currentWindowId, int currentWindowIndex,
                                             qint64 previousWindowId, int previousWindowIndex);
+    void zg_currentCalibrationWindowName(const QString& name) const;
 
     void zg_requestCurrentWindowIndex(int&) const;
     void zg_requestSelectedWindowIndexList(QList<int>&) const;
@@ -210,9 +211,14 @@ public slots:
     void zp_onSelectedCalibrationChange(QList<int>);
     void zp_onCurrentCalibrationChange(int current, int previous);
     void zp_onCurrentCalibrationWindowChange(int current, int previous);
+    void zp_onCalibrationWindowClick(const QModelIndex& index);
+
     void zp_onCalibrationWindowSelectionChange();
     void zp_onCurrentTermChange(int currentTermIndex, int previousTermIndex);
-    void zp_calibrationQualityDataChanged(bool saveTocalibration, qint64 calibrationId, ZCalibrationQualityData);
+    void zp_calibrationQualityDataChanged(bool saveTocalibration,
+                                          qint64 calibrationId,
+                                          ZCalibrationQualityData);
+    void zp_onTermDoubleClocked(int row);
 
 private slots:
 

@@ -37,6 +37,8 @@ void ZTermCorrelationTableWidget::zp_setModel(ZTermCorrelationTableModel* model)
             this, &ZTermCorrelationTableWidget::zh_onCurrentTermChanged);
     connect(this, &ZTermCorrelationTableWidget::zg_currentTermChanged,
             model, &ZTermCorrelationTableModel::zg_currentTermChanged);
+    connect(this, &ZTermCorrelationTableWidget::zg_termDoubleClicked,
+            model, &ZTermCorrelationTableModel::zg_termDoubleClicked);
 }
 //=============================================================
 void ZTermCorrelationTableWidget::zp_appendButtonActions(QList<QAction*> actionList)
@@ -90,6 +92,8 @@ void ZTermCorrelationTableWidget::zh_createComponents()
     ZCustomCheckableVerticalHeaderView* checkableHeader = new ZCustomCheckableVerticalHeaderView();
     connect(checkableHeader, &ZCustomCheckableVerticalHeaderView::zg_userChangesTermState,
             this, &ZTermCorrelationTableWidget::zg_userChangesTermState);
+    connect(checkableHeader, &ZCustomCheckableVerticalHeaderView::doubleClicked,
+            this, &ZTermCorrelationTableWidget::zh_onTermDoubleClick);
     zv_table->setVerticalHeader(checkableHeader);
     zv_table->verticalHeader()->setContextMenuPolicy(Qt::CustomContextMenu);
 
@@ -145,6 +149,16 @@ void ZTermCorrelationTableWidget::zp_currentTermIndex(int& index)
 void ZTermCorrelationTableWidget::zh_onCurrentTermChanged(QModelIndex current, QModelIndex previous)
 {
     emit zg_currentTermChanged(current.row(), previous.row());
+}
+//=============================================================
+void ZTermCorrelationTableWidget::zh_onTermDoubleClick(const QModelIndex& index)
+{
+    if (!index.isValid() || !index.model())
+    {
+        return;
+    }
+
+    emit zg_termDoubleClicked(index.row());
 }
 //=============================================================
 void ZTermCorrelationTableWidget::zh_onContextMenuRequest(const QPoint &pos)

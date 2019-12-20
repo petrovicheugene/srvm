@@ -1,11 +1,13 @@
 //=========================================================
 #include "ZRulerWidget.h"
+#include <math.h>
 #include <QLabel>
 #include <QResizeEvent>
 #include <QPaintEvent>
 #include <QPainter>
 #include <QDebug>
 #include <QPixmap>
+
 //=========================================================
 ZRulerWidget::ZRulerWidget(QWidget *parent) : QWidget(parent)
 {
