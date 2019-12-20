@@ -3,6 +3,7 @@
 #define ZMATHEXPRESSIONVARIABLELISTMAKER_H
 //===================================================
 #include <QObject>
+#include <QMap>
 //===================================================
 
 //===================================================
@@ -31,7 +32,7 @@ public slots:
 
 private:
     // VARS
-    QStringList zv_variableNameList;
+    QMap<QString, qreal> zv_variableNameMap;
     QString zv_errorString;
     int zv_errorTokenStartPosition;
     int zv_errorTokenEndPosition;

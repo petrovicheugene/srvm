@@ -8,7 +8,7 @@ ZMathExpressionVariableListMaker::ZMathExpressionVariableListMaker(QObject* pare
 //===================================================
 QStringList ZMathExpressionVariableListMaker::zp_variableList() const
 {
-    return zv_variableNameList;
+    return zv_variableNameMap.keys();
 }
 //===================================================
 void ZMathExpressionVariableListMaker::zp_error(QString& errorString,
@@ -22,7 +22,7 @@ void ZMathExpressionVariableListMaker::zp_error(QString& errorString,
 //===================================================
 void ZMathExpressionVariableListMaker::zp_clear()
 {
-    zv_variableNameList.clear();
+    zv_variableNameMap.clear();
     zv_errorString.clear();
     zv_errorTokenStartPosition = -1;
     zv_errorTokenEndPosition = -1;
@@ -33,12 +33,17 @@ void ZMathExpressionVariableListMaker::zp_insertVariableValue(const QString& var
                                                               bool& bRes)
 {
     emit zs_variableCheckRequest(varName, bRes);
-    if (bRes)
+    if (!bRes )
     {
-        zv_variableNameList.append(varName);
+        return;
     }
 
-    value = static_cast<qreal>(QRandomGenerator::global()->generate());
+    if (!zv_variableNameMap.keys().contains(varName))
+    {
+        zv_variableNameMap.insert(varName, static_cast<qreal>(QRandomGenerator::global()->generate()));
+    }
+
+    value = zv_variableNameMap.value(varName);
 }
 //===================================================
 void ZMathExpressionVariableListMaker::zp_setError(const QString& errorString,
