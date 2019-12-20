@@ -83,6 +83,7 @@ private:
     const QString zv_FRACTIONAL_BASE_NORMALIZER = "fractional_base_normalizer";
 
     const QString zv_CUSTOM_STRING = "custom_string";
+    const QString zv_DESCRIPTION = "description";
     const QString zv_INTERCEPT = "intercept";
 
     const QString zv_YES = "yes";

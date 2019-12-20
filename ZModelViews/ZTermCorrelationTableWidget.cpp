@@ -37,6 +37,8 @@ void ZTermCorrelationTableWidget::zp_setModel(ZTermCorrelationTableModel* model)
             this, &ZTermCorrelationTableWidget::zh_onCurrentTermChanged);
     connect(this, &ZTermCorrelationTableWidget::zg_currentTermChanged,
             model, &ZTermCorrelationTableModel::zg_currentTermChanged);
+    connect(this, &ZTermCorrelationTableWidget::zg_termDoubleClicked,
+            model, &ZTermCorrelationTableModel::zg_termDoubleClicked);
 }
 //=============================================================
 void ZTermCorrelationTableWidget::zp_appendButtonActions(QList<QAction*> actionList)
@@ -64,7 +66,7 @@ void ZTermCorrelationTableWidget::zp_appendContextMenuActions(QList<QAction*> ac
 {
     foreach(QAction* action, actionList)
     {
-        if(action != 0 && zv_contextMenuActionList.contains(action))
+        if(action != nullptr && zv_contextMenuActionList.contains(action))
         {
             continue;
         }
@@ -90,6 +92,8 @@ void ZTermCorrelationTableWidget::zh_createComponents()
     ZCustomCheckableVerticalHeaderView* checkableHeader = new ZCustomCheckableVerticalHeaderView();
     connect(checkableHeader, &ZCustomCheckableVerticalHeaderView::zg_userChangesTermState,
             this, &ZTermCorrelationTableWidget::zg_userChangesTermState);
+    connect(checkableHeader, &ZCustomCheckableVerticalHeaderView::doubleClicked,
+            this, &ZTermCorrelationTableWidget::zh_onTermDoubleClick);
     zv_table->setVerticalHeader(checkableHeader);
     zv_table->verticalHeader()->setContextMenuPolicy(Qt::CustomContextMenu);
 
@@ -147,6 +151,16 @@ void ZTermCorrelationTableWidget::zh_onCurrentTermChanged(QModelIndex current, Q
     emit zg_currentTermChanged(current.row(), previous.row());
 }
 //=============================================================
+void ZTermCorrelationTableWidget::zh_onTermDoubleClick(const QModelIndex& index)
+{
+    if (!index.isValid() || !index.model())
+    {
+        return;
+    }
+
+    emit zg_termDoubleClicked(index.row());
+}
+//=============================================================
 void ZTermCorrelationTableWidget::zh_onContextMenuRequest(const QPoint &pos)
 {
     QMenu *menu=new QMenu(this);
@@ -154,7 +168,7 @@ void ZTermCorrelationTableWidget::zh_onContextMenuRequest(const QPoint &pos)
 
     foreach(QAction* action, zv_contextMenuActionList)
     {
-        if(action == 0)
+        if(action == nullptr)
         {
             menu->addSeparator();
             continue;

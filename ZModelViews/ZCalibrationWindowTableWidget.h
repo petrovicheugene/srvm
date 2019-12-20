@@ -31,6 +31,7 @@ signals:
 
     void zg_currentCalibrationWindowChanged(int, int);
     void zg_calibrationWindowSelectionChanged();
+    void zg_calibrationWindowClicked(const QModelIndex& index) const;
 
 public slots:
 
@@ -61,7 +62,9 @@ private slots:
                                      const QModelIndex & previous);
     void zh_onCalibrationWindowSelectionChanged(const QItemSelection & selected,
                                                                                const QItemSelection & deselected);
+    void zh_onCalibrationWindowClick(const QModelIndex& index ) const;
     void zh_onContextMenuRequest(const QPoint &pos);
+
 
 };
 //==============================================================

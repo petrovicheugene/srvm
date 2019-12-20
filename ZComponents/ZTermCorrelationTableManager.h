@@ -48,6 +48,7 @@ public:
     QString zp_verticalColumnName(int) const;
 
     QPixmap zp_termStateIcon(int) const;
+
     void zp_setNextUsersTermState(int);
 
 signals:
@@ -60,6 +61,7 @@ signals:
                                             qreal sumSquareAverageConcentration) const;
 
     void zg_currentTermChanged(int currentTermIndex, int previousTermIndex) const;
+    void zg_termDoubleClicked(int row);
 
 public slots:
 

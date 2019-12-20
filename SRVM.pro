@@ -14,7 +14,7 @@ RC_ICONS = "ZImages/SRVM-8.ico"
 #Application version
 VER_MAJ=1
 VER_MIN=0
-VER_PAT=6
+VER_PAT=8
 
 PRODUCT_SHORT_NAME="SRVM"
 PRODUCT_FILE_BASE_NAME="SRVM"
@@ -179,7 +179,10 @@ INCLUDEPATH += ZPlotter \
 
 SOURCES += main.cpp \
     MainWindow.cpp \
+    ZComponents/ZMathExpressionHandler.cpp \
+    ZComponents/ZMathExpressionVariableListMaker.cpp \
     ZComponents/ZXMLCalibrationProjectIOHandler.cpp \
+    ZDialogs/ZCustomTermDialog.cpp \
     ZGeneral.cpp \
     ZComponents/ZSpectrumArray.cpp \
     ZComponents/ZFileActionManager.cpp \
@@ -301,7 +304,10 @@ SOURCES += main.cpp \
 
 HEADERS  += \
     MainWindow.h \
+    ZComponents/ZMathExpressionHandler.h \
+    ZComponents/ZMathExpressionVariableListMaker.h \
     ZComponents/ZXMLCalibrationProjectIOHandler.h \
+    ZDialogs/ZCustomTermDialog.h \
     ZGeneral.h \
     ZComponents/ZSpectrumArray.h \
     ZComponents/ZFileActionManager.h \
@@ -357,7 +363,7 @@ HEADERS  += \
     ZModelViews/ZCalibrationWindowTableWidget.h \
     ZPlotter/ZDefaultRectGraphicsItem.h \
     ZModelViews/ZIntDelegate/ZChannelNumberDelegate.h \
-    ZPlotter/ZPlotterDefaulVariables.h \
+    ZPlotter/ZPlotterDefaultVariables.h \
     ZModelViews/ZTermCorrelationTableWidget.h \
     ZModels/ZTermCorrelationTableModel.h \
     ZComponents/ZTermCorrelationTableManager.h \

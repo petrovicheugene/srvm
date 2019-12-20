@@ -9,8 +9,9 @@
 #include "ZWindowGraphicsItem.h"
 #include "ZChartPointGraphicsItem.h"
 #include "ZGeneral.h"
-#include "ZPlotterDefaulVariables.h"
+#include "ZPlotterDefaultVariables.h"
 
+#include <math.h>
 #include <QApplication>
 #include <QScrollBar>
 #include <QVBoxLayout>

@@ -4,6 +4,7 @@
 
 #include <QPainter>
 #include <QApplication>
+#include <QDebug>
 #include <QTableView>
 #include <QMouseEvent>
 #include <QRect>
@@ -245,6 +246,12 @@ void ZCustomCheckableVerticalHeaderView::mouseReleaseEvent(QMouseEvent* event)
 {
     zv_pressedIndex = -1;
     QHeaderView::mouseReleaseEvent(event);
+}
+//=========================================================
+void ZCustomCheckableVerticalHeaderView::mouseDoubleClickEvent(QMouseEvent* e)
+{
+    QModelIndex index = currentIndex();
+    emit doubleClicked(index);
 }
 //=========================================================
 QSize ZCustomCheckableVerticalHeaderView::sectionSizeFromContents(int logicalIndex) const

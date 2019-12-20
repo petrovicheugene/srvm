@@ -3,6 +3,8 @@
 #include "ZLESGaussSolver.h"
 #include "ZGeneral.h"
 #include "ZJointSpectraDataManager.h"
+
+#include <math.h>
 #include <QPair>
 #include <math.h>
 //=============================================================================
@@ -56,6 +58,8 @@ void ZTermCorrelationTableManager::zp_connectToCalibrationRepository(ZCalibratio
 
     connect(this, &ZTermCorrelationTableManager::zg_currentTermChanged,
             zv_calibrationRepository, &ZCalibrationRepository::zp_onCurrentTermChange);
+    connect(this, &ZTermCorrelationTableManager::zg_termDoubleClicked,
+            zv_calibrationRepository, &ZCalibrationRepository::zp_onTermDoubleClocked);
 
 
     emit zg_currentOperation(TOT_END_RESET, -1, -1);

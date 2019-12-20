@@ -25,6 +25,7 @@ protected:
     QSize sectionSizeFromContents(int logicalIndex) const;
     void mousePressEvent(QMouseEvent* event);
     void mouseReleaseEvent(QMouseEvent* event);
+    void mouseDoubleClickEvent(QMouseEvent* e);
 
     QRect zh_decorationRect(const QRect &sectionRect) const;
     bool zh_isFirstVisibleSection(int section) const;

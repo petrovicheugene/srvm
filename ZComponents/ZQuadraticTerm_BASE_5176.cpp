@@ -1,11 +1,6 @@
 //===================================================================
 #include "ZQuadraticTerm.h"
 #include "ZCalibrationWindow.h"
-<<<<<<< HEAD
-=======
-
->>>>>>> c9d4afa6dbb33f0cf68b83b6caedfe5c1b428b1e
-#include <math.h>
 //===================================================================
 ZQuadraticTerm::ZQuadraticTerm(const ZCalibrationWindow *window,
                                ZCalibration *parent) :
