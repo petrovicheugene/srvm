@@ -20,9 +20,9 @@ QWidget* ZChannelNumberDelegate::createEditor(QWidget* parent,
    *pCurrentModelIndex = index;
    bool minMaxSetRes = false;
 
-   if(index.column() == 2)
+   if(index.column() == 3)
    {
-      QModelIndex nextIndex = index.model()->index(index.row(), 3);
+      QModelIndex nextIndex = index.model()->index(index.row(), 4);
       if(nextIndex.isValid())
       {
          QVariant vData = nextIndex.data();
@@ -39,9 +39,9 @@ QWidget* ZChannelNumberDelegate::createEditor(QWidget* parent,
          }
       }
    }
-   else if(index.column() == 3)
+   else if(index.column() == 4)
    {
-      QModelIndex nextIndex = index.model()->index(index.row(), 2);
+      QModelIndex nextIndex = index.model()->index(index.row(), 3);
       if(nextIndex.isValid())
       {
          QVariant vData = nextIndex.data();
@@ -94,7 +94,7 @@ void	ZChannelNumberDelegate::setEditorData(QWidget * editor, const QModelIndex &
 //================================================
 void	ZChannelNumberDelegate::setModelData ( QWidget * editor, QAbstractItemModel * model, const QModelIndex & index ) const
 {
-   if(model == 0 || !index.isValid())
+   if(model == nullptr || !index.isValid())
    {
       return;
    }

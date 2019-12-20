@@ -17,6 +17,7 @@
 #include "ZEquationSettingsData.h"
 #include "ZHelpBrowser.h"
 #include "ZStandardMessagePictureDispatcher.h"
+#include "ZTranslatorManager.h"
 
 // views
 #include "ZWidgetWithSidebar.h"
@@ -94,9 +95,12 @@ MainWindow::MainWindow(QWidget *parent)
 
     zh_createActions();
     zh_createComponents();
+    zh_createPlotterWidget();
+
     zh_createMenu();
     zh_createToolbar();
     zh_createConnections();
+
     zh_restoreSettings();
 
     // plotter starting settings
@@ -187,30 +191,118 @@ void MainWindow::closeEvent(QCloseEvent* e)
 //==========================================================
 void MainWindow::zh_createActions()
 {
+    //    zv_languageControlAction = new QAction(this);
+    //    zv_languageControlAction->setIcon(QIcon(":/images/ZImages/earthGlobe-16.png"));
+    //    zv_languageControlAction->setText(tr("Language"));
+    //    zv_languageControlAction->setToolTip(tr("Application language"));
+
     zv_exitAction = new QAction(this);
     zv_exitAction->setIcon(QIcon(NS_Icons::glIconExitApp));
     zv_exitAction->setText(tr("Exit"));
     zv_exitAction->setToolTip(tr("Exit the application"));
 
-//    zv_aboutAction = new QAction(this);
+    //    zv_aboutAction = new QAction(this);
     zv_aboutAction->setIcon(QIcon(NS_Icons::glIconAbout));
-//    zv_aboutAction->setText(tr("About"));
-//    zv_aboutAction->setToolTip(tr("About the application"));
+    //    zv_aboutAction->setText(tr("About"));
+    //    zv_aboutAction->setToolTip(tr("About the application"));
     zv_aboutQtAction->setIcon(QIcon(NS_Icons::glIconQt));
-//    zv_helpAction = new QAction(this);
+    //    zv_helpAction = new QAction(this);
     zv_helpAction->setIcon(QIcon(NS_Icons::glIconHelp));
-//    zv_helpAction->setText(tr("Help"));
-//    zv_helpAction->setToolTip(tr("Show user guide"));
+    //    zv_helpAction->setText(tr("Help"));
+    //    zv_helpAction->setToolTip(tr("Show user guide"));
 
+}
+//==========================================================
+void MainWindow::zh_createPlotterWidget()
+{
+    // Plotter
+    if(zv_plotter)
+    {
+        zv_plotter->deleteLater();
+    }
+
+    zv_plotter = new ZPlotter(this);
+    QFrame* frame = zh_setWidgetToFrame(zv_plotter);
+    setCentralWidget(frame);
+
+    if(zv_plotterDataManager)
+    {
+        zv_plotterDataManager->zp_connectToPlotter(zv_plotter);
+    }
+
+    connect(zv_spectrumArrayRepository, &ZSpectrumArrayRepository::zg_fitPlotInBoundingRect,
+            zv_plotter, &ZPlotter::zp_fitInBoundingRect);
+    connect(zv_calibrationRepository, &ZCalibrationRepository::zg_requestCurrentVisibleSceneRect,
+            zv_plotter, &ZPlotter::zp_currentVisibleSceneRect);
+
+}
+//==========================================================
+void MainWindow::zh_appLanguageControl()
+{
+    if(!sender())
+    {
+        return;
+    }
+
+    QAction* action = dynamic_cast<QAction*>(sender());
+    if(!action)
+    {
+        return;
+    }
+
+    ZTranslatorManager translatorManager;
+    QString currentLanguageName;
+    bool ok = false;
+    translatorManager.zp_currentLanguageName(currentLanguageName, &ok);
+
+    qDebug() << "Current lang" << currentLanguageName << "Installied lang" << action->text();
+
+    if(ok && action->text() == currentLanguageName)
+    {
+        return;
+    }
+
+    ok = false;
+    translatorManager.zp_setApplicationLanguage(action->text(), &ok);
+    QString msg;
+    if(ok)
+    {
+        msg = tr("The language of application has been changed.\n"
+                 "In order for the changes to take effect, please restart the application.");
+    }
+    else
+    {
+        msg = translatorManager.zp_lastError().isEmpty() ?
+                    tr("Unknown language settings error.") : translatorManager.zp_lastError();
+
+    }
+
+    QString title = tr("Language settings");
+    QMessageBox::information(this, title, msg, QMessageBox::Ok);
+}
+//==========================================================
+void MainWindow::zh_fillLanguageMenu()
+{
+    zv_languageMenu->clear();
+    ZTranslatorManager translatorManager;
+    QStringList availableLanguageNameList;
+    translatorManager.zp_availableLanguageNameList(availableLanguageNameList);
+
+    foreach(QString languageName, availableLanguageNameList)
+    {
+        QAction* action = zv_languageMenu->addAction(languageName);
+        connect(action, &QAction::triggered,
+                this, &MainWindow::zh_appLanguageControl);
+    }
 }
 //==========================================================
 void MainWindow::zh_createComponents()
 {
     // CENTRAL WIDGET
-    // Plotter
-    zv_plotter = new ZPlotter(this);
-    QFrame* frame = zh_setWidgetToFrame(zv_plotter);
-    setCentralWidget(frame);
+    //    // Plotter
+    //    zv_plotter = new ZPlotter(this);
+    //    QFrame* frame = zh_setWidgetToFrame(zv_plotter);
+    //    setCentralWidget(frame);
 
     // DOCKS
     // Spectrum array dock
@@ -278,7 +370,7 @@ void MainWindow::zh_createComponents()
     //leftWidgetLayout->addWidget(frame);
 
     // setting to dock
-    frame = zh_setWidgetToFrame(calibrationWidget);
+    QFrame* frame = zh_setWidgetToFrame(calibrationWidget);
     zv_calibrationDock->setWidget(frame);
 
     // Correlation Plotter View
@@ -398,6 +490,9 @@ void MainWindow::zh_createMenu()
     // menu->setCursor(Qt::PointingHandCursor);
     menu->setObjectName("Help");
     zh_appendActionsToMenu(menu);
+
+
+
 }
 //==========================================================
 void MainWindow::zh_createToolbar()
@@ -419,10 +514,15 @@ void MainWindow::zh_createConnections()
     // main window actions
     connect(zv_exitAction, &QAction::triggered,
             this, &MainWindow::close);
-//    connect(zv_aboutAction, &QAction::triggered,
-//            this, &MainWindow::zh_onAboutAction);
-//    connect(zv_helpAction, &QAction::triggered,
-//            this, &MainWindow::zh_onHelpAction);
+    //    connect(zv_languageControlAction, &QAction::triggered,
+    //            this, &MainWindow::zh_appLanguageControl);
+    connect(zv_languageMenu, &QMenu::aboutToShow,
+            this, &MainWindow::zh_fillLanguageMenu);
+
+    //    connect(zv_aboutAction, &QAction::triggered,
+    //            this, &MainWindow::zh_onAboutAction);
+    //    connect(zv_helpAction, &QAction::triggered,
+    //            this, &MainWindow::zh_onHelpAction);
 
     // main window save settings command
     connect(this, &MainWindow::zg_saveSettings,
@@ -444,7 +544,7 @@ void MainWindow::zh_createConnections()
     zv_termCorrelationTableWidget->zp_setModel(zv_termCorrelationTableModel);
 
     // File Action Manager <-> other components
-    zv_calibrationRepository->zp_connectToFileManager(zv_fileActionManager);
+    zv_calibrationRepository->zp_connectToFileActionManager(zv_fileActionManager);
     //zv_calibrationRepository->zp_connectToSpectrumArrayRepository(zv_spectrumArrayRepository);
     zv_spectrumArrayRepository->zp_connectToFileActionManager(zv_fileActionManager);
 
@@ -457,7 +557,7 @@ void MainWindow::zh_createConnections()
     // plotter
     zv_plotterDataManager->zp_connectToSpectraArrayRepository(zv_spectrumArrayRepository);
     zv_plotterDataManager->zp_connectToCalibrationRepository(zv_calibrationRepository);
-    zv_plotterDataManager->zp_connectToPlotter(zv_plotter);
+    // zv_plotterDataManager->zp_connectToPlotter(zv_plotter);
     // chem element
     zv_chemElementDataManager->zp_connectToSpectraArrayRepository(zv_spectrumArrayRepository);
     zv_chemElementModel->zp_connectToChemElementDataManager(zv_chemElementDataManager);
@@ -476,8 +576,8 @@ void MainWindow::zh_createConnections()
             zv_chemElementWidget, &ZChemElementWidget::zp_setCurrentChemElementIndex);
     connect(zv_spectrumArrayRepository, &ZSpectrumArrayRepository::zg_startCurrentChemElementEdition,
             zv_chemElementWidget, &ZChemElementWidget::zp_startCurrentChemElementEdition);
-    connect(zv_spectrumArrayRepository, &ZSpectrumArrayRepository::zg_fitPlotInBoundingRect,
-            zv_plotter, &ZPlotter::zp_fitInBoundingRect);
+    //    connect(zv_spectrumArrayRepository, &ZSpectrumArrayRepository::zg_fitPlotInBoundingRect,
+    //            zv_plotter, &ZPlotter::zp_fitInBoundingRect);
 
 
     // spectra repository <-> joint spectrum view
@@ -502,8 +602,8 @@ void MainWindow::zh_createConnections()
     zv_calibrationModel->zp_connectToCalibrationRepository(zv_calibrationRepository);
 
     // calibration repository <-> plotter
-    connect(zv_calibrationRepository, &ZCalibrationRepository::zg_requestCurrentVisibleSceneRect,
-            zv_plotter, &ZPlotter::zp_currentVisibleSceneRect);
+    //    connect(zv_calibrationRepository, &ZCalibrationRepository::zg_requestCurrentVisibleSceneRect,
+    //            zv_plotter, &ZPlotter::zp_currentVisibleSceneRect);
     connect(zv_calibrationRepository, &ZCalibrationRepository::zg_setCurrentWindowIndex,
             zv_calibrationWindowTableWidget, &ZCalibrationWindowTableWidget::zp_setCurrentWindowIndex);
     connect(zv_calibrationRepository, &ZCalibrationRepository::zg_startCurrentWindowEdition,
@@ -585,8 +685,8 @@ void MainWindow::zh_messageIconPixmap(int type,
     if(type == QtDebugMsg)
     {
         QPixmap debugPixmap = QPixmap(":/images/ZImages/Bug.png").scaled(size,
-                                                           Qt::KeepAspectRatio,
-                                                           Qt::FastTransformation);
+                                                                         Qt::KeepAspectRatio,
+                                                                         Qt::FastTransformation);
         if(!debugPixmap.isNull())
         {
             pixmap = debugPixmap;
@@ -603,6 +703,22 @@ void MainWindow::zh_appendActionsToMenu(QMenu* menu)
 {
     if(menu->objectName() == "File")
     {
+        // language
+        // menu->addAction(zv_languageControlAction);
+        zv_languageMenu = new QMenu;
+        zv_languageMenu->setIcon(QIcon(":/images/ZImages/earthGlobe-16.png"));
+        ZTranslatorManager translatorManager;
+        QString currentLanguage;
+        bool ok = false;
+        translatorManager.zp_currentLanguageName(currentLanguage, &ok);
+        if(ok)
+        {
+            zv_languageMenu->setTitle(currentLanguage);
+        }
+
+        zv_languageMenu->setToolTip(tr("Application language"));
+
+        menu->addMenu(zv_languageMenu);
         menu->addAction(zv_exitAction);
         menu->addSeparator();
         return;

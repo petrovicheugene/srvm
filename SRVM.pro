@@ -14,15 +14,14 @@ RC_ICONS = "ZImages/SRVM-8.ico"
 #Application version
 VER_MAJ=1
 VER_MIN=0
-VER_PAT=1
-VER_BUILD=b
+VER_PAT=8
 
-PRODUCT_DISPLAY_NAME="SRV M"
+PRODUCT_SHORT_NAME="SRVM"
 PRODUCT_FILE_BASE_NAME="SRVM"
-QMAKE_TARGET_PRODUCT="SRVM"
+QMAKE_TARGET_PRODUCT="SRV M"
 QMAKE_TARGET_DESCRIPTION="Creation of spectrometer calibration"
 QMAKE_TARGET_COMPANY="TechnoAnalyt"
-QMAKE_TARGET_COPYRIGHT="Copyright © $${QMAKE_TARGET_COMPANY} Ltd. 2015 - 2019.  All rights reserved."
+QMAKE_TARGET_COPYRIGHT="Copyright © $${QMAKE_TARGET_COMPANY} Ltd. 2015 - 2019. All rights reserved."
 COMPANY_URL=www.tehnoanalit.com
 
 #-------------------------------------------------
@@ -53,13 +52,14 @@ VERSION=$${VER_MAJ}.$${VER_MIN}.$${VER_PAT}
 CONFIG(debug, debug|release) {
     BUILD_FLAG = debug
     LIB_SUFFIX = d
+
 } else {
     BUILD_FLAG = release
 }
 
 #Define the preprocessor macro to get the application version in the application.
-DEFINES += APP_DISPLAY_NAME=\"\\\"$${PRODUCT_DISPLAY_NAME}\\\"\"
-DEFINES += APP_PRODUCT=\"\\\"$${QMAKE_TARGET_PRODUCT}\\\"\"
+DEFINES += APP_DISPLAY_NAME=\"\\\"$${QMAKE_TARGET_PRODUCT}\\\"\"
+DEFINES += APP_PRODUCT=\"\\\"$${PRODUCT_SHORT_NAME}\\\"\"
 DEFINES += APP_VERSION=\"\\\"$${VERSION}.$${VER_RELEASE}\\\"\"
 DEFINES += APP_COMPANY=\"\\\"$${QMAKE_TARGET_COMPANY}\\\"\"
 DEFINES += APP_COMPANY_URL=\"\\\"$${COMPANY_URL}\\\"\"
@@ -97,9 +97,9 @@ linux-g++: QMAKE_CXXFLAGS += -std=c++11
 linux-g++: QMAKE_LFLAGS += -Wl,--rpath=\\\$\$ORIGIN/../../lib.$${OS_SUFFIX}/
 
 CONFIG(debug, debug|release) {
-    TARGET=$${PRODUCT_FILE_BASE_NAME}-$${VERSION}.$${VER_BUILD}
+    TARGET=$${PRODUCT_FILE_BASE_NAME}-$${VERSION}.$${BUILD_FLAG}
 } else {
-    TARGET=$${PRODUCT_FILE_BASE_NAME}-$${VERSION}
+    TARGET=$${PRODUCT_FILE_BASE_NAME}
 }
 
 #END
@@ -179,6 +179,10 @@ INCLUDEPATH += ZPlotter \
 
 SOURCES += main.cpp \
     MainWindow.cpp \
+    ZComponents/ZMathExpressionHandler.cpp \
+    ZComponents/ZMathExpressionVariableListMaker.cpp \
+    ZComponents/ZXMLCalibrationProjectIOHandler.cpp \
+    ZDialogs/ZCustomTermDialog.cpp \
     ZGeneral.cpp \
     ZComponents/ZSpectrumArray.cpp \
     ZComponents/ZFileActionManager.cpp \
@@ -300,6 +304,10 @@ SOURCES += main.cpp \
 
 HEADERS  += \
     MainWindow.h \
+    ZComponents/ZMathExpressionHandler.h \
+    ZComponents/ZMathExpressionVariableListMaker.h \
+    ZComponents/ZXMLCalibrationProjectIOHandler.h \
+    ZDialogs/ZCustomTermDialog.h \
     ZGeneral.h \
     ZComponents/ZSpectrumArray.h \
     ZComponents/ZFileActionManager.h \
@@ -355,7 +363,7 @@ HEADERS  += \
     ZModelViews/ZCalibrationWindowTableWidget.h \
     ZPlotter/ZDefaultRectGraphicsItem.h \
     ZModelViews/ZIntDelegate/ZChannelNumberDelegate.h \
-    ZPlotter/ZPlotterDefaulVariables.h \
+    ZPlotter/ZPlotterDefaultVariables.h \
     ZModelViews/ZTermCorrelationTableWidget.h \
     ZModels/ZTermCorrelationTableModel.h \
     ZComponents/ZTermCorrelationTableManager.h \

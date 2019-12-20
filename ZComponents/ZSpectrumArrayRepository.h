@@ -18,7 +18,7 @@ class ZSpectrumArrayRepository : public QObject
 {
     Q_OBJECT
 public:
-    explicit ZSpectrumArrayRepository(QObject *parent = 0);
+    explicit ZSpectrumArrayRepository(QObject *parent = nullptr);
 
     // VARS
     enum ArrayOperationType {AOT_INSERT_ARRAYS,
@@ -145,7 +145,7 @@ signals:
     void zg_startCurrentArrayEdition();
     void zg_startCurrentChemElementEdition();
 
-    void zg_saveSpectraArrayList(QString, QList<ZRawSpectrumArray>) const;
+    void zg_saveSpectraArrayList(QString&, QList<ZRawSpectrumArray>, bool& res) const;
     void zg_initSpectraAppending(int);
 
     void zg_currentArrayIsAboutChange(qint64 arrayId, int arrayIndex);
@@ -162,7 +162,7 @@ signals:
 
     void zg_arrayListDirtyChanged(bool dirty, bool currentArrayExists) const;
 
-    void zg_requestCurrentRow(int& currentRow, bool* ok) const;
+    void zg_requestCurrentSpectrumRow(int& currentRow, bool* ok) const;
 
 public slots:
 
@@ -178,6 +178,10 @@ public slots:
                                      bool concentrationSelected,
                                      bool spectrumSelected);
 
+    void zp_currentSpectrumWindowIntensity(int firstChannel,
+                                           int lastChennel, qreal &intensity) const;
+
+
 private slots:
 
     void zp_appendArrays(QString path, QList<ZRawSpectrumArray>);
@@ -192,7 +196,7 @@ private slots:
     void zh_onRemoveChemElementAction();
 
     void zh_onChemElementOperation(ZChemElementList::OperationType, int, int);
-    void zh_createRawArrayListAndStartSaving(QString filePath) const;
+    void zh_createRawArrayListAndStartSaving(QString &filePath, bool &res) const;
     void zh_onSpectrumOperation(ZSpectrumArray::OperationType type, int first, int last) const;
 
     void zh_onClipboardContentChange();

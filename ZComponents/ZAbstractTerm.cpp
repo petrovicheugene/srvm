@@ -80,9 +80,10 @@ ZAbstractTerm::TermState ZAbstractTerm::zp_termStateFromString(const QString& st
 //============================================================
 // END STATIC
 //============================================================
-ZAbstractTerm::ZAbstractTerm(ZCalibration *parent) : QObject(parent)
+ZAbstractTerm::ZAbstractTerm(ZCalibration *calibration) :
+      QObject(calibration)
 {
-    zh_connectToCalibration(parent);
+    zh_connectToCalibration(calibration);
     zv_type = TT_NOT_DEFINED;
     zv_termState = TS_CONST_EXCLUDED;
     // zp_setTermFactor(0.0); // zv_termFactorString = 0;

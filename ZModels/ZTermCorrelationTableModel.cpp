@@ -177,6 +177,8 @@ void ZTermCorrelationTableModel::zp_connectToTermCorrelationTableManager(ZTermCo
 
     connect(this, &ZTermCorrelationTableModel::zg_currentTermChanged,
             zv_dataManager, &ZTermCorrelationTableManager::zg_currentTermChanged);
+    connect(this, &ZTermCorrelationTableModel::zg_termDoubleClicked,
+            zv_dataManager, &ZTermCorrelationTableManager::zg_termDoubleClicked);
 
     endResetModel();
 }

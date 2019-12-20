@@ -21,6 +21,7 @@ class ZEnergyLineTableWidget;
 
 class QAction;
 class QFrame;
+class QMenu;
 class ZPlotter;
 class ZHelpBrowser;
 
@@ -71,7 +72,9 @@ private:
     // VARS
     // actions
     QAction* zv_exitAction;
-    //    QAction* zv_aboutQtAction;
+    //QAction* zv_languageControlAction;
+    QMenu* zv_languageMenu;
+    // QAction* zv_openCalibrationProjectAction;
     //    QAction* zv_helpAction;
 
     // docks
@@ -138,6 +141,9 @@ private slots:
 
 
     void zh_rebuildCorrelationPlot();
+    void zh_createPlotterWidget();
+    void zh_appLanguageControl();
+    void zh_fillLanguageMenu();
 
 };
 Q_DECLARE_METATYPE(QtMsgType)

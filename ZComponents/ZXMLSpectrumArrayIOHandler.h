@@ -38,6 +38,8 @@ private:
     const QString zv_SPECTRUM = "spectrum";
     const QString zv_PATH = "path";
     const QString zv_CONCENTRATION = "concentration";
+    const QString zv_CHECKED = "checked";
+    const QString zv_VISIBLE = "visible";
 
     const QString zv_YES = "yes";
     const QString zv_NO = "no";

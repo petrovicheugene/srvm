@@ -19,7 +19,7 @@ class ZCalibrationRepository : public QObject
     Q_OBJECT
     friend class ZTermCorrelationTableManager;
 public:
-    explicit ZCalibrationRepository(QObject *parent = 0);
+    explicit ZCalibrationRepository(QObject *parent = nullptr);
 
     // VARS
     enum CalibrationOperationType {COT_CALIBRATION_VISIBILITY_CHANGE,
@@ -62,7 +62,7 @@ public:
                            };
 
     // FUNCS
-    void zp_connectToFileManager(ZFileActionManager*);
+    void zp_connectToFileActionManager(ZFileActionManager*);
 
     void zp_appendActionsToMenu(QMenu *menu) const;
     QList<QAction*> zp_calibrationActions() const;
@@ -103,7 +103,7 @@ public:
     // Windows
     bool zp_isCalibrationWindowVisible(qint64, int) const;
     bool zp_isCalibrationWindowVisible(qint64) const;
-    bool zp_setCalibrationWindowVisible(qreal, int windowIndex, bool visibility);
+    bool zp_setCalibrationWindowVisible(qint64, int windowIndex, bool visibility);
 
     int zp_calibrationWindowCount(qint64) const;
     QString zp_calibrationWindowName(qint64 calibrationId, int windowIndex) const;
@@ -181,9 +181,9 @@ signals:
 
     void zg_requestSelectedCalibrationIndexList(QList<int>&);
     void zg_requestCurrentCalibrationIndex(int&);
-//    void zg_openCalibrationsActionTriggered() const;
-//    void zg_saveCalibrationsActionTriggered() const;
-//    void zg_saveAsCalibrationsActionTriggered() const;
+    //    void zg_openCalibrationsActionTriggered() const;
+    //    void zg_saveCalibrationsActionTriggered() const;
+    //    void zg_saveAsCalibrationsActionTriggered() const;
 
     void zg_setCurrentCalibrationIndex(int calibrationIndex);
     void zg_startCurrentCalibrationEdition();
@@ -191,6 +191,7 @@ signals:
 
     void zg_currentCalibrationWindowChanged(qint64 currentWindowId, int currentWindowIndex,
                                             qint64 previousWindowId, int previousWindowIndex);
+    void zg_currentCalibrationWindowName(const QString& name) const;
 
     void zg_requestCurrentWindowIndex(int&) const;
     void zg_requestSelectedWindowIndexList(QList<int>&) const;
@@ -210,9 +211,14 @@ public slots:
     void zp_onSelectedCalibrationChange(QList<int>);
     void zp_onCurrentCalibrationChange(int current, int previous);
     void zp_onCurrentCalibrationWindowChange(int current, int previous);
+    void zp_onCalibrationWindowClick(const QModelIndex& index);
+
     void zp_onCalibrationWindowSelectionChange();
     void zp_onCurrentTermChange(int currentTermIndex, int previousTermIndex);
-    void zp_calibrationQualityDataChanged(bool saveTocalibration, qint64 calibrationId, ZCalibrationQualityData);
+    void zp_calibrationQualityDataChanged(bool saveTocalibration,
+                                          qint64 calibrationId,
+                                          ZCalibrationQualityData);
+    void zp_onTermDoubleClocked(int row);
 
 private slots:
 
@@ -310,7 +316,7 @@ private:
     bool zh_copyCalibration(int calibrationIndex);
     bool zh_copyWindowsTermsAndEquation(int calibrationIndex, ZCalibration *trgCalibration);
     int zh_findCorrespondingTermIndex(int srcTermIndex,
-                                  const ZCalibration *srcCalibration, const ZCalibration *trgCalibration);
+                                      const ZCalibration *srcCalibration, const ZCalibration *trgCalibration);
 };
 //======================================================
 #endif // ZCALIBRATIONARRAYREPOSITORY_H

@@ -26,7 +26,7 @@ ZPlotter* ZCorrelationPlotterWidget::zp_plotter()
 //==============================================================
 void ZCorrelationPlotterWidget::zp_rebuildPlotter()
 {
-    if(zv_plotter != 0)
+    if(zv_plotter != nullptr)
     {
         delete zv_plotter;
     }

@@ -131,7 +131,7 @@ void ZBaseMainWindow::zh_about()
                 "<p>%3</p>"
                 "<p>%7<br> "
                 "Company website: <a href=\"http://%8/\">%8</a><br>"
-                "%5: %4.<br>"
+                "%5: %4<br>"
                 "Author's email: <a href=mailto:petrovich.eugene@gmail.com?Subject=My%20Subject>petrovich.eugene@gmail.com</a></p>"
                 ).arg(qApp->property("glAppProduct").toString(),
                       qApp->applicationVersion(),
@@ -139,8 +139,8 @@ void ZBaseMainWindow::zh_about()
                       tr("Eugene Petrovich"),
                       tr("Author"),
                       tr("Version"),
-                      qApp->property("glAppCopyright").toString(),
-                      qApp->property("glAppCompanyURL").toString()
+                      qApp->property("appCopyright").toString(),
+                      qApp->organizationDomain()
                       );
 
     QMessageBox::about(centralWidget(), title, htmlText);

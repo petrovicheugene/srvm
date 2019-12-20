@@ -16,7 +16,7 @@ class ZTermCorrelationTableWidget : public QWidget
 {
     Q_OBJECT
 public:
-    explicit ZTermCorrelationTableWidget(QWidget *parent = 0);
+    explicit ZTermCorrelationTableWidget(QWidget *parent = nullptr);
 
     // FUNCS
     void zp_setModel(ZTermCorrelationTableModel* model);
@@ -29,6 +29,7 @@ signals:
 
     void zg_userChangesTermState(int termLogIndex);
     void zg_currentTermChanged(int currentTermIndex, int previousTermIndex) const;
+    void zg_termDoubleClicked(int row) const;
 
 public slots:
 
@@ -38,6 +39,7 @@ private slots:
 
     void zh_editNext(QModelIndex editedIndex);
     void zh_onCurrentTermChanged(QModelIndex current, QModelIndex previous);
+    void zh_onTermDoubleClick(const QModelIndex& index);
     void zh_onContextMenuRequest(const QPoint &pos);
 
 private:

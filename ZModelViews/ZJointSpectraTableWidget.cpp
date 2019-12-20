@@ -81,7 +81,7 @@ void ZJointSpectrumTableWidget::zp_currentIndex(QModelIndex& index) const
     index = zv_table->currentIndex();
 }
 //=============================================================
-void ZJointSpectrumTableWidget::zp_currentRow(int& row, bool* ok) const
+void ZJointSpectrumTableWidget::zp_currentSpectrumRow(int& row, bool* ok) const
 {
     QModelIndex currentIndex;
     zp_currentIndex(currentIndex);
@@ -190,8 +190,8 @@ void ZJointSpectrumTableWidget::zp_connectToSpectrumArrayRepository(ZSpectrumArr
             repository, &ZSpectrumArrayRepository::zp_currentSpectrumChanged);
     connect(repository, &ZSpectrumArrayRepository::zg_setCurrentSpectrumIndex,
             this, &ZJointSpectrumTableWidget::zp_setCurrentSpectrumIndex);
-    connect(repository, &ZSpectrumArrayRepository::zg_requestCurrentRow,
-            this, &ZJointSpectrumTableWidget::zp_currentRow);
+    connect(repository, &ZSpectrumArrayRepository::zg_requestCurrentSpectrumRow,
+            this, &ZJointSpectrumTableWidget::zp_currentSpectrumRow);
 
 }
 //==============================================================

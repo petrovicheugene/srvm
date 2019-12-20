@@ -5,18 +5,18 @@
 ZCalibrationWindowModel::ZCalibrationWindowModel(QObject *parent)
     : QAbstractTableModel(parent)
 {
-    zv_dataManager = 0;
+    zv_dataManager = nullptr;
 }
 //==================================================================
 Qt::ItemFlags	ZCalibrationWindowModel::flags(const QModelIndex & index) const
 {
     Qt::ItemFlags flags;
-    flags |= Qt::ItemIsEnabled | Qt::ItemIsSelectable;
+    flags = Qt::ItemIsEnabled | Qt::ItemIsSelectable;
 
-    //    if(zv_dataManager->zp_isColumnChemElement(index.column()))
-    //    {
-    flags |= Qt::ItemIsEditable;
-    //    }
+    if(index.column() != 2)
+    {
+        flags |= Qt::ItemIsEditable;
+    }
 
     return flags;
 }
@@ -86,7 +86,10 @@ bool	ZCalibrationWindowModel::setData(const QModelIndex & index, const QVariant 
 
     if(role == Qt::EditRole)
     {
-        return zv_dataManager->zp_setData(index, value);
+        bool res = zv_dataManager->zp_setData(index, value);
+        QModelIndex intensityIndex = this->index(index.row(), 2);
+        emit dataChanged(intensityIndex, intensityIndex);
+        return res;
     }
 
     if(role == NS_DataRole::VisibleRole)

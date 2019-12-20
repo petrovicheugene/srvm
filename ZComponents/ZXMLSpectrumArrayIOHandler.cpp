@@ -133,6 +133,9 @@ void ZXMLSpectrumArrayIOHandler::zh_parseXMLElement(QList<ZRawSpectrumArray> &ar
         {
             ZRawSpectrum rawSpectrum;
             rawSpectrum.path = reader.attributes().value(zv_PATH).toString();
+            rawSpectrum.checked = reader.attributes().value(zv_CHECKED).toString() == zv_YES? true : false;
+            rawSpectrum.visible = reader.attributes().value(zv_VISIBLE).toString() == zv_YES? true : false;
+
             array[currentArrayIndex].spectrumList.append(rawSpectrum);
             currentSpectrumIndex = array[currentArrayIndex].spectrumList.count() - 1;
         }
@@ -217,6 +220,8 @@ bool ZXMLSpectrumArrayIOHandler::zp_writeSpectrumArray(QFile& file, const QList<
         {
             writer.writeStartElement(zv_SPECTRUM);
             writer.writeAttribute(zv_PATH, rawArrayList.value(a).spectrumList.value(s).path);
+            writer.writeAttribute(zv_CHECKED, rawArrayList.value(a).spectrumList.value(s).checked ? zv_YES : zv_NO);
+            writer.writeAttribute(zv_VISIBLE, rawArrayList.value(a).spectrumList.value(s).visible ? zv_YES : zv_NO);
 
             QMap<QString, QString>::const_iterator it;
 

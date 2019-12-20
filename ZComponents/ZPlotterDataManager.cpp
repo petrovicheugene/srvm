@@ -11,6 +11,7 @@
 #include "ZSpeSpectrum.h"
 
 #include "ZGeneral.h"
+#include <math.h>
 #include <QSet>
 //===========================================================
 ZPlotterDataManager::ZPlotterDataManager(QObject *parent) : QObject(parent)

@@ -8,7 +8,7 @@
 class ZRawTerm
 {
 public:
-    ZRawTerm();
+    ZRawTerm(ZAbstractTerm::TermType termType = ZAbstractTerm::TT_NOT_DEFINED);
     // VARS
     QString name;
     ZAbstractTerm::TermType termType;
@@ -16,6 +16,16 @@ public:
     QStringList windowList;
     QString customString;
     QString factor;
+
 };
+class ZRawCustomTerm : public ZRawTerm
+{
+public:
+    ZRawCustomTerm(ZAbstractTerm::TermType termType = ZAbstractTerm::TT_NOT_DEFINED);
+    // VARS
+    qint64 termId;
+    QString descriptionString;
+};
+
 //================================================
 #endif // ZRAWTERM_H

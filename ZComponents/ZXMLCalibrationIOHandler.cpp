@@ -23,7 +23,7 @@ ZXMLCalibrationIOHandler::~ZXMLCalibrationIOHandler()
 QString ZXMLCalibrationIOHandler::zp_getCalibrationOpenFile(const QString& calibrationFolderPath)
 {
     QString locationDirString = zp_checkDirPath(calibrationFolderPath);
-    QString fileName = QFileDialog::getOpenFileName(0, tr("Select file to open"),
+    QString fileName = QFileDialog::getOpenFileName(nullptr, tr("Select file to open"),
                                               locationDirString,
                                               tr("XML Calibration files(*.clbx);;XML files(*.xml);;All files(*.*)"));
     return fileName;
@@ -32,7 +32,7 @@ QString ZXMLCalibrationIOHandler::zp_getCalibrationOpenFile(const QString& calib
 QStringList ZXMLCalibrationIOHandler::zp_getCalibrationOpenFiles(const QString& calibrationFolderPath)
 {
     QString locationDirString = zp_checkDirPath(calibrationFolderPath);
-    QStringList fileNames = QFileDialog::getOpenFileNames(0, tr("Open file"),
+    QStringList fileNames = QFileDialog::getOpenFileNames(nullptr, tr("Open file"),
                                               locationDirString,
                                               tr("XML Calibration files(*.clbx);;XML files(*.xml);;All files(*.*)"));
     return fileNames;
@@ -40,7 +40,7 @@ QStringList ZXMLCalibrationIOHandler::zp_getCalibrationOpenFiles(const QString& 
 //==========================================================
 QString ZXMLCalibrationIOHandler::zp_getCalibrationSaveFile(const QString& calibrationFilePath)
 {
-    QString fileName = QFileDialog::getSaveFileName(0, tr("Save file"),
+    QString fileName = QFileDialog::getSaveFileName(nullptr, tr("Save file"),
                                               calibrationFilePath,
                                               tr("XML Calibration files(*.clbx);;XML files(*.xml);;All files(*.*)"));
     return fileName;
@@ -181,7 +181,13 @@ bool ZXMLCalibrationIOHandler::zp_writeCalibrationToFile(QFile& file, const ZCal
         // term custom string
         if(calibration->zp_termType(t) == ZAbstractTerm::TT_CUSTOM)
         {
-            // TODO write Term Custom string
+            writer.writeStartElement(zv_CUSTOM_STRING);
+            writer.writeCharacters(calibration->zp_termCustomString(t));
+            writer.writeEndElement(); // term state
+
+            writer.writeStartElement(zv_DESCRIPTION);
+            writer.writeCharacters(calibration->zp_termDescription(t));
+            writer.writeEndElement(); // term state
         }
 
         // term windows
@@ -268,7 +274,7 @@ QString ZXMLCalibrationIOHandler::zp_message() const
 bool ZXMLCalibrationIOHandler::zp_getCalibrationFromFile(QFile& file,
                                                          ZCalibration* calibration)
 {
-    if(calibration == 0)
+    if(calibration == nullptr)
     {
         return false;
     }
@@ -362,7 +368,7 @@ void ZXMLCalibrationIOHandler::zh_parseXMLElement(ZCalibration* calibration,
     else if(currentTagName == zv_TERM)
     {
         // create new raw term
-        zv_rawTerm = ZRawTerm();
+        zv_rawTerm = ZRawCustomTerm();
         zv_rawTerm.name = reader.attributes().value(zv_NAME).toString();
     }
 
@@ -503,6 +509,24 @@ void ZXMLCalibrationIOHandler::zh_parseXMLElement(ZCalibration* calibration,
             {
                 zv_rawTerm.termState = ZAbstractTerm::zp_termStateFromString(readerText);
             }
+
+            else if(currentTagName == zv_STATE)
+            {
+                zv_rawTerm.termState = ZAbstractTerm::zp_termStateFromString(readerText);
+            }
+
+            else if(currentTagName == zv_CUSTOM_STRING)
+            {
+                ZRawCustomTerm* rawCustomTerm = static_cast<ZRawCustomTerm*>(&zv_rawTerm);
+                rawCustomTerm->customString = (readerText);
+            }
+
+            else if(currentTagName == zv_DESCRIPTION)
+            {
+                ZRawCustomTerm* rawCustomTerm = static_cast<ZRawCustomTerm*>(&zv_rawTerm);
+                rawCustomTerm->descriptionString = (readerText);
+            }
+
             else if(currentTagName == zv_TERM_WINDOW)
             {
                 zv_rawTerm.windowList.append(readerText);
@@ -543,7 +567,15 @@ void ZXMLCalibrationIOHandler::zh_parseXMLElement(ZCalibration* calibration,
             }
             else if(currentTagName == zv_TERM)
             {
-                calibration->zp_createTerm(zv_rawTerm);
+                if (zv_rawTerm.termType == ZAbstractTerm::TT_CUSTOM)
+                {
+                    ZRawCustomTerm* customTerm = static_cast<ZRawCustomTerm* >(&zv_rawTerm);
+                    calibration->zp_applyRawTerm(*customTerm);
+                }
+                else
+                {
+                    calibration->zp_applyRawTerm(zv_rawTerm);
+                }
             }
             parentTagStack.pop();
             return; // parent tag is closed

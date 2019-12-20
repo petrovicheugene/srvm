@@ -5,10 +5,10 @@
 #include "ZPlotter.h"
 #include "ZGeneral.h"
 
+#include <math.h>
 #include <QPoint>
 #include <QPointF>
 #include <QDebug>
-
 //========================================================
 ZRulersAndGridManager::ZRulersAndGridManager(ZPlotter *parent) : QObject(parent)
 {

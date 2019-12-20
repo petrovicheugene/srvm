@@ -115,12 +115,13 @@ void ZTranslatorManager::zh_createAvailableLocaleList()
     QStringList resFiles;
     translatorFileNameStringList.append(resDir.entryList());
 
-    QLocale locale;
     QString localeName;
     foreach(QString translatorFileName, translatorFileNameStringList)
     {
+        QLocale locale(QLocale::c());
         localeName = zh_localeNameForTranslator(translatorFileName);
         locale = QLocale(localeName);
+
         if(locale == QLocale::c())
         {
             continue;

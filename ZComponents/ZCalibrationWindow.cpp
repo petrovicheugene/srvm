@@ -1,31 +1,32 @@
 //====================================================
 #include "ZCalibrationWindow.h"
-#include "ZAbstractTerm.h"
 #include "ZAbstractSpectrum.h"
+#include "ZAbstractTerm.h"
 #include <QPointer>
 
 //====================================================
 qint64 ZCalibrationWindow::zv_lastWindowId = 0;
-QMap<ZCalibrationWindow::WindowType, QPair<QString, QString> > ZCalibrationWindow::zv_typeNameMap = ZCalibrationWindow::zh_intTypeNameMap();
+QMap<ZCalibrationWindow::WindowType, QPair<QString, QString>> ZCalibrationWindow::zv_typeNameMap
+    = ZCalibrationWindow::zh_intTypeNameMap();
 //====================================================
-QMap<ZCalibrationWindow::WindowType, QPair<QString, QString> > ZCalibrationWindow::zh_intTypeNameMap()
+QMap<ZCalibrationWindow::WindowType, QPair<QString, QString>> ZCalibrationWindow::zh_intTypeNameMap()
 {
-    QMap<ZCalibrationWindow::WindowType, QPair<QString, QString> > map;
+    QMap<ZCalibrationWindow::WindowType, QPair<QString, QString>> map;
     QPair<QString, QString> pair;
     pair.first = "Not defined";
-    pair.second =  QObject::tr("Not defined");
+    pair.second = QObject::tr("Not defined");
     map.insert(WT_NOT_DEFINED, pair);
 
     pair.first = "Peak";
-    pair.second =  QObject::tr("Peak");
+    pair.second = QObject::tr("Peak");
     map.insert(WT_PEAK, pair);
 
     pair.first = "Coherent";
-    pair.second =  QObject::tr("Coherent");
+    pair.second = QObject::tr("Coherent");
     map.insert(WT_COHERENT, pair);
 
     pair.first = "Incoherent";
-    pair.second =  QObject::tr("Incoherent");
+    pair.second = QObject::tr("Incoherent");
     map.insert(WT_INCOHERENT, pair);
 
     return map;
@@ -55,16 +56,14 @@ ZCalibrationWindow::ZCalibrationWindow(QObject* parent) : QObject(parent)
 //    zv_windowId = zv_lastWindowId++;
 //}
 //====================================================
-ZCalibrationWindow::ZCalibrationWindow(const QString& name,
-                                       WindowType type,
-                                       int firstChannel,
-                                       int lastChannel,
-                                       QObject *parent) : QObject(parent)
+ZCalibrationWindow::ZCalibrationWindow(
+    const QString& name, WindowType type, int firstChannel, int lastChannel, QObject* parent)
+    : QObject(parent)
 {
     zv_windowName = name;
     zv_type = type;
 
-    if(firstChannel > lastChannel)
+    if (firstChannel > lastChannel)
     {
         qSwap(firstChannel, lastChannel);
     }
@@ -81,7 +80,7 @@ bool ZCalibrationWindow::zp_isWindowVisible() const
 //====================================================
 bool ZCalibrationWindow::zp_setWindowVisible(bool visible)
 {
-    if(zv_visible == visible)
+    if (zv_visible == visible)
     {
         return false;
     }
@@ -97,7 +96,7 @@ QString ZCalibrationWindow::zp_windowName() const
 //====================================================
 bool ZCalibrationWindow::zp_setWindowName(const QString& name)
 {
-    if(name.isEmpty() || name == zv_windowName)
+    if (name.isEmpty() || name == zv_windowName)
     {
         return false;
     }
@@ -118,7 +117,7 @@ int ZCalibrationWindow::zp_lastChannel() const
 //====================================================
 bool ZCalibrationWindow::zp_setWindowFirstChannel(int channel)
 {
-    if(zv_firstChannel == channel || channel < 0 || channel > zv_lastChannel)
+    if (zv_firstChannel == channel || channel < 0 || channel > zv_lastChannel)
     {
         return false;
     }
@@ -129,7 +128,7 @@ bool ZCalibrationWindow::zp_setWindowFirstChannel(int channel)
 //====================================================
 bool ZCalibrationWindow::zp_setWindowLastChannel(int channel)
 {
-    if(zv_lastChannel == channel || channel < 0 || channel < zv_firstChannel)
+    if (zv_lastChannel == channel || channel < 0 || channel < zv_firstChannel)
     {
         return false;
     }
@@ -140,12 +139,12 @@ bool ZCalibrationWindow::zp_setWindowLastChannel(int channel)
 //====================================================
 bool ZCalibrationWindow::zp_setWindowMarginChannels(int first, int last)
 {
-    if(first == zv_firstChannel && last == zv_lastChannel)
+    if (first == zv_firstChannel && last == zv_lastChannel)
     {
         return false;
     }
 
-    if(first > last)
+    if (first > last)
     {
         qSwap(first, last);
     }
@@ -162,7 +161,7 @@ ZCalibrationWindow::WindowType ZCalibrationWindow::zp_windowType() const
 //====================================================
 bool ZCalibrationWindow::zp_setWindowType(ZCalibrationWindow::WindowType type)
 {
-    if(zv_type == type)
+    if (zv_type == type)
     {
         return false;
     }
@@ -180,7 +179,7 @@ qint64 ZCalibrationWindow::zp_windowId() const
 //====================================================
 QString ZCalibrationWindow::zp_displayTypeName(WindowType type)
 {
-    if(!zv_typeNameMap.keys().contains(type))
+    if (!zv_typeNameMap.keys().contains(type))
     {
         return QString();
     }
@@ -189,7 +188,7 @@ QString ZCalibrationWindow::zp_displayTypeName(WindowType type)
 //====================================================
 QString ZCalibrationWindow::zp_typeName(WindowType type)
 {
-    if(!zv_typeNameMap.keys().contains(type))
+    if (!zv_typeNameMap.keys().contains(type))
     {
         return QString();
     }
@@ -198,10 +197,10 @@ QString ZCalibrationWindow::zp_typeName(WindowType type)
 //====================================================
 ZCalibrationWindow::WindowType ZCalibrationWindow::zp_typeFromString(const QString& typeName)
 {
-    QMap<ZCalibrationWindow::WindowType, QPair<QString, QString> >::const_iterator it;
-    for(it = zv_typeNameMap.begin(); it != zv_typeNameMap.end(); it++)
+    QMap<ZCalibrationWindow::WindowType, QPair<QString, QString>>::const_iterator it;
+    for (it = zv_typeNameMap.begin(); it != zv_typeNameMap.end(); it++)
     {
-        if(it.value().first == typeName || it.value().second == typeName )
+        if (it.value().first == typeName || it.value().second == typeName)
         {
             return it.key();
         }
@@ -210,24 +209,27 @@ ZCalibrationWindow::WindowType ZCalibrationWindow::zp_typeFromString(const QStri
     return ZCalibrationWindow::WT_NOT_DEFINED;
 }
 //====================================================
-void ZCalibrationWindow::zp_calcWindowIntensity(const QObject *spectrumObject, qreal& intensityValue, bool useBuffer, bool* ok)
+void ZCalibrationWindow::zp_calcWindowIntensity(const QObject* spectrumObject,
+                                                qreal& intensityValue,
+                                                bool useBuffer,
+                                                bool* ok)
 {
     const ZAbstractSpectrum* spectrum = qobject_cast<const ZAbstractSpectrum*>(spectrumObject);
 
-    if(!spectrum)
+    if (!spectrum)
     {
         intensityValue = 0.0;
-        if(ok)
+        if (ok)
         {
             *ok = false;
         }
         return;
     }
 
-    if(zv_spectrumId >= 0 && zv_spectrumId == spectrum->zp_spectrumId() && useBuffer)
+    if (zv_spectrumId >= 0 && zv_spectrumId == spectrum->zp_spectrumId() && useBuffer)
     {
         intensityValue = zv_windowIntensityValue;
-        if(ok)
+        if (ok)
         {
             *ok = true;
         }
@@ -235,7 +237,7 @@ void ZCalibrationWindow::zp_calcWindowIntensity(const QObject *spectrumObject, q
     }
 
     bool res = spectrum->zp_intensityInWindow(zv_firstChannel, zv_lastChannel, intensityValue);
-    if(res && useBuffer)
+    if (res && useBuffer)
     {
         zv_windowIntensityValue = intensityValue;
         zv_spectrumId = spectrum->zp_spectrumId();
@@ -246,7 +248,7 @@ void ZCalibrationWindow::zp_calcWindowIntensity(const QObject *spectrumObject, q
         zv_spectrumId = -1;
     }
 
-    if(ok)
+    if (ok)
     {
         *ok = res;
     }

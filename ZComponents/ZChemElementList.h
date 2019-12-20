@@ -48,7 +48,7 @@ class ZChemElementList : public QObject
 {
     Q_OBJECT
 public:
-    explicit ZChemElementList(QObject *parent = 0);
+    explicit ZChemElementList(QObject *parent = nullptr);
 
     // VARS
     enum OperationType {OT_INSERT_CHEM_ELEMENT,

@@ -4,8 +4,8 @@
 //=============================================================================
 ZCalibrationWindowDataManager::ZCalibrationWindowDataManager(QObject *parent) : QObject(parent)
 {
-    zv_calibrationRepository = 0;
-    zv_spectrumArrayRepositiry = 0;
+    zv_calibrationRepository = nullptr;
+    zv_spectrumArrayRepositiry = nullptr;
     zv_currentCalibrationId = -1;
     zv_currentSpectrumArrayId = -1;
 }
@@ -17,6 +17,9 @@ void ZCalibrationWindowDataManager::zp_connectToSpectraArrayRepository(ZSpectrum
             this, &ZCalibrationWindowDataManager::zh_currentSpectrumArrayChanged);
     connect(zv_spectrumArrayRepositiry, &ZSpectrumArrayRepository::zg_arrayMaxParametersChanged,
             this, &ZCalibrationWindowDataManager::zh_onArrayMaxParametersChanged);
+    connect(zv_spectrumArrayRepositiry, &ZSpectrumArrayRepository::zg_currentSpectrumChanged,
+            this, &ZCalibrationWindowDataManager::zh_onCurrentSpectrumChange);
+
 }
 //=============================================================================
 void ZCalibrationWindowDataManager::zp_connectToCalibrationRepository(ZCalibrationRepository* repository)
@@ -30,7 +33,7 @@ void ZCalibrationWindowDataManager::zp_connectToCalibrationRepository(ZCalibrati
 //=============================================================================
 int ZCalibrationWindowDataManager::zp_rowCount() const
 {
-    if(zv_currentCalibrationId < 0 || zv_calibrationRepository == 0)
+    if(zv_currentCalibrationId < 0 || zv_calibrationRepository == nullptr)
     {
         return 0;
     }
@@ -40,13 +43,12 @@ int ZCalibrationWindowDataManager::zp_rowCount() const
 //=============================================================================
 int ZCalibrationWindowDataManager::zp_columnCount() const
 {
-    return 4;
+    return 5;
     // return zv_spectrumDataColumnCount + zv_visibleChemElementCount + zv_visibleCalibrationCount;
 }
 //=============================================================================
 void ZCalibrationWindowDataManager::zh_onArrayMaxParametersChanged(qint64 arrayId, int intensity, int channels)
 {
-
     if(zv_currentSpectrumArrayId != arrayId)
     {
         return;
@@ -55,7 +57,7 @@ void ZCalibrationWindowDataManager::zh_onArrayMaxParametersChanged(qint64 arrayI
     emit zg_setChannelMinMax(0, channels);
 }
 //=============================================================================
-void ZCalibrationWindowDataManager::zh_onCurrentCalibrationChange(qreal calibrationId, int calibrationIndex)
+void ZCalibrationWindowDataManager::zh_onCurrentCalibrationChange(qint64 calibrationId, int calibrationIndex)
 {
     if(zv_currentCalibrationId == calibrationId)
     {
@@ -72,7 +74,7 @@ void ZCalibrationWindowDataManager::zh_onCurrentCalibrationChange(qreal calibrat
 void ZCalibrationWindowDataManager::zh_onRepositoryWindowOperation(ZCalibrationRepository::WindowOperationType type,
                                                                    int calibrationIndex, int first, int last)
 {
-    if(zv_calibrationRepository == 0)
+    if(zv_calibrationRepository == nullptr)
     {
         return;
     }
@@ -118,6 +120,12 @@ void ZCalibrationWindowDataManager::zh_currentSpectrumArrayChanged(qint64 arrayI
     zv_currentSpectrumArrayId = arrayId;
     int channelCount = zv_spectrumArrayRepositiry->zp_arrayChannelCount(arrayIndex);
     emit zg_setChannelMinMax(0, channelCount);
+    emit zg_currentOperation(OT_DATA_CHANGED, 0, zp_rowCount() - 1);
+}
+//=============================================================================
+void ZCalibrationWindowDataManager::zh_onCurrentSpectrumChange(qint64, int, qint64, int)
+{
+    emit zg_currentOperation(OT_DATA_CHANGED, 0, zp_rowCount() - 1);
 }
 //=============================================================================
 QString ZCalibrationWindowDataManager::zp_columnName(int columnIndex) const
@@ -132,17 +140,21 @@ QString ZCalibrationWindowDataManager::zp_columnName(int columnIndex) const
     }
     else if(columnIndex == 2)
     {
-        return tr("First channel");
+        return tr("Intensity");
     }
     else if(columnIndex == 3)
     {
-        return tr("Last channel");
+        return tr("First channel");
     }
     else if(columnIndex == 4)
     {
-        return tr("Simple factor");
+        return tr("Last channel");
     }
     else if(columnIndex == 5)
+    {
+        return tr("Simple factor");
+    }
+    else if(columnIndex == 6)
     {
         return tr("Square factor");
     }
@@ -168,9 +180,28 @@ QVariant ZCalibrationWindowDataManager::zp_data(QModelIndex index) const
     }
     if(index.column() == 2)
     {
-        return QVariant(zv_calibrationRepository->zp_calibrationWindowFirstChannel(zv_currentCalibrationId, index.row()));
+        QString intensityString;
+        if(zv_spectrumArrayRepositiry)
+        {
+            int firstChannel = zv_calibrationRepository->zp_calibrationWindowFirstChannel(zv_currentCalibrationId, index.row());
+            int lastChannel = zv_calibrationRepository->zp_calibrationWindowLastChannel(zv_currentCalibrationId, index.row());
+            qreal intensity;
+            // request to Spectrum array repo
+
+            zv_spectrumArrayRepositiry->zp_currentSpectrumWindowIntensity(firstChannel, lastChannel, intensity);
+
+            if(intensity == intensity) // val not nan
+            {
+                intensityString = QString::number(static_cast<qint64>(intensity));
+            }
+        }
+        return QVariant(intensityString);
     }
     if(index.column() == 3)
+    {
+        return QVariant(zv_calibrationRepository->zp_calibrationWindowFirstChannel(zv_currentCalibrationId, index.row()));
+    }
+    if(index.column() == 4)
     {
         return QVariant(zv_calibrationRepository->zp_calibrationWindowLastChannel(zv_currentCalibrationId, index.row()));
     }
@@ -203,7 +234,7 @@ bool ZCalibrationWindowDataManager::zp_setData(QModelIndex index, QVariant data)
         ZCalibrationWindow::WindowType type = ZCalibrationWindow::zp_typeFromString(data.toString());
         return zv_calibrationRepository->zp_setCalibrationWindowType(zv_currentCalibrationId, index.row(), type);
     }
-    if(index.column() == 2)
+    if(index.column() == 3)
     {
         if(!data.canConvert<int>())
         {
@@ -212,7 +243,7 @@ bool ZCalibrationWindowDataManager::zp_setData(QModelIndex index, QVariant data)
 
         return zv_calibrationRepository->zp_setCalibrationWindowFirstChannel(zv_currentCalibrationId, index.row(), data.toInt());
     }
-    if(index.column() == 3)
+    if(index.column() == 4)
     {
         if(!data.canConvert<int>())
         {

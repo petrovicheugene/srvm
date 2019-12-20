@@ -3,6 +3,7 @@
 #include "ZXMLSpectrumArrayIOHandler.h"
 #include "ZSpectrumArray.h"
 #include "ZAbstractSpectrumIOHandler.h"
+#include "ZXMLCalibrationProjectIOHandler.h"
 #include "ZXMLCalibrationIOHandler.h"
 #include "ZSpeIOHandler.h"
 #include "ZCalibration.h"
@@ -10,6 +11,7 @@
 
 #include <QApplication>
 #include <QDebug>
+#include <QDir>
 #include <QMenu>
 #include <QFileDialog>
 #include <QFile>
@@ -28,6 +30,9 @@ void ZFileActionManager::zp_appendActionsToMenu(QMenu* menu) const
 {
     if(menu->objectName() == "File")
     {
+        menu->addAction(zv_openCalibrationProjectAction);
+        menu->addSeparator();
+
         menu->addAction(zv_openArrayFromFileAction);
         menu->addAction(zv_saveArrayToFileAction);
         menu->addAction(zv_saveArrayAsFileAction);
@@ -45,6 +50,7 @@ QList<QAction*> ZFileActionManager::zp_actionList() const
 {
     QList<QAction*> actionList;
 
+    actionList << zv_openCalibrationProjectAction;
     actionList <<  zv_openArrayFromFileAction;
     actionList <<  zv_saveArrayToFileAction;
     actionList <<  zv_saveArrayAsFileAction;
@@ -176,6 +182,9 @@ void ZFileActionManager::zh_createActions()
     zv_saveCalibrationAsFileAction = new QAction(QIcon(NS_Icons::glIconSaveAsCalibration), tr("Save calibration as..."), this);
     zv_saveCalibrationAsFileAction->setEnabled(false);
     // zv_loadSpectrumFromFileAction = new QAction(QIcon(":/images/ZImages/document-open.png"), tr("Append &spectra to array"), this);
+
+    zv_openCalibrationProjectAction = new QAction(QIcon(), tr("Open calibration &project"), this);
+
 }
 //======================================================
 void ZFileActionManager::zh_createConnections()
@@ -194,25 +203,25 @@ void ZFileActionManager::zh_createConnections()
     connect(zv_saveCalibrationAsFileAction, &QAction::triggered,
             this, &ZFileActionManager::zh_onSaveCalibrationAsAction);
 
-    //    connect(zv_loadSpectrumFromFileAction, &QAction::triggered,
-    //            this, &ZFileActionManager::zh_onOpenSpectraAction);
+    connect(zv_openCalibrationProjectAction, &QAction::triggered,
+            this, &ZFileActionManager::zh_onOpenCalibrationProjectAction);
 }
 //======================================================
 bool ZFileActionManager::zh_defineSpectrumArrayFileNameToOpen(QString& fileName) const
 {
     // opening
-    fileName = QFileDialog::getOpenFileName(0, tr("Select file to open"),
+    fileName = QFileDialog::getOpenFileName(nullptr, tr("Select file to open"),
                                             zv_spectrumArrayFolderPath,
-                                            tr("Spectrum array files(*.spar);;XML files(*.xml);;All files(*.*)"));
+                                            tr("Spectrum array files(*.%1);;XML files(%2);;All files(%3)").arg(zv_spectrumArrayFileSuffix, "*.xml", "*.*"));
     return zh_checkFile(fileName);
 }
 //======================================================
 bool ZFileActionManager::zh_defineSpectrumArrayFileNameToSave(QString& fileName) const
 {
     // opening
-    fileName = QFileDialog::getSaveFileName(0, tr("Select file to save"),
+    fileName = QFileDialog::getSaveFileName(nullptr, tr("Select file to save"),
                                             zv_spectrumArrayFolderPath,
-                                            tr("Spectrum array files(*.spar);;XML files(*.xml);;All files(*.*)"));
+                                            tr("Spectrum array files(*.%1);;XML files(%2);;All files(%3)").arg(zv_spectrumArrayFileSuffix, "*.xml", "*.*"));
     return !fileName.isEmpty();
 }
 //======================================================
@@ -260,7 +269,7 @@ bool ZFileActionManager::zh_checkFile(const QString& fileName) const
     if(!fileInfo.exists())
     {
         QString msg = tr("File \"%1\" does not exist!").arg(fileName);
-        QMessageBox::critical(0, tr("File open error"), msg);
+        QMessageBox::critical(nullptr, tr("File open error"), msg);
         emit zg_message(msg);
         qCritical().noquote() <<  msg;
         return false;
@@ -269,7 +278,7 @@ bool ZFileActionManager::zh_checkFile(const QString& fileName) const
     if(fileInfo.isDir())
     {
         QString msg = tr("\"%1\" is a folder!").arg(fileName);
-        QMessageBox::critical(0, tr("File open error"), msg);
+        QMessageBox::critical(nullptr, tr("File open error"), msg);
         emit zg_message(msg);
         qCritical().noquote() <<  msg;
         return false;
@@ -293,10 +302,10 @@ bool ZFileActionManager::zh_getRawSpectrumArrayFromFile(const QString& fileName,
         qCritical().noquote() <<  msg;
         return false;
     }
-    else if(fileInfo.suffix() != "xml" && fileInfo.suffix() != "spar")
+    else if(fileInfo.suffix() != "xml" && fileInfo.suffix() != zv_spectrumArrayFileSuffix)
     {
         QString msg = tr("Error handling file \"%1\"! Cannot handle \"%2\" files.").arg(fileName, fileInfo.suffix());
-        QMessageBox::critical(0, tr("File handling error"), msg);
+        QMessageBox::critical(nullptr, tr("File handling error"), msg);
         emit zg_message(msg);
         qCritical().noquote() <<  msg;
         return false;
@@ -452,7 +461,7 @@ void ZFileActionManager::zp_openCalibrations() const
     zv_openCalibrationFromFileAction->trigger();
 }
 //======================================================
-void ZFileActionManager::zp_saveSpectraArrayListToFile(QString filePath, QList<ZRawSpectrumArray> rawArrayList)
+void ZFileActionManager::zp_saveSpectraArrayListToFile(QString& filePath, QList<ZRawSpectrumArray> rawArrayList, bool& res)
 {
     if(filePath.isEmpty())
     {
@@ -463,12 +472,13 @@ void ZFileActionManager::zp_saveSpectraArrayListToFile(QString filePath, QList<Z
     }
 
     QFileInfo fileInfo(filePath);
-    if(fileInfo.suffix() != "xml" && fileInfo.suffix() != "spar")
+    if(fileInfo.suffix() != "xml" && fileInfo.suffix() != zv_spectrumArrayFileSuffix)
     {
         QString msg = tr("Error handling file \"%1\"! Cannot handle \"%2\" files.").arg(filePath, fileInfo.suffix());
-        QMessageBox::critical(0, tr("File handling error"), msg);
+        QMessageBox::critical(nullptr, tr("File handling error"), msg);
         qCritical().noquote() <<  msg;
         emit zg_message(msg);
+        res = false;
         return;
     }
 
@@ -487,6 +497,7 @@ void ZFileActionManager::zp_saveSpectraArrayListToFile(QString filePath, QList<Z
         }
         emit zg_message(errorMsg);
         qCritical().noquote() <<  errorMsg;
+        res = false;
         return;
     }
 
@@ -513,6 +524,8 @@ void ZFileActionManager::zp_saveSpectraArrayListToFile(QString filePath, QList<Z
         emit zg_spectrumArraySaved(filePath);
     }
 
+    res = writeArrayRes;
+
     // TODO signal that saving has been completed
 }
 //======================================================
@@ -531,7 +544,6 @@ void ZFileActionManager::zp_saveCalibrationToFile(const ZCalibration* calibratio
     {
         absFileName = QFileInfo(QDir(filePath), name).absoluteFilePath();
     }
-
 
     //    QFileInfo fileInfo(absFileName);
     //    if(fileInfo.suffix() != "xml" && fileInfo.suffix() != "spar")
@@ -581,9 +593,59 @@ void ZFileActionManager::zp_saveCalibrationToFile(const ZCalibration* calibratio
     if(res)
     {
         emit zg_calibrationSaved(calibration, absFileName);
+        zh_saveCalibrationProjectFile(absFileName);
     }
 
-    // TODO signal that saving has been completed
+}
+//======================================================
+void ZFileActionManager::zh_saveCalibrationProjectFile(const QString& calibrationFilePath)
+{
+    QFileInfo fileInfo(calibrationFilePath);
+
+    QDir dir(fileInfo.absolutePath());
+    QString projectFileName = dir.absoluteFilePath(fileInfo.baseName() + "." +zv_projectFileSuffix);
+
+    QFile file(projectFileName);
+    if(!file.open(QIODevice::WriteOnly))
+    {
+        QString errorMsg;
+        if(file.error() != QFile::NoError)
+        {
+            errorMsg = tr("Cannot read file \"%1\"! %2").arg(file.fileName(), file.errorString());
+        }
+        else
+        {
+            errorMsg = tr("Cannot read file \"%1\"! %2").arg(file.fileName(), tr("Unknown error"));
+        }
+        emit zg_message(errorMsg);
+        qCritical().noquote() <<  errorMsg;
+        return;
+    }
+
+    QString msg = tr("Do you want to save calibration project?");
+    if(QMessageBox::question(nullptr, tr("Calibration saving"), msg, QMessageBox::Yes | QMessageBox::No)
+            == QMessageBox::No)
+    {
+        return;
+    }
+
+    // init to save spectrumArray
+    QString spectrumArrayFilePath;
+    bool ok = false;
+    emit zg_requestRawArrayListAndInitSaving(spectrumArrayFilePath, ok);
+
+    if(!ok)
+    {
+        return;
+    }
+
+    ZXMLCalibrationProjectIOHandler XMLCalibrationProjectIOHandler;
+    XMLCalibrationProjectIOHandler.zp_writeProjectData(file, calibrationFilePath, spectrumArrayFilePath);
+
+    if(file.isOpen())
+    {
+        file.close();
+    }
 }
 //======================================================
 void ZFileActionManager::zp_onArrayListDirtyChange(bool dirty, bool currentArrayExists)
@@ -600,9 +662,9 @@ void ZFileActionManager::zp_onCurrentCalibrationDirtyChange(bool dirty, bool cur
 //======================================================
 void ZFileActionManager::zp_defineSpectrumFilesAndInitAppending(int arrayIndex)
 {
-    QStringList fileNameList = QFileDialog::getOpenFileNames(0, tr("Select spectrum file"),
+    QStringList fileNameList = QFileDialog::getOpenFileNames(nullptr, tr("Select spectrum file"),
                                                              zv_spectrumFolderPath,
-                                                             tr("SRV spectrum files(*.spe);;All files(*.*)"));
+                                                             tr("SRV spectrum files(%1);;All files(%2)").arg("*.spe", "*.*"));
     if(fileNameList.isEmpty())
     {
         return;
@@ -625,9 +687,9 @@ void ZFileActionManager::zh_onOpenSpectrumArrayAction() // outputs RawArray
     if(!zh_getRawSpectrumArrayFromFile(fileName, rawArrayList))
     {
         QString msg = tr("Data loading from file \"%1\" failed.").arg(fileName);
-        QMessageBox::critical(0, tr("Loading error"), msg, QMessageBox::Ok);
+        QMessageBox::critical(nullptr, tr("Loading error"), msg, QMessageBox::Ok);
         emit zg_message(msg);
-        qCritical().noquote() <<  msg;
+        qCritical().noquote() << msg;
         return;
     }
 
@@ -636,15 +698,18 @@ void ZFileActionManager::zh_onOpenSpectrumArrayAction() // outputs RawArray
 //======================================================
 void ZFileActionManager::zh_onSaveSpectrumArrayAction() const
 {
-    emit zg_requestRawArrayListAndInitSaving(QString());
+    QString filePath;
+    bool ok = false;
+    emit zg_requestRawArrayListAndInitSaving(filePath, ok);
 }
 //======================================================
 void ZFileActionManager::zh_onSaveSpectrumArrayAsAction() const
 {
     QString filePath;
+    bool ok = false;
     if(zh_defineSpectrumArrayFileNameToSave(filePath))
     {
-        emit zg_requestRawArrayListAndInitSaving(filePath);
+        emit zg_requestRawArrayListAndInitSaving(filePath, ok);
     }
 }
 //======================================================
@@ -676,10 +741,65 @@ void ZFileActionManager::zh_onSaveCalibrationAction() const
 //======================================================
 void ZFileActionManager::zh_onSaveCalibrationAsAction() const
 {
-    QString filePath = QFileInfo(QDir(zv_calibrationFolderPath), "*.clbx").absoluteFilePath();
+    QString filePath = QFileInfo(QDir(zv_calibrationFolderPath), "*."+zv_calibrationFileSuffix).absoluteFilePath();
     if(zh_defineCalibrationFileNameToSave(filePath))
     {
         emit zg_requestCalibrationDataAndInitSaving(QFileInfo(filePath).absolutePath(), QFileInfo(filePath).fileName());
     }
+}
+//======================================================
+void ZFileActionManager::zh_onOpenCalibrationProjectAction()
+{
+    QString fileName = QFileDialog::getOpenFileName(nullptr, tr("Select file to open"),
+                                            zv_calibrationFolderPath,
+                                            tr("Calibration project files(%1);;XML files(%2);;All files(%3)").arg("*."+zv_projectFileSuffix, "*.xml", "*.*"));
+
+    QFile file(fileName);
+    if(!file.open(QIODevice::ReadOnly))
+    {
+        QString errorMsg;
+        if(file.error() != QFile::NoError)
+        {
+            errorMsg = tr("Cannot read file \"%1\"! %2").arg(file.fileName(), file.errorString());
+        }
+        else
+        {
+            errorMsg = tr("Cannot read file \"%1\"! %2").arg(file.fileName(), tr("Unknown error"));
+        }
+        emit zg_message(errorMsg);
+        qCritical().noquote() <<  errorMsg;
+        return;
+    }
+
+    QString calibrationFilePath;
+    QString spectrumArrayFilePath;
+    ZXMLCalibrationProjectIOHandler XMLCalibrationProjectIOHandler;
+    connect(&XMLCalibrationProjectIOHandler, &ZXMLCalibrationProjectIOHandler::zg_message,
+            this, &ZFileActionManager::zg_message);
+
+    if(!XMLCalibrationProjectIOHandler.zp_readProjectData(file, calibrationFilePath,
+                                                      spectrumArrayFilePath))
+
+    {
+        return;
+    }
+
+    // Spectrum array list
+    QList<ZRawSpectrumArray> rawArrayList;
+    if(!zh_getRawSpectrumArrayFromFile(spectrumArrayFilePath, rawArrayList))
+    {
+        QString msg = tr("Data loading from file \"%1\" failed.").arg(fileName);
+        QMessageBox::critical(nullptr, tr("Loading error"), msg, QMessageBox::Ok);
+        emit zg_message(msg);
+        qCritical().noquote() << msg;
+        return;
+    }
+
+    emit zg_spectrumRawArrayList(fileName, rawArrayList);
+
+    // calibrations
+
+    emit zg_calibrationFileListToOpen(QStringList(calibrationFilePath));
+
 }
 //======================================================
