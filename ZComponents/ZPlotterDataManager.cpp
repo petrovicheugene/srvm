@@ -12,17 +12,19 @@
 
 #include "ZGeneral.h"
 #include <QSet>
+#include <math.h>
+
 //===========================================================
 ZPlotterDataManager::ZPlotterDataManager(QObject *parent) : QObject(parent)
 {
-    zv_spectrumArrayRepositiry = 0;
-    zv_calibrationRepository = 0;
-    zv_plotter = 0;
+    zv_spectrumArrayRepositiry = nullptr;
+    zv_calibrationRepository = nullptr;
+    zv_plotter = nullptr;
     zv_currentArrayIndex = -1;
-    zv_switchRuleMetrixAction = 0;
+    zv_switchRuleMetrixAction = nullptr;
     zv_currentArrayId = -1;
     zv_boundingRectTopFactor = 1.05;
-    zv_defaultItem = 0;
+    zv_defaultItem = nullptr;
     zv_currentCalibrationId = -1;
     zv_currentCalibrationIndex = -1;
 
@@ -321,7 +323,7 @@ void ZPlotterDataManager::zp_currentCalibrationChanged(qint64 currentCalibration
                                                        int currentCalibrationIndex)
 {
     if((zv_currentCalibrationId == currentCalibrationId && zv_currentCalibrationIndex == currentCalibrationIndex)
-            || zv_plotter == 0 || zv_calibrationRepository == 0)
+            || zv_plotter == nullptr || zv_calibrationRepository == nullptr)
     {
         return;
     }
@@ -345,7 +347,7 @@ void ZPlotterDataManager::zh_setCurrentWindowId(qint64 windowId)
     for(int w = 0; w < windowList.count(); w++)
     {
         windowItem = qgraphicsitem_cast<ZWindowGraphicsItem*>(windowList.at(w));
-        if(windowItem == 0)
+        if(windowItem == nullptr)
         {
             continue;
         }
@@ -359,7 +361,7 @@ void ZPlotterDataManager::zp_currentArrayChanged(qint64 currentArrayId,
                                                  int currentArrayIndex)
 {
     if((zv_currentArrayIndex == currentArrayIndex && zv_currentArrayId == currentArrayId)
-            || zv_plotter == 0 || zv_spectrumArrayRepositiry == 0)
+            || zv_plotter == nullptr || zv_spectrumArrayRepositiry == nullptr)
     {
         return;
     }
@@ -488,7 +490,7 @@ void ZPlotterDataManager::zh_createConnections()
 void ZPlotterDataManager::zh_onRepositoryArrayOperation(ZSpectrumArrayRepository::SpectrumOperationType type,
                                                         int arrayIndex, int first, int last)
 {
-    if(zv_currentArrayIndex != arrayIndex || zv_plotter == 0)
+    if(zv_currentArrayIndex != arrayIndex || zv_plotter == nullptr)
     {
         return;
     }
@@ -581,7 +583,7 @@ void ZPlotterDataManager::zh_onRepositoryArrayOperation(ZSpectrumArrayRepository
 void ZPlotterDataManager::zh_onRepositoryCalibrationWindowOperation(ZCalibrationRepository::WindowOperationType type,
                                                                     int calibrationIndex, int first, int last)
 {
-    if(zv_plotter == 0)
+    if(zv_plotter == nullptr)
     {
         return;
     }
@@ -654,7 +656,7 @@ void ZPlotterDataManager::zh_onRepositoryCalibrationWindowOperation(ZCalibration
         for(int i = windowList.count()-1; i >= 0; i--)
         {
             windowItem = qgraphicsitem_cast<ZWindowGraphicsItem*>(windowList.value(i));
-            if(windowItem == 0)
+            if(windowItem == nullptr)
             {
                 continue;
             }
@@ -678,20 +680,20 @@ void ZPlotterDataManager::zh_onRepositoryCalibrationWindowOperation(ZCalibration
             return;
         }
 
-        ZWindowGraphicsItem* windowItem = 0;
+        ZWindowGraphicsItem* windowItem = nullptr;
         QList<QGraphicsItem*>windowList = zv_plotter->zp_itemListForType(WindowItemType);
 
         for(int w = first; w <= last; w++ )
         {
             const ZCalibrationWindow* window = zv_calibrationRepository->zp_calibrationWindow(calibrationId, w);
-            if(window == 0)
+            if(window == nullptr)
             {
                 continue;
             }
             for(int i = 0; i < windowList.count(); i++)
             {
                 windowItem = qgraphicsitem_cast<ZWindowGraphicsItem*>(windowList.value(i));
-                if(windowItem == 0)
+                if(windowItem == nullptr)
                 {
                     continue;
                 }
@@ -759,7 +761,7 @@ void ZPlotterDataManager::zh_updateRuleMetrix()
 //===========================================================
 void ZPlotterDataManager::zh_onArrayMaxParametersChanged(int arrayId, int maxIntensity, int channelCount)
 {
-    if(arrayId != zv_currentArrayId || zv_plotter == 0)
+    if(arrayId != zv_currentArrayId || zv_plotter == nullptr)
     {
         return;
     }
@@ -796,7 +798,7 @@ void ZPlotterDataManager::zh_setPlotterVerticalAbsMax(qreal maxIntensity)
     for(int w = 0; w < windowList.count(); w++)
     {
         windowItem = qgraphicsitem_cast<ZWindowGraphicsItem*>(windowList.at(w));
-        if(windowItem == 0)
+        if(windowItem == nullptr)
         {
             continue;
         }
@@ -853,7 +855,7 @@ void ZPlotterDataManager::zh_findItemInCursorAreaImage(QImage cursorAreaImage)
     for(int i = 0; i < itemList.count(); i++)
     {
         spectrumItem = qgraphicsitem_cast<ZSpectrumGraphicsItem*>(itemList.at(i));
-        if(spectrumItem == 0)
+        if(spectrumItem == nullptr)
         {
             continue;
         }

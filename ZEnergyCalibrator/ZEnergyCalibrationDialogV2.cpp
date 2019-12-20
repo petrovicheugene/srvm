@@ -36,7 +36,7 @@
 #include <QTableView>
 #include <QToolButton>
 #include <QVBoxLayout>
-
+#include <math.h>
 //======================================================
 ZEnergyCalibrationDialogV2::ZEnergyCalibrationDialogV2(QMap<quint8, QList<ZSpeSpectrum*> >& spectrumMap,
                                                        QWidget *parent) :
@@ -53,7 +53,7 @@ ZEnergyCalibrationDialogV2::ZEnergyCalibrationDialogV2(QMap<quint8, QList<ZSpeSp
     zh_loadSpectrumData(spectrumMap);
     zv_askSaveForGainFactor = false;
 
-    if(zv_plotter != 0)
+    if(zv_plotter != nullptr)
     {
         QMetaObject::invokeMethod(zv_plotter, "zp_fitInBoundingRect",
                                   Qt::QueuedConnection);

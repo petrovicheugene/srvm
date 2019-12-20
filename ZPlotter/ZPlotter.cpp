@@ -19,7 +19,7 @@
 #include <QScrollBar>
 
 #include <QDebug>
-
+#include <math.h>
 //====================================================
 extern const qreal gl_defaultSpectrumZValue = 2;
 extern const qreal gl_currentSpectrumZValue = 3;
@@ -30,13 +30,13 @@ extern const qreal gl_currentWindowZValue = 4;
 //====================================================
 ZPlotter::ZPlotter(QWidget *parent) : QWidget(parent)
 {
-    zv_rulerWidget = 0;
-    zv_plotView = 0;
-    zv_verticalScrollBar = 0;
-    zv_horizontalScrollBar = 0;
-    zv_plotScene = 0;
-    zv_rulersAndGreedManager = 0;
-    zv_dashBoard = 0;
+    zv_rulerWidget = nullptr;
+    zv_plotView = nullptr;
+    zv_verticalScrollBar = nullptr;
+    zv_horizontalScrollBar = nullptr;
+    zv_plotScene = nullptr;
+    zv_rulersAndGreedManager = nullptr;
+    zv_dashBoard = nullptr;
 
     zv_verticalAbsMax = 0;
     zv_autoDefineVerticalAbsMax = true;
