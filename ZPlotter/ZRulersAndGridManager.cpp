@@ -9,11 +9,6 @@
 #include <QPoint>
 #include <QPointF>
 #include <QDebug>
-<<<<<<< HEAD
-#include <math.h>
-
-=======
->>>>>>> c9d4afa6dbb33f0cf68b83b6caedfe5c1b428b1e
 //========================================================
 ZRulersAndGridManager::ZRulersAndGridManager(ZPlotter *parent) : QObject(parent)
 {
