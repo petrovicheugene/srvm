@@ -1,5 +1,6 @@
 //===================================================
 #include "ZMathExpressionVariableListMaker.h"
+#include <QRandomGenerator>
 //===================================================
 ZMathExpressionVariableListMaker::ZMathExpressionVariableListMaker(QObject* parent)
     : QObject(parent)
@@ -32,12 +33,12 @@ void ZMathExpressionVariableListMaker::zp_insertVariableValue(const QString& var
                                                               bool& bRes)
 {
     emit zs_variableCheckRequest(varName, bRes);
-    if(bRes)
+    if (bRes)
     {
         zv_variableNameList.append(varName);
     }
 
-    value = 0.0;
+    value = static_cast<qreal>(QRandomGenerator::global()->generate());
 }
 //===================================================
 void ZMathExpressionVariableListMaker::zp_setError(const QString& errorString,
