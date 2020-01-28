@@ -40,6 +40,8 @@ private:
     const QString zv_CALIBRATION_PATH = "calibrationPath";
     const QString zv_SPECTRUM_ARRAY_PATH = "spectrumArrayPath";
 
+    QString zv_fileAbsolutePath;
+
     // FUNCS
     bool zh_detectRoot(const QXmlStreamReader& reader,
                        bool& magicStringDetectionFlag) const;
