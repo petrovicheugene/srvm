@@ -771,6 +771,7 @@ void ZFileActionManager::zh_onOpenCalibrationProjectAction()
         return;
     }
 
+
     QString calibrationFilePath;
     QString spectrumArrayFilePath;
     ZXMLCalibrationProjectIOHandler XMLCalibrationProjectIOHandler;

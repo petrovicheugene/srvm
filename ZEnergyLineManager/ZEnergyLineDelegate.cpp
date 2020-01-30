@@ -11,7 +11,7 @@
 //======================================================================
 ZEnergyLineDelegate::ZEnergyLineDelegate(QObject *parent) : QStyledItemDelegate(parent)
 {
-
+    zv_preventMouseReleaseHandle = false;
 }
 //======================================================================
 void ZEnergyLineDelegate::paint(QPainter* painter, const QStyleOptionViewItem & option, const QModelIndex & index ) const
@@ -214,7 +214,8 @@ bool ZEnergyLineDelegate::editorEvent ( QEvent * event,
 //======================================================================
 bool ZEnergyLineDelegate::eventFilter(QObject *object, QEvent *event)
 {
-    if(event->type() == QEvent::MouseButtonPress || event->type() == QEvent::MouseButtonDblClick)
+    if (event->type() == QEvent::MouseButtonPress || event->type() == QEvent::MouseButtonDblClick
+        || event->type() == QEvent::MouseButtonRelease)
     {
         QMouseEvent* mouseEvent = static_cast<QMouseEvent*>(event);
         //
@@ -268,12 +269,53 @@ bool ZEnergyLineDelegate::eventFilter(QObject *object, QEvent *event)
 
         if(!decorationRect.contains(mousePoint))
         {
+            if (zv_preventMouseReleaseHandle)
+            {
+                if (event->type() == QEvent::MouseButtonRelease)
+                {
+                    // prevent mouse release handling after slide of the keeping down cursor from decoration rectangle
+                    zv_preventMouseReleaseHandle = false;
+                    return true;
+                }
+            }
+
             return QStyledItemDelegate::eventFilter(object, event);
         }
 
         // mouse position is in decoration rect
         // MouseButtonPress or MouseButtonDblClick (making item current) - banned
         // visible will be switched by mouseButtonRelease
+        if (event->type() == QEvent::MouseButtonRelease)
+        {
+            QAbstractItemView *itemView = dynamic_cast<QAbstractItemView *>(parent());
+            if (!itemView)
+            {
+                return false;
+            }
+
+            QModelIndex index = itemView->indexAt(mousePoint);
+            QVariant vData = index.data(NS_DataRole::VisibleRole);
+            if (!vData.isValid() || vData.isNull() || !vData.canConvert<bool>())
+            {
+                return false;
+            }
+
+            bool visible = vData.toBool();
+            QAbstractItemModel *model = const_cast<QAbstractItemModel *>(index.model());
+            model->setData(index, QVariant(!visible), NS_DataRole::VisibleRole);
+            zv_preventMouseReleaseHandle = false;
+        }
+        else
+        {
+            zv_preventMouseReleaseHandle = true;
+        }
+
+        return true;
+    }
+
+    if (zv_preventMouseReleaseHandle)
+    {
+        // prevent mouse release handling after slide of the keeping down cursor from decoration rectangle
         return true;
     }
 

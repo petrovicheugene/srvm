@@ -5,8 +5,8 @@
 #include "ZJointSpectraDataManager.h"
 
 #include <math.h>
+#include <QDebug>
 #include <QPair>
-#include <math.h>
 //=============================================================================
 ZTermCorrelationTableManager::ZTermCorrelationTableManager(QObject *parent) : QObject(parent)
 {
@@ -861,7 +861,9 @@ void ZTermCorrelationTableManager::zh_recalcCalibrationFactors()
     qreal* freeTerm;
     calibration->zp_createEquationDataForEquationRecalc(factorToIndexMap, freeTerm);
 
-    if(factorToIndexMap.isEmpty())
+    qDebug() << factorToIndexMap;
+
+    if (factorToIndexMap.isEmpty())
     {
         if(calibration->zp_equationType() != ZCalibration::ET_FRACTIONAL)
         {
@@ -1027,7 +1029,7 @@ bool ZTermCorrelationTableManager::zh_convertColRowForCovariationMatrix(int& row
         qSwap(col, row);
     }
 
-    col -= row;
+    //col -= row;
 
     if(row >= zv_termCovariationMatrix.count())
     {
