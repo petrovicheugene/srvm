@@ -39,6 +39,7 @@ void ZCustomTerm::zh_handleErrorReport(const QString& errorString,
 //===================================================================
 bool ZCustomTerm::zp_calcValue(const ZAbstractSpectrum* spectrum, qreal& value)
 {
+    value = 0.0;
     if(zv_termState != TS_CONST_INCLUDED && zv_termState != TS_INCLUDED)
     {
         return true;

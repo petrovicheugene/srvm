@@ -76,7 +76,6 @@ protected:
     QList<quint32> zv_spectrumData;
 
     QPainterPath zv_spectrumPaintPath;
-
     QMap<qint64, QString> zv_concentrationMap;
     bool zv_visible;
     bool zv_checked;

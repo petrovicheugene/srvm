@@ -1,8 +1,10 @@
 //============================================================
 #include "ZXMLSpectrumArrayIOHandler.h"
 #include <QDebug>
+#include <QDir>
 #include <QXmlStreamReader>
 #include <QFileInfo>
+
 //============================================================
 ZXMLSpectrumArrayIOHandler::ZXMLSpectrumArrayIOHandler(QObject *parent) : QObject(parent)
 {
@@ -14,7 +16,7 @@ ZXMLSpectrumArrayIOHandler::~ZXMLSpectrumArrayIOHandler()
 
 }
 //============================================================
-bool ZXMLSpectrumArrayIOHandler::zp_readSpectrumArray (QFile& file, QList<ZRawSpectrumArray>& rawArrayList) const
+bool ZXMLSpectrumArrayIOHandler::zp_readSpectrumArray (QFile& file, QList<ZRawSpectrumArray>& rawArrayList)
 {
     if(!(file.openMode() & QIODevice::ReadOnly))
     {
@@ -23,6 +25,9 @@ bool ZXMLSpectrumArrayIOHandler::zp_readSpectrumArray (QFile& file, QList<ZRawSp
         qCritical().noquote() <<  errorMsg;
         return false;
     }
+
+    QFileInfo fi(file.fileName());
+    zv_fileAbsolutePath = fi.absolutePath();
 
     // root checking
     QXmlStreamReader reader(&file);
@@ -99,6 +104,7 @@ void ZXMLSpectrumArrayIOHandler::zh_parseXMLElement(QList<ZRawSpectrumArray> &ar
     // current start tag handling
     // attributes handling
     QString currentTagName = reader.name().toString();
+    QString path;
 
     if(currentTagName == zv_ARRAY)
     {
@@ -131,8 +137,11 @@ void ZXMLSpectrumArrayIOHandler::zh_parseXMLElement(QList<ZRawSpectrumArray> &ar
     {
         if(currentArrayIndex >= 0 && currentArrayIndex < array.count())
         {
+            QFileInfo fi(reader.attributes().value(zv_PATH).toString());
+            path = fi.isRelative()? zv_fileAbsolutePath + fi.filePath().remove(0,1) : fi.filePath();
+
             ZRawSpectrum rawSpectrum;
-            rawSpectrum.path = reader.attributes().value(zv_PATH).toString();
+            rawSpectrum.path = path;
             rawSpectrum.checked = reader.attributes().value(zv_CHECKED).toString() == zv_YES? true : false;
             rawSpectrum.visible = reader.attributes().value(zv_VISIBLE).toString() == zv_YES? true : false;
 
@@ -188,7 +197,7 @@ void ZXMLSpectrumArrayIOHandler::zh_parseXMLElement(QList<ZRawSpectrumArray> &ar
     }
 }
 //============================================================
-bool ZXMLSpectrumArrayIOHandler::zp_writeSpectrumArray(QFile& file, const QList<ZRawSpectrumArray>& rawArrayList) const
+bool ZXMLSpectrumArrayIOHandler::zp_writeSpectrumArray(QFile& file, const QList<ZRawSpectrumArray>& rawArrayList)
 {
     if(!(file.openMode() & QIODevice::WriteOnly))
     {
@@ -197,6 +206,10 @@ bool ZXMLSpectrumArrayIOHandler::zp_writeSpectrumArray(QFile& file, const QList<
         qCritical().noquote() << errorMsg;
         return false;
     }
+
+    QFileInfo fi(file.fileName());
+    zv_fileAbsolutePath = fi.absolutePath();
+    QString path;
 
     QXmlStreamWriter writer(&file);
     writer.setAutoFormatting(true);
@@ -218,8 +231,17 @@ bool ZXMLSpectrumArrayIOHandler::zp_writeSpectrumArray(QFile& file, const QList<
 
         for(int s = 0; s < rawArrayList.at(a).spectrumList.count(); s++)
         {
+            if(rawArrayList.value(a).spectrumList.value(s).path.startsWith(zv_fileAbsolutePath, Qt::CaseInsensitive))
+            {
+                path = (rawArrayList.value(a).spectrumList.value(s).path.remove(0, zv_fileAbsolutePath.length()).prepend("."));
+            }
+            else
+            {
+                path = rawArrayList.value(a).spectrumList.value(s).path;
+            }
+
             writer.writeStartElement(zv_SPECTRUM);
-            writer.writeAttribute(zv_PATH, rawArrayList.value(a).spectrumList.value(s).path);
+            writer.writeAttribute(zv_PATH, path);
             writer.writeAttribute(zv_CHECKED, rawArrayList.value(a).spectrumList.value(s).checked ? zv_YES : zv_NO);
             writer.writeAttribute(zv_VISIBLE, rawArrayList.value(a).spectrumList.value(s).visible ? zv_YES : zv_NO);
 

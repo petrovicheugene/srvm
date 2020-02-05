@@ -23,9 +23,8 @@ public slots:
 
 
 private:
-
     // VARS
-
+    bool zv_preventMouseReleaseHandle;
     // FUNCS
     bool editorEvent ( QEvent * event,
                        QAbstractItemModel * model,

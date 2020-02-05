@@ -15,6 +15,7 @@
 #include <QMimeData>
 #include <QMessageBox>
 #include <QStringList>
+#include <math.h>
 //==================================================================
 ZSpectrumArrayRepository::ZSpectrumArrayRepository(QObject *parent) : QObject(parent)
 {
@@ -88,7 +89,7 @@ QList<QAction*> ZSpectrumArrayRepository::zp_arrayContextMenuActions() const
     actionList << zv_appendArrayAction;
     actionList << zv_openArrayAction;
     actionList << zv_removeArrayAction;
-    actionList << 0;
+    actionList << nullptr;
     actionList << zv_saveArrayAction;
     actionList << zv_saveAsArrayAction;
 
@@ -114,20 +115,20 @@ QList<QAction*> ZSpectrumArrayRepository::zp_spectrumContextMenuActions() const
     QList<QAction*> actionList;
     actionList << zv_appendSpectrumToArrayAction;
     actionList << zv_removeSpectrumFromArrayAction;
-    actionList << 0; // separator
+    actionList << nullptr; // separator
     actionList << zv_copyConcentrationDataAction;
     actionList << zv_pasteConcentrationDataAction;
-    actionList << 0; // separator
+    actionList << nullptr; // separator
     actionList << zv_clearConcentrationDataAction;
-    actionList << 0; // separator
+    actionList << nullptr; // separator
     actionList << zv_setSpectraVisibleAction;
     actionList << zv_setSpectraInvisibleAction;
     actionList << zv_invertSpectraVisibilityAction;
-    actionList << 0; // separator
+    actionList << nullptr; // separator
     actionList << zv_setChemElementsVisibleAction;
     actionList << zv_setChemElementsInvisibleAction;
     actionList << zv_invertChemElementsVisibilityAction;
-    actionList << 0; // separator
+    actionList << nullptr; // separator
     actionList << zv_energyCalibrationAction;
     return actionList;
 }
@@ -145,7 +146,7 @@ QList<QAction*> ZSpectrumArrayRepository::zp_chemElementContextMenuActions() con
     QList<QAction*> actionList;
     actionList << zv_appendChemElementAction;
     actionList << zv_removeChemElementAction;
-    actionList << 0; // separator
+    actionList << nullptr; // separator
     actionList << zv_setChemElementsVisibleAction;
     actionList << zv_setChemElementsInvisibleAction;
     actionList << zv_invertChemElementsVisibilityAction;
@@ -208,7 +209,7 @@ const ZSpectrumArray* ZSpectrumArrayRepository::zp_array(int arrayIndex)
 {
     if(arrayIndex < 0 || arrayIndex >= zv_arrayList.count())
     {
-        return 0;
+        return nullptr;
     }
 
     return zv_arrayList.at(arrayIndex);
@@ -831,7 +832,7 @@ void ZSpectrumArrayRepository::zp_appendArrays(QString path, QList<ZRawSpectrumA
             }
             question += tr("Do you want to save current array changes?");
 
-            if(QMessageBox::question(0, tr("Array appending"), question, QMessageBox::Yes, QMessageBox::No)
+            if(QMessageBox::question(nullptr, tr("Array appending"), question, QMessageBox::Yes, QMessageBox::No)
                     == QMessageBox::Yes)
             {
                 // TODO SAVING ARRAY LIST TO FILE
@@ -842,7 +843,7 @@ void ZSpectrumArrayRepository::zp_appendArrays(QString path, QList<ZRawSpectrumA
         if(zv_arrayList.count() > 0)
         {
             QString question = tr("Clear existing array list?");
-            if(QMessageBox::question(0, tr("Array appending"), question, QMessageBox::Yes, QMessageBox::No)
+            if(QMessageBox::question(nullptr, tr("Array appending"), question, QMessageBox::Yes, QMessageBox::No)
                     == QMessageBox::Yes)
             {
                 zp_clear();
@@ -1262,7 +1263,7 @@ void ZSpectrumArrayRepository::zh_onRemoveArrayAction()
     }
 
     QString question = tr("Do you want to remove array \"%1\" from the list?").arg(zv_arrayList.value(currentArrayIndex)->zp_arrayName());
-    if(QMessageBox::question(0, tr("Array removing"), question, QMessageBox::Yes, QMessageBox::No)
+    if(QMessageBox::question(nullptr, tr("Array removing"), question, QMessageBox::Yes, QMessageBox::No)
             == QMessageBox::Yes)
     {
         bool res = zh_removeArray(currentArrayIndex);
@@ -1297,7 +1298,7 @@ void ZSpectrumArrayRepository::zh_onAppendSpectraToArrayAction()
     if(currentArrayIndex < 0 || currentArrayIndex >= zv_arrayList.count())
     {
         QString string = tr("Select an array you want to append spectra to!");
-        QMessageBox::critical(0, tr("Spectra appending"), string, QMessageBox::Ok);
+        QMessageBox::critical(nullptr, tr("Spectra appending"), string, QMessageBox::Ok);
         return;
     }
 
@@ -1314,7 +1315,7 @@ void ZSpectrumArrayRepository::zh_onRemoveSpectrumFromArrayAction()
     if(selectedSpectrumList.isEmpty())
     {
         QString string = tr("There is no spectra to remove!");
-        QMessageBox::critical(0, tr("Spectra removing"), string, QMessageBox::Ok);
+        QMessageBox::critical(nullptr, tr("Spectra removing"), string, QMessageBox::Ok);
         return;
     }
 
@@ -1326,12 +1327,15 @@ void ZSpectrumArrayRepository::zh_onRemoveSpectrumFromArrayAction()
     }
 
     QString question = tr("Do you want to remove the selected spectra from the list?");
-    if(QMessageBox::question(0, tr("Spectra removing"), question, QMessageBox::Yes, QMessageBox::No)
+    if(QMessageBox::question(nullptr, tr("Spectra removing"), question, QMessageBox::Yes, QMessageBox::No)
             == QMessageBox::No)
     {
         return;
     }
-    qSort(selectedSpectrumList);
+
+    //qSort(selectedSpectrumList);
+    std::sort(selectedSpectrumList.begin(), selectedSpectrumList.end());
+
     bool res = false;
     for(int i = selectedSpectrumList.count() - 1; i >= 0; i--)
     {
@@ -1390,7 +1394,7 @@ void ZSpectrumArrayRepository::zh_onRemoveChemElementAction()
     if(selectedChemElementList.isEmpty())
     {
         QString string = tr("There is no chemical elements to remove!");
-        QMessageBox::critical(0, tr("Chemical element removing"), string, QMessageBox::Ok);
+        QMessageBox::critical(nullptr, tr("Chemical element removing"), string, QMessageBox::Ok);
         return;
     }
 
@@ -1402,13 +1406,14 @@ void ZSpectrumArrayRepository::zh_onRemoveChemElementAction()
     }
 
     QString question = tr("Do you want to remove the selected chemical elemnts from the list?");
-    if(QMessageBox::question(0, tr("Chemical elements removing"), question, QMessageBox::Yes, QMessageBox::No)
+    if(QMessageBox::question(nullptr, tr("Chemical elements removing"), question, QMessageBox::Yes, QMessageBox::No)
             == QMessageBox::No)
     {
         return;
     }
 
-    qSort(selectedChemElementList);
+    //qSort(selectedChemElementList);
+    std::sort(selectedChemElementList.begin(), selectedChemElementList.end());
     bool res = false;
 
     for(int i = selectedChemElementList.count() - 1; i >= 0; i--)
@@ -1422,7 +1427,7 @@ void ZSpectrumArrayRepository::zh_onRemoveChemElementAction()
 void ZSpectrumArrayRepository::zh_onChemElementOperation(ZChemElementList::OperationType type, int first, int last)
 {
     QObject* signalSender = sender();
-    if(signalSender == 0)
+    if(signalSender == nullptr)
     {
         return;
     }
@@ -1593,7 +1598,7 @@ void ZSpectrumArrayRepository::zh_onPasteConcentrationDataAction()
     if(currentArrayIndex < 0 || currentArrayIndex >= zv_arrayList.count())
     {
         QString warning = tr("Select a spectrum array for data pasting.");
-        QMessageBox::warning(0, zv_messageBoxPasteTitle, warning, QMessageBox::Ok);
+        QMessageBox::warning(nullptr, zv_messageBoxPasteTitle, warning, QMessageBox::Ok);
         return;
     }
 
@@ -1625,7 +1630,7 @@ void ZSpectrumArrayRepository::zh_onPasteConcentrationDataAction()
             QString question = tr("In the pasting data are folowing chemical elements not presented in current array:\n"
                                   "%1\n"
                                   "Do you want to create new chemical elements?").arg(absentChemElementString);
-            if(QMessageBox::question(0, zv_messageBoxPasteTitle, question, QMessageBox::Yes | QMessageBox::No)
+            if(QMessageBox::question(nullptr, zv_messageBoxPasteTitle, question, QMessageBox::Yes | QMessageBox::No)
                     == QMessageBox::Yes)
             {
                 // create new chem elements
@@ -1650,7 +1655,7 @@ void ZSpectrumArrayRepository::zh_onPasteConcentrationDataAction()
         if(!question.isEmpty())
         {
             question += "\nContinue anyway?";
-            if(QMessageBox::question(0, zv_messageBoxPasteTitle, question, QMessageBox::Yes | QMessageBox::No)
+            if(QMessageBox::question(nullptr, zv_messageBoxPasteTitle, question, QMessageBox::Yes | QMessageBox::No)
                     == QMessageBox::No)
             {
                 return;
@@ -1680,7 +1685,7 @@ void ZSpectrumArrayRepository::zh_onPasteConcentrationDataAction()
                 {
                     QString question = tr("There are hidden chemical element columns.\n"
                                           "Do you want to paste data to them?");
-                    int res = QMessageBox::question(0, zv_messageBoxPasteTitle, question,
+                    int res = QMessageBox::question(nullptr, zv_messageBoxPasteTitle, question,
                                                     QMessageBox::Yes | QMessageBox::No);
                     switch(res)
                     {
@@ -1690,7 +1695,6 @@ void ZSpectrumArrayRepository::zh_onPasteConcentrationDataAction()
                     case QMessageBox::No:
                         answerResult = AR_NO;
                         continue;
-                        break;
                     }
                 }
                 else if(answerResult == AR_NO)
@@ -1718,7 +1722,7 @@ void ZSpectrumArrayRepository::zh_onPasteConcentrationDataAction()
                 || column < 0 || column >= currentArray->zp_visibleChemElementCount())
         {
             QString warning = tr("Select a top left cell in a chemical concentration column for data pasting.");
-            QMessageBox::warning(0, zv_messageBoxPasteTitle, warning, QMessageBox::Ok);
+            QMessageBox::warning(nullptr, zv_messageBoxPasteTitle, warning, QMessageBox::Ok);
             return;
         }
 
@@ -1744,7 +1748,7 @@ void ZSpectrumArrayRepository::zh_onPasteConcentrationDataAction()
         if(!question.isEmpty())
         {
             question += "\nContinue anyway?";
-            if(QMessageBox::question(0, zv_messageBoxPasteTitle, question, QMessageBox::Yes | QMessageBox::No)
+            if(QMessageBox::question(nullptr, zv_messageBoxPasteTitle, question, QMessageBox::Yes | QMessageBox::No)
                     == QMessageBox::No)
             {
                 return;

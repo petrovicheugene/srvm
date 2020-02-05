@@ -144,7 +144,7 @@ bool ZChartPointOptions::zp_setRulerScaleValue(Qt::Orientation orientation, qrea
 {
     if(orientation == Qt::Horizontal)
     {
-         if(zv_horizontalRulerScaleValue == scaleValue)
+         if(zv_horizontalRulerScaleValue - scaleValue == 0.0)
          {
              return false;
          }
@@ -152,7 +152,7 @@ bool ZChartPointOptions::zp_setRulerScaleValue(Qt::Orientation orientation, qrea
     }
     else
     {
-        if(zv_verticalRulerScaleValue == scaleValue)
+        if(zv_verticalRulerScaleValue - scaleValue == 0.0)
         {
             return false;
         }

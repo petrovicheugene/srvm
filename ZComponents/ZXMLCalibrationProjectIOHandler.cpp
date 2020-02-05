@@ -2,6 +2,7 @@
 #include "ZXMLCalibrationProjectIOHandler.h"
 
 #include <QDebug>
+#include <QFileInfo>
 #include <QXmlStreamReader>
 //======================================================
 ZXMLCalibrationProjectIOHandler::ZXMLCalibrationProjectIOHandler(QObject *parent) : QObject(parent)
@@ -21,6 +22,9 @@ bool ZXMLCalibrationProjectIOHandler::zp_writeProjectData(QFile&file,
         return false;
     }
 
+    QFileInfo fi(file.fileName());
+    zv_fileAbsolutePath = fi.absolutePath();
+
     QXmlStreamWriter writer(&file);
     writer.setAutoFormatting(true);
     // head
@@ -29,14 +33,25 @@ bool ZXMLCalibrationProjectIOHandler::zp_writeProjectData(QFile&file,
     writer.writeAttribute(zv_TYPE, zv_magicString);
 
     writer.writeStartElement(zv_CALIBRATION_PATH);
-    writer.writeCharacters(calibrationFilePath);
+
+    QString path = calibrationFilePath;
+    if(path.startsWith(zv_fileAbsolutePath, Qt::CaseInsensitive))
+    {
+        path = (path.remove(0, zv_fileAbsolutePath.length()).prepend("."));
+    }
+
+    writer.writeCharacters(path);
     writer.writeEndElement(); // type
 
     writer.writeStartElement(zv_SPECTRUM_ARRAY_PATH);
-    writer.writeCharacters(spectrumArrayFilePath);
+    path =spectrumArrayFilePath;
+    if(path.startsWith(zv_fileAbsolutePath, Qt::CaseInsensitive))
+    {
+        path = (path.remove(0, zv_fileAbsolutePath.length()).prepend("."));
+    }
+
+    writer.writeCharacters(path);
     writer.writeEndElement(); // type
-
-
 
     writer.writeEndElement(); // root
     writer.writeEndDocument();
@@ -85,6 +100,9 @@ bool ZXMLCalibrationProjectIOHandler::zp_readProjectData(QFile&file, QString& ca
         return false;
     }
 
+    QFileInfo fi(file.fileName());
+    zv_fileAbsolutePath = fi.absolutePath();
+
     // root checking
     QXmlStreamReader reader(&file);
     bool rootDetectedFlag = false;
@@ -93,6 +111,8 @@ bool ZXMLCalibrationProjectIOHandler::zp_readProjectData(QFile&file, QString& ca
     parentTagStack.clear();
     QString readerText;
     QString currentTagName;
+    QString path;
+
     // handling root level
     while(!reader.atEnd())
     {
@@ -128,12 +148,15 @@ bool ZXMLCalibrationProjectIOHandler::zp_readProjectData(QFile&file, QString& ca
 
             if(currentTagName == zv_CALIBRATION_PATH)
             {
-                calibrationFilePath = readerText;
+                QFileInfo fi(readerText);
+                path = fi.isRelative()? zv_fileAbsolutePath + fi.filePath().remove(0,1) : fi.filePath();
+                calibrationFilePath = path;
             }
             else if(currentTagName == zv_SPECTRUM_ARRAY_PATH)
             {
-                spectrumArrayFilePath = readerText;
-
+                QFileInfo fi(readerText);
+                path = fi.isRelative()? zv_fileAbsolutePath + fi.filePath().remove(0,1) : fi.filePath();
+                spectrumArrayFilePath = path;
             }
         }
         else if(reader.isStartElement())

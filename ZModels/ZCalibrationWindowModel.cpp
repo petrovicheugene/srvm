@@ -97,7 +97,12 @@ bool	ZCalibrationWindowModel::setData(const QModelIndex & index, const QVariant 
         if(index.column() == 0 && value.canConvert<bool>())
         {
             bool visible = value.toBool();
-            return zv_dataManager->zp_setWindowVisible(index.row(), visible);
+            bool res = zv_dataManager->zp_setWindowVisible(index.row(), visible);
+            if (res)
+            {
+                emit dataChanged(index, index);
+            }
+            return res;
         }
     }
 

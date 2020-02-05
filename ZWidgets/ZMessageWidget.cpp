@@ -129,18 +129,19 @@ void ZMessageWidget::zp_alignStringList(QStringList& stringList, Qt::Alignment a
     int maxWidth = 0;
     foreach(QString string, stringList)
     {
-        if(maxWidth < fontMetrix.width(string))
+        if (maxWidth < fontMetrix.horizontalAdvance(string))
         {
-            maxWidth = fontMetrix.width(string);
+            maxWidth = fontMetrix.horizontalAdvance(string);
         }
     }
 
-    double spaceSymbolWidth = static_cast<double>(fontMetrix.width(spaceSymbol));
+    double spaceSymbolWidth = static_cast<double>(fontMetrix.horizontalAdvance(spaceSymbol));
 
     for(int i = 0; i < stringList.count(); i++)
     {
-        int spaceCount = qRound(static_cast<double>(maxWidth - (fontMetrix.width(stringList.at(i))))
-                /  spaceSymbolWidth);
+        int spaceCount = qRound(
+            static_cast<double>(maxWidth - (fontMetrix.horizontalAdvance(stringList.at(i))))
+            / spaceSymbolWidth);
 
         if(alignment & Qt::AlignRight)
         {

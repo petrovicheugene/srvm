@@ -750,9 +750,12 @@ void ZFileActionManager::zh_onSaveCalibrationAsAction() const
 //======================================================
 void ZFileActionManager::zh_onOpenCalibrationProjectAction()
 {
-    QString fileName = QFileDialog::getOpenFileName(nullptr, tr("Select file to open"),
-                                            zv_calibrationFolderPath,
-                                            tr("Calibration project files(%1);;XML files(%2);;All files(%3)").arg("*."+zv_projectFileSuffix, "*.xml", "*.*"));
+    QString fileName = QFileDialog::getOpenFileName(
+        nullptr,
+        tr("Select file to open"),
+        zv_calibrationFolderPath,
+        tr("Calibration project files(%1);;XML files(%2);;All files(%3)")
+            .arg("*." + zv_projectFileSuffix, "*.xml", "*.*"));
 
     QFile file(fileName);
     if(!file.open(QIODevice::ReadOnly))
@@ -770,6 +773,7 @@ void ZFileActionManager::zh_onOpenCalibrationProjectAction()
         qCritical().noquote() <<  errorMsg;
         return;
     }
+
 
     QString calibrationFilePath;
     QString spectrumArrayFilePath;
@@ -800,6 +804,5 @@ void ZFileActionManager::zh_onOpenCalibrationProjectAction()
     // calibrations
 
     emit zg_calibrationFileListToOpen(QStringList(calibrationFilePath));
-
 }
 //======================================================

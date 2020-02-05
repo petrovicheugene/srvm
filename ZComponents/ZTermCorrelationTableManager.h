@@ -10,6 +10,7 @@
 #include "ZSpectrumArrayRepository.h"
 //==================================================================
 class ZJointSpectraDataManager;
+class QTextEdit;
 //==================================================================
 class ZTermCorrelationTableManager : public QObject
 {
@@ -70,7 +71,7 @@ private slots:
     void zh_currentSpectrumArrayChanged(qint64, int);
     void zh_onRepositoryChemElementOperation(ZSpectrumArrayRepository::ChemElementOperationType type,
                                              int arrayIndex, int first, int last);
-    void zh_currentCalibrationChanged(qreal calibrationId, int calibrationIndex);
+    void zh_currentCalibrationChanged(qint64 calibrationId, int calibrationIndex);
     void zh_onRepositoryTermOperation(ZCalibrationRepository::TermOperationType, int, int, int);
     void zh_onCalibrationRepositoryOperation(ZCalibrationRepository::CalibrationOperationType, int, int);
     void zh_onSpectrumOperation(ZSpectrumArrayRepository::SpectrumOperationType, int, int, int);
@@ -118,6 +119,7 @@ private:
     QColor zv_redCell;
     QColor zv_cyanCell;
     QColor zv_magentaCell;
+
 
     // FUNCS
 

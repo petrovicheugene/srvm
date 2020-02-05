@@ -1,18 +1,17 @@
 //=========================================================
 #include "ZRulerWidget.h"
-#include <math.h>
 #include <QLabel>
 #include <QResizeEvent>
 #include <QPaintEvent>
 #include <QPainter>
 #include <QDebug>
 #include <QPixmap>
-
+#include <math.h>
 //=========================================================
 ZRulerWidget::ZRulerWidget(QWidget *parent) : QWidget(parent)
 {
-    zv_plot = 0;
-    zv_rulersAndGreedManager = 0;
+    zv_plot = nullptr;
+    zv_rulersAndGreedManager = nullptr;
     zv_formatSet << 'f' << 'g' << 'e' << 'E' << 'G';
     //    zv_rightRulerProperty.visibility = false;
     //    zv_topRulerProperty.visibility = false;
@@ -25,7 +24,7 @@ ZRulerWidget::ZRulerWidget(QWidget *parent) : QWidget(parent)
 //=========================================================
 void ZRulerWidget::zp_setPlotView(QWidget* plot)
 {
-    if(plot != 0)
+    if(plot != nullptr)
     {
         plot->setParent(this);
         zv_plot = plot;
@@ -469,7 +468,7 @@ void ZRulerWidget::zp_setInfoLabelVisible(bool visible)
 //=========================================================
 void ZRulerWidget::resizeEvent(QResizeEvent* event)
 {
-    if(zv_plot != 0)
+    if(zv_plot != nullptr)
     {
         // plot layout
         int newPlotWidth = event->size().width() - zv_leftRulerProperty.rulerSize() -
@@ -519,7 +518,7 @@ void ZRulerWidget::resizeEvent(QResizeEvent* event)
         zv_topRulerProperty.markRect = QRect(QPoint(0,0), QSize(event->size().width(), zv_topRulerProperty.markLineSize));
         if(zv_topRulerProperty.ruleLabelVisibility)
         {
-            int dy2 = (zv_topRulerProperty.markRect.height()  - zv_maxMarkHeight*1.5) * -1;
+          int dy2 = static_cast<int>((zv_topRulerProperty.markRect.height()  - zv_maxMarkHeight*1.5) * -1.0);
             zv_topRulerProperty.ruleLabelRect = zv_topRulerProperty.markRect.adjusted(0,0,0,dy2);
         }
         else
@@ -531,7 +530,7 @@ void ZRulerWidget::resizeEvent(QResizeEvent* event)
                                                 QSize(event->size().width(), zv_bottomRulerProperty.markLineSize));
         if(zv_bottomRulerProperty.ruleLabelVisibility)
         {
-            int dy1 = (zv_bottomRulerProperty.markRect.height()  - zv_maxMarkHeight*1.5);
+          int dy1 = static_cast<int>((zv_bottomRulerProperty.markRect.height()  - zv_maxMarkHeight*1.5));
             zv_bottomRulerProperty.ruleLabelRect = zv_bottomRulerProperty.markRect.adjusted(0, dy1, 0,0);
         }
         else
@@ -543,7 +542,7 @@ void ZRulerWidget::resizeEvent(QResizeEvent* event)
                                               QSize(zv_leftRulerProperty.markLineSize, geometryRect.height() + (zv_maxMarkHeight*2)));
         if(zv_leftRulerProperty.ruleLabelVisibility)
         {
-            int dx2 = (zv_leftRulerProperty.markRect.width() - zv_maxMarkHeight*1.5) * -1;
+          int dx2 = static_cast<int>((zv_leftRulerProperty.markRect.width() - zv_maxMarkHeight*1.5) * -1.0);
             zv_leftRulerProperty.ruleLabelRect = zv_leftRulerProperty.markRect.adjusted(0,0, dx2, 0);
         }
         else
@@ -555,7 +554,7 @@ void ZRulerWidget::resizeEvent(QResizeEvent* event)
                                                QSize(zv_rightRulerProperty.markLineSize, geometryRect.height() + (zv_maxMarkHeight*2)));
         if(zv_rightRulerProperty.ruleLabelVisibility)
         {
-            int dx1 = zv_leftRulerProperty.markRect.width() - zv_maxMarkHeight*1.5;
+          int dx1 = static_cast<int>(zv_leftRulerProperty.markRect.width() - zv_maxMarkHeight*1.5);
             zv_rightRulerProperty.ruleLabelRect = zv_rightRulerProperty.markRect.adjusted(dx1, 0, 0, 0 );
         }
         else
@@ -568,7 +567,7 @@ void ZRulerWidget::resizeEvent(QResizeEvent* event)
         QRect infoLabelRect = zv_bottomRulerProperty.ruleLabelRect;
         infoLabelRect.setLeft(geometryRect.left());
         QFontMetrics fm(this->font());
-        int ruleLabelWidth = fm.width(zv_bottomRulerProperty.ruleLabel);
+        int ruleLabelWidth = fm.horizontalAdvance(zv_bottomRulerProperty.ruleLabel);
         infoLabelRect.setRight(geometryRect.center().x() - ruleLabelWidth);
         zv_infoLabel->setGeometry(infoLabelRect);
     }
@@ -578,7 +577,7 @@ void ZRulerWidget::resizeEvent(QResizeEvent* event)
 //=========================================================
 void ZRulerWidget::paintEvent(QPaintEvent* event)
 {
-    if(zv_plot != 0 && !zv_dontRepaint)
+    if(zv_plot != nullptr && !zv_dontRepaint)
     {
         QPainter painter(this);
         painter.setWindow(event->rect());
@@ -602,7 +601,7 @@ void ZRulerWidget::paintEvent(QPaintEvent* event)
 //=========================================================
 void ZRulerWidget::zh_paintLeftRule(QPainter* painter)
 {
-    if(!zv_leftRulerProperty.visibility || zv_YRuleList == 0)
+    if(!zv_leftRulerProperty.visibility || zv_YRuleList == nullptr)
     {
         return;
     }
@@ -645,7 +644,8 @@ void ZRulerWidget::zh_paintLeftRule(QPainter* painter)
                             + zv_leftRulerProperty.K0;
                 }
                 QString mark = QString::number(markValue, zv_leftRulerProperty.format, zv_leftRulerProperty.precision);
-                markRect = QRect(QPoint(0, 0), QSize(fontMetrics.width(mark), zv_maxMarkHeight));
+                markRect = QRect(QPoint(0, 0),
+                                 QSize(fontMetrics.horizontalAdvance(mark), zv_maxMarkHeight));
                 markRect.moveCenter(QPoint(zv_leftRulerProperty.markRect.right()
                                            - zv_leftRulerProperty.scratchLineSize
                                            - zv_leftRulerProperty.markOffsetFromScratch
@@ -672,7 +672,7 @@ void ZRulerWidget::zh_paintLeftRule(QPainter* painter)
 //=========================================================
 void ZRulerWidget::zh_paintRightRule(QPainter* painter)
 {
-    if(!zv_rightRulerProperty.visibility || zv_YRuleList == 0)
+    if(!zv_rightRulerProperty.visibility || zv_YRuleList == nullptr)
     {
         return;
     }
@@ -716,7 +716,8 @@ void ZRulerWidget::zh_paintRightRule(QPainter* painter)
                 }
 
                 QString mark = QString::number(markValue, zv_rightRulerProperty.format, zv_rightRulerProperty.precision);
-                markRect = QRect(QPoint(0, 0), QSize(fontMetrics.width(mark), zv_maxMarkHeight));
+                markRect = QRect(QPoint(0, 0),
+                                 QSize(fontMetrics.horizontalAdvance(mark), zv_maxMarkHeight));
                 markRect.moveCenter(QPoint(zv_rightRulerProperty.markRect.left()
                                            + zv_rightRulerProperty.scratchLineSize
                                            + zv_rightRulerProperty.markOffsetFromScratch
@@ -742,7 +743,7 @@ void ZRulerWidget::zh_paintRightRule(QPainter* painter)
 //=========================================================
 void ZRulerWidget::zh_paintTopRule(QPainter* painter)
 {
-    if(!zv_topRulerProperty.visibility || zv_XRuleList == 0)
+    if(!zv_topRulerProperty.visibility || zv_XRuleList == nullptr)
     {
         return;
     }
@@ -784,7 +785,8 @@ void ZRulerWidget::zh_paintTopRule(QPainter* painter)
                 }
 
                 QString mark = QString::number(markValue, zv_topRulerProperty.format, zv_topRulerProperty.precision);
-                markRect = QRect(QPoint(0, 0), QSize(fontMetrics.width(mark), zv_maxMarkHeight));
+                markRect = QRect(QPoint(0, 0),
+                                 QSize(fontMetrics.horizontalAdvance(mark), zv_maxMarkHeight));
                 markRect.moveCenter(QPoint(x, zv_topRulerProperty.markRect.bottom()
                                            - zv_topRulerProperty.scratchLineSize
                                            - zv_topRulerProperty.markOffsetFromScratch
@@ -806,7 +808,7 @@ void ZRulerWidget::zh_paintTopRule(QPainter* painter)
 //=========================================================
 void ZRulerWidget::zh_paintBottomRule(QPainter* painter)
 {
-    if(!zv_bottomRulerProperty.visibility || zv_XRuleList == 0)
+    if(!zv_bottomRulerProperty.visibility || zv_XRuleList == nullptr)
     {
         return;
     }
@@ -848,7 +850,8 @@ void ZRulerWidget::zh_paintBottomRule(QPainter* painter)
                 }
 
                 QString mark = QString::number(markValue, zv_bottomRulerProperty.format, zv_bottomRulerProperty.precision);
-                markRect = QRect(QPoint(0, 0), QSize(fontMetrics.width(mark), zv_maxMarkHeight));
+                markRect = QRect(QPoint(0, 0),
+                                 QSize(fontMetrics.horizontalAdvance(mark), zv_maxMarkHeight));
                 markRect.moveCenter(QPoint(x, zv_bottomRulerProperty.markRect.top()
                                            + zv_bottomRulerProperty.scratchLineSize
                                            + zv_bottomRulerProperty.markOffsetFromScratch
@@ -880,7 +883,7 @@ void ZRulerWidget::zh_recalcRuleSizes()
     QString maxString = QString::number(-5.555555555555E-99, 'f', precision);
 
     QFontMetrics fm(font());
-    zv_maxMarkWidth = fm.width(maxString);
+    zv_maxMarkWidth = fm.horizontalAdvance(maxString);
     zv_maxMarkHeight = fm.height();
 
     // horizontal offset
@@ -889,34 +892,34 @@ void ZRulerWidget::zh_recalcRuleSizes()
 
     f.setPixelSize(zv_leftRulerProperty.fontSize);
     fm = QFontMetrics(font());
-    zv_leftRulerProperty.markOffsetFromScratch = fm.width("8");
+    zv_leftRulerProperty.markOffsetFromScratch = fm.horizontalAdvance("8");
 
     f.setPixelSize(zv_rightRulerProperty.fontSize);
     fm = QFontMetrics(font());
-    zv_rightRulerProperty.markOffsetFromScratch = fm.width("8");
+    zv_rightRulerProperty.markOffsetFromScratch = fm.horizontalAdvance("8");
 
     // mark line sizes
-    zv_topRulerProperty.markLineSize = zv_maxMarkHeight * 1.5;
-    zv_bottomRulerProperty.markLineSize = zv_maxMarkHeight * 1.5;
+    zv_topRulerProperty.markLineSize = static_cast<int>(zv_maxMarkHeight * 1.5);
+    zv_bottomRulerProperty.markLineSize = static_cast<int>(zv_maxMarkHeight * 1.5);
     zv_leftRulerProperty.markLineSize = zv_maxMarkWidth + zv_leftRulerProperty.markOffsetFromScratch + zv_leftRulerProperty.scratchLineSize;
     zv_rightRulerProperty.markLineSize = zv_maxMarkWidth  + zv_rightRulerProperty.markOffsetFromScratch + zv_rightRulerProperty.scratchLineSize;
 
     // adding space for rule name
     if(zv_leftRulerProperty.ruleLabelVisibility)
     {
-        zv_leftRulerProperty.markLineSize += zv_maxMarkHeight * 1.5;
+      zv_leftRulerProperty.markLineSize += static_cast<int>(zv_maxMarkHeight * 1.5);
     }
     if(zv_rightRulerProperty.ruleLabelVisibility)
     {
-        zv_rightRulerProperty.markLineSize += zv_maxMarkHeight * 1.5;
+      zv_rightRulerProperty.markLineSize += static_cast<int>(zv_maxMarkHeight * 1.5);
     }
     if(zv_topRulerProperty.ruleLabelVisibility)
     {
-        zv_topRulerProperty.markLineSize += zv_maxMarkHeight * 1.5;
+      zv_topRulerProperty.markLineSize += static_cast<int>(zv_maxMarkHeight * 1.5);
     }
     if(zv_bottomRulerProperty.ruleLabelVisibility)
     {
-        zv_bottomRulerProperty.markLineSize += zv_maxMarkHeight * 1.5;
+        zv_bottomRulerProperty.markLineSize += static_cast<int>(zv_maxMarkHeight * 1.5);
     }
 }
 //=========================================================
