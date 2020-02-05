@@ -368,7 +368,7 @@ void ZXMLCalibrationIOHandler::zh_parseXMLElement(ZCalibration* calibration,
     else if(currentTagName == zv_TERM)
     {
         // create new raw term
-        zv_rawTerm = ZRawCustomTerm();
+        zv_rawTerm = ZRawTerm();
         zv_rawTerm.name = reader.attributes().value(zv_NAME).toString();
     }
 
@@ -517,14 +517,14 @@ void ZXMLCalibrationIOHandler::zh_parseXMLElement(ZCalibration* calibration,
 
             else if(currentTagName == zv_CUSTOM_STRING)
             {
-                ZRawCustomTerm* rawCustomTerm = static_cast<ZRawCustomTerm*>(&zv_rawTerm);
-                rawCustomTerm->customString = (readerText);
+                zv_rawTerm.customString = readerText;
             }
 
             else if(currentTagName == zv_DESCRIPTION)
             {
-                ZRawCustomTerm* rawCustomTerm = static_cast<ZRawCustomTerm*>(&zv_rawTerm);
-                rawCustomTerm->descriptionString = (readerText);
+                // ZRawCustomTerm* rawCustomTerm = dynamic_cast<ZRawCustomTerm*>(&zv_rawTerm);
+
+                zv_rawTerm.descriptionString = readerText;
             }
 
             else if(currentTagName == zv_TERM_WINDOW)
@@ -569,8 +569,9 @@ void ZXMLCalibrationIOHandler::zh_parseXMLElement(ZCalibration* calibration,
             {
                 if (zv_rawTerm.termType == ZAbstractTerm::TT_CUSTOM)
                 {
-                    ZRawCustomTerm* customTerm = static_cast<ZRawCustomTerm* >(&zv_rawTerm);
-                    calibration->zp_applyRawTerm(*customTerm);
+                    //ZRawCustomTerm* customTerm = static_cast<ZRawCustomTerm* >(&zv_rawTerm);
+                    //calibration->zp_applyRawTerm(*customTerm);
+                    calibration->zp_applyRawTerm(zv_rawTerm);
                 }
                 else
                 {

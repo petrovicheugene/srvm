@@ -9,6 +9,7 @@ class ZRawTerm
 {
 public:
     ZRawTerm(ZAbstractTerm::TermType termType = ZAbstractTerm::TT_NOT_DEFINED);
+    virtual ~ZRawTerm() {};
     // VARS
     QString name;
     ZAbstractTerm::TermType termType;
@@ -17,14 +18,18 @@ public:
     QString customString;
     QString factor;
 
+    qint64 termId;
+    QString descriptionString;
 };
+
 class ZRawCustomTerm : public ZRawTerm
 {
 public:
     ZRawCustomTerm(ZAbstractTerm::TermType termType = ZAbstractTerm::TT_NOT_DEFINED);
+    virtual ~ZRawCustomTerm() {};
     // VARS
-    qint64 termId;
-    QString descriptionString;
+//    qint64 termId;
+//    QString descriptionString;
 };
 
 //================================================

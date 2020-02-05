@@ -10,6 +10,7 @@
 #include "ZSpectrumArrayRepository.h"
 //==================================================================
 class ZJointSpectraDataManager;
+class QTextEdit;
 //==================================================================
 class ZTermCorrelationTableManager : public QObject
 {
@@ -118,6 +119,7 @@ private:
     QColor zv_redCell;
     QColor zv_cyanCell;
     QColor zv_magentaCell;
+
 
     // FUNCS
 

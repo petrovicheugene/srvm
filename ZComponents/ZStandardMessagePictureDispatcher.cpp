@@ -46,7 +46,7 @@ bool ZStandardMessagePictureDispatcher::zp_pictureForStandardMessage(QtMsgType t
 
     // try to get pixmap from cache
     QString keyString =  zv_msgTypeNameMap.value(type)+QString::number(size.width())+"-"+QString::number(size.height());
-    if (!QPixmapCache::find(keyString, msgIconPixmap))
+    if (!QPixmapCache::find(keyString, &msgIconPixmap))
     {
         // get standard pixmap and insert it into cache
         msgIconPixmap = ZStandardMessagePictureDispatcher::zh_getStandardMessageBoxPixmap(type, size, picstyle);

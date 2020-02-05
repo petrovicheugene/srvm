@@ -17,8 +17,8 @@ public:
     explicit ZXMLSpectrumArrayIOHandler(QObject* parent = 0);
     virtual ~ZXMLSpectrumArrayIOHandler();
 
-    bool zp_readSpectrumArray (QFile&, QList<ZRawSpectrumArray>&) const;
-    bool zp_writeSpectrumArray(QFile&, const QList<ZRawSpectrumArray>&) const;
+    bool zp_readSpectrumArray (QFile&, QList<ZRawSpectrumArray>&);
+    bool zp_writeSpectrumArray(QFile&, const QList<ZRawSpectrumArray>&);
 
 signals:
 
@@ -44,6 +44,7 @@ private:
     const QString zv_YES = "yes";
     const QString zv_NO = "no";
 
+    QString zv_fileAbsolutePath;
 
     // FUNCS
     bool zh_detectRoot(const QXmlStreamReader& reader, bool& magicStringDetectionFlag) const;

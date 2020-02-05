@@ -45,7 +45,7 @@ bool ZLESGaussSolver::zp_solve()
             maxValue = zv_columnList.at(i).elements.at(i);
             for(int r = i + 1; r < zv_freeTermList.count(); r++)
             {
-                rowFactor = -1 * zv_columnList.at(i).elements.at(r) / maxValue;
+                rowFactor = -1.0 * zv_columnList.at(i).elements.at(r) / maxValue;
                 zh_addMultipliedRow(r, i, rowFactor);
             }
         }
@@ -104,15 +104,16 @@ void ZLESGaussSolver::zh_swapRows(int row1, int row2)
 {
     for(int col = 0; col < zv_columnList.count(); col++)
     {
-        zv_columnList[col].elements.swap(row1, row2);
+        //zv_columnList[col].elements.swap(row1, row2);
+        zv_columnList[col].elements.swapItemsAt(row1, row2);
     }
 
-    zv_freeTermList.swap(row1, row2);
+    zv_freeTermList.swapItemsAt(row1, row2);
 }
 //==============================================================
 void ZLESGaussSolver::zh_swapColumns(int col1, int col2)
 {
-    zv_columnList.swap(col1, col2);
+    zv_columnList.swapItemsAt(col1, col2);
 }
 //==============================================================
 bool ZLESGaussSolver::zh_putMaxValueOnDiagonal(int startIndex)
@@ -120,7 +121,7 @@ bool ZLESGaussSolver::zh_putMaxValueOnDiagonal(int startIndex)
     qreal maxAbsValue = 0.0;
     int maxValueColumn = -1;
     int maxValueRow = -1;
-    qreal currentAbsValue;
+    qreal currentAbsValue = 0.0;
     for(int col = startIndex; col < zv_columnList.count(); col++)
     {
         for(int row = startIndex; row < zv_freeTermList.count(); row++)
