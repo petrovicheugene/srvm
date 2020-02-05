@@ -7,6 +7,7 @@
 #include "ZSetGainFactorToCalibrationDialog.h"
 #include "ZXMLCalibrationIOHandler.h"
 
+#include <algorithm>
 #include <QClipboard>
 #include <QDebug>
 #include <QFile>
@@ -1302,7 +1303,8 @@ void ZCalibrationRepository::zh_onRemoveCalibrationsAction()
         return;
     }
 
-    qSort(selectedCalibrationIndexList);
+    //qSort(selectedCalibrationIndexList);
+    std::sort(selectedCalibrationIndexList.begin(), selectedCalibrationIndexList.end());
 
     for (int i = selectedCalibrationIndexList.count() - 1; i >= 0; i--)
     {
@@ -1391,7 +1393,9 @@ void ZCalibrationRepository::zh_onRemoveWindowAction()
         return;
     }
 
-    qSort(selectedWindowList);
+    //qSort(selectedWindowList);
+    std::sort(selectedWindowList.begin(), selectedWindowList.end());
+
     for (int i = selectedWindowList.count() - 1; i >= 0; i--)
     {
         zh_removeCalibrationWindow(currentCalibrationIndex, selectedWindowList.value(i));
@@ -1830,7 +1834,8 @@ void ZCalibrationRepository::zh_onCopySelectedCalibrationAction()
         return;
     }
 
-    qSort(selectedCalibrationList);
+    //qSort(selectedCalibrationList);
+    std::sort(selectedCalibrationList.begin(), selectedCalibrationList.end());
 
     zv_blockCalibrationRecalc = true;
     for (int c = 0; c < selectedCalibrationList.count(); c++)

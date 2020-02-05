@@ -50,7 +50,7 @@ void	ZNumericEditor::stepBy ( int steps )
 
     bool powerTypeRecord = numericString.contains(QRegExp("[eE]"));
 
-    // определяем в какой части курсор
+    // defining which part is the cursor on
     if(parts.isEmpty() || parts.count() > 3)
     {
         return;
@@ -151,7 +151,7 @@ void	ZNumericEditor::stepBy ( int steps )
 
         if(!checkNewNumber(parts, powerTypeRecord, changedPartNumeric, changedPartNumber, newNumericString,  newPartCount) )
         {
-            //откат
+            //rewind
             changedPartNumeric = steps > 0 ? changedPartNumeric-1 : changedPartNumeric+1;
             checkNewNumber(parts, powerTypeRecord, changedPartNumeric, changedPartNumber, newNumericString,  newPartCount);
 
@@ -359,7 +359,7 @@ QSize ZNumericEditor::sizeHint() const
     QFontMetrics fm(this->font());
     QString maxString = QString::number(zv_max, 'f', 15);
     QString minString = QString::number(zv_min, 'f', 15);
-    int stringWidth = qMax(fm.width(maxString), fm.width(minString));
+    int stringWidth = qMax(fm.horizontalAdvance(maxString), fm.horizontalAdvance(minString));
     QStyleOptionComplex opt;
     opt.initFrom(this);
     int upDownButtonWidth = this->style()->subControlRect(QStyle::CC_SpinBox, &opt, QStyle::SC_SpinBoxDown, this).width();

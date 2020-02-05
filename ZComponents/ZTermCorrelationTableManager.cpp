@@ -7,6 +7,7 @@
 #include <math.h>
 #include <QDebug>
 #include <QPair>
+#include <QTextEdit>
 //=============================================================================
 ZTermCorrelationTableManager::ZTermCorrelationTableManager(QObject *parent) : QObject(parent)
 {
@@ -812,7 +813,7 @@ void ZTermCorrelationTableManager::zh_recalcCalibrationFactors()
     }
 
     // check average free term (if a != a  then a == nan)
-    if(zv_averageEquationIntercept - zv_averageEquationIntercept != 0.0)
+    if (zv_averageEquationIntercept != zv_averageEquationIntercept)
     {
         // TODO Error report
         return;
@@ -939,9 +940,12 @@ void ZTermCorrelationTableManager::zh_recalcCalibrationFactors()
     int row;
     int col;
 
+    QString testColString;
+    QString testFreeTermString;
     // passage through rows of covariance matrix
     for(int rowi = 0; rowi < factorCount; rowi++)
     {
+        testColString.clear();
         columnList.clear();
         // passage through columns of covariance matrix
         for(int coli = 0; coli < factorCount; coli++)
@@ -955,16 +959,22 @@ void ZTermCorrelationTableManager::zh_recalcCalibrationFactors()
             }
 
             columnList.append(zv_termCovariationMatrix.at(row).at(col));
+
+            testColString.append(
+                QString("%1,").arg(QString::number(zv_termCovariationMatrix.at(row).at(col))));
         }
         // append column to solver
         solver.zp_appendTermColumn(factorToIndexMap.value(factorIndexList.at(rowi)), columnList);
+
         // free term list formation
         freeTermList.append(zv_freeTermCovariationList.at(factorIndexList.at(rowi)));
+        //TEST
+        testFreeTermString.append(QString("%1,").arg(
+            QString::number(zv_freeTermCovariationList.at(factorIndexList.at(rowi)))));
     }
 
     // append free term column to solver
     solver.zp_appendFreeTermList(freeTermList);
-
 
     if(!solver.zp_solve())
     {
@@ -974,7 +984,10 @@ void ZTermCorrelationTableManager::zh_recalcCalibrationFactors()
 
     // Equation free term calculation
     // first initialization of free term
+
+
     *freeTerm = zv_averageEquationIntercept;
+
     QMap<int, qreal*>::const_iterator it;
     qreal averageTerm;
     for(it = factorToIndexMap.begin(); it != factorToIndexMap.end(); it++)
@@ -990,6 +1003,7 @@ void ZTermCorrelationTableManager::zh_recalcCalibrationFactors()
             break;
 
         }
+
         *freeTerm -= (*it.value()) * averageTerm;
     }
 
@@ -1029,7 +1043,7 @@ bool ZTermCorrelationTableManager::zh_convertColRowForCovariationMatrix(int& row
         qSwap(col, row);
     }
 
-    //col -= row;
+    col -= row;
 
     if(row >= zv_termCovariationMatrix.count())
     {
@@ -1067,6 +1081,9 @@ void ZTermCorrelationTableManager::zh_startCalculationCorrelationsAndCovariation
     }
 
     // dispersions
+
+    qDebug() << "RECALC DISPERSIONS";
+
     zh_calcTermDispersions();
     zh_calcConcentrationAndFreeTermDispersions();
 
@@ -1092,7 +1109,7 @@ void ZTermCorrelationTableManager::zh_calcTermDispersions()
     // local vars for circles
     qreal averageTerm;
     qreal termValue;
-    const ZAbstractSpectrum* spectrum;
+    const ZAbstractSpectrum *spectrum;
 
     // term circle
     for(int t = 0; t < zp_rowCount(); t++)
@@ -1132,6 +1149,7 @@ void ZTermCorrelationTableManager::zh_calcTermDispersions()
             }
             zv_termDispersionMatrix.last().append(termValue);
             averageTerm += termValue;
+
         }
 
         // average term nan check
@@ -1189,7 +1207,7 @@ void ZTermCorrelationTableManager::zh_calcConcentrationAndFreeTermDispersions()
     // local vars for circles
     qreal averageConcentration = 0.0;
     qreal concentration = 0.0;
-    const ZAbstractSpectrum* spectrum;
+    const ZAbstractSpectrum *spectrum = nullptr;
 
     qreal equationFreeTerm = 0.0;
     qreal baseTermValue = 0.0;

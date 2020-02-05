@@ -1332,7 +1332,10 @@ void ZSpectrumArrayRepository::zh_onRemoveSpectrumFromArrayAction()
     {
         return;
     }
-    qSort(selectedSpectrumList);
+
+    //qSort(selectedSpectrumList);
+    std::sort(selectedSpectrumList.begin(), selectedSpectrumList.end());
+
     bool res = false;
     for(int i = selectedSpectrumList.count() - 1; i >= 0; i--)
     {
@@ -1409,7 +1412,8 @@ void ZSpectrumArrayRepository::zh_onRemoveChemElementAction()
         return;
     }
 
-    qSort(selectedChemElementList);
+    //qSort(selectedChemElementList);
+    std::sort(selectedChemElementList.begin(), selectedChemElementList.end());
     bool res = false;
 
     for(int i = selectedChemElementList.count() - 1; i >= 0; i--)

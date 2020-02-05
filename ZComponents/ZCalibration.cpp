@@ -1584,6 +1584,11 @@ bool ZCalibration::zp_setEquationType(ZCalibration::EquationType type)
         return false;
     }
     zv_equationType = type;
+    if (zv_equationType == ET_POLYNOMIAL)
+    {
+        zv_baseTermId = -1;
+    }
+
     zv_dateTime = QDateTime::currentDateTime();
     zv_dirty = true;
     emit zg_dirtyChanged(zv_dirty);
@@ -1701,6 +1706,12 @@ qint64 ZCalibration::zp_baseTermId() const
 //=========================================================
 bool ZCalibration::zp_setBaseTermId(qint64 id)
 {
+    if (zv_equationType == ET_POLYNOMIAL)
+    {
+        zv_baseTermId = -1;
+        return true;
+    }
+
     if (zv_baseTermId == id)
     {
         return false;
