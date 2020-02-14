@@ -1584,6 +1584,11 @@ bool ZCalibration::zp_setEquationType(ZCalibration::EquationType type)
         return false;
     }
     zv_equationType = type;
+    if (zv_equationType == ET_POLYNOMIAL)
+    {
+        zv_baseTermId = -1;
+    }
+
     zv_dateTime = QDateTime::currentDateTime();
     zv_dirty = true;
     emit zg_dirtyChanged(zv_dirty);
@@ -1701,6 +1706,12 @@ qint64 ZCalibration::zp_baseTermId() const
 //=========================================================
 bool ZCalibration::zp_setBaseTermId(qint64 id)
 {
+    if (zv_equationType == ET_POLYNOMIAL)
+    {
+        zv_baseTermId = -1;
+        return true;
+    }
+
     if (zv_baseTermId == id)
     {
         return false;
@@ -1806,7 +1817,7 @@ void ZCalibration::zp_resetEquationTerms()
     }
 
     emit zg_termOperation(TOT_TERM_FACTOR_CHANGED, 0, zv_termList.count() - 1);
-    res = res || zp_setEquationIntercept(0.0);
+    res = res && zp_setEquationIntercept(0.0);
 
     if (res)
     {
@@ -2308,28 +2319,52 @@ void ZCalibration::zp_setNextUsersTermState(int termIndex)
 
     ZAbstractTerm::TermState state = zv_termList.at(termIndex)->zp_termState();
     bool res = false;
-    switch (state)
-    {
-    case ZAbstractTerm::TS_CONST_INCLUDED:
-        res = zv_termList.at(termIndex)->zp_setTermState(ZAbstractTerm::TS_EXAM_WAITING);
-        break;
-    case ZAbstractTerm::TS_EXAM_WAITING:
-        res = zv_termList.at(termIndex)->zp_setTermState(ZAbstractTerm::TS_CONST_EXCLUDED);
-        break;
-    case ZAbstractTerm::TS_INCLUDED:
-        res = zv_termList.at(termIndex)->zp_setTermState(ZAbstractTerm::TS_CONST_EXCLUDED);
-        break;
-    case ZAbstractTerm::TS_EXCEPTED:
-        res = zv_termList.at(termIndex)->zp_setTermState(ZAbstractTerm::TS_CONST_EXCLUDED);
-        break;
-    case ZAbstractTerm::TS_CONST_EXCLUDED:
-        res = zv_termList.at(termIndex)->zp_setTermState(ZAbstractTerm::TS_CONST_INCLUDED);
-        break;
-    case ZAbstractTerm::TS_BASE:
-    case ZAbstractTerm::TS_NOT_DEFINED:
-    default:
-        return;
-    }
+//    switch (state)
+//    {
+//    case ZAbstractTerm::TS_CONST_INCLUDED:
+//        res = zv_termList.at(termIndex)->zp_setTermState(ZAbstractTerm::TS_EXAM_WAITING);
+//        break;
+//    case ZAbstractTerm::TS_EXAM_WAITING:
+//        res = zv_termList.at(termIndex)->zp_setTermState(ZAbstractTerm::TS_CONST_EXCLUDED);
+//        break;
+//    case ZAbstractTerm::TS_INCLUDED:
+//        res = zv_termList.at(termIndex)->zp_setTermState(ZAbstractTerm::TS_CONST_EXCLUDED);
+//        break;
+//    case ZAbstractTerm::TS_EXCEPTED:
+//        res = zv_termList.at(termIndex)->zp_setTermState(ZAbstractTerm::TS_CONST_EXCLUDED);
+//        break;
+//    case ZAbstractTerm::TS_CONST_EXCLUDED:
+//        res = zv_termList.at(termIndex)->zp_setTermState(ZAbstractTerm::TS_CONST_INCLUDED);
+//        break;
+//    case ZAbstractTerm::TS_BASE:
+//    case ZAbstractTerm::TS_NOT_DEFINED:
+//    default:
+//        return;
+//    }
+
+        switch (state)
+        {
+        case ZAbstractTerm::TS_CONST_INCLUDED:
+            res = zv_termList.at(termIndex)->zp_setTermState(ZAbstractTerm::TS_CONST_EXCLUDED);
+            break;
+        case ZAbstractTerm::TS_EXAM_WAITING:
+            res = zv_termList.at(termIndex)->zp_setTermState(ZAbstractTerm::TS_CONST_EXCLUDED);
+            break;
+        case ZAbstractTerm::TS_INCLUDED:
+            res = zv_termList.at(termIndex)->zp_setTermState(ZAbstractTerm::TS_CONST_EXCLUDED);
+            break;
+        case ZAbstractTerm::TS_EXCEPTED:
+            res = zv_termList.at(termIndex)->zp_setTermState(ZAbstractTerm::TS_CONST_EXCLUDED);
+            break;
+        case ZAbstractTerm::TS_CONST_EXCLUDED:
+            res = zv_termList.at(termIndex)->zp_setTermState(ZAbstractTerm::TS_CONST_INCLUDED);
+            break;
+        case ZAbstractTerm::TS_BASE:
+        case ZAbstractTerm::TS_NOT_DEFINED:
+        default:
+            return;
+        }
+
 
     if (res)
     {

@@ -20,9 +20,9 @@ public:
 
     RulePoint()
     {
-        globalPos = 0;
-        scenePos = 0;
-        markValue = 0;
+        globalPos = 0.0;
+        scenePos = 0.0;
+        markValue = 0.0;
         markType = MT_SCRATCH;
     }
 

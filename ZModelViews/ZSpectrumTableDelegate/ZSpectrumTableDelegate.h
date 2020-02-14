@@ -26,6 +26,7 @@ private:
     // VARS
     // QWidget* zv_baseWidget;
     ZPrimitivePlot* zv_plot;
+    bool zv_preventMouseReleaseHandle;
 
     // FUNCS
     bool editorEvent ( QEvent * event,

@@ -24,7 +24,7 @@ void ZCalibrationWindowTableWidget::zp_setModel(ZCalibrationWindowModel* model)
 {
     zv_table->setModel(model);
     ZVisibilityStringDelegate* visibilityStringDelegate = new ZVisibilityStringDelegate(zv_table);
-    //zv_table->viewport()->installEventFilter(visibilityStringDelegate);
+    zv_table->viewport()->installEventFilter(visibilityStringDelegate);
     zv_table->setItemDelegateForColumn(0, visibilityStringDelegate);
 
     ZWindowTypeComboBoxDelegate* windowTypeComboBoxDelegate = new ZWindowTypeComboBoxDelegate(

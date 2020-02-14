@@ -1,21 +1,22 @@
 //======================================================================
 #include "ZSpectrumTableDelegate.h"
+#include "ZGeneral.h"
 #include "ZPrimitivePlot.h"
 #include "ZSpectrumPaintData.h"
-#include "ZGeneral.h"
 
+#include <QAbstractItemView>
+#include <QApplication>
+#include <QHBoxLayout>
+#include <QMouseEvent>
 #include <QPainter>
 #include <QStyle>
-#include <QApplication>
-#include <QVBoxLayout>
-#include <QHBoxLayout>
-#include <QAbstractItemView>
 #include <QTableView>
-#include <QMouseEvent>
+#include <QVBoxLayout>
 //======================================================================
 ZSpectrumTableDelegate::ZSpectrumTableDelegate(QObject *parent) : QStyledItemDelegate(parent)
 {
     zv_plot = new ZPrimitivePlot();
+    zv_preventMouseReleaseHandle = false;
 }
 //======================================================================
 ZSpectrumTableDelegate::~ZSpectrumTableDelegate()
@@ -23,11 +24,13 @@ ZSpectrumTableDelegate::~ZSpectrumTableDelegate()
     delete zv_plot;
 }
 //======================================================================
-void ZSpectrumTableDelegate::paint(QPainter* painter, const QStyleOptionViewItem & option, const QModelIndex & index) const
+void ZSpectrumTableDelegate::paint(QPainter *painter,
+                                   const QStyleOptionViewItem &option,
+                                   const QModelIndex &index) const
 {
-    if(!index.isValid())
+    if (!index.isValid())
     {
-        QStyledItemDelegate::paint (painter, option, index);
+        QStyledItemDelegate::paint(painter, option, index);
         return;
     }
 
@@ -35,25 +38,25 @@ void ZSpectrumTableDelegate::paint(QPainter* painter, const QStyleOptionViewItem
 
     QColor penColor;
     QColor brushColor;
-    QPixmap  pixmap(option.rect.size());
+    QPixmap pixmap(option.rect.size());
     QPainter pixmapPainter(&pixmap);
 
     QPalette palette = option.palette;
 
     QStyleOptionViewItem newOption(option);
-    newOption.state =  newOption.state | QStyle::State_Active;
+    newOption.state = newOption.state | QStyle::State_Active;
     newOption.rect = pixmap.rect();
     initStyleOption(&newOption, index);
 
     const QWidget *widget = option.widget;
     QStyle *style = widget ? widget->style() : QApplication::style();
 
-    if(newOption.state & QStyle::State_Selected)
+    if (newOption.state & QStyle::State_Selected)
     {
-        pixmapPainter.fillRect(pixmap.rect(), newOption.palette.highlight()) ;
+        pixmapPainter.fillRect(pixmap.rect(), newOption.palette.highlight());
         style->drawControl(QStyle::CE_ItemViewItem, &newOption, &pixmapPainter, widget);
 
-        if(newOption.state & QStyle::State_Active)
+        if (newOption.state & QStyle::State_Active)
         {
             penColor = QColor(Qt::yellow);
             brushColor = QColor(Qt::yellow);
@@ -66,7 +69,7 @@ void ZSpectrumTableDelegate::paint(QPainter* painter, const QStyleOptionViewItem
     }
     else
     {
-        if(index.row() % 2)
+        if (index.row() % 2)
         {
             pixmapPainter.fillRect(pixmap.rect(), newOption.palette.color(QPalette::AlternateBase));
         }
@@ -83,16 +86,16 @@ void ZSpectrumTableDelegate::paint(QPainter* painter, const QStyleOptionViewItem
     // rectangels
     QRect plotRect = pixmap.rect();
     QRect decorationRect = QRect();
-    if(newOption.features & QStyleOptionViewItem::HasDecoration)
+    if (newOption.features & QStyleOptionViewItem::HasDecoration)
     {
         decorationRect = style->subElementRect(QStyle::SE_ItemViewItemDecoration, &newOption);
 
         QColor decorationColor;
         QVariant vData = index.data(Qt::DecorationRole);
-        if(vData.isValid() && !vData.isNull() && vData.canConvert<QColor>())
+        if (vData.isValid() && !vData.isNull() && vData.canConvert<QColor>())
         {
             decorationColor = index.data(Qt::DecorationRole).value<QColor>();
-            if(!decorationColor.isValid())
+            if (!decorationColor.isValid())
             {
                 decorationColor = newOption.palette.color(QPalette::Base);
             }
@@ -108,7 +111,7 @@ void ZSpectrumTableDelegate::paint(QPainter* painter, const QStyleOptionViewItem
         pixmapPainter.drawRect(decorationRect.adjusted(1, 0, -2, 0));
 
         bool visible = index.data(NS_DataRole::VisibleRole).toBool();
-        if(visible)
+        if (visible)
         {
             QPixmap pixmap(NS_Icons::glIconVisible);
             QRect paintRect = pixmap.rect();
@@ -133,7 +136,7 @@ void ZSpectrumTableDelegate::paint(QPainter* painter, const QStyleOptionViewItem
     zv_plot->zp_setBrushColor(brushColor);
     zv_plot->zp_setPenColor(penColor);
     QVariant vData = index.data(Qt::DisplayRole);
-    if(vData.isValid() && !vData.isNull() && vData.canConvert<ZSpectrumPaintData>())
+    if (vData.isValid() && !vData.isNull() && vData.canConvert<ZSpectrumPaintData>())
     {
         ZSpectrumPaintData paintData = vData.value<ZSpectrumPaintData>();
         zv_plot->zp_paintData(paintData);
@@ -148,62 +151,48 @@ void ZSpectrumTableDelegate::paint(QPainter* painter, const QStyleOptionViewItem
     painter->restore();
 }
 //======================================================================
-QSize	ZSpectrumTableDelegate::sizeHint ( const QStyleOptionViewItem & option, const QModelIndex & index ) const
+QSize ZSpectrumTableDelegate::sizeHint(const QStyleOptionViewItem &option,
+                                       const QModelIndex &index) const
 {
     return QStyledItemDelegate::sizeHint(option, index);
 }
 //======================================================================
-bool ZSpectrumTableDelegate::editorEvent ( QEvent * event,
-                                           QAbstractItemModel * model,
-                                           const QStyleOptionViewItem & option,
-                                           const QModelIndex & index )
+bool ZSpectrumTableDelegate::editorEvent(QEvent *event,
+                                         QAbstractItemModel *model,
+                                         const QStyleOptionViewItem &option,
+                                         const QModelIndex &index)
 {
-    if(!index.isValid() || model == 0 || event->type() != QEvent::MouseButtonRelease)
+    if (!index.isValid() || model == 0 || event->type() != QEvent::MouseButtonRelease)
     {
-        return QStyledItemDelegate::editorEvent(event,
-                                                model,
-                                                option,
-                                                index);
+        return QStyledItemDelegate::editorEvent(event, model, option, index);
     }
 
-    QMouseEvent* mouseEvent = static_cast<QMouseEvent*>(event);
-    if(!mouseEvent || mouseEvent->type() != QMouseEvent::MouseButtonRelease)
+    QMouseEvent *mouseEvent = static_cast<QMouseEvent *>(event);
+    if (!mouseEvent || mouseEvent->type() != QMouseEvent::MouseButtonRelease)
     {
-        return QStyledItemDelegate::editorEvent(event,
-                                                model,
-                                                option,
-                                                index);
+        return QStyledItemDelegate::editorEvent(event, model, option, index);
     }
 
     QStyleOptionViewItem newOption(option);
     initStyleOption(&newOption, index);
-    const QAbstractItemView* itemView = qobject_cast<const QAbstractItemView*>(newOption.widget);
-    if(!itemView)
+    const QAbstractItemView *itemView = qobject_cast<const QAbstractItemView *>(newOption.widget);
+    if (!itemView)
     {
-        return QStyledItemDelegate::editorEvent(event,
-                                                model,
-                                                option,
-                                                index);
+        return QStyledItemDelegate::editorEvent(event, model, option, index);
     }
 
     QStyle *style = itemView->style();
     QRect decorationRect = style->subElementRect(QStyle::SE_ItemViewItemDecoration, &newOption);
     QPoint mousePos = mouseEvent->pos();
-    if(!decorationRect.contains(mousePos))
+    if (!decorationRect.contains(mousePos))
     {
-        return QStyledItemDelegate::editorEvent(event,
-                                                model,
-                                                option,
-                                                index);
+        return QStyledItemDelegate::editorEvent(event, model, option, index);
     }
 
     QVariant vData = index.data(NS_DataRole::VisibleRole);
-    if(!vData.isValid() || vData.isNull() || !vData.canConvert<bool>())
+    if (!vData.isValid() || vData.isNull() || !vData.canConvert<bool>())
     {
-        return QStyledItemDelegate::editorEvent(event,
-                                                model,
-                                                option,
-                                                index);
+        return QStyledItemDelegate::editorEvent(event, model, option, index);
     }
 
     bool visible = vData.toBool();
@@ -214,17 +203,18 @@ bool ZSpectrumTableDelegate::editorEvent ( QEvent * event,
 //======================================================================
 bool ZSpectrumTableDelegate::eventFilter(QObject *object, QEvent *event)
 {
-    if(event->type() == QEvent::MouseButtonPress || event->type() == QEvent::MouseButtonDblClick)
+    if (event->type() == QEvent::MouseButtonPress || event->type() == QEvent::MouseButtonDblClick
+        || event->type() == QEvent::MouseButtonRelease)
     {
-        QMouseEvent* mouseEvent = static_cast<QMouseEvent*>(event);
+        QMouseEvent *mouseEvent = static_cast<QMouseEvent *>(event);
         //
-        QTableView* itemView = qobject_cast<QTableView*>(parent());
-        if(itemView == 0)
+        QTableView *itemView = qobject_cast<QTableView *>(parent());
+        if (itemView == 0)
         {
             return QStyledItemDelegate::eventFilter(object, event);
         }
 
-        if(itemView->viewport() != object)
+        if (itemView->viewport() != object)
         {
             return QStyledItemDelegate::eventFilter(object, event);
         }
@@ -232,12 +222,12 @@ bool ZSpectrumTableDelegate::eventFilter(QObject *object, QEvent *event)
         QPoint mousePoint = mouseEvent->pos();
         QModelIndex itemIndex = itemView->indexAt(mousePoint);
 
-        if(!itemIndex.isValid())
+        if (!itemIndex.isValid())
         {
             return QStyledItemDelegate::eventFilter(object, event);
         }
 
-        if(itemView->itemDelegateForColumn(itemIndex.column()) != this)
+        if (itemView->itemDelegateForColumn(itemIndex.column()) != this)
         {
             return QStyledItemDelegate::eventFilter(object, event);
         }
@@ -261,16 +251,60 @@ bool ZSpectrumTableDelegate::eventFilter(QObject *object, QEvent *event)
         initStyleOption(&newOption, itemIndex);
         newOption.rect = itemRect;
 
-        QRect decorationRect = itemView->style()->subElementRect(QStyle::SE_ItemViewItemDecoration, &newOption);
+        QRect decorationRect = itemView->style()->subElementRect(QStyle::SE_ItemViewItemDecoration,
+                                                                 &newOption);
 
-        if(!decorationRect.contains(mousePoint))
+        if (!decorationRect.contains(mousePoint))
         {
+            if (zv_preventMouseReleaseHandle)
+            {
+                if (event->type() == QEvent::MouseButtonRelease)
+                {
+                    // prevent mouse release handling after slide of the keeping down cursor from decoration rectangle
+                    zv_preventMouseReleaseHandle = false;
+                    return true;
+                }
+            }
+
             return QStyledItemDelegate::eventFilter(object, event);
         }
 
         // mouse position is in decoration rect
         // MouseButtonPress or MouseButtonDblClick (making item current) - banned
         // visible will be switched by mouseButtonRelease
+        if (event->type() == QEvent::MouseButtonRelease)
+        {
+            QAbstractItemView *itemView = dynamic_cast<QAbstractItemView *>(parent());
+            if (!itemView)
+            {
+                return false;
+            }
+
+            QModelIndex index = itemView->indexAt(mousePoint);
+            QVariant vData = index.data(NS_DataRole::VisibleRole);
+            if (!vData.isValid() || vData.isNull() || !vData.canConvert<bool>())
+            {
+                return false;
+            }
+
+            bool visible = vData.toBool();
+            QAbstractItemModel *model = const_cast<QAbstractItemModel *>(index.model());
+            model->setData(index, QVariant(!visible), NS_DataRole::VisibleRole);
+            zv_preventMouseReleaseHandle = false;
+        }
+        else
+        {
+            zv_preventMouseReleaseHandle = true;
+        }
+
+        return true;
+    }
+
+    if ((event->type() == QEvent::HoverEnter || event->type() == QEvent::HoverMove
+         || event->type() == QEvent::HoverLeave)
+        && zv_preventMouseReleaseHandle)
+    {
+        // prevent mouse release handling after slide of the keeping down cursor from decoration rectangle
         return true;
     }
 
