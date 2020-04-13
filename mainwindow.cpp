@@ -10,7 +10,7 @@
 #include "ZCalibrationWindowDataManager.h"
 #include "ZCalibrationRepository.h"
 #include "ZChemElementDataManager.h"
-#include "ZPlotterDataManager.h"
+#include "ZAbstractPlotterDataManager.h"
 #include "ZCorrelationPlotterDataManager.h"
 #include "ZTermCorrelationTableManager.h"
 #include "ZSpeSpectrum.h"
@@ -423,7 +423,7 @@ void MainWindow::zh_createComponents()
     zv_chemElementDataManager = new ZChemElementDataManager(this);
     zv_calibrationRepository = new ZCalibrationRepository(this);
     zv_jointCalibrationWindowDataManager = new ZCalibrationWindowDataManager(this);
-    zv_plotterDataManager = new ZPlotterDataManager(this);
+    zv_plotterDataManager = new ZAbstractPlotterDataManager(this);
     zv_calculationPlotterManager = new ZCorrelationPlotterDataManager(this);
     zv_termCorrelationTableManager = new ZTermCorrelationTableManager(this);
 
@@ -647,15 +647,15 @@ void MainWindow::zh_createConnections()
 
     // energy line widget
     connect(zv_energyLineTableWidget, &ZEnergyLineTableWidget::zg_energyLineOperation,
-            zv_plotterDataManager, &ZPlotterDataManager::zp_onEnergyLineOperation);
-    connect(zv_plotterDataManager, &ZPlotterDataManager::zg_requestEnergyLineEnergyValue,
+            zv_plotterDataManager, &ZAbstractPlotterDataManager::zp_onEnergyLineOperation);
+    connect(zv_plotterDataManager, &ZAbstractPlotterDataManager::zg_requestEnergyLineEnergyValue,
             zv_energyLineTableWidget, &ZEnergyLineTableWidget::zp_energyLineEnergyValue);
-    connect(zv_plotterDataManager, &ZPlotterDataManager::zg_requestEnergyLineRelativeIntensity,
+    connect(zv_plotterDataManager, &ZAbstractPlotterDataManager::zg_requestEnergyLineRelativeIntensity,
             zv_energyLineTableWidget, &ZEnergyLineTableWidget::zp_energyLineRelativeIntensity);
 
-    connect(zv_plotterDataManager, &ZPlotterDataManager::zg_requestEnergyLineVisibility,
+    connect(zv_plotterDataManager, &ZAbstractPlotterDataManager::zg_requestEnergyLineVisibility,
             zv_energyLineTableWidget, &ZEnergyLineTableWidget::zp_energyLineVisibility);
-    connect(zv_plotterDataManager, &ZPlotterDataManager::zg_requestEnergyLineColor,
+    connect(zv_plotterDataManager, &ZAbstractPlotterDataManager::zg_requestEnergyLineColor,
             zv_energyLineTableWidget, &ZEnergyLineTableWidget::zp_energyLineColor);
 
 
