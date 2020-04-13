@@ -13,8 +13,8 @@ RC_ICONS = "ZImages/SRVM-8.ico"
 
 #Application version
 VER_MAJ=1
-VER_MIN=0
-VER_PAT=9
+VER_MIN=1
+VER_PAT=0
 
 PRODUCT_SHORT_NAME="SRVM"
 PRODUCT_FILE_BASE_NAME="SRVM"
@@ -179,6 +179,7 @@ INCLUDEPATH += ZPlotter \
 
 SOURCES += main.cpp \
     MainWindow.cpp \
+    ZComponents/ZAbstractPlotterDataManager.cpp \
     ZComponents/ZMathExpressionHandler.cpp \
     ZComponents/ZMathExpressionVariableListMaker.cpp \
     ZComponents/ZXMLCalibrationProjectIOHandler.cpp \
@@ -218,7 +219,6 @@ SOURCES += main.cpp \
     ZModelViews/ZVisibilityStringDelegate/ZVisibilityStringDelegate.cpp \
     ZModelViews/ZChemElementComboBoxDelegate/ZChemElementComboBoxDelegate.cpp \
     ZModelViews/ZWindowTypeComboBoxDelegate/ZWindowTypeComboBoxDelegate.cpp \
-    ZComponents/ZPlotterDataManager.cpp \
     ZPlotter/ZPlotGraphicsScene.cpp \
     ZPlotter/ZPlotGraphicsView.cpp \
     ZPlotter/ZPlotter.cpp \
@@ -304,6 +304,7 @@ SOURCES += main.cpp \
 
 HEADERS  += \
     MainWindow.h \
+    ZComponents/ZAbstractPlotterDataManager.h \
     ZComponents/ZMathExpressionHandler.h \
     ZComponents/ZMathExpressionVariableListMaker.h \
     ZComponents/ZXMLCalibrationProjectIOHandler.h \
@@ -345,7 +346,6 @@ HEADERS  += \
     ZModelViews/ZChemElementComboBoxDelegate/ZChemElementComboBoxDelegate.h \
     ZModelViews/ZWindowTypeComboBoxDelegate/ZWindowTypeComboBoxDelegate.h \
     ZComponents/ZSpectrumPaintData.h \
-    ZComponents/ZPlotterDataManager.h \
     ZPlotter/ZGraphicsItemUserTypes.h \
     ZPlotter/ZPlotGraphicsScene.h \
     ZPlotter/ZPlotGraphicsView.h \

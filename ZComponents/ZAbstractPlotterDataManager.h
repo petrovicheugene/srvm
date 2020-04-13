@@ -12,11 +12,11 @@ class ZDefaultRectGraphicsItem;
 
 typedef int EnergyLineOperationType;
 //===========================================================
-class ZPlotterDataManager : public QObject
+class ZAbstractPlotterDataManager : public QObject
 {
     Q_OBJECT
 public:
-    explicit ZPlotterDataManager(QObject *parent = 0);
+    explicit ZAbstractPlotterDataManager(QObject *parent = 0);
 
     // FUNCS
     void zp_connectToSpectraArrayRepository(ZSpectrumArrayRepository*);

@@ -1,5 +1,5 @@
 //===========================================================
-#include "ZPlotterDataManager.h"
+#include "ZAbstractPlotterDataManager.h"
 #include "ZPlotter.h"
 #include "ZGraphicsItemUserTypes.h"
 #include "ZSpectrumGraphicsItem.h"
@@ -16,7 +16,7 @@
 #include <math.h>
 
 //===========================================================
-ZPlotterDataManager::ZPlotterDataManager(QObject *parent) : QObject(parent)
+ZAbstractPlotterDataManager::ZAbstractPlotterDataManager(QObject *parent) : QObject(parent)
 {
     zv_spectrumArrayRepositiry = nullptr;
     zv_calibrationRepository = nullptr;
@@ -37,40 +37,40 @@ ZPlotterDataManager::ZPlotterDataManager(QObject *parent) : QObject(parent)
     zh_createConnections();
 }
 //===========================================================
-void ZPlotterDataManager::zp_connectToSpectraArrayRepository(ZSpectrumArrayRepository* repository)
+void ZAbstractPlotterDataManager::zp_connectToSpectraArrayRepository(ZSpectrumArrayRepository* repository)
 {
     zv_spectrumArrayRepositiry = repository;
     // array repository <->  model
     connect(repository, &ZSpectrumArrayRepository::zg_spectrumOperation,
-            this, &ZPlotterDataManager::zh_onRepositoryArrayOperation);
+            this, &ZAbstractPlotterDataManager::zh_onRepositoryArrayOperation);
 //    connect(repository, &ZSpectrumArrayRepository::zg_energyCalibrationChanged,
 //            this, &ZPlotterDataManager::zh_updateEnergyCalibrationOnRule);
     connect(repository, &ZSpectrumArrayRepository::zg_arrayMaxParametersChanged,
-            this, &ZPlotterDataManager::zh_onArrayMaxParametersChanged);
+            this, &ZAbstractPlotterDataManager::zh_onArrayMaxParametersChanged);
     connect(repository, &ZSpectrumArrayRepository::zg_requestIsPlotScaled,
-            this, &ZPlotterDataManager::zh_definePlotScaling);
+            this, &ZAbstractPlotterDataManager::zh_definePlotScaling);
     connect(repository, &ZSpectrumArrayRepository::zg_currentArrayIdChanged,
-            this, &ZPlotterDataManager::zp_currentArrayChanged);
+            this, &ZAbstractPlotterDataManager::zp_currentArrayChanged);
     connect(repository, &ZSpectrumArrayRepository::zg_currentSpectrumChanged,
-            this, &ZPlotterDataManager::zp_currentSpectrumChanged);
+            this, &ZAbstractPlotterDataManager::zp_currentSpectrumChanged);
     connect(repository, &ZSpectrumArrayRepository::zg_energyCalibrationChanged,
-            this, &ZPlotterDataManager::zh_onCurrentEnergyCalibrationChange);
+            this, &ZAbstractPlotterDataManager::zh_onCurrentEnergyCalibrationChange);
 
 
 }
 //===========================================================
-void ZPlotterDataManager::zp_connectToCalibrationRepository(ZCalibrationRepository* repository)
+void ZAbstractPlotterDataManager::zp_connectToCalibrationRepository(ZCalibrationRepository* repository)
 {
     zv_calibrationRepository = repository;
     connect(repository, &ZCalibrationRepository::zg_calibrationWindowOperation,
-            this, &ZPlotterDataManager::zh_onRepositoryCalibrationWindowOperation);
+            this, &ZAbstractPlotterDataManager::zh_onRepositoryCalibrationWindowOperation);
     connect(repository, &ZCalibrationRepository::zg_currentCalibrationChanged,
-            this, &ZPlotterDataManager::zp_currentCalibrationChanged);
+            this, &ZAbstractPlotterDataManager::zp_currentCalibrationChanged);
     connect(repository, &ZCalibrationRepository::zg_currentCalibrationWindowChanged,
-            this, &ZPlotterDataManager::zp_currentCalibrationWindowChanged);
+            this, &ZAbstractPlotterDataManager::zp_currentCalibrationWindowChanged);
 }
 //===========================================================
-void ZPlotterDataManager::zp_connectToPlotter(ZPlotter* plotter)
+void ZAbstractPlotterDataManager::zp_connectToPlotter(ZPlotter* plotter)
 {
     zv_plotter = plotter;
     zv_plotter->zp_setAutoDefineVerticalAbsMax(false);
@@ -81,7 +81,7 @@ void ZPlotterDataManager::zp_connectToPlotter(ZPlotter* plotter)
                                             Qt::AlignLeft, 0);
 
     connect(zv_plotter, &ZPlotter::zg_cursorAreaImage,
-            this, &ZPlotterDataManager::zh_findItemInCursorAreaImage);
+            this, &ZAbstractPlotterDataManager::zh_findItemInCursorAreaImage);
 
     // rule settings // No label on right and top
     zv_plotter->zp_setLeftMarkRecalcFlag(false);
@@ -107,12 +107,12 @@ void ZPlotterDataManager::zp_connectToPlotter(ZPlotter* plotter)
     }
 
     connect(zv_plotter, &ZPlotter::zg_viewportRectChanged,
-            this, &ZPlotterDataManager::zp_onPlotterViewPortRectChange);
+            this, &ZAbstractPlotterDataManager::zp_onPlotterViewPortRectChange);
     connect(zv_plotter, &ZPlotter::zg_rulerToolChanged,
-            this, &ZPlotterDataManager::zh_updateRulerTool);
+            this, &ZAbstractPlotterDataManager::zh_updateRulerTool);
 }
 //===========================================================
-void ZPlotterDataManager::zp_onEnergyLineOperation(QString elementSymbol, QString lineName,
+void ZAbstractPlotterDataManager::zp_onEnergyLineOperation(QString elementSymbol, QString lineName,
                                                    EnergyLineOperationType operationType)
 {
     if(!zv_plotter)
@@ -216,7 +216,7 @@ void ZPlotterDataManager::zp_onEnergyLineOperation(QString elementSymbol, QStrin
     }
 }
 //===========================================================
-void ZPlotterDataManager::zp_onPlotterViewPortRectChange(QRectF rect)
+void ZAbstractPlotterDataManager::zp_onPlotterViewPortRectChange(QRectF rect)
 {
     ZEnergyLineGraphicsItem::zp_setTopAndButtonMargins(rect.top(), rect.bottom());
     ZEnergyLineGraphicsItem* energyLineItem = nullptr;
@@ -232,7 +232,7 @@ void ZPlotterDataManager::zp_onPlotterViewPortRectChange(QRectF rect)
     }
 }
 //===========================================================
-void ZPlotterDataManager::zh_updateRulerTool(QPointF startPoint, QPointF endPoint, bool visibility)
+void ZAbstractPlotterDataManager::zh_updateRulerTool(QPointF startPoint, QPointF endPoint, bool visibility)
 {
     // qDebug() << "UPDATE RT" << startPoint.x() << endPoint.x() << visibility;
     QRectF plotterRect = zv_plotter->zp_viewportSceneRect();
@@ -290,7 +290,7 @@ void ZPlotterDataManager::zh_updateRulerTool(QPointF startPoint, QPointF endPoin
                                 infoString);
 }
 //======================================================
-void ZPlotterDataManager::zh_onCurrentEnergyCalibrationChange(QList<double> calibrationFactors)
+void ZAbstractPlotterDataManager::zh_onCurrentEnergyCalibrationChange(QList<double> calibrationFactors)
 {
     zv_calibrationFactors = calibrationFactors;
     zv_plotter->zp_setEnergyCalibration(zv_calibrationFactors);
@@ -298,7 +298,7 @@ void ZPlotterDataManager::zh_onCurrentEnergyCalibrationChange(QList<double> cali
     zh_updateRuleMetrix();
 }
 //======================================================
-void ZPlotterDataManager::zh_updateEnergyLines()
+void ZAbstractPlotterDataManager::zh_updateEnergyLines()
 {
     ZEnergyLineGraphicsItem* energyLineItem = nullptr;
     QList<QGraphicsItem*> energyLineList = zv_plotter->zp_itemListForType(EnergyLineItemType);
@@ -320,7 +320,7 @@ void ZPlotterDataManager::zh_updateEnergyLines()
     }
 }
 //===========================================================
-void ZPlotterDataManager::zp_currentCalibrationChanged(qint64 currentCalibrationId,
+void ZAbstractPlotterDataManager::zp_currentCalibrationChanged(qint64 currentCalibrationId,
                                                        int currentCalibrationIndex)
 {
     if((zv_currentCalibrationId == currentCalibrationId && zv_currentCalibrationIndex == currentCalibrationIndex)
@@ -332,13 +332,13 @@ void ZPlotterDataManager::zp_currentCalibrationChanged(qint64 currentCalibration
     zh_setCurrentWindowId(-1);
 }
 //===========================================================
-void ZPlotterDataManager::zp_currentCalibrationWindowChanged(qint64 currentWindowId, int currentWindowIndex,
+void ZAbstractPlotterDataManager::zp_currentCalibrationWindowChanged(qint64 currentWindowId, int currentWindowIndex,
                                                              qint64 previousWindowId, int previousWindowIndex)
 {
     zh_setCurrentWindowId(currentWindowId);
 }
 //===========================================================
-void ZPlotterDataManager::zh_setCurrentWindowId(qint64 windowId)
+void ZAbstractPlotterDataManager::zh_setCurrentWindowId(qint64 windowId)
 {
     ZWindowGraphicsItem::zp_setCurrentWindowId(windowId);
 
@@ -358,7 +358,7 @@ void ZPlotterDataManager::zh_setCurrentWindowId(qint64 windowId)
     zv_plotter->zp_updatePlot();
 }
 //===========================================================
-void ZPlotterDataManager::zp_currentArrayChanged(qint64 currentArrayId,
+void ZAbstractPlotterDataManager::zp_currentArrayChanged(qint64 currentArrayId,
                                                  int currentArrayIndex)
 {
     if((zv_currentArrayIndex == currentArrayIndex && zv_currentArrayId == currentArrayId)
@@ -409,7 +409,7 @@ void ZPlotterDataManager::zp_currentArrayChanged(qint64 currentArrayId,
     }
 }
 //===========================================================
-void ZPlotterDataManager::zp_currentSpectrumChanged(qint64 currentSpectrumId,
+void ZAbstractPlotterDataManager::zp_currentSpectrumChanged(qint64 currentSpectrumId,
                                                     int currentSpectrumIndex,
                                                     qint64 previousSpectrumId,
                                                     int previousSpectrumIndex)
@@ -432,7 +432,7 @@ void ZPlotterDataManager::zp_currentSpectrumChanged(qint64 currentSpectrumId,
     zv_plotter->zp_updatePlot();
 }
 //===========================================================
-bool ZPlotterDataManager::zh_convertEnergyToChannel(double energyValue, double& channel)
+bool ZAbstractPlotterDataManager::zh_convertEnergyToChannel(double energyValue, double& channel)
 {
     if(zv_calibrationFactors.count() < 2)
     {
@@ -475,20 +475,20 @@ bool ZPlotterDataManager::zh_convertEnergyToChannel(double energyValue, double& 
     return true;
 }
 //===========================================================
-void ZPlotterDataManager::zh_createComponents()
+void ZAbstractPlotterDataManager::zh_createComponents()
 {
     zv_switchRuleMetrixAction = new QAction(this);
     zv_switchRuleMetrixAction->setIcon(QIcon(NS_Icons::glIconAxisToEnergy));
     zv_switchRuleMetrixAction->setCheckable(true);
 }
 //===========================================================
-void ZPlotterDataManager::zh_createConnections()
+void ZAbstractPlotterDataManager::zh_createConnections()
 {
     connect(zv_switchRuleMetrixAction, &QAction::toggled,
-            this, &ZPlotterDataManager::zh_switchRuleMetrix);
+            this, &ZAbstractPlotterDataManager::zh_switchRuleMetrix);
 }
 //===========================================================
-void ZPlotterDataManager::zh_onRepositoryArrayOperation(ZSpectrumArrayRepository::SpectrumOperationType type,
+void ZAbstractPlotterDataManager::zh_onRepositoryArrayOperation(ZSpectrumArrayRepository::SpectrumOperationType type,
                                                         int arrayIndex, int first, int last)
 {
     if(zv_currentArrayIndex != arrayIndex || zv_plotter == nullptr)
@@ -581,7 +581,7 @@ void ZPlotterDataManager::zh_onRepositoryArrayOperation(ZSpectrumArrayRepository
     }
 }
 //===========================================================
-void ZPlotterDataManager::zh_onRepositoryCalibrationWindowOperation(ZCalibrationRepository::WindowOperationType type,
+void ZAbstractPlotterDataManager::zh_onRepositoryCalibrationWindowOperation(ZCalibrationRepository::WindowOperationType type,
                                                                     int calibrationIndex, int first, int last)
 {
     if(zv_plotter == nullptr)
@@ -718,13 +718,13 @@ void ZPlotterDataManager::zh_onRepositoryCalibrationWindowOperation(ZCalibration
 }
 
 //===========================================================
-void ZPlotterDataManager::zh_switchRuleMetrix(bool toggled)
+void ZAbstractPlotterDataManager::zh_switchRuleMetrix(bool toggled)
 {
     zv_energyRuleMetrixFlag = toggled;
     zh_updateRuleMetrix();
 }
 //======================================================
-void ZPlotterDataManager::zh_updateRuleMetrix()
+void ZAbstractPlotterDataManager::zh_updateRuleMetrix()
 {
     if(!zv_energyRuleMetrixFlag || zv_calibrationFactors.isEmpty() ||
             (!(zv_calibrationFactors.value(1, 0.0) == 0.0 ||
@@ -760,7 +760,7 @@ void ZPlotterDataManager::zh_updateRuleMetrix()
 //    zh_switchRuleMetrix(zv_switchRuleMetrixAction->isChecked());
 //}
 //===========================================================
-void ZPlotterDataManager::zh_onArrayMaxParametersChanged(int arrayId, int maxIntensity, int channelCount)
+void ZAbstractPlotterDataManager::zh_onArrayMaxParametersChanged(int arrayId, int maxIntensity, int channelCount)
 {
     if(arrayId != zv_currentArrayId || zv_plotter == nullptr)
     {
@@ -788,7 +788,7 @@ void ZPlotterDataManager::zh_onArrayMaxParametersChanged(int arrayId, int maxInt
     //   //zh_setMaxParametersToDefaultItem((qreal)maxIntensity, (qreal)channelCount);
 }
 //===========================================================
-void ZPlotterDataManager::zh_setPlotterVerticalAbsMax(qreal maxIntensity)
+void ZAbstractPlotterDataManager::zh_setPlotterVerticalAbsMax(qreal maxIntensity)
 {
     zv_plotter->zp_setVerticalAbsMax((qreal)maxIntensity);
 
@@ -808,7 +808,7 @@ void ZPlotterDataManager::zh_setPlotterVerticalAbsMax(qreal maxIntensity)
     zv_plotter->zp_updatePlot();
 }
 //===========================================================
-void ZPlotterDataManager::zh_setMaxParametersToDefaultItem(qreal maxY, qreal maxX)
+void ZAbstractPlotterDataManager::zh_setMaxParametersToDefaultItem(qreal maxY, qreal maxX)
 {
     QList<QGraphicsItem*>defaultItemList = zv_plotter->zp_itemListForType(DefaultRectItemType);
     if(defaultItemList.isEmpty())
@@ -831,12 +831,12 @@ void ZPlotterDataManager::zh_setMaxParametersToDefaultItem(qreal maxY, qreal max
     defaultItem->zp_fitItemInRect(rect);
 }
 //===========================================================
-void ZPlotterDataManager::zh_definePlotScaling(bool& plotIsScaled)
+void ZAbstractPlotterDataManager::zh_definePlotScaling(bool& plotIsScaled)
 {
     plotIsScaled = zv_plotter->zp_isPlotScaled();
 }
 //===========================================================
-void ZPlotterDataManager::zh_findItemInCursorAreaImage(QImage cursorAreaImage)
+void ZAbstractPlotterDataManager::zh_findItemInCursorAreaImage(QImage cursorAreaImage)
 {
     // central pixel
     int centralPointRow = cursorAreaImage.height()/2;

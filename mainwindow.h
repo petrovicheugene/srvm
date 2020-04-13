@@ -38,7 +38,7 @@ class ZCalibrationRepository;
 class ZJointSpectraDataManager;
 class ZChemElementDataManager;
 class ZCalibrationWindowDataManager;
-class ZPlotterDataManager;
+class ZAbstractPlotterDataManager;
 class ZCorrelationPlotterDataManager;
 class ZTermCorrelationTableManager;
 //==========================================================
@@ -120,7 +120,7 @@ private:
     ZCalibrationRepository* zv_calibrationRepository;
     ZCalibrationWindowDataManager* zv_jointCalibrationWindowDataManager;
     ZChemElementDataManager* zv_chemElementDataManager;
-    ZPlotterDataManager* zv_plotterDataManager;
+    ZAbstractPlotterDataManager* zv_plotterDataManager;
     ZCorrelationPlotterDataManager* zv_calculationPlotterManager;
     ZTermCorrelationTableManager* zv_termCorrelationTableManager;
 

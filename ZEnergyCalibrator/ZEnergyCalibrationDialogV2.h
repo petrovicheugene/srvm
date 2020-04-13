@@ -12,7 +12,7 @@
 class ZEnergyCalibrationSpectrumTableModel;
 class ZEnergyCalibrationLine;
 class ZPlotter;
-class ZPlotterDataManager;
+class ZAbstractPlotterDataManager;
 
 class QAction;
 class QCheckBox;
