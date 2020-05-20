@@ -43,8 +43,11 @@ signals:
     void zg_requestCalibrationDataAndInitSaving(QString path, QString name) const;
 
     void zg_spectrumArraySaved(QString) const;
-    void zg_calibrationSaved(const ZCalibration* calibration, QString absFilePath) const;
+    void zg_calibrationSaved(const ZCalibration* calibration,
+                             QString absFilePath) const;
 
+    //    void zg_saveCalibrationActionEnabledChanged(bool enabled);
+    //    void zg_saveCalibrationAsActionEnabledChanged(bool enabled);
 
 public slots:
 
@@ -110,7 +113,8 @@ private slots:
     void zh_onSaveCalibrationAction() const;
     void zh_onSaveCalibrationAsAction() const;
     void zh_onOpenCalibrationProjectAction();
-
+    //    void zh_synchronizeSaveCalibrationActions();
+    //    void zh_synchronizeSaveAsCalibrationActions();
 };
 //======================================================
 #endif // ZFILEACTIONMANAGER_H

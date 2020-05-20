@@ -1082,8 +1082,6 @@ void ZTermCorrelationTableManager::zh_startCalculationCorrelationsAndCovariation
 
     // dispersions
 
-    qDebug() << "RECALC DISPERSIONS";
-
     zh_calcTermDispersions();
     zh_calcConcentrationAndFreeTermDispersions();
 
