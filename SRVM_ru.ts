@@ -289,7 +289,7 @@ In order for the changes to take effect, please restart the application.</source
         <translation type="vanished">Общая интенсивность:</translation>
     </message>
     <message>
-        <location filename="ZComponents/ZCalibrationRepository.cpp" line="2165"/>
+        <location filename="ZComponents/ZCalibrationRepository.cpp" line="2287"/>
         <location filename="ZComponents/ZSpectrumArray.cpp" line="480"/>
         <source>Cannot handle file of type &quot;%1&quot;!</source>
         <translation>Невозможно обработать файл типа &quot;%1&quot;!</translation>
@@ -779,146 +779,146 @@ In order for the changes to take effect, please restart the application.</source
 <context>
     <name>ZCalibrationRepository</name>
     <message>
-        <location filename="ZComponents/ZCalibrationRepository.cpp" line="35"/>
+        <location filename="ZComponents/ZCalibrationRepository.cpp" line="36"/>
         <source>Calibration #</source>
         <translation>Градуировка #</translation>
     </message>
     <message>
-        <location filename="ZComponents/ZCalibrationRepository.cpp" line="1288"/>
+        <location filename="ZComponents/ZCalibrationRepository.cpp" line="1339"/>
         <source>selected calibration</source>
         <oldsource>calibration</oldsource>
         <translation>выделенную градуировку</translation>
     </message>
     <message>
-        <location filename="ZComponents/ZCalibrationRepository.cpp" line="1292"/>
+        <location filename="ZComponents/ZCalibrationRepository.cpp" line="1343"/>
         <source>selected calibrations</source>
         <oldsource>calibrations</oldsource>
         <translation>выделенные градуировки</translation>
     </message>
     <message>
-        <location filename="ZComponents/ZCalibrationRepository.cpp" line="1295"/>
-        <location filename="ZComponents/ZCalibrationRepository.cpp" line="1385"/>
+        <location filename="ZComponents/ZCalibrationRepository.cpp" line="1346"/>
+        <location filename="ZComponents/ZCalibrationRepository.cpp" line="1441"/>
         <source>Do you want to remove %1 from the list?</source>
         <oldsource>Do you want to remove selected %1 from the list?</oldsource>
         <translation>Удалить %1 из списка?</translation>
     </message>
     <message>
-        <location filename="ZComponents/ZCalibrationRepository.cpp" line="1297"/>
+        <location filename="ZComponents/ZCalibrationRepository.cpp" line="1349"/>
         <source>Calibration removing</source>
         <translation>Удаление градуировки</translation>
     </message>
     <message>
-        <location filename="ZComponents/ZCalibrationRepository.cpp" line="1378"/>
+        <location filename="ZComponents/ZCalibrationRepository.cpp" line="1434"/>
         <source>selected window</source>
         <oldsource>window</oldsource>
         <translation>выделенное окно</translation>
     </message>
     <message>
-        <location filename="ZComponents/ZCalibrationRepository.cpp" line="1382"/>
+        <location filename="ZComponents/ZCalibrationRepository.cpp" line="1438"/>
         <source>selected windows</source>
         <oldsource>windows</oldsource>
         <translation>выделенные окна</translation>
     </message>
     <message>
-        <location filename="ZComponents/ZCalibrationRepository.cpp" line="1387"/>
+        <location filename="ZComponents/ZCalibrationRepository.cpp" line="1444"/>
         <source>Window removing</source>
         <translation>Удаление окон</translation>
     </message>
     <message>
-        <location filename="ZComponents/ZCalibrationRepository.cpp" line="2158"/>
+        <location filename="ZComponents/ZCalibrationRepository.cpp" line="2280"/>
         <source>Error: &quot;%1&quot; is not a file!</source>
         <translation>Ошибка: &quot;%1&quot; не файл!</translation>
     </message>
     <message>
-        <location filename="ZComponents/ZCalibrationRepository.cpp" line="2178"/>
-        <location filename="ZComponents/ZCalibrationRepository.cpp" line="2182"/>
+        <location filename="ZComponents/ZCalibrationRepository.cpp" line="2301"/>
+        <location filename="ZComponents/ZCalibrationRepository.cpp" line="2306"/>
         <source>Cannot read file &quot;%1&quot;! %2</source>
         <translation>Невозможно прочитать файл &quot;%1&quot;! %2</translation>
     </message>
     <message>
-        <location filename="ZComponents/ZCalibrationRepository.cpp" line="2182"/>
+        <location filename="ZComponents/ZCalibrationRepository.cpp" line="2307"/>
         <source>Unknown error</source>
         <translation>Неизвестная ошибка</translation>
     </message>
     <message>
-        <location filename="ZComponents/ZCalibrationRepository.cpp" line="2349"/>
+        <location filename="ZComponents/ZCalibrationRepository.cpp" line="2489"/>
         <source>New calibration</source>
         <translation>Новая градуировка</translation>
     </message>
     <message>
-        <location filename="ZComponents/ZCalibrationRepository.cpp" line="2350"/>
+        <location filename="ZComponents/ZCalibrationRepository.cpp" line="2491"/>
         <source>Append a new calibration to the list</source>
         <translation>Добавить новую градуировку в список</translation>
     </message>
     <message>
-        <location filename="ZComponents/ZCalibrationRepository.cpp" line="2370"/>
+        <location filename="ZComponents/ZCalibrationRepository.cpp" line="2512"/>
         <source>Remove selected calibrations</source>
         <translation>Удалить выделенные градуировки</translation>
     </message>
     <message>
-        <location filename="ZComponents/ZCalibrationRepository.cpp" line="2371"/>
+        <location filename="ZComponents/ZCalibrationRepository.cpp" line="2514"/>
         <source>Remove selected calibrations from the list</source>
         <translation>Удалить выделенные градуировки из списка</translation>
     </message>
     <message>
-        <location filename="ZComponents/ZCalibrationRepository.cpp" line="2377"/>
+        <location filename="ZComponents/ZCalibrationRepository.cpp" line="2520"/>
         <source>New window</source>
         <translation>Новое окно</translation>
     </message>
     <message>
-        <location filename="ZComponents/ZCalibrationRepository.cpp" line="2378"/>
+        <location filename="ZComponents/ZCalibrationRepository.cpp" line="2521"/>
         <source>Append a new window to the list</source>
         <translation>Добавить новое окно в список</translation>
     </message>
     <message>
-        <location filename="ZComponents/ZCalibrationRepository.cpp" line="2383"/>
+        <location filename="ZComponents/ZCalibrationRepository.cpp" line="2526"/>
         <source>Remove selected windows</source>
         <translation>Удалить выделенные окна</translation>
     </message>
     <message>
-        <location filename="ZComponents/ZCalibrationRepository.cpp" line="2384"/>
+        <location filename="ZComponents/ZCalibrationRepository.cpp" line="2528"/>
         <source>Remove selected windows from the list</source>
         <translation>Удалить выделенные окна из списка</translation>
     </message>
     <message>
-        <location filename="ZComponents/ZCalibrationRepository.cpp" line="2390"/>
+        <location filename="ZComponents/ZCalibrationRepository.cpp" line="2534"/>
         <source>Recalculate calibration</source>
         <translation>Пересчитать градуировку</translation>
     </message>
     <message>
-        <location filename="ZComponents/ZCalibrationRepository.cpp" line="2392"/>
+        <location filename="ZComponents/ZCalibrationRepository.cpp" line="2536"/>
         <source>Recalculate equation factors for current calibration</source>
         <translation>Пересчитать коэффициенты уравнения для текущей градуировки</translation>
     </message>
     <message>
-        <location filename="ZComponents/ZCalibrationRepository.cpp" line="2398"/>
-        <location filename="ZComponents/ZCalibrationRepository.cpp" line="2399"/>
+        <location filename="ZComponents/ZCalibrationRepository.cpp" line="2542"/>
+        <location filename="ZComponents/ZCalibrationRepository.cpp" line="2543"/>
         <source>Create mixed terms</source>
         <translation>Создать смешанный параметр</translation>
     </message>
     <message>
-        <location filename="ZComponents/ZCalibrationRepository.cpp" line="2404"/>
+        <location filename="ZComponents/ZCalibrationRepository.cpp" line="2548"/>
         <source>Remove mixed terms</source>
         <translation>Удалить смешанные параметры</translation>
     </message>
     <message>
-        <location filename="ZComponents/ZCalibrationRepository.cpp" line="2405"/>
+        <location filename="ZComponents/ZCalibrationRepository.cpp" line="2550"/>
         <source>Remove mixed terms from the list</source>
         <translation>Удалить смешанные параметры из списка</translation>
     </message>
     <message>
-        <location filename="ZComponents/ZCalibrationRepository.cpp" line="2410"/>
-        <location filename="ZComponents/ZCalibrationRepository.cpp" line="2411"/>
+        <location filename="ZComponents/ZCalibrationRepository.cpp" line="2555"/>
+        <location filename="ZComponents/ZCalibrationRepository.cpp" line="2556"/>
         <source>Create custom term</source>
         <translation>Создать пользовательский параметр</translation>
     </message>
     <message>
-        <location filename="ZComponents/ZCalibrationRepository.cpp" line="2416"/>
+        <location filename="ZComponents/ZCalibrationRepository.cpp" line="2561"/>
         <source>Remove custom term</source>
         <translation>Удалить ползовательский параметр</translation>
     </message>
     <message>
-        <location filename="ZComponents/ZCalibrationRepository.cpp" line="2417"/>
+        <location filename="ZComponents/ZCalibrationRepository.cpp" line="2563"/>
         <source>Remove custom term from the list</source>
         <translation>Удалить ползовательдский параметр из списка</translation>
     </message>
@@ -931,74 +931,74 @@ In order for the changes to take effect, please restart the application.</source
         <translation type="vanished">Удалить выделенные пользовательские предикторы из списка</translation>
     </message>
     <message>
-        <location filename="ZComponents/ZCalibrationRepository.cpp" line="2423"/>
+        <location filename="ZComponents/ZCalibrationRepository.cpp" line="2569"/>
         <source>Set calibration visible</source>
         <translation>Показать все градуировки</translation>
     </message>
     <message>
-        <location filename="ZComponents/ZCalibrationRepository.cpp" line="2424"/>
+        <location filename="ZComponents/ZCalibrationRepository.cpp" line="2571"/>
         <source>Set visible calibration column</source>
         <translation>Показать в таблице все колонки градуировок</translation>
     </message>
     <message>
-        <location filename="ZComponents/ZCalibrationRepository.cpp" line="2429"/>
+        <location filename="ZComponents/ZCalibrationRepository.cpp" line="2576"/>
         <source>Set calibration invisible</source>
         <translation>Скрыть все градуировки</translation>
     </message>
     <message>
-        <location filename="ZComponents/ZCalibrationRepository.cpp" line="2430"/>
+        <location filename="ZComponents/ZCalibrationRepository.cpp" line="2578"/>
         <source>Set invisible calibration column</source>
         <translation>Скрыть в таблице все колонки градуировок</translation>
     </message>
     <message>
-        <location filename="ZComponents/ZCalibrationRepository.cpp" line="2435"/>
-        <location filename="ZComponents/ZCalibrationRepository.cpp" line="2436"/>
+        <location filename="ZComponents/ZCalibrationRepository.cpp" line="2585"/>
+        <location filename="ZComponents/ZCalibrationRepository.cpp" line="2587"/>
         <source>Invert calibration visibility</source>
         <translation>Инвертировать видимость градуировок</translation>
     </message>
     <message>
-        <location filename="ZComponents/ZCalibrationRepository.cpp" line="2441"/>
-        <location filename="ZComponents/ZCalibrationRepository.cpp" line="2442"/>
+        <location filename="ZComponents/ZCalibrationRepository.cpp" line="2592"/>
+        <location filename="ZComponents/ZCalibrationRepository.cpp" line="2593"/>
         <source>Set window visible</source>
         <translation>Показать все окна</translation>
     </message>
     <message>
-        <location filename="ZComponents/ZCalibrationRepository.cpp" line="2447"/>
-        <location filename="ZComponents/ZCalibrationRepository.cpp" line="2448"/>
+        <location filename="ZComponents/ZCalibrationRepository.cpp" line="2598"/>
+        <location filename="ZComponents/ZCalibrationRepository.cpp" line="2599"/>
         <source>Set window invisible</source>
         <translation>Скрыть все окна</translation>
     </message>
     <message>
-        <location filename="ZComponents/ZCalibrationRepository.cpp" line="2453"/>
-        <location filename="ZComponents/ZCalibrationRepository.cpp" line="2454"/>
+        <location filename="ZComponents/ZCalibrationRepository.cpp" line="2605"/>
+        <location filename="ZComponents/ZCalibrationRepository.cpp" line="2607"/>
         <source>Invert window visibility</source>
         <translation>Инвертировать видимость окон</translation>
     </message>
     <message>
-        <location filename="ZComponents/ZCalibrationRepository.cpp" line="2459"/>
-        <location filename="ZComponents/ZCalibrationRepository.cpp" line="2460"/>
+        <location filename="ZComponents/ZCalibrationRepository.cpp" line="2614"/>
+        <location filename="ZComponents/ZCalibrationRepository.cpp" line="2616"/>
         <source>Duplicate selected calibrations</source>
         <translation>Копировать выделенные градуировки</translation>
     </message>
     <message>
-        <location filename="ZComponents/ZCalibrationRepository.cpp" line="2465"/>
-        <location filename="ZComponents/ZCalibrationRepository.cpp" line="2466"/>
+        <location filename="ZComponents/ZCalibrationRepository.cpp" line="2621"/>
+        <location filename="ZComponents/ZCalibrationRepository.cpp" line="2622"/>
         <source>Copy selected windows</source>
         <translation>Копировать выделенные окна</translation>
     </message>
     <message>
-        <location filename="ZComponents/ZCalibrationRepository.cpp" line="2471"/>
-        <location filename="ZComponents/ZCalibrationRepository.cpp" line="2472"/>
+        <location filename="ZComponents/ZCalibrationRepository.cpp" line="2627"/>
+        <location filename="ZComponents/ZCalibrationRepository.cpp" line="2628"/>
         <source>Paste windows</source>
         <translation>Вставить окна</translation>
     </message>
     <message>
-        <location filename="ZComponents/ZCalibrationRepository.cpp" line="2477"/>
+        <location filename="ZComponents/ZCalibrationRepository.cpp" line="2633"/>
         <source>Reset terms</source>
         <translation>Исключить все  параметры</translation>
     </message>
     <message>
-        <location filename="ZComponents/ZCalibrationRepository.cpp" line="2478"/>
+        <location filename="ZComponents/ZCalibrationRepository.cpp" line="2634"/>
         <source>Reset equation terms</source>
         <translation>Исключение всех параметров из уравнения</translation>
     </message>
@@ -2206,43 +2206,43 @@ In order for the changes to take effect, please restart the application.</source
 <context>
     <name>ZFileActionManager</name>
     <message>
-        <location filename="ZComponents/ZFileActionManager.cpp" line="173"/>
+        <location filename="ZComponents/ZFileActionManager.cpp" line="225"/>
         <source>&amp;Open spectrum array list</source>
         <translation>&amp;Открыть список массивов спектров</translation>
     </message>
     <message>
-        <location filename="ZComponents/ZFileActionManager.cpp" line="174"/>
+        <location filename="ZComponents/ZFileActionManager.cpp" line="228"/>
         <source>&amp;Save spectrum array list</source>
         <translation>&amp;Сохранить список массивов спектров</translation>
     </message>
     <message>
-        <location filename="ZComponents/ZFileActionManager.cpp" line="176"/>
+        <location filename="ZComponents/ZFileActionManager.cpp" line="233"/>
         <source>Save spectrum array list &amp;as...</source>
         <translation>Сохранить список массивов спектров как ...</translation>
     </message>
     <message>
-        <location filename="ZComponents/ZFileActionManager.cpp" line="179"/>
+        <location filename="ZComponents/ZFileActionManager.cpp" line="239"/>
         <source>Open &amp;calibrations</source>
         <translation>Открыть &amp;градуировки</translation>
     </message>
     <message>
-        <location filename="ZComponents/ZFileActionManager.cpp" line="180"/>
+        <location filename="ZComponents/ZFileActionManager.cpp" line="243"/>
         <source>Save calibration</source>
         <translation>Сохранить градуировки</translation>
     </message>
     <message>
-        <location filename="ZComponents/ZFileActionManager.cpp" line="182"/>
+        <location filename="ZComponents/ZFileActionManager.cpp" line="248"/>
         <source>Save calibration as...</source>
         <translation>Сохранить градуировки как ...</translation>
     </message>
     <message>
-        <location filename="ZComponents/ZFileActionManager.cpp" line="186"/>
+        <location filename="ZComponents/ZFileActionManager.cpp" line="254"/>
         <source>Open calibration &amp;project</source>
         <translation>Открыть проект &amp;калибровки</translation>
     </message>
     <message>
-        <location filename="ZComponents/ZFileActionManager.cpp" line="213"/>
-        <location filename="ZComponents/ZFileActionManager.cpp" line="755"/>
+        <location filename="ZComponents/ZFileActionManager.cpp" line="297"/>
+        <location filename="ZComponents/ZFileActionManager.cpp" line="890"/>
         <source>Select file to open</source>
         <translation>Выбор файла для открытия</translation>
     </message>
@@ -2251,94 +2251,94 @@ In order for the changes to take effect, please restart the application.</source
         <translation type="vanished">Массивы спектров(*.spe);;Все файлы(*.*)</translation>
     </message>
     <message>
-        <location filename="ZComponents/ZFileActionManager.cpp" line="215"/>
-        <location filename="ZComponents/ZFileActionManager.cpp" line="224"/>
+        <location filename="ZComponents/ZFileActionManager.cpp" line="299"/>
+        <location filename="ZComponents/ZFileActionManager.cpp" line="312"/>
         <source>Spectrum array files(*.%1);;XML files(%2);;All files(%3)</source>
         <translation>Файл массива спектров(*.%1);;XML файлы (%2);;Все файлы(%3)</translation>
     </message>
     <message>
-        <location filename="ZComponents/ZFileActionManager.cpp" line="222"/>
+        <location filename="ZComponents/ZFileActionManager.cpp" line="310"/>
         <source>Select file to save</source>
         <translation>Выбор файла для сохранения</translation>
     </message>
     <message>
-        <location filename="ZComponents/ZFileActionManager.cpp" line="271"/>
+        <location filename="ZComponents/ZFileActionManager.cpp" line="363"/>
         <source>File &quot;%1&quot; does not exist!</source>
         <translation>Файла &quot;%1&quot; не существует!</translation>
     </message>
     <message>
-        <location filename="ZComponents/ZFileActionManager.cpp" line="272"/>
-        <location filename="ZComponents/ZFileActionManager.cpp" line="281"/>
+        <location filename="ZComponents/ZFileActionManager.cpp" line="364"/>
+        <location filename="ZComponents/ZFileActionManager.cpp" line="373"/>
         <source>File open error</source>
         <translation>Ошибка открытия файла</translation>
     </message>
     <message>
-        <location filename="ZComponents/ZFileActionManager.cpp" line="280"/>
+        <location filename="ZComponents/ZFileActionManager.cpp" line="372"/>
         <source>&quot;%1&quot; is a folder!</source>
         <translation>&quot;%1&quot; является папкой!</translation>
     </message>
     <message>
-        <location filename="ZComponents/ZFileActionManager.cpp" line="299"/>
+        <location filename="ZComponents/ZFileActionManager.cpp" line="391"/>
         <source>Error: &quot;%1&quot; is not a file!</source>
         <translation>Ошибка: &quot;%1&quot; не файл!</translation>
     </message>
     <message>
-        <location filename="ZComponents/ZFileActionManager.cpp" line="307"/>
-        <location filename="ZComponents/ZFileActionManager.cpp" line="477"/>
+        <location filename="ZComponents/ZFileActionManager.cpp" line="401"/>
+        <location filename="ZComponents/ZFileActionManager.cpp" line="581"/>
         <source>Error handling file &quot;%1&quot;! Cannot handle &quot;%2&quot; files.</source>
         <translation>Ошибка обработки файла &quot;%1&quot;! Невозможно обработать файлы с расширением &quot;%2&quot;.</translation>
     </message>
     <message>
-        <location filename="ZComponents/ZFileActionManager.cpp" line="308"/>
-        <location filename="ZComponents/ZFileActionManager.cpp" line="478"/>
+        <location filename="ZComponents/ZFileActionManager.cpp" line="403"/>
+        <location filename="ZComponents/ZFileActionManager.cpp" line="583"/>
         <source>File handling error</source>
         <translation>Ошибка обработки файла</translation>
     </message>
     <message>
-        <location filename="ZComponents/ZFileActionManager.cpp" line="321"/>
-        <location filename="ZComponents/ZFileActionManager.cpp" line="325"/>
-        <location filename="ZComponents/ZFileActionManager.cpp" line="492"/>
-        <location filename="ZComponents/ZFileActionManager.cpp" line="496"/>
-        <location filename="ZComponents/ZFileActionManager.cpp" line="564"/>
-        <location filename="ZComponents/ZFileActionManager.cpp" line="568"/>
-        <location filename="ZComponents/ZFileActionManager.cpp" line="614"/>
-        <location filename="ZComponents/ZFileActionManager.cpp" line="618"/>
-        <location filename="ZComponents/ZFileActionManager.cpp" line="766"/>
-        <location filename="ZComponents/ZFileActionManager.cpp" line="770"/>
+        <location filename="ZComponents/ZFileActionManager.cpp" line="416"/>
+        <location filename="ZComponents/ZFileActionManager.cpp" line="421"/>
+        <location filename="ZComponents/ZFileActionManager.cpp" line="597"/>
+        <location filename="ZComponents/ZFileActionManager.cpp" line="602"/>
+        <location filename="ZComponents/ZFileActionManager.cpp" line="676"/>
+        <location filename="ZComponents/ZFileActionManager.cpp" line="681"/>
+        <location filename="ZComponents/ZFileActionManager.cpp" line="741"/>
+        <location filename="ZComponents/ZFileActionManager.cpp" line="746"/>
+        <location filename="ZComponents/ZFileActionManager.cpp" line="901"/>
+        <location filename="ZComponents/ZFileActionManager.cpp" line="906"/>
         <source>Cannot read file &quot;%1&quot;! %2</source>
         <translation>Невозможно прочитать файл &quot;%1&quot;! %2</translation>
     </message>
     <message>
-        <location filename="ZComponents/ZFileActionManager.cpp" line="325"/>
-        <location filename="ZComponents/ZFileActionManager.cpp" line="496"/>
-        <location filename="ZComponents/ZFileActionManager.cpp" line="568"/>
-        <location filename="ZComponents/ZFileActionManager.cpp" line="618"/>
-        <location filename="ZComponents/ZFileActionManager.cpp" line="770"/>
+        <location filename="ZComponents/ZFileActionManager.cpp" line="422"/>
+        <location filename="ZComponents/ZFileActionManager.cpp" line="603"/>
+        <location filename="ZComponents/ZFileActionManager.cpp" line="682"/>
+        <location filename="ZComponents/ZFileActionManager.cpp" line="747"/>
+        <location filename="ZComponents/ZFileActionManager.cpp" line="907"/>
         <source>Unknown error</source>
         <translation>Неизвестная ошибка</translation>
     </message>
     <message>
-        <location filename="ZComponents/ZFileActionManager.cpp" line="625"/>
+        <location filename="ZComponents/ZFileActionManager.cpp" line="719"/>
         <source>Do you want to save calibration project?</source>
         <translation>Сохранить проект градуировки?</translation>
     </message>
     <message>
-        <location filename="ZComponents/ZFileActionManager.cpp" line="626"/>
+        <location filename="ZComponents/ZFileActionManager.cpp" line="721"/>
         <source>Calibration saving</source>
         <translation>Сохранение градуировки</translation>
     </message>
     <message>
-        <location filename="ZComponents/ZFileActionManager.cpp" line="665"/>
+        <location filename="ZComponents/ZFileActionManager.cpp" line="794"/>
         <source>Select spectrum file</source>
         <translation>Выбор файлов спектров</translation>
     </message>
     <message>
-        <location filename="ZComponents/ZFileActionManager.cpp" line="667"/>
+        <location filename="ZComponents/ZFileActionManager.cpp" line="796"/>
         <source>SRV spectrum files(%1);;All files(%2)</source>
         <translation>Файлы спектров СРВ(%1);;Все файлы(%2)</translation>
     </message>
     <message>
-        <location filename="ZComponents/ZFileActionManager.cpp" line="757"/>
+        <location filename="ZComponents/ZFileActionManager.cpp" line="892"/>
         <source>Calibration project files(%1);;XML files(%2);;All files(%3)</source>
         <translation>Файлы проектов градуировок(%1);;XML файлы(%2);;Всеl файлы(%3)</translation>
     </message>
@@ -2347,14 +2347,14 @@ In order for the changes to take effect, please restart the application.</source
         <translation type="vanished">СРВ спектры(*.spe);;Все файлы(*.*)</translation>
     </message>
     <message>
-        <location filename="ZComponents/ZFileActionManager.cpp" line="689"/>
-        <location filename="ZComponents/ZFileActionManager.cpp" line="795"/>
+        <location filename="ZComponents/ZFileActionManager.cpp" line="818"/>
+        <location filename="ZComponents/ZFileActionManager.cpp" line="934"/>
         <source>Data loading from file &quot;%1&quot; failed.</source>
         <translation>Не удалось загрузить данные из файла &quot;%1&quot;.</translation>
     </message>
     <message>
-        <location filename="ZComponents/ZFileActionManager.cpp" line="690"/>
-        <location filename="ZComponents/ZFileActionManager.cpp" line="796"/>
+        <location filename="ZComponents/ZFileActionManager.cpp" line="820"/>
+        <location filename="ZComponents/ZFileActionManager.cpp" line="936"/>
         <source>Loading error</source>
         <translation>Ошибка загрузки данных</translation>
     </message>
