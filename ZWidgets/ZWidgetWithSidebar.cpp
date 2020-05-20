@@ -157,6 +157,7 @@ void ZWidgetWithSidebar::zh_createComponents(QString title)
         zv_closePixmap = QPixmap(NS_Icons::glIconSidebarRightClose);
         zv_openPixmap = QPixmap(NS_Icons::glIconSidebarRightOpen);
         basementLayout->addWidget(zv_hideLabel, 0, Qt::AlignLeft);
+        basementLayout->addSpacing(5);
         basementLayout->addWidget(zv_infoLabel, 999999, Qt::AlignLeft);
     }
     else
@@ -164,6 +165,7 @@ void ZWidgetWithSidebar::zh_createComponents(QString title)
         zv_closePixmap = QPixmap(NS_Icons::glIconSidebarLeftClose);
         zv_openPixmap = QPixmap(NS_Icons::glIconSidebarLeftOpen);
         basementLayout->addWidget(zv_infoLabel, 999999, Qt::AlignRight);
+        basementLayout->addSpacing(5);
         basementLayout->addWidget(zv_hideLabel, 0, Qt::AlignRight);
     }
 }

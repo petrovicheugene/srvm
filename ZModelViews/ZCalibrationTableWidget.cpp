@@ -8,13 +8,14 @@
 #include "ZNumericDelegate.h"
 #include "ZGeneral.h"
 
-#include <QTableView>
-#include <QHBoxLayout>
-#include <QVBoxLayout>
 #include <QAbstractItemModel>
-#include <QHeaderView>
 #include <QAction>
+#include <QDebug>
+#include <QHBoxLayout>
+#include <QHeaderView>
 #include <QPushButton>
+#include <QTableView>
+#include <QVBoxLayout>
 
 //==============================================================
 ZCalibrationTableWidget::ZCalibrationTableWidget(QWidget *parent) : QWidget(parent)
@@ -73,10 +74,27 @@ void ZCalibrationTableWidget::zp_setModel(QAbstractItemModel* model)
             this, &ZCalibrationTableWidget::zh_onCurrentCalibrationChange);
     connect(zv_table->selectionModel(), &QItemSelectionModel::selectionChanged,
             this, &ZCalibrationTableWidget::zh_onSelectedCalibrationChange);
+    connect(model,
+            &QAbstractItemModel::rowsMoved,
+            this,
+            &ZCalibrationTableWidget::zh_onRowCountChange);
+    connect(model,
+            &QAbstractItemModel::rowsRemoved,
+            this,
+            &ZCalibrationTableWidget::zh_onRowCountChange);
 
-    connect(chemElementComboBoxDelegate, &ZChemElementComboBoxDelegate::zg_requestChemElementList,
-            this, &ZCalibrationTableWidget::zg_requestChemElementList);
-
+    connect(chemElementComboBoxDelegate,
+            &ZChemElementComboBoxDelegate::zg_requestChemElementList,
+            this,
+            &ZCalibrationTableWidget::zg_requestChemElementList);
+}
+//==============================================================
+void ZCalibrationTableWidget::zh_onRowCountChange(const QModelIndex& parent,
+                                                  int first,
+                                                  int last)
+{
+    QModelIndex currentIndex = zv_table->selectionModel()->currentIndex();
+    emit zg_currentCalibrationChanged(currentIndex.row(), -1);
 }
 //==============================================================
 void ZCalibrationTableWidget::zp_appendButtonActions(QList<QAction*> actionList)

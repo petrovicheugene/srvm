@@ -57,7 +57,7 @@ private slots:
     void zh_onContextMenuRequest(const QPoint &pos);
     void zh_onCurrentCalibrationChange(const QModelIndex & current, const QModelIndex & previous);
     void zh_onSelectedCalibrationChange(const QItemSelection &selected, const QItemSelection &deselected);
-
+    void zh_onRowCountChange(const QModelIndex& parent, int first, int last);
 };
 //==============================================================
 #endif // ZCALIBRATIONTABLEWIDGET_H
