@@ -176,6 +176,7 @@ Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{
 ;Source: "{#SourceFolder}{#MyAppExeName}"; DestDir: "{app}"; Flags: ignoreversion
 Source: "{#SourceFolder}{#MyAppExeName}"; DestDir: "{app}"; Flags: ignoreversion
 Source: "{#SourceFolder}SRVM_ru.qm"; DestDir: "{app}"; Flags: ignoreversion
+Source: "{#SourceFolder}SRVM_en.qm"; DestDir: "{app}"; Flags: ignoreversion
 Source: "{#SourceFolder}qtbase_ru.qm"; DestDir: "{app}"; Flags: ignoreversion
 Source: "{#SourceFolder}qtbase_en.qm"; DestDir: "{app}"; Flags: ignoreversion
 ;Source: "{#SourceFolder}ComDV.dll"; DestDir: "{app}"; Flags: ignoreversion
