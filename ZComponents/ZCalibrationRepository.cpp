@@ -1113,6 +1113,22 @@ void ZCalibrationRepository::zh_appendCalibrationsToArray(
     const QStringList& fileNameList)
 {
     bool res = false;
+
+    if(fileNameList.isEmpty())
+    {
+        return;
+    }
+
+    if(!zv_caibrationList.isEmpty())
+    {
+        QString question = tr("Clear current calibration list?");
+        if(QMessageBox::question(nullptr, tr("Calibration appending"), question, QMessageBox::Yes, QMessageBox::No)
+            == QMessageBox::Yes)
+        {
+            zp_clear();
+        }
+    }
+
     foreach (QString fileName, fileNameList)
     {
         res = zh_createCalibrationFromFile(fileName) || res;

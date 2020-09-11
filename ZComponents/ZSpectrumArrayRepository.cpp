@@ -842,7 +842,7 @@ void ZSpectrumArrayRepository::zp_appendArrays(QString path, QList<ZRawSpectrumA
 
         if(zv_arrayList.count() > 0)
         {
-            QString question = tr("Clear existing array list?");
+            QString question = tr("Clear current array list?");
             if(QMessageBox::question(nullptr, tr("Array appending"), question, QMessageBox::Yes, QMessageBox::No)
                     == QMessageBox::Yes)
             {

@@ -27,7 +27,7 @@ private:
 
     // VARS
     QPushButton* zv_okButton;
-    QPushButton* zv_cancelButton;
+    QPushButton* zv_closeButton;
 
     QRadioButton* zv_noNormaRadioButton;
     QRadioButton* zv_coherentNormaRadioButton;

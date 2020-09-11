@@ -60,17 +60,19 @@ void ZNormaSettingsDialog::zh_createComponents()
     mainLayout->addWidget(buttonBox);
 
     zv_okButton = new QPushButton(this);
+    zv_okButton->setText(tr("Ok"));
     buttonBox->addButton(zv_okButton, QDialogButtonBox::ActionRole);
 
-    zv_cancelButton = new QPushButton(this);
-    buttonBox->addButton(zv_cancelButton, QDialogButtonBox::ActionRole);
+    zv_closeButton = new QPushButton(this);
+    zv_closeButton->setText(tr("Close"));
+    buttonBox->addButton(zv_closeButton, QDialogButtonBox::ActionRole);
 }
 //============================================================
 void ZNormaSettingsDialog::zh_createConnections()
 {
     connect(zv_okButton, &QPushButton::clicked,
             this, &ZNormaSettingsDialog::zh_onDialogAccepted);
-    connect(zv_cancelButton, &QPushButton::clicked,
+    connect(zv_closeButton, &QPushButton::clicked,
             this, &ZNormaSettingsDialog::reject);
 
     connect(zv_noNormaRadioButton, &QRadioButton::toggled,

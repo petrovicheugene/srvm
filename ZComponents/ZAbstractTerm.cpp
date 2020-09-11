@@ -307,6 +307,7 @@ void ZAbstractTerm::zh_connectToCalibration(ZCalibration* calibration)
 
     connect(this, &ZAbstractTerm::zg_termWindowMarginChanged,
             calibration, &ZCalibration::zh_onTermWindowMarginChange);
+
     //    connect(this, &ZAbstractTerm::zg_termValuesChanged,
     //            calibration, &ZCalibration::zp_onTermAverageValueChange);
 
