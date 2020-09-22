@@ -1,11 +1,11 @@
-//==========================================
+//========================================================
 #include "ZNormaSettingsData.h"
-//==========================================
+//========================================================
 ZNormaSettingsData::ZNormaSettingsData()
 {
     normaType = ZTermNormalizer::NT_NONE;
 }
-//==========================================
+//========================================================
 ZNormaSettingsData::ZNormaSettingsData(const ZCalibration *calibration)
 {
     normaType = calibration->zp_normaType();

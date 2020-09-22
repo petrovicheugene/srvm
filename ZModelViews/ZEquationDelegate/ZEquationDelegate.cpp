@@ -16,8 +16,8 @@ QWidget* ZEquationDelegate::createEditor(QWidget* parent, const QStyleOptionView
 {
     ZEquationChooseDialog* dialog = new ZEquationChooseDialog();
     dialog->setAttribute(Qt::WA_DeleteOnClose);
-
-
+    connect(this, &ZEquationDelegate::zg_currentCalibrationWindowName,
+            dialog, &ZEquationChooseDialog::zg_currentCalibrationWindowName);
 
     return dialog;
 }

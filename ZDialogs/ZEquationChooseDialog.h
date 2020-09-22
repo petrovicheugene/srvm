@@ -25,9 +25,11 @@ public:
 
 signals:
 
+    void zg_currentCalibrationWindowName(const QString& windowName) const;
 
 public slots:
 
+    void zh_onNormaSettingsDialogAccept();
 
 private slots:
 
@@ -43,7 +45,7 @@ private:
     QRadioButton* zv_fractionalEquationRadioButton;
     QComboBox* zv_baseTermComboBox;
     QLineEdit* zv_normTermLineEdit;
-    ZNormaSettingsDialog* zv_normaDialog;
+   // ZNormaSettingsDialog* zv_normaDialog;
     ZNormaSettingsData zv_fractionalBaseNormaSettingsData;
     // FUNCS
     bool eventFilter(QObject* receiver, QEvent* event);

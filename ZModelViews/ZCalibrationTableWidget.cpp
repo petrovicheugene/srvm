@@ -57,9 +57,17 @@ void ZCalibrationTableWidget::zp_setModel(QAbstractItemModel* model)
     zv_table->setItemDelegateForColumn(1, chemElementComboBoxDelegate);
 
     ZEquationDelegate* equationDelegate = new ZEquationDelegate(zv_table);
+    connect(this,
+            &ZCalibrationTableWidget::zg_currentCalibrationWindowName,
+            equationDelegate,
+            &ZEquationDelegate::zg_currentCalibrationWindowName);
     zv_table->setItemDelegateForColumn(2, equationDelegate);
 
     ZNormaDelegate* normaDelegate = new ZNormaDelegate(zv_table);
+    connect(this,
+            &ZCalibrationTableWidget::zg_currentCalibrationWindowName,
+            normaDelegate,
+            &ZNormaDelegate::zg_currentCalibrationWindowName);
     zv_table->setItemDelegateForColumn(3, normaDelegate);
 
     ZNumericDelegate* interceptDelegate = new ZNumericDelegate(zv_table);
@@ -142,6 +150,11 @@ void ZCalibrationTableWidget::zp_connectToCalibrationRepository(ZCalibrationRepo
             this, &ZCalibrationTableWidget::zp_setCurrentCalibrationIndex);
     connect(repository, &ZCalibrationRepository::zg_startCurrentCalibrationEdition,
             this, &ZCalibrationTableWidget::zp_startCurrentCalibrationEdition);
+
+    connect(repository,
+            &ZCalibrationRepository::zg_currentCalibrationWindowName,
+            this,
+            &ZCalibrationTableWidget::zg_currentCalibrationWindowName);
 
 }
 //==============================================================

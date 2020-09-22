@@ -21,9 +21,7 @@ class ZCustomTermDialog : public ZBaseDialog
 public:
     explicit ZCustomTermDialog(ZRawCustomTerm rawTerm = ZRawCustomTerm(ZAbstractTerm::TT_CUSTOM));
     explicit ZCustomTermDialog(ZCalibration* zv_calibration, int termIndex = -1);
-
     ~ZCustomTermDialog();
-
 
 signals:
 
@@ -50,7 +48,7 @@ private:
     QLabel* zv_messageLabel;
     QCheckBox* zv_useModifierForInsertingCheckBox;
     QPushButton* zv_okButton;
-    QPushButton* zv_cancelButton;
+    QPushButton* zv_closeButton;
     const QString zv_useModifierString = "useModifier";
 
     // FUNCS

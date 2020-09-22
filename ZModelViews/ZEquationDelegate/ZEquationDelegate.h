@@ -26,6 +26,8 @@ private slots:
 
 signals:
 
+    void zg_currentCalibrationWindowName(const QString& windowName) const;
+
 public slots:
 
 private:
