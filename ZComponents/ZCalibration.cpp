@@ -914,6 +914,8 @@ bool ZCalibration::zp_setTermFactorString(int termIndex, const QString& factorSt
     if (zv_termList.at(termIndex)->zh_setTermFactor(factorString))
     {
         emit zg_termOperation(TOT_TERM_FACTOR_CHANGED, termIndex, termIndex);
+        zv_dirty = true;
+        emit zg_dirtyChanged(zv_dirty);
         zv_dateTime = QDateTime::currentDateTime();
         return true;
     }
@@ -1800,6 +1802,9 @@ void ZCalibration::zh_notifyCalibrationRecalc()
         zv_termList.value(t)->zh_conformStringWithValue();
     }
     emit zg_termOperation(TOT_TERM_FACTOR_CHANGED, 0, zv_termList.count() - 1);
+    zv_dirty = true;
+    emit zg_dirtyChanged(zv_dirty);
+    zv_dateTime = QDateTime::currentDateTime();
     emit zg_interceptChanged();
 }
 //=========================================================

@@ -3,46 +3,48 @@
 #include "ZCalibration.h"
 #include <QDebug>
 
-#include <QFileInfo>
+#include <QDateTime>
 #include <QFileDialog>
+#include <QFileInfo>
 #include <QStandardPaths>
 #include <QXmlStreamReader>
-#include <QDateTime>
 //==========================================================
-ZXMLCalibrationIOHandler::ZXMLCalibrationIOHandler(QObject *parent)
-    : QObject(parent)
+ZXMLCalibrationIOHandler::ZXMLCalibrationIOHandler(QObject* parent) : QObject(parent)
 {
     // zv_calibrationParent = calibrationParent;
 }
 //==========================================================
-ZXMLCalibrationIOHandler::~ZXMLCalibrationIOHandler()
-{
-
-}
+ZXMLCalibrationIOHandler::~ZXMLCalibrationIOHandler() {}
 //==========================================================
 QString ZXMLCalibrationIOHandler::zp_getCalibrationOpenFile(const QString& calibrationFolderPath)
 {
     QString locationDirString = zp_checkDirPath(calibrationFolderPath);
-    QString fileName = QFileDialog::getOpenFileName(nullptr, tr("Select file to open"),
-                                              locationDirString,
-                                              tr("XML Calibration files(*.clbx);;XML files(*.xml);;All files(*.*)"));
+    QString fileName = QFileDialog::getOpenFileName(
+        nullptr,
+        tr("Select file to open"),
+        locationDirString,
+        tr("XML Calibration files(*.clbx);;XML files(*.xml);;All files(*.*)"));
     return fileName;
 }
 //==========================================================
 QStringList ZXMLCalibrationIOHandler::zp_getCalibrationOpenFiles(const QString& calibrationFolderPath)
 {
     QString locationDirString = zp_checkDirPath(calibrationFolderPath);
-    QStringList fileNames = QFileDialog::getOpenFileNames(nullptr, tr("Open file"),
-                                              locationDirString,
-                                              tr("XML Calibration files(*.clbx);;XML files(*.xml);;All files(*.*)"));
+    QStringList fileNames = QFileDialog::getOpenFileNames(
+        nullptr,
+        tr("Open file"),
+        locationDirString,
+        tr("XML Calibration files(*.clbx);;XML files(*.xml);;All files(*.*)"));
     return fileNames;
 }
 //==========================================================
 QString ZXMLCalibrationIOHandler::zp_getCalibrationSaveFile(const QString& calibrationFilePath)
 {
-    QString fileName = QFileDialog::getSaveFileName(nullptr, tr("Save file"),
-                                              calibrationFilePath,
-                                              tr("XML Calibration files(*.clbx);;XML files(*.xml);;All files(*.*)"));
+    QString fileName = QFileDialog::getSaveFileName(
+        nullptr,
+        tr("Save file"),
+        calibrationFilePath,
+        tr("XML Calibration files(*.clbx);;XML files(*.xml);;All files(*.*)"));
     return fileName;
 }
 //==========================================================
@@ -50,10 +52,11 @@ QString ZXMLCalibrationIOHandler::zp_checkDirPath(const QString& calibrationFold
 {
     QString locationDirString = calibrationFolderPath;
     QFileInfo fileInfo(locationDirString);
-    if(!fileInfo.exists() || !fileInfo.isDir())
+    if (!fileInfo.exists() || !fileInfo.isDir())
     {
-        QStringList docLocations = QStandardPaths::standardLocations(QStandardPaths::DocumentsLocation);
-        if(docLocations.isEmpty())
+        QStringList docLocations = QStandardPaths::standardLocations(
+            QStandardPaths::DocumentsLocation);
+        if (docLocations.isEmpty())
         {
             locationDirString = QDir::currentPath();
         }
@@ -66,13 +69,14 @@ QString ZXMLCalibrationIOHandler::zp_checkDirPath(const QString& calibrationFold
     return locationDirString;
 }
 //==========================================================
-bool ZXMLCalibrationIOHandler::zp_writeCalibrationToFile(QFile& file, const ZCalibration* calibration)
+bool ZXMLCalibrationIOHandler::zp_writeCalibrationToFile(QFile& file,
+                                                         const ZCalibration* calibration)
 {
-    if(!(file.openMode() & QIODevice::WriteOnly))
+    if (!(file.openMode() & QIODevice::WriteOnly))
     {
         zv_message = tr("File \"%1\" is not open in write mode!").arg(file.fileName());
         emit zg_message(zv_message);
-        qCritical().noquote() <<  zv_message;
+        qCritical().noquote() << zv_message;
         return false;
     }
 
@@ -94,17 +98,17 @@ bool ZXMLCalibrationIOHandler::zp_writeCalibrationToFile(QFile& file, const ZCal
     writer.writeEndElement(); // chem element
 
     // Energy calibration
-//    writer.writeStartElement(zv_ENERGY_K0);
-//    writer.writeCharacters(QString::number(calibration->zp_energyCalibrationK0()));
-//    writer.writeEndElement(); // k0
+    //    writer.writeStartElement(zv_ENERGY_K0);
+    //    writer.writeCharacters(QString::number(calibration->zp_energyCalibrationK0()));
+    //    writer.writeEndElement(); // k0
 
-//    writer.writeStartElement(zv_ENERGY_K1);
-//    writer.writeCharacters(QString::number(calibration->zp_energyCalibrationK1()));
-//    writer.writeEndElement(); // k1
+    //    writer.writeStartElement(zv_ENERGY_K1);
+    //    writer.writeCharacters(QString::number(calibration->zp_energyCalibrationK1()));
+    //    writer.writeEndElement(); // k1
 
-//    writer.writeStartElement(zv_ENERGY_K2);
-//    writer.writeCharacters(QString::number(calibration->zp_energyCalibrationK2()));
-//    writer.writeEndElement(); // k2
+    //    writer.writeStartElement(zv_ENERGY_K2);
+    //    writer.writeCharacters(QString::number(calibration->zp_energyCalibrationK2()));
+    //    writer.writeEndElement(); // k2
 
     // gain factor
     writer.writeStartElement(zv_GAIN_FACTOR);
@@ -112,9 +116,9 @@ bool ZXMLCalibrationIOHandler::zp_writeCalibrationToFile(QFile& file, const ZCal
     writer.writeEndElement(); // gainFactor
 
     // energy unit
-//    writer.writeStartElement(zv_ENERGY_UNIT);
-//    writer.writeCharacters(calibration->zp_energyUnit());
-//    writer.writeEndElement(); // energy unit
+    //    writer.writeStartElement(zv_ENERGY_UNIT);
+    //    writer.writeCharacters(calibration->zp_energyUnit());
+    //    writer.writeEndElement(); // energy unit
 
     // exposition
     writer.writeStartElement(zv_EXPOSITION);
@@ -140,14 +144,15 @@ bool ZXMLCalibrationIOHandler::zp_writeCalibrationToFile(QFile& file, const ZCal
     // EQUATION DATA
     // windows
     writer.writeStartElement(zv_WINDOW_LIST);
-    for(int w = 0; w < calibration->zp_calibrationWindowCount(); w++)
+    for (int w = 0; w < calibration->zp_calibrationWindowCount(); w++)
     {
         // start window + name
         writer.writeStartElement(zv_WINDOW);
         writer.writeAttribute(zv_NAME, calibration->zp_calibrationWindowName(w));
         // window type
         writer.writeStartElement(zv_TYPE);
-        writer.writeCharacters(ZCalibrationWindow::zp_typeName(calibration->zp_calibrationWindowType(w)));
+        writer.writeCharacters(
+            ZCalibrationWindow::zp_typeName(calibration->zp_calibrationWindowType(w)));
         writer.writeEndElement(); // type
         // first channel
         writer.writeStartElement(zv_FIRST_CHANNEL);
@@ -164,7 +169,7 @@ bool ZXMLCalibrationIOHandler::zp_writeCalibrationToFile(QFile& file, const ZCal
 
     // terms
     writer.writeStartElement(zv_TERM_LIST);
-    for(int t = 0; t < calibration->zp_termCount(); t++)
+    for (int t = 0; t < calibration->zp_termCount(); t++)
     {
         // start term + name
         writer.writeStartElement(zv_TERM);
@@ -179,7 +184,7 @@ bool ZXMLCalibrationIOHandler::zp_writeCalibrationToFile(QFile& file, const ZCal
         writer.writeEndElement(); // term state
 
         // term custom string
-        if(calibration->zp_termType(t) == ZAbstractTerm::TT_CUSTOM)
+        if (calibration->zp_termType(t) == ZAbstractTerm::TT_CUSTOM)
         {
             writer.writeStartElement(zv_CUSTOM_STRING);
             writer.writeCharacters(calibration->zp_termCustomString(t));
@@ -192,7 +197,7 @@ bool ZXMLCalibrationIOHandler::zp_writeCalibrationToFile(QFile& file, const ZCal
 
         // term windows
         QStringList windowList = calibration->zp_termWindowsNameList(t);
-        foreach(QString window, windowList)
+        foreach (QString window, windowList)
         {
             writer.writeStartElement(zv_TERM_WINDOW);
             writer.writeCharacters(window);
@@ -255,11 +260,11 @@ bool ZXMLCalibrationIOHandler::zp_writeCalibrationToFile(QFile& file, const ZCal
     writer.writeEndElement(); // root
     writer.writeEndDocument();
 
-    if(file.error() != QFile::NoError)
+    if (file.error() != QFile::NoError)
     {
         zv_message = tr("Cannot write to file \"%1\"! %2").arg(file.fileName(), file.errorString());
         emit zg_message(zv_message);
-        qCritical().noquote() <<  zv_message;
+        qCritical().noquote() << zv_message;
         return false;
     }
 
@@ -271,19 +276,18 @@ QString ZXMLCalibrationIOHandler::zp_message() const
     return zv_message;
 }
 //==========================================================
-bool ZXMLCalibrationIOHandler::zp_getCalibrationFromFile(QFile& file,
-                                                         ZCalibration* calibration)
+bool ZXMLCalibrationIOHandler::zp_getCalibrationFromFile(QFile& file, ZCalibration* calibration)
 {
-    if(calibration == nullptr)
+    if (calibration == nullptr)
     {
         return false;
     }
 
-    if(!(file.openMode() & QIODevice::ReadOnly))
+    if (!(file.openMode() & QIODevice::ReadOnly))
     {
         zv_message = tr("File \"%1\" is not open in read mode!").arg(file.fileName());
         emit zg_message(zv_message);
-        qCritical().noquote() <<  zv_message;
+        qCritical().noquote() << zv_message;
         return false;
     }
 
@@ -294,18 +298,18 @@ bool ZXMLCalibrationIOHandler::zp_getCalibrationFromFile(QFile& file,
     //bool parsingErrorFalg = false;
     parentTagStack.clear();
     // handling root level
-    while(!reader.atEnd())
+    while (!reader.atEnd())
     {
         reader.readNext();
         // property root element detection section
-        if(!rootDetectedFlag)
+        if (!rootDetectedFlag)
         {
-            if(!zh_detectRoot(reader, magicStringDetectionFlag))
+            if (!zh_detectRoot(reader, magicStringDetectionFlag))
             {
                 continue;
             }
 
-            if(!magicStringDetectionFlag)
+            if (!magicStringDetectionFlag)
             {
                 zv_message = tr("File \"%1\" is not recognized!").arg(file.fileName());
                 emit zg_message(zv_message);
@@ -317,14 +321,14 @@ bool ZXMLCalibrationIOHandler::zp_getCalibrationFromFile(QFile& file,
         }
 
         // root text data handling section
-        if(reader.isCharacters())
+        if (reader.isCharacters())
         {
-            if(reader.text().toString().simplified().isEmpty())
+            if (reader.text().toString().simplified().isEmpty())
             {
                 continue;
             }
         }
-        else if(reader.isStartElement())
+        else if (reader.isStartElement())
         {
             // handling inserted levels
             parentTagStack.push(reader.name().toString());
@@ -332,18 +336,18 @@ bool ZXMLCalibrationIOHandler::zp_getCalibrationFromFile(QFile& file,
         }
     }
 
-    if(reader.hasError())
+    if (reader.hasError())
     {
         zv_message = tr("File \"%1\" parsing failed! %2").arg(file.fileName(), reader.errorString());
         emit zg_message(zv_message);
-        qCritical().noquote() <<  zv_message;
+        qCritical().noquote() << zv_message;
         return false;
     }
-    else if(file.error() != QFile::NoError)
+    else if (file.error() != QFile::NoError)
     {
         zv_message = tr("Cannot read file \"%1\"! %2").arg(file.fileName(), file.errorString());
         emit zg_message(zv_message);
-        qCritical().noquote() <<  zv_message;
+        qCritical().noquote() << zv_message;
         return false;
     }
 
@@ -357,15 +361,15 @@ void ZXMLCalibrationIOHandler::zh_parseXMLElement(ZCalibration* calibration,
 {
     // current start tag handling
     QString currentTagName = reader.name().toString();
-//    parentTagStack.push(currentTagName);
-//    // attributes handling
-    if(currentTagName == zv_WINDOW)
+    //    parentTagStack.push(currentTagName);
+    //    // attributes handling
+    if (currentTagName == zv_WINDOW)
     {
         // create new raw window
         zv_rawWindow = ZRawWindow();
         zv_rawWindow.name = reader.attributes().value(zv_NAME).toString();
     }
-    else if(currentTagName == zv_TERM)
+    else if (currentTagName == zv_TERM)
     {
         // create new raw term
         zv_rawTerm = ZRawTerm();
@@ -373,199 +377,161 @@ void ZXMLCalibrationIOHandler::zh_parseXMLElement(ZCalibration* calibration,
     }
 
     QString readerText;
-    while(!reader.atEnd())
+    while (!reader.atEnd())
     {
         reader.readNext();
 
-        if(reader.isStartElement())
+        if (reader.isStartElement())
         {
             parentTagStack.push(currentTagName);
             zh_parseXMLElement(calibration, reader);
             continue;
         }
-        else if(reader.isCharacters())
+        else if (reader.isCharacters())
         {
-            if(reader.text().toString().simplified().isEmpty())
+            if (reader.text().toString().simplified().isEmpty())
             {
                 continue;
             }
 
             readerText = reader.text().toString().simplified();
-            if(currentTagName == zv_DATE_TIME)
+            if (currentTagName == zv_DATE_TIME)
             {
                 QString dateTimeString = readerText;
                 QDateTime dateTime = QDateTime::fromString(dateTimeString, zv_dateTimeFormat);
                 calibration->zp_setDateTime(dateTime);
             }
-            else if(currentTagName == zv_CHEMELEMENT)
+            else if (currentTagName == zv_CHEMELEMENT)
             {
                 calibration->zp_setChemElement(readerText);
             }
-//            else if(currentTagName == zv_ENERGY_K0)
-//            {
-//                bool ok;
-//                qreal realValue = readerText.toDouble(&ok);
-//                if(!ok)
-//                {
-//                    realValue = 0;
-//                }
 
-//                calibration->zp_setEnergyCalibrationK0(realValue);
-//            }
-//            else if(currentTagName == zv_ENERGY_K1)
-//            {
-//                bool ok;
-//                qreal realValue = readerText.toDouble(&ok);
-//                if(!ok)
-//                {
-//                    realValue = 0;
-//                }
-
-//                calibration->zp_setEnergyCalibrationK1(realValue);
-//            }
-//            else if(currentTagName == zv_ENERGY_K2)
-//            {
-//                bool ok;
-//                qreal realValue = readerText.toDouble(&ok);
-//                if(!ok)
-//                {
-//                    realValue = 0;
-//                }
-
-//                calibration->zp_setEnergyCalibrationK2(realValue);
-//            }
-            else if(currentTagName == zv_GAIN_FACTOR)
+            else if (currentTagName == zv_GAIN_FACTOR)
             {
                 bool ok;
                 int intValue = readerText.toInt(&ok);
-                if(!ok)
+                if (!ok)
                 {
                     intValue = -1;
                 }
 
                 calibration->zp_setGainFactor(intValue);
             }
-
-//            else if(currentTagName == zv_ENERGY_UNIT)
-//            {
-//                calibration->zp_setEnergyUnit(readerText);
-//            }
-            else if(currentTagName == zv_EXPOSITION)
+            else if (currentTagName == zv_EXPOSITION)
             {
                 bool ok;
                 int intValue = readerText.toInt(&ok);
-                if(!ok)
+                if (!ok)
                 {
                     intValue = -1;
                 }
 
                 calibration->zp_setExposition(intValue);
             }
-            else if(currentTagName == zv_DETERMINATION_R2)
+            else if (currentTagName == zv_DETERMINATION_R2)
             {
                 calibration->zp_setDetermination(readerText);
             }
-            else if(currentTagName == zv_ADJUSTED_DETERMINATION_R2ADJ)
+            else if (currentTagName == zv_ADJUSTED_DETERMINATION_R2ADJ)
             {
                 calibration->zp_setAdjustedDetermination(readerText);
             }
-            else if(currentTagName == zv_STANDARD_DEVIATION)
+            else if (currentTagName == zv_STANDARD_DEVIATION)
             {
                 calibration->zp_setStandardDeviation(readerText);
             }
-            else if(currentTagName == zv_TYPE)
+            else if (currentTagName == zv_TYPE)
             {
-
-                if(parentTagStack.last() == zv_WINDOW)
+                if (parentTagStack.last() == zv_WINDOW)
                 {
                     zv_rawWindow.windowType = ZCalibrationWindow::zp_typeFromString(readerText);
                 }
-                else if(parentTagStack.last() == zv_TERM)
+                else if (parentTagStack.last() == zv_TERM)
                 {
                     zv_rawTerm.termType = ZAbstractTerm::zp_termTypeFromString(readerText);
                 }
-                else if(parentTagStack.last() == zv_NORMALIZER)
+                else if (parentTagStack.last() == zv_NORMALIZER)
                 {
                     calibration->zp_setNormaType(ZTermNormalizer::zp_normaTypeForString(readerText));
                 }
-                else if(parentTagStack.last() == zv_FRACTIONAL_BASE_NORMALIZER)
+                else if (parentTagStack.last() == zv_FRACTIONAL_BASE_NORMALIZER)
                 {
-                    calibration->zp_setBaseTermNormaType(ZTermNormalizer::zp_normaTypeForString(readerText));
+                    calibration->zp_setBaseTermNormaType(
+                        ZTermNormalizer::zp_normaTypeForString(readerText));
                 }
-                else if(parentTagStack.last() == zv_EQUATION)
+                else if (parentTagStack.last() == zv_EQUATION)
                 {
-                    calibration->zp_setEquationType(ZCalibration::zp_equationTypeFromString(readerText));
+                    calibration->zp_setEquationType(
+                        ZCalibration::zp_equationTypeFromString(readerText));
                 }
             }
-            else if(currentTagName == zv_FIRST_CHANNEL)
+            else if (currentTagName == zv_FIRST_CHANNEL)
             {
                 zv_rawWindow.firstChannel = readerText;
             }
-            else if(currentTagName == zv_LAST_CHANNEL)
+            else if (currentTagName == zv_LAST_CHANNEL)
             {
                 zv_rawWindow.lastChannel = readerText;
             }
-            else if(currentTagName == zv_STATE)
+            else if (currentTagName == zv_STATE)
             {
                 zv_rawTerm.termState = ZAbstractTerm::zp_termStateFromString(readerText);
             }
 
-            else if(currentTagName == zv_STATE)
+            else if (currentTagName == zv_STATE)
             {
                 zv_rawTerm.termState = ZAbstractTerm::zp_termStateFromString(readerText);
             }
 
-            else if(currentTagName == zv_CUSTOM_STRING)
-            {
-                zv_rawTerm.customString = readerText;
-            }
-
-            else if(currentTagName == zv_DESCRIPTION)
+            //            else if(currentTagName == zv_CUSTOM_STRING)
+            //            {
+            //                zv_rawTerm.customString = readerText;
+            //            }
+            else if (currentTagName == zv_DESCRIPTION)
             {
                 // ZRawCustomTerm* rawCustomTerm = dynamic_cast<ZRawCustomTerm*>(&zv_rawTerm);
 
                 zv_rawTerm.descriptionString = readerText;
             }
-
-            else if(currentTagName == zv_TERM_WINDOW)
+            else if (currentTagName == zv_TERM_WINDOW)
             {
                 zv_rawTerm.windowList.append(readerText);
             }
-            else if(currentTagName == zv_FACTOR)
+            else if (currentTagName == zv_FACTOR)
             {
                 zv_rawTerm.factor = readerText;
             }
-            else if(currentTagName == zv_CUSTOM_STRING)
+            else if (currentTagName == zv_CUSTOM_STRING)
             {
-                if(parentTagStack.last() == zv_NORMALIZER)
+                if (parentTagStack.last() == zv_NORMALIZER)
                 {
                     calibration->zp_setNormaCustomString(readerText);
                 }
-                else if(parentTagStack.last() == zv_FRACTIONAL_BASE_NORMALIZER)
+                else if (parentTagStack.last() == zv_FRACTIONAL_BASE_NORMALIZER)
                 {
                     calibration->zp_setBaseTermNormaCustomString(readerText);
                 }
-                else if(parentTagStack.last() == zv_TERM)
+                else if (parentTagStack.last() == zv_TERM)
                 {
                     zv_rawTerm.customString = readerText;
                 }
             }
-            else if(currentTagName == zv_BASE_TERM)
+            else if (currentTagName == zv_BASE_TERM)
             {
                 calibration->zp_setBaseTermFromName(readerText);
             }
-            else if(currentTagName == zv_INTERCEPT)
+            else if (currentTagName == zv_INTERCEPT)
             {
                 calibration->zp_setEquationInterceptString(readerText);
             }
         }
-        else  if(reader.isEndElement())
+        else if (reader.isEndElement())
         {
-            if(currentTagName == zv_WINDOW)
+            if (currentTagName == zv_WINDOW)
             {
                 calibration->zp_createNewCalibrationWindow(zv_rawWindow);
             }
-            else if(currentTagName == zv_TERM)
+            else if (currentTagName == zv_TERM)
             {
                 if (zv_rawTerm.termType == ZAbstractTerm::TT_CUSTOM)
                 {
@@ -583,22 +549,22 @@ void ZXMLCalibrationIOHandler::zh_parseXMLElement(ZCalibration* calibration,
         }
     }
 
-//    if(reader.hasError())
-//    {
-//        return;
-//    }
+    //    if(reader.hasError())
+    //    {
+    //        return;
+    //    }
 }
 //============================================================
-bool ZXMLCalibrationIOHandler::zh_detectRoot(const QXmlStreamReader& reader, bool& magicStringDetectionFlag) const
+bool ZXMLCalibrationIOHandler::zh_detectRoot(const QXmlStreamReader& reader,
+                                             bool& magicStringDetectionFlag) const
 {
     // true - element name == root, error - trnado magic string existing flag
-    if(reader.tokenType() != QXmlStreamReader::StartElement ||
-            reader.name() != zv_ROOT)
+    if (reader.tokenType() != QXmlStreamReader::StartElement || reader.name() != zv_ROOT)
     {
         return false;
     }
 
-    if(reader.attributes().value(zv_TYPE).toString() == zv_magicString)
+    if (reader.attributes().value(zv_TYPE).toString() == zv_magicString)
     {
         magicStringDetectionFlag = true;
     }
@@ -613,7 +579,7 @@ bool ZXMLCalibrationIOHandler::zh_detectRoot(const QXmlStreamReader& reader, boo
 bool ZXMLCalibrationIOHandler::zh_checkfilePath(const QString& path) const
 {
     QFileInfo fileInfo(path);
-    if((!fileInfo.exists()) || (!fileInfo.isFile()))
+    if ((!fileInfo.exists()) || (!fileInfo.isFile()))
     {
         return false;
     }

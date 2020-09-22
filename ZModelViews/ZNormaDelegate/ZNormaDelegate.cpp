@@ -14,7 +14,12 @@ ZNormaDelegate::ZNormaDelegate(QObject *parent) : QStyledItemDelegate(parent)
 QWidget* ZNormaDelegate::createEditor(QWidget* parent, const QStyleOptionViewItem& option, const QModelIndex& index) const
 {
     ZNormaSettingsDialog* dialog = new ZNormaSettingsDialog();
+    connect(this,
+            &ZNormaDelegate::zg_currentCalibrationWindowName,
+            dialog,
+            &ZNormaSettingsDialog::zp_insertVariable);
     dialog->setAttribute(Qt::WA_DeleteOnClose);
+    dialog->setWindowFlag(Qt::WindowStaysOnTopHint);
 
     return dialog;
 }

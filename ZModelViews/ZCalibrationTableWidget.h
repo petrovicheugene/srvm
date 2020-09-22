@@ -31,6 +31,8 @@ signals:
     void zg_currentCalibrationChanged(int current, int previous);
     void zg_selectedCalibrationChanged(QList<int>);
     void zg_requestChemElementList(QStringList&);
+    void zg_currentCalibrationWindowName(const QString& name) const;
+
 
 public slots:
 

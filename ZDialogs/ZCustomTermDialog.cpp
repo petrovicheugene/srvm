@@ -106,7 +106,7 @@ void ZCustomTermDialog::zh_createComponents()
 
     zv_okButton = zh_createBasementButton(tr("OK"), tr("Save parameter"), QIcon());
 
-    zv_cancelButton = zh_createBasementButton(tr("Close"),
+    zv_closeButton = zh_createBasementButton(tr("Close"),
                                               tr("Close dialog"),
                                               QIcon());
 }
@@ -152,7 +152,7 @@ void ZCustomTermDialog::zh_onCloseButtonClick()
 void ZCustomTermDialog::zh_createConnections()
 {
     connect(zv_okButton, &QPushButton::clicked, this, &ZCustomTermDialog::zh_onOkButtonClick);
-    connect(zv_cancelButton, &QPushButton::clicked, this, &ZCustomTermDialog::zh_onCloseButtonClick);
+    connect(zv_closeButton, &QPushButton::clicked, this, &ZCustomTermDialog::zh_onCloseButtonClick);
     connect(zv_calibration, &ZCalibration::zg_message, this, &ZCustomTermDialog::zp_showMsg);
 }
 //=========================================================
