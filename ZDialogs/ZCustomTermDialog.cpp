@@ -46,7 +46,6 @@ ZCustomTermDialog::ZCustomTermDialog(ZCalibration* calibration, int termIndex)
     zv_rawTerm = ZRawCustomTerm(ZAbstractTerm::TT_CUSTOM);
     zv_rawTerm.termState = ZAbstractTerm::TS_CONST_EXCLUDED;
 
-
     zv_calibration = calibration;
     zh_createComponents();
     zh_createConnections();
