@@ -1,7 +1,7 @@
 //======================================================
 #include "ZWindowGraphicsItem.h"
 #include "ZCalibrationWindow.h"
-#include "ZPlotterDefaulVariables.h"
+#include "ZPlotterDefaultVariables.h"
 
 #include <QGraphicsScene>
 #include <QPainter>

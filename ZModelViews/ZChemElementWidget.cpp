@@ -21,7 +21,7 @@ ZChemElementWidget::ZChemElementWidget(QWidget *parent) : QWidget(parent)
 void ZChemElementWidget::zh_createComponents()
 {
     zv_mainLayout = new QVBoxLayout;
-    zv_mainLayout->setMargin(0);
+    zv_mainLayout->setContentsMargins(0, 0, 0, 0);
 
     setLayout(zv_mainLayout);
 
@@ -82,7 +82,7 @@ void ZChemElementWidget::zp_appendContextMenuActions(QList<QAction*> actionList)
 //==============================================================
 void ZChemElementWidget::zp_setMainLayoutMargin(int margin)
 {
-    zv_mainLayout->setMargin(margin);
+    zv_mainLayout->setContentsMargins(margin, margin, margin, margin);
 }
 //==============================================================
 void ZChemElementWidget::zp_setCurrentChemElementIndex(int chemElementIndex)

@@ -311,7 +311,7 @@ void ZPlotGraphicsView::wheelEvent(QWheelEvent * event)
         return;
     }
 
-    zv_sceneMousePos = mapToScene(event->pos());
+    zv_sceneMousePos = mapToScene(event->position().toPoint());
     QRectF oldDisplayedSceneRect = mapToScene(viewport()->rect().adjusted(2,-1,-2,1)).boundingRect();
     //QRectF oldDisplayedSceneRect = mapToScene(viewport()->rect()).boundingRect();
     QRectF displayedSceneRect = oldDisplayedSceneRect;
@@ -323,7 +323,7 @@ void ZPlotGraphicsView::wheelEvent(QWheelEvent * event)
     qreal leftPartFactor = 0.1 - rightPartFactor;
     qreal bottomPartFactor = 0.1 - topPartFactor;
 
-    if(event->delta() > 0)
+    if(event->angleDelta().y() > 0)
     {
         topPartFactor *= -1;
         leftPartFactor *= -1;
@@ -371,7 +371,7 @@ void ZPlotGraphicsView::wheelEvent(QWheelEvent * event)
     zp_fitInView(displayedSceneRect.normalized());
     //ensureVisible(displayedSceneRect.normalized(), 2, 2);
     zv_sceneCenterPos = mapToScene(viewport()->rect()).boundingRect().center();
-    zv_sceneMousePos = mapToScene(event->pos());
+    zv_sceneMousePos = mapToScene(event->position().toPoint());
 }
 //=============================================================
 void ZPlotGraphicsView::mousePressEvent(QMouseEvent* event)

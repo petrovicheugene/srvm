@@ -804,12 +804,12 @@ void ZPlotter::zh_createComponents()
 
     // Layout
     QVBoxLayout* mainLayout = new QVBoxLayout;
-    mainLayout->setMargin(0);
+    mainLayout->setContentsMargins(0, 0, 0, 0);
     mainLayout->setSpacing(0);
     setLayout(mainLayout);
 
     QHBoxLayout* mainScrollLayout = new QHBoxLayout;
-    mainScrollLayout->setMargin(0);
+    mainScrollLayout->setContentsMargins(0, 0, 0, 0);
     mainScrollLayout->setSpacing(0);
     mainLayout->addLayout(mainScrollLayout);
 
@@ -818,7 +818,7 @@ void ZPlotter::zh_createComponents()
     mainScrollLayout->addWidget(zv_verticalScrollBar);
 
     QHBoxLayout* bottomScrollLayout = new QHBoxLayout;
-    bottomScrollLayout->setMargin(0);
+    bottomScrollLayout->setContentsMargins(0, 0, 0, 0);
     bottomScrollLayout->setSpacing(0);
     mainLayout->addLayout(bottomScrollLayout);
     bottomScrollLayout->addWidget(zv_horizontalScrollBar, 9999999);

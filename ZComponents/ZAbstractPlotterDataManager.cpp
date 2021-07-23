@@ -918,7 +918,8 @@ void ZAbstractPlotterDataManager::zh_findItemInCursorAreaImage(QImage cursorArea
                             return;
                         }
 
-                        if(it + 1 == itemColorIdBufferMap.end())
+                        // if(it + 1 == itemColorIdBufferMap.end())
+                        if(it.key() == itemColorIdBufferMap.lastKey())
                         {
                             // last spe. Insert point into checkedPointSet
                             checkedPointList.append(currentPoint);

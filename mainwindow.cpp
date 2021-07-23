@@ -355,7 +355,7 @@ void MainWindow::zh_createComponents()
     // left side widget
     QWidget* calibrationWidget = new QWidget();
     QVBoxLayout*leftWidgetLayout = new QVBoxLayout;
-    leftWidgetLayout->setMargin(0);
+    leftWidgetLayout->setContentsMargins(0, 0, 0, 0);
     calibrationWidget->setLayout(leftWidgetLayout);
 
     QSplitter* calibrationSplitter = new QSplitter(Qt::Vertical, this);

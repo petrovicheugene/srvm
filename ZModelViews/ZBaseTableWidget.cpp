@@ -130,7 +130,7 @@ void ZBaseTableWidget::zp_appendContextActions(const QList<ZControlAction*>& act
 void ZBaseTableWidget::zh_createComponents()
 {
     zv_mainLayout = new QVBoxLayout;
-    zv_mainLayout->setMargin(0);
+    zv_mainLayout->setContentsMargins(0, 0, 0, 0);
     setLayout(zv_mainLayout);
 
     zv_table = new QTableView(this);

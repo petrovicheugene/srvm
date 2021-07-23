@@ -41,8 +41,8 @@ public:
 protected:
 
     // FUNCS
-    virtual void	mousePressEvent(QGraphicsSceneMouseEvent * event);
-    virtual void	mouseReleaseEvent(QGraphicsSceneMouseEvent * event);
+    virtual void	mousePressEvent(QGraphicsSceneMouseEvent * event) override;
+    virtual void	mouseReleaseEvent(QGraphicsSceneMouseEvent * event) override;
 
 private:
 

@@ -5,6 +5,7 @@
 #-------------------------------------------------
 QT       += core gui
 QT       += xml
+QT       +=  core5compat
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -12,9 +13,9 @@ greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 RC_ICONS = "ZImages/SRVM-8.ico"
 
 #Application version
-VER_MAJ=20
-VER_MIN=12
-VER_PAT=03
+VER_MAJ=21
+VER_MIN=07
+VER_PAT=01
 
 PRODUCT_SHORT_NAME="SRVM"
 PRODUCT_FILE_BASE_NAME="SRVM"

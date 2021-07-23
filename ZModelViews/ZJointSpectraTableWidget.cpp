@@ -97,7 +97,7 @@ void ZJointSpectrumTableWidget::zp_currentSpectrumRow(int& row, bool* ok) const
 void ZJointSpectrumTableWidget::zh_createComponents()
 {
     zv_mainLayout = new QVBoxLayout;
-    zv_mainLayout->setMargin(0);
+    zv_mainLayout->setContentsMargins(0, 0, 0, 0);
 
     setLayout(zv_mainLayout);
 
@@ -205,7 +205,7 @@ void ZJointSpectrumTableWidget::zp_connectToCalibrationRepository(ZCalibrationRe
 //==============================================================
 void ZJointSpectrumTableWidget::zp_setMainLayoutMargin(int margin)
 {
-    zv_mainLayout->setMargin(margin);
+    zv_mainLayout->setContentsMargins(margin, margin, margin, margin);
 }
 //==============================================================
 void ZJointSpectrumTableWidget::zh_editNext(QModelIndex editedIndex)

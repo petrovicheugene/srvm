@@ -72,7 +72,7 @@ QWidget* ZEnergyCalibrationDialog::zh_createControlWidget()
     QWidget* controlWidget = new QWidget();
 
     QVBoxLayout* mainLayout = new QVBoxLayout;
-    mainLayout->setMargin(0);
+    mainLayout->setContentsMargins(0, 0, 0, 0);
     controlWidget->setLayout(mainLayout);
 
     // gain factor spinbox

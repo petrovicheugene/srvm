@@ -60,7 +60,7 @@ void ZMessageWidget::zp_setWidgetMargin(int margin)
         return;
     }
 
-    zv_mainLayout->setMargin(margin);
+    zv_mainLayout->setContentsMargins(margin, margin, margin, margin);
 }
 //===================================================
 void ZMessageWidget::zp_setBasementSeparatorVisible(bool visibility)

@@ -92,7 +92,7 @@ void ZBaseMainWindow::zh_help()
         searchList << dir.absolutePath() << ":/docs";
 
         zv_helpBrowser = ZHelpBrowser::zp_instance(searchList, source, centralWidget());
-        zv_helpBrowser->setAttribute(Qt::WA_GroupLeader);
+        // zv_helpBrowser->setAttribute(Qt::WA_GroupLeader);
         zv_helpBrowser->show();
     }
     else if(!zv_helpBrowser->isVisible())

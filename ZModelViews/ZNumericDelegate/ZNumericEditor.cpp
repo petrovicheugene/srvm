@@ -7,6 +7,7 @@
 #include <QMessageBox>
 #include <QKeyEvent>
 #include <QFontMetrics>
+#include <QRegularExpression>
 #include <QStyle>
 #include <QStyleOptionComplex>
 //================================================================
@@ -37,10 +38,10 @@ void	ZNumericEditor::stepBy ( int steps )
 
     //double doubleValue = numericString.toDouble();
 
-    numericString.replace(QRegExp(","), ".");
+    numericString.replace(QRegularExpression(","), ".");
     //numericString.replace(QRegExp("e"), "E");
 
-    QStringList parts = numericString.split(QRegExp("[,.Ee]"),QString::KeepEmptyParts);
+    QStringList parts = numericString.split(QRegularExpression("[,.Ee]"),Qt::KeepEmptyParts);
 
     for(int i  = 0; i < parts.count(); i++)
     {
@@ -48,7 +49,7 @@ void	ZNumericEditor::stepBy ( int steps )
             parts[i] = "0";
     }
 
-    bool powerTypeRecord = numericString.contains(QRegExp("[eE]"));
+    bool powerTypeRecord = numericString.contains(QRegularExpression("[eE]"));
 
     // defining which part is the cursor on
     if(parts.isEmpty() || parts.count() > 3)
@@ -76,7 +77,7 @@ void	ZNumericEditor::stepBy ( int steps )
     case 2:
 
         secondSeparatorPos = numericString.length() - 1;
-        firstSeparatorPos = numericString.indexOf(QRegExp("[,.Ee]"));
+        firstSeparatorPos = numericString.indexOf(QRegularExpression("[,.Ee]"));
         if(cursorPos > firstSeparatorPos)
         {
             changedPartNumber = 1;
@@ -91,8 +92,8 @@ void	ZNumericEditor::stepBy ( int steps )
         break;
     case 3:
 
-        firstSeparatorPos = numericString.indexOf(QRegExp("[,.]"));
-        secondSeparatorPos = numericString.indexOf(QRegExp("[Ee]"));
+        firstSeparatorPos = numericString.indexOf(QRegularExpression("[,.]"));
+        secondSeparatorPos = numericString.indexOf(QRegularExpression("[Ee]"));
 
         if(cursorPos <= firstSeparatorPos )
         {
@@ -299,7 +300,7 @@ void ZNumericEditor::setText(QString numericString)
 
     if(removeLastTree)
     {
-        QStringList parts = numericString.split(QRegExp("[,.Ee]"),QString::KeepEmptyParts);
+        QStringList parts = numericString.split(QRegularExpression("[,.Ee]"),Qt::KeepEmptyParts);
 
         QString fractionalPart = parts.value(1);
         fractionalPart.remove(fractionalPart.count() - 3 , 3);

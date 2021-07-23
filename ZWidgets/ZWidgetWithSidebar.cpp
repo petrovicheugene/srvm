@@ -78,7 +78,7 @@ bool ZWidgetWithSidebar::zp_setSidebarWidget(QWidget* sideBarWidget)
 //=======================================================
 void ZWidgetWithSidebar::zp_setMargin(int margin)
 {
-    zv_mainLayout->setMargin(margin);
+    zv_mainLayout->setContentsMargins(margin, margin, margin, margin);
 }
 //=======================================================
 void ZWidgetWithSidebar::zp_setInfoLabelText(bool dirty, const QString& text)
@@ -97,7 +97,7 @@ void ZWidgetWithSidebar::zh_createComponents(QString title)
 {
     // Main Layout
     zv_mainLayout = new QVBoxLayout;
-    zv_margin = zv_mainLayout->margin();
+    zv_margin = zv_mainLayout->contentsMargins().right();
     // zv_mainLayout->setMargin(0);
     zv_mainLayout->setSpacing(0);
     setLayout(zv_mainLayout);
@@ -129,7 +129,7 @@ void ZWidgetWithSidebar::zh_createComponents(QString title)
     QHBoxLayout* basementLayout = new QHBoxLayout;
     basement->setLayout(basementLayout);
     // int margin = basementLayout->margin();
-    basementLayout->setMargin(0);
+    basementLayout->setContentsMargins(0, 0, 0, 0);
     basementLayout->setSpacing(zv_margin);
     // basementLayout->addSpacing(margin);
 

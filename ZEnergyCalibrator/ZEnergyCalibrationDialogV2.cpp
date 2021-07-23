@@ -81,7 +81,7 @@ void ZEnergyCalibrationDialogV2::zh_createComponents()
 
     // gain factor
     QHBoxLayout* gainFactorLayout = new QHBoxLayout;
-    gainFactorLayout->setMargin(0);
+    gainFactorLayout->setContentsMargins(0, 0, 0, 0);
     mainLayout->addLayout(gainFactorLayout);
 
     QLabel* label = new QLabel;
@@ -124,7 +124,7 @@ QWidget* ZEnergyCalibrationDialogV2::zh_createMainWidget()
 
     // top  layout
     QHBoxLayout* rightLayout = new QHBoxLayout;
-    rightLayout->setMargin(0);
+    rightLayout->setContentsMargins(0, 0, 0, 0);
     mainGroupBoxlayout->addLayout(rightLayout);
 
     //    QDialogButtonBox* mainWidgetButtonBox = new QDialogButtonBox(this);
@@ -415,15 +415,15 @@ void ZEnergyCalibrationDialogV2::zh_restoreSettings()
     }
     else
     {
-        QList<QColor> lineColorList;
-        lineColorList.append(QColor(Qt::red));
-        lineColorList.append(QColor(Qt::green));
-        lineColorList.append(QColor(Qt::blue));
+        QVector<QColor> lineColorVector;
+        lineColorVector.append(QColor(Qt::red));
+        lineColorVector.append(QColor(Qt::green));
+        lineColorVector.append(QColor(Qt::blue));
 
-        QColor color;
+        //       QColor color;
         for(int i = 0; i < zv_energyCalibrationLineList.count(); i++)
         {
-            zv_energyCalibrationLineList.at(i)->zp_setLineColor(lineColorList.value(i, QColor()));
+            zv_energyCalibrationLineList.at(i)->zp_setLineColor(lineColorVector.value(i, QColor()));
         }
     }
 

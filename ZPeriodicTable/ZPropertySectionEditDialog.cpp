@@ -8,6 +8,7 @@
 #include <QLineEdit>
 #include <QMessageBox>
 #include <QPushButton>
+#include <QRegularExpression>
 #include <QRadioButton>
 #include <QRegExp>
 #include <QVBoxLayout>
@@ -155,8 +156,7 @@ ZPropertySectionEditDialog::AdditionTarget ZPropertySectionEditDialog::zp_additi
 QStringList ZPropertySectionEditDialog::zp_newSectionBranch() const
 {
     QStringList sectionBranch = zv_parentSectionBranch;
-    QStringList newSectionBranch = zv_sectionLineEdit->text().split(QRegExp("[\\\\/-]"),
-                                                                    QString::QString::SkipEmptyParts);
+    QStringList newSectionBranch = zv_sectionLineEdit->text().split(QRegularExpression("[\\\\/-]"), Qt::SkipEmptyParts);
 
     foreach(QString section, newSectionBranch)
     {

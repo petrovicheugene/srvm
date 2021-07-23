@@ -154,7 +154,7 @@ QWidget* ZCorrelationPlotterDataManager::zh_createChartDataKindComboBoxWidget()
     QWidget* widget = new QWidget();
     QHBoxLayout* layout = new QHBoxLayout;
     widget->setLayout(layout);
-    layout->setMargin(0);
+    layout->setContentsMargins(0, 0, 0, 0);
 
     QLabel* label = new QLabel();
     label->setText(tr("Display:"));

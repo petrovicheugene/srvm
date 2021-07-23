@@ -87,11 +87,11 @@ void	ZNumericDelegate::setModelData ( QWidget * editor, QAbstractItemModel * mod
         removeLastTree = true;
     }
 
-    valString.replace(QRegExp(","), ".");
-    valString.replace(QRegExp("e"), "E");
-    bool powerTypeRecord = valString.contains(QRegExp("[eE]"));
+    valString.replace(QRegularExpression(","), ".");
+    valString.replace(QRegularExpression("e"), "E");
+    bool powerTypeRecord = valString.contains(QRegularExpression("[eE]"));
 
-    QStringList parts = valString.split(QRegExp("[,.Ee]"),QString::KeepEmptyParts);
+    QStringList parts = valString.split(QRegularExpression("[,.Ee]"),Qt::KeepEmptyParts);
 
     if(removeLastTree && parts.count() > 2)
     {

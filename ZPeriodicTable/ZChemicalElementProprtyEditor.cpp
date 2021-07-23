@@ -18,6 +18,7 @@
 #include <QMessageBox>
 #include <QMimeData>
 #include <QPushButton>
+#include <QRegularExpression>
 #include <QSettings>
 #include <QSplitter>
 #include <QStandardPaths>
@@ -595,12 +596,12 @@ void ZChemicalElementProprtyEditor::zh_pastePropertyFromClipboard()
     }
 
     // devide text to rows (separator - \n)
-    QRegExp rowSplitterRegExp("\n");
+    QRegularExpression rowSplitterRegExp("\n");
     QString txt = zv_clipboard->text();
-    QStringList rowList = zv_clipboard->text().split(rowSplitterRegExp, QString::SkipEmptyParts);
+    QStringList rowList = zv_clipboard->text().split(rowSplitterRegExp, Qt::SkipEmptyParts);
 
     // devide every row to columns (separator - \t or ';')
-    QRegExp columnSplitterRegExp("[\t;]");
+    QRegularExpression columnSplitterRegExp("[\t;]");
     QList<QStringList> slittedRowList;
     QStringList currentRow;
     int columnCount = 0;

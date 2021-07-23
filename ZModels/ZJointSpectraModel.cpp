@@ -315,10 +315,10 @@ void ZJointSpectraModel::zp_clearSelectedConcentrations()
     QMap<int, QMap<int, QModelIndex> >::const_iterator rit;
     QMap<int, QModelIndex> columnList;
     QMap<int, QModelIndex>::const_iterator cit;
-    for(rit = zv_selectedIndexMap.begin(); rit != zv_selectedIndexMap.end(); rit++)
+    for(rit = zv_selectedIndexMap.cbegin(); rit != zv_selectedIndexMap.cend(); rit++)
     {
         columnList = rit.value();
-        for(cit = columnList.begin(); cit != columnList.end(); cit++)
+        for(cit = columnList.cbegin(); cit != columnList.cend(); cit++)
         {
             setData(cit.value(), QVariant("0.0"));
         }
@@ -341,7 +341,7 @@ void ZJointSpectraModel::zp_convertSelectedToString(QString& selectionString) co
     for(rit = zv_selectedIndexMap.begin(); rit != zv_selectedIndexMap.end(); rit++)
     {
         columnList = rit.value();
-        for(cit = columnList.begin(); cit != columnList.end(); cit++)
+        for(cit = columnList.cbegin(); cit != columnList.cend(); cit++)
         {
             vData = data(cit.value());
             if(!vData.isValid() && !vData.canConvert<QString>())
@@ -351,13 +351,15 @@ void ZJointSpectraModel::zp_convertSelectedToString(QString& selectionString) co
             }
             selectionString += vData.toString();
 
-            if(cit != columnList.end() - 1)
+            // if(cit != columnList.end() - 1)
+            if(cit.key() != columnList.lastKey())
             {
                 selectionString += separator;
             }
         }
         // row is comlete
-        if(rit != zv_selectedIndexMap.end() - 1)
+        // if(rit != zv_selectedIndexMap.end() - 1)
+        if(rit.key() != zv_selectedIndexMap.lastKey())
         {
             selectionString.append('\n');
         }

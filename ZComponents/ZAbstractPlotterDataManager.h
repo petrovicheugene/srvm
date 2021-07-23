@@ -21,20 +21,19 @@ public:
     // FUNCS
     void zp_connectToSpectraArrayRepository(ZSpectrumArrayRepository*);
     void zp_connectToCalibrationRepository(ZCalibrationRepository*);
-
     void zp_connectToPlotter(ZPlotter* plotter);
 
 signals:
 
-    void zg_requestCurrentMeasuringConditions(quint8 gainFactor, int exposition) const;
+    void zg_requestCurrentMeasuringConditions(quint8 gainFactor, int exposition);
 
     void zg_requestEnergyLineEnergyValue(const QString& elementSymbol,
-                                         const QString& lineName, double& energyValue) const;
+                                         const QString& lineName, double& energyValue);
     void zg_requestEnergyLineRelativeIntensity(const QString& elementSymbol,
-                                               const QString& lineName, int& reletiveIntensity) const;
+                                               const QString& lineName, int& reletiveIntensity);
 
-    void zg_requestEnergyLineVisibility(QString elementSymbol, QString lineName, bool& visibility) const;
-    void zg_requestEnergyLineColor(QString elementSymbol, QString lineName, QColor& color) const;
+    void zg_requestEnergyLineVisibility(QString elementSymbol, QString lineName, bool& visibility);
+    void zg_requestEnergyLineColor(QString elementSymbol, QString lineName, QColor& color);
 
 
 

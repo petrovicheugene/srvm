@@ -40,7 +40,7 @@ void ZCorrelationPlotterWidget::zh_createComponents()
 {
     QVBoxLayout* mainLayout = new QVBoxLayout;
     setLayout(mainLayout);
-    mainLayout->setMargin(0);
+    mainLayout->setContentsMargins(0, 0, 0, 0);
 
     //zv_plotter = new ZPlotter(this);
     QFrame* frame = new QFrame();

@@ -2,7 +2,7 @@
 #include "ZSpectrumGraphicsItem.h"
 #include "ZAbstractSpectrum.h"
 #include "ZGeneral.h"
-#include "ZPlotterDefaulVariables.h"
+#include "zplotterdefaulvariables.h"
 
 #include <QPainter>
 #include <QStyleOptionGraphicsItem>

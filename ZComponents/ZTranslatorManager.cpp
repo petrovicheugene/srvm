@@ -112,7 +112,7 @@ void ZTranslatorManager::zh_createAvailableLocaleList()
     translatorFileNameStringList = dir.entryList(QStringList(QString("%1.qm").arg(appBaseName+"*")));
 
     QDir resDir(zv_resoucesTranslatorDirName);
-    QStringList resFiles;
+    //QStringList resFiles;
     translatorFileNameStringList.append(resDir.entryList());
 
     QString localeName;

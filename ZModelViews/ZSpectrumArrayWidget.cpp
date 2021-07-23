@@ -24,7 +24,7 @@ ZSpectrumArrayWidget::ZSpectrumArrayWidget(QWidget *parent) : QWidget(parent)
 void ZSpectrumArrayWidget::zh_createComponents()
 {
     zv_mainLayout = new QVBoxLayout;
-    zv_mainLayout->setMargin(0);
+    zv_mainLayout->setContentsMargins(0, 0, 0, 0);
     setLayout(zv_mainLayout);
 
     zv_table = new QTableView(this);
@@ -98,7 +98,7 @@ void ZSpectrumArrayWidget::zp_connectToSpectrumArrayRepository(ZSpectrumArrayRep
 //==============================================================
 void ZSpectrumArrayWidget::zp_setMainLayoutMargin(int margin)
 {
-    zv_mainLayout->setMargin(margin);
+    zv_mainLayout->setContentsMargins(margin, margin, margin, margin);
 }
 //==============================================================
 void ZSpectrumArrayWidget::zp_setCurrentArrayIndex(int arrayIndex)

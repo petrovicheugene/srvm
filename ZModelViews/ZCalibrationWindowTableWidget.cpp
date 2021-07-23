@@ -104,7 +104,7 @@ void ZCalibrationWindowTableWidget::zp_connectToCalibrationRepository(
 //=============================================================
 void ZCalibrationWindowTableWidget::zp_setMainLayoutMargin(int margin)
 {
-    zv_mainLayout->setMargin(margin);
+    zv_mainLayout->setContentsMargins(margin, margin, margin, margin);
 }
 //=============================================================
 void ZCalibrationWindowTableWidget::zp_setCurrentWindowIndex(int windowIndex)
@@ -181,7 +181,7 @@ void ZCalibrationWindowTableWidget::zp_setChannelNumberMinMax(int first, int las
 void ZCalibrationWindowTableWidget::zh_createComponents()
 {
     zv_mainLayout = new QVBoxLayout;
-    zv_mainLayout->setMargin(0);
+    zv_mainLayout->setContentsMargins(0, 0, 0, 0);
 
     setLayout(zv_mainLayout);
 

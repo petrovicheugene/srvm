@@ -8,7 +8,7 @@ ZRawTerm::ZRawTerm(ZAbstractTerm::TermType termType)
     termState = ZAbstractTerm::TS_NOT_DEFINED;
     windowList = QStringList();
     customString = QString();
-    factor = 0.0;
+    factor = QString::number(0.0);
 }
 //================================================
 ZRawCustomTerm::ZRawCustomTerm(ZAbstractTerm::TermType termType)

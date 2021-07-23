@@ -1,5 +1,6 @@
 //====================================================
 #include "ZPasteData.h"
+#include <QRegularExpression>
 //====================================================
 ZPasteData::ZPasteData()
 {
@@ -63,7 +64,7 @@ bool ZPasteData::zp_loadData(const QString& dataString, const QStringList &chemE
 bool ZPasteData::zh_devideStringToTerms(const QString& dataString)
 {
     // devide into strings and remove empty lines
-    QStringList lines =  dataString.split(QRegExp("\\n|\\v"));
+    QStringList lines =  dataString.split(QRegularExpression("\\n|\\v"));
     if(lines.isEmpty())
     {
         return false;
@@ -80,7 +81,7 @@ bool ZPasteData::zh_devideStringToTerms(const QString& dataString)
     {
         // remove whitespace from the start and end
         line = line.simplified();
-        QStringList lineValueList = line.split(QRegExp("\\t|\\s{1,}"));
+        QStringList lineValueList = line.split(QRegularExpression("\\t|\\s{1,}"));
         // define column count
         if(zv_columnCount < lineValueList.count())
         {

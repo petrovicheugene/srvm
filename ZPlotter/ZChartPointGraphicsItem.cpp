@@ -3,7 +3,7 @@
 #include "ZGraphicsItemUserTypes.h"
 #include "ZChartPointOptions.h"
 #include "ZGeneral.h"
-#include "ZPlotterDefaulVariables.h"
+#include "ZPlotterDefaultVariables.h"
 #include "ZCorrelationPlotterDataManager.h"
 
 #include <QGraphicsRectItem>
@@ -24,6 +24,7 @@ ZChartPointGraphicsItem::ZChartPointGraphicsItem(const ZCorrelationPlotterDataMa
 {
     zv_dataManager = dataManager;
     zv_relatedObjectId = relatedObjectId;
+
     // color of current point by default
     prepareGeometryChange();
     zv_chartPointOptions = seriesPointOptions;

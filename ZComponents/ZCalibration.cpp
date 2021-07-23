@@ -2416,10 +2416,10 @@ QList<QColor> ZCalibration::zp_createColorList()
 
     while (colorList.count() < 1500)
     {
-        qsrand(QDateTime::currentMSecsSinceEpoch() + 500);
-        red = ((qrand() % 24) * 10) + 15;
-        green = ((qrand() % 24) * 10) + 15;
-        blue = ((qrand() % 24) * 10) + 15;
+        srand(QDateTime::currentMSecsSinceEpoch() + 500);
+        red = ((rand() % 24) * 10) + 15;
+        green = ((rand() % 24) * 10) + 15;
+        blue = ((rand() % 24) * 10) + 15;
 
         color = QColor(red, green, blue);
         if (ZCalibration::checkColor(color))
