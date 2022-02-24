@@ -101,7 +101,7 @@ void ZPeriodicTableWidget::zh_createComponents()
             chemicalElementButton->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
             buttonGridLayout->addWidget(chemicalElementButton, row, col, 1, 1);
             // apppend the button to the list
-            if (currentZNumber - 1 >= zv_elementButtonList.size())
+            if (currentZNumber - 1 >= static_cast<uint>(zv_elementButtonList.size()))
             {
                 zv_elementButtonList.append(chemicalElementButton);
             }

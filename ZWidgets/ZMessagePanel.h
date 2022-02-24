@@ -19,7 +19,7 @@ public slots:
 
     void zp_appendMessage(const QString&);
     void zp_appendStandardOutput(const QByteArray& byteArray);
-
+    void zp_clearMessages();
 private:
 
     // VARS

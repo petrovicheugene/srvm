@@ -218,6 +218,11 @@ void ZMessageWidget::zp_addToMessage(int msgType,
     zh_scrollTextToEnd();
 }
 //===================================================
+void ZMessageWidget::zp_clearMessages()
+{
+    zv_msgTextEdit->clear();
+}
+//===================================================
 void ZMessageWidget::zp_appendMessage(int msgType,
                                       const QString &msg)
 {

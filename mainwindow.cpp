@@ -67,7 +67,7 @@ MainWindow::MainWindow(QWidget *parent)
     : ZBaseMainWindow(parent)
 {
     qRegisterMetaType<ZEquationSettingsData>("ZEquationSettingsData");
-    //    qRegisterMetaType<ZSpeSpectrum>("ZSpeSpectrum");
+//    qRegisterMetaType<ZSpeSpectrum>("ZSpeSpectrum");
 
     setWindowTitle(qApp->applicationDisplayName());
 

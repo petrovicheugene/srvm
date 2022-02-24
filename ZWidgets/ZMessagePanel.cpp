@@ -42,6 +42,11 @@ void ZMessagePanel::zh_createConnections()
             zv_msgTextEdit, &QTextEdit::clear);
 }
 //==================================================
+void ZMessagePanel::zp_clearMessages()
+{
+    zv_msgTextEdit->clear();
+}
+//==================================================
 void ZMessagePanel::zp_appendMessage(const QString& msg)
 {
     zv_msgTextEdit->append(msg);

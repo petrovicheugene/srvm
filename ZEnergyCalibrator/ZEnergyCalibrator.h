@@ -8,7 +8,7 @@ class ZEnergyCalibrator : public QObject
 {
     Q_OBJECT
 public:
-    explicit ZEnergyCalibrator(QObject *parent = 0);
+    explicit ZEnergyCalibrator(QObject *parent);
 
 signals:
 

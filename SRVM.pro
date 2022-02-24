@@ -5,7 +5,9 @@
 #-------------------------------------------------
 QT       += core gui
 QT       += xml
-QT       +=  core5compat
+QT       += core
+
+QT       += core5compat
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -13,8 +15,8 @@ greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 RC_ICONS = "ZImages/SRVM-8.ico"
 
 #Application version
-VER_MAJ=21
-VER_MIN=07
+VER_MAJ=22
+VER_MIN=02
 VER_PAT=01
 
 PRODUCT_SHORT_NAME="SRVM"
@@ -22,12 +24,12 @@ PRODUCT_FILE_BASE_NAME="SRVM"
 QMAKE_TARGET_PRODUCT="SRV M"
 QMAKE_TARGET_DESCRIPTION="Creation of spectrometer calibration"
 QMAKE_TARGET_COMPANY="TechnoAnalyt"
-QMAKE_TARGET_COPYRIGHT="Copyright © $${QMAKE_TARGET_COMPANY} Ltd. 2015 - 2020. All rights reserved."
+QMAKE_TARGET_COPYRIGHT="Copyright © $${QMAKE_TARGET_COMPANY} Ltd. 2015 - 2022. All rights reserved."
 COMPANY_URL=www.tehnoanalit.com
 
 #-------------------------------------------------
 # in common.pri will be defined VERSION, TARGET, DEBUG SETTINGS
-#  global APP DEFINES
+# global APP DEFINES
 #-------------------------------------------------
 #include(./common.pri )
 #include(./app.pri )
@@ -272,7 +274,6 @@ SOURCES += main.cpp \
     ZEnergyCalibrator/ZEnergyCalibrationDialog.cpp \
     ZEnergyCalibrator/ZEnergyCalibrationDialogV2.cpp \
     ZEnergyCalibrator/ZEnergyCalibrationSpectrumTableModel.cpp \
-    ZEnergyCalibrator/ZEnergyCalibrator.cpp \
     ZEnergyCalibrator/ZPeakWindow.cpp \
     ZEnergyCalibrator/ZPeakWindowTableModel.cpp \
     ZEnergyLineManager/ZEnergyLineDelegate.cpp \
@@ -401,7 +402,6 @@ HEADERS  += \
     ZEnergyCalibrator/ZEnergyCalibrationDialog.h \
     ZEnergyCalibrator/ZEnergyCalibrationDialogV2.h \
     ZEnergyCalibrator/ZEnergyCalibrationSpectrumTableModel.h \
-    ZEnergyCalibrator/ZEnergyCalibrator.h \
     ZEnergyCalibrator/ZPeakWindow.h \
     ZEnergyCalibrator/ZPeakWindowTableModel.h \
     ZEnergyLineManager/ZEnergyLineDelegate.h \

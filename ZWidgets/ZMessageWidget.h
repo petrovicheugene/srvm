@@ -36,7 +36,7 @@ public:
     void zp_alignStringList(QStringList& stringList,
                             Qt::Alignment alignment,
                             const QString& spaceSymbol = " ");
-
+    void zp_clearMessages();
 signals:
 
     void zg_requestMessageIconPixmap(int type,
