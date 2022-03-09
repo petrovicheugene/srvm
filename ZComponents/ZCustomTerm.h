@@ -30,8 +30,8 @@ signals:
 
     void zs_calcWindowIntensity(
         const QString& windowName, const QObject*, qreal&, bool keepBufferClean, bool* ok);
-    void zs_errorReport(const QString& errorMsg) const;
-    void zg_windowIsExist(const QString& name, bool& res) const;
+    void zs_errorReport(const QString& errorMsg);
+    void zs_windowExist(const QString& name, bool& res);
 
 protected slots:
 
@@ -41,7 +41,7 @@ protected slots:
     void zh_handleWindowIntensityRequest(const QString& varName, double& value, bool& bRes);
     void zh_handleErrorReport(const QString& errorString,
                         int errorTokenStartPosition,
-                        int errorTokenEndPosition) const;
+                        int errorTokenEndPosition);
 
 private:
     // VARS

@@ -7,9 +7,8 @@ QT       += core gui
 QT       += xml
 QT       += core
 
-QT       += core5compat
-
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
+greaterThan(QT_MAJOR_VERSION, 5): QT += core5compat
 
 #PRO VARS
 RC_ICONS = "ZImages/SRVM-8.ico"

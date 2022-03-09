@@ -740,13 +740,14 @@ void ZFileActionManager::zp_onCurrentCalibrationDirtyChange(bool dirty,
     zv_saveCalibrationAsFileAction->setEnabled(dirty || currentCalibrationExists);
 }
 //======================================================
-void ZFileActionManager::zp_defineSpectrumFilesAndInitAppending(int arrayIndex)
+void ZFileActionManager::zp_selectSpeFilesAndInitAppending(int arrayIndex)
 {
     QStringList fileNameList = QFileDialog::getOpenFileNames(
-        nullptr,
+                nullptr,
         tr("Select spectrum file"),
         zv_spectrumFolderPath,
         tr("SRV spectrum files(%1);;All files(%2)").arg("*.spe", "*.*"));
+
     if (fileNameList.isEmpty())
     {
         return;

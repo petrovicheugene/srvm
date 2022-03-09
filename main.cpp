@@ -12,7 +12,7 @@
 #include <QPixmap>
 #include <iostream>
 #include <QSet>
-
+#include <QException>
 //===============================================
 //======================================================
 /*!
@@ -139,111 +139,14 @@ void messageHandler(QtMsgType type, const QMessageLogContext &context, const QSt
 //======================================================
 int main(int argc, char *argv[])
 {
-    //    QApplication a(argc, argv);
-    //    QPixmap pixmap(":/images/ZImages/SDC_TA3.png");
-    //    QSplashScreen splash(pixmap);
-    //    splash.show();
-    //    splash.showMessage("Loading codecs...", Qt::AlignBottom | Qt::AlignRight, Qt::white );
-    //    a.processEvents();
-
     QTextCodec* codec = QTextCodec::codecForName("windows-1251");
     QTextCodec::setCodecForLocale(codec);
 
-    //    QApplication::setOrganizationName(glAppCompany);
-    //    QApplication::setApplicationName(glAppExeBaseName);
-    //    QApplication::setApplicationVersion(qApp->applicationVersion());
-
-    //    splash.showMessage("Loading translations...", Qt::AlignBottom | Qt::AlignRight, Qt::white );
-    //    a.processEvents();
-
-    //    QTranslator appTranslator;
-    //    QDir appDir(QApplication::applicationDirPath());
-
-    //    bool res = appTranslator.load(appDir.absoluteFilePath(QString("%1_%2").arg(glAppExeBaseName, QLocale::system().name())));
-    //    if(!res)
-    //    {
-    //        res = appTranslator.load(QString(":/trans/%1_%2").arg(glAppExeBaseName, QLocale::system().name()));
-    //    }
-
-    //    if(res)
-    //    {
-    //        a.installTranslator(&appTranslator);
-    //    }
-
-    //    QTranslator qtTranslator;
-    //    res = qtTranslator.load(appDir.absoluteFilePath(QString("%1_%2").arg("qtbase", QLocale::system().name())));
-
-    //    if(!res)
-    //    {
-    //        res = qtTranslator.load(QString(":/trans/qtbase_%2").arg(QLocale::system().name()));
-    //    }
-
-    //    if(res)
-    //    {
-    //        a.installTranslator(&qtTranslator);
-    //    }
-
-    //    splash.showMessage("Loading styles...", Qt::AlignBottom | Qt::AlignRight, Qt::white );
-    //    a.processEvents();
-
-    //    splash.showMessage("Loading modules...", Qt::AlignBottom | Qt::AlignRight, Qt::white );
-    //    a.processEvents();
-
-    //    MainWindow w;
-    //    w.show();
-    //    splash.finish(&w);
-
-    //    return a.exec();
     QApplication a(argc, argv);
     //
     initMsgTypesToHandleInMainWindow();
     // custom message handler for logging via qInfo qWarning qCritical
     qInstallMessageHandler(messageHandler);
-
-    // set translators
-    // translator attempts to load from expernal file first and if not from resources
-    //    QDir appDir(QApplication::applicationDirPath());
-    //    QTranslator appTranslator;
-    //    if(appTranslator.load(appDir.absoluteFilePath(QString("%1_%2").arg(APP_EXE_BASE_NAME, QLocale::system().name())))
-    //            || appTranslator.load(QString(":/translators/%1_%2").arg(APP_EXE_BASE_NAME, QLocale::system().name())))
-    //    {
-    //        a.installTranslator(&appTranslator);
-    //    }
-
-    //    QTranslator qtTranslator;
-    //    if(qtTranslator.load(appDir.absoluteFilePath(QString("%1_%2").arg("qtbase", QLocale::system().name())))
-    //            || qtTranslator.load(QString(":/translators/qtbase_%2").arg(QLocale::system().name())))
-    //    {
-    //        a.installTranslator(&qtTranslator);
-    //    }
-
-    //    // set application properties
-    //    QApplication::setOrganizationName(APP_COMPANY);
-    //    QApplication::setApplicationName(APP_EXE_BASE_NAME);
-    //    QApplication::setApplicationVersion(APP_VERSION);
-
-    // create qApp properties and set .pro defines into them
-    //#ifdef APP_EXE_BASE_NAME
-    //    qApp->setProperty("glAppExeBaseName", QString(APP_EXE_BASE_NAME));
-    //#endif
-    //#ifdef APP_PRODUCT
-    //    qApp->setProperty("glAppProduct", QString(APP_PRODUCT));
-    //#endif
-    //#ifdef APP_VERSION
-    //    qApp->setProperty("qApp->applicationVersion()", QString(APP_VERSION));
-    //#endif
-    //#ifdef APP_COMPANY
-    //    qApp->setProperty("glAppCompany", QString(APP_COMPANY));
-    //#endif
-    //#ifdef APP_COPYRIGHT
-    //    qApp->setProperty("glAppCopyright", QString(APP_COPYRIGHT));
-    //#endif
-    //#ifdef APP_COMPANY_URL
-    //    qApp->setProperty("glAppCompanyURL", QString(APP_COMPANY_URL));
-    //#endif
-    //#ifdef APP_ICON
-    //    qApp->setProperty("glAppIcon", QString(APP_ICON));
-    //#endif
 
     // create qApp properties and set .pro defines into them
 #ifdef APP_DISPLAY_NAME
@@ -277,7 +180,6 @@ int main(int argc, char *argv[])
     ZTranslatorManager languageManager;
     languageManager.zp_installTranslatorsToApplication();
 
-
     // set dots on the splitter handle
     qApp->setStyleSheet(
                 "QSplitter::handle:vertical {height: 4px; image: url(:/images/ZImages/vSplitterHandler.png);}"
@@ -304,18 +206,10 @@ int main(int argc, char *argv[])
                             "}");
     }
 
-    // launch app
-
-    //  pixmap = QPixmap(":/images/ZImages/Chemistry.png");
-    //  QSplashScreen dbSplash(pixmap);
-    //  dbSplash.show();
-    //  dbSplash.showMessage("Connecting to database...", Qt::AlignBottom | Qt::AlignRight, Qt::white );
-
-    // main window
     MainWindow w;
-
     // pointer to main window for message handler
     pMainWindow = &w;
+
     w.show();
     return a.exec();
 }

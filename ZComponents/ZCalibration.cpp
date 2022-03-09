@@ -1426,8 +1426,8 @@ bool ZCalibration::zh_updateExistingTerm(int termIndex, ZRawTerm& rawTerm)
 
         ZCustomTerm* customTerm = static_cast<ZCustomTerm*>(zv_termList[termIndex]);
         customTerm->zp_setName(rawCustomTerm->name);
-        customTerm->zp_setExpression(rawCustomTerm->customString);
-        customTerm->zp_setDescription(rawCustomTerm->descriptionString);
+//        customTerm->zp_setExpression(rawCustomTerm->customString);
+//        customTerm->zp_setDescription(rawCustomTerm->descriptionString);
         res = true;
 
         zv_dirty = true;

@@ -31,7 +31,7 @@ void ZCustomTerm::zh_handleWindowIntensityRequest(const QString& windowName,
 //===================================================================
 void ZCustomTerm::zh_handleErrorReport(const QString& errorString,
                                        int errorTokenStartPosition,
-                                       int errorTokenEndPosition) const
+                                       int errorTokenEndPosition)
 {
     emit zs_errorReport(QString("%1 (%2)!").arg(errorString, QString::number(errorTokenStartPosition)));
 
@@ -142,10 +142,10 @@ bool ZCustomTerm::zh_checkExpression(const QString& expression)
             &ZMathExpressionHandler::zs_errorReport,
             &mathExpressionVariableListMaker,
             &ZMathExpressionVariableListMaker::zp_setError);
-    connect(&mathExpressionVariableListMaker,
-            &ZMathExpressionVariableListMaker::zs_variableCheckRequest,
-            this,
-            &ZCustomTerm::zg_windowIsExist);
+//    connect(&mathExpressionVariableListMaker,
+//            &ZMathExpressionVariableListMaker::zs_variableCheckRequest,
+//            this,
+//            &ZCustomTerm::zs_windowIsExist);
 
     double res;
     if (!mathExpressionHandler.zp_calculateExpression(expression, res))
