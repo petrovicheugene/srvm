@@ -390,7 +390,7 @@ bool ZMathExpressionHandler::zh_getToken()
 bool ZMathExpressionHandler::zh_addOrSubtract(double& result)
 {
     QString op;
-    double temp;
+    double temp = 0.0;
     if (!zh_multiplyOrDevide(result))
     {
         return false;
@@ -422,7 +422,7 @@ bool ZMathExpressionHandler::zh_addOrSubtract(double& result)
 bool ZMathExpressionHandler::zh_multiplyOrDevide(double& result)
 {
     QString op;
-    double temp;
+    double temp= 0.0;
     if (!zh_power(result))
     {
         return false;
@@ -686,6 +686,7 @@ bool ZMathExpressionHandler::zp_checkExpression(const QString& expression,
 //===================================================
 bool ZMathExpressionHandler::zp_calculateExpression(const QString& expression, double& dResult)
 {
+    qDebug() << "IN CALC EXP";
     zv_expression = expression;
     zv_charPosition = 0;
 

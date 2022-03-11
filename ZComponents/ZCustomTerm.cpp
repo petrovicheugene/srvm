@@ -121,8 +121,14 @@ void ZCustomTerm::zp_setName(const QString& name)
 //===================================================================
 bool ZCustomTerm::zp_setExpression(const QString& expression)
 {
+    // bool res = zh_checkExpression(expression);
+    // if(res)
+    // {
     zv_expression = expression;
-    return zh_checkExpression(zv_expression);
+    // }
+
+    // return res;
+    return true;
 }
 //===================================================================
 void ZCustomTerm::zp_setDescription(const QString& description)

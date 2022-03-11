@@ -56,7 +56,8 @@ public:
         TOT_TERM_NAME_CHANGED,
         TOT_TERM_STATE_CHANGED,
         TOT_TERM_WINDOW_MARGIN_CHANGED,
-        TOT_TERM_FACTOR_CHANGED
+        TOT_TERM_FACTOR_CHANGED,
+        TOT_TERM_CHANGED
     };
 
     enum EquationType

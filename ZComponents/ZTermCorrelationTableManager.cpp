@@ -610,6 +610,28 @@ void ZTermCorrelationTableManager::zh_onRepositoryTermOperation(ZCalibrationRepo
     {
         emit zg_currentOperation(TOT_DATA_CHANGED, first, last);
     }
+    else if(type == ZCalibrationRepository::TOT_TERM_CHANGED)
+    {
+        // DEBUG
+        zh_startCalculationCorrelationsAndCovariations();
+        emit zg_currentOperation(TOT_DATA_CHANGED, 0, zp_rowCount() -1);
+
+        // equation quality recalc
+        int factorCount = 0;
+        ZAbstractTerm::TermState termState;
+        for(int t = 0; t < zv_calibrationRepository->zp_termCount(zv_currentCalibrationId); t++)
+        {
+            termState = zv_calibrationRepository->zp_termState(zv_currentCalibrationId, t);
+            if(termState == ZAbstractTerm::TS_CONST_INCLUDED
+                    || termState == ZAbstractTerm::TS_INCLUDED)
+            {
+                factorCount ++;
+            }
+        }
+
+        emit zg_calculateCalibrationQualityData(false, zv_currentCalibrationId, factorCount + 1, zv_sumSquareAverageConcentrationDispersion);
+    }
+
 }
 //=============================================================================
 void ZTermCorrelationTableManager::zh_onCalibrationRepositoryOperation(ZCalibrationRepository::CalibrationOperationType type,

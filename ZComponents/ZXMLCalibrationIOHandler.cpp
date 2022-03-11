@@ -20,10 +20,10 @@ QString ZXMLCalibrationIOHandler::zp_getCalibrationOpenFile(const QString& calib
 {
     QString locationDirString = zp_checkDirPath(calibrationFolderPath);
     QString fileName = QFileDialog::getOpenFileName(
-        nullptr,
-        tr("Select file to open"),
-        locationDirString,
-        tr("XML Calibration files(*.clbx);;XML files(*.xml);;All files(*.*)"));
+                nullptr,
+                tr("Select file to open"),
+                locationDirString,
+                tr("XML Calibration files(*.clbx);;XML files(*.xml);;All files(*.*)"));
     return fileName;
 }
 //==========================================================
@@ -31,20 +31,20 @@ QStringList ZXMLCalibrationIOHandler::zp_getCalibrationOpenFiles(const QString& 
 {
     QString locationDirString = zp_checkDirPath(calibrationFolderPath);
     QStringList fileNames = QFileDialog::getOpenFileNames(
-        nullptr,
-        tr("Open file"),
-        locationDirString,
-        tr("XML Calibration files(*.clbx);;XML files(*.xml);;All files(*.*)"));
+                nullptr,
+                tr("Open file"),
+                locationDirString,
+                tr("XML Calibration files(*.clbx);;XML files(*.xml);;All files(*.*)"));
     return fileNames;
 }
 //==========================================================
 QString ZXMLCalibrationIOHandler::zp_getCalibrationSaveFile(const QString& calibrationFilePath)
 {
     QString fileName = QFileDialog::getSaveFileName(
-        nullptr,
-        tr("Save file"),
-        calibrationFilePath,
-        tr("XML Calibration files(*.clbx);;XML files(*.xml);;All files(*.*)"));
+                nullptr,
+                tr("Save file"),
+                calibrationFilePath,
+                tr("XML Calibration files(*.clbx);;XML files(*.xml);;All files(*.*)"));
     return fileName;
 }
 //==========================================================
@@ -55,7 +55,7 @@ QString ZXMLCalibrationIOHandler::zp_checkDirPath(const QString& calibrationFold
     if (!fileInfo.exists() || !fileInfo.isDir())
     {
         QStringList docLocations = QStandardPaths::standardLocations(
-            QStandardPaths::DocumentsLocation);
+                    QStandardPaths::DocumentsLocation);
         if (docLocations.isEmpty())
         {
             locationDirString = QDir::currentPath();
@@ -152,7 +152,7 @@ bool ZXMLCalibrationIOHandler::zp_writeCalibrationToFile(QFile& file,
         // window type
         writer.writeStartElement(zv_TYPE);
         writer.writeCharacters(
-            ZCalibrationWindow::zp_typeName(calibration->zp_calibrationWindowType(w)));
+                    ZCalibrationWindow::zp_typeName(calibration->zp_calibrationWindowType(w)));
         writer.writeEndElement(); // type
         // first channel
         writer.writeStartElement(zv_FIRST_CHANNEL);
@@ -395,6 +395,7 @@ void ZXMLCalibrationIOHandler::zh_parseXMLElement(ZCalibration* calibration,
             }
 
             readerText = reader.text().toString().simplified();
+
             if (currentTagName == zv_DATE_TIME)
             {
                 QString dateTimeString = readerText;
@@ -457,12 +458,12 @@ void ZXMLCalibrationIOHandler::zh_parseXMLElement(ZCalibration* calibration,
                 else if (parentTagStack.last() == zv_FRACTIONAL_BASE_NORMALIZER)
                 {
                     calibration->zp_setBaseTermNormaType(
-                        ZTermNormalizer::zp_normaTypeForString(readerText));
+                                ZTermNormalizer::zp_normaTypeForString(readerText));
                 }
                 else if (parentTagStack.last() == zv_EQUATION)
                 {
                     calibration->zp_setEquationType(
-                        ZCalibration::zp_equationTypeFromString(readerText));
+                                ZCalibration::zp_equationTypeFromString(readerText));
                 }
             }
             else if (currentTagName == zv_FIRST_CHANNEL)
@@ -533,16 +534,7 @@ void ZXMLCalibrationIOHandler::zh_parseXMLElement(ZCalibration* calibration,
             }
             else if (currentTagName == zv_TERM)
             {
-                if (zv_rawTerm.termType == ZAbstractTerm::TT_CUSTOM)
-                {
-                    //ZRawCustomTerm* customTerm = static_cast<ZRawCustomTerm* >(&zv_rawTerm);
-                    //calibration->zp_applyRawTerm(*customTerm);
-                    calibration->zp_applyRawTerm(zv_rawTerm);
-                }
-                else
-                {
-                    calibration->zp_applyRawTerm(zv_rawTerm);
-                }
+                calibration->zp_applyRawTerm(zv_rawTerm);
             }
             parentTagStack.pop();
             return; // parent tag is closed

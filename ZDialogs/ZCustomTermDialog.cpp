@@ -129,11 +129,20 @@ void ZCustomTermDialog::zh_onOkButtonClick()
 {
     zv_messageLabel->clear();
     bool res = false;
+    if(zv_nameLineEdit->text().isEmpty())
+    {
+        QString msg = tr("The term name is empty.");
+        zp_showMsg(msg);
+        return;
+    }
+
     zv_rawTerm.name = zv_nameLineEdit->text();
     zv_rawTerm.customString = zv_expressionLineEdit->text();
     zv_rawTerm.descriptionString = zv_descriptionTextEdit->toPlainText();
 
     zv_calibration->zp_updateCustomTerm(res, zv_rawTerm);
+
+    qDebug() << "UPDATE RES" << res;
 
     if (res)
     {

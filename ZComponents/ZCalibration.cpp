@@ -1123,10 +1123,18 @@ void ZCalibration::zp_updateCustomTerm(bool& res, ZRawCustomTerm& rawTerm)
         return;
     }
 
-    // create a new term
-    int id = zp_applyRawTerm(rawTerm);
-    res = id < 0 ? false : true;
-    rawTerm.termId = id;
+    int termIndex = zp_applyRawTerm(rawTerm);
+    res = termIndex < 0 ? false : true;
+    rawTerm.termId = termIndex;
+
+    // Update
+    zv_dirty = true;
+    zv_dateTime = QDateTime::currentDateTime();
+    emit zg_dirtyChanged(zv_dirty);
+
+    emit zg_termOperation(TOT_TERM_CHANGED, termIndex, termIndex);
+
+
 }
 //=========================================================
 void ZCalibration::zp_calcWindowIntensity(const QString& windowName,
@@ -1394,7 +1402,7 @@ bool ZCalibration::zh_checkCustomString(ZRawTerm& rawTerm)
 //=========================================================
 bool ZCalibration::zh_createWindowIndexList(QList<int>& windowIndexList, ZRawTerm& rawTerm)
 {
-    if (!zh_checkCustomString(rawTerm))
+    if (rawTerm.termType == ZAbstractTerm::TT_CUSTOM && !zh_checkCustomString(rawTerm))
     {
         return false;
     }
@@ -1426,8 +1434,8 @@ bool ZCalibration::zh_updateExistingTerm(int termIndex, ZRawTerm& rawTerm)
 
         ZCustomTerm* customTerm = static_cast<ZCustomTerm*>(zv_termList[termIndex]);
         customTerm->zp_setName(rawCustomTerm->name);
-//        customTerm->zp_setExpression(rawCustomTerm->customString);
-//        customTerm->zp_setDescription(rawCustomTerm->descriptionString);
+        customTerm->zp_setExpression(rawCustomTerm->customString);
+        customTerm->zp_setDescription(rawCustomTerm->descriptionString);
         res = true;
 
         zv_dirty = true;
@@ -1440,8 +1448,6 @@ bool ZCalibration::zh_updateExistingTerm(int termIndex, ZRawTerm& rawTerm)
         zv_termList[termIndex]->zh_setTermFactor(rawTerm.factor);
         res = true;
     }
-
-
 
     return res;
 }
