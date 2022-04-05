@@ -686,7 +686,7 @@ bool ZMathExpressionHandler::zp_checkExpression(const QString& expression,
 //===================================================
 bool ZMathExpressionHandler::zp_calculateExpression(const QString& expression, double& dResult)
 {
-    qDebug() << "IN CALC EXP";
+    // qDebug() << "IN CALC EXP";
     zv_expression = expression;
     zv_charPosition = 0;
 
