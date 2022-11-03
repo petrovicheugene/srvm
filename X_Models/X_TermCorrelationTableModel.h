@@ -38,7 +38,7 @@ public slots:
 
 private slots:
 
-    void zh_onDataManagerOperation(X_TermCorrelationTableManager::OperationType type,
+    void xh_onDataManagerOperation(X_TermCorrelationTableManager::OperationType type,
                                    int first,
                                    int last);
 

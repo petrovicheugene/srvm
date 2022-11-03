@@ -61,21 +61,21 @@ private:
     const QString xv_NAME = "name";
 
     // FUNCS
-    // static QMap<QChar, QString> zh_initEscapeControlCharacterMap();
-    void zh_writeXMLElement(X_AbstractChemicalElementPropertyRepository* repository,
+    // static QMap<QChar, QString> xh_initEscapeControlCharacterMap();
+    void xh_writeXMLElement(X_AbstractChemicalElementPropertyRepository* repository,
                             QXmlStreamWriter *writer,
                             int z,
                             QStringList& propertySectionBranch);
 
-    bool zh_detectRoot(QXmlStreamReader &reader) const;
-    bool zh_parseXmlElement(X_AbstractChemicalElementPropertyRepository* repository,
+    bool xh_detectRoot(QXmlStreamReader &reader) const;
+    bool xh_parseXmlElement(X_AbstractChemicalElementPropertyRepository* repository,
                             QXmlStreamReader& reader,
                             QStringList& sectionBranch,
                             QString &propertyName,
                             QStack<QString>& tokenNameStack) const;
 
-//    QString zh_escapeControlCharacters(const QString& srcString) const;
-//    QString zh_removeWordSeparator(const QString& srcString) const;
+//    QString xh_escapeControlCharacters(const QString& srcString) const;
+//    QString xh_removeWordSeparator(const QString& srcString) const;
 
 };
 //======================================================

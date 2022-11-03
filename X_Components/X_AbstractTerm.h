@@ -73,13 +73,13 @@ public slots:
 
 protected slots:
 
-    void zh_normalizerChanged();
-    void zh_onWindowDestroying();
+    void xh_normalizerChanged();
+    void xh_onWindowDestroying();
 
 protected slots:
 
-    virtual void zh_updateTermNameForWindowName() = 0;
-    virtual void zh_onWindowTypeChange(X_CalibrationWindow::WindowType previousType, X_CalibrationWindow::WindowType currentType) = 0;
+    virtual void xh_updateTermNameForWindowName() = 0;
+    virtual void xh_onWindowTypeChange(X_CalibrationWindow::WindowType previousType, X_CalibrationWindow::WindowType currentType) = 0;
 
 protected:
 
@@ -94,15 +94,15 @@ protected:
     //    QList<qint64> xv_unnormalizedValueList;
     //    qreal xv_averageValue;
     // FUNCS
-    //bool zh_setTermFactor(qreal factor);
-    void zh_connectToNormalizer(X_TermNormalizer *);
-    void zh_connectToCalibration(X_Calibration* calibration);
-    void zh_chopTailX_eroesFromTermFactorString();
-    qreal* zh_termFactorPointer();
+    //bool xh_setTermFactor(qreal factor);
+    void xh_connectToNormalizer(X_TermNormalizer *);
+    void xh_connectToCalibration(X_Calibration* calibration);
+    void xh_chopTailX_eroesFromTermFactorString();
+    qreal* xh_termFactorPointer();
 
-    bool zh_setTermFactor(const QString&);
-    bool zh_setTermFactor(qreal);
-    void zh_conformStringWithValue();
+    bool xh_setTermFactor(const QString&);
+    bool xh_setTermFactor(qreal);
+    void xh_conformStringWithValue();
 
     // STATIC
     // VARS
@@ -113,8 +113,8 @@ protected:
     static QMap<X_AbstractTerm::TermState, QString> xv_stateNameMap;
 
     // FUNCS
-    static QMap<X_AbstractTerm::TermType, QString> zh_intTypeNameMap();
-    static QMap<X_AbstractTerm::TermState, QString>zh_intStateNameMap();
+    static QMap<X_AbstractTerm::TermType, QString> xh_intTypeNameMap();
+    static QMap<X_AbstractTerm::TermState, QString>xh_intStateNameMap();
 
 
 };

@@ -9,11 +9,11 @@
 //==================================================
 X_MessagePanel::X_MessagePanel(QWidget *parent) : QWidget(parent)
 {
-    zh_createComponents();
-    zh_createConnections();
+    xh_createComponents();
+    xh_createConnections();
 }
 //==================================================
-void X_MessagePanel::zh_createComponents()
+void X_MessagePanel::xh_createComponents()
 {
     QVBoxLayout* mainLayout = new QVBoxLayout;
     setLayout(mainLayout);
@@ -36,7 +36,7 @@ void X_MessagePanel::zh_createComponents()
 
 }
 //==================================================
-void X_MessagePanel::zh_createConnections()
+void X_MessagePanel::xh_createConnections()
 {
     connect(xv_clearButton, &QPushButton::clicked,
             xv_msgTextEdit, &QTextEdit::clear);

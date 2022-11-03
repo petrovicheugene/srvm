@@ -22,9 +22,9 @@ X_WidgetWithSidebar::X_WidgetWithSidebar(const QString &objectName,
     showToolTipString = xv_sideBarOnLeft? tr("Show left panel") : tr("Show right panel");
 
     setObjectName(objectName);
-    zh_createComponents();
-    zh_createConnections();
-    // zh_restoreState();
+    xh_createComponents();
+    xh_createConnections();
+    // xh_restoreState();
 
 }
 //=======================================================
@@ -36,9 +36,9 @@ X_WidgetWithSidebar::X_WidgetWithSidebar(const QString &title,
     xv_sideBarWidget = nullptr;
     xv_mainWidget = nullptr;
     setObjectName(objectName);
-    zh_createComponents(title);
-    zh_createConnections();
-    // zh_restoreState();
+    xh_createComponents(title);
+    xh_createConnections();
+    // xh_restoreState();
 
 }
 //=======================================================
@@ -53,7 +53,7 @@ bool X_WidgetWithSidebar::xp_setMainWidget(QWidget* mainWidget)
 
     xv_splitter->insertWidget(widgetIndex, xv_mainWidget);
     xv_splitter->setCollapsible(widgetIndex, false);
-    zh_restoreSettings();
+    xh_restoreSettings();
     return true;
 }
 //=======================================================
@@ -72,7 +72,7 @@ bool X_WidgetWithSidebar::xp_setSidebarWidget(QWidget* sideBarWidget)
     xv_hideLabel->setPixmap(xv_closePixmap); // QPixmap(":/images/X_Widgets/sidebarRightBlueClose.png"));
     xv_hideLabel->setVisible(true);
     xv_hideLabel->setToolTip(hideToolTipString);
-    zh_restoreSettings();
+    xh_restoreSettings();
     return true;
 }
 //=======================================================
@@ -93,7 +93,7 @@ void X_WidgetWithSidebar::xp_setInfoLabelText(bool dirty, const QString& text)
     xv_infoLabel->setToolTip(infoText);
 }
 //=======================================================
-void X_WidgetWithSidebar::zh_createComponents(QString title)
+void X_WidgetWithSidebar::xh_createComponents(QString title)
 {
     // Main Layout
     xv_mainLayout = new QVBoxLayout;
@@ -170,13 +170,13 @@ void X_WidgetWithSidebar::zh_createComponents(QString title)
     }
 }
 //=======================================================
-void X_WidgetWithSidebar::zh_createConnections()
+void X_WidgetWithSidebar::xh_createConnections()
 {
     connect(xv_hideLabel, &X_ClickableLabel::clicked,
-            this, &X_WidgetWithSidebar::zh_onHideSidePanelButtonClick);
+            this, &X_WidgetWithSidebar::xh_onHideSidePanelButtonClick);
 }
 //=======================================================
-void X_WidgetWithSidebar::zh_restoreSettings()
+void X_WidgetWithSidebar::xh_restoreSettings()
 {
     QSettings settings;
     QVariant vData;
@@ -206,7 +206,7 @@ void X_WidgetWithSidebar::xp_saveSettings()
     settings.endGroup();
 }
 //=======================================================
-void X_WidgetWithSidebar::zh_manageHideLabelPix()
+void X_WidgetWithSidebar::xh_manageHideLabelPix()
 {
     if(xv_sideBarWidget->isVisible())
     {
@@ -220,14 +220,14 @@ void X_WidgetWithSidebar::zh_manageHideLabelPix()
     }
 }
 //=======================================================
-void X_WidgetWithSidebar::zh_onHideSidePanelButtonClick()
+void X_WidgetWithSidebar::xh_onHideSidePanelButtonClick()
 {
     if(xv_sideBarWidget)
     {
         xv_sideBarWidget->setVisible(!xv_sideBarWidget->isVisible());
     }
 
-    zh_manageHideLabelPix();
+    xh_manageHideLabelPix();
 }
 //=======================================================
 

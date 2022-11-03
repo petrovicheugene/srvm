@@ -82,7 +82,7 @@ signals:
 
 private slots:
 
-    void zh_restoreVisibility();
+    void xh_restoreVisibility();
 private:
 
     // VARS
@@ -92,9 +92,9 @@ private:
     static const QString xv_settingsSectionName;
 
     // FUNCS
-    void zh_saveVisibility();
-    void zh_openSettingsGroup(QSettings& settings);
-    void zh_closeSettingsGroup(QSettings&  settings);
+    void xh_saveVisibility();
+    void xh_openSettingsGroup(QSettings& settings);
+    void xh_closeSettingsGroup(QSettings&  settings);
 
 };
 Q_DECLARE_METATYPE(PropertyList)

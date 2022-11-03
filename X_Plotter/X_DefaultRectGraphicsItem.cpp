@@ -77,7 +77,7 @@ void X_DefaultRectGraphicsItem::xp_fitItemInRect(const QRectF& rect)
     newShape.addRect(xv_boundingRect);
     xv_shape = newShape;
 
-    zh_remakePainterPaths();
+    xh_remakePainterPaths();
 
     //    QPainterPath newAxisPath;
     //    if(xv_XAxesVisible)
@@ -103,7 +103,7 @@ void X_DefaultRectGraphicsItem::xp_fitItemInRect(const QRectF& rect)
     update();
 }
 //========================================================
-void X_DefaultRectGraphicsItem::zh_remakePainterPaths()
+void X_DefaultRectGraphicsItem::xh_remakePainterPaths()
 {
     QPainterPath newAxisPath;
     if(xv_XAxesVisible)
@@ -138,7 +138,7 @@ void X_DefaultRectGraphicsItem::xp_setAxisVisible(Qt::Orientation orientation, b
         xv_XAxesVisible = visibilityFlag;
     }
 
-    zh_remakePainterPaths();
+    xh_remakePainterPaths();
     update();
 }
 //========================================================
@@ -169,7 +169,7 @@ void X_DefaultRectGraphicsItem::xp_setMedianaLineVisible(bool visibilityFlag)
         return;
     }
     xv_medianaLineVisible = visibilityFlag;
-    zh_remakePainterPaths();
+    xh_remakePainterPaths();
     update();
 }
 //========================================================

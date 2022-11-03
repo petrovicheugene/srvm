@@ -66,23 +66,23 @@ protected:
 
     // FUNCS
 
-    void zh_findBracketForward(QChar bracketSymbol,
+    void xh_findBracketForward(QChar bracketSymbol,
                                const QString& expression,
                                int pos,
                                QPair<int, bool>& highlight);
-    void zh_findBracketBackward(QChar bracketSymbol,
+    void xh_findBracketBackward(QChar bracketSymbol,
                                 const QString& expression,
                                 int pos,
                                 QPair<int, bool>& highlight);
 
-    bool zh_getToken();
-    bool zh_addOrSubtract(double& result);
-    bool zh_multiplyOrDevide(double& result);
-    bool zh_power(double& result);
-    bool zh_unaryOperation(double& result);
-    bool zh_recognizeBrackets(double& result);
-    bool zh_variableValue(double& result);
-    void zh_handleError(int error);
+    bool xh_getToken();
+    bool xh_addOrSubtract(double& result);
+    bool xh_multiplyOrDevide(double& result);
+    bool xh_power(double& result);
+    bool xh_unaryOperation(double& result);
+    bool xh_recognizeBrackets(double& result);
+    bool xh_variableValue(double& result);
+    void xh_handleError(int error);
 };
 //===================================================
 #endif // X_MATHEXPRESSIONHANDLER_H

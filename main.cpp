@@ -12,6 +12,7 @@
 #include <QPixmap>
 #include <iostream>
 #include <QSet>
+#include <QException>
 //===============================================
 //======================================================
 /*!
@@ -148,101 +149,11 @@ int main(int argc, char *argv[])
     QTextCodec* codec = QTextCodec::codecForName("windows-1251");
     QTextCodec::setCodecForLocale(codec);
 
-    //    QApplication::setOrganizationName(glAppCompany);
-    //    QApplication::setApplicationName(glAppExeBaseName);
-    //    QApplication::setApplicationVersion(qApp->applicationVersion());
-
-    //    splash.showMessage("Loading translations...", Qt::AlignBottom | Qt::AlignRight, Qt::white );
-    //    a.processEvents();
-
-    //    QTranslator appTranslator;
-    //    QDir appDir(QApplication::applicationDirPath());
-
-    //    bool res = appTranslator.load(appDir.absoluteFilePath(QString("%1_%2").arg(glAppExeBaseName, QLocale::system().name())));
-    //    if(!res)
-    //    {
-    //        res = appTranslator.load(QString(":/trans/%1_%2").arg(glAppExeBaseName, QLocale::system().name()));
-    //    }
-
-    //    if(res)
-    //    {
-    //        a.installTranslator(&appTranslator);
-    //    }
-
-    //    QTranslator qtTranslator;
-    //    res = qtTranslator.load(appDir.absoluteFilePath(QString("%1_%2").arg("qtbase", QLocale::system().name())));
-
-    //    if(!res)
-    //    {
-    //        res = qtTranslator.load(QString(":/trans/qtbase_%2").arg(QLocale::system().name()));
-    //    }
-
-    //    if(res)
-    //    {
-    //        a.installTranslator(&qtTranslator);
-    //    }
-
-    //    splash.showMessage("Loading styles...", Qt::AlignBottom | Qt::AlignRight, Qt::white );
-    //    a.processEvents();
-
-    //    splash.showMessage("Loading modules...", Qt::AlignBottom | Qt::AlignRight, Qt::white );
-    //    a.processEvents();
-
-    //    MainWindow w;
-    //    w.show();
-    //    splash.finish(&w);
-
-    //    return a.exec();
     QApplication a(argc, argv);
     //
     initMsgTypesToHandleInMainWindow();
     // custom message handler for logging via qInfo qWarning qCritical
     qInstallMessageHandler(messageHandler);
-
-    // set translators
-    // translator attempts to load from expernal file first and if not from resources
-    //    QDir appDir(QApplication::applicationDirPath());
-    //    QTranslator appTranslator;
-    //    if(appTranslator.load(appDir.absoluteFilePath(QString("%1_%2").arg(APP_EXE_BASE_NAME, QLocale::system().name())))
-    //            || appTranslator.load(QString(":/translators/%1_%2").arg(APP_EXE_BASE_NAME, QLocale::system().name())))
-    //    {
-    //        a.installTranslator(&appTranslator);
-    //    }
-
-    //    QTranslator qtTranslator;
-    //    if(qtTranslator.load(appDir.absoluteFilePath(QString("%1_%2").arg("qtbase", QLocale::system().name())))
-    //            || qtTranslator.load(QString(":/translators/qtbase_%2").arg(QLocale::system().name())))
-    //    {
-    //        a.installTranslator(&qtTranslator);
-    //    }
-
-    //    // set application properties
-    //    QApplication::setOrganizationName(APP_COMPANY);
-    //    QApplication::setApplicationName(APP_EXE_BASE_NAME);
-    //    QApplication::setApplicationVersion(APP_VERSION);
-
-    // create qApp properties and set .pro defines into them
-    //#ifdef APP_EXE_BASE_NAME
-    //    qApp->setProperty("glAppExeBaseName", QString(APP_EXE_BASE_NAME));
-    //#endif
-    //#ifdef APP_PRODUCT
-    //    qApp->setProperty("glAppProduct", QString(APP_PRODUCT));
-    //#endif
-    //#ifdef APP_VERSION
-    //    qApp->setProperty("qApp->applicationVersion()", QString(APP_VERSION));
-    //#endif
-    //#ifdef APP_COMPANY
-    //    qApp->setProperty("glAppCompany", QString(APP_COMPANY));
-    //#endif
-    //#ifdef APP_COPYRIGHT
-    //    qApp->setProperty("glAppCopyright", QString(APP_COPYRIGHT));
-    //#endif
-    //#ifdef APP_COMPANY_URL
-    //    qApp->setProperty("glAppCompanyURL", QString(APP_COMPANY_URL));
-    //#endif
-    //#ifdef APP_ICON
-    //    qApp->setProperty("glAppIcon", QString(APP_ICON));
-    //#endif
 
     // create qApp properties and set .pro defines into them
 #ifdef APP_DISPLAY_NAME
@@ -276,7 +187,6 @@ int main(int argc, char *argv[])
     X_TranslatorManager languageManager;
     languageManager.xp_installTranslatorsToApplication();
 
-
     // set dots on the splitter handle
     qApp->setStyleSheet(
                 "QSplitter::handle:vertical {height: 4px; image: url(:/images/X_Images/vSplitterHandler.png);}"
@@ -284,24 +194,24 @@ int main(int argc, char *argv[])
                 );
 
     // horizontal lines on table header views on win10
-//    if (QSysInfo::windowsVersion() == QSysInfo::WV_WINDOWS10)
-//    {
-//        qApp->setStyleSheet("QHeaderView::section{"
-//                            "border-top:0px solid #D8D8D8;"
-//                            "border-left:0px solid #D8D8D8;"
-//                            "border-right:1px solid #D8D8D8;"
-//                            "border-bottom: 1px solid #D8D8D8;"
-//                            "background-color:white;"
-//                            "padding:4px;"
-//                            "}"
-//                            "QTableCornerButton::section{"
-//                            "border-top:0px solid #D8D8D8;"
-//                            "border-left:0px solid #D8D8D8;"
-//                            "border-right:1px solid #D8D8D8;"
-//                            "border-bottom: 1px solid #D8D8D8;"
-//                            "background-color:white;"
-//                            "}");
-//    }
+    if (QSysInfo::productVersion() == "10")
+    {
+        qApp->setStyleSheet("QHeaderView::section{"
+                            "border-top:0px solid #D8D8D8;"
+                            "border-left:0px solid #D8D8D8;"
+                            "border-right:1px solid #D8D8D8;"
+                            "border-bottom: 1px solid #D8D8D8;"
+                            "background-color:white;"
+                            "padding:4px;"
+                            "}"
+                            "QTableCornerButton::section{"
+                            "border-top:0px solid #D8D8D8;"
+                            "border-left:0px solid #D8D8D8;"
+                            "border-right:1px solid #D8D8D8;"
+                            "border-bottom: 1px solid #D8D8D8;"
+                            "background-color:white;"
+                            "}");
+    }
 
     // launch app
 
@@ -312,9 +222,9 @@ int main(int argc, char *argv[])
 
     // main window
     MainWindow w;
-
     // pointer to main window for message handler
     pMainWindow = &w;
+
     w.show();
     return a.exec();
 }

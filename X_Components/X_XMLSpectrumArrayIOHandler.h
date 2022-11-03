@@ -47,12 +47,12 @@ private:
     QString xv_fileAbsolutePath;
 
     // FUNCS
-    bool zh_detectRoot(const QXmlStreamReader& reader, bool& magicStringDetectionFlag) const;
-    void zh_parseXMLElement(QList<X_RawSpectrumArray>&,
+    bool xh_detectRoot(const QXmlStreamReader& reader, bool& magicStringDetectionFlag) const;
+    void xh_parseXMLElement(QList<X_RawSpectrumArray>&,
                             int currentArrayIndex,
                             int currentSpectrumIndex,
                             QXmlStreamReader&) const;
-    bool zh_checkfilePath(const QString& path) const;
+    bool xh_checkfilePath(const QString& path) const;
 };
 //============================================================
 #endif // X_XMLARRAYIOHANDLER_H

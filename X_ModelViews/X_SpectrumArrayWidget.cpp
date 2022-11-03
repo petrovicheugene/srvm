@@ -17,11 +17,11 @@
 //==============================================================
 X_SpectrumArrayWidget::X_SpectrumArrayWidget(QWidget *parent) : QWidget(parent)
 {
-    zh_createComponents();
-    zh_createConnections();
+    xh_createComponents();
+    xh_createConnections();
 }
 //==============================================================
-void X_SpectrumArrayWidget::zh_createComponents()
+void X_SpectrumArrayWidget::xh_createComponents()
 {
     xv_mainLayout = new QVBoxLayout;
     xv_mainLayout->setContentsMargins(0, 0, 0, 0);
@@ -47,9 +47,9 @@ void X_SpectrumArrayWidget::xp_setModel(X_ArrayModel *model)
     //xv_table->horizontalHeader()->setSectionResizeMode(0, QHeaderView::Stretch);
     xv_table->setAlternatingRowColors(true);
     connect(xv_table->selectionModel(), &QItemSelectionModel::currentRowChanged,
-            this, &X_SpectrumArrayWidget::zh_onCurrentArrayChanged);
+            this, &X_SpectrumArrayWidget::xh_onCurrentArrayChanged);
     connect(model, &X_ArrayModel::xg_checkCurrentArray,
-            this, &X_SpectrumArrayWidget::zh_checkCurrentArray);
+            this, &X_SpectrumArrayWidget::xh_checkCurrentArray);
     xv_table->setSelectionMode(QAbstractItemView::SingleSelection);
 }
 //==============================================================
@@ -159,13 +159,13 @@ void X_SpectrumArrayWidget::xp_startCurrentArrayEdition()
     xv_table->edit(currentIndex);
 }
 //==============================================================
-void X_SpectrumArrayWidget::zh_createConnections()
+void X_SpectrumArrayWidget::xh_createConnections()
 {
     connect(xv_table, &QTableView::customContextMenuRequested,
-            this, &X_SpectrumArrayWidget::zh_onContextMenuRequest);
+            this, &X_SpectrumArrayWidget::xh_onContextMenuRequest);
 }
 //==============================================================
-void X_SpectrumArrayWidget::zh_checkCurrentArray()
+void X_SpectrumArrayWidget::xh_checkCurrentArray()
 {
     if(!xv_table->selectionModel())
     {
@@ -181,7 +181,7 @@ void X_SpectrumArrayWidget::zh_checkCurrentArray()
     }
 }
 //==============================================================
-void X_SpectrumArrayWidget::zh_onCurrentArrayChanged(const QModelIndex & current,
+void X_SpectrumArrayWidget::xh_onCurrentArrayChanged(const QModelIndex & current,
                                                     const QModelIndex & previous)
 {
     int currentRow;
@@ -206,7 +206,7 @@ void X_SpectrumArrayWidget::zh_onCurrentArrayChanged(const QModelIndex & current
     emit xg_currentArrayChanged(currentRow, previousRow);
 }
 //==============================================================
-void X_SpectrumArrayWidget::zh_onContextMenuRequest(const QPoint &pos)
+void X_SpectrumArrayWidget::xh_onContextMenuRequest(const QPoint &pos)
 {
     QMenu *menu = new QMenu(this);
     menu->setAttribute(Qt::WA_DeleteOnClose);

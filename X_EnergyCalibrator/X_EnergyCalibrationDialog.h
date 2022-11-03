@@ -29,7 +29,7 @@ public slots:
 
 private slots:
 
-    void zh_calculateSaveAndClose();
+    void xh_calculateSaveAndClose();
 
 private:
 
@@ -45,12 +45,12 @@ private:
     X_PeakWindowTableModel* xv_peakWindowTableModel;
 
     // FUNCS
-    void zh_createActions();
-    void zh_createComponents();
-    QWidget* zh_createControlWidget();
-    void zh_createConnections();
-    void zh_restoreSettings();
-    void zh_saveSettings() const;
+    void xh_createActions();
+    void xh_createComponents();
+    QWidget* xh_createControlWidget();
+    void xh_createConnections();
+    void xh_restoreSettings();
+    void xh_saveSettings() const;
 
 };
 //======================================================

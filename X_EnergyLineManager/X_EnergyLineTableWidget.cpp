@@ -15,11 +15,11 @@
 X_EnergyLineTableWidget::X_EnergyLineTableWidget(QWidget *parent)
     : QWidget(parent)
 {
-    zh_createComponents();
-    zh_createConnections();
+    xh_createComponents();
+    xh_createConnections();
 }
 //======================================================
-void X_EnergyLineTableWidget::zh_createComponents()
+void X_EnergyLineTableWidget::xh_createComponents()
 {
     xv_chemicalElementPropertyTreeModel = new X_ChemicalElementPropertyTreeModel(this);
     xv_chemicalElementPropertyTreeModel->xp_setNamePropertyName("Name ru");
@@ -45,7 +45,7 @@ void X_EnergyLineTableWidget::zh_createComponents()
 
 }
 //======================================================
-void X_EnergyLineTableWidget::zh_createConnections()
+void X_EnergyLineTableWidget::xh_createConnections()
 {
     xv_periodicTableWidget->xp_setModel(xv_chemicalElementPropertyTreeModel);
 
@@ -60,13 +60,13 @@ void X_EnergyLineTableWidget::zh_createConnections()
             xv_periodicTableWidget, &X_PeriodicTableWidget::xp_fillSelectedChemicalElementList);
 
     connect(xv_selectedEnergyLineTableModel, &X_SelectedEnergyLineTableModel::xg_requestEnergyLinesForX_Number,
-            this, &X_EnergyLineTableWidget::zh_energyLinesForX_Number);
+            this, &X_EnergyLineTableWidget::xh_energyLinesForX_Number);
     connect(xv_selectedEnergyLineTableModel, &X_SelectedEnergyLineTableModel::xg_requestEnergyLineRelativeIntensityForX_Number,
-            this, &X_EnergyLineTableWidget::zh_energyLinesRelativeIntensityForX_Number);
+            this, &X_EnergyLineTableWidget::xh_energyLinesRelativeIntensityForX_Number);
 
 
     connect(xv_selectedEnergyLineTableModel, &X_SelectedEnergyLineTableModel::xg_requestChemicalElementSymbol,
-            this, &X_EnergyLineTableWidget::zh_chemicalElementSymbol);
+            this, &X_EnergyLineTableWidget::xh_chemicalElementSymbol);
 
     connect(xv_selectedEnergyLineTableModel, &X_SelectedEnergyLineTableModel::xg_energyLineVisibilityChanged,
             this, &X_EnergyLineTableWidget::xg_energyLineVisibilityChanged);
@@ -77,21 +77,21 @@ void X_EnergyLineTableWidget::zh_createConnections()
 
 }
 //======================================================
-void X_EnergyLineTableWidget::zh_energyLinesForX_Number(int X_Number, PropertyList& propertyList)
+void X_EnergyLineTableWidget::xh_energyLinesForX_Number(int X_Number, PropertyList& propertyList)
 {
     QStringList propertySectionBranch;
     propertySectionBranch << "Energy Lines";
     xv_chemicalElementPropertyTreeModel->xp_chemicalElementProperties(X_Number, propertySectionBranch, propertyList);
 }
 //======================================================
-void X_EnergyLineTableWidget::zh_energyLinesRelativeIntensityForX_Number(int X_Number, PropertyList& propertyList)
+void X_EnergyLineTableWidget::xh_energyLinesRelativeIntensityForX_Number(int X_Number, PropertyList& propertyList)
 {
     QStringList propertySectionBranch;
     propertySectionBranch << "Relative Intensity";
     xv_chemicalElementPropertyTreeModel->xp_chemicalElementProperties(X_Number, propertySectionBranch, propertyList);
 }
 //======================================================
-void X_EnergyLineTableWidget::zh_chemicalElementSymbol(int X_Number, QString& symbol)
+void X_EnergyLineTableWidget::xh_chemicalElementSymbol(int X_Number, QString& symbol)
 {
     PropertyList propertyList;
     xv_chemicalElementPropertyTreeModel->xp_chemicalElementProperties(X_Number, QStringList(), propertyList);

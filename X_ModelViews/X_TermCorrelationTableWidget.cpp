@@ -13,8 +13,8 @@
 //=============================================================
 X_TermCorrelationTableWidget::X_TermCorrelationTableWidget(QWidget *parent) : QWidget(parent)
 {
-    zh_createComponents();
-    zh_createConnections();
+    xh_createComponents();
+    xh_createConnections();
 }
 //=============================================================
 void X_TermCorrelationTableWidget::xp_setModel(X_TermCorrelationTableModel* model)
@@ -25,7 +25,7 @@ void X_TermCorrelationTableWidget::xp_setModel(X_TermCorrelationTableModel* mode
             model, &X_TermCorrelationTableModel::xp_onUserChangesTermState);
     X_NumericDelegate* numericDelegate = new X_NumericDelegate(xv_table);
     //    connect(numericDelegate, &X_NumericDelegate::xg_editNext,
-    //            this, &X_TermCorrelationTableWidget::zh_editNext);
+    //            this, &X_TermCorrelationTableWidget::xh_editNext);
     xv_table->setItemDelegate(numericDelegate);
     //    X_SpectrumTableDelegate* spectrumDelegate = new X_SpectrumTableDelegate(xv_table);
     //    xv_table->setItemDelegateForColumn(0, new X_VisibilityStringDelegate(xv_table));
@@ -34,7 +34,7 @@ void X_TermCorrelationTableWidget::xp_setModel(X_TermCorrelationTableModel* mode
 
 
     connect(xv_table->selectionModel(), &QItemSelectionModel::currentRowChanged,
-            this, &X_TermCorrelationTableWidget::zh_onCurrentTermChanged);
+            this, &X_TermCorrelationTableWidget::xh_onCurrentTermChanged);
     connect(this, &X_TermCorrelationTableWidget::xg_currentTermChanged,
             model, &X_TermCorrelationTableModel::xg_currentTermChanged);
     connect(this, &X_TermCorrelationTableWidget::xg_termDoubleClicked,
@@ -79,7 +79,7 @@ void X_TermCorrelationTableWidget::xp_setMainLayoutMargin(int margin)
     xv_mainLayout->setContentsMargins(margin, margin, margin, margin);
 }
 //=============================================================
-void X_TermCorrelationTableWidget::zh_createComponents()
+void X_TermCorrelationTableWidget::xh_createComponents()
 {
     xv_mainLayout = new QVBoxLayout;
     xv_mainLayout->setContentsMargins(0, 0, 0, 0);
@@ -93,7 +93,7 @@ void X_TermCorrelationTableWidget::zh_createComponents()
     connect(checkableHeader, &X_CustomCheckableVerticalHeaderView::xg_userChangesTermState,
             this, &X_TermCorrelationTableWidget::xg_userChangesTermState);
     connect(checkableHeader, &X_CustomCheckableVerticalHeaderView::doubleClicked,
-            this, &X_TermCorrelationTableWidget::zh_onTermDoubleClick);
+            this, &X_TermCorrelationTableWidget::xh_onTermDoubleClick);
     xv_table->setVerticalHeader(checkableHeader);
     xv_table->verticalHeader()->setContextMenuPolicy(Qt::CustomContextMenu);
 
@@ -103,15 +103,15 @@ void X_TermCorrelationTableWidget::zh_createComponents()
     xv_mainLayout->addLayout(xv_buttonLayout);
 }
 //=============================================================
-void X_TermCorrelationTableWidget::zh_createConnections()
+void X_TermCorrelationTableWidget::xh_createConnections()
 {
     connect(xv_table, &QTableView::customContextMenuRequested,
-            this, &X_TermCorrelationTableWidget::zh_onContextMenuRequest);
+            this, &X_TermCorrelationTableWidget::xh_onContextMenuRequest);
     connect(xv_table->verticalHeader(), &QHeaderView::customContextMenuRequested,
-            this, &X_TermCorrelationTableWidget::zh_onContextMenuRequest);
+            this, &X_TermCorrelationTableWidget::xh_onContextMenuRequest);
 }
 //=============================================================
-void X_TermCorrelationTableWidget::zh_editNext(QModelIndex editedIndex)
+void X_TermCorrelationTableWidget::xh_editNext(QModelIndex editedIndex)
 {
     if(!editedIndex.isValid() || editedIndex.row() < 0)
     {
@@ -146,12 +146,12 @@ void X_TermCorrelationTableWidget::xp_currentTermIndex(int& index)
     index = xv_table->currentIndex().row();
 }
 //=============================================================
-void X_TermCorrelationTableWidget::zh_onCurrentTermChanged(QModelIndex current, QModelIndex previous)
+void X_TermCorrelationTableWidget::xh_onCurrentTermChanged(QModelIndex current, QModelIndex previous)
 {
     emit xg_currentTermChanged(current.row(), previous.row());
 }
 //=============================================================
-void X_TermCorrelationTableWidget::zh_onTermDoubleClick(const QModelIndex& index)
+void X_TermCorrelationTableWidget::xh_onTermDoubleClick(const QModelIndex& index)
 {
     if (!index.isValid() || !index.model())
     {
@@ -161,7 +161,7 @@ void X_TermCorrelationTableWidget::zh_onTermDoubleClick(const QModelIndex& index
     emit xg_termDoubleClicked(index.row());
 }
 //=============================================================
-void X_TermCorrelationTableWidget::zh_onContextMenuRequest(const QPoint &pos)
+void X_TermCorrelationTableWidget::xh_onContextMenuRequest(const QPoint &pos)
 {
     QMenu *menu=new QMenu(this);
     menu->setAttribute(Qt::WA_DeleteOnClose);

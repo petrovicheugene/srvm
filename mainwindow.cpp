@@ -69,6 +69,7 @@ MainWindow::MainWindow(QWidget *parent)
     qRegisterMetaType<X_EquationSettingsData>("X_EquationSettingsData");
     qRegisterMetaType<X_SpeSpectrum>("X_SpeSpectrum");
 
+
     setWindowTitle(qApp->applicationDisplayName());
 
     //    QPalette palette = QPalette(Qt::darkBlue);
@@ -93,15 +94,15 @@ MainWindow::MainWindow(QWidget *parent)
     xv_termCorrelationTableModel = nullptr;
     xv_plotter = nullptr;
 
-    zh_createActions();
-    zh_createComponents();
-    zh_createPlotterWidget();
+    xh_createActions();
+    xh_createComponents();
+    xh_createPlotterWidget();
 
-    zh_createMenu();
-    zh_createToolbar();
-    zh_createConnections();
+    xh_createMenu();
+    xh_createToolbar();
+    xh_createConnections();
 
-    zh_restoreSettings();
+    xh_restoreSettings();
 
     // plotter starting settings
     if(xv_plotter != nullptr)
@@ -186,10 +187,10 @@ void MainWindow::closeEvent(QCloseEvent* e)
         }
     }
 
-    zh_saveSettings();
+    xh_saveSettings();
 }
 //==========================================================
-void MainWindow::zh_createActions()
+void MainWindow::xh_createActions()
 {
     //    xv_languageControlAction = new QAction(this);
     //    xv_languageControlAction->setIcon(QIcon(":/images/X_Images/earthGlobe-16.png"));
@@ -213,7 +214,7 @@ void MainWindow::zh_createActions()
 
 }
 //==========================================================
-void MainWindow::zh_createPlotterWidget()
+void MainWindow::xh_createPlotterWidget()
 {
     // Plotter
     if(xv_plotter)
@@ -222,7 +223,7 @@ void MainWindow::zh_createPlotterWidget()
     }
 
     xv_plotter = new X_Plotter(this);
-    QFrame* frame = zh_setWidgetToFrame(xv_plotter);
+    QFrame* frame = xh_setWidgetToFrame(xv_plotter);
     setCentralWidget(frame);
 
     if(xv_plotterDataManager)
@@ -237,7 +238,7 @@ void MainWindow::zh_createPlotterWidget()
 
 }
 //==========================================================
-void MainWindow::zh_appLanguageControl()
+void MainWindow::xh_appLanguageControl()
 {
     if(!sender())
     {
@@ -281,7 +282,7 @@ void MainWindow::zh_appLanguageControl()
     QMessageBox::information(this, title, msg, QMessageBox::Ok);
 }
 //==========================================================
-void MainWindow::zh_fillLanguageMenu()
+void MainWindow::xh_fillLanguageMenu()
 {
     xv_languageMenu->clear();
     X_TranslatorManager translatorManager;
@@ -292,16 +293,16 @@ void MainWindow::zh_fillLanguageMenu()
     {
         QAction* action = xv_languageMenu->addAction(languageName);
         connect(action, &QAction::triggered,
-                this, &MainWindow::zh_appLanguageControl);
+                this, &MainWindow::xh_appLanguageControl);
     }
 }
 //==========================================================
-void MainWindow::zh_createComponents()
+void MainWindow::xh_createComponents()
 {
     // CENTRAL WIDGET
     //    // Plotter
     //    xv_plotter = new X_Plotter(this);
-    //    QFrame* frame = zh_setWidgetToFrame(xv_plotter);
+    //    QFrame* frame = xh_setWidgetToFrame(xv_plotter);
     //    setCentralWidget(frame);
 
     // DOCKS
@@ -365,12 +366,12 @@ void MainWindow::zh_createComponents()
     calibrationSplitter->setChildrenCollapsible(false);
     leftWidgetLayout->addWidget(calibrationSplitter);
 
-    //frame = zh_setWidgetToFrame(xv_equationSettingsPanelWidget);
+    //frame = xh_setWidgetToFrame(xv_equationSettingsPanelWidget);
     //frame->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
     //leftWidgetLayout->addWidget(frame);
 
     // setting to dock
-    QFrame* frame = zh_setWidgetToFrame(calibrationWidget);
+    QFrame* frame = xh_setWidgetToFrame(calibrationWidget);
     xv_calibrationDock->setWidget(frame);
 
     // Correlation Plotter View
@@ -393,7 +394,7 @@ void MainWindow::zh_createComponents()
     addDockWidget(Qt::LeftDockWidgetArea, xv_messagePanelDock);
 
     xv_messageWidget = new X_MessageWidget(this);
-    frame = zh_setWidgetToFrame(xv_messageWidget);
+    frame = xh_setWidgetToFrame(xv_messageWidget);
     // setting to dock
     xv_messagePanelDock->setWidget(frame);
 
@@ -407,7 +408,7 @@ void MainWindow::zh_createComponents()
     // create widget
     xv_energyLineTableWidget = new X_EnergyLineTableWidget(this);
     xv_energyLineTableWidget->show();
-    frame = zh_setWidgetToFrame(xv_energyLineTableWidget);
+    frame = xh_setWidgetToFrame(xv_energyLineTableWidget);
 
     // setting to widget dock
     xv_energyLineTableDock->setWidget(frame);
@@ -438,7 +439,7 @@ void MainWindow::zh_createComponents()
     statusBar();
 }
 //==========================================================
-QFrame* MainWindow::zh_setWidgetToFrame(QWidget* widget)
+QFrame* MainWindow::xh_setWidgetToFrame(QWidget* widget)
 {
     QFrame* frame = new QFrame();
     QVBoxLayout* frameLayout = new QVBoxLayout;
@@ -450,7 +451,7 @@ QFrame* MainWindow::zh_setWidgetToFrame(QWidget* widget)
     return frame;
 }
 //==========================================================
-void MainWindow::zh_createMenu()
+void MainWindow::xh_createMenu()
 {
     // File
     QMenu * menu = menuBar()->addMenu(tr("File"));
@@ -459,7 +460,7 @@ void MainWindow::zh_createMenu()
     xv_fileActionManager->xp_appendActionsToMenu(menu);
     xv_spectrumArrayRepository->xp_appendActionsToMenu(menu);
     xv_calibrationRepository->xp_appendActionsToMenu(menu);
-    zh_appendActionsToMenu(menu);
+    xh_appendActionsToMenu(menu);
 
     // Edit
     menu = menuBar()->addMenu(tr("Edit"));
@@ -467,7 +468,7 @@ void MainWindow::zh_createMenu()
     menu->setObjectName("Edit");
     xv_spectrumArrayRepository->xp_appendActionsToMenu(menu);
     xv_calibrationRepository->xp_appendActionsToMenu(menu);
-    zh_appendActionsToMenu(menu);
+    xh_appendActionsToMenu(menu);
 
     // View
     menu = menuBar()->addMenu(tr("View"));
@@ -475,7 +476,7 @@ void MainWindow::zh_createMenu()
     menu->setObjectName("View");
     xv_spectrumArrayRepository->xp_appendActionsToMenu(menu);
     xv_calibrationRepository->xp_appendActionsToMenu(menu);
-    zh_appendActionsToMenu(menu);
+    xh_appendActionsToMenu(menu);
 
     // Actions
     menu = menuBar()->addMenu(tr("Actions"));
@@ -483,24 +484,24 @@ void MainWindow::zh_createMenu()
     menu->setObjectName("Actions");
     xv_spectrumArrayRepository->xp_appendActionsToMenu(menu);
     xv_calibrationRepository->xp_appendActionsToMenu(menu);
-    zh_appendActionsToMenu(menu);
+    xh_appendActionsToMenu(menu);
 
     // Help
     menu = menuBar()->addMenu(tr("Help"));
     // menu->setCursor(Qt::PointingHandCursor);
     menu->setObjectName("Help");
-    zh_appendActionsToMenu(menu);
+    xh_appendActionsToMenu(menu);
 
 
 
 }
 //==========================================================
-void MainWindow::zh_createToolbar()
+void MainWindow::xh_createToolbar()
 {
 
 }
 //==========================================================
-void MainWindow::zh_createConnections()
+void MainWindow::xh_createConnections()
 {
 
     connect(this, &MainWindow::xg_standardLogMessage,
@@ -508,21 +509,21 @@ void MainWindow::zh_createConnections()
     connect(this, &MainWindow::xg_plainLogMessage,
             xv_messageWidget, &X_MessageWidget::xp_appendPlainMessage, Qt::QueuedConnection);
     connect(xv_messageWidget, &X_MessageWidget::xg_requestMessageIconPixmap,
-            this, &MainWindow::zh_messageIconPixmap);
+            this, &MainWindow::xh_messageIconPixmap);
 
 
     // main window actions
     connect(xv_exitAction, &QAction::triggered,
             this, &MainWindow::close);
     //    connect(xv_languageControlAction, &QAction::triggered,
-    //            this, &MainWindow::zh_appLanguageControl);
+    //            this, &MainWindow::xh_appLanguageControl);
     connect(xv_languageMenu, &QMenu::aboutToShow,
-            this, &MainWindow::zh_fillLanguageMenu);
+            this, &MainWindow::xh_fillLanguageMenu);
 
     //    connect(xv_aboutAction, &QAction::triggered,
-    //            this, &MainWindow::zh_onAboutAction);
+    //            this, &MainWindow::xh_onAboutAction);
     //    connect(xv_helpAction, &QAction::triggered,
-    //            this, &MainWindow::zh_onHelpAction);
+    //            this, &MainWindow::xh_onHelpAction);
 
     // main window save settings command
     connect(this, &MainWindow::xg_saveSettings,
@@ -631,7 +632,7 @@ void MainWindow::zh_createConnections()
     xv_calculationPlotterManager->xp_connectToTermCorrelationWidget(xv_termCorrelationTableWidget);
 
     connect(xv_calculationPlotterManager, &X_CorrelationPlotterDataManager::xg_initPlotRebuild,
-            this, &MainWindow::zh_rebuildCorrelationPlot, Qt::QueuedConnection);
+            this, &MainWindow::xh_rebuildCorrelationPlot, Qt::QueuedConnection);
 
     xv_termCorrelationTableModel->xp_connectToTermCorrelationTableManager(xv_termCorrelationTableManager);
     xv_termCorrelationTableManager->xp_connectToCalibrationRepository(xv_calibrationRepository);
@@ -663,7 +664,7 @@ void MainWindow::zh_createConnections()
     //xv_equationSettingsPanelWidget->xp_connectToCalibrationRepository(xv_calibrationRepository);
 }
 //======================================================
-void MainWindow::zh_messageIconPixmap(int type,
+void MainWindow::xh_messageIconPixmap(int type,
                                       QSize size,
                                       QStyle* style,
                                       QPixmap& pixmap,
@@ -699,7 +700,7 @@ void MainWindow::zh_messageIconPixmap(int type,
     ok = false;
 }
 //==========================================================
-void MainWindow::zh_appendActionsToMenu(QMenu* menu)
+void MainWindow::xh_appendActionsToMenu(QMenu* menu)
 {
     if(menu->objectName() == "File")
     {
@@ -757,7 +758,7 @@ void MainWindow::zh_appendActionsToMenu(QMenu* menu)
     }
 }
 //==========================================================
-void MainWindow::zh_restoreSettings()
+void MainWindow::xh_restoreSettings()
 {
     QSettings settings;
     QVariant vData;
@@ -782,7 +783,7 @@ void MainWindow::zh_restoreSettings()
 
 }
 //==========================================================
-void MainWindow::zh_saveSettings()
+void MainWindow::xh_saveSettings()
 {
     QSettings settings;
     settings.beginGroup(qApp->applicationVersion());
@@ -798,7 +799,7 @@ void MainWindow::zh_saveSettings()
     emit xg_saveSettings();
 }
 //==========================================================
-//void MainWindow::zh_about()
+//void MainWindow::xh_about()
 //{
 //    //    QString title = tr("About %1").arg(glAppProduct);
 
@@ -869,7 +870,7 @@ void MainWindow::zh_saveSettings()
 //    QMessageBox::about(centralWidget(), title, htmlText);
 //}
 //==========================================================
-//void MainWindow::zh_help()
+//void MainWindow::xh_help()
 //{
 //    if(mv_helpBrowser == 0)
 //    {
@@ -905,11 +906,11 @@ void MainWindow::zh_saveSettings()
 //    }
 //}
 //==========================================================
-void MainWindow::zh_rebuildCorrelationPlot()
+void MainWindow::xh_rebuildCorrelationPlot()
 {
     xv_correlationPlotterWidget->xp_rebuildPlotter();
     xv_calculationPlotterManager->xp_connectToPlotter(xv_correlationPlotterWidget->xp_plotter());
     xv_correlationPlotterWidget->xp_plotter()->xp_fitInBoundingRect();
-    xv_calculationPlotterManager-> zh_rebuildChart();
+    xv_calculationPlotterManager-> xh_rebuildChart();
 }
 //==========================================================

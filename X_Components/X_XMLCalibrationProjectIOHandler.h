@@ -43,7 +43,7 @@ private:
     QString xv_fileAbsolutePath;
 
     // FUNCS
-    bool zh_detectRoot(const QXmlStreamReader& reader,
+    bool xh_detectRoot(const QXmlStreamReader& reader,
                        bool& magicStringDetectionFlag) const;
 
 };

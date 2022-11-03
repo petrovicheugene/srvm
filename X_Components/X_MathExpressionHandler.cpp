@@ -17,7 +17,7 @@ X_MathExpressionHandler::X_MathExpressionHandler(QObject* parent) : QObject(pare
     xv_extraSymbolSet << "#" << "№" << "@" << "`" << "$";
 }
 //===================================================
-void X_MathExpressionHandler::zh_findBracketForward(QChar bracketSymbol,
+void X_MathExpressionHandler::xh_findBracketForward(QChar bracketSymbol,
                                                    const QString& expression,
                                                    int pos,
                                                    QPair<int, bool>& highlight)
@@ -81,7 +81,7 @@ void X_MathExpressionHandler::zh_findBracketForward(QChar bracketSymbol,
     highlight.second = false;
 }
 //===================================================
-void X_MathExpressionHandler::zh_findBracketBackward(QChar bracketSymbol,
+void X_MathExpressionHandler::xh_findBracketBackward(QChar bracketSymbol,
                                                     const QString& expression,
                                                     int pos,
                                                     QPair<int, bool>& highlight)
@@ -146,7 +146,7 @@ void X_MathExpressionHandler::zh_findBracketBackward(QChar bracketSymbol,
     highlight.second = false;
 }
 //===================================================
-bool X_MathExpressionHandler::zh_getToken()
+bool X_MathExpressionHandler::xh_getToken()
 {
     xv_token = QString();
     xv_tokenType = TT_NULL;
@@ -240,7 +240,7 @@ bool X_MathExpressionHandler::zh_getToken()
 
             case TT_ERROR:
                 xv_tokenEndPosition = xv_charPosition;
-                zh_handleError(nError);
+                xh_handleError(nError);
                 return false;
 
                 break;
@@ -371,14 +371,14 @@ bool X_MathExpressionHandler::zh_getToken()
 
     if (xv_tokenType == TT_CELL)
     {
-        zh_handleError(2);
+        xh_handleError(2);
         xv_tokenType = TT_ERROR;
         return false;
     }
 
     if (xv_tokenType == TT_ERROR)
     {
-        zh_handleError(nError);
+        xh_handleError(nError);
         return false;
     }
 
@@ -387,21 +387,21 @@ bool X_MathExpressionHandler::zh_getToken()
     //return true;
 }
 //===================================================
-bool X_MathExpressionHandler::zh_addOrSubtract(double& result)
+bool X_MathExpressionHandler::xh_addOrSubtract(double& result)
 {
     QString op;
     double temp;
-    if (!zh_multiplyOrDevide(result))
+    if (!xh_multiplyOrDevide(result))
     {
         return false;
     }
     while ((op = xv_token) == "+" || op == "-")
     {
-        if (!zh_getToken())
+        if (!xh_getToken())
         {
             return false;
         }
-        if (!zh_multiplyOrDevide(temp))
+        if (!xh_multiplyOrDevide(temp))
         {
             return false;
         }
@@ -419,22 +419,22 @@ bool X_MathExpressionHandler::zh_addOrSubtract(double& result)
     return true;
 }
 //===================================================
-bool X_MathExpressionHandler::zh_multiplyOrDevide(double& result)
+bool X_MathExpressionHandler::xh_multiplyOrDevide(double& result)
 {
     QString op;
     double temp;
-    if (!zh_power(result))
+    if (!xh_power(result))
     {
         return false;
     }
 
     while ((op = xv_token) == "*" || op == "/")
     {
-        if (!zh_getToken())
+        if (!xh_getToken())
         {
             return false;
         }
-        if (!zh_power(temp))
+        if (!xh_power(temp))
         {
             return false;
         }
@@ -447,7 +447,7 @@ bool X_MathExpressionHandler::zh_multiplyOrDevide(double& result)
         {
             if (temp == 0)
             {
-                zh_handleError(1);
+                xh_handleError(1);
                 return false;
             }
             result = result / temp;
@@ -457,22 +457,22 @@ bool X_MathExpressionHandler::zh_multiplyOrDevide(double& result)
     return true;
 }
 //===================================================
-bool X_MathExpressionHandler::zh_power(double& result)
+bool X_MathExpressionHandler::xh_power(double& result)
 {
-    if (!zh_unaryOperation(result))
+    if (!xh_unaryOperation(result))
     {
         return false;
     }
 
     if (xv_token == "^")
     {
-        if (!zh_getToken())
+        if (!xh_getToken())
         {
             return false;
         }
 
         double temp = 0.0;
-        if (!zh_unaryOperation(temp))
+        if (!xh_unaryOperation(temp))
         {
             return false;
         }
@@ -495,7 +495,7 @@ bool X_MathExpressionHandler::zh_power(double& result)
     return true;
 }
 //===================================================
-bool X_MathExpressionHandler::zh_unaryOperation(double& result)
+bool X_MathExpressionHandler::xh_unaryOperation(double& result)
 {
     QString op;
     if ((xv_tokenType == TT_DELIMITER || xv_tokenType == TT_OPERATOR)
@@ -503,13 +503,13 @@ bool X_MathExpressionHandler::zh_unaryOperation(double& result)
             || xv_token == "exp"))
     {
         op = xv_token;
-        if (!zh_getToken())
+        if (!xh_getToken())
         {
             return false;
         }
     }
 
-    if (zh_recognizeBrackets(result))
+    if (xh_recognizeBrackets(result))
     {
         if (op == "-")
         {
@@ -536,33 +536,33 @@ bool X_MathExpressionHandler::zh_unaryOperation(double& result)
     }
 }
 //===================================================
-bool X_MathExpressionHandler::zh_recognizeBrackets(double& result)
+bool X_MathExpressionHandler::xh_recognizeBrackets(double& result)
 {
     if (xv_token == "(")
     {
-        if (!zh_getToken())
+        if (!xh_getToken())
         {
             return false;
         }
-        if (!zh_addOrSubtract(result))
+        if (!xh_addOrSubtract(result))
         {
             return false;
         }
 
         if (xv_token != ")")
         {
-            zh_handleError(3);
+            xh_handleError(3);
             return false;
         }
-        return zh_getToken();
+        return xh_getToken();
     }
     else
     {
-        return zh_variableValue(result);
+        return xh_variableValue(result);
     }
 }
 //===================================================
-bool X_MathExpressionHandler::zh_variableValue(double& result)
+bool X_MathExpressionHandler::xh_variableValue(double& result)
 {
     bool res;
     QString simplifiedToken = xv_token.simplified();
@@ -572,7 +572,7 @@ bool X_MathExpressionHandler::zh_variableValue(double& result)
         result = simplifiedToken.toDouble(&res);
         if (!res)
         {
-            zh_handleError(4);
+            xh_handleError(4);
             return false;
         }
     }
@@ -581,15 +581,15 @@ bool X_MathExpressionHandler::zh_variableValue(double& result)
         emit zs_requestVariableValue(simplifiedToken, result, res);
         if (!res)
         {
-            zh_handleError(5);
+            xh_handleError(5);
             return false;
         }
     }
 
-    return zh_getToken();
+    return xh_getToken();
 }
 //===================================================
-void X_MathExpressionHandler::zh_handleError(int error)
+void X_MathExpressionHandler::xh_handleError(int error)
 {
     QString errorString;
     switch (error)
@@ -647,7 +647,7 @@ void X_MathExpressionHandler::xp_defineHighLights(const QString& expression,
         {
             if (xv_pairSymbolVector.value(i).first == symbol)
             {
-                zh_findBracketForward(xv_pairSymbolVector.value(i).second,
+                xh_findBracketForward(xv_pairSymbolVector.value(i).second,
                                       expression,
                                       cursorPos,
                                       forwardHighlight);
@@ -664,7 +664,7 @@ void X_MathExpressionHandler::xp_defineHighLights(const QString& expression,
         {
             if (xv_pairSymbolVector.value(i).second == symbol)
             {
-                zh_findBracketBackward(xv_pairSymbolVector.value(i).first,
+                xh_findBracketBackward(xv_pairSymbolVector.value(i).first,
                                        expression,
                                        cursorPos,
                                        backwardHighlight);
@@ -689,16 +689,16 @@ bool X_MathExpressionHandler::xp_calculateExpression(const QString& expression, 
     xv_expression = expression;
     xv_charPosition = 0;
 
-    zh_getToken();
+    xh_getToken();
 
     if (xv_tokenType == TT_NULL)
     {
-        zh_handleError(0); //  Выражение пусто.
+        xh_handleError(0); //  Выражение пусто.
         dResult = 0.0;
         return false;
     }
 
-    bool res = zh_addOrSubtract(dResult);
+    bool res = xh_addOrSubtract(dResult);
 
     //    if(mv_tokenType == TT_NULL)
     //    {

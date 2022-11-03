@@ -71,15 +71,15 @@ public slots:
 
 private slots:
 
-    void zh_onRepositoryArrayOperation(X_SpectrumArrayRepository::SpectrumOperationType,
+    void xh_onRepositoryArrayOperation(X_SpectrumArrayRepository::SpectrumOperationType,
                                        int arrayIndex, int first, int last);
 
-    void zh_onRepositoryChemElementOperation(X_SpectrumArrayRepository::ChemElementOperationType,
+    void xh_onRepositoryChemElementOperation(X_SpectrumArrayRepository::ChemElementOperationType,
                                              int arrayIndex, int first, int last);
-    void zh_onRepositoryTermOperation(X_CalibrationRepository::TermOperationType, int calibrationIndex, int first, int last);
-    void zh_onRepositoryCalibrationOperation(X_CalibrationRepository::CalibrationOperationType, int, int);
-    void zh_currentSpectrumArrayChanged(qint64, int);
-    void zh_currentChemConcentrationCellIndex(int& row, int& chemConcColumn);
+    void xh_onRepositoryTermOperation(X_CalibrationRepository::TermOperationType, int calibrationIndex, int first, int last);
+    void xh_onRepositoryCalibrationOperation(X_CalibrationRepository::CalibrationOperationType, int, int);
+    void xh_currentSpectrumArrayChanged(qint64, int);
+    void xh_currentChemConcentrationCellIndex(int& row, int& chemConcColumn);
 
 private:
 
@@ -100,15 +100,15 @@ private:
    // QMap<qint64, QList<qreal> > xv_concentrationResidualMap; //
 
     // FUNCS
-    bool zh_getVisibleIndexesForInsert(int first, int last, int& visibleFirst, int& visibleLast) const;
-    bool zh_getVisibleIndexesForOperation(int first, int last, int& visibleFirst, int& visibleLast) const;
+    bool xh_getVisibleIndexesForInsert(int first, int last, int& visibleFirst, int& visibleLast) const;
+    bool xh_getVisibleIndexesForOperation(int first, int last, int& visibleFirst, int& visibleLast) const;
 
-    int zh_convertChemElementIndexToVisibleChemElementIndex(int arrayIndex, int originalIndex);
-    int zh_convertVisibleIndexToCalibrationIndex(int visibleIndex);
-    void zh_defineColumnCounts();
-    void zh_calculateCalibrationConcentrations();
-    bool zh_calculateCalibrationConcentrationForCalibration(int calibrationIndex);
-    bool zh_calculateCalibrationConcentrationForCalibrationId(qint64 calibrationId);
+    int xh_convertChemElementIndexToVisibleChemElementIndex(int arrayIndex, int originalIndex);
+    int xh_convertVisibleIndexToCalibrationIndex(int visibleIndex);
+    void xh_defineColumnCounts();
+    void xh_calculateCalibrationConcentrations();
+    bool xh_calculateCalibrationConcentrationForCalibration(int calibrationIndex);
+    bool xh_calculateCalibrationConcentrationForCalibrationId(qint64 calibrationId);
 
 };
 //==================================================================

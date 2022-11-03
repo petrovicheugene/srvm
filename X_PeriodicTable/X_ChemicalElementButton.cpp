@@ -81,10 +81,10 @@ X_ChemicalElementButton::X_ChemicalElementButton(X_Number zNumber, QWidget *pare
     xv_margin = 1;
     xv_zNumber = zNumber;
     xv_name = QString();
-    zh_setDefaultFonts();
-    zh_setDefaultColors();
+    xh_setDefaultFonts();
+    xh_setDefaultColors();
 
-    zh_createConnections();
+    xh_createConnections();
 }
 //======================================================
 X_ChemicalElementButton::~X_ChemicalElementButton()
@@ -92,7 +92,7 @@ X_ChemicalElementButton::~X_ChemicalElementButton()
     delete xv_frame;
 }
 //======================================================
-void X_ChemicalElementButton::zh_setDefaultFonts()
+void X_ChemicalElementButton::xh_setDefaultFonts()
 {
     QFont font = this->font();
     //    font.setBold(true);
@@ -106,7 +106,7 @@ void X_ChemicalElementButton::zh_setDefaultFonts()
     xp_setPropertyFont(PN_NAME, font);
 }
 //======================================================
-void X_ChemicalElementButton::zh_setDefaultColors()
+void X_ChemicalElementButton::xh_setDefaultColors()
 {
     //    QColor color = palette().color(QPalette::Active, QPalette::ButtonText);
     //    xp_setPropertyColor(PN_SYMBOL, color);
@@ -114,10 +114,10 @@ void X_ChemicalElementButton::zh_setDefaultColors()
     //    xp_setPropertyColor(PN_NAME, color);
 }
 //======================================================
-void X_ChemicalElementButton::zh_createConnections()
+void X_ChemicalElementButton::xh_createConnections()
 {
     connect(qApp, &QApplication::fontDatabaseChanged,
-            this, &X_ChemicalElementButton::zh_onAppFontDatabaseChange);
+            this, &X_ChemicalElementButton::xh_onAppFontDatabaseChange);
 }
 //======================================================
 void X_ChemicalElementButton::resizeEvent(QResizeEvent* event)
@@ -145,7 +145,7 @@ void X_ChemicalElementButton::paintEvent(QPaintEvent *event)
         frameStyle |= QFrame::Raised;
     }
 
-    xv_frame->setPalette(zh_currentPalette());
+    xv_frame->setPalette(xh_currentPalette());
 
     xv_frame->setFrameStyle(frameStyle);
     xv_frame->setLineWidth(xv_frameLineWidth);
@@ -162,9 +162,9 @@ void X_ChemicalElementButton::paintEvent(QPaintEvent *event)
     if(!xv_zNumberViewPortRect.isEmpty() && !xv_zNumberWindowRect.isEmpty())
     {
         pixPainter.save();
-        pixPainter.setFont(zh_zNumberFont());
-        pixPainter.setPen(zh_textColor());
-        pixPainter.setBrush(zh_textColor());
+        pixPainter.setFont(xh_zNumberFont());
+        pixPainter.setPen(xh_textColor());
+        pixPainter.setBrush(xh_textColor());
         pixPainter.setRenderHint(QPainter::Antialiasing);
 
         xv_zNumberViewPortRect.moveTopRight(commonViewportRect.topRight());
@@ -180,9 +180,9 @@ void X_ChemicalElementButton::paintEvent(QPaintEvent *event)
     if(!xv_symbolViewPortRect.isEmpty() && !xv_symbolWindowRect.isEmpty())
     {
         pixPainter.save();
-        pixPainter.setFont(zh_symbolFont());
-        pixPainter.setPen(zh_textColor());
-        pixPainter.setBrush(zh_textColor());
+        pixPainter.setFont(xh_symbolFont());
+        pixPainter.setPen(xh_textColor());
+        pixPainter.setBrush(xh_textColor());
         pixPainter.setRenderHint(QPainter::Antialiasing);
 
         // free part of commonViewportRect
@@ -203,9 +203,9 @@ void X_ChemicalElementButton::paintEvent(QPaintEvent *event)
     if(!xv_nameViewPortRect.isEmpty() && !xv_nameWindowRect.isEmpty())
     {
         pixPainter.save();
-        pixPainter.setFont(zh_nameFont());
-        pixPainter.setPen(zh_textColor());
-        pixPainter.setBrush(zh_textColor());
+        pixPainter.setFont(xh_nameFont());
+        pixPainter.setPen(xh_textColor());
+        pixPainter.setBrush(xh_textColor());
         pixPainter.setRenderHint(QPainter::Antialiasing);
 
         QPoint nameCenterPoint;
@@ -227,16 +227,16 @@ void X_ChemicalElementButton::paintEvent(QPaintEvent *event)
     painter.drawPixmap(event->rect(), buttonPixmap);
 }
 //======================================================
-void X_ChemicalElementButton::zh_onAppFontDatabaseChange()
+void X_ChemicalElementButton::xh_onAppFontDatabaseChange()
 {
-    zh_recalcPropertyWindowRects();
+    xh_recalcPropertyWindowRects();
     update();
 }
 //======================================================
 void X_ChemicalElementButton::xp_setChemicalElementSymbol(const QString& symbol)
 {
     xv_symbol = symbol;
-    zh_recalcPropertyWindowRects();
+    xh_recalcPropertyWindowRects();
     emit xg_symbolChanged(xv_symbol);
     update();
 }
@@ -249,7 +249,7 @@ QString X_ChemicalElementButton::xp_chemicalElementSymbol() const
 void X_ChemicalElementButton::xp_setChemicalElementName(const QString& name)
 {
     xv_name = name;
-    zh_recalcPropertyWindowRects();
+    xh_recalcPropertyWindowRects();
     update();
 }
 //======================================================
@@ -278,12 +278,12 @@ QRect X_ChemicalElementButton::xp_buttonViewPortRect() const
         // rect = this->rect().adjusted(1,1,-1,-1);
     }
 
-    int spacing = zh_marginSpacing();
+    int spacing = xh_marginSpacing();
     rect.adjust(spacing, spacing, -spacing, -spacing);
     return rect;
 }
 //======================================================
-int X_ChemicalElementButton::zh_marginSpacing() const
+int X_ChemicalElementButton::xh_marginSpacing() const
 {
     int spacing = xv_frameLineWidth + xv_margin;
     return spacing;
@@ -306,7 +306,7 @@ QSize X_ChemicalElementButton::xp_nameWindowRectSize() const
 //======================================================
 void X_ChemicalElementButton::xp_updateMinimumSizeForSymbolRectSize(QSize symbolSize)
 {
-    int spacing = zh_marginSpacing();
+    int spacing = xh_marginSpacing();
     symbolSize.setHeight(symbolSize.height() + (spacing * 2));
     symbolSize.setWidth(symbolSize.width() + (spacing * 2));
 
@@ -325,19 +325,19 @@ void X_ChemicalElementButton::xp_setPropertyFont(PropertyName proprtyName,
 void X_ChemicalElementButton::xp_updatePropertyViewPortRects()
 {
     QSize symbolViewPortRectSize;
-    zh_recalcViewPortRectSize(xv_symbolBoundingRectSize,
+    xh_recalcViewPortRectSize(xv_symbolBoundingRectSize,
                               xv_symbolWindowRect.size(),
                               symbolViewPortRectSize);
     xv_symbolViewPortRect = QRect(QPoint(0, 0), symbolViewPortRectSize);
 
     QSize zNumberViewPortRectSize;
-    zh_recalcViewPortRectSize(xv_zNumberBoundingRectSize,
+    xh_recalcViewPortRectSize(xv_zNumberBoundingRectSize,
                               xv_zNumberWindowRect.size(),
                               zNumberViewPortRectSize);
     xv_zNumberViewPortRect = QRect(QPoint(0, 0), zNumberViewPortRectSize);
 
     QSize nameViewPortRectSize;
-    zh_recalcViewPortRectSize(xv_nameBoundingRectSize,
+    xh_recalcViewPortRectSize(xv_nameBoundingRectSize,
                               xv_nameWindowRect.size(),
                               nameViewPortRectSize);
     xv_nameViewPortRect = QRect(QPoint(0, 0), nameViewPortRectSize);
@@ -345,7 +345,7 @@ void X_ChemicalElementButton::xp_updatePropertyViewPortRects()
     update();
 }
 //======================================================
-void X_ChemicalElementButton::zh_recalcViewPortRectSize(QSize boundingViewPortSize,
+void X_ChemicalElementButton::xh_recalcViewPortRectSize(QSize boundingViewPortSize,
                                                        QSize windowSize,
                                                        QSize&  viewPortSize) const
 {
@@ -379,17 +379,17 @@ void X_ChemicalElementButton::zh_recalcViewPortRectSize(QSize boundingViewPortSi
     }
 }
 //======================================================
-void X_ChemicalElementButton::zh_recalcPropertyWindowRects()
+void X_ChemicalElementButton::xh_recalcPropertyWindowRects()
 {
-    QFontMetrics fontMetrics(zh_symbolFont());
+    QFontMetrics fontMetrics(xh_symbolFont());
     xv_symbolWindowRect.setWidth(fontMetrics.horizontalAdvance(xv_symbol));
     xv_symbolWindowRect.setHeight(fontMetrics.height());
 
-    fontMetrics = QFontMetrics(zh_zNumberFont());
+    fontMetrics = QFontMetrics(xh_zNumberFont());
     xv_zNumberWindowRect.setWidth(fontMetrics.horizontalAdvance(QString::number(xv_zNumber)));
     xv_zNumberWindowRect.setHeight(fontMetrics.height());
 
-    fontMetrics = QFontMetrics(zh_nameFont());
+    fontMetrics = QFontMetrics(xh_nameFont());
     xv_nameWindowRect.setWidth(fontMetrics.horizontalAdvance(xv_name));
     xv_nameWindowRect.setHeight(fontMetrics.height());
 }
@@ -399,25 +399,25 @@ X_Number X_ChemicalElementButton::xp_zNumber() const
     return xv_zNumber;
 }
 //======================================================
-QFont X_ChemicalElementButton::zh_symbolFont() const
+QFont X_ChemicalElementButton::xh_symbolFont() const
 {
     QFont font = xv_fontMap.value(PN_SYMBOL);
     return font;
 }
 //======================================================
-QFont X_ChemicalElementButton::zh_zNumberFont() const
+QFont X_ChemicalElementButton::xh_zNumberFont() const
 {
     QFont font = xv_fontMap.value(PN_X_NUMBER);
     return font;
 }
 //======================================================
-QFont X_ChemicalElementButton::zh_nameFont() const
+QFont X_ChemicalElementButton::xh_nameFont() const
 {
     QFont font = xv_fontMap.value(PN_NAME);
     return font;
 }
 //======================================================
-QColor X_ChemicalElementButton::zh_textColor() const
+QColor X_ChemicalElementButton::xh_textColor() const
 {
     QColor color;
     if(isChecked())
@@ -431,7 +431,7 @@ QColor X_ChemicalElementButton::zh_textColor() const
     return color;
 }
 //======================================================
-QPalette X_ChemicalElementButton::zh_currentPalette() const
+QPalette X_ChemicalElementButton::xh_currentPalette() const
 {
     QPalette palette = this->palette();
     if(isChecked())

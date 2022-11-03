@@ -35,11 +35,11 @@ signals:
 
 protected slots:
 
-    virtual void zh_updateTermNameForWindowName() override;
-    virtual void zh_onWindowTypeChange(X_CalibrationWindow::WindowType previousType,
+    virtual void xh_updateTermNameForWindowName() override;
+    virtual void xh_onWindowTypeChange(X_CalibrationWindow::WindowType previousType,
                                        X_CalibrationWindow::WindowType currentType) override;
-    void zh_handleWindowIntensityRequest(const QString& varName, double& value, bool& bRes);
-    void zh_handleErrorReport(const QString& errorString,
+    void xh_handleWindowIntensityRequest(const QString& varName, double& value, bool& bRes);
+    void xh_handleErrorReport(const QString& errorString,
                         int errorTokenStartPosition,
                         int errorTokenEndPosition) const;
 
@@ -52,8 +52,8 @@ private:
     const X_AbstractSpectrum* xv_spectrum;
 
     // FUNCS
-    void zh_createConnections();
-    bool zh_checkExpression(const QString &expression);
+    void xh_createConnections();
+    bool xh_checkExpression(const QString &expression);
 
 };
 //===================================================================

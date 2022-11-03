@@ -13,11 +13,11 @@
 X_SetGainFactorToCalibrationDialog::X_SetGainFactorToCalibrationDialog(const QString& calibrationName, QWidget *parent)
     : QDialog(parent)
 {
-    zh_createComponents(calibrationName);
-    zh_createConnections();
+    xh_createComponents(calibrationName);
+    xh_createConnections();
 }
 //=========================================================
-void X_SetGainFactorToCalibrationDialog::zh_createComponents(const QString& calibrationName)
+void X_SetGainFactorToCalibrationDialog::xh_createComponents(const QString& calibrationName)
 {
     QVBoxLayout* mainLayout = new QVBoxLayout;
     setLayout(mainLayout);
@@ -48,7 +48,7 @@ void X_SetGainFactorToCalibrationDialog::zh_createComponents(const QString& cali
     buttonBox->addButton(xv_cancelButton, QDialogButtonBox::ActionRole);
 }
 //=========================================================
-void X_SetGainFactorToCalibrationDialog::zh_createConnections()
+void X_SetGainFactorToCalibrationDialog::xh_createConnections()
 {
     connect(xv_okButton, &QPushButton::clicked,
             this, &X_SetGainFactorToCalibrationDialog::accept);

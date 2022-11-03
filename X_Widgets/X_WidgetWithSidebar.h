@@ -52,15 +52,15 @@ private:
     QString showToolTipString;
 
     // FUNCS
-    void zh_createComponents(QString title = QString());
-    void zh_createConnections();
-    void zh_restoreSettings();
+    void xh_createComponents(QString title = QString());
+    void xh_createConnections();
+    void xh_restoreSettings();
 
-    void zh_manageHideLabelPix();
+    void xh_manageHideLabelPix();
 
 private slots:
 
-    void zh_onHideSidePanelButtonClick();
+    void xh_onHideSidePanelButtonClick();
 
 };
 //=======================================================

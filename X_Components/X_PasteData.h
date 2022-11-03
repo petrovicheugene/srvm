@@ -34,8 +34,8 @@ private:
     int xv_columnCount;
 
     // FUNCS
-    bool zh_devideStringToTerms(const QString& dataString);
-    X_PasteData::LineType zh_checkClipboardLine(const QStringList& line,
+    bool xh_devideStringToTerms(const QString& dataString);
+    X_PasteData::LineType xh_checkClipboardLine(const QStringList& line,
                                                            const QStringList& chemElementList) const;
 };
 //====================================================

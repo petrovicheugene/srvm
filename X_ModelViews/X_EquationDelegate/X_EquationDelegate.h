@@ -22,7 +22,7 @@ public:
 
 private slots:
 
-    void zh_onEditorChildDialogOpen(bool);
+    void xh_onEditorChildDialogOpen(bool);
 
 signals:
 

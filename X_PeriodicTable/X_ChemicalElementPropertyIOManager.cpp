@@ -11,9 +11,9 @@
 //// STATIC
 ////======================================================
 //QMap<QChar, QString> X_ChemicalElementPropertyIOManager::xv_escapeControlCharacterMap
-//= X_ChemicalElementPropertyIOManager::zh_initEscapeControlCharacterMap();
+//= X_ChemicalElementPropertyIOManager::xh_initEscapeControlCharacterMap();
 ////======================================================
-//QMap<QChar, QString> X_ChemicalElementPropertyIOManager::zh_initEscapeControlCharacterMap()
+//QMap<QChar, QString> X_ChemicalElementPropertyIOManager::xh_initEscapeControlCharacterMap()
 //{
 //    QMap<QChar, QString> escapeControlCharacterMap;
 //    // non printing
@@ -275,7 +275,7 @@ bool X_ChemicalElementPropertyIOManager::xp_extractFromXML(X_AbstractChemicalEle
     //repository->xp_clearData();
     QXmlStreamReader reader(&file);
 
-    if(!zh_detectRoot(reader))
+    if(!xh_detectRoot(reader))
     {
         xv_errorStringList.append(tr("Cannot recognize file \"%1\" as data source.<br>"
                                      "Root type is invalid").arg(filePath));
@@ -286,12 +286,12 @@ bool X_ChemicalElementPropertyIOManager::xp_extractFromXML(X_AbstractChemicalEle
     QStringList sectionBranch;
     QString propertyName;
     QStack<QString> tokenNameStack;
-    // after zh_detectRoot reader is inside the root section
+    // after xh_detectRoot reader is inside the root section
     tokenNameStack.push(xv_ROOT);
     while(!reader.atEnd())
     {
         reader.readNext();
-        if(!zh_parseXmlElement(repository, reader, sectionBranch, propertyName, tokenNameStack))
+        if(!xh_parseXmlElement(repository, reader, sectionBranch, propertyName, tokenNameStack))
         {
             file.close();
             return false;
@@ -302,7 +302,7 @@ bool X_ChemicalElementPropertyIOManager::xp_extractFromXML(X_AbstractChemicalEle
     return true;
 }
 //======================================================
-bool X_ChemicalElementPropertyIOManager::zh_parseXmlElement(X_AbstractChemicalElementPropertyRepository* repository,
+bool X_ChemicalElementPropertyIOManager::xh_parseXmlElement(X_AbstractChemicalElementPropertyRepository* repository,
                                                            QXmlStreamReader& reader,
                                                            QStringList& sectionBranch,
                                                            QString& propertyName,
@@ -402,7 +402,7 @@ bool X_ChemicalElementPropertyIOManager::zh_parseXmlElement(X_AbstractChemicalEl
     return true;
 }
 //======================================================
-bool X_ChemicalElementPropertyIOManager::zh_detectRoot(QXmlStreamReader& reader) const
+bool X_ChemicalElementPropertyIOManager::xh_detectRoot(QXmlStreamReader& reader) const
 {
     while(!reader.atEnd())
     {
@@ -470,7 +470,7 @@ bool X_ChemicalElementPropertyIOManager::xp_saveToXML(X_AbstractChemicalElementP
     {
         propertySectionBranch.clear();
         propertySectionBranch.append(sectionList.at(element));
-        zh_writeXMLElement(repository, &writer, -1, propertySectionBranch);
+        xh_writeXMLElement(repository, &writer, -1, propertySectionBranch);
     }
 
     writer.writeEndElement(); // root
@@ -518,7 +518,7 @@ QStringList X_ChemicalElementPropertyIOManager::xp_lastErrors() const
     return xv_errorStringList;
 }
 //======================================================
-void X_ChemicalElementPropertyIOManager::zh_writeXMLElement(X_AbstractChemicalElementPropertyRepository* repository,
+void X_ChemicalElementPropertyIOManager::xh_writeXMLElement(X_AbstractChemicalElementPropertyRepository* repository,
                                                            QXmlStreamWriter* writer,
                                                            int z,
                                                            QStringList &propertySectionBranch)
@@ -567,7 +567,7 @@ void X_ChemicalElementPropertyIOManager::zh_writeXMLElement(X_AbstractChemicalEl
             childPropertySectionBranch =  propertySectionBranch;
             childPropertySectionBranch.append(section);
 
-            zh_writeXMLElement(repository,
+            xh_writeXMLElement(repository,
                                writer,
                                z,
                                childPropertySectionBranch);
@@ -578,7 +578,7 @@ void X_ChemicalElementPropertyIOManager::zh_writeXMLElement(X_AbstractChemicalEl
     writer->writeEndElement(); // chemical element
 }
 //======================================================
-//QString X_ChemicalElementPropertyIOManager::zh_escapeControlCharacters(const QString& srcString) const
+//QString X_ChemicalElementPropertyIOManager::xh_escapeControlCharacters(const QString& srcString) const
 //{
 //    QString outString = srcString;
 //    QList<QChar> controlCharacterList = xv_escapeControlCharacterMap.keys();
@@ -593,7 +593,7 @@ void X_ChemicalElementPropertyIOManager::zh_writeXMLElement(X_AbstractChemicalEl
 //    return outString;
 //}
 ////======================================================
-//QString X_ChemicalElementPropertyIOManager::zh_removeWordSeparator(const QString& srcString) const
+//QString X_ChemicalElementPropertyIOManager::xh_removeWordSeparator(const QString& srcString) const
 //{
 //    QString outString = srcString;
 //    return outString;

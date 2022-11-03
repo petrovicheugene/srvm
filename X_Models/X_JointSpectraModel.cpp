@@ -188,7 +188,7 @@ void X_JointSpectraModel::xp_connectToSpectraDataManager(X_JointSpectraDataManag
     xv_dataManager = dataManager;
     // data manager <-> joint model
     connect(dataManager, &X_JointSpectraDataManager::xg_currentOperation,
-            this, &X_JointSpectraModel::zh_onDataManagerOperation);
+            this, &X_JointSpectraModel::xh_onDataManagerOperation);
     connect(dataManager, &X_JointSpectraDataManager::xg_requestCurrentIndex,
             this, &X_JointSpectraModel::xg_requestCurrentIndex);
     connect(this, &X_JointSpectraModel::xg_selectionChanged,
@@ -203,7 +203,7 @@ void X_JointSpectraModel::xp_connectToSpectraDataManager(X_JointSpectraDataManag
     endResetModel();
 }
 //==================================================================
-void X_JointSpectraModel::zh_onDataManagerOperation(X_JointSpectraDataManager::OperationType type, int first, int last)
+void X_JointSpectraModel::xh_onDataManagerOperation(X_JointSpectraDataManager::OperationType type, int first, int last)
 {
     if(!xv_dataManager)
     {

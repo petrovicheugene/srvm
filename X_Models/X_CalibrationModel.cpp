@@ -336,7 +336,7 @@ void X_CalibrationModel::xp_connectToCalibrationRepository(X_CalibrationReposito
 
     xv_calibrationRepository = repository;
     connect(xv_calibrationRepository, &X_CalibrationRepository::xg_calibrationOperation,
-            this, &X_CalibrationModel::zh_onCalibrationRepositoryOperation);
+            this, &X_CalibrationModel::xh_onCalibrationRepositoryOperation);
 
     endResetModel();
 }
@@ -369,7 +369,7 @@ void X_CalibrationModel::xp_calibrationQualityDataChanged(bool saveToCalibration
 
 }
 //==================================================================
-void X_CalibrationModel::zh_onCalibrationRepositoryOperation(X_CalibrationRepository::CalibrationOperationType type, int first, int last)
+void X_CalibrationModel::xh_onCalibrationRepositoryOperation(X_CalibrationRepository::CalibrationOperationType type, int first, int last)
 {
     if(type == X_CalibrationRepository::COT_BEGIN_RESET)
     {

@@ -125,14 +125,14 @@ private:
 
 
     // FUNCS
-    void zh_createConnections();
-    void zh_recalcArrayMaxParameters();
+    void xh_createConnections();
+    void xh_recalcArrayMaxParameters();
 
-    void zh_saveSpectrumToFile(X_SpeSpectrum* spectrum) const;
-    int zh_indexForSpectrum(X_SpeSpectrum* spectrum, bool *ok) const;
+    void xh_saveSpectrumToFile(X_SpeSpectrum* spectrum) const;
+    int xh_indexForSpectrum(X_SpeSpectrum* spectrum, bool *ok) const;
 
-    //    bool zh_calcAverageChemConcentration(qint64 chemElementId);
-    //    void zh_calcAverageChemConcentrations();
+    //    bool xh_calcAverageChemConcentration(qint64 chemElementId);
+    //    void xh_calcAverageChemConcentrations();
 
     static QList<QColor> xp_createColorList();
     static bool checkColor(QColor color);
@@ -140,8 +140,8 @@ private:
 
 private slots:
 
-    void zh_onSpectrumEnergyCalibrationChange() const;
-    void zh_onSpectrumGainFactorChange() const;
+    void xh_onSpectrumEnergyCalibrationChange() const;
+    void xh_onSpectrumGainFactorChange() const;
 
 };
 //===============================================

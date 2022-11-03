@@ -23,13 +23,13 @@ void X_JointSpectraDataManager::xp_connectToSpectrumArrayRepository(X_SpectrumAr
     xv_spectrumArrayRepository = repository;
     // array repository <-> array model
     connect(repository, &X_SpectrumArrayRepository::xg_spectrumOperation,
-            this, &X_JointSpectraDataManager::zh_onRepositoryArrayOperation);
+            this, &X_JointSpectraDataManager::xh_onRepositoryArrayOperation);
     connect(repository, &X_SpectrumArrayRepository::xg_chemElementOperation,
-            this, &X_JointSpectraDataManager::zh_onRepositoryChemElementOperation);
+            this, &X_JointSpectraDataManager::xh_onRepositoryChemElementOperation);
     connect(repository, &X_SpectrumArrayRepository::xg_currentArrayIdChanged,
-            this, &X_JointSpectraDataManager::zh_currentSpectrumArrayChanged);
+            this, &X_JointSpectraDataManager::xh_currentSpectrumArrayChanged);
     connect(repository, &X_SpectrumArrayRepository::xg_requestCurrentChemConcentrationCellIndex,
-            this, &X_JointSpectraDataManager::zh_currentChemConcentrationCellIndex);
+            this, &X_JointSpectraDataManager::xh_currentChemConcentrationCellIndex);
     connect(this, &X_JointSpectraDataManager::xg_onSelectionChange,
             repository, &X_SpectrumArrayRepository::xp_onSelectionSpectraChange);
 
@@ -44,9 +44,9 @@ void X_JointSpectraDataManager::xp_connectToCalibrationRepository(X_CalibrationR
 {
     xv_calibrationRepository = repository;
     connect(repository, &X_CalibrationRepository::xg_calibrationOperation,
-            this, &X_JointSpectraDataManager::zh_onRepositoryCalibrationOperation);
+            this, &X_JointSpectraDataManager::xh_onRepositoryCalibrationOperation);
     connect(repository, &X_CalibrationRepository::xg_termOperation,
-            this, &X_JointSpectraDataManager::zh_onRepositoryTermOperation);
+            this, &X_JointSpectraDataManager::xh_onRepositoryTermOperation);
 
 }
 //==================================================================
@@ -269,7 +269,7 @@ int X_JointSpectraDataManager::xp_spectrumDataColumnCount()
     return xv_spectrumDataColumnCount;
 }
 //==================================================================
-void X_JointSpectraDataManager::zh_currentSpectrumArrayChanged(qint64 currentArrayId, int currentArrayIndex)
+void X_JointSpectraDataManager::xh_currentSpectrumArrayChanged(qint64 currentArrayId, int currentArrayIndex)
 {
     if(xv_currentArrayIndex == currentArrayIndex && xv_currentArrayId == currentArrayId)
     {
@@ -279,12 +279,12 @@ void X_JointSpectraDataManager::zh_currentSpectrumArrayChanged(qint64 currentArr
     emit xg_currentOperation(OT_BEGIN_RESET, -1, -1);
     xv_currentArrayIndex = currentArrayIndex;
     xv_currentArrayId = currentArrayId;
-    zh_defineColumnCounts();
-    zh_calculateCalibrationConcentrations();
+    xh_defineColumnCounts();
+    xh_calculateCalibrationConcentrations();
     emit xg_currentOperation(OT_END_RESET, -1, -1);
 }
 //==================================================================
-void X_JointSpectraDataManager::zh_currentChemConcentrationCellIndex(int& row, int& chemConcColumn)
+void X_JointSpectraDataManager::xh_currentChemConcentrationCellIndex(int& row, int& chemConcColumn)
 {
     QModelIndex currentIndex;
     emit xg_requestCurrentIndex(currentIndex);
@@ -405,10 +405,10 @@ void X_JointSpectraDataManager::xp_calculateCalibrationQualityData(bool saveToCa
 
 }
 //==================================================================
-void X_JointSpectraDataManager::zh_onRepositoryArrayOperation(X_SpectrumArrayRepository::SpectrumOperationType type,
+void X_JointSpectraDataManager::xh_onRepositoryArrayOperation(X_SpectrumArrayRepository::SpectrumOperationType type,
                                                              int arrayIndex, int first, int last)
 {
-    zh_defineColumnCounts();
+    xh_defineColumnCounts();
     if(xv_currentArrayIndex != arrayIndex)
     {
         return;
@@ -421,7 +421,7 @@ void X_JointSpectraDataManager::zh_onRepositoryArrayOperation(X_SpectrumArrayRep
     else if(type == X_SpectrumArrayRepository::SOT_END_INSERT_SPECTRA)
     {
         emit xg_currentOperation(OT_END_INSERT_ROW, first, last);
-        zh_calculateCalibrationConcentrations();
+        xh_calculateCalibrationConcentrations();
     }
     else if(type == X_SpectrumArrayRepository::SOT_BEGIN_REMOVE_SPECTRA)
     {
@@ -430,7 +430,7 @@ void X_JointSpectraDataManager::zh_onRepositoryArrayOperation(X_SpectrumArrayRep
     else if(type == X_SpectrumArrayRepository::SOT_END_REMOVE_SPECTRA)
     {
         emit xg_currentOperation(OT_END_REMOVE_ROW, first, last);
-        zh_calculateCalibrationConcentrations();
+        xh_calculateCalibrationConcentrations();
     }
     else if(type == X_SpectrumArrayRepository::SOT_VISIBLE_CHANGED)
     {
@@ -443,17 +443,17 @@ void X_JointSpectraDataManager::zh_onRepositoryArrayOperation(X_SpectrumArrayRep
 
 }
 //==================================================================
-void X_JointSpectraDataManager::zh_onRepositoryChemElementOperation(X_SpectrumArrayRepository::ChemElementOperationType type,
+void X_JointSpectraDataManager::xh_onRepositoryChemElementOperation(X_SpectrumArrayRepository::ChemElementOperationType type,
                                                                    int arrayIndex, int first, int last)
 {
-    zh_defineColumnCounts();
+    xh_defineColumnCounts();
     if(xv_currentArrayIndex != arrayIndex)
     {
         return;
     }
 
     int residual = last - first;
-    int visibleFirst = zh_convertChemElementIndexToVisibleChemElementIndex(xv_currentArrayIndex, first);
+    int visibleFirst = xh_convertChemElementIndexToVisibleChemElementIndex(xv_currentArrayIndex, first);
 
     if(visibleFirst < 0)
     {
@@ -511,7 +511,7 @@ void X_JointSpectraDataManager::zh_onRepositoryChemElementOperation(X_SpectrumAr
     }
 }
 //==================================================================
-void X_JointSpectraDataManager::zh_onRepositoryTermOperation(X_CalibrationRepository::TermOperationType type,
+void X_JointSpectraDataManager::xh_onRepositoryTermOperation(X_CalibrationRepository::TermOperationType type,
                                                             int calibrationIndex, int first, int last)
 {
     if(!xv_calibrationRepository)
@@ -526,7 +526,7 @@ void X_JointSpectraDataManager::zh_onRepositoryTermOperation(X_CalibrationReposi
 
     int visibleFirst;
     int visibleLast;
-    if(!zh_getVisibleIndexesForOperation(calibrationIndex, calibrationIndex, visibleFirst, visibleLast))
+    if(!xh_getVisibleIndexesForOperation(calibrationIndex, calibrationIndex, visibleFirst, visibleLast))
     {
         return;
     }
@@ -538,13 +538,13 @@ void X_JointSpectraDataManager::zh_onRepositoryTermOperation(X_CalibrationReposi
             type == X_CalibrationRepository::TOT_END_INSERT_TERM ||
             type == X_CalibrationRepository::TOT_END_RESET)
     {
-        zh_calculateCalibrationConcentrationForCalibration(calibrationIndex);
+        xh_calculateCalibrationConcentrationForCalibration(calibrationIndex);
 
         emit xg_currentOperation(OT_COLUMN_DATA_CHANGED, visibleFirst, visibleLast);
     }
 }
 //==================================================================
-void X_JointSpectraDataManager::zh_onRepositoryCalibrationOperation(X_CalibrationRepository::CalibrationOperationType type,
+void X_JointSpectraDataManager::xh_onRepositoryCalibrationOperation(X_CalibrationRepository::CalibrationOperationType type,
                                                                    int first, int last)
 {
     if(!xv_calibrationRepository)
@@ -552,14 +552,14 @@ void X_JointSpectraDataManager::zh_onRepositoryCalibrationOperation(X_Calibratio
         return;
     }
 
-    zh_defineColumnCounts();
+    xh_defineColumnCounts();
 
     int visibleFirst = -1;
     int visibleLast = -1;
 
     if(type == X_CalibrationRepository::COT_INSERT_CALIBRATIONS)
     {
-        if(!zh_getVisibleIndexesForInsert(first, last, visibleFirst, visibleLast))
+        if(!xh_getVisibleIndexesForInsert(first, last, visibleFirst, visibleLast))
         {
             return;
         }
@@ -571,7 +571,7 @@ void X_JointSpectraDataManager::zh_onRepositoryCalibrationOperation(X_Calibratio
     }
     else if(type == X_CalibrationRepository::COT_REMOVE_CALIBRATIONS)
     {
-        if(!zh_getVisibleIndexesForOperation(first, last, visibleFirst, visibleLast))
+        if(!xh_getVisibleIndexesForOperation(first, last, visibleFirst, visibleLast))
         {
             return;
         }
@@ -584,7 +584,7 @@ void X_JointSpectraDataManager::zh_onRepositoryCalibrationOperation(X_Calibratio
     }
     else if(type == X_CalibrationRepository::COT_CALIBRATION_NAME_CHANGED)
     {
-        if(!zh_getVisibleIndexesForOperation(first, last, visibleFirst, visibleLast))
+        if(!xh_getVisibleIndexesForOperation(first, last, visibleFirst, visibleLast))
         {
             return;
         }
@@ -597,7 +597,7 @@ void X_JointSpectraDataManager::zh_onRepositoryCalibrationOperation(X_Calibratio
 
         if(!visible)
         {
-            if(!zh_getVisibleIndexesForInsert(first, last, visibleFirst, visibleLast))
+            if(!xh_getVisibleIndexesForInsert(first, last, visibleFirst, visibleLast))
             {
                 return;
             }
@@ -606,7 +606,7 @@ void X_JointSpectraDataManager::zh_onRepositoryCalibrationOperation(X_Calibratio
         }
         else
         {
-            if(!zh_getVisibleIndexesForOperation(first, last, visibleFirst, visibleLast))
+            if(!xh_getVisibleIndexesForOperation(first, last, visibleFirst, visibleLast))
             {
                 return;
             }
@@ -632,7 +632,7 @@ void X_JointSpectraDataManager::zh_onRepositoryCalibrationOperation(X_Calibratio
             type == X_CalibrationRepository::COT_CALIBRATION_EQUATION_BASE_TERM_CHANGED
             )
     {
-        if(!zh_getVisibleIndexesForOperation(first, last, visibleFirst, visibleLast))
+        if(!xh_getVisibleIndexesForOperation(first, last, visibleFirst, visibleLast))
         {
             return;
         }
@@ -640,14 +640,14 @@ void X_JointSpectraDataManager::zh_onRepositoryCalibrationOperation(X_Calibratio
         int calibrationIndex;
         for(int v = visibleFirst; v <= visibleLast; v++)
         {
-            calibrationIndex = zh_convertVisibleIndexToCalibrationIndex(v);
-            zh_calculateCalibrationConcentrationForCalibration(calibrationIndex);
+            calibrationIndex = xh_convertVisibleIndexToCalibrationIndex(v);
+            xh_calculateCalibrationConcentrationForCalibration(calibrationIndex);
             emit xg_currentOperation(OT_COLUMN_DATA_CHANGED, visibleFirst, visibleLast);
         }
     }
 }
 //==================================================================
-int X_JointSpectraDataManager::zh_convertVisibleIndexToCalibrationIndex(int visibleIndex)
+int X_JointSpectraDataManager::xh_convertVisibleIndexToCalibrationIndex(int visibleIndex)
 {
     if(visibleIndex < xv_spectrumDataColumnCount + xv_visibleChemElementCount ||
             visibleIndex >= xv_spectrumDataColumnCount +
@@ -668,7 +668,7 @@ int X_JointSpectraDataManager::zh_convertVisibleIndexToCalibrationIndex(int visi
     return -1;
 }
 //==================================================================
-bool X_JointSpectraDataManager::zh_getVisibleIndexesForInsert(int first, int last, int& visibleFirst, int& visibleLast) const
+bool X_JointSpectraDataManager::xh_getVisibleIndexesForInsert(int first, int last, int& visibleFirst, int& visibleLast) const
 {
     int visibleBeforeFirst = 0;
     for(int i = 0; i < first; i++)
@@ -686,7 +686,7 @@ bool X_JointSpectraDataManager::zh_getVisibleIndexesForInsert(int first, int las
     return true;
 }
 //==================================================================
-bool X_JointSpectraDataManager::zh_getVisibleIndexesForOperation(int first, int last, int& visibleFirst, int& visibleLast) const
+bool X_JointSpectraDataManager::xh_getVisibleIndexesForOperation(int first, int last, int& visibleFirst, int& visibleLast) const
 {
     int visibleBeforeFirst = 0;
     int visibleInInterval = 0;
@@ -717,7 +717,7 @@ bool X_JointSpectraDataManager::zh_getVisibleIndexesForOperation(int first, int 
     return true;
 }
 //==================================================================
-int X_JointSpectraDataManager::zh_convertChemElementIndexToVisibleChemElementIndex(int arrayIndex,
+int X_JointSpectraDataManager::xh_convertChemElementIndexToVisibleChemElementIndex(int arrayIndex,
                                                                                   int originalIndex)
 {
     if(xv_spectrumArrayRepository == nullptr)
@@ -728,7 +728,7 @@ int X_JointSpectraDataManager::zh_convertChemElementIndexToVisibleChemElementInd
     return xv_spectrumArrayRepository->xp_numberVisibleChemElementsBeforeIndex(arrayIndex, originalIndex);
 }
 //==================================================================
-void X_JointSpectraDataManager::zh_defineColumnCounts()
+void X_JointSpectraDataManager::xh_defineColumnCounts()
 {
     if(xv_spectrumArrayRepository != nullptr && xv_currentArrayIndex >= 0)
     {
@@ -749,7 +749,7 @@ void X_JointSpectraDataManager::zh_defineColumnCounts()
     }
 }
 //==================================================================
-void X_JointSpectraDataManager::zh_calculateCalibrationConcentrations()
+void X_JointSpectraDataManager::xh_calculateCalibrationConcentrations()
 {
     xv_calibrationConcentrationMap.clear();
 
@@ -767,11 +767,11 @@ void X_JointSpectraDataManager::zh_calculateCalibrationConcentrations()
 
     for(int c = 0; c < xv_calibrationRepository->xp_calibrationCount(); c++)
     {
-        zh_calculateCalibrationConcentrationForCalibration(c);
+        xh_calculateCalibrationConcentrationForCalibration(c);
     }
 }
 //==================================================================
-bool X_JointSpectraDataManager::zh_calculateCalibrationConcentrationForCalibration(int calibrationIndex)
+bool X_JointSpectraDataManager::xh_calculateCalibrationConcentrationForCalibration(int calibrationIndex)
 {
     qint64 calibrationId = xv_calibrationRepository->xp_calibrationIdForCalibrationIndex(calibrationIndex);
     if(calibrationId < 0)
@@ -779,10 +779,10 @@ bool X_JointSpectraDataManager::zh_calculateCalibrationConcentrationForCalibrati
         return false;
     }
 
-    return zh_calculateCalibrationConcentrationForCalibrationId(calibrationId);
+    return xh_calculateCalibrationConcentrationForCalibrationId(calibrationId);
 }
 //==================================================================
-bool X_JointSpectraDataManager::zh_calculateCalibrationConcentrationForCalibrationId(qint64 calibrationId)
+bool X_JointSpectraDataManager::xh_calculateCalibrationConcentrationForCalibrationId(qint64 calibrationId)
 {
     if(calibrationId < 0 )
     {

@@ -94,29 +94,29 @@ signals:
 public slots:
 
 protected:
-    bool zh_setCemicalElementProperty(int X_Number,
+    bool xh_setCemicalElementProperty(int X_Number,
                                       const QString& key,
                                       const QString& value);
 
-    bool zh_setCemicalElementProperties(int X_Number,
+    bool xh_setCemicalElementProperties(int X_Number,
                                            const QStringList& propertySectionBranch,
                                            const PropertyList& propertyList);
 
-    bool zh_addCemicalElementPropertyBranch(int X_Number,
+    bool xh_addCemicalElementPropertyBranch(int X_Number,
                                             const QStringList& propertySectionBranch);
 
 private slots:
 
-    void zh_onItemAboutToBeInserted(int row, const X_ChemicalElementPropertyItem* parentItem);
-    void zh_onItemInsertion(const X_ChemicalElementPropertyItem* item);
-    void zh_notifyItemAboutToBeRemoved(const X_ChemicalElementPropertyItem *item);
-    void zh_notifyItemRemoved(const X_ChemicalElementPropertyItem* item);
-    void zh_notifyItemIsChanged(const X_ChemicalElementPropertyItem *item);
+    void xh_onItemAboutToBeInserted(int row, const X_ChemicalElementPropertyItem* parentItem);
+    void xh_onItemInsertion(const X_ChemicalElementPropertyItem* item);
+    void xh_notifyItemAboutToBeRemoved(const X_ChemicalElementPropertyItem *item);
+    void xh_notifyItemRemoved(const X_ChemicalElementPropertyItem* item);
+    void xh_notifyItemIsChanged(const X_ChemicalElementPropertyItem *item);
 
-    void zh_notifyItemPropertyNameIsChanged(const X_ChemicalElementPropertyItem *item);
-    void zh_notifyItemPropertyValueIsChanged(const X_ChemicalElementPropertyItem *item);
+    void xh_notifyItemPropertyNameIsChanged(const X_ChemicalElementPropertyItem *item);
+    void xh_notifyItemPropertyValueIsChanged(const X_ChemicalElementPropertyItem *item);
 
-    void zh_itemRemovingPermission(const X_ChemicalElementPropertyItem* item,
+    void xh_itemRemovingPermission(const X_ChemicalElementPropertyItem* item,
                                    bool& permissionToRemove);
 
 private:
@@ -137,22 +137,22 @@ private:
     bool xv_dirty;
 
     // FUNCS
-    void zh_createComponents();
-    void zh_createConnections();
-    void zh_loadBasicChemicalElementProperties();
+    void xh_createComponents();
+    void xh_createConnections();
+    void xh_loadBasicChemicalElementProperties();
 
-    X_ChemicalElementPropertyItem* zh_itemForIndex(const QModelIndex &index) const;
-    QModelIndex zh_indexForItem(const X_ChemicalElementPropertyItem* item) const;
-    X_ChemicalElementPropertyItem* zh_itemForX_Number(int X_Number) const;
-    void zh_redefinePropertyNameList();
-    bool zh_firstPropertyColumnForItem(X_ChemicalElementPropertyItem* item,
+    X_ChemicalElementPropertyItem* xh_itemForIndex(const QModelIndex &index) const;
+    QModelIndex xh_indexForItem(const X_ChemicalElementPropertyItem* item) const;
+    X_ChemicalElementPropertyItem* xh_itemForX_Number(int X_Number) const;
+    void xh_redefinePropertyNameList();
+    bool xh_firstPropertyColumnForItem(X_ChemicalElementPropertyItem* item,
                                       int& columnNumber) const;
 
-    void zh_defineChemicalElementItemNames(const QString &nameTemplate, QString separator = " ");
-    int zh_propertyNameCount(const PropertyNames& propertyNames) const;
+    void xh_defineChemicalElementItemNames(const QString &nameTemplate, QString separator = " ");
+    int xh_propertyNameCount(const PropertyNames& propertyNames) const;
 
-    bool zh_openDialogSettingsGroup(QSettings* settings) const;
-    bool zh_closeDialogSettingsGroup(QSettings* settings) const;
+    bool xh_openDialogSettingsGroup(QSettings* settings) const;
+    bool xh_closeDialogSettingsGroup(QSettings* settings) const;
 
 };
 //======================================================

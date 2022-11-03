@@ -33,8 +33,8 @@ public slots:
 private:
 
     const static QMap<QtMsgType, QString> xv_msgTypeNameMap;
-    static QMap<QtMsgType, QString> zh_initMsgTypeNameMap();
-    static QPixmap zh_getStandardMessageBoxPixmap(QtMsgType type,
+    static QMap<QtMsgType, QString> xh_initMsgTypeNameMap();
+    static QPixmap xh_getStandardMessageBoxPixmap(QtMsgType type,
                                                   QSize size,
                                                   QStyle *style);
 

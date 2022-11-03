@@ -97,7 +97,7 @@ void	X_EquationDelegate::updateEditorGeometry(QWidget* editor, const QStyleOptio
     // QStyledItemDelegate::updateEditorGeometry(editor, option, index);
 }
 //======================================================================
-void X_EquationDelegate::zh_onEditorChildDialogOpen(bool dialogOpen)
+void X_EquationDelegate::xh_onEditorChildDialogOpen(bool dialogOpen)
 {
     xv_editorChildDialogOpen = dialogOpen;
 }

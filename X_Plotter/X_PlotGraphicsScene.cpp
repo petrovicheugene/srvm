@@ -11,19 +11,19 @@
 X_PlotGraphicsScene::X_PlotGraphicsScene(QObject * parent)
     : QGraphicsScene(parent)
 {
-    zh_createConnections();
+    xh_createConnections();
 }
 //====================================================
 X_PlotGraphicsScene::X_PlotGraphicsScene(const QRectF & sceneRect, QObject * parent)
     : QGraphicsScene(sceneRect,  parent)
 {
-    zh_createConnections();
+    xh_createConnections();
 }
 //====================================================
 X_PlotGraphicsScene::X_PlotGraphicsScene(qreal x, qreal y, qreal width, qreal height, QObject * parent)
     : QGraphicsScene(x,  y,  width,  height, parent)
 {
-    zh_createConnections();
+    xh_createConnections();
 }
 //====================================================
 X_PlotGraphicsScene::~X_PlotGraphicsScene()
@@ -55,13 +55,13 @@ void X_PlotGraphicsScene::xp_removeItem(QGraphicsItem * item)
     delete item;
 }
 //====================================================
-void X_PlotGraphicsScene::zh_createConnections()
+void X_PlotGraphicsScene::xh_createConnections()
 {
     connect(this, &QGraphicsScene::sceneRectChanged,
-            this, &X_PlotGraphicsScene::zh_onSceneRectChange);
+            this, &X_PlotGraphicsScene::xh_onSceneRectChange);
 }
 //====================================================
-void X_PlotGraphicsScene::zh_onSceneRectChange(const QRectF& rect)
+void X_PlotGraphicsScene::xh_onSceneRectChange(const QRectF& rect)
 {
     // fitting window items in scene trect
     //    foreach(X_WindowGraphicsItem* windowItem, xv_windowItemList)

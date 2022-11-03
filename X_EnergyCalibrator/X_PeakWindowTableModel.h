@@ -37,8 +37,8 @@ public slots:
 
 protected slots:
 
-    void zh_onAddPeakWindowAction();
-    void zh_onRemovePeakWindowAction();
+    void xh_onAddPeakWindowAction();
+    void xh_onRemovePeakWindowAction();
 
 protected:
 
@@ -48,8 +48,8 @@ protected:
     QList<X_PeakWindow*> xv_peakWindowList;
 
     // FUNCS
-    void zh_createActions();
-    void zh_createConnections();
+    void xh_createActions();
+    void xh_createConnections();
 
 };
 //======================================================

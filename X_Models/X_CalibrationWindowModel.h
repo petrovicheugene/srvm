@@ -31,7 +31,7 @@ public slots:
 
 private slots:
 
-    void zh_onDataManagerOperation(X_CalibrationWindowDataManager::OperationType type, int first, int last);
+    void xh_onDataManagerOperation(X_CalibrationWindowDataManager::OperationType type, int first, int last);
 
 private:
     // VARS

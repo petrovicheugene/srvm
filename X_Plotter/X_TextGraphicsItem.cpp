@@ -16,14 +16,14 @@ X_TextGraphicsItem::X_TextGraphicsItem(const QString& text, QGraphicsItem * pare
     xv_text = text;
     xv_font = qApp->font();
     xv_textPixelSize = 6;
-    zh_recalcShapeAndBoundingRect();
+    xh_recalcShapeAndBoundingRect();
 }
 //======================================================
 X_TextGraphicsItem::X_TextGraphicsItem(QGraphicsItem * parent)
 {
     xv_font = qApp->font();
     xv_textPixelSize = 6;
-    zh_recalcShapeAndBoundingRect();
+    xh_recalcShapeAndBoundingRect();
 }
 //======================================================
 QRectF X_TextGraphicsItem::boundingRect() const
@@ -62,7 +62,7 @@ int X_TextGraphicsItem::type() const
     return TextItemType;
 }
 //======================================================
-void X_TextGraphicsItem::zh_recalcShapeAndBoundingRect()
+void X_TextGraphicsItem::xh_recalcShapeAndBoundingRect()
 {
     QFontMetrics fm(xv_font);
     //xv_boundingRect = fm.boundingRect(xv_text);
@@ -81,7 +81,7 @@ void X_TextGraphicsItem::zh_recalcShapeAndBoundingRect()
 //======================================================
 void X_TextGraphicsItem::xp_updateItem()
 {
-    zh_recalcShapeAndBoundingRect();
+    xh_recalcShapeAndBoundingRect();
     update();
 }
 //======================================================

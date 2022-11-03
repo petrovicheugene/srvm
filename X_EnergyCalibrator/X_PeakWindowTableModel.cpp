@@ -7,8 +7,8 @@
 X_PeakWindowTableModel::X_PeakWindowTableModel(QObject *parent)
     : QAbstractTableModel(parent)
 {
-    zh_createActions();
-    zh_createConnections();
+    xh_createActions();
+    xh_createConnections();
 
 }
 //======================================================
@@ -85,7 +85,7 @@ QList<X_ControlAction*> X_PeakWindowTableModel::xp_contextActions() const
     return actionList;
 }
 //======================================================
-void X_PeakWindowTableModel::zh_createActions()
+void X_PeakWindowTableModel::xh_createActions()
 {
     xv_addPeakWindowAction = new X_ControlAction(this);
     xv_addPeakWindowAction->setIcon(QIcon());
@@ -99,16 +99,16 @@ void X_PeakWindowTableModel::zh_createActions()
 
 }
 //===================================================
-void X_PeakWindowTableModel::zh_createConnections()
+void X_PeakWindowTableModel::xh_createConnections()
 {
     connect(xv_addPeakWindowAction, &X_ControlAction::triggered,
-            this, &X_PeakWindowTableModel::zh_onAddPeakWindowAction);
+            this, &X_PeakWindowTableModel::xh_onAddPeakWindowAction);
     connect(xv_removePeakWindowAction, &X_ControlAction::triggered,
-            this, &X_PeakWindowTableModel::zh_onRemovePeakWindowAction);
+            this, &X_PeakWindowTableModel::xh_onRemovePeakWindowAction);
 
 }
 //===================================================
-void X_PeakWindowTableModel::zh_onAddPeakWindowAction()
+void X_PeakWindowTableModel::xh_onAddPeakWindowAction()
 {
     // define peak window margins
     // ask plotter for visible rect
@@ -140,7 +140,7 @@ void X_PeakWindowTableModel::zh_onAddPeakWindowAction()
 
 }
 //===================================================
-void X_PeakWindowTableModel::zh_onRemovePeakWindowAction()
+void X_PeakWindowTableModel::xh_onRemovePeakWindowAction()
 {
     QModelIndex currentIndex;
     emit xg_inquiryCurrentIndex(currentIndex);

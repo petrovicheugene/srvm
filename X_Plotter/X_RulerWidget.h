@@ -169,12 +169,12 @@ protected:
     void resizeEvent(QResizeEvent* event);
     void paintEvent(QPaintEvent* event);
 
-    void zh_paintLeftRule(QPainter* painter);
-    void zh_paintRightRule(QPainter* painter);
-    void zh_paintTopRule(QPainter* painter);
-    void zh_paintBottomRule(QPainter* painter);
+    void xh_paintLeftRule(QPainter* painter);
+    void xh_paintRightRule(QPainter* painter);
+    void xh_paintTopRule(QPainter* painter);
+    void xh_paintBottomRule(QPainter* painter);
 
-    void zh_recalcRuleSizes();
+    void xh_recalcRuleSizes();
 };
 //=========================================================
 #endif // X_RULERWIDGET_H

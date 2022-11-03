@@ -35,7 +35,7 @@ public:
 
     void xp_setBottomRulerScaleMetrix(qreal scaleValue, const QString& rulerLabelString);
     void xp_setCurrentSpectrum(qint64 id) const;
-    void zh_rebuildChart();
+    void xh_rebuildChart();
 
 signals:
 
@@ -48,23 +48,23 @@ public slots:
 
 private slots:
 
-    //    void zh_showTermCorrelationChart();
-    //    void zh_showConcentrationChart();
+    //    void xh_showTermCorrelationChart();
+    //    void xh_showConcentrationChart();
 
-    void zh_currentSpectrumChanged(qint64 currentSpectrumId, int currentSpectrumIndex,
+    void xh_currentSpectrumChanged(qint64 currentSpectrumId, int currentSpectrumIndex,
                                    qint64 previousSpectrumId, int previousSpectrumIndex);
 
-    void zh_onChartDataKindChange(int);
-    void zh_currentSpectrumArrayChanged(qint64, int);
-    void zh_onRepositoryArrayOperation(X_SpectrumArrayRepository::SpectrumOperationType type,
+    void xh_onChartDataKindChange(int);
+    void xh_currentSpectrumArrayChanged(qint64, int);
+    void xh_onRepositoryArrayOperation(X_SpectrumArrayRepository::SpectrumOperationType type,
                                        int arrayIndex, int first, int last);
-    void zh_onRepositoryChemElementOperation(X_SpectrumArrayRepository::ChemElementOperationType,
+    void xh_onRepositoryChemElementOperation(X_SpectrumArrayRepository::ChemElementOperationType,
                                              int arrayIndex, int first, int last);
 
-    void zh_onRepositoryCalibrationOperation(X_CalibrationRepository::CalibrationOperationType type, int first, int last);
-    void zh_onRepositoryTermOperation(X_CalibrationRepository::TermOperationType type, int calibrationIndex, int first, int last);
-    void zh_currentCalibrationChanged(qint64 calibrationId, int calibrationIndex);
-    void zh_onNormalizerChange(qint64 calibrationId);
+    void xh_onRepositoryCalibrationOperation(X_CalibrationRepository::CalibrationOperationType type, int first, int last);
+    void xh_onRepositoryTermOperation(X_CalibrationRepository::TermOperationType type, int calibrationIndex, int first, int last);
+    void xh_currentCalibrationChanged(qint64 calibrationId, int calibrationIndex);
+    void xh_onNormalizerChange(qint64 calibrationId);
 
 
 private:
@@ -94,25 +94,25 @@ private:
     QString xv_deviationRulerLabelBaseString;
 
     // FUNCS
-    QWidget* zh_createChartDataKindComboBoxWidget();
-    void zh_setUpChartPointOptions();
+    QWidget* xh_createChartDataKindComboBoxWidget();
+    void xh_setUpChartPointOptions();
 
-    // void zh_rebuildChart();
-    bool zh_getTermToConcentrationData(QMap<qint64, X_VisibilityPointF> &chartPointMap,
+    // void xh_rebuildChart();
+    bool xh_getTermToConcentrationData(QMap<qint64, X_VisibilityPointF> &chartPointMap,
                                        qreal& maxX, qreal &minX, qreal& maxY, qreal &minY);
-    bool zh_getCalibrationToConcentrationData(QMap<qint64, X_VisibilityPointF> &chartPointMap,
+    bool xh_getCalibrationToConcentrationData(QMap<qint64, X_VisibilityPointF> &chartPointMap,
                                               qreal &maxX, qreal &minX, qreal& maxY, qreal &minY);
-    bool zh_getDeviationToConcentrationData(QMap<qint64, X_VisibilityPointF> &chartPointMap,
+    bool xh_getDeviationToConcentrationData(QMap<qint64, X_VisibilityPointF> &chartPointMap,
                                             qreal &maxX, qreal &minX, qreal& maxY, qreal &minY);
 
-    void zh_recalcAndSetSceneRect(const QMap<qint64, X_VisibilityPointF>& chartPointMap,
+    void xh_recalcAndSetSceneRect(const QMap<qint64, X_VisibilityPointF>& chartPointMap,
                                   const X_ChartPointOptions* chartPointOptions);
 
-    void zh_recalcAndSetSceneRect(qreal maxX, qreal minX, qreal maxY, qreal minY, ChartDataKind chartDataKind,
+    void xh_recalcAndSetSceneRect(qreal maxX, qreal minX, qreal maxY, qreal minY, ChartDataKind chartDataKind,
                                   const X_ChartPointOptions* chartPointOptions);
-    void zh_createAndPlaceChartPointItems(const QMap<qint64, X_VisibilityPointF> &chartPointMap,
+    void xh_createAndPlaceChartPointItems(const QMap<qint64, X_VisibilityPointF> &chartPointMap,
                                           X_ChartPointOptions* chartPointOptions);
-    bool zh_setRulerMetrixAndPrecisionToPlot(const X_ChartPointOptions &) const;
+    bool xh_setRulerMetrixAndPrecisionToPlot(const X_ChartPointOptions &) const;
 
 };
 //=====================================================================

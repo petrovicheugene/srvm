@@ -13,35 +13,35 @@ X_PropertyEditDialog::X_PropertyEditDialog(QWidget *parent)
 {
     setWindowTitle(qApp->applicationDisplayName());
 
-    zh_createComponents();
-    zh_createConnections();
+    xh_createComponents();
+    xh_createConnections();
 }
 //======================================================
-void X_PropertyEditDialog::zh_createComponents()
+void X_PropertyEditDialog::xh_createComponents()
 {
-    zh_addWidgetToMainLayout(zh_createControlWidget());
-    zh_addStretchToMainLayout();
+    xh_addWidgetToMainLayout(xh_createControlWidget());
+    xh_addStretchToMainLayout();
 
 
-    xv_okButton = zh_createBasementButton(tr("Ok"),
+    xv_okButton = xh_createBasementButton(tr("Ok"),
                                           tr("Save section and close dialog"),
                                           QIcon());
-    xv_cancelButton = zh_createBasementButton(tr("Cancel"),
+    xv_cancelButton = xh_createBasementButton(tr("Cancel"),
                                               tr("Close dialog without savimg section"),
                                               QIcon());
 
 }
 //======================================================
-void X_PropertyEditDialog::zh_createConnections()
+void X_PropertyEditDialog::xh_createConnections()
 {
     connect(xv_okButton, &QPushButton::clicked,
-            this, &X_PropertyEditDialog::zh_onOkButtonClick);
+            this, &X_PropertyEditDialog::xh_onOkButtonClick);
     connect(xv_cancelButton, &QPushButton::clicked,
-            this, &X_PropertyEditDialog::zh_onCloseButtonClick);
+            this, &X_PropertyEditDialog::xh_onCloseButtonClick);
 
 }
 //======================================================
-QWidget* X_PropertyEditDialog::zh_createControlWidget()
+QWidget* X_PropertyEditDialog::xh_createControlWidget()
 {
     QWidget* widget = new QWidget(this);
     QVBoxLayout* mainLayout = new QVBoxLayout;
@@ -67,7 +67,7 @@ QWidget* X_PropertyEditDialog::zh_createControlWidget()
     return widget;
 }
 //======================================================
-void X_PropertyEditDialog::zh_onOkButtonClick()
+void X_PropertyEditDialog::xh_onOkButtonClick()
 {
     // check data
     if( xp_propertyName().isEmpty())
@@ -80,7 +80,7 @@ void X_PropertyEditDialog::zh_onOkButtonClick()
     accept();
 }
 //======================================================
-void X_PropertyEditDialog::zh_onCloseButtonClick()
+void X_PropertyEditDialog::xh_onCloseButtonClick()
 {
     reject();
 }

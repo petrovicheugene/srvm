@@ -29,11 +29,11 @@ signals:
 
 public slots:
 
-    void zh_onNormaSettingsDialogAccept();
+    void xh_onNormaSettingsDialogAccept();
 
 private slots:
 
-    void zh_onDialogAccepted();
+    void xh_onDialogAccepted();
 
 private:
 
@@ -49,10 +49,10 @@ private:
     X_NormaSettingsData xv_fractionalBaseNormaSettingsData;
     // FUNCS
     bool eventFilter(QObject* receiver, QEvent* event);
-    void zh_createComponents();
-    void zh_createConnections();
-    void zh_runNormalizationDialog();
-    void zh_setNormalizationToLineEdit(X_NormaSettingsData fractionalBaseNormaSettingsData);
+    void xh_createComponents();
+    void xh_createConnections();
+    void xh_runNormalizationDialog();
+    void xh_setNormalizationToLineEdit(X_NormaSettingsData fractionalBaseNormaSettingsData);
 };
 //============================================================
 #endif // X_EQUATIONCHOOSEDIALOG_H

@@ -28,8 +28,8 @@ X_SpectrumArray::X_SpectrumArray(QObject* parent)
     xv_energyUnit = QString();
 
     xv_arrayId = xv_lastArrayId++;
-    zh_createConnections();
-    zh_recalcArrayMaxParameters();}
+    xh_createConnections();
+    xh_recalcArrayMaxParameters();}
 //===============================================
 X_SpectrumArray::X_SpectrumArray(const QString& name, QObject* parent)  : QObject(parent)
 {
@@ -44,8 +44,8 @@ X_SpectrumArray::X_SpectrumArray(const QString& name, QObject* parent)  : QObjec
     xv_energyUnit = QString();
 
     xv_arrayId = xv_lastArrayId++;
-    zh_createConnections();
-    zh_recalcArrayMaxParameters();
+    xh_createConnections();
+    xh_recalcArrayMaxParameters();
 }
 //===============================================
 X_SpectrumArray::~X_SpectrumArray()
@@ -403,7 +403,7 @@ bool X_SpectrumArray::xp_setSpectrumChecked(int index, bool checked)
     if(res)
     {
         emit xg_spectrumOperation(OT_CHANGED, index, index);
-        //        zh_calcAverageChemConcentrations();
+        //        xh_calcAverageChemConcentrations();
     }
     return res;
 }
@@ -419,8 +419,8 @@ bool X_SpectrumArray::xp_removeSpectrum(int index)
     xv_spectrumList.removeAt(index);
     emit xg_spectrumOperation(OT_END_REMOVE_SPECTRA, index, index);
 
-    zh_recalcArrayMaxParameters();
-    //   zh_calcAverageChemConcentrations();
+    xh_recalcArrayMaxParameters();
+    //   xh_calcAverageChemConcentrations();
 
     if(xv_spectrumList.count() < 1 )
     {
@@ -448,8 +448,8 @@ void X_SpectrumArray::xp_clearArray()
 
         emit xg_spectrumOperation(OT_END_REMOVE_SPECTRA,  0, lastSpectrumIndex);
 
-        zh_recalcArrayMaxParameters();
-        //        zh_calcAverageChemConcentrations();
+        xh_recalcArrayMaxParameters();
+        //        xh_calcAverageChemConcentrations();
     }
 }
 //===============================================
@@ -607,20 +607,20 @@ bool X_SpectrumArray::xp_appendSpectrum(const X_RawSpectrum& rawSpectrum, bool l
             }
 
             //            connect(speSpectrum, &X_SpeSpectrum::xg_energyCalibrationChanged,
-            //                    this, &X_SpectrumArray::zh_saveSpectrumToFile);
+            //                    this, &X_SpectrumArray::xh_saveSpectrumToFile);
             connect(speSpectrum, &X_SpeSpectrum::xg_energyCalibrationChanged,
-                    this, &X_SpectrumArray::zh_onSpectrumEnergyCalibrationChange);
+                    this, &X_SpectrumArray::xh_onSpectrumEnergyCalibrationChange);
             connect(speSpectrum, &X_SpeSpectrum::xg_gainFactorChanged,
-                    this, &X_SpectrumArray::zh_onSpectrumGainFactorChange);
+                    this, &X_SpectrumArray::xh_onSpectrumGainFactorChange);
         }
     }
 
     delete ioHandler;
-    zh_recalcArrayMaxParameters();
+    xh_recalcArrayMaxParameters();
     return res;
 }
 //===============================================
-void X_SpectrumArray::zh_onSpectrumEnergyCalibrationChange() const
+void X_SpectrumArray::xh_onSpectrumEnergyCalibrationChange() const
 {
     X_SpeSpectrum* spectrum = qobject_cast<X_SpeSpectrum*>(sender());
     if(!spectrum)
@@ -628,10 +628,10 @@ void X_SpectrumArray::zh_onSpectrumEnergyCalibrationChange() const
         return;
     }
 
-    zh_saveSpectrumToFile(spectrum);
+    xh_saveSpectrumToFile(spectrum);
 
     bool ok = false;
-    int spectrumIndex = zh_indexForSpectrum(spectrum, &ok);
+    int spectrumIndex = xh_indexForSpectrum(spectrum, &ok);
 
     if(ok)
     {
@@ -639,7 +639,7 @@ void X_SpectrumArray::zh_onSpectrumEnergyCalibrationChange() const
     }
 }
 //===============================================
-void X_SpectrumArray::zh_onSpectrumGainFactorChange() const
+void X_SpectrumArray::xh_onSpectrumGainFactorChange() const
 {
     X_SpeSpectrum* spectrum = qobject_cast<X_SpeSpectrum*>(sender());
     if(!spectrum)
@@ -647,10 +647,10 @@ void X_SpectrumArray::zh_onSpectrumGainFactorChange() const
         return;
     }
 
-    zh_saveSpectrumToFile(spectrum);
+    xh_saveSpectrumToFile(spectrum);
 }
 //===============================================
-void X_SpectrumArray::zh_saveSpectrumToFile(X_SpeSpectrum* spectrum) const
+void X_SpectrumArray::xh_saveSpectrumToFile(X_SpeSpectrum* spectrum) const
 {
     X_SpeIOHandler speIOHandler(nullptr);
 
@@ -661,7 +661,7 @@ void X_SpectrumArray::zh_saveSpectrumToFile(X_SpeSpectrum* spectrum) const
     speIOHandler.xp_saveSpectrumToFile(folderPath, fileName, spectrum);
 }
 //===============================================
-int X_SpectrumArray::zh_indexForSpectrum(X_SpeSpectrum* spectrum, bool* ok) const
+int X_SpectrumArray::xh_indexForSpectrum(X_SpeSpectrum* spectrum, bool* ok) const
 {
     for(int i = 0; i < xv_spectrumList.count(); i++)
     {
@@ -798,13 +798,13 @@ qint64 X_SpectrumArray::xp_arrayId() const
 //    return xv_chemElementList.xp_averageChemConcentration(chemElementIndex, averageValue);
 //}
 //===============================================
-void X_SpectrumArray::zh_createConnections()
+void X_SpectrumArray::xh_createConnections()
 {
     connect(&xv_chemElementList, &X_ChemElementList::xg_operationType,
             this, &X_SpectrumArray::xg_chemElementOperation);
 }
 //===============================================
-void X_SpectrumArray::zh_recalcArrayMaxParameters()
+void X_SpectrumArray::xh_recalcArrayMaxParameters()
 {
     xv_maxArrayChannelCount = 0;
     xv_maxArrayIntensity = 0;
@@ -828,7 +828,7 @@ void X_SpectrumArray::zh_recalcArrayMaxParameters()
     emit xg_arrayMaxParametersChanged(xv_arrayId,  xv_maxArrayIntensity,  xv_maxArrayChannelCount);
 }
 //===============================================
-//bool X_SpectrumArray::zh_calcAverageChemConcentration(qint64 chemElementId)
+//bool X_SpectrumArray::xh_calcAverageChemConcentration(qint64 chemElementId)
 //{
 //    if(!xv_chemElementList.xp_containsElementId(chemElementId))
 //    {
@@ -888,7 +888,7 @@ void X_SpectrumArray::zh_recalcArrayMaxParameters()
 //    return true;
 //}
 ////===============================================
-//void X_SpectrumArray::zh_calcAverageChemConcentrations()
+//void X_SpectrumArray::xh_calcAverageChemConcentrations()
 //{
 //#ifdef DBG
 //    qDebug() << "X_SpectrumArray: START FULL CHEM AVERAGE RECALC ";
@@ -901,7 +901,7 @@ void X_SpectrumArray::zh_recalcArrayMaxParameters()
 
 //    for(int e = 0; e < xv_chemElementList.xp_chemElementCount(); e++)
 //    {
-//        zh_calcAverageChemConcentration(xv_chemElementList.xp_chemElementId(e));
+//        xh_calcAverageChemConcentration(xv_chemElementList.xp_chemElementId(e));
 //    }
 //}
 //===============================================

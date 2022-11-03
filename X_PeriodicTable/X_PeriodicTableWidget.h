@@ -44,12 +44,12 @@ protected:
 
 private slots:
 
-    void zh_updatePeriodicTable();
-    void zh_updateButtonCaptions(const QModelIndex& topLeft,
+    void xh_updatePeriodicTable();
+    void xh_updateButtonCaptions(const QModelIndex& topLeft,
                                  const QModelIndex& bottomRight);
-    void zh_recalcAndApplyMinButtonSize();
+    void xh_recalcAndApplyMinButtonSize();
 
-    void zh_onButtonToggle(bool toggled);
+    void xh_onButtonToggle(bool toggled);
 
 private:
 
@@ -60,20 +60,20 @@ private:
     SelectionMode xv_selectionMode;
 
     // FUNCS
-    void zh_createComponents();
-    void zh_createConnections();
+    void xh_createComponents();
+    void xh_createConnections();
 
-    bool zh_buttonForX_Number(X_Number zNumber,  X_ChemicalElementButton *&button);
-    bool zh_setChemicalElementSymbol(X_Number zNumber, const QString& symbol);
-    void zh_recalcAndApplyPropertyRectSizes();
-    void zh_recalcPropertyRectSizes(QSize &symbolRectSize,
+    bool xh_buttonForX_Number(X_Number zNumber,  X_ChemicalElementButton *&button);
+    bool xh_setChemicalElementSymbol(X_Number zNumber, const QString& symbol);
+    void xh_recalcAndApplyPropertyRectSizes();
+    void xh_recalcPropertyRectSizes(QSize &symbolRectSize,
                                     QSize &zNumberRectSize,
                                     QSize &nameRectSize) const;
-    void zh_applyPropertyRectSizes(const QSize& symbolRectSize,
+    void xh_applyPropertyRectSizes(const QSize& symbolRectSize,
                                    const QSize& zNumberRectSize,
                                    const QSize& nameRectSize);
-    void zh_buttonRectSizes(QSize &minButtonSize, QSize &maxWidthSymbolRectSize, QSize &maxWidthX_NumberRectSize, QSize &maxWidthNameRectSize) const;
-    void zh_maxSymbolRectSize(QSize& symbolSize) const;
+    void xh_buttonRectSizes(QSize &minButtonSize, QSize &maxWidthSymbolRectSize, QSize &maxWidthX_NumberRectSize, QSize &maxWidthNameRectSize) const;
+    void xh_maxSymbolRectSize(QSize& symbolSize) const;
 
 
 };

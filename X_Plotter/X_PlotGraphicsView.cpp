@@ -35,7 +35,7 @@ X_PlotGraphicsView::X_PlotGraphicsView(QWidget* parent) : QGraphicsView(parent)
     setViewportUpdateMode(QGraphicsView::FullViewportUpdate);
     //setViewportUpdateMode(QGraphicsView::SmartViewportUpdate);
     setMouseTracking(true);
-    zh_createConnections();
+    xh_createConnections();
 }
 //=============================================================
 void X_PlotGraphicsView::xp_setScaleViewWhenResizeFlag(bool flag)
@@ -381,7 +381,7 @@ void X_PlotGraphicsView::mousePressEvent(QMouseEvent* event)
         // pad moving
         //      QGraphicsItem* item = itemAt(event->pos());
         //      if(!item || !(item->flags() & QGraphicsItem::ItemIsMovable))
-        //      if(!zh_findSpectrumInCursorArea(event->pos()))
+        //      if(!xh_findSpectrumInCursorArea(event->pos()))
         //      {
         //xv_plotMode = PM_PAD_DRAGGING;
         xv_sceneCenterPos = mapToScene(viewport()->rect()).boundingRect().center();
@@ -449,7 +449,7 @@ void X_PlotGraphicsView::mouseReleaseEvent(QMouseEvent* event)
     }
     else if(xv_plotMode == PM_REGULAR && xv_mousePressStartViewPos == event->pos())
     {
-        emit xg_cursorAreaImage(zh_grabCursorArea(event->pos()));
+        emit xg_cursorAreaImage(xh_grabCursorArea(event->pos()));
     }
     else if(xv_plotMode == PM_RULER)
     {
@@ -684,12 +684,12 @@ void X_PlotGraphicsView::drawBackground(QPainter * painter, const QRectF & rect)
     QGraphicsView::drawBackground(painter, rect);
 }
 //=============================================================
-void X_PlotGraphicsView::zh_createConnections()
+void X_PlotGraphicsView::xh_createConnections()
 {
 
 }
 //=============================================================
-QImage X_PlotGraphicsView::zh_grabCursorArea(QPoint mousePos)
+QImage X_PlotGraphicsView::xh_grabCursorArea(QPoint mousePos)
 {
     int rectSide = xv_colorPickUpAuxCoverageSize*2 + 1; // 1 - central pixel
     QPoint topLeft;

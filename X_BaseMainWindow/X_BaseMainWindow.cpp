@@ -16,8 +16,8 @@ X_BaseMainWindow::X_BaseMainWindow(QWidget *parent) : QMainWindow(parent)
 
     xv_helpBrowser = nullptr;
 
-    zh_createBaseActions();
-    zh_createBaseConnections();
+    xh_createBaseActions();
+    xh_createBaseConnections();
 }
 //======================================================
 void X_BaseMainWindow::xp_handleStandardLogMessage(QtMsgType type,
@@ -28,24 +28,24 @@ void X_BaseMainWindow::xp_handleStandardLogMessage(QtMsgType type,
     emit xg_standardLogMessage(type, msg);
 }
 //======================================================
-void X_BaseMainWindow::zh_createBaseActions()
+void X_BaseMainWindow::xh_createBaseActions()
 {
     xv_helpAction = new QAction(tr("Help"), this);
     xv_aboutAction = new QAction(tr("About"), this);
     xv_aboutQtAction = new QAction(tr("About Qt"), this);
 }
 //======================================================
-void X_BaseMainWindow::zh_createBaseConnections()
+void X_BaseMainWindow::xh_createBaseConnections()
 {
     connect(xv_helpAction, &QAction::triggered,
-            this, &X_BaseMainWindow::zh_help);
+            this, &X_BaseMainWindow::xh_help);
     connect(xv_aboutAction, &QAction::triggered,
-            this, &X_BaseMainWindow::zh_about);
+            this, &X_BaseMainWindow::xh_about);
     connect(xv_aboutQtAction, &QAction::triggered,
             qApp, &QApplication::aboutQt);
 }
 //======================================================
-bool X_BaseMainWindow::zh_openSettingsGroup(QSettings* settings)
+bool X_BaseMainWindow::xh_openSettingsGroup(QSettings* settings)
 {
     if(settings == nullptr)
     {
@@ -62,7 +62,7 @@ bool X_BaseMainWindow::zh_openSettingsGroup(QSettings* settings)
     return true;
 }
 //======================================================
-bool X_BaseMainWindow::zh_closeSettingsGroup(QSettings* settings)
+bool X_BaseMainWindow::xh_closeSettingsGroup(QSettings* settings)
 {
     if(settings == nullptr)
     {
@@ -78,7 +78,7 @@ bool X_BaseMainWindow::zh_closeSettingsGroup(QSettings* settings)
     return true;
 }
 //======================================================
-void X_BaseMainWindow::zh_help()
+void X_BaseMainWindow::xh_help()
 {
     if(xv_helpBrowser == nullptr)
     {
@@ -101,7 +101,7 @@ void X_BaseMainWindow::zh_help()
     }
 }
 //======================================================
-void X_BaseMainWindow::zh_about()
+void X_BaseMainWindow::xh_about()
 {
     QString title = tr("About %1").arg(qApp->property("glAppProduct").toString());
     //    QString text = tr("The application is a supplement to a SRV spectrometer software. It provides to make extra calculation of chemical concentration that cannot be directly  measured."

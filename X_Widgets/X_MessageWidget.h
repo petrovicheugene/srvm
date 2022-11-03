@@ -75,21 +75,21 @@ private:
 
 
     //FUNCS
-    void zh_createComponents();
-    void zh_createConnections();
-    void zh_initMessageColors();
+    void xh_createComponents();
+    void xh_createConnections();
+    void xh_initMessageColors();
 
 
-    bool zh_insertIconPixmapForMsgType(QTextCursor &cursor, int type);
-    void zh_insertMessage(int type,
+    bool xh_insertIconPixmapForMsgType(QTextCursor &cursor, int type);
+    void xh_insertMessage(int type,
                           const QString &msg,
                           bool htmlFlag,
                           bool suppressTime = false);
-    void zh_scrollTextToEnd();
-    void zh_defineScrollRequiredFlag();
-    QString zh_createTimestampString(bool htmlFlag) const;
-    bool zh_applyColorToString(QString& string, int msgType) const;
-    static QMap<QtMsgType, QString> zh_initMsgTypeNameMap();
+    void xh_scrollTextToEnd();
+    void xh_defineScrollRequiredFlag();
+    QString xh_createTimestampString(bool htmlFlag) const;
+    bool xh_applyColorToString(QString& string, int msgType) const;
+    static QMap<QtMsgType, QString> xh_initMsgTypeNameMap();
 
 };
 //===================================================

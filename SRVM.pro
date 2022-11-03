@@ -5,9 +5,10 @@
 #-------------------------------------------------
 QT       += core gui
 QT       += xml
-QT       +=  core5compat
+QT       += core
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
+greaterThan(QT_MAJOR_VERSION, 5): QT += core5compat
 
 #PRO VARS
 RC_ICONS = "X_Images/SRVM-8.ico"
@@ -27,7 +28,7 @@ COMPANY_URL=www.tehnoanalit.com
 
 #-------------------------------------------------
 # in common.pri will be defined VERSION, TARGET, DEBUG SETTINGS
-#  global APP DEFINES
+# global APP DEFINES
 #-------------------------------------------------
 #include(./common.pri )
 #include(./app.pri )
@@ -431,7 +432,6 @@ HEADERS  += \
     X_Widgets/X_MessageWidget.h \
     X_Components/X_StandardMessagePictureDispatcher.h \
     X_Components/X_TranslatorManager.h
-
 
 RESOURCES += \
     resources.qrc \

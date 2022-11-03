@@ -68,7 +68,7 @@ QWidget* X_ChannelNumberDelegate::createEditor(QWidget* parent,
    if(xv_immediatellyValueChangeFlag)
    {
        X_ChannelNumberDelegate* pThis = const_cast<X_ChannelNumberDelegate*>(this);
-       connect(editor, SIGNAL(valueChanged(int)), pThis, SLOT(zh_editorValueChanged(int)));
+       connect(editor, SIGNAL(valueChanged(int)), pThis, SLOT(xh_editorValueChanged(int)));
    }
    return editor;
 }
@@ -131,7 +131,7 @@ void X_ChannelNumberDelegate::xp_setEditorMinMax(qint64 min, qint64 max)
    }
 }
 //================================================
-void X_ChannelNumberDelegate::zh_editorValueChanged(int value)
+void X_ChannelNumberDelegate::xh_editorValueChanged(int value)
 {
    QWidget* editor = qobject_cast<QWidget*>(sender());
    if(editor == 0 || !xv_currentModelIndex.isValid())

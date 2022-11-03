@@ -42,18 +42,18 @@ public slots:
 
 private slots:
 
-    void zh_calculateAndWriteEnergyCalibration();
-    void zh_onCurrentGainFactorIndexChange(int currentIndex);
-    void zh_onCurrentPeackCountIndexChange(int currentIndex);
+    void xh_calculateAndWriteEnergyCalibration();
+    void xh_onCurrentGainFactorIndexChange(int currentIndex);
+    void xh_onCurrentPeackCountIndexChange(int currentIndex);
 
-    void zh_onModelReset();
-    void zh_onModelDataChange(const QModelIndex& topLeft, const QModelIndex& bottomRight);
-    void zh_onMousePressedOnPlotter(QPointF scenePos);
-    void zh_onChannelNumberAction();
-    void zh_onSelectEnergyLineAction();
-    void zh_onClearEnergyLineAction();
-    void zh_onLineColorChange(QColor color);
-    void zh_onChannelNumberChange(int channelValue);
+    void xh_onModelReset();
+    void xh_onModelDataChange(const QModelIndex& topLeft, const QModelIndex& bottomRight);
+    void xh_onMousePressedOnPlotter(QPointF scenePos);
+    void xh_onChannelNumberAction();
+    void xh_onSelectEnergyLineAction();
+    void xh_onClearEnergyLineAction();
+    void xh_onLineColorChange(QColor color);
+    void xh_onChannelNumberChange(int channelValue);
 
 private:
 
@@ -84,24 +84,24 @@ private:
     bool xv_askSaveForGainFactor;
 
     // FUNCS
-    void zh_createComponents();
-    void zh_createContextMenu();
+    void xh_createComponents();
+    void xh_createContextMenu();
 
-    QWidget* zh_createMainWidget();
-    QWidget* zh_createElementLinesWidgetAndComponents();
-    void zh_createElementLineControlsAndComponents(QGridLayout *layout, int elementNumber);
+    QWidget* xh_createMainWidget();
+    QWidget* xh_createElementLinesWidgetAndComponents();
+    void xh_createElementLineControlsAndComponents(QGridLayout *layout, int elementNumber);
 
-    void zh_createConnections();
-    void zh_loadSpectrumData(QMap<quint8, QList<X_SpeSpectrum *> > &spectrumMap);
+    void xh_createConnections();
+    void xh_loadSpectrumData(QMap<quint8, QList<X_SpeSpectrum *> > &spectrumMap);
 
-    //void zh_restoreLineColorList();
-    void zh_restoreSettings();
-    void zh_saveSettings();
+    //void xh_restoreLineColorList();
+    void xh_restoreSettings();
+    void xh_saveSettings();
 
-    bool zh_calculateEnergyFactors(QList<double> &energyCalibrationFactorList);
-    void zh_setElementLineControlsAndComponentVisibility();
+    bool xh_calculateEnergyFactors(QList<double> &energyCalibrationFactorList);
+    void xh_setElementLineControlsAndComponentVisibility();
 
-    void zh_updateVerticalLines();
+    void xh_updateVerticalLines();
 
 };
 //======================================================

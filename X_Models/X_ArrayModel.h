@@ -40,7 +40,7 @@ private:
 
 private slots:
 
-    void zh_onRepositoryOperation(X_SpectrumArrayRepository::ArrayOperationType type, int first, int last);
+    void xh_onRepositoryOperation(X_SpectrumArrayRepository::ArrayOperationType type, int first, int last);
 
  };
 //==================================================================

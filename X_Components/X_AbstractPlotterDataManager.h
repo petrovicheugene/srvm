@@ -46,9 +46,9 @@ public slots:
 
 private slots:
 
-    void zh_updateRulerTool(QPointF startPoint, QPointF endPoint, bool visibility);
-    void zh_onCurrentEnergyCalibrationChange(QList<double> calibrationFactors);
-    void zh_updateEnergyLines();
+    void xh_updateRulerTool(QPointF startPoint, QPointF endPoint, bool visibility);
+    void xh_onCurrentEnergyCalibrationChange(QList<double> calibrationFactors);
+    void xh_updateEnergyLines();
 
 private:
 
@@ -75,23 +75,23 @@ private:
     QList<double> xv_calibrationFactors;
 
     // FUNCS
-    void zh_createComponents();
-    void zh_createConnections();
-    void zh_setCurrentWindowId(qint64);
-    void zh_setPlotterVerticalAbsMax(qreal maxIntensity);
+    void xh_createComponents();
+    void xh_createConnections();
+    void xh_setCurrentWindowId(qint64);
+    void xh_setPlotterVerticalAbsMax(qreal maxIntensity);
 
 private slots:
 
-    void zh_onRepositoryArrayOperation(X_SpectrumArrayRepository::SpectrumOperationType type,
+    void xh_onRepositoryArrayOperation(X_SpectrumArrayRepository::SpectrumOperationType type,
                                        int arrayIndex, int first, int last);
-    void zh_onRepositoryCalibrationWindowOperation(X_CalibrationRepository::WindowOperationType,
+    void xh_onRepositoryCalibrationWindowOperation(X_CalibrationRepository::WindowOperationType,
                                                    int calibrationIndex, int first, int last);
-    void zh_switchRuleMetrix(bool toggled);
-    //void zh_updateEnergyCalibrationOnRule(qint64 arrayId);
-    void zh_onArrayMaxParametersChanged(int arrayId, int maxIntensity, int channelCount);
-    void zh_setMaxParametersToDefaultItem(qreal, qreal);
-    void zh_definePlotScaling(bool& plotIsScaled);
-    void zh_findItemInCursorAreaImage(QImage cursorAreaImage);
+    void xh_switchRuleMetrix(bool toggled);
+    //void xh_updateEnergyCalibrationOnRule(qint64 arrayId);
+    void xh_onArrayMaxParametersChanged(int arrayId, int maxIntensity, int channelCount);
+    void xh_setMaxParametersToDefaultItem(qreal, qreal);
+    void xh_definePlotScaling(bool& plotIsScaled);
+    void xh_findItemInCursorAreaImage(QImage cursorAreaImage);
 
     void xp_currentCalibrationChanged(qint64 currentCalibrationId, int currentCalibrationIndex);
     void xp_currentCalibrationWindowChanged(qint64 currentWindowId, int currentWindowIndex,
@@ -100,8 +100,8 @@ private slots:
     void xp_currentSpectrumChanged(qint64 currentSpectrumId, int currentSpectrumIndex,
                                    qint64 previousSpectrumId, int previousSpectrumIndex);
 
-    bool zh_convertEnergyToChannel(double energyValue, double& channel);
-    void zh_updateRuleMetrix();
+    bool xh_convertEnergyToChannel(double energyValue, double& channel);
+    void xh_updateRuleMetrix();
 
 };
 //===========================================================

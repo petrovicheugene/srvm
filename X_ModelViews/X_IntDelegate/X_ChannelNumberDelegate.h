@@ -34,7 +34,7 @@ private:
 
 private slots:
 
-   void zh_editorValueChanged(int value);
+   void xh_editorValueChanged(int value);
 
 };
 //====================================

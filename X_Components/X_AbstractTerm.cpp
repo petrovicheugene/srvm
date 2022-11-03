@@ -9,10 +9,10 @@
 // STATIC
 qint64 X_AbstractTerm::xv_lastTermId = 0;
 int X_AbstractTerm::xv_precision = 15;
-QMap<X_AbstractTerm::TermType, QString> X_AbstractTerm::xv_typeNameMap = X_AbstractTerm::zh_intTypeNameMap();
-QMap<X_AbstractTerm::TermState, QString> X_AbstractTerm::xv_stateNameMap = X_AbstractTerm::zh_intStateNameMap();
+QMap<X_AbstractTerm::TermType, QString> X_AbstractTerm::xv_typeNameMap = X_AbstractTerm::xh_intTypeNameMap();
+QMap<X_AbstractTerm::TermState, QString> X_AbstractTerm::xv_stateNameMap = X_AbstractTerm::xh_intStateNameMap();
 //============================================================
-QMap<X_AbstractTerm::TermType, QString> X_AbstractTerm::zh_intTypeNameMap()
+QMap<X_AbstractTerm::TermType, QString> X_AbstractTerm::xh_intTypeNameMap()
 {
     QMap<X_AbstractTerm::TermType, QString> map;
     map.insert(TT_NOT_DEFINED, "Not defined");
@@ -24,7 +24,7 @@ QMap<X_AbstractTerm::TermType, QString> X_AbstractTerm::zh_intTypeNameMap()
     return map;
 }
 //============================================================
-QMap<X_AbstractTerm::TermState, QString> X_AbstractTerm::zh_intStateNameMap()
+QMap<X_AbstractTerm::TermState, QString> X_AbstractTerm::xh_intStateNameMap()
 {
     QMap<X_AbstractTerm::TermState, QString> map;
     map.insert(TS_NOT_DEFINED, "Not defined");
@@ -83,11 +83,11 @@ X_AbstractTerm::TermState X_AbstractTerm::xp_termStateFromString(const QString& 
 X_AbstractTerm::X_AbstractTerm(X_Calibration *calibration) :
       QObject(calibration)
 {
-    zh_connectToCalibration(calibration);
+    xh_connectToCalibration(calibration);
     xv_type = TT_NOT_DEFINED;
     xv_termState = TS_CONST_EXCLUDED;
     // xp_setTermFactor(0.0); // xv_termFactorString = 0;
-    zh_setTermFactor("0.0");
+    xh_setTermFactor("0.0");
     xv_termId = xv_lastTermId++;
 }
 //============================================================
@@ -118,7 +118,7 @@ bool X_AbstractTerm::xp_setTermState(X_AbstractTerm::TermState state)
     return true;
 }
 //============================================================
-void X_AbstractTerm::zh_conformStringWithValue()
+void X_AbstractTerm::xh_conformStringWithValue()
 {
     if(qAbs(xv_termFactor) < 1)
     {
@@ -232,7 +232,7 @@ qreal X_AbstractTerm::xp_termFactor() const
     return xv_termFactor;
 }
 //============================================================
-qreal* X_AbstractTerm::zh_termFactorPointer()
+qreal* X_AbstractTerm::xh_termFactorPointer()
 {
     return &xv_termFactor;
 }
@@ -242,7 +242,7 @@ QString X_AbstractTerm::xp_termFactorString() const
     return xv_termFactorString;
 }
 //============================================================
-bool X_AbstractTerm::zh_setTermFactor(qreal factor)
+bool X_AbstractTerm::xh_setTermFactor(qreal factor)
 {
     if(xv_termFactor == factor)
     {
@@ -250,13 +250,13 @@ bool X_AbstractTerm::zh_setTermFactor(qreal factor)
     }
 
     xv_termFactor = factor;
-    zh_conformStringWithValue();
+    xh_conformStringWithValue();
 //    xv_termFactorString = QString::number(factor, 'f', 15);
-//    zh_chopTailX_eroesFromTermFactorString();
+//    xh_chopTailX_eroesFromTermFactorString();
     return true;
 }
 //============================================================
-bool X_AbstractTerm::zh_setTermFactor(const QString& termFactorString)
+bool X_AbstractTerm::xh_setTermFactor(const QString& termFactorString)
 {
     bool ok;
     qreal termFactor = termFactorString.toDouble(&ok);
@@ -270,7 +270,7 @@ bool X_AbstractTerm::zh_setTermFactor(const QString& termFactorString)
     return true;
 }
 //============================================================
-void X_AbstractTerm::zh_chopTailX_eroesFromTermFactorString()
+void X_AbstractTerm::xh_chopTailX_eroesFromTermFactorString()
 {
     for(int i = xv_termFactorString.length() - 1; i > 0; i--)
     {
@@ -282,10 +282,10 @@ void X_AbstractTerm::zh_chopTailX_eroesFromTermFactorString()
     }
 }
 //============================================================
-void X_AbstractTerm::zh_connectToNormalizer(X_TermNormalizer* normalizer)
+void X_AbstractTerm::xh_connectToNormalizer(X_TermNormalizer* normalizer)
 {
     connect(normalizer, &X_TermNormalizer::xg_normalizerChanged,
-            this, &X_AbstractTerm::zh_normalizerChanged);
+            this, &X_AbstractTerm::xh_normalizerChanged);
     //    connect(this, &X_AbstractTerm::xg_requestIsNormalizerValid,
     //            normalizer, &X_TermNormalizer::xp_isValid);
     //    connect(this, &X_AbstractTerm::xg_requestNormalizerValue,
@@ -293,32 +293,32 @@ void X_AbstractTerm::zh_connectToNormalizer(X_TermNormalizer* normalizer)
 
 }
 //============================================================
-void X_AbstractTerm::zh_connectToCalibration(X_Calibration* calibration)
+void X_AbstractTerm::xh_connectToCalibration(X_Calibration* calibration)
 {
     connect(this, &X_AbstractTerm::xg_requestForDelete,
-            calibration, &X_Calibration::zh_removeTerm);
+            calibration, &X_Calibration::xh_removeTerm);
 
     connect(calibration, &X_Calibration::xg_normalizerChanged,
-            this, &X_AbstractTerm::zh_normalizerChanged);
+            this, &X_AbstractTerm::xh_normalizerChanged);
     //    connect(this, &X_AbstractTerm::xg_requestNormalizerValue,
-    //            calibration, &X_Calibration::zh_normalizerValue);
+    //            calibration, &X_Calibration::xh_normalizerValue);
     connect(this, &X_AbstractTerm::xg_termNameChanged,
-            calibration, &X_Calibration::zh_onTermNameChange);
+            calibration, &X_Calibration::xh_onTermNameChange);
 
     connect(this, &X_AbstractTerm::xg_termWindowMarginChanged,
-            calibration, &X_Calibration::zh_onTermWindowMarginChange);
+            calibration, &X_Calibration::xh_onTermWindowMarginChange);
 
     //    connect(this, &X_AbstractTerm::xg_termValuesChanged,
     //            calibration, &X_Calibration::xp_onTermAverageValueChange);
 
 }
 //============================================================
-void X_AbstractTerm::zh_normalizerChanged()
+void X_AbstractTerm::xh_normalizerChanged()
 {
     emit xg_termNameChanged();
 }
 //============================================================
-void X_AbstractTerm::zh_onWindowDestroying()
+void X_AbstractTerm::xh_onWindowDestroying()
 {
     emit xg_requestForDelete(this);
 }

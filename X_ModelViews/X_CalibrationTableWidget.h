@@ -51,15 +51,15 @@ private:
     QList<QAction*> xv_contextMenuActionList;
 
     // FUNCS
-    void zh_createComponents();
-    void zh_createConnections();
+    void xh_createComponents();
+    void xh_createConnections();
 
 private slots:
 
-    void zh_onContextMenuRequest(const QPoint &pos);
-    void zh_onCurrentCalibrationChange(const QModelIndex & current, const QModelIndex & previous);
-    void zh_onSelectedCalibrationChange(const QItemSelection &selected, const QItemSelection &deselected);
-    void zh_onRowCountChange(const QModelIndex& parent, int first, int last);
+    void xh_onContextMenuRequest(const QPoint &pos);
+    void xh_onCurrentCalibrationChange(const QModelIndex & current, const QModelIndex & previous);
+    void xh_onSelectedCalibrationChange(const QItemSelection &selected, const QItemSelection &deselected);
+    void xh_onRowCountChange(const QModelIndex& parent, int first, int last);
 };
 //==============================================================
 #endif // X_CALIBRATIONTABLEWIDGET_H

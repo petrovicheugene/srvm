@@ -8,9 +8,9 @@
 //===================================================
 // STATIC
 const QMap<QtMsgType, QString> X_StandardMessagePictureDispatcher::xv_msgTypeNameMap =
-        X_StandardMessagePictureDispatcher::zh_initMsgTypeNameMap();
+        X_StandardMessagePictureDispatcher::xh_initMsgTypeNameMap();
 //===================================================
-QMap<QtMsgType, QString> X_StandardMessagePictureDispatcher::zh_initMsgTypeNameMap()
+QMap<QtMsgType, QString> X_StandardMessagePictureDispatcher::xh_initMsgTypeNameMap()
 {
     QMap<QtMsgType, QString> msgTypeNameMap;
     msgTypeNameMap.insert(QtDebugMsg, "debug");
@@ -49,7 +49,7 @@ bool X_StandardMessagePictureDispatcher::xp_pictureForStandardMessage(QtMsgType 
     if (!QPixmapCache::find(keyString, &msgIconPixmap))
     {
         // get standard pixmap and insert it into cache
-        msgIconPixmap = X_StandardMessagePictureDispatcher::zh_getStandardMessageBoxPixmap(type, size, picstyle);
+        msgIconPixmap = X_StandardMessagePictureDispatcher::xh_getStandardMessageBoxPixmap(type, size, picstyle);
         QPixmapCache::insert(keyString, msgIconPixmap);
     }
 
@@ -68,7 +68,7 @@ void X_StandardMessagePictureDispatcher::xp_pictureForStandardMessage(QtMsgType 
                                                                                msgIconPixmap);
 }
 //===================================================
-QPixmap X_StandardMessagePictureDispatcher::zh_getStandardMessageBoxPixmap(QtMsgType type,
+QPixmap X_StandardMessagePictureDispatcher::xh_getStandardMessageBoxPixmap(QtMsgType type,
                                                                           QSize size,
                                                                           QStyle *style)
 {

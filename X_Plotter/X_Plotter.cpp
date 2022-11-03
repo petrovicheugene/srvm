@@ -46,8 +46,8 @@ X_Plotter::X_Plotter(QWidget *parent) : QWidget(parent)
 
     xv_mouseButtonDown = false;
     xv_userResizesWidget = false;
-    zh_createComponents();
-    zh_createConnections();
+    xh_createComponents();
+    xh_createConnections();
     qApp->installEventFilter(this);
 }
 //====================================================
@@ -496,9 +496,9 @@ void X_Plotter::xp_setVerticalAbsMax(qreal max)
     }
     xv_verticalAbsMax = qAbs(max);
 
-    if(zh_recalcVerticalDistortionFactors(xv_dashBoard->xp_distortionValue()))
+    if(xh_recalcVerticalDistortionFactors(xv_dashBoard->xp_distortionValue()))
     {
-        zh_recalcRulesAndItemCoordinates();
+        xh_recalcRulesAndItemCoordinates();
     }
 }
 //====================================================
@@ -680,7 +680,7 @@ void X_Plotter::xp_fitInBoundingRect()
     xv_verticalScrollBar->blockSignals(false);
     xv_horizontalScrollBar->blockSignals(false);
 
-    zh_updateScrollBarsVisible();
+    xh_updateScrollBarsVisible();
     //xv_plotView->ensureVisible(rectToFit);
 }
 //====================================================
@@ -714,7 +714,7 @@ bool X_Plotter::eventFilter(QObject *obj, QEvent *event)
         xv_mouseButtonDown = false;
         xv_userResizesWidget = false;
         xv_plotView->xp_setScaleViewWhenResizeFlag(false);
-        zh_updateScrollBarsVisible();
+        xh_updateScrollBarsVisible();
         bool res = QObject::eventFilter(obj, event);
         return res;
     }
@@ -723,16 +723,16 @@ bool X_Plotter::eventFilter(QObject *obj, QEvent *event)
     return res;
 }
 //====================================================
-void X_Plotter::zh_verticalDistortionChanged(int distortionValue)
+void X_Plotter::xh_verticalDistortionChanged(int distortionValue)
 {
-    if(zh_recalcVerticalDistortionFactors(static_cast<qreal>(distortionValue)))
+    if(xh_recalcVerticalDistortionFactors(static_cast<qreal>(distortionValue)))
     {
-        zh_recalcRulesAndItemCoordinates();
+        xh_recalcRulesAndItemCoordinates();
         xv_plotView->xp_update();
     }
 }
 //====================================================
-void X_Plotter::zh_scrollBarVisible(Qt::Orientation orientation, bool& visible)
+void X_Plotter::xh_scrollBarVisible(Qt::Orientation orientation, bool& visible)
 {
     if(orientation == Qt::Vertical)
     {
@@ -744,7 +744,7 @@ void X_Plotter::zh_scrollBarVisible(Qt::Orientation orientation, bool& visible)
     }
 }
 //====================================================
-void X_Plotter::zh_mouseScenePositionChanged(QPointF scenePos) const
+void X_Plotter::xh_mouseScenePositionChanged(QPointF scenePos) const
 {
     if(!xv_rulerWidget)
     {
@@ -772,12 +772,12 @@ void X_Plotter::zh_mouseScenePositionChanged(QPointF scenePos) const
 
 }
 //====================================================
-void X_Plotter::zh_mouseLeaved() const
+void X_Plotter::xh_mouseLeaved() const
 {
     xv_rulerWidget->xp_setInfoLabelText(QString());
 }
 //====================================================
-void X_Plotter::zh_createComponents()
+void X_Plotter::xh_createComponents()
 {
     xv_verticalScrollBar = new QScrollBar(Qt::Vertical, this);
     xv_horizontalScrollBar = new QScrollBar(Qt::Horizontal, this);
@@ -829,10 +829,10 @@ void X_Plotter::zh_createComponents()
 
 }
 //====================================================
-void X_Plotter::zh_createConnections()
+void X_Plotter::xh_createConnections()
 {
     // scroll bar visible control connection
-    zh_connectScrollBars();
+    xh_connectScrollBars();
     xv_rulersAndGreedManager->xp_setRulerWidget(xv_rulerWidget);
     xv_plotView->setScene(xv_plotScene);
     xv_plotView->xp_connectToRulersAndGridManager(xv_rulersAndGreedManager);
@@ -840,9 +840,9 @@ void X_Plotter::zh_createConnections()
     xv_dashBoard->xp_setPlotGraphicsView(xv_plotView);
     xv_dashBoard->xp_setPlotGraphicsScene(xv_plotScene);
     connect(xv_dashBoard, &X_HorizontalDashBoard::xg_distortionFactorChanged,
-            this, &X_Plotter::zh_verticalDistortionChanged);
+            this, &X_Plotter::xh_verticalDistortionChanged);
     connect(xv_plotView, &X_PlotGraphicsView::xg_requestForScrollBarVisible,
-            this, &X_Plotter::zh_scrollBarVisible);
+            this, &X_Plotter::xh_scrollBarVisible);
     connect(xv_plotView, &X_PlotGraphicsView::xg_cursorAreaImage,
             this, &X_Plotter::xg_cursorAreaImage);
 
@@ -850,29 +850,29 @@ void X_Plotter::zh_createConnections()
             this, &X_Plotter::xg_viewportRectChanged);
 
     connect(xv_plotView, &X_PlotGraphicsView::xg_mouseScenePositionChanged,
-            this, &X_Plotter::zh_mouseScenePositionChanged);
+            this, &X_Plotter::xh_mouseScenePositionChanged);
     connect(xv_plotView, &X_PlotGraphicsView::xg_mouseLeaved,
-            this, &X_Plotter::zh_mouseLeaved);
+            this, &X_Plotter::xh_mouseLeaved);
     connect(xv_plotView, &X_PlotGraphicsView::xg_rulerToolChanged,
             this, &X_Plotter::xg_rulerToolChanged);
 
 
 }
 //====================================================
-void X_Plotter::zh_connectScrollBars()
+void X_Plotter::xh_connectScrollBars()
 {
     connect(xv_horizontalScrollBar, &QScrollBar::rangeChanged,
-            this, &X_Plotter::zh_scrollBarVisibleControl);
+            this, &X_Plotter::xh_scrollBarVisibleControl);
     connect(xv_verticalScrollBar, &QScrollBar::rangeChanged,
-            this, &X_Plotter::zh_scrollBarVisibleControl);
+            this, &X_Plotter::xh_scrollBarVisibleControl);
 
     connect(xv_horizontalScrollBar, &QScrollBar::valueChanged,
-            this, &X_Plotter::zh_notifySceneRect);
+            this, &X_Plotter::xh_notifySceneRect);
     connect(xv_verticalScrollBar, &QScrollBar::valueChanged,
-            this, &X_Plotter::zh_notifySceneRect);
+            this, &X_Plotter::xh_notifySceneRect);
 }
 //====================================================
-void X_Plotter::zh_updateScrollBarsVisible()
+void X_Plotter::xh_updateScrollBarsVisible()
 {
     xv_horizontalScrollBar->setHidden(xv_horizontalScrollBar->maximum() == 0
                                       && xv_horizontalScrollBar->minimum() == 0);
@@ -881,7 +881,7 @@ void X_Plotter::zh_updateScrollBarsVisible()
                                     && xv_verticalScrollBar->minimum() == 0);
 }
 //====================================================
-void X_Plotter::zh_scrollBarVisibleControl(int min , int max)
+void X_Plotter::xh_scrollBarVisibleControl(int min , int max)
 {
     QScrollBar* scrollBar = qobject_cast<QScrollBar*>(sender());
     if(!scrollBar || xv_userResizesWidget)
@@ -891,14 +891,14 @@ void X_Plotter::zh_scrollBarVisibleControl(int min , int max)
     scrollBar->setHidden(min == 0 && max == 0);
 }
 //====================================================
-void X_Plotter::zh_notifySceneRect(int value)
+void X_Plotter::xh_notifySceneRect(int value)
 {
     QRectF viewportRect;
     xv_plotView->xp_viewPortSceneRect(viewportRect);
     emit xg_viewportRectChanged(viewportRect);
 }
 //====================================================
-bool X_Plotter::zh_recalcVerticalDistortionFactors(qreal distortionValue)
+bool X_Plotter::xh_recalcVerticalDistortionFactors(qreal distortionValue)
 {
     if(xv_verticalAbsMax == 0.0)
     {
@@ -919,7 +919,7 @@ bool X_Plotter::zh_recalcVerticalDistortionFactors(qreal distortionValue)
     return true;
 }
 //====================================================
-void X_Plotter::zh_recalcRulesAndItemCoordinates()
+void X_Plotter::xh_recalcRulesAndItemCoordinates()
 {
     if(xv_rulersAndGreedManager != 0)
     {

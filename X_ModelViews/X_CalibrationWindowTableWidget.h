@@ -54,16 +54,16 @@ private:
     const int xv_defaultChannelCount = 2048;
 
     // FUNCS
-    void zh_createComponents();
-    void zh_createConnections();
+    void xh_createComponents();
+    void xh_createConnections();
 
 private slots:
-    void zh_onCurrentCalibrationWindowChanged(const QModelIndex & current,
+    void xh_onCurrentCalibrationWindowChanged(const QModelIndex & current,
                                      const QModelIndex & previous);
-    void zh_onCalibrationWindowSelectionChanged(const QItemSelection & selected,
+    void xh_onCalibrationWindowSelectionChanged(const QItemSelection & selected,
                                                                                const QItemSelection & deselected);
-    void zh_onCalibrationWindowClick(const QModelIndex& index ) const;
-    void zh_onContextMenuRequest(const QPoint &pos);
+    void xh_onCalibrationWindowClick(const QModelIndex& index ) const;
+    void xh_onContextMenuRequest(const QPoint &pos);
 
 
 };

@@ -51,10 +51,10 @@ private:
     QString xv_lastErrorString;
 
     // FUNCS
-    void zh_swapRows(int row1, int row2);
-    void zh_swapColumns(int col1, int col2);
-    bool zh_putMaxValueOnDiagonal(int startIndex);
-    void zh_addMultipliedRow(int targetRow, int sourceRow, qreal factor);
+    void xh_swapRows(int row1, int row2);
+    void xh_swapColumns(int col1, int col2);
+    bool xh_putMaxValueOnDiagonal(int startIndex);
+    void xh_addMultipliedRow(int targetRow, int sourceRow, qreal factor);
 
 };
 //==============================================================

@@ -42,13 +42,13 @@ private:
     QVector<QPoint> xv_chartData;
 
     // FUNCS
-    void zh_paintDots(QStylePainter*);
-    void zh_paintPlygon(QStylePainter*);
-    void zh_paintStairs(QStylePainter*);
-    void zh_paintStairsPolygon(QStylePainter*);
-    void zh_paintStraight(QStylePainter*);
+    void xh_paintDots(QStylePainter*);
+    void xh_paintPlygon(QStylePainter*);
+    void xh_paintStairs(QStylePainter*);
+    void xh_paintStairsPolygon(QStylePainter*);
+    void xh_paintStraight(QStylePainter*);
 
-    void zh_recalcPaintData(const X_SpectrumPaintData &paintData);
+    void xh_recalcPaintData(const X_SpectrumPaintData &paintData);
 
 signals:
 

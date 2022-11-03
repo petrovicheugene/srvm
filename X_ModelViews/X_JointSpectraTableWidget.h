@@ -53,17 +53,17 @@ private:
     QList<QAction*> xv_contextMenuActionList;
 
     // FUNCS
-    void zh_createComponents();
-    void zh_createConnections();
+    void xh_createComponents();
+    void xh_createConnections();
 
 private slots:
 
-    void zh_editNext(QModelIndex editedIndex);
-    void zh_onCurrentSpectrumChanged(const QModelIndex & current,
+    void xh_editNext(QModelIndex editedIndex);
+    void xh_onCurrentSpectrumChanged(const QModelIndex & current,
                                      const QModelIndex & previous);
 
-    void zh_onContextMenuRequest(const QPoint &pos);
-    void zh_onSelectionChange(const QItemSelection & selected, const QItemSelection & deselected) const;
+    void xh_onContextMenuRequest(const QPoint &pos);
+    void xh_onSelectionChange(const QItemSelection & selected, const QItemSelection & deselected) const;
 };
 //=============================================================
 #endif // X_SPECTRUMTABLEWIDGET_H

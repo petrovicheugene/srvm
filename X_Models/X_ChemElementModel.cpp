@@ -160,12 +160,12 @@ void X_ChemElementModel::xp_connectToChemElementDataManager(X_ChemElementDataMan
     xv_dataManager = dataManager;
     // array repository <-> array model
     connect(dataManager, &X_ChemElementDataManager::xg_currentOperation,
-            this, &X_ChemElementModel::zh_onRepositoryOperation);
+            this, &X_ChemElementModel::xh_onRepositoryOperation);
     endResetModel();
 
 }
 //==================================================================
-void X_ChemElementModel::zh_onRepositoryOperation(X_ChemElementDataManager::OperationType type,
+void X_ChemElementModel::xh_onRepositoryOperation(X_ChemElementDataManager::OperationType type,
                                                  int first, int last)
 {
     if(type == X_ChemElementDataManager::OT_RESET_DATA)

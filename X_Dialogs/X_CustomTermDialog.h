@@ -34,8 +34,8 @@ public slots:
 
 private slots:
 
-    void zh_onOkButtonClick();
-    void zh_onCloseButtonClick();
+    void xh_onOkButtonClick();
+    void xh_onCloseButtonClick();
 
 private:
     // VARS
@@ -52,12 +52,12 @@ private:
     const QString xv_useModifierString = "useModifier";
 
     // FUNCS
-    void zh_createComponents();
-    void zh_createConnections();
-    QWidget* zh_createControlWidget();
+    void xh_createComponents();
+    void xh_createConnections();
+    QWidget* xh_createControlWidget();
 
-    void zh_restoreSettings() override;
-    void zh_saveSettings() override;
+    void xh_restoreSettings() override;
+    void xh_saveSettings() override;
 
 };
 //=========================================================

@@ -22,8 +22,8 @@ X_SpectrumArrayRepository::X_SpectrumArrayRepository(QObject *parent) : QObject(
     xv_arrayFilePath = QString();
     xv_dirty = false;
     xv_defaultArrayBaseName = tr("Array #");
-    zh_createActions();
-    zh_createConnections();
+    xh_createActions();
+    xh_createConnections();
 }
 //==================================================================
 void X_SpectrumArrayRepository::xp_appendActionsToMenu(QMenu* menu) const
@@ -165,12 +165,12 @@ void X_SpectrumArrayRepository::xp_connectToFileActionManager(X_FileActionManage
     connect(manager, &X_FileActionManager::xg_spectrumFileListToOpen,
             this, &X_SpectrumArrayRepository::xp_appendSpectraToArray);
     connect(manager, &X_FileActionManager::xg_spectrumArraySaved,
-            this, &X_SpectrumArrayRepository::zh_onSpectrumArraySaving);
+            this, &X_SpectrumArrayRepository::xh_onSpectrumArraySaving);
 
     connect(this, &X_SpectrumArrayRepository::xg_initSpectraAppending,
             manager, &X_FileActionManager::xp_defineSpectrumFilesAndInitAppending);
     connect(manager, &X_FileActionManager::xg_requestRawArrayListAndInitSaving,
-            this, &X_SpectrumArrayRepository::zh_createRawArrayListAndStartSaving);
+            this, &X_SpectrumArrayRepository::xh_createRawArrayListAndStartSaving);
     connect(this, &X_SpectrumArrayRepository::xg_saveSpectraArrayList,
             manager, &X_FileActionManager::xp_saveSpectraArrayListToFile);
 
@@ -197,7 +197,7 @@ void X_SpectrumArrayRepository::xp_clear()
     }
 
     xv_arrayFilePath.clear();
-    zh_setDirty(false);
+    xh_setDirty(false);
 }
 //==================================================================
 bool X_SpectrumArrayRepository::xp_isDirty() const
@@ -380,12 +380,12 @@ bool X_SpectrumArrayRepository::xp_setChemConcentration(int arrayIndex, int spec
     bool res = xv_arrayList.value(arrayIndex)->xp_setChemConcentration(chemElementId, spectrumIndex, concentration);
     if(res)
     {
-        //        int chemElementIndex = zh_chemElementIndexForId(arrayIndex, chemElementId);
+        //        int chemElementIndex = xh_chemElementIndexForId(arrayIndex, chemElementId);
         //        emit xg_chemElementOperation(CEOT_CHEM_ELEMENT_VALUE_CHANGED,
         //                                     arrayIndex, chemElementIndex, chemElementIndex);
 
 
-        zh_setDirty(true);
+        xh_setDirty(true);
     }
 
     return res;
@@ -445,7 +445,7 @@ bool X_SpectrumArrayRepository::xp_setGainFactor(int arrayIndex, int gainFactor)
     if(res)
     {
         emit xg_spectrumArrayOperation(AOT_DATA_CHANGED, arrayIndex, arrayIndex);
-        zh_setDirty(true);
+        xh_setDirty(true);
     }
 
     return res;
@@ -559,7 +559,7 @@ bool X_SpectrumArrayRepository::xp_setSpectrumArrayName(int arrayIndex, const QS
     xv_arrayList[arrayIndex]->xp_setArrayName(name);
     emit xg_spectrumArrayOperation(AOT_DATA_CHANGED, arrayIndex, arrayIndex);
 
-    zh_setDirty(true);
+    xh_setDirty(true);
 
     return true;
 }
@@ -851,14 +851,14 @@ void X_SpectrumArrayRepository::xp_appendArrays(QString path, QList<X_RawSpectru
             else
             {
                 changePath = false;
-                zh_setDirty(true);
+                xh_setDirty(true);
             }
         }
     }
 
     foreach(X_RawSpectrumArray rawArray, rawArrayList)
     {
-        zh_createArray(rawArray);
+        xh_createArray(rawArray);
     }
 
     if(changePath)
@@ -870,17 +870,17 @@ void X_SpectrumArrayRepository::xp_appendArrays(QString path, QList<X_RawSpectru
 
     emit xg_currentFile(xv_dirty, xv_arrayFilePath);
     emit xg_fitPlotInBoundingRect();
-    zh_actionEnablingControl();
+    xh_actionEnablingControl();
 }
 //==================================================================
-void X_SpectrumArrayRepository::xp_appendSpectraToArray(int arrayIndex, QStringList fileNameList)
+void X_SpectrumArrayRepository::xp_appendSpectraToArray(QStringList fileNameList)
 {
-    if(arrayIndex < 0 || arrayIndex >= xv_arrayList.count())
+    if(xv_currentArrayIndex < 0 || xv_currentArrayIndex >= xv_arrayList.count())
     {
         return;
     }
 
-    int spectraStartCount = xv_arrayList.at(arrayIndex)->xp_spectrumCount();
+    int spectraStartCount = xv_arrayList.at(xv_currentArrayIndex)->xp_spectrumCount();
     bool dontAsk = false;
     bool continueAppend = true;
     for(int i = 0; i < fileNameList.count(); i++)
@@ -888,7 +888,7 @@ void X_SpectrumArrayRepository::xp_appendSpectraToArray(int arrayIndex, QStringL
         QFileInfo fileInfo(fileNameList.at(i));
         if(!fileInfo.exists())
         {
-            QString msg = tr("File \"%1\" does not exist!").arg(xv_arrayList.at(arrayIndex)->xp_arrayName());
+            QString msg = tr("File \"%1\" does not exist!").arg(xv_arrayList.at(xv_currentArrayIndex)->xp_arrayName());
             emit xg_message(msg);
             qCritical().noquote() <<  msg;
             continue;
@@ -896,7 +896,7 @@ void X_SpectrumArrayRepository::xp_appendSpectraToArray(int arrayIndex, QStringL
 
         if(fileInfo.isDir())
         {
-            QString msg = tr("\"%1\" is a folder!").arg(xv_arrayList.at(arrayIndex)->xp_arrayName());
+            QString msg = tr("\"%1\" is a folder!").arg(xv_arrayList.at(xv_currentArrayIndex)->xp_arrayName());
             emit xg_message(msg);
             qCritical().noquote() <<  msg;
             continue;
@@ -907,7 +907,7 @@ void X_SpectrumArrayRepository::xp_appendSpectraToArray(int arrayIndex, QStringL
 
         // int spectrumIndex = xv_arrayList[arrayIndex]->xp_spectrumCount();
         // emit xg_currentSpectrumOperation(SOT_INSERT_SPECTRA, arrayIndex, spectrumIndex, spectrumIndex);
-        if(!xv_arrayList[arrayIndex]->xp_appendSpectrum(rawSpectrum, fileNameList.count()-1 == i, dontAsk, continueAppend))
+        if(!xv_arrayList[xv_currentArrayIndex]->xp_appendSpectrum(rawSpectrum, fileNameList.count()-1 == i, dontAsk, continueAppend))
         {
 
         }
@@ -920,7 +920,7 @@ void X_SpectrumArrayRepository::xp_appendSpectraToArray(int arrayIndex, QStringL
         // emit xg_currentSpectrumOperation(SOT_END_INSERT_SPECTRA, arrayIndex, spectrumIndex, spectrumIndex);
     }
 
-    int loaded = xv_arrayList.at(arrayIndex)->xp_spectrumCount() - spectraStartCount;
+    int loaded = xv_arrayList.at(xv_currentArrayIndex)->xp_spectrumCount() - spectraStartCount;
     if(loaded > 0)
     {
         QString spectrumString = loaded > 1? tr("spectra") : tr("spectrum");
@@ -942,20 +942,20 @@ void X_SpectrumArrayRepository::xp_appendSpectraToArray(int arrayIndex, QStringL
             }
         }
 
-        zh_setDirty(true);
+        xh_setDirty(true);
 
     }
-    zh_actionEnablingControl();
+    xh_actionEnablingControl();
 
     int currentArrayIndex;
     emit xg_requestCurrentArrayIndex(currentArrayIndex);
-    if(arrayIndex == currentArrayIndex)
+    if(xv_currentArrayIndex == currentArrayIndex)
     {
 
     }
 }
 //==================================================================
-void X_SpectrumArrayRepository::zh_createArray(const X_RawSpectrumArray& rawArray)
+void X_SpectrumArrayRepository::xh_createArray(const X_RawSpectrumArray& rawArray)
 {
     int nextArrayIndex = xv_arrayList.count();
     emit xg_spectrumArrayOperation(AOT_INSERT_ARRAYS, nextArrayIndex, nextArrayIndex);
@@ -967,9 +967,9 @@ void X_SpectrumArrayRepository::zh_createArray(const X_RawSpectrumArray& rawArra
     connect(array, &X_SpectrumArray::xg_message,
             this, &X_SpectrumArrayRepository::xg_message);
     connect(array, &X_SpectrumArray::xg_chemElementOperation,
-            this, &X_SpectrumArrayRepository::zh_onChemElementOperation);
+            this, &X_SpectrumArrayRepository::xh_onChemElementOperation);
     connect(array, &X_SpectrumArray::xg_spectrumOperation,
-            this, &X_SpectrumArrayRepository::zh_onSpectrumOperation);
+            this, &X_SpectrumArrayRepository::xh_onSpectrumOperation);
     connect(array, &X_SpectrumArray::xg_arrayMaxParametersChanged,
             this, &X_SpectrumArrayRepository::xg_arrayMaxParametersChanged);
 
@@ -992,7 +992,7 @@ void X_SpectrumArrayRepository::zh_createArray(const X_RawSpectrumArray& rawArra
     emit xg_spectrumArrayOperation(AOT_END_INSERT_ARRAYS, nextArrayIndex, nextArrayIndex);
 }
 //==================================================================
-bool X_SpectrumArrayRepository::zh_removeArray(int arrayIndex)
+bool X_SpectrumArrayRepository::xh_removeArray(int arrayIndex)
 {
     int nextCurrentIndex;
     if(arrayIndex == xv_arrayList.count() - 1 && xv_arrayList.count() > 1)
@@ -1018,7 +1018,7 @@ bool X_SpectrumArrayRepository::zh_removeArray(int arrayIndex)
     return true;
 }
 //==================================================================
-bool X_SpectrumArrayRepository::zh_removeSpectrum(int arrayIndex, int spectrumIndex)
+bool X_SpectrumArrayRepository::xh_removeSpectrum(int arrayIndex, int spectrumIndex)
 {
     if(arrayIndex < 0 || arrayIndex >= xv_arrayList.count())
     {
@@ -1033,7 +1033,7 @@ bool X_SpectrumArrayRepository::zh_removeSpectrum(int arrayIndex, int spectrumIn
     return xv_arrayList[arrayIndex]->xp_removeSpectrum(spectrumIndex);
 }
 //==================================================================
-bool X_SpectrumArrayRepository::zh_removeChemicalElement(int arrayIndex, int elementIndex)
+bool X_SpectrumArrayRepository::xh_removeChemicalElement(int arrayIndex, int elementIndex)
 {
     if(arrayIndex < 0 || arrayIndex >= xv_arrayList.count())
     {
@@ -1048,7 +1048,7 @@ bool X_SpectrumArrayRepository::zh_removeChemicalElement(int arrayIndex, int ele
     bool res = xv_arrayList[arrayIndex]->xp_removeChemElement(elementIndex);
     if(res)
     {
-        zh_setDirty(true);
+        xh_setDirty(true);
     }
     return  res;
 }
@@ -1114,7 +1114,7 @@ void X_SpectrumArrayRepository::xp_currentArrayChanged(int current, int previous
     emit xg_currentArrayIsAboutChange(arrayId, current);
     emit xg_currentArrayIdChanged(arrayId, current);
 
-    zh_actionEnablingControl();
+    xh_actionEnablingControl();
 }
 //==================================================================
 void X_SpectrumArrayRepository::xp_currentSpectrumChanged(int currentSpectrumIndex, int previousSpectrumIndex)
@@ -1168,7 +1168,7 @@ void X_SpectrumArrayRepository::xp_onSelectionSpectraChange(bool selectionEnable
                                                            bool concentrationSelected,
                                                            bool spectrumSelected)
 {
-    // zh_actionEnablingControl();
+    // xh_actionEnablingControl();
     xv_removeSpectrumFromArrayAction->setEnabled(selectionEnabled);
     xv_energyCalibrationAction->setEnabled(spectrumSelected);
 
@@ -1212,13 +1212,13 @@ void X_SpectrumArrayRepository::xp_currentSpectrumWindowIntensity(int firstChann
     spectrum->xp_intensityInWindow(firstChannel, lastChennel, intensity);
 }
 //==================================================================
-void X_SpectrumArrayRepository::zh_onSpectrumArraySaving(QString filePath)
+void X_SpectrumArrayRepository::xh_onSpectrumArraySaving(QString filePath)
 {
     xv_arrayFilePath = filePath;
-    zh_setDirty(false);
+    xh_setDirty(false);
 }
 //==================================================================
-void X_SpectrumArrayRepository::zh_onAppendArrayAction()
+void X_SpectrumArrayRepository::xh_onAppendArrayAction()
 {
     X_RawSpectrumArray rawArray;
     // new array name
@@ -1244,16 +1244,16 @@ void X_SpectrumArrayRepository::zh_onAppendArrayAction()
 
     rawArray.name = xv_defaultArrayBaseName + QString::number(maxArrayNumber);
 
-    zh_createArray(rawArray);
-    zh_setDirty(true);
+    xh_createArray(rawArray);
+    xh_setDirty(true);
 
     emit xg_setCurrentArrayIndex(xv_arrayList.count() - 1);
     emit xg_startCurrentArrayEdition();
-    zh_actionEnablingControl();
+    xh_actionEnablingControl();
 
 }
 //==================================================================
-void X_SpectrumArrayRepository::zh_onRemoveArrayAction()
+void X_SpectrumArrayRepository::xh_onRemoveArrayAction()
 {
     int currentArrayIndex = -1;
     emit xg_requestCurrentArrayIndex(currentArrayIndex);
@@ -1266,25 +1266,25 @@ void X_SpectrumArrayRepository::zh_onRemoveArrayAction()
     if(QMessageBox::question(nullptr, tr("Array removing"), question, QMessageBox::Yes, QMessageBox::No)
             == QMessageBox::Yes)
     {
-        bool res = zh_removeArray(currentArrayIndex);
+        bool res = xh_removeArray(currentArrayIndex);
         if(res)
         {
             if(xv_arrayList.isEmpty())
             {
-                zh_setDirty(false);
+                xh_setDirty(false);
                 xv_arrayFilePath = QString();
             }
             else
             {
-                zh_setDirty(true);
+                xh_setDirty(true);
             }
         }
     }
-    zh_actionEnablingControl();
+    xh_actionEnablingControl();
 
 }
 //==================================================================
-void X_SpectrumArrayRepository::zh_onAppendSpectraToArrayAction()
+void X_SpectrumArrayRepository::xh_onAppendSpectraToArrayAction()
 {
     if(xv_arrayList.count() < 1)
     {
@@ -1292,22 +1292,22 @@ void X_SpectrumArrayRepository::zh_onAppendSpectraToArrayAction()
         xv_appendArrayAction->trigger();
     }
 
-    int currentArrayIndex;
-    emit xg_requestCurrentArrayIndex(currentArrayIndex);
+    emit xg_requestCurrentArrayIndex(xv_currentArrayIndex);
 
-    if(currentArrayIndex < 0 || currentArrayIndex >= xv_arrayList.count())
+    if(xv_currentArrayIndex < 0 || xv_currentArrayIndex >= xv_arrayList.count())
     {
         QString string = tr("Select an array you want to append spectra to!");
         QMessageBox::critical(nullptr, tr("Spectra appending"), string, QMessageBox::Ok);
         return;
     }
 
-    emit xg_initSpectraAppending(currentArrayIndex);
-    zh_actionEnablingControl();
+    emit xg_initSpectraAppending(xv_currentArrayIndex);
+
+    xh_actionEnablingControl();
 
 }
 //==================================================================
-void X_SpectrumArrayRepository::zh_onRemoveSpectrumFromArrayAction()
+void X_SpectrumArrayRepository::xh_onRemoveSpectrumFromArrayAction()
 {
     QList<int> selectedSpectrumList;
     emit xg_requestSelectedSpectrumIndexList(selectedSpectrumList);
@@ -1339,7 +1339,7 @@ void X_SpectrumArrayRepository::zh_onRemoveSpectrumFromArrayAction()
     bool res = false;
     for(int i = selectedSpectrumList.count() - 1; i >= 0; i--)
     {
-        res = zh_removeSpectrum(currentArrayIndex, selectedSpectrumList.value(i)) || res;
+        res = xh_removeSpectrum(currentArrayIndex, selectedSpectrumList.value(i)) || res;
     }
 
     if(res)
@@ -1353,20 +1353,20 @@ void X_SpectrumArrayRepository::zh_onRemoveSpectrumFromArrayAction()
 
         if(xv_arrayList.isEmpty())
         {
-            zh_setDirty(false);
+            xh_setDirty(false);
 
             xv_arrayFilePath = QString();
         }
         else
         {
-            zh_setDirty(true);
+            xh_setDirty(true);
         }
     }
-    zh_actionEnablingControl();
+    xh_actionEnablingControl();
 
 }
 //==================================================================
-void X_SpectrumArrayRepository::zh_onAppendChemElementAction()
+void X_SpectrumArrayRepository::xh_onAppendChemElementAction()
 {
     int currentArrayIndex = -1;
     emit xg_requestCurrentArrayIndex(currentArrayIndex);
@@ -1377,16 +1377,16 @@ void X_SpectrumArrayRepository::zh_onAppendChemElementAction()
 
     if(xv_arrayList[currentArrayIndex]->xp_appendNewChemElement())
     {
-        zh_setDirty(true);
+        xh_setDirty(true);
 
         emit xg_setCurrentChemElementIndex(xv_arrayList.at(currentArrayIndex)->xp_chemElementCount() - 1);
         emit xg_startCurrentChemElementEdition();
     }
-    zh_actionEnablingControl();
+    xh_actionEnablingControl();
 
 }
 //==================================================================
-void X_SpectrumArrayRepository::zh_onRemoveChemElementAction()
+void X_SpectrumArrayRepository::xh_onRemoveChemElementAction()
 {
     QList<int> selectedChemElementList;
     emit xg_requestSelectedChemElementIndexList(selectedChemElementList);
@@ -1418,13 +1418,13 @@ void X_SpectrumArrayRepository::zh_onRemoveChemElementAction()
 
     for(int i = selectedChemElementList.count() - 1; i >= 0; i--)
     {
-        res = zh_removeChemicalElement(currentArrayIndex, selectedChemElementList.value(i)) || res;
+        res = xh_removeChemicalElement(currentArrayIndex, selectedChemElementList.value(i)) || res;
     }
 
-    zh_actionEnablingControl();
+    xh_actionEnablingControl();
 }
 //==================================================================
-void X_SpectrumArrayRepository::zh_onChemElementOperation(X_ChemElementList::OperationType type, int first, int last)
+void X_SpectrumArrayRepository::xh_onChemElementOperation(X_ChemElementList::OperationType type, int first, int last)
 {
     QObject* signalSender = sender();
     if(signalSender == nullptr)
@@ -1476,20 +1476,20 @@ void X_SpectrumArrayRepository::zh_onChemElementOperation(X_ChemElementList::Ope
     }
 }
 //==================================================================
-void X_SpectrumArrayRepository::zh_createRawArrayListAndStartSaving(QString& filePath, bool& res) const
+void X_SpectrumArrayRepository::xh_createRawArrayListAndStartSaving(QString& filePath, bool& res) const
 {
     if(filePath.isEmpty())
     {
         filePath = xv_arrayFilePath;
     }
 
-    QList<X_RawSpectrumArray> rawSpectrumArrayList = zh_createRawArrayList();
+    QList<X_RawSpectrumArray> rawSpectrumArrayList = xh_createRawArrayList();
     emit xg_saveSpectraArrayList(filePath, rawSpectrumArrayList, res);
     // TODO after saving FileActionManager must send back a signal for reset dirty flag
     // TODO signal from fileActionManager with saved filePath. xv_path have to be canged
 }
 //==================================================================
-void X_SpectrumArrayRepository::zh_onSpectrumOperation(X_SpectrumArray::OperationType type, int first, int last) const
+void X_SpectrumArrayRepository::xh_onSpectrumOperation(X_SpectrumArray::OperationType type, int first, int last) const
 {
     if(!sender())
     {
@@ -1553,7 +1553,7 @@ void X_SpectrumArrayRepository::zh_onSpectrumOperation(X_SpectrumArray::Operatio
     }
 }
 //==================================================================
-void X_SpectrumArrayRepository::zh_onClipboardContentChange()
+void X_SpectrumArrayRepository::xh_onClipboardContentChange()
 {
     xv_pasteData.xp_reset();
 
@@ -1585,7 +1585,7 @@ void X_SpectrumArrayRepository::zh_onClipboardContentChange()
     return;
 }
 //==================================================================
-void X_SpectrumArrayRepository::zh_onPasteConcentrationDataAction()
+void X_SpectrumArrayRepository::xh_onPasteConcentrationDataAction()
 {
     if(!xv_pasteData.xp_isValid())
     {
@@ -1782,7 +1782,7 @@ void X_SpectrumArrayRepository::zh_onPasteConcentrationDataAction()
     }
 }
 //==================================================================
-void X_SpectrumArrayRepository::zh_onCopyConcentrationDataAction()
+void X_SpectrumArrayRepository::xh_onCopyConcentrationDataAction()
 {
     QString selectedString;
     emit xg_requestSelectedString(selectedString);
@@ -1796,12 +1796,12 @@ void X_SpectrumArrayRepository::zh_onCopyConcentrationDataAction()
     clipboard->setText(selectedString);
 }
 //==================================================================
-void X_SpectrumArrayRepository::zh_onClearConcentrationDataAction()
+void X_SpectrumArrayRepository::xh_onClearConcentrationDataAction()
 {
     emit xg_requestClearSelected();
 }
 //==================================================================
-void X_SpectrumArrayRepository::zh_onSetSpectraVisibleAction()
+void X_SpectrumArrayRepository::xh_onSetSpectraVisibleAction()
 {
     int arrayIndex = -1;
     emit xg_requestCurrentArrayIndex(arrayIndex);
@@ -1823,7 +1823,7 @@ void X_SpectrumArrayRepository::zh_onSetSpectraVisibleAction()
     }
 }
 //==================================================================
-void X_SpectrumArrayRepository::zh_onSetSpectraInvisibleAction()
+void X_SpectrumArrayRepository::xh_onSetSpectraInvisibleAction()
 {
     int arrayIndex = -1;
     emit xg_requestCurrentArrayIndex(arrayIndex);
@@ -1845,7 +1845,7 @@ void X_SpectrumArrayRepository::zh_onSetSpectraInvisibleAction()
     }
 }
 //==================================================================
-void X_SpectrumArrayRepository::zh_onInvertSpectraVisibilityAction()
+void X_SpectrumArrayRepository::xh_onInvertSpectraVisibilityAction()
 {
     int arrayIndex = -1;
     emit xg_requestCurrentArrayIndex(arrayIndex);
@@ -1867,7 +1867,7 @@ void X_SpectrumArrayRepository::zh_onInvertSpectraVisibilityAction()
     }
 }
 //==================================================================
-void X_SpectrumArrayRepository::zh_onSetChemElementsVisibleAction()
+void X_SpectrumArrayRepository::xh_onSetChemElementsVisibleAction()
 {
     int arrayIndex = -1;
     emit xg_requestCurrentArrayIndex(arrayIndex);
@@ -1884,7 +1884,7 @@ void X_SpectrumArrayRepository::zh_onSetChemElementsVisibleAction()
     }
 }
 //==================================================================
-void X_SpectrumArrayRepository::zh_onSetChemElementsInvisibleAction()
+void X_SpectrumArrayRepository::xh_onSetChemElementsInvisibleAction()
 {
     int arrayIndex = -1;
     emit xg_requestCurrentArrayIndex(arrayIndex);
@@ -1901,7 +1901,7 @@ void X_SpectrumArrayRepository::zh_onSetChemElementsInvisibleAction()
     }
 }
 //==================================================================
-void X_SpectrumArrayRepository::zh_onInvertChemElementsVisibilityAction()
+void X_SpectrumArrayRepository::xh_onInvertChemElementsVisibilityAction()
 {
     int arrayIndex = -1;
     emit xg_requestCurrentArrayIndex(arrayIndex);
@@ -1918,7 +1918,7 @@ void X_SpectrumArrayRepository::zh_onInvertChemElementsVisibilityAction()
     }
 }
 //==================================================================
-void X_SpectrumArrayRepository::zh_onEnergyCalibrationAction()
+void X_SpectrumArrayRepository::xh_onEnergyCalibrationAction()
 {
     // create selected spectrum map
     QList<int> selectedSpectrumList;
@@ -1965,11 +1965,11 @@ void X_SpectrumArrayRepository::zh_onEnergyCalibrationAction()
 
     X_EnergyCalibrationDialogV2 dialog(spectrumMap);
     //    connect(&dialog, &X_EnergyCalibrationDialogV2::xg_energyCalibrationChanged,
-    //            this, &X_SpectrumArrayRepository::zh_writeEnergyCalibrationToSpectra);
+    //            this, &X_SpectrumArrayRepository::xh_writeEnergyCalibrationToSpectra);
     dialog.exec();
 }
 //==================================================================
-void X_SpectrumArrayRepository::zh_writeEnergyCalibrationToSpectra(int gainFactor,
+void X_SpectrumArrayRepository::xh_writeEnergyCalibrationToSpectra(int gainFactor,
                                                                   const QList<double>& energyCalibrationFactors)
 {
     for(int a = 0; a < xv_arrayList.count(); a++)
@@ -1988,7 +1988,7 @@ void X_SpectrumArrayRepository::zh_writeEnergyCalibrationToSpectra(int gainFacto
     }
 }
 //==================================================================
-QList<X_RawSpectrumArray> X_SpectrumArrayRepository::zh_createRawArrayList() const
+QList<X_RawSpectrumArray> X_SpectrumArrayRepository::xh_createRawArrayList() const
 {
     QList<X_RawSpectrumArray> rawSpectrumArrayList;
     for(int a = 0; a < xv_arrayList.count(); a++)
@@ -2000,7 +2000,7 @@ QList<X_RawSpectrumArray> X_SpectrumArrayRepository::zh_createRawArrayList() con
     return rawSpectrumArrayList;
 }
 //==================================================================
-void X_SpectrumArrayRepository::zh_actionEnablingControl()
+void X_SpectrumArrayRepository::xh_actionEnablingControl()
 {
     int arrayIndex = -1;
     emit xg_requestCurrentArrayIndex(arrayIndex);
@@ -2076,15 +2076,15 @@ void X_SpectrumArrayRepository::zh_actionEnablingControl()
     emit xg_arrayListDirtyChanged(xv_dirty, !xv_arrayList.isEmpty());
 }
 //==================================================================
-void X_SpectrumArrayRepository::zh_setDirty(bool dirty)
+void X_SpectrumArrayRepository::xh_setDirty(bool dirty)
 {
     xv_dirty = dirty;
     emit xg_arrayListDirtyChanged(xv_dirty, !xv_arrayList.isEmpty());
     emit xg_currentFile(xv_dirty, xv_arrayFilePath);
-    zh_actionEnablingControl();
+    xh_actionEnablingControl();
 }
 //==================================================================
-void X_SpectrumArrayRepository::zh_createActions()
+void X_SpectrumArrayRepository::xh_createActions()
 {
     xv_appendArrayAction = new QAction(this);
     xv_appendArrayAction->setIcon(QIcon(NS_Icons::glAddArray));
@@ -2179,51 +2179,51 @@ void X_SpectrumArrayRepository::zh_createActions()
     xv_invertChemElementsVisibilityAction->setEnabled(false);
 }
 //==================================================================
-void X_SpectrumArrayRepository::zh_createConnections()
+void X_SpectrumArrayRepository::xh_createConnections()
 {
     connect(xv_appendArrayAction, &QAction::triggered,
-            this, &X_SpectrumArrayRepository::zh_onAppendArrayAction);
+            this, &X_SpectrumArrayRepository::xh_onAppendArrayAction);
     connect(xv_removeArrayAction, &QAction::triggered,
-            this, &X_SpectrumArrayRepository::zh_onRemoveArrayAction);
+            this, &X_SpectrumArrayRepository::xh_onRemoveArrayAction);
     connect(xv_appendSpectrumToArrayAction, &QAction::triggered,
-            this, &X_SpectrumArrayRepository::zh_onAppendSpectraToArrayAction);
+            this, &X_SpectrumArrayRepository::xh_onAppendSpectraToArrayAction);
     connect(xv_removeSpectrumFromArrayAction, &QAction::triggered,
-            this, &X_SpectrumArrayRepository::zh_onRemoveSpectrumFromArrayAction);
+            this, &X_SpectrumArrayRepository::xh_onRemoveSpectrumFromArrayAction);
     connect(xv_appendChemElementAction, &QAction::triggered,
-            this, &X_SpectrumArrayRepository::zh_onAppendChemElementAction);
+            this, &X_SpectrumArrayRepository::xh_onAppendChemElementAction);
     connect(xv_removeChemElementAction, &QAction::triggered,
-            this, &X_SpectrumArrayRepository::zh_onRemoveChemElementAction);
+            this, &X_SpectrumArrayRepository::xh_onRemoveChemElementAction);
 
     connect(xv_copyConcentrationDataAction, &QAction::triggered,
-            this, &X_SpectrumArrayRepository::zh_onCopyConcentrationDataAction);
+            this, &X_SpectrumArrayRepository::xh_onCopyConcentrationDataAction);
     connect(xv_pasteConcentrationDataAction, &QAction::triggered,
-            this, &X_SpectrumArrayRepository::zh_onPasteConcentrationDataAction);
+            this, &X_SpectrumArrayRepository::xh_onPasteConcentrationDataAction);
     connect(xv_clearConcentrationDataAction, &QAction::triggered,
-            this, &X_SpectrumArrayRepository::zh_onClearConcentrationDataAction);
+            this, &X_SpectrumArrayRepository::xh_onClearConcentrationDataAction);
 
     connect(xv_setSpectraVisibleAction, &QAction::triggered,
-            this, &X_SpectrumArrayRepository::zh_onSetSpectraVisibleAction);
+            this, &X_SpectrumArrayRepository::xh_onSetSpectraVisibleAction);
     connect(xv_setSpectraInvisibleAction, &QAction::triggered,
-            this, &X_SpectrumArrayRepository::zh_onSetSpectraInvisibleAction);
+            this, &X_SpectrumArrayRepository::xh_onSetSpectraInvisibleAction);
     connect(xv_invertSpectraVisibilityAction, &QAction::triggered,
-            this, &X_SpectrumArrayRepository::zh_onInvertSpectraVisibilityAction);
+            this, &X_SpectrumArrayRepository::xh_onInvertSpectraVisibilityAction);
     connect(xv_setChemElementsVisibleAction, &QAction::triggered,
-            this, &X_SpectrumArrayRepository::zh_onSetChemElementsVisibleAction);
+            this, &X_SpectrumArrayRepository::xh_onSetChemElementsVisibleAction);
     connect(xv_setChemElementsInvisibleAction, &QAction::triggered,
-            this, &X_SpectrumArrayRepository::zh_onSetChemElementsInvisibleAction);
+            this, &X_SpectrumArrayRepository::xh_onSetChemElementsInvisibleAction);
     connect(xv_invertChemElementsVisibilityAction, &QAction::triggered,
-            this, &X_SpectrumArrayRepository::zh_onInvertChemElementsVisibilityAction);
+            this, &X_SpectrumArrayRepository::xh_onInvertChemElementsVisibilityAction);
 
     connect(xv_energyCalibrationAction, &QAction::triggered,
-            this, &X_SpectrumArrayRepository::zh_onEnergyCalibrationAction);
+            this, &X_SpectrumArrayRepository::xh_onEnergyCalibrationAction);
 
 
     connect(qApp->clipboard(), &QClipboard::dataChanged,
-            this, &X_SpectrumArrayRepository::zh_onClipboardContentChange);
+            this, &X_SpectrumArrayRepository::xh_onClipboardContentChange);
 
 }
 //==================================================================
-int X_SpectrumArrayRepository::zh_chemElementIndexForId(int arrayIndex, qint64 chemElementId)
+int X_SpectrumArrayRepository::xh_chemElementIndexForId(int arrayIndex, qint64 chemElementId)
 {
     if(arrayIndex < 0 || arrayIndex >= xv_arrayList.count())
     {

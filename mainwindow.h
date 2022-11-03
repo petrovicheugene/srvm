@@ -59,7 +59,7 @@ signals:
 
 private slots:
 
-    void zh_messageIconPixmap(int type,
+    void xh_messageIconPixmap(int type,
                               QSize size,
                               QStyle *style,
                               QPixmap& pixmap,
@@ -126,24 +126,24 @@ private:
 
     // FUNCS
     void closeEvent(QCloseEvent* e);
-    void zh_createActions();
-    void zh_createComponents();
-    QFrame* zh_setWidgetToFrame(QWidget*);
-    void zh_createMenu();
-    void zh_createToolbar();
-    void zh_createConnections();
+    void xh_createActions();
+    void xh_createComponents();
+    QFrame* xh_setWidgetToFrame(QWidget*);
+    void xh_createMenu();
+    void xh_createToolbar();
+    void xh_createConnections();
 
-    void zh_appendActionsToMenu(QMenu* menu);
-    void zh_restoreSettings();
-    void zh_saveSettings();
+    void xh_appendActionsToMenu(QMenu* menu);
+    void xh_restoreSettings();
+    void xh_saveSettings();
 
 private slots:
 
 
-    void zh_rebuildCorrelationPlot();
-    void zh_createPlotterWidget();
-    void zh_appLanguageControl();
-    void zh_fillLanguageMenu();
+    void xh_rebuildCorrelationPlot();
+    void xh_createPlotterWidget();
+    void xh_appLanguageControl();
+    void xh_fillLanguageMenu();
 
 };
 Q_DECLARE_METATYPE(QtMsgType)

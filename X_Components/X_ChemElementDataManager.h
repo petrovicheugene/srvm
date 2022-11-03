@@ -56,7 +56,7 @@ private:
 
 private slots:
 
-    void zh_onRepositoryChemElementOperation(X_SpectrumArrayRepository::ChemElementOperationType,
+    void xh_onRepositoryChemElementOperation(X_SpectrumArrayRepository::ChemElementOperationType,
                                              int arrayIndex, int first, int last);
 
 

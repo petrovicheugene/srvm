@@ -13,13 +13,13 @@
 X_PeriodicTableWidget::X_PeriodicTableWidget(QWidget *parent) : QWidget(parent)
 {
     xv_model = nullptr;
-    zh_createComponents();
-    zh_createConnections();
-    zh_recalcAndApplyMinButtonSize();
+    xh_createComponents();
+    xh_createConnections();
+    xh_recalcAndApplyMinButtonSize();
     xp_setSelectionMode(SM_NO_SELECTION);
 }
 //======================================================
-void X_PeriodicTableWidget::zh_createComponents()
+void X_PeriodicTableWidget::xh_createComponents()
 {
     xv_mainLayout = new QVBoxLayout;
     setLayout(xv_mainLayout);
@@ -114,18 +114,18 @@ void X_PeriodicTableWidget::zh_createComponents()
     }
 }
 //======================================================
-void X_PeriodicTableWidget::zh_createConnections()
+void X_PeriodicTableWidget::xh_createConnections()
 {
     foreach (X_ChemicalElementButton *button, xv_elementButtonList)
     {
         connect(button,
                 &X_ChemicalElementButton::xg_symbolChanged,
                 this,
-                &X_PeriodicTableWidget::zh_recalcAndApplyMinButtonSize);
+                &X_PeriodicTableWidget::xh_recalcAndApplyMinButtonSize);
         connect(button,
                 &X_ChemicalElementButton::toggled,
                 this,
-                &X_PeriodicTableWidget::zh_onButtonToggle);
+                &X_PeriodicTableWidget::xh_onButtonToggle);
     }
 }
 //======================================================
@@ -152,7 +152,7 @@ void X_PeriodicTableWidget::xp_setModel(QAbstractItemModel *model)
         disconnect(model,
                    &QAbstractItemModel::modelReset,
                    this,
-                   &X_PeriodicTableWidget::zh_updatePeriodicTable);
+                   &X_PeriodicTableWidget::xh_updatePeriodicTable);
     }
 
     // connect to model
@@ -160,14 +160,14 @@ void X_PeriodicTableWidget::xp_setModel(QAbstractItemModel *model)
     connect(model,
             &QAbstractItemModel::modelReset,
             this,
-            &X_PeriodicTableWidget::zh_updatePeriodicTable);
+            &X_PeriodicTableWidget::xh_updatePeriodicTable);
 
     connect(model,
             &QAbstractItemModel::dataChanged,
             this,
-            &X_PeriodicTableWidget::zh_updateButtonCaptions);
+            &X_PeriodicTableWidget::xh_updateButtonCaptions);
 
-    zh_updatePeriodicTable();
+    xh_updatePeriodicTable();
 }
 //======================================================
 QList<int> X_PeriodicTableWidget::xp_selectedChemicalElementList() const
@@ -205,11 +205,11 @@ X_PeriodicTableWidget::SelectionMode X_PeriodicTableWidget::xp_selectionMode()
 //======================================================
 void X_PeriodicTableWidget::resizeEvent(QResizeEvent *event)
 {
-    zh_recalcAndApplyPropertyRectSizes();
+    xh_recalcAndApplyPropertyRectSizes();
     QWidget::resizeEvent(event);
 }
 //======================================================
-void X_PeriodicTableWidget::zh_updatePeriodicTable()
+void X_PeriodicTableWidget::xh_updatePeriodicTable()
 {
     QModelIndex index;
     QVariant vData;
@@ -245,13 +245,13 @@ void X_PeriodicTableWidget::zh_updatePeriodicTable()
     }
 }
 //======================================================
-void X_PeriodicTableWidget::zh_updateButtonCaptions(const QModelIndex &topLeft,
+void X_PeriodicTableWidget::xh_updateButtonCaptions(const QModelIndex &topLeft,
                                                    const QModelIndex &bottomRight)
 {
-    zh_updatePeriodicTable();
+    xh_updatePeriodicTable();
 }
 //======================================================
-void X_PeriodicTableWidget::zh_onButtonToggle(bool toggled)
+void X_PeriodicTableWidget::xh_onButtonToggle(bool toggled)
 {
     X_ChemicalElementButton *toggledButton = qobject_cast<X_ChemicalElementButton *>(sender());
     if (toggledButton->isChecked() && xv_selectionMode == SM_SINGLE_SELECTION)
@@ -270,10 +270,10 @@ void X_PeriodicTableWidget::zh_onButtonToggle(bool toggled)
     emit xg_selectedChemicalElementChanged(toggledButton->xp_zNumber(), toggledButton->isChecked());
 }
 //======================================================
-void X_PeriodicTableWidget::zh_recalcAndApplyMinButtonSize()
+void X_PeriodicTableWidget::xh_recalcAndApplyMinButtonSize()
 {
     QSize maxSymbolSize;
-    zh_maxSymbolRectSize(maxSymbolSize);
+    xh_maxSymbolRectSize(maxSymbolSize);
 
     foreach (X_ChemicalElementButton *button, xv_elementButtonList)
     {
@@ -281,10 +281,10 @@ void X_PeriodicTableWidget::zh_recalcAndApplyMinButtonSize()
     }
 }
 //======================================================
-bool X_PeriodicTableWidget::zh_setChemicalElementSymbol(X_Number zNumber, const QString &symbol)
+bool X_PeriodicTableWidget::xh_setChemicalElementSymbol(X_Number zNumber, const QString &symbol)
 {
     X_ChemicalElementButton *button = nullptr;
-    if (!zh_buttonForX_Number(zNumber, button))
+    if (!xh_buttonForX_Number(zNumber, button))
     {
         return false;
     }
@@ -293,17 +293,17 @@ bool X_PeriodicTableWidget::zh_setChemicalElementSymbol(X_Number zNumber, const 
     return true;
 }
 //======================================================
-void X_PeriodicTableWidget::zh_recalcAndApplyPropertyRectSizes()
+void X_PeriodicTableWidget::xh_recalcAndApplyPropertyRectSizes()
 {
     QSize symbolRectSize;
     QSize zNumberRectSize;
     QSize nameRectSize;
-    zh_recalcPropertyRectSizes(symbolRectSize, zNumberRectSize, nameRectSize);
+    xh_recalcPropertyRectSizes(symbolRectSize, zNumberRectSize, nameRectSize);
 
-    zh_applyPropertyRectSizes(symbolRectSize, zNumberRectSize, nameRectSize);
+    xh_applyPropertyRectSizes(symbolRectSize, zNumberRectSize, nameRectSize);
 }
 //======================================================
-void X_PeriodicTableWidget::zh_recalcPropertyRectSizes(QSize &symbolRectSize,
+void X_PeriodicTableWidget::xh_recalcPropertyRectSizes(QSize &symbolRectSize,
                                                       QSize &zNumberRectSize,
                                                       QSize &nameRectSize) const
 {
@@ -318,7 +318,7 @@ void X_PeriodicTableWidget::zh_recalcPropertyRectSizes(QSize &symbolRectSize,
     QSize zNumberWindowRectSize;
     QSize nameWindowRectSize;
 
-    zh_buttonRectSizes(minButtonSize,
+    xh_buttonRectSizes(minButtonSize,
                        symbolWindowRectSize,
                        zNumberWindowRectSize,
                        nameWindowRectSize);
@@ -425,7 +425,7 @@ void X_PeriodicTableWidget::zh_recalcPropertyRectSizes(QSize &symbolRectSize,
     }
 }
 //======================================================
-void X_PeriodicTableWidget::zh_applyPropertyRectSizes(const QSize &symbolRectSize,
+void X_PeriodicTableWidget::xh_applyPropertyRectSizes(const QSize &symbolRectSize,
                                                      const QSize &zNumberRectSize,
                                                      const QSize &nameRectSize)
 {
@@ -441,7 +441,7 @@ void X_PeriodicTableWidget::zh_applyPropertyRectSizes(const QSize &symbolRectSiz
     }
 }
 //======================================================
-void X_PeriodicTableWidget::zh_buttonRectSizes(QSize &minButtonSize,
+void X_PeriodicTableWidget::xh_buttonRectSizes(QSize &minButtonSize,
                                               QSize &maxWidthSymbolRectSize,
                                               QSize &maxWidthX_NumberRectSize,
                                               QSize &maxWidthNameRectSize) const
@@ -518,7 +518,7 @@ void X_PeriodicTableWidget::zh_buttonRectSizes(QSize &minButtonSize,
     maxWidthNameRectSize = QSize(nameWidth, nameHeight);
 }
 //======================================================
-void X_PeriodicTableWidget::zh_maxSymbolRectSize(QSize &symbolSize) const
+void X_PeriodicTableWidget::xh_maxSymbolRectSize(QSize &symbolSize) const
 {
     int symbolWidth = 0;
     int symbolHeight = 0;
@@ -541,7 +541,7 @@ void X_PeriodicTableWidget::zh_maxSymbolRectSize(QSize &symbolSize) const
     symbolSize = QSize(symbolWidth, symbolHeight);
 }
 //======================================================
-bool X_PeriodicTableWidget::zh_buttonForX_Number(X_Number zNumber, X_ChemicalElementButton *&button)
+bool X_PeriodicTableWidget::xh_buttonForX_Number(X_Number zNumber, X_ChemicalElementButton *&button)
 {
     foreach (X_ChemicalElementButton *currentButton, xv_elementButtonList)
     {
@@ -556,3 +556,4 @@ bool X_PeriodicTableWidget::zh_buttonForX_Number(X_Number zNumber, X_ChemicalEle
     return false;
 }
 //======================================================
+

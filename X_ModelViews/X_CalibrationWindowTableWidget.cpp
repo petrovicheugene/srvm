@@ -16,8 +16,8 @@
 X_CalibrationWindowTableWidget::X_CalibrationWindowTableWidget(QWidget* parent) : QWidget(parent)
 {
     xv_channelDelegate = 0;
-    zh_createComponents();
-    zh_createConnections();
+    xh_createComponents();
+    xh_createConnections();
 }
 //==============================================================
 void X_CalibrationWindowTableWidget::xp_setModel(X_CalibrationWindowModel* model)
@@ -40,16 +40,16 @@ void X_CalibrationWindowTableWidget::xp_setModel(X_CalibrationWindowModel* model
     connect(xv_table->selectionModel(),
             &QItemSelectionModel::currentRowChanged,
             this,
-            &X_CalibrationWindowTableWidget::zh_onCurrentCalibrationWindowChanged);
+            &X_CalibrationWindowTableWidget::xh_onCurrentCalibrationWindowChanged);
     connect(xv_table->selectionModel(),
             &QItemSelectionModel::selectionChanged,
             this,
-            &X_CalibrationWindowTableWidget::zh_onCalibrationWindowSelectionChanged);
+            &X_CalibrationWindowTableWidget::xh_onCalibrationWindowSelectionChanged);
 
     connect(xv_table,
             &QTableView::clicked,
             this,
-            &X_CalibrationWindowTableWidget::zh_onCalibrationWindowClick);
+            &X_CalibrationWindowTableWidget::xh_onCalibrationWindowClick);
 }
 //==============================================================
 void X_CalibrationWindowTableWidget::xp_appendButtonActions(QList<QAction*> actionList)
@@ -178,7 +178,7 @@ void X_CalibrationWindowTableWidget::xp_setChannelNumberMinMax(int first, int la
     xv_channelDelegate->xp_setEditorMinMax(first, last);
 }
 //==============================================================
-void X_CalibrationWindowTableWidget::zh_createComponents()
+void X_CalibrationWindowTableWidget::xh_createComponents()
 {
     xv_mainLayout = new QVBoxLayout;
     xv_mainLayout->setContentsMargins(0, 0, 0, 0);
@@ -194,15 +194,15 @@ void X_CalibrationWindowTableWidget::zh_createComponents()
     xv_mainLayout->addLayout(xv_buttonLayout);
 }
 //==============================================================
-void X_CalibrationWindowTableWidget::zh_createConnections()
+void X_CalibrationWindowTableWidget::xh_createConnections()
 {
     connect(xv_table,
             &QTableView::customContextMenuRequested,
             this,
-            &X_CalibrationWindowTableWidget::zh_onContextMenuRequest);
+            &X_CalibrationWindowTableWidget::xh_onContextMenuRequest);
 }
 //==============================================================
-void X_CalibrationWindowTableWidget::zh_onCurrentCalibrationWindowChanged(const QModelIndex& current,
+void X_CalibrationWindowTableWidget::xh_onCurrentCalibrationWindowChanged(const QModelIndex& current,
                                                                          const QModelIndex& previous)
 {
     int currentRow;
@@ -227,20 +227,20 @@ void X_CalibrationWindowTableWidget::zh_onCurrentCalibrationWindowChanged(const 
     emit xg_currentCalibrationWindowChanged(currentRow, previousRow);
 }
 //==============================================================
-void X_CalibrationWindowTableWidget::zh_onCalibrationWindowSelectionChanged(
+void X_CalibrationWindowTableWidget::xh_onCalibrationWindowSelectionChanged(
     const QItemSelection& selected, const QItemSelection& deselected)
 {
     emit xg_calibrationWindowSelectionChanged();
 }
 //==============================================================
-void X_CalibrationWindowTableWidget::zh_onCalibrationWindowClick(const QModelIndex& index) const
+void X_CalibrationWindowTableWidget::xh_onCalibrationWindowClick(const QModelIndex& index) const
 {
 
     emit xg_calibrationWindowClicked(index);
 
 }
 //==============================================================
-void X_CalibrationWindowTableWidget::zh_onContextMenuRequest(const QPoint& pos)
+void X_CalibrationWindowTableWidget::xh_onContextMenuRequest(const QPoint& pos)
 {
     QMenu* menu = new QMenu(this);
     menu->setAttribute(Qt::WA_DeleteOnClose);

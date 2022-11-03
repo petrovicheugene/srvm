@@ -16,9 +16,9 @@
 //=============================================================
 X_JointSpectrumTableWidget::X_JointSpectrumTableWidget(QWidget *parent) : QWidget(parent)
 {
-    //zh_createActions();
-    zh_createComponents();
-    zh_createConnections();
+    //xh_createActions();
+    xh_createComponents();
+    xh_createConnections();
 }
 //=============================================================
 void X_JointSpectrumTableWidget::xp_setCurrentSpectrumIndex(int spectrumIndex)
@@ -94,7 +94,7 @@ void X_JointSpectrumTableWidget::xp_currentSpectrumRow(int& row, bool* ok) const
     row = currentIndex.row();
 }
 //=============================================================
-void X_JointSpectrumTableWidget::zh_createComponents()
+void X_JointSpectrumTableWidget::xh_createComponents()
 {
     xv_mainLayout = new QVBoxLayout;
     xv_mainLayout->setContentsMargins(0, 0, 0, 0);
@@ -111,10 +111,10 @@ void X_JointSpectrumTableWidget::zh_createComponents()
 
 }
 //=============================================================
-void X_JointSpectrumTableWidget::zh_createConnections()
+void X_JointSpectrumTableWidget::xh_createConnections()
 {
     connect(xv_table, &QTableView::customContextMenuRequested,
-            this, &X_JointSpectrumTableWidget::zh_onContextMenuRequest);
+            this, &X_JointSpectrumTableWidget::xh_onContextMenuRequest);
 }
 //=============================================================
 void X_JointSpectrumTableWidget::xp_setModel(X_JointSpectraModel* model)
@@ -127,7 +127,7 @@ void X_JointSpectrumTableWidget::xp_setModel(X_JointSpectraModel* model)
     min = 0.0;
     numericDelegate->xp_setEditorMinMax(min, max);
     connect(numericDelegate, &X_NumericDelegate::xg_editNext,
-            this, &X_JointSpectrumTableWidget::zh_editNext);
+            this, &X_JointSpectrumTableWidget::xh_editNext);
     xv_table->setItemDelegate(numericDelegate);
     X_SpectrumTableDelegate* spectrumDelegate = new X_SpectrumTableDelegate(xv_table);
     // tracking mouse event to prevent current event setting when visible changed
@@ -137,9 +137,9 @@ void X_JointSpectrumTableWidget::xp_setModel(X_JointSpectraModel* model)
     xv_table->setAlternatingRowColors(true);
 
     connect(xv_table->selectionModel(), &QItemSelectionModel::currentRowChanged,
-            this, &X_JointSpectrumTableWidget::zh_onCurrentSpectrumChanged);
+            this, &X_JointSpectrumTableWidget::xh_onCurrentSpectrumChanged);
     connect(xv_table->selectionModel(), &QItemSelectionModel::selectionChanged,
-            this, &X_JointSpectrumTableWidget::zh_onSelectionChange);
+            this, &X_JointSpectrumTableWidget::xh_onSelectionChange);
     connect(model, &X_JointSpectraModel::xg_requestCurrentIndex,
             this, &X_JointSpectrumTableWidget::xp_currentIndex);
     connect(this, &X_JointSpectrumTableWidget::xg_selectedIndexListChanged,
@@ -208,7 +208,7 @@ void X_JointSpectrumTableWidget::xp_setMainLayoutMargin(int margin)
     xv_mainLayout->setContentsMargins(margin, margin, margin, margin);
 }
 //==============================================================
-void X_JointSpectrumTableWidget::zh_editNext(QModelIndex editedIndex)
+void X_JointSpectrumTableWidget::xh_editNext(QModelIndex editedIndex)
 {
     if(!editedIndex.isValid() || editedIndex.row() < 0)
     {
@@ -233,7 +233,7 @@ void X_JointSpectrumTableWidget::zh_editNext(QModelIndex editedIndex)
     xv_table->edit(nextIndex);
 }
 //==============================================================
-void X_JointSpectrumTableWidget::zh_onCurrentSpectrumChanged(const QModelIndex & current,
+void X_JointSpectrumTableWidget::xh_onCurrentSpectrumChanged(const QModelIndex & current,
                                                             const QModelIndex & previous)
 {
     int currentRow;
@@ -258,7 +258,7 @@ void X_JointSpectrumTableWidget::zh_onCurrentSpectrumChanged(const QModelIndex &
     emit xg_currentSpectrumChanged(currentRow, previousRow);
 }
 //==============================================================
-void X_JointSpectrumTableWidget::zh_onContextMenuRequest(const QPoint &pos)
+void X_JointSpectrumTableWidget::xh_onContextMenuRequest(const QPoint &pos)
 {
     QMenu *menu=new QMenu(this);
     menu->setAttribute(Qt::WA_DeleteOnClose);
@@ -277,7 +277,7 @@ void X_JointSpectrumTableWidget::zh_onContextMenuRequest(const QPoint &pos)
     menu->popup(xv_table->viewport()->mapToGlobal(pos));
 }
 //==============================================================
-void X_JointSpectrumTableWidget::zh_onSelectionChange(const QItemSelection & selected,
+void X_JointSpectrumTableWidget::xh_onSelectionChange(const QItemSelection & selected,
                                                      const QItemSelection & deselected) const
 {
     QModelIndexList selectedIndexList = xv_table->selectionModel()->selectedIndexes();

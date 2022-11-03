@@ -67,9 +67,9 @@ private:
     QStringList xv_columnHederList;
 
     // FUNCS
-    int zh_findRowToInsert(int X_Number) const;
-    void zh_updateColumns();
-    void zh_loadEnergyLinesToItem(X_EnergyLineSetItem* item);
+    int xh_findRowToInsert(int X_Number) const;
+    void xh_updateColumns();
+    void xh_loadEnergyLinesToItem(X_EnergyLineSetItem* item);
 
 
 };

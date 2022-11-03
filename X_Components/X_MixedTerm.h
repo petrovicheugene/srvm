@@ -29,8 +29,8 @@ signals:
 
 protected slots:
 
-    virtual void zh_updateTermNameForWindowName() override;
-    virtual void zh_onWindowTypeChange(X_CalibrationWindow::WindowType previousType,
+    virtual void xh_updateTermNameForWindowName() override;
+    virtual void xh_onWindowTypeChange(X_CalibrationWindow::WindowType previousType,
                                        X_CalibrationWindow::WindowType currentType) override;
 
 private:
@@ -40,8 +40,8 @@ private:
     const X_CalibrationWindow* xv_window2;
 
     // FUNCS
-    void zh_setName();
-    void zh_connectToWindows();
+    void xh_setName();
+    void xh_connectToWindows();
 
 };
 //===================================================================

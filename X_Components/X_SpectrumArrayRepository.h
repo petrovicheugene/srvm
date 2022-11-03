@@ -185,36 +185,36 @@ public slots:
 private slots:
 
     void xp_appendArrays(QString path, QList<X_RawSpectrumArray>);
-    void xp_appendSpectraToArray(int, QStringList);
-    void zh_onSpectrumArraySaving(QString);
+    void xp_appendSpectraToArray(QStringList);
+    void xh_onSpectrumArraySaving(QString);
 
-    void zh_onAppendArrayAction();
-    void zh_onRemoveArrayAction();
-    void zh_onAppendSpectraToArrayAction();
-    void zh_onRemoveSpectrumFromArrayAction();
-    void zh_onAppendChemElementAction();
-    void zh_onRemoveChemElementAction();
+    void xh_onAppendArrayAction();
+    void xh_onRemoveArrayAction();
+    void xh_onAppendSpectraToArrayAction();
+    void xh_onRemoveSpectrumFromArrayAction();
+    void xh_onAppendChemElementAction();
+    void xh_onRemoveChemElementAction();
 
-    void zh_onChemElementOperation(X_ChemElementList::OperationType, int, int);
-    void zh_createRawArrayListAndStartSaving(QString &filePath, bool &res) const;
-    void zh_onSpectrumOperation(X_SpectrumArray::OperationType type, int first, int last) const;
+    void xh_onChemElementOperation(X_ChemElementList::OperationType, int, int);
+    void xh_createRawArrayListAndStartSaving(QString &filePath, bool &res) const;
+    void xh_onSpectrumOperation(X_SpectrumArray::OperationType type, int first, int last) const;
 
-    void zh_onClipboardContentChange();
+    void xh_onClipboardContentChange();
 
-    void zh_onPasteConcentrationDataAction();
-    void zh_onCopyConcentrationDataAction();
-    void zh_onClearConcentrationDataAction();
+    void xh_onPasteConcentrationDataAction();
+    void xh_onCopyConcentrationDataAction();
+    void xh_onClearConcentrationDataAction();
 
-    void zh_onSetSpectraVisibleAction();
-    void zh_onSetSpectraInvisibleAction();
-    void zh_onInvertSpectraVisibilityAction();
+    void xh_onSetSpectraVisibleAction();
+    void xh_onSetSpectraInvisibleAction();
+    void xh_onInvertSpectraVisibilityAction();
 
-    void zh_onSetChemElementsVisibleAction();
-    void zh_onSetChemElementsInvisibleAction();
-    void zh_onInvertChemElementsVisibilityAction();
-    void zh_onEnergyCalibrationAction();
+    void xh_onSetChemElementsVisibleAction();
+    void xh_onSetChemElementsInvisibleAction();
+    void xh_onInvertChemElementsVisibilityAction();
+    void xh_onEnergyCalibrationAction();
 
-    void zh_writeEnergyCalibrationToSpectra(int gainFactor,
+    void xh_writeEnergyCalibrationToSpectra(int gainFactor,
                                    const QList<double> &energyCalibrationFactors);
 
 private:
@@ -225,6 +225,7 @@ private:
     bool xv_dirty;
     QString xv_defaultArrayBaseName;
     const QString xv_messageBoxPasteTitle = tr("Paste concentration");
+    int xv_currentArrayIndex = -1;
 
     QAction* xv_appendArrayAction;
     QAction* xv_removeArrayAction;
@@ -253,18 +254,18 @@ private:
     X_PasteData xv_pasteData;
 
     // FUNCS
-    void zh_createActions();
-    void zh_createConnections();
-    void zh_createArray(const X_RawSpectrumArray&);
+    void xh_createActions();
+    void xh_createConnections();
+    void xh_createArray(const X_RawSpectrumArray&);
 
-    bool zh_removeArray(int);
-    bool zh_removeSpectrum(int, int);
-    bool zh_removeChemicalElement(int, int);
-    int zh_chemElementIndexForId(int arrayIndex, qint64 chemElementId);
-    QList<X_RawSpectrumArray> zh_createRawArrayList() const;
-    void zh_actionEnablingControl();
+    bool xh_removeArray(int);
+    bool xh_removeSpectrum(int, int);
+    bool xh_removeChemicalElement(int, int);
+    int xh_chemElementIndexForId(int arrayIndex, qint64 chemElementId);
+    QList<X_RawSpectrumArray> xh_createRawArrayList() const;
+    void xh_actionEnablingControl();
 
-    void zh_setDirty(bool dirty);
+    void xh_setDirty(bool dirty);
 };
 //==================================================================
 #endif // X_SPECTRAARRAYREPOSITORY_H

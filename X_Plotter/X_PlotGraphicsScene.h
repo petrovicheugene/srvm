@@ -31,11 +31,11 @@ protected:
     void 	removeItem(QGraphicsItem * item);
 
     // my
-    void zh_createConnections();
+    void xh_createConnections();
 
 protected slots:
 
-    void zh_onSceneRectChange(const QRectF&);
+    void xh_onSceneRectChange(const QRectF&);
 
 };
 //====================================================

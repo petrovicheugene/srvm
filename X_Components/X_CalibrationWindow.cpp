@@ -7,9 +7,9 @@
 //====================================================
 qint64 X_CalibrationWindow::xv_lastWindowId = 0;
 QMap<X_CalibrationWindow::WindowType, QPair<QString, QString>> X_CalibrationWindow::xv_typeNameMap
-    = X_CalibrationWindow::zh_intTypeNameMap();
+    = X_CalibrationWindow::xh_intTypeNameMap();
 //====================================================
-QMap<X_CalibrationWindow::WindowType, QPair<QString, QString>> X_CalibrationWindow::zh_intTypeNameMap()
+QMap<X_CalibrationWindow::WindowType, QPair<QString, QString>> X_CalibrationWindow::xh_intTypeNameMap()
 {
     QMap<X_CalibrationWindow::WindowType, QPair<QString, QString>> map;
     QPair<QString, QString> pair;

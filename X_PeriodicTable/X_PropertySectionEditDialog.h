@@ -33,8 +33,8 @@ public slots:
 
 private slots:
 
-    void zh_onOkButtonClick();
-    void zh_onCloseButtonClick();
+    void xh_onOkButtonClick();
+    void xh_onCloseButtonClick();
 
 private:
 
@@ -53,11 +53,11 @@ private:
 
 
     // FUNCS
-    void zh_createComponents();
-    void zh_createConnections();
-    void zh_setUpAdditionTargetButtons(bool selectedVisible,
+    void xh_createComponents();
+    void xh_createConnections();
+    void xh_setUpAdditionTargetButtons(bool selectedVisible,
                 bool currentVisible);
-    QWidget* zh_createControlWidget();
+    QWidget* xh_createControlWidget();
 
 
 };

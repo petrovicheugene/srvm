@@ -21,11 +21,11 @@ X_ChemicalElementPropertyTreeModel::X_ChemicalElementPropertyTreeModel(QObject *
     xv_settingsGroupName = metaObject()->className();
     xv_dirty = false;
 
-    zh_createComponents();
-    zh_createConnections();
-    zh_loadBasicChemicalElementProperties();
+    xh_createComponents();
+    xh_createConnections();
+    xh_loadBasicChemicalElementProperties();
     //QString chemicalElementItemNameTemplate = "Symbol";
-    //zh_defineChemicalElementItemNames(chemicalElementItemNameTemplate);
+    //xh_defineChemicalElementItemNames(chemicalElementItemNameTemplate);
 }
 //======================================================
 X_ChemicalElementPropertyTreeModel::~X_ChemicalElementPropertyTreeModel()
@@ -41,7 +41,7 @@ Qt::ItemFlags	X_ChemicalElementPropertyTreeModel::flags(const QModelIndex & inde
         flags |= Qt::ItemIsEnabled
                 | Qt::ItemIsSelectable;
 
-        if(index.column() != 0 || zh_itemForIndex(index.parent()) != xv_root)
+        if(index.column() != 0 || xh_itemForIndex(index.parent()) != xv_root)
         {
             flags |= Qt::ItemIsEditable;
         }
@@ -58,7 +58,7 @@ QModelIndex X_ChemicalElementPropertyTreeModel::index(int row, int column, const
         return QModelIndex();
     }
 
-    X_ChemicalElementPropertyItem* parentItem = zh_itemForIndex(parent);
+    X_ChemicalElementPropertyItem* parentItem = xh_itemForIndex(parent);
     if(!parentItem)
     {
         return QModelIndex();
@@ -79,7 +79,7 @@ int X_ChemicalElementPropertyTreeModel::columnCount(const QModelIndex & parent) 
         return 0;
     }
 
-    X_ChemicalElementPropertyItem* parentItem = zh_itemForIndex(parent);
+    X_ChemicalElementPropertyItem* parentItem = xh_itemForIndex(parent);
 
     if(!parentItem)
     {
@@ -88,7 +88,7 @@ int X_ChemicalElementPropertyTreeModel::columnCount(const QModelIndex & parent) 
 
     if(parentItem == xv_root)
     {
-        return zh_propertyNameCount(xv_propertyNames) + 1;
+        return xh_propertyNameCount(xv_propertyNames) + 1;
     }
 
     return 0;
@@ -101,7 +101,7 @@ int	 X_ChemicalElementPropertyTreeModel::rowCount(const QModelIndex & parent) co
         return 0;
     }
 
-    X_ChemicalElementPropertyItem* parentItem = zh_itemForIndex(parent);
+    X_ChemicalElementPropertyItem* parentItem = xh_itemForIndex(parent);
     if(!parentItem)
     {
         return 0;
@@ -117,7 +117,7 @@ QVariant X_ChemicalElementPropertyTreeModel::data(const QModelIndex & index, int
         return QVariant();
     }
 
-    X_ChemicalElementPropertyItem* item = zh_itemForIndex(index);
+    X_ChemicalElementPropertyItem* item = xh_itemForIndex(index);
     if(!item)
     {
         return QVariant();
@@ -132,7 +132,7 @@ QVariant X_ChemicalElementPropertyTreeModel::data(const QModelIndex & index, int
     if(role == PropertyFirstColumnRole)
     {
         int column;
-        if(!zh_firstPropertyColumnForItem(item, column))
+        if(!xh_firstPropertyColumnForItem(item, column))
         {
             return QVariant();
         }
@@ -217,7 +217,7 @@ bool X_ChemicalElementPropertyTreeModel::setData(const QModelIndex & index, cons
         return false;
     }
 
-    X_ChemicalElementPropertyItem* item = zh_itemForIndex(index);
+    X_ChemicalElementPropertyItem* item = xh_itemForIndex(index);
     if(!item || item == xv_root)
     {
         return false;
@@ -316,7 +316,7 @@ QModelIndex X_ChemicalElementPropertyTreeModel::parent(const QModelIndex& child)
         return QModelIndex();
     }
 
-    X_ChemicalElementPropertyItem* childItem = zh_itemForIndex(child);
+    X_ChemicalElementPropertyItem* childItem = xh_itemForIndex(child);
     if(!childItem || childItem == xv_root)
     {
         return QModelIndex();
@@ -335,7 +335,7 @@ QModelIndex X_ChemicalElementPropertyTreeModel::parent(const QModelIndex& child)
 //======================================================
 bool X_ChemicalElementPropertyTreeModel::hasChildren(const QModelIndex &parent) const
 {
-    X_ChemicalElementPropertyItem* item = zh_itemForIndex(parent);
+    X_ChemicalElementPropertyItem* item = xh_itemForIndex(parent);
     if(!item)
     {
         return false;
@@ -344,7 +344,7 @@ bool X_ChemicalElementPropertyTreeModel::hasChildren(const QModelIndex &parent) 
     return item->xp_hasCildren();
 }
 //======================================================
-void X_ChemicalElementPropertyTreeModel::zh_createComponents()
+void X_ChemicalElementPropertyTreeModel::xh_createComponents()
 {
     // create root
     xv_root = new X_ChemicalElementPropertyItem(nullptr);
@@ -358,40 +358,40 @@ void X_ChemicalElementPropertyTreeModel::zh_createComponents()
     }
 }
 //======================================================
-void X_ChemicalElementPropertyTreeModel::zh_createConnections()
+void X_ChemicalElementPropertyTreeModel::xh_createConnections()
 {
     connect(xv_root, &X_ChemicalElementPropertyItem::xg_itemInserted,
-            this, &X_ChemicalElementPropertyTreeModel::zh_onItemInsertion);
+            this, &X_ChemicalElementPropertyTreeModel::xh_onItemInsertion);
     connect(xv_root, &X_ChemicalElementPropertyItem::xg_itemAboutToBeInserted,
-            this, &X_ChemicalElementPropertyTreeModel::zh_onItemAboutToBeInserted);
+            this, &X_ChemicalElementPropertyTreeModel::xh_onItemAboutToBeInserted);
 
     connect(xv_root, &X_ChemicalElementPropertyItem::xg_requestItemRemovingPermission,
-            this, &X_ChemicalElementPropertyTreeModel::zh_itemRemovingPermission);
+            this, &X_ChemicalElementPropertyTreeModel::xh_itemRemovingPermission);
     connect(xv_root, &X_ChemicalElementPropertyItem::xg_itemAboutToBeRemoved,
-            this, &X_ChemicalElementPropertyTreeModel::zh_notifyItemAboutToBeRemoved);
+            this, &X_ChemicalElementPropertyTreeModel::xh_notifyItemAboutToBeRemoved);
     connect(xv_root, &X_ChemicalElementPropertyItem::xg_itemRemoved,
-            this, &X_ChemicalElementPropertyTreeModel::zh_notifyItemRemoved);
+            this, &X_ChemicalElementPropertyTreeModel::xh_notifyItemRemoved);
     connect(xv_root, &X_ChemicalElementPropertyItem::xg_itemIsChanged,
-            this, &X_ChemicalElementPropertyTreeModel::zh_notifyItemIsChanged);
+            this, &X_ChemicalElementPropertyTreeModel::xh_notifyItemIsChanged);
     connect(xv_root, &X_ChemicalElementPropertyItem::xg_itemPropertyNameIsChanged,
-            this, &X_ChemicalElementPropertyTreeModel::zh_notifyItemPropertyNameIsChanged);
+            this, &X_ChemicalElementPropertyTreeModel::xh_notifyItemPropertyNameIsChanged);
     connect(xv_root, &X_ChemicalElementPropertyItem::xg_itemPropertyValueIsChanged,
-            this, &X_ChemicalElementPropertyTreeModel::zh_notifyItemPropertyValueIsChanged);
+            this, &X_ChemicalElementPropertyTreeModel::xh_notifyItemPropertyValueIsChanged);
 
 }
 //======================================================
-void X_ChemicalElementPropertyTreeModel::zh_onItemAboutToBeInserted(int row, const X_ChemicalElementPropertyItem* parentItem)
+void X_ChemicalElementPropertyTreeModel::xh_onItemAboutToBeInserted(int row, const X_ChemicalElementPropertyItem* parentItem)
 {
-    QModelIndex parentIndex = zh_indexForItem(parentItem);
+    QModelIndex parentIndex = xh_indexForItem(parentItem);
     beginInsertRows(parentIndex, row, row);
 }
 //======================================================
-void X_ChemicalElementPropertyTreeModel::zh_onItemInsertion(const X_ChemicalElementPropertyItem* item)
+void X_ChemicalElementPropertyTreeModel::xh_onItemInsertion(const X_ChemicalElementPropertyItem* item)
 {
     endInsertRows();
 }
 //======================================================
-void X_ChemicalElementPropertyTreeModel::zh_loadBasicChemicalElementProperties()
+void X_ChemicalElementPropertyTreeModel::xh_loadBasicChemicalElementProperties()
 {
     // ListOfElementProperties-init.csv
     beginResetModel();
@@ -404,7 +404,7 @@ void X_ChemicalElementPropertyTreeModel::zh_loadBasicChemicalElementProperties()
         chemicalElementPropertyLoader.xp_extractFromFile(this, xv_defaultPropertiesSourceFileName);
     }
 
-    zh_redefinePropertyNameList();
+    xh_redefinePropertyNameList();
     endResetModel();
     xv_dirty = false;
 }
@@ -413,13 +413,13 @@ QString X_ChemicalElementPropertyTreeModel::xp_propertiesSourceFilePath() const
 {
     QSettings settings;
     // TODO basic properties file name from settings
-    if(!zh_openDialogSettingsGroup(&settings))
+    if(!xh_openDialogSettingsGroup(&settings))
     {
         return xv_defaultPropertiesSourceFileName;
     }
 
     QVariant vData = settings.value(xv_propertyFilePathSettingsName);
-    zh_closeDialogSettingsGroup(&settings);
+    xh_closeDialogSettingsGroup(&settings);
 
     if(!vData.isValid() || !vData.canConvert<QString>())
     {
@@ -433,14 +433,14 @@ bool X_ChemicalElementPropertyTreeModel::xp_setPropertiesSourceFileName(const QS
 {
     QSettings settings;
     // TODO basic properties file name from settings
-    if(!zh_openDialogSettingsGroup(&settings))
+    if(!xh_openDialogSettingsGroup(&settings))
     {
         return false;
     }
 
     settings.setValue(xv_propertyFilePathSettingsName, QVariant(propertiesFileName));
 
-    zh_closeDialogSettingsGroup(&settings);
+    xh_closeDialogSettingsGroup(&settings);
     return true;
 }
 //======================================================
@@ -452,7 +452,7 @@ bool X_ChemicalElementPropertyTreeModel::xp_loadDataFromFile(const QString& file
     {
         // TODO error report
         xv_errorStringList.append(chemicalElementPropertyLoader.xp_lastErrors());
-        zh_loadBasicChemicalElementProperties();
+        xh_loadBasicChemicalElementProperties();
         return false;
     }
 
@@ -463,7 +463,7 @@ bool X_ChemicalElementPropertyTreeModel::xp_loadDataFromFile(const QString& file
 //======================================================
 QModelIndex X_ChemicalElementPropertyTreeModel::xp_indexForSection(int X_Number, const QStringList& sectionBranch) const
 {
-    X_ChemicalElementPropertyItem* item = zh_itemForX_Number(X_Number);
+    X_ChemicalElementPropertyItem* item = xh_itemForX_Number(X_Number);
     if(!item)
     {
         return QModelIndex();
@@ -472,7 +472,7 @@ QModelIndex X_ChemicalElementPropertyTreeModel::xp_indexForSection(int X_Number,
     // branch is empty => add properties to chemical elemnt item
     if(sectionBranch.isEmpty())
     {
-        return zh_indexForItem(item);
+        return xh_indexForItem(item);
     }
 
     X_ChemicalElementPropertyItem* child = item->xp_childNamed(sectionBranch);
@@ -481,7 +481,7 @@ QModelIndex X_ChemicalElementPropertyTreeModel::xp_indexForSection(int X_Number,
         return QModelIndex();
     }
 
-    return zh_indexForItem(child);
+    return xh_indexForItem(child);
 }
 //======================================================
 bool X_ChemicalElementPropertyTreeModel::xp_setChemicalElementProperty(int X_Number,
@@ -489,10 +489,10 @@ bool X_ChemicalElementPropertyTreeModel::xp_setChemicalElementProperty(int X_Num
                                                                       const QString& value)
 {
     //beginResetModel();
-    bool res = zh_setCemicalElementProperty(X_Number,
+    bool res = xh_setCemicalElementProperty(X_Number,
                                             key,
                                             value);
-    zh_redefinePropertyNameList();
+    xh_redefinePropertyNameList();
     xv_dirty = true;
 
     //endResetModel();
@@ -504,10 +504,10 @@ bool X_ChemicalElementPropertyTreeModel::xp_setChemicalElementProperties(int X_N
                                                                         const PropertyList& propertyList)
 {
     //beginResetModel();
-    bool res = zh_setCemicalElementProperties(X_Number,
+    bool res = xh_setCemicalElementProperties(X_Number,
                                               propertySectionBranch,
                                               propertyList);
-    zh_redefinePropertyNameList();
+    xh_redefinePropertyNameList();
     xv_dirty = true;
 
     //endResetModel();
@@ -522,7 +522,7 @@ bool X_ChemicalElementPropertyTreeModel::xp_chemicalElementPropertySectionBranch
         return false;
     }
 
-    X_ChemicalElementPropertyItem* item = zh_itemForIndex(index);
+    X_ChemicalElementPropertyItem* item = xh_itemForIndex(index);
     if(!item || item == xv_root)
     {
         return false;
@@ -536,7 +536,7 @@ bool X_ChemicalElementPropertyTreeModel::xp_removeChemicalElementProperty(int X_
                                                                          const QStringList& propertySectionBranch,
                                                                          int propertyIndex)
 {
-    X_ChemicalElementPropertyItem* item = zh_itemForX_Number(X_Number);
+    X_ChemicalElementPropertyItem* item = xh_itemForX_Number(X_Number);
     if(!item)
     {
         xv_errorMsg = tr("Cannot get model item for X_ number %1!").arg(QString::number(X_Number));
@@ -584,7 +584,7 @@ bool X_ChemicalElementPropertyTreeModel::xp_chemicalElementProperties(int X_Numb
                                                                      PropertyList& propertyList)
 {
     propertyList.clear();
-    X_ChemicalElementPropertyItem* item = zh_itemForX_Number(X_Number);
+    X_ChemicalElementPropertyItem* item = xh_itemForX_Number(X_Number);
     if(!item)
     {
         xv_errorMsg = tr("Cannot get model item for X_ number %1!").arg(QString::number(X_Number));
@@ -624,7 +624,7 @@ bool X_ChemicalElementPropertyTreeModel::xp_chemicalElementPropertySectionList(i
                                                                               QStringList& sectionList)
 {
     sectionList.clear();
-    X_ChemicalElementPropertyItem* item = zh_itemForX_Number(X_Number);
+    X_ChemicalElementPropertyItem* item = xh_itemForX_Number(X_Number);
     if(!item)
     {
         xv_errorMsg = tr("Cannot get model item for X_ number %1!").arg(QString::number(X_Number));
@@ -678,15 +678,15 @@ bool X_ChemicalElementPropertyTreeModel::xp_addChemicalElementPropertyBranch(int
                                                                             const QStringList& propertyGroupNameBranch)
 {
     // beginResetModel();
-    bool res = zh_addCemicalElementPropertyBranch(X_Number,
+    bool res = xh_addCemicalElementPropertyBranch(X_Number,
                                                   propertyGroupNameBranch);
-    zh_redefinePropertyNameList();
+    xh_redefinePropertyNameList();
     xv_dirty = true;
     // endResetModel();
     return res;
 }
 //======================================================
-void X_ChemicalElementPropertyTreeModel::zh_defineChemicalElementItemNames(const QString& nameTemplate,
+void X_ChemicalElementPropertyTreeModel::xh_defineChemicalElementItemNames(const QString& nameTemplate,
                                                                           QString separator)
 {
     if(!xv_root)
@@ -707,7 +707,7 @@ void X_ChemicalElementPropertyTreeModel::zh_defineChemicalElementItemNames(const
 //======================================================
 bool X_ChemicalElementPropertyTreeModel::xp_zNumberForIndex(const QModelIndex& index, int& zNumber) const
 {
-    X_ChemicalElementPropertyItem* item = zh_itemForIndex(index);
+    X_ChemicalElementPropertyItem* item = xh_itemForIndex(index);
     if(!item)
     {
         return false;
@@ -765,13 +765,13 @@ bool X_ChemicalElementPropertyTreeModel::xp_isRemovable(const QModelIndex& index
         return true;
     }
 
-    X_ChemicalElementPropertyItem* item = zh_itemForIndex(index);
+    X_ChemicalElementPropertyItem* item = xh_itemForIndex(index);
     if(!item)
     {
         return false;
     }
 
-    int levelNumber = item->zh_elementLevelNumber();
+    int levelNumber = item->xh_elementLevelNumber();
     return levelNumber > 1;
 }
 //======================================================
@@ -782,7 +782,7 @@ void X_ChemicalElementPropertyTreeModel::xp_removeItems(const QModelIndexList& i
     X_ChemicalElementPropertyItem* item;
     foreach(QModelIndex index, indexList)
     {
-        item = zh_itemForIndex(index);
+        item = xh_itemForIndex(index);
         if(!item)
         {
             continue;
@@ -826,14 +826,14 @@ bool X_ChemicalElementPropertyTreeModel::xp_saveDataToXMLFile(const QString& fil
     return true;;
 }
 //======================================================
-void X_ChemicalElementPropertyTreeModel::zh_notifyItemAboutToBeRemoved(const X_ChemicalElementPropertyItem* item)
+void X_ChemicalElementPropertyTreeModel::xh_notifyItemAboutToBeRemoved(const X_ChemicalElementPropertyItem* item)
 {
     if(!item)
     {
         return;
     }
 
-    QModelIndex parentIndex = zh_indexForItem(item->xp_parent());
+    QModelIndex parentIndex = xh_indexForItem(item->xp_parent());
     int itemRow = item->xp_parent()->xp_rowOfChildItem(item);
 
     if(parentIndex.isValid() && itemRow >= 0)
@@ -842,38 +842,38 @@ void X_ChemicalElementPropertyTreeModel::zh_notifyItemAboutToBeRemoved(const X_C
     }
 }
 //======================================================
-void X_ChemicalElementPropertyTreeModel::zh_notifyItemRemoved(const X_ChemicalElementPropertyItem *item)
+void X_ChemicalElementPropertyTreeModel::xh_notifyItemRemoved(const X_ChemicalElementPropertyItem *item)
 {
     endRemoveRows();
 }
 //======================================================
-void X_ChemicalElementPropertyTreeModel::zh_notifyItemIsChanged(const X_ChemicalElementPropertyItem *item)
+void X_ChemicalElementPropertyTreeModel::xh_notifyItemIsChanged(const X_ChemicalElementPropertyItem *item)
 {
     if(!item || item == xv_root || !item->xp_parent() )
     {
         return;
     }
 
-    QModelIndex parent = zh_indexForItem(item->xp_parent());
+    QModelIndex parent = xh_indexForItem(item->xp_parent());
     int row = item->xp_parent()->xp_rowOfChildItem(item);
     QModelIndex topLeft = index(row, 0, parent);
     QModelIndex bottomRight =  index(row, columnCount() - 1, parent);
 
-    //zh_redefinePropertyNameList();
+    //xh_redefinePropertyNameList();
     emit dataChanged(topLeft, bottomRight);
 }
 //======================================================
-void X_ChemicalElementPropertyTreeModel::zh_notifyItemPropertyNameIsChanged(const X_ChemicalElementPropertyItem *item)
+void X_ChemicalElementPropertyTreeModel::xh_notifyItemPropertyNameIsChanged(const X_ChemicalElementPropertyItem *item)
 {
-    zh_redefinePropertyNameList();
+    xh_redefinePropertyNameList();
 }
 //======================================================
-void X_ChemicalElementPropertyTreeModel::zh_notifyItemPropertyValueIsChanged(const X_ChemicalElementPropertyItem *item)
+void X_ChemicalElementPropertyTreeModel::xh_notifyItemPropertyValueIsChanged(const X_ChemicalElementPropertyItem *item)
 {
-    zh_redefinePropertyNameList();
+    xh_redefinePropertyNameList();
 }
 //======================================================
-void X_ChemicalElementPropertyTreeModel::zh_itemRemovingPermission(const X_ChemicalElementPropertyItem* item,
+void X_ChemicalElementPropertyTreeModel::xh_itemRemovingPermission(const X_ChemicalElementPropertyItem* item,
                                                                   bool& permissionToRemove)
 {
     if(item == nullptr)
@@ -882,15 +882,15 @@ void X_ChemicalElementPropertyTreeModel::zh_itemRemovingPermission(const X_Chemi
         return;
     }
 
-    QModelIndex itemIndex = zh_indexForItem(item);
+    QModelIndex itemIndex = xh_indexForItem(item);
     permissionToRemove = xp_isRemovable(itemIndex);
 }
 //======================================================
-bool X_ChemicalElementPropertyTreeModel::zh_setCemicalElementProperty(int X_Number,
+bool X_ChemicalElementPropertyTreeModel::xh_setCemicalElementProperty(int X_Number,
                                                                      const QString& key,
                                                                      const QString& value)
 {
-    X_ChemicalElementPropertyItem* item = zh_itemForX_Number(X_Number);
+    X_ChemicalElementPropertyItem* item = xh_itemForX_Number(X_Number);
     if(!item)
     {
         xv_errorMsg = tr("Cannot get model item for X_ number %1!").arg(QString::number(X_Number));
@@ -901,11 +901,11 @@ bool X_ChemicalElementPropertyTreeModel::zh_setCemicalElementProperty(int X_Numb
     return true;
 }
 //======================================================
-bool X_ChemicalElementPropertyTreeModel::zh_setCemicalElementProperties(int X_Number,
+bool X_ChemicalElementPropertyTreeModel::xh_setCemicalElementProperties(int X_Number,
                                                                        const QStringList& propertySectionBranch,
                                                                        const PropertyList& propertyList)
 {
-    X_ChemicalElementPropertyItem* item = zh_itemForX_Number(X_Number);
+    X_ChemicalElementPropertyItem* item = xh_itemForX_Number(X_Number);
     if(!item)
     {
         xv_errorMsg = tr("Cannot get model item for X_ number %1!").arg(QString::number(X_Number));
@@ -940,10 +940,10 @@ bool X_ChemicalElementPropertyTreeModel::zh_setCemicalElementProperties(int X_Nu
     return true;
 }
 //======================================================
-bool X_ChemicalElementPropertyTreeModel::zh_addCemicalElementPropertyBranch(int X_Number,
+bool X_ChemicalElementPropertyTreeModel::xh_addCemicalElementPropertyBranch(int X_Number,
                                                                            const QStringList& propertySectionBranch)
 {
-    X_ChemicalElementPropertyItem* item = zh_itemForX_Number(X_Number);
+    X_ChemicalElementPropertyItem* item = xh_itemForX_Number(X_Number);
     if(!item)
     {
         xv_errorMsg = tr("Cannot get model item for X_ number %1!").arg(QString::number(X_Number));
@@ -954,7 +954,7 @@ bool X_ChemicalElementPropertyTreeModel::zh_addCemicalElementPropertyBranch(int 
     return child != nullptr;
 }
 //======================================================
-X_ChemicalElementPropertyItem* X_ChemicalElementPropertyTreeModel::zh_itemForIndex(const QModelIndex& index) const
+X_ChemicalElementPropertyItem* X_ChemicalElementPropertyTreeModel::xh_itemForIndex(const QModelIndex& index) const
 {
     if(!index.isValid())
     {
@@ -970,7 +970,7 @@ X_ChemicalElementPropertyItem* X_ChemicalElementPropertyTreeModel::zh_itemForInd
     return item;
 }
 //======================================================
-QModelIndex X_ChemicalElementPropertyTreeModel::zh_indexForItem(const X_ChemicalElementPropertyItem* item) const
+QModelIndex X_ChemicalElementPropertyTreeModel::xh_indexForItem(const X_ChemicalElementPropertyItem* item) const
 {
     if(item == nullptr)
     {
@@ -996,7 +996,7 @@ QModelIndex X_ChemicalElementPropertyTreeModel::zh_indexForItem(const X_Chemical
 
 }
 //======================================================
-X_ChemicalElementPropertyItem* X_ChemicalElementPropertyTreeModel::zh_itemForX_Number(int X_Number) const
+X_ChemicalElementPropertyItem* X_ChemicalElementPropertyTreeModel::xh_itemForX_Number(int X_Number) const
 {
     if(X_Number < 1)
     {
@@ -1011,7 +1011,7 @@ X_ChemicalElementPropertyItem* X_ChemicalElementPropertyTreeModel::zh_itemForX_N
     return xv_root->xp_childAtRow(X_Number - 1);
 }
 //======================================================
-void X_ChemicalElementPropertyTreeModel::zh_redefinePropertyNameList()
+void X_ChemicalElementPropertyTreeModel::xh_redefinePropertyNameList()
 {
     if(columnCount() > 1)
     {
@@ -1032,17 +1032,17 @@ void X_ChemicalElementPropertyTreeModel::zh_redefinePropertyNameList()
         xv_propertyNames.append(propertyNames);
     }
 
-    int newColumnCount = zh_propertyNameCount(propertyNames);
+    int newColumnCount = xh_propertyNameCount(propertyNames);
     beginInsertColumns(QModelIndex(), 1, 1 + newColumnCount);
     xv_propertyNames = propertyNames;
     endInsertColumns();
 }
 //======================================================
-bool X_ChemicalElementPropertyTreeModel::zh_firstPropertyColumnForItem(X_ChemicalElementPropertyItem* item,
+bool X_ChemicalElementPropertyTreeModel::xh_firstPropertyColumnForItem(X_ChemicalElementPropertyItem* item,
                                                                       int& columnNumber) const
 {
     // define element level number (zero level - root)
-    int levelNumber = item->zh_elementLevelNumber();
+    int levelNumber = item->xh_elementLevelNumber();
 
     // get first column for appropriate level from xv_propertyNames
     columnNumber = 0;
@@ -1059,7 +1059,7 @@ bool X_ChemicalElementPropertyTreeModel::zh_firstPropertyColumnForItem(X_Chemica
     return true;
 }
 //======================================================
-int X_ChemicalElementPropertyTreeModel::zh_propertyNameCount(const PropertyNames& propertyNames) const
+int X_ChemicalElementPropertyTreeModel::xh_propertyNameCount(const PropertyNames& propertyNames) const
 {
     if(propertyNames.isEmpty())
     {
@@ -1075,7 +1075,7 @@ int X_ChemicalElementPropertyTreeModel::zh_propertyNameCount(const PropertyNames
     return count;
 }
 //======================================================
-bool X_ChemicalElementPropertyTreeModel::zh_openDialogSettingsGroup(QSettings* settings) const
+bool X_ChemicalElementPropertyTreeModel::xh_openDialogSettingsGroup(QSettings* settings) const
 {
     if(settings == nullptr)
     {
@@ -1095,7 +1095,7 @@ bool X_ChemicalElementPropertyTreeModel::zh_openDialogSettingsGroup(QSettings* s
     return true;
 }
 //======================================================
-bool X_ChemicalElementPropertyTreeModel::zh_closeDialogSettingsGroup(QSettings *settings) const
+bool X_ChemicalElementPropertyTreeModel::xh_closeDialogSettingsGroup(QSettings *settings) const
 {
     if(settings == nullptr)
     {

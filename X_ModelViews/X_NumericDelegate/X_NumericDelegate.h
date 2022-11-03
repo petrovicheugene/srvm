@@ -53,8 +53,8 @@ public slots:
     
 protected slots:
 
-    void zh_onEditorEnterClick();
-    void zh_editorValueChanged(double value);
+    void xh_onEditorEnterClick();
+    void xh_editorValueChanged(double value);
 
 };
 //=========================================------------------------------------------

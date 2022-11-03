@@ -15,8 +15,8 @@
 X_BaseTableWidget::X_BaseTableWidget(QWidget *parent) : QWidget(parent)
 {
     xv_captionLabel = 0;
-    zh_createComponents();
-    zh_createConnections();
+    xh_createComponents();
+    xh_createConnections();
 }
 //=========================================================================
 void X_BaseTableWidget::xp_setModel(QAbstractItemModel* model, bool alternatingRowColorFlag)
@@ -25,12 +25,12 @@ void X_BaseTableWidget::xp_setModel(QAbstractItemModel* model, bool alternatingR
     connect(xv_table->selectionModel(), &QItemSelectionModel::currentChanged,
             this, &X_BaseTableWidget::xg_currentChanged);
     connect(xv_table->selectionModel(), &QItemSelectionModel::selectionChanged,
-            this, &X_BaseTableWidget::zh_onSelectionChange);
+            this, &X_BaseTableWidget::xh_onSelectionChange);
 
     xv_table->setAlternatingRowColors(alternatingRowColorFlag);
 }
 //=========================================================================
-void X_BaseTableWidget::zh_onSelectionChange(const QItemSelection& selected,
+void X_BaseTableWidget::xh_onSelectionChange(const QItemSelection& selected,
                                             const QItemSelection& deselected)
 {
     emit xg_selectionChanged();
@@ -127,7 +127,7 @@ void X_BaseTableWidget::xp_appendContextActions(const QList<X_ControlAction*>& a
     xv_table->setContextMenuPolicy(Qt::ActionsContextMenu);
 }
 //=========================================================================
-void X_BaseTableWidget::zh_createComponents()
+void X_BaseTableWidget::xh_createComponents()
 {
     xv_mainLayout = new QVBoxLayout;
     xv_mainLayout->setContentsMargins(0, 0, 0, 0);
@@ -142,10 +142,10 @@ void X_BaseTableWidget::zh_createComponents()
     xv_mainLayout->addLayout(xv_buttonLayout);
 }
 //=========================================================================
-void X_BaseTableWidget::zh_createConnections()
+void X_BaseTableWidget::xh_createConnections()
 {
     //    connect(xv_table, &QTableView::customContextMenuRequested,
-    //            this, &X_JointSpectrumTableWidget::zh_onContextMenuRequest);
+    //            this, &X_JointSpectrumTableWidget::xh_onContextMenuRequest);
 }
 //=========================================================================
 QList<int> X_BaseTableWidget::xp_selectedRowList()

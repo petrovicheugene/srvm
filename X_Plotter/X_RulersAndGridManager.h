@@ -110,13 +110,13 @@ private:
     QList<qreal> xv_markIntervalList;
 
     // FUNCS
-    void zh_recalcBottomRule();
-    void zh_recalcLeftRule();
-    void zh_recalcDistortedLeftRule(qreal xv_distortionFactor,
+    void xh_recalcBottomRule();
+    void xh_recalcLeftRule();
+    void xh_recalcDistortedLeftRule(qreal xv_distortionFactor,
                                     qreal xv_distortionCorrectionFactor);
 
-    void zh_recalcRectsForPaint();
-    bool zh_divideDistortedVerticalInterval(qreal p, qreal currentMarkValue,
+    void xh_recalcRectsForPaint();
+    bool xh_divideDistortedVerticalInterval(qreal p, qreal currentMarkValue,
                            qreal currentMarkVpPos, qreal prevMarkValue);
 };
 //========================================================

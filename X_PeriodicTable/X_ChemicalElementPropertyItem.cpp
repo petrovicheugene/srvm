@@ -292,14 +292,14 @@ int X_ChemicalElementPropertyItem::xp_chemicalElementPropertyCount() const
     return xv_chemicalElementPropertyList.count();
 }
 //======================================================
-int X_ChemicalElementPropertyItem::zh_elementLevelNumber() const
+int X_ChemicalElementPropertyItem::xh_elementLevelNumber() const
 {
     if(xv_parentItem == nullptr)
     {
         return 0;
     }
 
-    return xv_parentItem->zh_elementLevelNumber() + 1;
+    return xv_parentItem->xh_elementLevelNumber() + 1;
 }
 //======================================================
 int X_ChemicalElementPropertyItem::xp_zNumber(const X_ChemicalElementPropertyItem * callingItem) const

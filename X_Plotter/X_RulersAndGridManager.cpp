@@ -133,18 +133,18 @@ void X_RulersAndGridManager::xp_recalcRulesAndGrid()
     xv_viewportGlobalRect = viewportGlobalRect;
     xv_viewportSceneRect = viewportSceneRect;
     xv_globalX_eroPoint = globalX_eroPoint;
-    zh_recalcRectsForPaint();
+    xh_recalcRectsForPaint();
 
     // bottom rule haven't be distorted
-    zh_recalcBottomRule();
+    xh_recalcBottomRule();
 
     if(distortionFactor == 0.0 || distortionFactor == 1.0 || distortionCorrectionFactor == 0.0)
     {
-        zh_recalcLeftRule();
+        xh_recalcLeftRule();
     }
     else
     {
-        zh_recalcDistortedLeftRule(distortionFactor, distortionCorrectionFactor);
+        xh_recalcDistortedLeftRule(distortionFactor, distortionCorrectionFactor);
     }
 
     xv_rulerWidget->update();
@@ -163,7 +163,7 @@ double X_RulersAndGridManager::xp_recalcSceneVerticalPos(double scenePosition) c
     }
 }
 //========================================================
-void X_RulersAndGridManager::zh_recalcBottomRule()
+void X_RulersAndGridManager::xh_recalcBottomRule()
 {
     xv_XRulePointList.clear();
 
@@ -395,7 +395,7 @@ void X_RulersAndGridManager::zh_recalcBottomRule()
     }
 }
 //========================================================
-void X_RulersAndGridManager::zh_recalcLeftRule()
+void X_RulersAndGridManager::xh_recalcLeftRule()
 {
     // cleaning
     xv_YRulePointList.clear();
@@ -629,7 +629,7 @@ void X_RulersAndGridManager::zh_recalcLeftRule()
     }
 }
 //========================================================
-void X_RulersAndGridManager::zh_recalcDistortedLeftRule(qreal distortionFactor, qreal distortionCorrectionFactor)
+void X_RulersAndGridManager::xh_recalcDistortedLeftRule(qreal distortionFactor, qreal distortionCorrectionFactor)
 {
     xv_YRulePointList.clear();
 
@@ -718,7 +718,7 @@ void X_RulersAndGridManager::zh_recalcDistortedLeftRule(qreal distortionFactor, 
 
             // sratches defining (they may be marks if interval will allow)
 
-            zh_divideDistortedVerticalInterval(p, currentMarkValue, currentMarkVpPos, prevMarkValue);
+            xh_divideDistortedVerticalInterval(p, currentMarkValue, currentMarkVpPos, prevMarkValue);
         }
 
 
@@ -770,12 +770,12 @@ void X_RulersAndGridManager::zh_recalcDistortedLeftRule(qreal distortionFactor, 
 
             // sratches defining (they may be marks if interval will allow)
 
-            zh_divideDistortedVerticalInterval(p, currentMarkValue, currentMarkVpPos, prevMarkValue);
+            xh_divideDistortedVerticalInterval(p, currentMarkValue, currentMarkVpPos, prevMarkValue);
         }
     }
 }
 //========================================================
-bool X_RulersAndGridManager::zh_divideDistortedVerticalInterval(qreal p, qreal currentMarkValue,
+bool X_RulersAndGridManager::xh_divideDistortedVerticalInterval(qreal p, qreal currentMarkValue,
                                                                qreal currentMarkVpPos, qreal prevMarkValue)
 {
     qreal scratchValue;
@@ -819,7 +819,7 @@ bool X_RulersAndGridManager::zh_divideDistortedVerticalInterval(qreal p, qreal c
 
     if(qAbs(scratchVpPos - currentMarkVpPos) >= xv_minimalScratchVpInterval && scratchIsMark)
     {
-        divideCurrentInterval = zh_divideDistortedVerticalInterval(p - 1, currentMarkValue,
+        divideCurrentInterval = xh_divideDistortedVerticalInterval(p - 1, currentMarkValue,
                                                                    currentMarkVpPos, scratchValue);
     }
 
@@ -868,7 +868,7 @@ bool X_RulersAndGridManager::zh_divideDistortedVerticalInterval(qreal p, qreal c
 
             if(divideCurrentInterval && scratchIsMark)
             {
-                zh_divideDistortedVerticalInterval(p - 1, prevScratchValue,
+                xh_divideDistortedVerticalInterval(p - 1, prevScratchValue,
                                                    prevScratchVpPos, scratchValue);
             }
             scratchCount++;
@@ -925,7 +925,7 @@ bool X_RulersAndGridManager::zh_divideDistortedVerticalInterval(qreal p, qreal c
     return false;
 }
 //========================================================
-void X_RulersAndGridManager::zh_recalcRectsForPaint()
+void X_RulersAndGridManager::xh_recalcRectsForPaint()
 {
     qreal K_width = xv_viewportSceneRect.width() /
             (qreal)xv_viewportGlobalRect.width();

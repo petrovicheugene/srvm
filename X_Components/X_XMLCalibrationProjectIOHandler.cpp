@@ -67,7 +67,7 @@ bool X_XMLCalibrationProjectIOHandler::xp_writeProjectData(QFile&file,
     return true;
 }
 //======================================================
-bool X_XMLCalibrationProjectIOHandler::zh_detectRoot(const QXmlStreamReader& reader,
+bool X_XMLCalibrationProjectIOHandler::xh_detectRoot(const QXmlStreamReader& reader,
                                                     bool& magicStringDetectionFlag) const
 {
     // true - element name == root, error - trnado magic string existing flag
@@ -120,7 +120,7 @@ bool X_XMLCalibrationProjectIOHandler::xp_readProjectData(QFile&file, QString& c
         // property root element detection section
         if(!rootDetectedFlag)
         {
-            if(!zh_detectRoot(reader, magicStringDetectionFlag))
+            if(!xh_detectRoot(reader, magicStringDetectionFlag))
             {
                 continue;
             }

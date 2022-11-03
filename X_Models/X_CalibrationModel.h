@@ -40,7 +40,7 @@ private:
 
 private slots:
 
-    void zh_onCalibrationRepositoryOperation(X_CalibrationRepository::CalibrationOperationType, int, int);
+    void xh_onCalibrationRepositoryOperation(X_CalibrationRepository::CalibrationOperationType, int, int);
 
 };
 //===========================================================

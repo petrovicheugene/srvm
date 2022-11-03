@@ -23,9 +23,9 @@
 //===================================================
 // STATIC
 const QMap<QtMsgType, QString> X_MessageWidget::xv_msgTypeNameMap =
-        X_MessageWidget::zh_initMsgTypeNameMap();
+        X_MessageWidget::xh_initMsgTypeNameMap();
 //===================================================
-QMap<QtMsgType, QString> X_MessageWidget::zh_initMsgTypeNameMap()
+QMap<QtMsgType, QString> X_MessageWidget::xh_initMsgTypeNameMap()
 {
     QMap<QtMsgType, QString> msgTypeNameMap;
     msgTypeNameMap.insert(QtDebugMsg, "debug");
@@ -48,9 +48,9 @@ X_MessageWidget::X_MessageWidget(QWidget *parent) : QWidget(parent)
     xv_scrollRequiredFlag = true;
 
     //
-    zh_initMessageColors();
-    zh_createComponents();
-    zh_createConnections();
+    xh_initMessageColors();
+    xh_createComponents();
+    xh_createConnections();
 }
 //===================================================
 void X_MessageWidget::xp_setWidgetMargin(int margin)
@@ -92,7 +92,7 @@ void X_MessageWidget::xp_setFrameLineWidth(int width)
     xv_msgTextEdit->setLineWidth(width);
 }
 //===================================================
-void X_MessageWidget::zh_initMessageColors()
+void X_MessageWidget::xh_initMessageColors()
 {
     xv_timestampColor = QColor(Qt::darkGray);
     xv_messageColorMap.insert(QtDebugMsg, QColor(Qt::darkGreen));
@@ -171,7 +171,7 @@ void X_MessageWidget::xp_alignStringList(QStringList& stringList, Qt::Alignment 
     }
 }
 //===================================================
-void X_MessageWidget::zh_createComponents()
+void X_MessageWidget::xh_createComponents()
 {
     xv_mainLayout = new QVBoxLayout;
     setLayout(xv_mainLayout);
@@ -204,7 +204,7 @@ void X_MessageWidget::zh_createComponents()
     buttonBox->addButton(xv_clearButton, QDialogButtonBox::ActionRole);
 }
 //===================================================
-void X_MessageWidget::zh_createConnections()
+void X_MessageWidget::xh_createConnections()
 {
     connect(xv_clearButton, &QPushButton::clicked,
             xv_msgTextEdit, &QTextEdit::clear);
@@ -213,28 +213,28 @@ void X_MessageWidget::zh_createConnections()
 void X_MessageWidget::xp_addToMessage(int msgType,
                                      const QString &msg)
 {
-    zh_defineScrollRequiredFlag();
-    zh_insertMessage(msgType, msg, true, true);
-    zh_scrollTextToEnd();
+    xh_defineScrollRequiredFlag();
+    xh_insertMessage(msgType, msg, true, true);
+    xh_scrollTextToEnd();
 }
 //===================================================
 void X_MessageWidget::xp_appendMessage(int msgType,
                                       const QString &msg)
 {
-    zh_defineScrollRequiredFlag();
-    zh_insertMessage(msgType, msg, true);
-    zh_scrollTextToEnd();
+    xh_defineScrollRequiredFlag();
+    xh_insertMessage(msgType, msg, true);
+    xh_scrollTextToEnd();
 }
 //===================================================
 void  X_MessageWidget::xp_appendPlainMessage(int msgType,
                                             const QString &msg)
 {
-    zh_defineScrollRequiredFlag();
-    zh_insertMessage(msgType, msg, false);
-    zh_scrollTextToEnd();
+    xh_defineScrollRequiredFlag();
+    xh_insertMessage(msgType, msg, false);
+    xh_scrollTextToEnd();
 }
 //===================================================
-void X_MessageWidget::zh_insertMessage(int type,
+void X_MessageWidget::xh_insertMessage(int type,
                                       const QString &msg,
                                       bool htmlFlag,
                                       bool suppressTime)
@@ -247,7 +247,7 @@ void X_MessageWidget::zh_insertMessage(int type,
     // timestamp
     if(xv_insertTimeStampFlag && !suppressTime)
     {
-        QString timestampString = zh_createTimestampString(htmlFlag);
+        QString timestampString = xh_createTimestampString(htmlFlag);
         cursor.insertHtml(timestampString);
         // insert spacing
         cursor.insertText(" ");
@@ -255,7 +255,7 @@ void X_MessageWidget::zh_insertMessage(int type,
     }
 
     // message icon
-    if(zh_insertIconPixmapForMsgType(cursor, type))
+    if(xh_insertIconPixmapForMsgType(cursor, type))
     {
         // insert spacing
         cursor.insertText(" ");
@@ -266,7 +266,7 @@ void X_MessageWidget::zh_insertMessage(int type,
     {
         // set color to the msg string
         QString htmlMsg = msg;
-        zh_applyColorToString(htmlMsg, type);
+        xh_applyColorToString(htmlMsg, type);
         // set text to textEdit
         cursor.insertHtml(htmlMsg);
     }
@@ -282,13 +282,13 @@ void X_MessageWidget::zh_insertMessage(int type,
     }
 }
 //===================================================
-void X_MessageWidget::zh_defineScrollRequiredFlag()
+void X_MessageWidget::xh_defineScrollRequiredFlag()
 {
     xv_scrollRequiredFlag = xv_msgTextEdit->verticalScrollBar()->maximum()
             == xv_msgTextEdit->verticalScrollBar()->value();
 }
 //===================================================
-QString X_MessageWidget::zh_createTimestampString(bool htmlFlag) const
+QString X_MessageWidget::xh_createTimestampString(bool htmlFlag) const
 {
     if(!htmlFlag)
     {
@@ -301,7 +301,7 @@ QString X_MessageWidget::zh_createTimestampString(bool htmlFlag) const
     return timestamp;
 }
 //===================================================
-bool X_MessageWidget::zh_applyColorToString(QString& string, int msgType) const
+bool X_MessageWidget::xh_applyColorToString(QString& string, int msgType) const
 {
     if(!xv_messageColorMap.keys().contains(msgType))
     {
@@ -313,7 +313,7 @@ bool X_MessageWidget::zh_applyColorToString(QString& string, int msgType) const
     return true;
 }
 //===================================================
-void X_MessageWidget::zh_scrollTextToEnd()
+void X_MessageWidget::xh_scrollTextToEnd()
 {
     if(xv_scrollRequiredFlag)
     {
@@ -321,7 +321,7 @@ void X_MessageWidget::zh_scrollTextToEnd()
     }
 }
 //===================================================
-bool X_MessageWidget::zh_insertIconPixmapForMsgType(QTextCursor& cursor,
+bool X_MessageWidget::xh_insertIconPixmapForMsgType(QTextCursor& cursor,
                                                    int type)
 {
     if(!xv_insertIconFlag)
@@ -351,7 +351,7 @@ bool X_MessageWidget::zh_insertIconPixmapForMsgType(QTextCursor& cursor,
         //        if (!QPixmapCache::find(keyString, msgIconPixmap))
         //        {
         //            // get standard pixmap and insert it into cache
-        //            msgIconPixmap = zh_getStandardMessageBoxPixmap(type, fontHeight);
+        //            msgIconPixmap = xh_getStandardMessageBoxPixmap(type, fontHeight);
         //            QPixmapCache::insert(keyString, msgIconPixmap);
         //        }
         return false;

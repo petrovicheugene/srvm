@@ -44,15 +44,15 @@ private:
     QList<QAction*> xv_contextMenuActionList;
 
     // FUNCS
-    void zh_createComponents();
-    void zh_createConnections();
-    void zh_checkCurrentArray();
+    void xh_createComponents();
+    void xh_createConnections();
+    void xh_checkCurrentArray();
 
 private slots:
 
-    void zh_onCurrentArrayChanged(const QModelIndex & current,
+    void xh_onCurrentArrayChanged(const QModelIndex & current,
                                   const QModelIndex & previous);
-    void zh_onContextMenuRequest(const QPoint &pos);
+    void xh_onContextMenuRequest(const QPoint &pos);
 
 };
 //==============================================================

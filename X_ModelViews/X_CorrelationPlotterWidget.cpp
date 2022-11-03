@@ -10,8 +10,8 @@ X_CorrelationPlotterWidget::X_CorrelationPlotterWidget(QWidget *parent) : QWidge
 {
     xv_plotter = nullptr;
 
-    zh_createComponents();
-    zh_createConnections();
+    xh_createComponents();
+    xh_createConnections();
     if(xv_plotter != nullptr)
     {
         QMetaObject::invokeMethod(xv_plotter, "xp_fitInBoundingRect",
@@ -36,7 +36,7 @@ void X_CorrelationPlotterWidget::xp_rebuildPlotter()
     frameLayout->addWidget(xv_plotter);
 }
 //==============================================================
-void X_CorrelationPlotterWidget::zh_createComponents()
+void X_CorrelationPlotterWidget::xh_createComponents()
 {
     QVBoxLayout* mainLayout = new QVBoxLayout;
     setLayout(mainLayout);
@@ -55,7 +55,7 @@ void X_CorrelationPlotterWidget::zh_createComponents()
     xp_rebuildPlotter();
 }
 //==============================================================
-void X_CorrelationPlotterWidget::zh_createConnections()
+void X_CorrelationPlotterWidget::xh_createConnections()
 {
 
 }

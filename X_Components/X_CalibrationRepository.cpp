@@ -41,9 +41,9 @@ X_CalibrationRepository::X_CalibrationRepository(QObject* parent)
     xv_currentCalibrationIndex = -1;
     xv_currentTermIndex = -1;
     xv_currentWindowIndex = -1;
-    zh_createActions();
-    zh_createConnections();
-    zh_actionEnablingControl();
+    xh_createActions();
+    xh_createConnections();
+    xh_actionEnablingControl();
     xv_blockCalibrationRecalc = false;
 }
 //==================================================================
@@ -102,11 +102,11 @@ void X_CalibrationRepository::xp_connectToFileActionManager(
     connect(manager,
             &X_FileActionManager::xg_calibrationFileListToOpen,
             this,
-            &X_CalibrationRepository::zh_appendCalibrationsToArray);
+            &X_CalibrationRepository::xh_appendCalibrationsToArray);
     connect(manager,
             &X_FileActionManager::xg_requestCalibrationDataAndInitSaving,
             this,
-            &X_CalibrationRepository::zh_createCalibrationAndStartSaving);
+            &X_CalibrationRepository::xh_createCalibrationAndStartSaving);
 
     connect(this,
             &X_CalibrationRepository::xg_currentCalibrationDirtyChanged,
@@ -115,12 +115,12 @@ void X_CalibrationRepository::xp_connectToFileActionManager(
     connect(this,
             &X_CalibrationRepository::xg_saveCalibration,
             manager,
-            &X_FileActionManager::xp_saveCalibrationToFile);
+            &X_FileActionManager::xp_initSavingCalibrationToFile);
 
     connect(manager,
             &X_FileActionManager::xg_calibrationSaved,
             this,
-            &X_CalibrationRepository::zh_onCalibrationSaving);
+            &X_CalibrationRepository::xh_onCalibrationSaving);
 }
 //==================================================================
 QList<QAction*> X_CalibrationRepository::xp_calibrationActions() const
@@ -549,7 +549,7 @@ bool X_CalibrationRepository::xp_setCalibrationWindowVisible(qint64 calibrationI
 //======================================================
 int X_CalibrationRepository::xp_calibrationWindowCount(qint64 calibrationId) const
 {
-    const X_Calibration* calibration = zh_calibrationForId(calibrationId);
+    const X_Calibration* calibration = xh_calibrationForId(calibrationId);
     if (!calibration)
     {
         return 0;
@@ -561,7 +561,7 @@ int X_CalibrationRepository::xp_calibrationWindowCount(qint64 calibrationId) con
 QString X_CalibrationRepository::xp_calibrationWindowName(qint64 calibrationId,
                                                          int windowIndex) const
 {
-    const X_Calibration* calibration = zh_calibrationForId(calibrationId);
+    const X_Calibration* calibration = xh_calibrationForId(calibrationId);
     if (!calibration)
     {
         return QString();
@@ -574,7 +574,7 @@ bool X_CalibrationRepository::xp_setCalibrationWindowName(qint64 calibrationId,
                                                          int windowIndex,
                                                          const QString& name)
 {
-    X_Calibration* calibration = zh_calibrationForId(calibrationId);
+    X_Calibration* calibration = xh_calibrationForId(calibrationId);
     if (!calibration)
     {
         return false;
@@ -586,7 +586,7 @@ bool X_CalibrationRepository::xp_setCalibrationWindowName(qint64 calibrationId,
 X_CalibrationWindow::WindowType X_CalibrationRepository::xp_calibrationWindowType(
     qint64 calibrationId, int windowIndex) const
 {
-    const X_Calibration* calibration = zh_calibrationForId(calibrationId);
+    const X_Calibration* calibration = xh_calibrationForId(calibrationId);
     if (!calibration)
     {
         return X_CalibrationWindow::WT_NOT_DEFINED;
@@ -598,7 +598,7 @@ X_CalibrationWindow::WindowType X_CalibrationRepository::xp_calibrationWindowTyp
 bool X_CalibrationRepository::xp_setCalibrationWindowType(
     qint64 calibrationId, int windowIndex, X_CalibrationWindow::WindowType type)
 {
-    X_Calibration* calibration = zh_calibrationForId(calibrationId);
+    X_Calibration* calibration = xh_calibrationForId(calibrationId);
     if (!calibration)
     {
         return false;
@@ -610,7 +610,7 @@ bool X_CalibrationRepository::xp_setCalibrationWindowType(
 int X_CalibrationRepository::xp_calibrationWindowFirstChannel(
     qint64 calibrationId, int windowIndex) const
 {
-    const X_Calibration* calibration = zh_calibrationForId(calibrationId);
+    const X_Calibration* calibration = xh_calibrationForId(calibrationId);
     if (!calibration)
     {
         return 0;
@@ -622,7 +622,7 @@ int X_CalibrationRepository::xp_calibrationWindowFirstChannel(
 int X_CalibrationRepository::xp_calibrationWindowLastChannel(
     qint64 calibrationId, int windowIndex) const
 {
-    const X_Calibration* calibration = zh_calibrationForId(calibrationId);
+    const X_Calibration* calibration = xh_calibrationForId(calibrationId);
     if (!calibration)
     {
         return 0;
@@ -634,7 +634,7 @@ int X_CalibrationRepository::xp_calibrationWindowLastChannel(
 bool X_CalibrationRepository::xp_setCalibrationWindowFirstChannel(
     qint64 calibrationId, int windowIndex, int channel)
 {
-    X_Calibration* calibration = zh_calibrationForId(calibrationId);
+    X_Calibration* calibration = xh_calibrationForId(calibrationId);
     if (!calibration)
     {
         return false;
@@ -647,7 +647,7 @@ bool X_CalibrationRepository::xp_setCalibrationWindowFirstChannel(
 bool X_CalibrationRepository::xp_setCalibrationWindowLastChannel(
     qint64 calibrationId, int windowIndex, int channel)
 {
-    X_Calibration* calibration = zh_calibrationForId(calibrationId);
+    X_Calibration* calibration = xh_calibrationForId(calibrationId);
     if (!calibration)
     {
         return false;
@@ -659,7 +659,7 @@ bool X_CalibrationRepository::xp_setCalibrationWindowLastChannel(
 QColor X_CalibrationRepository::xp_calibrationWindowColor(qint64 calibrationId,
                                                          int windowIndex) const
 {
-    const X_Calibration* calibration = zh_calibrationForId(calibrationId);
+    const X_Calibration* calibration = xh_calibrationForId(calibrationId);
     if (!calibration)
     {
         return QColor();
@@ -671,7 +671,7 @@ QColor X_CalibrationRepository::xp_calibrationWindowColor(qint64 calibrationId,
 qint64 X_CalibrationRepository::xp_calibrationWindowId(qint64 calibrationId,
                                                       int windowIndex) const
 {
-    const X_Calibration* calibration = zh_calibrationForId(calibrationId);
+    const X_Calibration* calibration = xh_calibrationForId(calibrationId);
     if (!calibration)
     {
         return -1;
@@ -683,7 +683,7 @@ qint64 X_CalibrationRepository::xp_calibrationWindowId(qint64 calibrationId,
 const X_CalibrationWindow* X_CalibrationRepository::xp_calibrationWindow(
     qint64 calibrationId, int windowIndex) const
 {
-    const X_Calibration* calibration = zh_calibrationForId(calibrationId);
+    const X_Calibration* calibration = xh_calibrationForId(calibrationId);
     if (!calibration)
     {
         return nullptr;
@@ -715,7 +715,7 @@ bool X_CalibrationRepository::xp_calculateConcentrationForId(
         return false;
     }
 
-    X_Calibration* calibration = zh_calibrationForId(calibrationId);
+    X_Calibration* calibration = xh_calibrationForId(calibrationId);
     if (!calibration)
     {
         return false;
@@ -726,7 +726,7 @@ bool X_CalibrationRepository::xp_calculateConcentrationForId(
 //======================================================
 int X_CalibrationRepository::xp_termCount(qint64 calibrationId) const
 {
-    const X_Calibration* calibration = zh_calibrationForId(calibrationId);
+    const X_Calibration* calibration = xh_calibrationForId(calibrationId);
     if (!calibration)
     {
         return 0;
@@ -738,7 +738,7 @@ int X_CalibrationRepository::xp_termCount(qint64 calibrationId) const
 QString X_CalibrationRepository::xp_termName(qint64 calibrationId,
                                             int termIndex) const
 {
-    const X_Calibration* calibration = zh_calibrationForId(calibrationId);
+    const X_Calibration* calibration = xh_calibrationForId(calibrationId);
     if (!calibration)
     {
         return QString();
@@ -749,7 +749,7 @@ QString X_CalibrationRepository::xp_termName(qint64 calibrationId,
 X_AbstractTerm::TermState X_CalibrationRepository::xp_termState(
     qint64 calibrationId, int termIndex)
 {
-    const X_Calibration* calibration = zh_calibrationForId(calibrationId);
+    const X_Calibration* calibration = xh_calibrationForId(calibrationId);
     if (!calibration)
     {
         return X_AbstractTerm::TS_NOT_DEFINED;
@@ -760,7 +760,7 @@ X_AbstractTerm::TermState X_CalibrationRepository::xp_termState(
 void X_CalibrationRepository::xp_setNextUsersTermState(qint64 calibrationId,
                                                       int termLogIndex)
 {
-    X_Calibration* calibration = zh_calibrationForId(calibrationId);
+    X_Calibration* calibration = xh_calibrationForId(calibrationId);
     if (!calibration)
     {
         return;
@@ -772,7 +772,7 @@ void X_CalibrationRepository::xp_setNextUsersTermState(qint64 calibrationId,
 X_TermNormalizer::NormaType X_CalibrationRepository::xp_normaTypeForCalibrationId(
     qint64 calibrationId) const
 {
-    const X_Calibration* calibration = zh_calibrationForId(calibrationId);
+    const X_Calibration* calibration = xh_calibrationForId(calibrationId);
     if (!calibration)
     {
         return X_TermNormalizer::NT_NONE;
@@ -784,7 +784,7 @@ X_TermNormalizer::NormaType X_CalibrationRepository::xp_normaTypeForCalibrationI
 bool X_CalibrationRepository::xp_setNormaTypeForCalibrationId(
     qint64 calibrationId, X_TermNormalizer::NormaType type)
 {
-    X_Calibration* calibration = zh_calibrationForId(calibrationId);
+    X_Calibration* calibration = xh_calibrationForId(calibrationId);
     if (!calibration)
     {
         return false;
@@ -818,7 +818,7 @@ bool X_CalibrationRepository::xp_setNormaType(int calibrationIndex,
 bool X_CalibrationRepository::xp_equationTypeForCalibrationId(
     qint64 calibrationId, X_Calibration::EquationType& type) const
 {
-    X_Calibration* calibration = zh_calibrationForId(calibrationId);
+    X_Calibration* calibration = xh_calibrationForId(calibrationId);
     if (!calibration)
     {
         return false;
@@ -831,7 +831,7 @@ bool X_CalibrationRepository::xp_equationTypeForCalibrationId(
 bool X_CalibrationRepository::xp_setEquationTypeForCalibrationId(
     qint64 calibrationId, X_Calibration::EquationType type)
 {
-    X_Calibration* calibration = zh_calibrationForId(calibrationId);
+    X_Calibration* calibration = xh_calibrationForId(calibrationId);
     if (!calibration)
     {
         return false;
@@ -1002,7 +1002,7 @@ qint64 X_CalibrationRepository::xp_baseTermId(int calibrationIndex)
 //======================================================
 int X_CalibrationRepository::xp_baseTermIndexForCalibrationId(qint64 calibrationId)
 {
-    const X_Calibration* calibration = zh_calibrationForId(calibrationId);
+    const X_Calibration* calibration = xh_calibrationForId(calibrationId);
     if (!calibration)
     {
         return -1;
@@ -1013,7 +1013,7 @@ int X_CalibrationRepository::xp_baseTermIndexForCalibrationId(qint64 calibration
 //======================================================
 qint64 X_CalibrationRepository::xp_baseTermIdForCalibrationId(qint64 calibrationId)
 {
-    const X_Calibration* calibration = zh_calibrationForId(calibrationId);
+    const X_Calibration* calibration = xh_calibrationForId(calibrationId);
     if (!calibration)
     {
         return false;
@@ -1022,21 +1022,21 @@ qint64 X_CalibrationRepository::xp_baseTermIdForCalibrationId(qint64 calibration
     return calibration->xp_baseTermId();
 }
 //======================================================
-void X_CalibrationRepository::zh_notifyCalibrationRecalc(qint64 calibrationId) const
+void X_CalibrationRepository::xh_notifyCalibrationRecalc(qint64 calibrationId) const
 {
-    X_Calibration* calibration = zh_calibrationForId(calibrationId);
+    X_Calibration* calibration = xh_calibrationForId(calibrationId);
     if (!calibration)
     {
         return;
     }
 
-    calibration->zh_notifyCalibrationRecalc();
+    calibration->xh_notifyCalibrationRecalc();
 }
 //======================================================
 X_CalibrationQualityData X_CalibrationRepository::xp_calibrationQualityData(
     qint64 calibrationId) const
 {
-    X_Calibration* calibration = zh_calibrationForId(calibrationId);
+    X_Calibration* calibration = xh_calibrationForId(calibrationId);
     if (!calibration)
     {
         return X_CalibrationQualityData();
@@ -1049,7 +1049,7 @@ bool X_CalibrationRepository::xp_termFactor(qint64 calibrationId,
                                            int termIndex,
                                            qreal& factor) const
 {
-    const X_Calibration* calibration = zh_calibrationForId(calibrationId);
+    const X_Calibration* calibration = xh_calibrationForId(calibrationId);
     if (!calibration)
     {
         factor = 0;
@@ -1063,7 +1063,7 @@ bool X_CalibrationRepository::xp_termFactorString(qint64 calibrationId,
                                                  int termIndex,
                                                  QString& factorString) const
 {
-    const X_Calibration* calibration = zh_calibrationForId(calibrationId);
+    const X_Calibration* calibration = xh_calibrationForId(calibrationId);
     if (!calibration)
     {
         factorString = "0.0";
@@ -1076,7 +1076,7 @@ bool X_CalibrationRepository::xp_setTermFactorString(qint64 calibrationId,
                                                     int termIndex,
                                                     const QString& factorString)
 {
-    X_Calibration* calibration = zh_calibrationForId(calibrationId);
+    X_Calibration* calibration = xh_calibrationForId(calibrationId);
     if (!calibration)
     {
         return false;
@@ -1090,7 +1090,7 @@ bool X_CalibrationRepository::xp_termVariablePart(
     const X_AbstractSpectrum* spectrum,
     qreal& value)
 {
-    const X_Calibration* calibration = zh_calibrationForId(calibrationId);
+    const X_Calibration* calibration = xh_calibrationForId(calibrationId);
     if (!calibration)
     {
         return false;
@@ -1101,7 +1101,7 @@ bool X_CalibrationRepository::xp_termVariablePart(
 bool X_CalibrationRepository::xp_calcBaseTermValue(
     qint64 calibrationId, const X_AbstractSpectrum* spectrum, qreal& value)
 {
-    const X_Calibration* calibration = zh_calibrationForId(calibrationId);
+    const X_Calibration* calibration = xh_calibrationForId(calibrationId);
     if (!calibration)
     {
         return false;
@@ -1110,7 +1110,7 @@ bool X_CalibrationRepository::xp_calcBaseTermValue(
     return calibration->xp_calcBaseTermValue(spectrum, value);
 }
 //======================================================
-void X_CalibrationRepository::zh_appendCalibrationsToArray(
+void X_CalibrationRepository::xh_appendCalibrationsToArray(
     const QStringList& fileNameList)
 {
     bool res = false;
@@ -1132,7 +1132,7 @@ void X_CalibrationRepository::zh_appendCalibrationsToArray(
 
     foreach (QString fileName, fileNameList)
     {
-        res = zh_createCalibrationFromFile(fileName) || res;
+        res = xh_createCalibrationFromFile(fileName) || res;
     }
 
     if (res)
@@ -1140,7 +1140,7 @@ void X_CalibrationRepository::zh_appendCalibrationsToArray(
         emit xg_setCurrentCalibrationIndex(xv_caibrationList.count() - 1);
     }
 
-    zh_actionEnablingControl();
+    xh_actionEnablingControl();
 }
 //======================================================
 void X_CalibrationRepository::xp_onCurrentCalibrationChange(int current,
@@ -1162,13 +1162,13 @@ void X_CalibrationRepository::xp_onCurrentCalibrationChange(int current,
     }
 
     emit xg_currentCalibrationChanged(calibrationId, current);
-    zh_actionEnablingControl();
+    xh_actionEnablingControl();
 }
 //======================================================
 void X_CalibrationRepository::xp_onSelectedCalibrationChange(
     QList<int> selectedIndexList)
 {
-    zh_actionEnablingControl();
+    xh_actionEnablingControl();
 }
 //======================================================
 void X_CalibrationRepository::xp_onCurrentCalibrationWindowChange(
@@ -1223,7 +1223,7 @@ void X_CalibrationRepository::xp_onCurrentCalibrationWindowChange(
                                             currentIndex,
                                             previousCalibrationWindowId,
                                             previousIndex);
-    zh_actionEnablingControl();
+    xh_actionEnablingControl();
 }
 //======================================================
 void X_CalibrationRepository::xp_onCalibrationWindowClick(const QModelIndex& index)
@@ -1254,7 +1254,7 @@ void X_CalibrationRepository::xp_onCalibrationWindowClick(const QModelIndex& ind
 //======================================================
 void X_CalibrationRepository::xp_onCalibrationWindowSelectionChange()
 {
-    zh_actionEnablingControl();
+    xh_actionEnablingControl();
 }
 //======================================================
 void X_CalibrationRepository::xp_onCurrentTermChange(int currentTermIndex,
@@ -1262,7 +1262,7 @@ void X_CalibrationRepository::xp_onCurrentTermChange(int currentTermIndex,
 {
     xv_currentTermIndex = currentTermIndex;
     // emit xg_invokeCalibrationRecalc();
-    zh_actionEnablingControl();
+    xh_actionEnablingControl();
 }
 //======================================================
 void X_CalibrationRepository::xp_calibrationQualityDataChanged(
@@ -1275,7 +1275,7 @@ void X_CalibrationRepository::xp_calibrationQualityDataChanged(
         return;
     }
 
-    X_Calibration* calibration = zh_calibrationForId(calibrationId);
+    X_Calibration* calibration = xh_calibrationForId(calibrationId);
     if (!calibration)
     {
         return;
@@ -1305,7 +1305,7 @@ void X_CalibrationRepository::xp_onTermDoubleClocked(int row)
     }
 }
 //======================================================
-void X_CalibrationRepository::zh_onNewCalibrationAction()
+void X_CalibrationRepository::xh_onNewCalibrationAction()
 {
     // new Calibration Name
     int maxCalibrationNumber = 1;
@@ -1331,16 +1331,16 @@ void X_CalibrationRepository::zh_onNewCalibrationAction()
     QString calibrationName = xv_defaultCalibrationName
                               + QString::number(maxCalibrationNumber);
 
-    if (zh_createNewCalibration(calibrationName))
+    if (xh_createNewCalibration(calibrationName))
     {
         emit xg_setCurrentCalibrationIndex(xv_caibrationList.count() - 1);
         emit xg_startCurrentCalibrationEdition();
     }
 
-    zh_actionEnablingControl();
+    xh_actionEnablingControl();
 }
 //======================================================
-void X_CalibrationRepository::zh_onRemoveCalibrationsAction()
+void X_CalibrationRepository::xh_onRemoveCalibrationsAction()
 {
     QList<int> selectedCalibrationIndexList;
     emit xg_requestSelectedCalibrationIndexList(selectedCalibrationIndexList);
@@ -1378,13 +1378,13 @@ void X_CalibrationRepository::zh_onRemoveCalibrationsAction()
 
     for (int i = selectedCalibrationIndexList.count() - 1; i >= 0; i--)
     {
-        zh_removeCalibration(selectedCalibrationIndexList.value(i));
+        xh_removeCalibration(selectedCalibrationIndexList.value(i));
     }
 
-    zh_actionEnablingControl();
+    xh_actionEnablingControl();
 }
 //======================================================
-void X_CalibrationRepository::zh_onNewWindowAction()
+void X_CalibrationRepository::xh_onNewWindowAction()
 {
     int currentCalibrationIndex;
     emit xg_requestCurrentCalibrationIndex(currentCalibrationIndex);
@@ -1423,10 +1423,10 @@ void X_CalibrationRepository::zh_onNewWindowAction()
     emit xg_setCurrentWindowIndex(newWindowIndex);
     emit xg_startCurrentWindowEdition();
 
-    zh_actionEnablingControl();
+    xh_actionEnablingControl();
 }
 //======================================================
-void X_CalibrationRepository::zh_onRemoveWindowAction()
+void X_CalibrationRepository::xh_onRemoveWindowAction()
 {
     int currentCalibrationIndex;
     emit xg_requestCurrentCalibrationIndex(currentCalibrationIndex);
@@ -1472,22 +1472,22 @@ void X_CalibrationRepository::zh_onRemoveWindowAction()
 
     for (int i = selectedWindowList.count() - 1; i >= 0; i--)
     {
-        zh_removeCalibrationWindow(currentCalibrationIndex,
+        xh_removeCalibrationWindow(currentCalibrationIndex,
                                    selectedWindowList.value(i));
     }
 
-    zh_actionEnablingControl();
+    xh_actionEnablingControl();
 }
 //======================================================
-void X_CalibrationRepository::zh_onRecalcEquationFactorsAction()
+void X_CalibrationRepository::xh_onRecalcEquationFactorsAction()
 {
-    // zh_recalcEquationFactors(xv_currentCalibrationIndex);
+    // xh_recalcEquationFactors(xv_currentCalibrationIndex);
     // reset recalc block
     xv_blockCalibrationRecalc = false;
     emit xg_invokeCalibrationRecalc();
 }
 //======================================================
-void X_CalibrationRepository::zh_onCreateMixedTermsAction()
+void X_CalibrationRepository::xh_onCreateMixedTermsAction()
 {
     if (xv_currentCalibrationIndex < 0
         || xv_currentCalibrationIndex >= xv_caibrationList.count())
@@ -1499,7 +1499,7 @@ void X_CalibrationRepository::zh_onCreateMixedTermsAction()
     calibration->xp_createMixedTerms(xv_currentTermIndex);
 }
 //======================================================
-void X_CalibrationRepository::zh_onRemoveMixedTermsAction()
+void X_CalibrationRepository::xh_onRemoveMixedTermsAction()
 {
     if (xv_currentCalibrationIndex < 0
         || xv_currentCalibrationIndex >= xv_caibrationList.count())
@@ -1511,7 +1511,7 @@ void X_CalibrationRepository::zh_onRemoveMixedTermsAction()
     calibration->xp_removeMixedTerms();
 }
 //======================================================
-void X_CalibrationRepository::zh_onCreateCustomTermAction()
+void X_CalibrationRepository::xh_onCreateCustomTermAction()
 {
     if (xv_currentCalibrationIndex < 0
         || xv_currentCalibrationIndex >= xv_caibrationList.count())
@@ -1541,7 +1541,7 @@ void X_CalibrationRepository::zh_onCreateCustomTermAction()
     //                               X_AbstractTerm::TS_CONST_EXCLUDED, "0.0");
 }
 //======================================================
-void X_CalibrationRepository::zh_onRemoveCustomTermAction()
+void X_CalibrationRepository::xh_onRemoveCustomTermAction()
 {
     // NOTE Remove custom term
     if (xv_currentCalibrationIndex < 0
@@ -1561,7 +1561,7 @@ void X_CalibrationRepository::zh_onRemoveCustomTermAction()
     calibration->xp_removeCustomTerm(xv_currentTermIndex);
 }
 //======================================================
-void X_CalibrationRepository::zh_removeCalibrationWindow(
+void X_CalibrationRepository::xh_removeCalibrationWindow(
     int currentCalibrationIndex, int spectrumWindowIndex)
 {
     if (currentCalibrationIndex < 0
@@ -1581,7 +1581,7 @@ void X_CalibrationRepository::zh_removeCalibrationWindow(
         spectrumWindowIndex);
 }
 //======================================================
-void X_CalibrationRepository::zh_onWindowOperation(
+void X_CalibrationRepository::xh_onWindowOperation(
     X_Calibration::WindowOperationType type, int first, int last)
 {
     if (!sender())
@@ -1649,7 +1649,7 @@ void X_CalibrationRepository::zh_onWindowOperation(
     }
 }
 //======================================================
-void X_CalibrationRepository::zh_onTermOperation(
+void X_CalibrationRepository::xh_onTermOperation(
     X_Calibration::TremOperationType type, int first, int last)
 {
     if (!sender())
@@ -1679,7 +1679,7 @@ void X_CalibrationRepository::zh_onTermOperation(
                                   calibrationIndex,
                                   first,
                                   last);
-            zh_actionEnablingControl();
+            xh_actionEnablingControl();
         }
         else if (type == X_Calibration::TOT_BEGIN_REMOVE_TERM)
         {
@@ -1700,7 +1700,7 @@ void X_CalibrationRepository::zh_onTermOperation(
                 emit xg_invokeCalibrationRecalc();
             }
 
-            zh_actionEnablingControl();
+            xh_actionEnablingControl();
         }
         else if (type == X_Calibration::TOT_TERM_NAME_CHANGED)
         {
@@ -1721,7 +1721,7 @@ void X_CalibrationRepository::zh_onTermOperation(
                 emit xg_invokeCalibrationRecalc();
             }
 
-            //zh_recalcEquationFactors(calibrationIndex);
+            //xh_recalcEquationFactors(calibrationIndex);
         }
         else if (type == X_Calibration::TOT_TERM_WINDOW_MARGIN_CHANGED)
         {
@@ -1742,7 +1742,7 @@ void X_CalibrationRepository::zh_onTermOperation(
     }
 }
 //======================================================
-void X_CalibrationRepository::zh_onNormalizerChange() const
+void X_CalibrationRepository::xh_onNormalizerChange() const
 {
     if (!sender())
     {
@@ -1759,7 +1759,7 @@ void X_CalibrationRepository::zh_onNormalizerChange() const
     }
 }
 //======================================================
-void X_CalibrationRepository::zh_onCalibrationFreeTermChange() const
+void X_CalibrationRepository::xh_onCalibrationFreeTermChange() const
 {
     if (!sender())
     {
@@ -1769,13 +1769,13 @@ void X_CalibrationRepository::zh_onCalibrationFreeTermChange() const
     X_Calibration* calibration = static_cast<X_Calibration*>(sender());
     qint64 calibrationId = calibration->xp_calibrationId();
 
-    int calibrationIndex = zh_calibrationIndexForId(calibrationId);
+    int calibrationIndex = xh_calibrationIndexForId(calibrationId);
     emit xg_calibrationOperation(COT_CALIBRATION_FREE_MEMBER_CHANGED,
                                  calibrationIndex,
                                  calibrationIndex);
 }
 //======================================================
-void X_CalibrationRepository::zh_onCalibrationDirtyChange(bool dirty) const
+void X_CalibrationRepository::xh_onCalibrationDirtyChange(bool dirty) const
 {
     // find calibrationIndex
     X_Calibration* calibration = qobject_cast<X_Calibration*>(sender());
@@ -1784,7 +1784,7 @@ void X_CalibrationRepository::zh_onCalibrationDirtyChange(bool dirty) const
         return;
     }
 
-    int calibrationIndex = zh_calibrationIndexForId(
+    int calibrationIndex = xh_calibrationIndexForId(
         calibration->xp_calibrationId());
 
     emit xg_currentCalibrationDirtyChanged(dirty, calibrationIndex >= 0);
@@ -1797,7 +1797,7 @@ void X_CalibrationRepository::zh_onCalibrationDirtyChange(bool dirty) const
     //    emit xg_calibrationOperation(COT_CALIBRATION_DIRTY_CHANGED, xv_currentCalibrationIndex, xv_currentArrayIndex);
 }
 //======================================================
-void X_CalibrationRepository::zh_createCalibrationAndStartSaving(
+void X_CalibrationRepository::xh_createCalibrationAndStartSaving(
     QString path, QString name) const
 {
     if (xv_currentCalibrationIndex < 0
@@ -1847,7 +1847,7 @@ void X_CalibrationRepository::zh_createCalibrationAndStartSaving(
                             name);
 }
 //======================================================
-void X_CalibrationRepository::zh_onCalibrationSaving(
+void X_CalibrationRepository::xh_onCalibrationSaving(
     const X_Calibration* calibration, QString absFilePath)
 {
     for (int i = 0; i < xv_caibrationList.count(); i++)
@@ -1862,7 +1862,7 @@ void X_CalibrationRepository::zh_onCalibrationSaving(
     }
 }
 //======================================================
-void X_CalibrationRepository::zh_onSetCalibrationVisibleAction()
+void X_CalibrationRepository::xh_onSetCalibrationVisibleAction()
 {
     for (int c = 0; c < xv_caibrationList.count(); c++)
     {
@@ -1870,7 +1870,7 @@ void X_CalibrationRepository::zh_onSetCalibrationVisibleAction()
     }
 }
 //======================================================
-void X_CalibrationRepository::zh_onSetCalibrationInvisibleAction()
+void X_CalibrationRepository::xh_onSetCalibrationInvisibleAction()
 {
     for (int c = 0; c < xv_caibrationList.count(); c++)
     {
@@ -1878,7 +1878,7 @@ void X_CalibrationRepository::zh_onSetCalibrationInvisibleAction()
     }
 }
 //======================================================
-void X_CalibrationRepository::zh_onInvertCalibrationVisibilityAction()
+void X_CalibrationRepository::xh_onInvertCalibrationVisibilityAction()
 {
     for (int c = 0; c < xv_caibrationList.count(); c++)
     {
@@ -1886,7 +1886,7 @@ void X_CalibrationRepository::zh_onInvertCalibrationVisibilityAction()
     }
 }
 //======================================================
-void X_CalibrationRepository::zh_onSetWindowsVisibleAction()
+void X_CalibrationRepository::xh_onSetWindowsVisibleAction()
 {
     if (xv_currentCalibrationIndex < 0
         || xv_currentCalibrationIndex >= xv_caibrationList.count())
@@ -1906,7 +1906,7 @@ void X_CalibrationRepository::zh_onSetWindowsVisibleAction()
     }
 }
 //======================================================
-void X_CalibrationRepository::zh_onSetWindowsInvisibleAction()
+void X_CalibrationRepository::xh_onSetWindowsInvisibleAction()
 {
     if (xv_currentCalibrationIndex < 0
         || xv_currentCalibrationIndex >= xv_caibrationList.count())
@@ -1926,7 +1926,7 @@ void X_CalibrationRepository::zh_onSetWindowsInvisibleAction()
     }
 }
 //======================================================
-void X_CalibrationRepository::zh_onInvertWindowsVisibilityAction()
+void X_CalibrationRepository::xh_onInvertWindowsVisibilityAction()
 {
     if (xv_currentCalibrationIndex < 0
         || xv_currentCalibrationIndex >= xv_caibrationList.count())
@@ -1947,7 +1947,7 @@ void X_CalibrationRepository::zh_onInvertWindowsVisibilityAction()
     }
 }
 //======================================================
-void X_CalibrationRepository::zh_onCopySelectedCalibrationAction()
+void X_CalibrationRepository::xh_onCopySelectedCalibrationAction()
 {
     // Get selected calibration index list
     QList<int> selectedCalibrationList;
@@ -1964,7 +1964,7 @@ void X_CalibrationRepository::zh_onCopySelectedCalibrationAction()
     xv_blockCalibrationRecalc = true;
     for (int c = 0; c < selectedCalibrationList.count(); c++)
     {
-        if (!zh_copyCalibration(selectedCalibrationList.at(c)))
+        if (!xh_copyCalibration(selectedCalibrationList.at(c)))
         {
             // TODO error msg
         }
@@ -1972,7 +1972,7 @@ void X_CalibrationRepository::zh_onCopySelectedCalibrationAction()
     xv_blockCalibrationRecalc = false;
 }
 //======================================================
-bool X_CalibrationRepository::zh_copyCalibration(int calibrationIndex)
+bool X_CalibrationRepository::xh_copyCalibration(int calibrationIndex)
 {
     if (calibrationIndex < 0 || calibrationIndex >= xv_caibrationList.count())
     {
@@ -2073,7 +2073,7 @@ bool X_CalibrationRepository::zh_copyCalibration(int calibrationIndex)
                                                         calibrationIndex),
                                                     newName,
                                                     this);
-    bool res = zh_appendCalibrationToList(newCalibration);
+    bool res = xh_appendCalibrationToList(newCalibration);
     if (!res)
     {
         delete newCalibration;
@@ -2081,7 +2081,7 @@ bool X_CalibrationRepository::zh_copyCalibration(int calibrationIndex)
     }
 
     newCalibration->xp_setVisible(true);
-    res = zh_copyWindowsTermsAndEquation(calibrationIndex, newCalibration);
+    res = xh_copyWindowsTermsAndEquation(calibrationIndex, newCalibration);
     if (!res)
     {
         // TODO Error report
@@ -2090,7 +2090,7 @@ bool X_CalibrationRepository::zh_copyCalibration(int calibrationIndex)
     return res;
 }
 //======================================================
-bool X_CalibrationRepository::zh_copyWindowsTermsAndEquation(
+bool X_CalibrationRepository::xh_copyWindowsTermsAndEquation(
     int srcCalibrationIndex, X_Calibration* trgCalibration)
 {
     if (srcCalibrationIndex < 0
@@ -2129,7 +2129,7 @@ bool X_CalibrationRepository::zh_copyWindowsTermsAndEquation(
     int trgTermIndex;
     for (int t = 0; t < srcCalibration->xp_termCount(); t++)
     {
-        trgTermIndex = zh_findCorrespondingTermIndex(t,
+        trgTermIndex = xh_findCorrespondingTermIndex(t,
                                                      srcCalibration,
                                                      trgCalibration);
         if (trgTermIndex < 0 || trgTermIndex >= trgCalibration->xp_termCount())
@@ -2190,7 +2190,7 @@ bool X_CalibrationRepository::zh_copyWindowsTermsAndEquation(
     X_AbstractTerm::TermState termState;
     for (int t = 0; t < srcCalibration->xp_termCount(); t++)
     {
-        trgTermIndex = zh_findCorrespondingTermIndex(t,
+        trgTermIndex = xh_findCorrespondingTermIndex(t,
                                                      srcCalibration,
                                                      trgCalibration);
 
@@ -2214,7 +2214,7 @@ bool X_CalibrationRepository::zh_copyWindowsTermsAndEquation(
     return true;
 }
 //======================================================
-int X_CalibrationRepository::zh_findCorrespondingTermIndex(
+int X_CalibrationRepository::xh_findCorrespondingTermIndex(
     int srcTermIndex,
     const X_Calibration* srcCalibration,
     const X_Calibration* trgCalibration)
@@ -2242,11 +2242,11 @@ int X_CalibrationRepository::zh_findCorrespondingTermIndex(
     return -1;
 }
 //======================================================
-void X_CalibrationRepository::zh_onCopySelectedWindowsAction() {}
+void X_CalibrationRepository::xh_onCopySelectedWindowsAction() {}
 //======================================================
-void X_CalibrationRepository::zh_onPasteWindowsAction() {}
+void X_CalibrationRepository::xh_onPasteWindowsAction() {}
 //======================================================
-void X_CalibrationRepository::zh_onResetTermStateAction()
+void X_CalibrationRepository::xh_onResetTermStateAction()
 {
     if (xv_currentCalibrationIndex < 0
         || xv_currentCalibrationIndex >= xv_caibrationList.count())
@@ -2273,7 +2273,7 @@ void X_CalibrationRepository::zh_onResetTermStateAction()
     }
 }
 //======================================================
-void X_CalibrationRepository::zh_removeCalibration(int index)
+void X_CalibrationRepository::xh_removeCalibration(int index)
 {
     if (index < 0 || index >= xv_caibrationList.count())
     {
@@ -2287,7 +2287,7 @@ void X_CalibrationRepository::zh_removeCalibration(int index)
     emit xg_calibrationOperation(COT_END_REMOVE_CALIBRATIONS, index, index);
 }
 //======================================================
-bool X_CalibrationRepository::zh_createCalibrationFromFile(const QString& fileName)
+bool X_CalibrationRepository::xh_createCalibrationFromFile(const QString& fileName)
 {
     QFileInfo fileInfo(fileName);
     QString suffix = fileInfo.suffix();
@@ -2335,7 +2335,7 @@ bool X_CalibrationRepository::zh_createCalibrationFromFile(const QString& fileNa
     calibration->xp_setVisible(true);
     xv_blockCalibrationRecalc = true;
 
-    bool res = zh_appendCalibrationToList(calibration);
+    bool res = xh_appendCalibrationToList(calibration);
 
     if (res)
     {
@@ -2349,7 +2349,7 @@ bool X_CalibrationRepository::zh_createCalibrationFromFile(const QString& fileNa
         {
             if (xv_caibrationList.at(c) == calibration)
             {
-                zh_removeCalibration(c);
+                xh_removeCalibration(c);
             }
         }
     }
@@ -2364,7 +2364,7 @@ bool X_CalibrationRepository::zh_createCalibrationFromFile(const QString& fileNa
     return res;
 }
 //======================================================
-bool X_CalibrationRepository::zh_createNewCalibration(const QString& name)
+bool X_CalibrationRepository::xh_createNewCalibration(const QString& name)
 {
     if (name.isEmpty())
     {
@@ -2373,10 +2373,10 @@ bool X_CalibrationRepository::zh_createNewCalibration(const QString& name)
 
     X_Calibration* calibration = new X_Calibration(name, this);
     calibration->xp_setVisible(true);
-    return zh_appendCalibrationToList(calibration);
+    return xh_appendCalibrationToList(calibration);
 }
 //======================================================
-bool X_CalibrationRepository::zh_appendCalibrationToList(X_Calibration* calibration)
+bool X_CalibrationRepository::xh_appendCalibrationToList(X_Calibration* calibration)
 {
     if (!calibration)
     {
@@ -2390,24 +2390,24 @@ bool X_CalibrationRepository::zh_appendCalibrationToList(X_Calibration* calibrat
     connect(calibration,
             &X_Calibration::xg_windowOperation,
             this,
-            &X_CalibrationRepository::zh_onWindowOperation);
+            &X_CalibrationRepository::xh_onWindowOperation);
     connect(calibration,
             &X_Calibration::xg_termOperation,
             this,
-            &X_CalibrationRepository::zh_onTermOperation);
+            &X_CalibrationRepository::xh_onTermOperation);
     connect(calibration,
             &X_Calibration::xg_normalizerChanged,
             this,
-            &X_CalibrationRepository::zh_onNormalizerChange);
+            &X_CalibrationRepository::xh_onNormalizerChange);
     connect(calibration,
             &X_Calibration::xg_interceptChanged,
             this,
-            &X_CalibrationRepository::zh_onCalibrationFreeTermChange);
+            &X_CalibrationRepository::xh_onCalibrationFreeTermChange);
 
     connect(calibration,
             &X_Calibration::xg_dirtyChanged,
             this,
-            &X_CalibrationRepository::zh_onCalibrationDirtyChange);
+            &X_CalibrationRepository::xh_onCalibrationDirtyChange);
 
     int insertIndex = xv_caibrationList.count();
     emit xg_calibrationOperation(COT_INSERT_CALIBRATIONS,
@@ -2422,7 +2422,7 @@ bool X_CalibrationRepository::zh_appendCalibrationToList(X_Calibration* calibrat
     return true;
 }
 //======================================================
-void X_CalibrationRepository::zh_actionEnablingControl()
+void X_CalibrationRepository::xh_actionEnablingControl()
 {
     bool calibrationDisabilityFlag = xv_currentCalibrationIndex < 0
                                      || xv_currentCalibrationIndex
@@ -2498,7 +2498,7 @@ void X_CalibrationRepository::zh_actionEnablingControl()
     xv_removeCustomTermAction->setDisabled(customTermRemoveDisabled);
 }
 //======================================================
-void X_CalibrationRepository::zh_createActions()
+void X_CalibrationRepository::xh_createActions()
 {
     // calibration actions
     xv_newCalibrationAction = new QAction(this);
@@ -2651,12 +2651,12 @@ void X_CalibrationRepository::zh_createActions()
     xv_resetTermStateAction->setToolTip(tr("Reset equation terms"));
 }
 //======================================================
-void X_CalibrationRepository::zh_createConnections()
+void X_CalibrationRepository::xh_createConnections()
 {
     connect(xv_newCalibrationAction,
             &QAction::triggered,
             this,
-            &X_CalibrationRepository::zh_onNewCalibrationAction);
+            &X_CalibrationRepository::xh_onNewCalibrationAction);
     //    connect(xv_openCalibrationsAction, &QAction::triggered,
     //            this, &X_CalibrationRepository::xg_openCalibrationsActionTriggered);
     //    connect(xv_saveCalibrationsAction, &QAction::triggered,
@@ -2667,83 +2667,83 @@ void X_CalibrationRepository::zh_createConnections()
     connect(xv_removeCalibrationAction,
             &QAction::triggered,
             this,
-            &X_CalibrationRepository::zh_onRemoveCalibrationsAction);
+            &X_CalibrationRepository::xh_onRemoveCalibrationsAction);
     connect(xv_newWindowAction,
             &QAction::triggered,
             this,
-            &X_CalibrationRepository::zh_onNewWindowAction);
+            &X_CalibrationRepository::xh_onNewWindowAction);
     connect(xv_removeWindowAction,
             &QAction::triggered,
             this,
-            &X_CalibrationRepository::zh_onRemoveWindowAction);
+            &X_CalibrationRepository::xh_onRemoveWindowAction);
     connect(xv_recalcEquationFactorsAction,
             &QAction::triggered,
             this,
-            &X_CalibrationRepository::zh_onRecalcEquationFactorsAction);
+            &X_CalibrationRepository::xh_onRecalcEquationFactorsAction);
 
     connect(xv_createMixedTermsAction,
             &QAction::triggered,
             this,
-            &X_CalibrationRepository::zh_onCreateMixedTermsAction);
+            &X_CalibrationRepository::xh_onCreateMixedTermsAction);
     connect(xv_removeMixedTermsAction,
             &QAction::triggered,
             this,
-            &X_CalibrationRepository::zh_onRemoveMixedTermsAction);
+            &X_CalibrationRepository::xh_onRemoveMixedTermsAction);
     connect(xv_createCustomTermAction,
             &QAction::triggered,
             this,
-            &X_CalibrationRepository::zh_onCreateCustomTermAction);
+            &X_CalibrationRepository::xh_onCreateCustomTermAction);
     connect(xv_removeCustomTermAction,
             &QAction::triggered,
             this,
-            &X_CalibrationRepository::zh_onRemoveCustomTermAction);
+            &X_CalibrationRepository::xh_onRemoveCustomTermAction);
 
     connect(xv_setCalibrationVisibleAction,
             &QAction::triggered,
             this,
-            &X_CalibrationRepository::zh_onSetCalibrationVisibleAction);
+            &X_CalibrationRepository::xh_onSetCalibrationVisibleAction);
     connect(xv_setCalibrationInvisibleAction,
             &QAction::triggered,
             this,
-            &X_CalibrationRepository::zh_onSetCalibrationInvisibleAction);
+            &X_CalibrationRepository::xh_onSetCalibrationInvisibleAction);
     connect(xv_invertCalibrationVisibilityAction,
             &QAction::triggered,
             this,
-            &X_CalibrationRepository::zh_onInvertCalibrationVisibilityAction);
+            &X_CalibrationRepository::xh_onInvertCalibrationVisibilityAction);
 
     connect(xv_setWindowsVisibleAction,
             &QAction::triggered,
             this,
-            &X_CalibrationRepository::zh_onSetWindowsVisibleAction);
+            &X_CalibrationRepository::xh_onSetWindowsVisibleAction);
     connect(xv_setWindowsInvisibleAction,
             &QAction::triggered,
             this,
-            &X_CalibrationRepository::zh_onSetWindowsInvisibleAction);
+            &X_CalibrationRepository::xh_onSetWindowsInvisibleAction);
     connect(xv_invertWindowsVisibilityAction,
             &QAction::triggered,
             this,
-            &X_CalibrationRepository::zh_onInvertWindowsVisibilityAction);
+            &X_CalibrationRepository::xh_onInvertWindowsVisibilityAction);
 
     connect(xv_copySelectedCalibrationAction,
             &QAction::triggered,
             this,
-            &X_CalibrationRepository::zh_onCopySelectedCalibrationAction);
+            &X_CalibrationRepository::xh_onCopySelectedCalibrationAction);
     connect(xv_copySelectedWindowsAction,
             &QAction::triggered,
             this,
-            &X_CalibrationRepository::zh_onCopySelectedWindowsAction);
+            &X_CalibrationRepository::xh_onCopySelectedWindowsAction);
     connect(xv_pasteWindowsAction,
             &QAction::triggered,
             this,
-            &X_CalibrationRepository::zh_onPasteWindowsAction);
+            &X_CalibrationRepository::xh_onPasteWindowsAction);
 
     connect(xv_resetTermStateAction,
             &QAction::triggered,
             this,
-            &X_CalibrationRepository::zh_onResetTermStateAction);
+            &X_CalibrationRepository::xh_onResetTermStateAction);
 }
 //======================================================
-X_Calibration* X_CalibrationRepository::zh_calibrationForId(
+X_Calibration* X_CalibrationRepository::xh_calibrationForId(
     qint64 calibrationId) const
 {
     if (calibrationId < 0)
@@ -2764,7 +2764,7 @@ X_Calibration* X_CalibrationRepository::zh_calibrationForId(
     return nullptr;
 }
 //======================================================
-int X_CalibrationRepository::zh_calibrationIndexForId(qint64 calibrationId) const
+int X_CalibrationRepository::xh_calibrationIndexForId(qint64 calibrationId) const
 {
     if (calibrationId < 0)
     {

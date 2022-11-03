@@ -100,8 +100,8 @@ private:
     int xv_colorPickUpAuxCoverageSize;
     QColor xv_gridColor;
     // FUNCS
-    void zh_createConnections();
-    QImage zh_grabCursorArea(QPoint);
+    void xh_createConnections();
+    QImage xh_grabCursorArea(QPoint);
 };
 //=============================================================
 #endif // X_GRAPHICSVIEWPLOT_H

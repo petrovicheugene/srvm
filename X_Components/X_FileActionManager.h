@@ -37,7 +37,7 @@ signals:
     void xg_spectrumRawArrayList(QString, QList<X_RawSpectrumArray>) const;
     void xg_requestRawArrayListAndInitSaving(QString&, bool& res) const;
 
-    void xg_spectrumFileListToOpen(int, QStringList) const;
+    void xg_spectrumFileListToOpen(QStringList) const;
 
     void xg_calibrationFileListToOpen(QStringList) const;
     void xg_requestCalibrationDataAndInitSaving(QString path, QString name) const;
@@ -51,12 +51,13 @@ signals:
 
 public slots:
 
-    void xp_defineSpectrumFilesAndInitAppending(int arrayIndex);
+    void xp_defineSpectrumFilesAndInitAppending();
     void xp_saveSettings() const;
     void xp_openCalibrations() const;
 
     void xp_saveSpectraArrayListToFile(QString &filePath, QList<X_RawSpectrumArray> rawArrayList, bool &res);
-    void xp_saveCalibrationToFile(const X_Calibration *calibration, QString filePath, QString name);
+    //void xp_initSavingSpectraArrayListToFile(QString &filePath, QList<X_RawSpectrumArray> rawArrayList, bool &res);
+    void xp_initSavingCalibrationToFile(const X_Calibration *calibration, QString filePath, QString name);
 
     void xp_onArrayListDirtyChange(bool dirty, bool currentArrayExists);
     void xp_onCurrentCalibrationDirtyChange(bool dirty, bool currentCalibrationExists);
@@ -83,38 +84,48 @@ private:
     const QString xv_calibrationFileSuffix = "clbx";
 
     // FUNCS
-    void zh_createActions();
-    void zh_createConnections();
+    void xh_createActions();
+    void xh_createConnections();
 
-    void zh_restoreSettings();
+    void xh_restoreSettings();
 
-    bool zh_defineSpectrumArrayFileNameToOpen(QString&) const;
-    bool zh_defineSpectrumArrayFileNameToSave(QString& fileName) const;
+    bool xh_defineSpectrumArrayFileNameToOpen(QString&) const;
+    bool xh_defineSpectrumArrayFileNameToSave(QString& fileName) const;
 
-    bool zh_defineCalibrationFileNamesToOpen(QStringList& fileNameList) const;
-    bool zh_defineCalibrationFileNameToSave(QString& fileName) const;
-    bool zh_checkFile(const QString&) const;
+    bool xh_defineCalibrationFileNamesToOpen(QStringList& fileNameList) const;
+    bool xh_defineCalibrationFileNameToSave(QString& fileName) const;
+    bool xh_checkFile(const QString&) const;
 
-    // bool zh_getSpectrumArrayFromFile(const QString& fileName, X_SpectrumArray& array);
-    // bool zh_getSpectrumFromFile(const QString&, QSharedPointer<X_AbstractSpectrum> &);
-    // bool zh_getSpectrumFromFile(const QString&, X_AbstractSpectrum *&);
-    bool zh_getRawSpectrumArrayFromFile(const QString& fileName, QList<X_RawSpectrumArray>& rawArray);
-    // bool zh_getRawCalibrationArrayFromFile(const QString& fileName, QList<X_RawCalibrationArray>& rawArray);
-    void zh_saveCalibrationProjectFile(const QString& absFileName);
-
+    // bool xh_getSpectrumArrayFromFile(const QString& fileName, X_SpectrumArray& array);
+    // bool xh_getSpectrumFromFile(const QString&, QSharedPointer<X_AbstractSpectrum> &);
+    // bool xh_getSpectrumFromFile(const QString&, X_AbstractSpectrum *&);
+    bool xh_getRawSpectrumArrayFromFile(const QString& fileName, QList<X_RawSpectrumArray>& rawArray);
+    // bool xh_getRawCalibrationArrayFromFile(const QString& fileName, QList<X_RawCalibrationArray>& rawArray);
+    void xh_saveCalibrationProjectFile(const QString& absFileName);
 
 private slots:
 
-    void zh_onOpenSpectrumArrayAction();
-    void zh_onSaveSpectrumArrayAction() const;
-    void zh_onSaveSpectrumArrayAsAction() const;
+    void xh_onOpenSpectrumArrayAction();
+    void xh_onSaveSpectrumArrayAction() const;
+    void xh_onSaveSpectrumArrayAsAction() const;
 
-    void zh_onOpenCalibrationAction();
-    void zh_onSaveCalibrationAction() const;
-    void zh_onSaveCalibrationAsAction() const;
-    void zh_onOpenCalibrationProjectAction();
-    //    void zh_synchronizeSaveCalibrationActions();
-    //    void zh_synchronizeSaveAsCalibrationActions();
+    void xh_onOpenCalibrationAction();
+    void xh_onSaveCalibrationAction() const;
+    void xh_onSaveCalibrationAsAction() const;
+    void xh_onOpenCalibrationProjectAction();
+
+    void xh_handleOpenCalibrationFiles();
+    void xh_handleOpenSpectrumArray();
+    void xh_handleOpenSpectra();
+
+    void xh_handleOpenCalibrationProject();
+    void xh_handleSaveCalibrationFiles();
+    void xh_handleSaveSpectrumArrayFiles();
+
+    void xh_saveCalibrationToFile(const X_Calibration *calibration, QString absFileName);
+
+    //    void xh_synchronizeSaveCalibrationActions();
+    //    void xh_synchronizeSaveAsCalibrationActions();
 };
 //======================================================
 #endif // X_FILEACTIONMANAGER_H

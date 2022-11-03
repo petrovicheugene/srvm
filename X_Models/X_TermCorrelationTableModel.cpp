@@ -173,7 +173,7 @@ void X_TermCorrelationTableModel::xp_connectToTermCorrelationTableManager(X_Term
     xv_dataManager = dataManager;
     // data manager <-> joint model
     connect(xv_dataManager, &X_TermCorrelationTableManager::xg_currentOperation,
-            this, &X_TermCorrelationTableModel::zh_onDataManagerOperation);
+            this, &X_TermCorrelationTableModel::xh_onDataManagerOperation);
 
     connect(this, &X_TermCorrelationTableModel::xg_currentTermChanged,
             xv_dataManager, &X_TermCorrelationTableManager::xg_currentTermChanged);
@@ -193,7 +193,7 @@ void X_TermCorrelationTableModel::xp_onUserChangesTermState(int termLogIndex)
     xv_dataManager->xp_setNextUsersTermState(termLogIndex);
 }
 //==================================================================
-void X_TermCorrelationTableModel::zh_onDataManagerOperation(X_TermCorrelationTableManager::OperationType type, int first, int last)
+void X_TermCorrelationTableModel::xh_onDataManagerOperation(X_TermCorrelationTableManager::OperationType type, int first, int last)
 {
     if(!xv_dataManager)
     {

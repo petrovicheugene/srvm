@@ -14,11 +14,11 @@
 //==============================================================
 X_ChemElementWidget::X_ChemElementWidget(QWidget *parent) : QWidget(parent)
 {
-    zh_createComponents();
-    zh_createConnections();
+    xh_createComponents();
+    xh_createConnections();
 }
 //==============================================================
-void X_ChemElementWidget::zh_createComponents()
+void X_ChemElementWidget::xh_createComponents()
 {
     xv_mainLayout = new QVBoxLayout;
     xv_mainLayout->setContentsMargins(0, 0, 0, 0);
@@ -33,10 +33,10 @@ void X_ChemElementWidget::zh_createComponents()
     xv_mainLayout->addLayout(xv_buttonLayout);
 }
 //==============================================================
-void X_ChemElementWidget::zh_createConnections()
+void X_ChemElementWidget::xh_createConnections()
 {
     connect(xv_table, &QTableView::customContextMenuRequested,
-            this, &X_ChemElementWidget::zh_onContextMenuRequest);
+            this, &X_ChemElementWidget::xh_onContextMenuRequest);
 }
 //==============================================================
 void X_ChemElementWidget::xp_setModel(QAbstractItemModel* model)
@@ -50,7 +50,7 @@ void X_ChemElementWidget::xp_setModel(QAbstractItemModel* model)
     xv_table->setAlternatingRowColors(true);
 
     connect(xv_table->selectionModel(), &QItemSelectionModel::currentChanged,
-            this, &X_ChemElementWidget::zh_onCurrentElementChanged);
+            this, &X_ChemElementWidget::xh_onCurrentElementChanged);
 }
 //==============================================================
 void X_ChemElementWidget::xp_appendButtonActions(QList<QAction*> actionList)
@@ -134,13 +134,13 @@ void X_ChemElementWidget::xp_selectedChemElementIndexList(QList<int>& selectedIn
     }
 }
 //==============================================================
-void X_ChemElementWidget::zh_onCurrentElementChanged(const QModelIndex & current,
+void X_ChemElementWidget::xh_onCurrentElementChanged(const QModelIndex & current,
                                                     const QModelIndex & previous)
 {
     emit xg_currentCalibrationChanged(current.row(), previous.row());
 }
 //==============================================================
-void X_ChemElementWidget::zh_onContextMenuRequest(const QPoint &pos)
+void X_ChemElementWidget::xh_onContextMenuRequest(const QPoint &pos)
 {
     QMenu *menu=new QMenu(this);
     menu->setAttribute(Qt::WA_DeleteOnClose);

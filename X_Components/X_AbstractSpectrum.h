@@ -87,7 +87,7 @@ protected:
     bool xv_completed;
 
     // FUNCS
-    void zh_recalcSpectrumPainterPath();
+    void xh_recalcSpectrumPainterPath();
 
     // STATIC
     // VARS

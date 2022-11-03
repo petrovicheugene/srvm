@@ -55,10 +55,10 @@ public slots:
 
 private slots:
 
-    void zh_onWindowTypeChange(X_CalibrationWindow::WindowType previousType,
+    void xh_onWindowTypeChange(X_CalibrationWindow::WindowType previousType,
                                X_CalibrationWindow::WindowType currentType) const;
-    void zh_onWindowDestroy(QObject* obj) const;
-    void zh_onWindowMarginsChange() const;
+    void xh_onWindowDestroy(QObject* obj) const;
+    void xh_onWindowMarginsChange() const;
 
 private:
 
@@ -71,9 +71,9 @@ private:
     qreal xv_normaValueBuffer;
 
     // FUNCS
-    void zh_createConnections();
-    bool zh_getWindowsValue(X_CalibrationWindow::WindowType type, const X_AbstractSpectrum* spectrum, qint64& value) const;
-    bool zh_calcNormaValue(const X_AbstractSpectrum *spectrum, qreal& normaValue) const;
+    void xh_createConnections();
+    bool xh_getWindowsValue(X_CalibrationWindow::WindowType type, const X_AbstractSpectrum* spectrum, qint64& value) const;
+    bool xh_calcNormaValue(const X_AbstractSpectrum *spectrum, qreal& normaValue) const;
 
 
     // STATIC
@@ -81,7 +81,7 @@ private:
     static QMap<X_TermNormalizer::NormaType, QString> xv_normaTypeStringMap;
 
     // FUNCS
-    static QMap<X_TermNormalizer::NormaType, QString> zh_initNormaTypeStringMap();
+    static QMap<X_TermNormalizer::NormaType, QString> xh_initNormaTypeStringMap();
 
 };
 //======================================================================

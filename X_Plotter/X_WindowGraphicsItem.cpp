@@ -28,7 +28,7 @@ X_WindowGraphicsItem::X_WindowGraphicsItem(const X_CalibrationWindow* window,
     xv_lineColor = xv_color;
     xv_brushColor = xv_color;
     xv_brushColor.setAlpha(xv_alphaCannelValue);
-    zh_recalcShapeAndBoundingRect();
+    xh_recalcShapeAndBoundingRect();
     xp_updateCurrentWindow(window->xp_isWindowVisible());
 }
 //======================================================
@@ -112,7 +112,7 @@ void X_WindowGraphicsItem::xp_setLeftRightMargins(qreal first, qreal last)
 
     xv_leftMargin = first;
     xv_rightMargin = last + 1;
-    zh_recalcShapeAndBoundingRect();
+    xh_recalcShapeAndBoundingRect();
     update();
 }
 //======================================================
@@ -141,7 +141,7 @@ void X_WindowGraphicsItem::xp_updateCurrentWindow(bool visible)
 //======================================================
 void X_WindowGraphicsItem::xp_updateItem()
 {
-    zh_recalcShapeAndBoundingRect();
+    xh_recalcShapeAndBoundingRect();
     update();
 }
 //======================================================
@@ -159,7 +159,7 @@ void X_WindowGraphicsItem::mouseReleaseEvent(QGraphicsSceneMouseEvent * event)
     QGraphicsItem::mouseReleaseEvent(event);
 }
 //======================================================
-//void X_WindowGraphicsItem::zh_recalcShape()
+//void X_WindowGraphicsItem::xh_recalcShape()
 //{
 //   QPainterPath path;
 //   //    QPointF topPoint(xv_data.first, xv_topY);
@@ -175,7 +175,7 @@ void X_WindowGraphicsItem::mouseReleaseEvent(QGraphicsSceneMouseEvent * event)
 //   xv_shape = path;
 //}
 //======================================================
-void X_WindowGraphicsItem::zh_recalcShapeAndBoundingRect()
+void X_WindowGraphicsItem::xh_recalcShapeAndBoundingRect()
 {
     prepareGeometryChange();
     // shape

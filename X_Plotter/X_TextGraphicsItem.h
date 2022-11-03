@@ -28,7 +28,7 @@ public:
 
 protected:
 
-    void zh_recalcShapeAndBoundingRect();
+    void xh_recalcShapeAndBoundingRect();
 
 private:
 

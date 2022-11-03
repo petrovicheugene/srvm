@@ -39,7 +39,6 @@ signals:
 private:
 
     // VARS
-    static QFileDialog* xv_calibrationDialog;
     // QObject* xv_calibrationParent;
     // QString parentTagName;
     QStack<QString> parentTagStack;
@@ -47,14 +46,14 @@ private:
     X_RawWindow xv_rawWindow;
     QString xv_message;
 
-    const QString xv_magicString = qApp->organizationName()  + " 7D385RTNOW9SH31JX_QL";
+    const QString xv_magicString = qApp->organizationName()  + " 7D385RTNOW9SH31JZQL";
     // elment names
     const QString xv_ROOT = "root";
     const QString xv_TYPE = "type";
     const QString xv_STATE = "state";
 
     const QString xv_DATE_TIME = "date-time";
-//    const QString xv_ENERGY_K0 = "energy_K0";
+//    const QString xv_ENERGY_K0 = "energy_K0";S
 //    const QString xv_ENERGY_K1 = "energy_K1";
 //    const QString xv_ENERGY_K2 = "energy_K2";
 //    const QString xv_ENERGY_UNIT = "energy_unit";
@@ -94,10 +93,10 @@ private:
     const QString xv_dateTimeFormat = "dd.MM.yyyy hh:mm:ss";
 
     // FUNCS
-    bool zh_detectRoot(const QXmlStreamReader& reader, bool& magicStringDetectionFlag) const;
-    void zh_parseXMLElement(X_Calibration*,
+    bool xh_detectRoot(const QXmlStreamReader& reader, bool& magicStringDetectionFlag) const;
+    void xh_parseXMLElement(X_Calibration*,
                             QXmlStreamReader&);
-    bool zh_checkfilePath(const QString& path) const;
+    bool xh_checkfilePath(const QString& path) const;
 
 
 };

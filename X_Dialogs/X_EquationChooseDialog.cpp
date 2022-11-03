@@ -1,7 +1,6 @@
 //============================================================
 #include "X_EquationChooseDialog.h"
 #include "X_Calibration.h"
-#include "X_General.h"
 #include "X_NormaSettingsDialog.h"
 #include "X_TermNormalizer.h"
 
@@ -22,8 +21,8 @@ X_EquationChooseDialog::X_EquationChooseDialog(QWidget* parent) : QDialog(parent
     setWindowTitle(tr("Equation settings"));
     setWindowFlags(Qt::Tool | Qt::MSWindowsFixedSizeDialogHint | Qt::WindowStaysOnTopHint);
 
-    zh_createComponents();
-    zh_createConnections();
+    xh_createComponents();
+    xh_createConnections();
 }
 //============================================================
 X_EquationChooseDialog::~X_EquationChooseDialog() {}
@@ -33,14 +32,14 @@ bool X_EquationChooseDialog::eventFilter(QObject* receiver, QEvent* event)
     if (receiver == xv_normTermLineEdit && event->type() == QEvent::MouseButtonDblClick
         && xv_fractionalEquationRadioButton->isChecked())
     {
-        zh_runNormalizationDialog();
+        xh_runNormalizationDialog();
         return true;
     }
 
     return QObject::eventFilter(receiver, event);
 }
 //============================================================
-void X_EquationChooseDialog::zh_createComponents()
+void X_EquationChooseDialog::xh_createComponents()
 {
     QVBoxLayout* mainLayout = new QVBoxLayout;
     setLayout(mainLayout);
@@ -110,9 +109,9 @@ void X_EquationChooseDialog::zh_createComponents()
     buttonBox->addButton(xv_cancelButton, QDialogButtonBox::ActionRole);
 }
 //============================================================
-void X_EquationChooseDialog::zh_createConnections()
+void X_EquationChooseDialog::xh_createConnections()
 {
-    connect(xv_okButton, &QPushButton::clicked, this, &X_EquationChooseDialog::zh_onDialogAccepted);
+    connect(xv_okButton, &QPushButton::clicked, this, &X_EquationChooseDialog::xh_onDialogAccepted);
     connect(xv_cancelButton, &QPushButton::clicked, this, &X_EquationChooseDialog::reject);
     connect(xv_simplePolynomEquationRadioButton,
             &QRadioButton::toggled,
@@ -132,7 +131,7 @@ void X_EquationChooseDialog::zh_createConnections()
             &QLineEdit::setEnabled);
 }
 //============================================================
-void X_EquationChooseDialog::zh_onDialogAccepted()
+void X_EquationChooseDialog::xh_onDialogAccepted()
 {
     setResult(QDialog::Accepted);
     accept();
@@ -162,7 +161,7 @@ void X_EquationChooseDialog::xp_setEquationSettings(const X_EquationSettingsData
     }
 
     xv_baseTermComboBox->setCurrentIndex(currentTermIndex);
-    zh_setNormalizationToLineEdit(settings.fractionalBaseNormaSettingsData);
+    xh_setNormalizationToLineEdit(settings.fractionalBaseNormaSettingsData);
 }
 //============================================================
 X_EquationSettingsData X_EquationChooseDialog::xp_equationSettings() const
@@ -199,7 +198,7 @@ X_EquationSettingsData X_EquationChooseDialog::xp_equationSettings() const
     return settings;
 }
 //============================================================
-void X_EquationChooseDialog::zh_runNormalizationDialog()
+void X_EquationChooseDialog::xh_runNormalizationDialog()
 {
     X_NormaSettingsDialog* normaDialog = new X_NormaSettingsDialog();
 
@@ -216,12 +215,12 @@ void X_EquationChooseDialog::zh_runNormalizationDialog()
     connect(normaDialog,
             &X_NormaSettingsDialog::accepted,
             this,
-            &X_EquationChooseDialog::zh_onNormaSettingsDialogAccept);
+            &X_EquationChooseDialog::xh_onNormaSettingsDialogAccept);
 
     normaDialog->show();
 }
 //============================================================
-void X_EquationChooseDialog::zh_onNormaSettingsDialogAccept()
+void X_EquationChooseDialog::xh_onNormaSettingsDialogAccept()
 {
     if (!sender())
     {
@@ -234,10 +233,10 @@ void X_EquationChooseDialog::zh_onNormaSettingsDialogAccept()
         return;
     }
 
-    zh_setNormalizationToLineEdit(normaDialog->xp_normaSettings());
+    xh_setNormalizationToLineEdit(normaDialog->xp_normaSettings());
 }
 //============================================================
-void X_EquationChooseDialog::zh_setNormalizationToLineEdit(
+void X_EquationChooseDialog::xh_setNormalizationToLineEdit(
     X_NormaSettingsData fractionalBaseNormaSettingsData)
 {
     xv_fractionalBaseNormaSettingsData = fractionalBaseNormaSettingsData;

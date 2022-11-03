@@ -167,7 +167,7 @@ void X_SelectedEnergyLineTableModel::xp_onSelectedChemicalElementChange(int X_Nu
     {
         if(!xv_itemMap.keys().contains(X_Number))
         {
-            int row = zh_findRowToInsert(X_Number);
+            int row = xh_findRowToInsert(X_Number);
             QString symbol;
             emit xg_requestChemicalElementSymbol(X_Number, symbol);
 
@@ -178,7 +178,7 @@ void X_SelectedEnergyLineTableModel::xp_onSelectedChemicalElementChange(int X_Nu
                     this, &X_SelectedEnergyLineTableModel::xg_energyLineOperation);
 
             xv_itemMap.insert(X_Number, item);
-            zh_loadEnergyLinesToItem(item);
+            xh_loadEnergyLinesToItem(item);
 
             endInsertRows();
         }
@@ -200,10 +200,10 @@ void X_SelectedEnergyLineTableModel::xp_onSelectedChemicalElementChange(int X_Nu
         }
     }
 
-    zh_updateColumns();
+    xh_updateColumns();
 }
 //=============================================================
-void X_SelectedEnergyLineTableModel::zh_loadEnergyLinesToItem(X_EnergyLineSetItem* item)
+void X_SelectedEnergyLineTableModel::xh_loadEnergyLinesToItem(X_EnergyLineSetItem* item)
 
 {
     // energy values
@@ -218,7 +218,7 @@ void X_SelectedEnergyLineTableModel::zh_loadEnergyLinesToItem(X_EnergyLineSetIte
     item->xp_loadRelativeIntensity(propertyList);
 }
 //=============================================================
-int X_SelectedEnergyLineTableModel::zh_findRowToInsert(int X_Number) const
+int X_SelectedEnergyLineTableModel::xh_findRowToInsert(int X_Number) const
 {
     if(xv_itemMap.isEmpty())
     {
@@ -238,7 +238,7 @@ int X_SelectedEnergyLineTableModel::zh_findRowToInsert(int X_Number) const
     return xv_itemMap.count();
 }
 //=============================================================
-void X_SelectedEnergyLineTableModel::zh_updateColumns()
+void X_SelectedEnergyLineTableModel::xh_updateColumns()
 {
     // create new column header list
     QStringList newColumnHeaderList;

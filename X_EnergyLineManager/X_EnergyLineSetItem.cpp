@@ -90,7 +90,7 @@ X_EnergyLineSetItem::X_EnergyLineSetItem(int X_Number,
 //======================================================
 X_EnergyLineSetItem::~X_EnergyLineSetItem()
 {
-    zh_saveVisibility();
+    xh_saveVisibility();
 
     for(auto& key : xv_energyLinePropertyMap.keys())
     {
@@ -125,7 +125,7 @@ void X_EnergyLineSetItem::xp_createEnergyLines(const PropertyList &propertyList)
         emit xg_energyLineOperation(xv_symbol, property.first, EL_INSERTED);
     }
 
-    zh_restoreVisibility();
+    xh_restoreVisibility();
 }
 //======================================================
 void X_EnergyLineSetItem::xp_loadRelativeIntensity(const PropertyList &propertyList)
@@ -221,10 +221,10 @@ QStringList X_EnergyLineSetItem::xp_energyLineNameStringList() const
     return energyLineNameStringList;
 }
 //======================================================
-void X_EnergyLineSetItem::zh_restoreVisibility()
+void X_EnergyLineSetItem::xh_restoreVisibility()
 {
     QSettings settings;
-    zh_openSettingsGroup(settings);
+    xh_openSettingsGroup(settings);
     QStringList keys = settings.childKeys();
     QVariant vData;
     xv_energyLinePropertyMap.keys();
@@ -240,13 +240,13 @@ void X_EnergyLineSetItem::zh_restoreVisibility()
         emit xg_energyLineOperation(xv_symbol, key, EL_VISIBILITY_CHANGED);
 
     }
-    zh_closeSettingsGroup(settings);
+    xh_closeSettingsGroup(settings);
 }
 //======================================================
-void X_EnergyLineSetItem::zh_saveVisibility()
+void X_EnergyLineSetItem::xh_saveVisibility()
 {
     QSettings settings;
-    zh_openSettingsGroup(settings);
+    xh_openSettingsGroup(settings);
 
     QMap<QString, X_EnergyLineProperties>::const_iterator it;
     for(it = xv_energyLinePropertyMap.begin(); it != xv_energyLinePropertyMap.end(); it++)
@@ -254,17 +254,17 @@ void X_EnergyLineSetItem::zh_saveVisibility()
         settings.setValue(it.key(), QVariant(it.value().xp_isVisible()));
     }
 
-    zh_closeSettingsGroup(settings);
+    xh_closeSettingsGroup(settings);
 }
 //======================================================
-void X_EnergyLineSetItem::zh_openSettingsGroup(QSettings& settings)
+void X_EnergyLineSetItem::xh_openSettingsGroup(QSettings& settings)
 {
     settings.beginGroup(qApp->applicationVersion());
     settings.beginGroup(xv_settingsSectionName);
     settings.beginGroup(QString::number(xv_X_Number));
 }
 //======================================================
-void X_EnergyLineSetItem::zh_closeSettingsGroup(QSettings& settings)
+void X_EnergyLineSetItem::xh_closeSettingsGroup(QSettings& settings)
 {
     while(settings.group().isEmpty())
     {

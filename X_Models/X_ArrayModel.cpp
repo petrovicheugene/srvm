@@ -163,11 +163,11 @@ void X_ArrayModel::xp_connectToSpectraArrayRepository(X_SpectrumArrayRepository*
     xv_repositiry = repository;
     // array repository <-> array model
     connect(repository, &X_SpectrumArrayRepository::xg_spectrumArrayOperation,
-            this, &X_ArrayModel::zh_onRepositoryOperation);
+            this, &X_ArrayModel::xh_onRepositoryOperation);
     endResetModel();
 }
 //==================================================================
-void X_ArrayModel::zh_onRepositoryOperation(X_SpectrumArrayRepository::ArrayOperationType type, int first, int last)
+void X_ArrayModel::xh_onRepositoryOperation(X_SpectrumArrayRepository::ArrayOperationType type, int first, int last)
 {
     if(type == X_SpectrumArrayRepository::AOT_INSERT_ARRAYS)
     {

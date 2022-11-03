@@ -32,8 +32,8 @@ X_AbstractPlotterDataManager::X_AbstractPlotterDataManager(QObject *parent) : QO
     xv_horizontalRuleLabel = tr("Channels");
     xv_horizontalRecalcedRuleLabel = tr("Energy");
 
-    zh_createComponents();
-    zh_createConnections();
+    xh_createComponents();
+    xh_createConnections();
 }
 //===========================================================
 void X_AbstractPlotterDataManager::xp_connectToSpectraArrayRepository(X_SpectrumArrayRepository* repository)
@@ -41,19 +41,19 @@ void X_AbstractPlotterDataManager::xp_connectToSpectraArrayRepository(X_Spectrum
     xv_spectrumArrayRepositiry = repository;
     // array repository <->  model
     connect(repository, &X_SpectrumArrayRepository::xg_spectrumOperation,
-            this, &X_AbstractPlotterDataManager::zh_onRepositoryArrayOperation);
+            this, &X_AbstractPlotterDataManager::xh_onRepositoryArrayOperation);
 //    connect(repository, &X_SpectrumArrayRepository::xg_energyCalibrationChanged,
-//            this, &X_PlotterDataManager::zh_updateEnergyCalibrationOnRule);
+//            this, &X_PlotterDataManager::xh_updateEnergyCalibrationOnRule);
     connect(repository, &X_SpectrumArrayRepository::xg_arrayMaxParametersChanged,
-            this, &X_AbstractPlotterDataManager::zh_onArrayMaxParametersChanged);
+            this, &X_AbstractPlotterDataManager::xh_onArrayMaxParametersChanged);
     connect(repository, &X_SpectrumArrayRepository::xg_requestIsPlotScaled,
-            this, &X_AbstractPlotterDataManager::zh_definePlotScaling);
+            this, &X_AbstractPlotterDataManager::xh_definePlotScaling);
     connect(repository, &X_SpectrumArrayRepository::xg_currentArrayIdChanged,
             this, &X_AbstractPlotterDataManager::xp_currentArrayChanged);
     connect(repository, &X_SpectrumArrayRepository::xg_currentSpectrumChanged,
             this, &X_AbstractPlotterDataManager::xp_currentSpectrumChanged);
     connect(repository, &X_SpectrumArrayRepository::xg_energyCalibrationChanged,
-            this, &X_AbstractPlotterDataManager::zh_onCurrentEnergyCalibrationChange);
+            this, &X_AbstractPlotterDataManager::xh_onCurrentEnergyCalibrationChange);
 
 
 }
@@ -62,7 +62,7 @@ void X_AbstractPlotterDataManager::xp_connectToCalibrationRepository(X_Calibrati
 {
     xv_calibrationRepository = repository;
     connect(repository, &X_CalibrationRepository::xg_calibrationWindowOperation,
-            this, &X_AbstractPlotterDataManager::zh_onRepositoryCalibrationWindowOperation);
+            this, &X_AbstractPlotterDataManager::xh_onRepositoryCalibrationWindowOperation);
     connect(repository, &X_CalibrationRepository::xg_currentCalibrationChanged,
             this, &X_AbstractPlotterDataManager::xp_currentCalibrationChanged);
     connect(repository, &X_CalibrationRepository::xg_currentCalibrationWindowChanged,
@@ -80,7 +80,7 @@ void X_AbstractPlotterDataManager::xp_connectToPlotter(X_Plotter* plotter)
                                             Qt::AlignLeft, 0);
 
     connect(xv_plotter, &X_Plotter::xg_cursorAreaImage,
-            this, &X_AbstractPlotterDataManager::zh_findItemInCursorAreaImage);
+            this, &X_AbstractPlotterDataManager::xh_findItemInCursorAreaImage);
 
     // rule settings // No label on right and top
     xv_plotter->xp_setLeftMarkRecalcFlag(false);
@@ -97,7 +97,7 @@ void X_AbstractPlotterDataManager::xp_connectToPlotter(X_Plotter* plotter)
     xv_plotter->xp_setBottomRuleLabel(xv_horizontalRuleLabel);
     xv_plotter->xp_setBottomRuleLabelVisible(true);
 
-    zh_setPlotterVerticalAbsMax(100.0);
+    xh_setPlotterVerticalAbsMax(100.0);
 
     if(xv_plotter->xp_itemCount() <= 0)
     {
@@ -108,7 +108,7 @@ void X_AbstractPlotterDataManager::xp_connectToPlotter(X_Plotter* plotter)
     connect(xv_plotter, &X_Plotter::xg_viewportRectChanged,
             this, &X_AbstractPlotterDataManager::xp_onPlotterViewPortRectChange);
     connect(xv_plotter, &X_Plotter::xg_rulerToolChanged,
-            this, &X_AbstractPlotterDataManager::zh_updateRulerTool);
+            this, &X_AbstractPlotterDataManager::xh_updateRulerTool);
 }
 //===========================================================
 void X_AbstractPlotterDataManager::xp_onEnergyLineOperation(QString elementSymbol, QString lineName,
@@ -170,7 +170,7 @@ void X_AbstractPlotterDataManager::xp_onEnergyLineOperation(QString elementSymbo
         xv_plotter->xp_addItem(energyLineItem);
 
         double channel;
-        if(zh_convertEnergyToChannel(energyVal, channel))
+        if(xh_convertEnergyToChannel(energyVal, channel))
         {
             energyLineItem->xp_setXPosition(channel);
             energyLineItem->setVisible(visibility);
@@ -231,7 +231,7 @@ void X_AbstractPlotterDataManager::xp_onPlotterViewPortRectChange(QRectF rect)
     }
 }
 //===========================================================
-void X_AbstractPlotterDataManager::zh_updateRulerTool(QPointF startPoint, QPointF endPoint, bool visibility)
+void X_AbstractPlotterDataManager::xh_updateRulerTool(QPointF startPoint, QPointF endPoint, bool visibility)
 {
     // qDebug() << "UPDATE RT" << startPoint.x() << endPoint.x() << visibility;
     QRectF plotterRect = xv_plotter->xp_viewportSceneRect();
@@ -289,15 +289,15 @@ void X_AbstractPlotterDataManager::zh_updateRulerTool(QPointF startPoint, QPoint
                                 infoString);
 }
 //======================================================
-void X_AbstractPlotterDataManager::zh_onCurrentEnergyCalibrationChange(QList<double> calibrationFactors)
+void X_AbstractPlotterDataManager::xh_onCurrentEnergyCalibrationChange(QList<double> calibrationFactors)
 {
     xv_calibrationFactors = calibrationFactors;
     xv_plotter->xp_setEnergyCalibration(xv_calibrationFactors);
-    zh_updateEnergyLines();
-    zh_updateRuleMetrix();
+    xh_updateEnergyLines();
+    xh_updateRuleMetrix();
 }
 //======================================================
-void X_AbstractPlotterDataManager::zh_updateEnergyLines()
+void X_AbstractPlotterDataManager::xh_updateEnergyLines()
 {
     X_EnergyLineGraphicsItem* energyLineItem = nullptr;
     QList<QGraphicsItem*> energyLineList = xv_plotter->xp_itemListForType(EnergyLineItemType);
@@ -310,7 +310,7 @@ void X_AbstractPlotterDataManager::zh_updateEnergyLines()
         }
 
         double channel = 0.0;
-        if(!zh_convertEnergyToChannel(energyLineItem->xp_energyValue(), channel))
+        if(!xh_convertEnergyToChannel(energyLineItem->xp_energyValue(), channel))
         {
             channel = 0.0;
         }
@@ -328,16 +328,16 @@ void X_AbstractPlotterDataManager::xp_currentCalibrationChanged(qint64 currentCa
         return;
     }
 
-    zh_setCurrentWindowId(-1);
+    xh_setCurrentWindowId(-1);
 }
 //===========================================================
 void X_AbstractPlotterDataManager::xp_currentCalibrationWindowChanged(qint64 currentWindowId, int currentWindowIndex,
                                                              qint64 previousWindowId, int previousWindowIndex)
 {
-    zh_setCurrentWindowId(currentWindowId);
+    xh_setCurrentWindowId(currentWindowId);
 }
 //===========================================================
-void X_AbstractPlotterDataManager::zh_setCurrentWindowId(qint64 windowId)
+void X_AbstractPlotterDataManager::xh_setCurrentWindowId(qint64 windowId)
 {
     X_WindowGraphicsItem::xp_setCurrentWindowId(windowId);
 
@@ -377,9 +377,9 @@ void X_AbstractPlotterDataManager::xp_currentArrayChanged(qint64 currentArrayId,
     //qreal horizontalMax = (qreal)xv_spectrumArrayRepositiry->xp_arrayChannelCount(xv_currentArrayIndex);
     //xv_plotter->xp_setVerticalAbsMax(verticalMax);
 
-    zh_setPlotterVerticalAbsMax(verticalMax);
+    xh_setPlotterVerticalAbsMax(verticalMax);
 
-    //zh_setMaxParametersToDefaultItem(verticalMax, horizontalMax);
+    //xh_setMaxParametersToDefaultItem(verticalMax, horizontalMax);
 
     QList<X_AbstractSpectrum*> spectrumList = xv_spectrumArrayRepositiry->xp_spectrumListForArray(xv_currentArrayIndex);
     X_SpectrumGraphicsItem* spectrumItem;
@@ -396,8 +396,8 @@ void X_AbstractPlotterDataManager::xp_currentArrayChanged(qint64 currentArrayId,
         xv_plotter->xp_addItem(spectrumItem);
     }
 
-    zh_updateRuleMetrix();
-    zh_updateEnergyLines();
+    xh_updateRuleMetrix();
+    xh_updateEnergyLines();
 
     if(!isPlotScaled)
     {
@@ -431,7 +431,7 @@ void X_AbstractPlotterDataManager::xp_currentSpectrumChanged(qint64 currentSpect
     xv_plotter->xp_updatePlot();
 }
 //===========================================================
-bool X_AbstractPlotterDataManager::zh_convertEnergyToChannel(double energyValue, double& channel)
+bool X_AbstractPlotterDataManager::xh_convertEnergyToChannel(double energyValue, double& channel)
 {
     if(xv_calibrationFactors.count() < 2)
     {
@@ -474,20 +474,20 @@ bool X_AbstractPlotterDataManager::zh_convertEnergyToChannel(double energyValue,
     return true;
 }
 //===========================================================
-void X_AbstractPlotterDataManager::zh_createComponents()
+void X_AbstractPlotterDataManager::xh_createComponents()
 {
     xv_switchRuleMetrixAction = new QAction(this);
     xv_switchRuleMetrixAction->setIcon(QIcon(NS_Icons::glIconAxisToEnergy));
     xv_switchRuleMetrixAction->setCheckable(true);
 }
 //===========================================================
-void X_AbstractPlotterDataManager::zh_createConnections()
+void X_AbstractPlotterDataManager::xh_createConnections()
 {
     connect(xv_switchRuleMetrixAction, &QAction::toggled,
-            this, &X_AbstractPlotterDataManager::zh_switchRuleMetrix);
+            this, &X_AbstractPlotterDataManager::xh_switchRuleMetrix);
 }
 //===========================================================
-void X_AbstractPlotterDataManager::zh_onRepositoryArrayOperation(X_SpectrumArrayRepository::SpectrumOperationType type,
+void X_AbstractPlotterDataManager::xh_onRepositoryArrayOperation(X_SpectrumArrayRepository::SpectrumOperationType type,
                                                         int arrayIndex, int first, int last)
 {
     if(xv_currentArrayIndex != arrayIndex || xv_plotter == nullptr)
@@ -580,7 +580,7 @@ void X_AbstractPlotterDataManager::zh_onRepositoryArrayOperation(X_SpectrumArray
     }
 }
 //===========================================================
-void X_AbstractPlotterDataManager::zh_onRepositoryCalibrationWindowOperation(X_CalibrationRepository::WindowOperationType type,
+void X_AbstractPlotterDataManager::xh_onRepositoryCalibrationWindowOperation(X_CalibrationRepository::WindowOperationType type,
                                                                     int calibrationIndex, int first, int last)
 {
     if(xv_plotter == nullptr)
@@ -717,13 +717,13 @@ void X_AbstractPlotterDataManager::zh_onRepositoryCalibrationWindowOperation(X_C
 }
 
 //===========================================================
-void X_AbstractPlotterDataManager::zh_switchRuleMetrix(bool toggled)
+void X_AbstractPlotterDataManager::xh_switchRuleMetrix(bool toggled)
 {
     xv_energyRuleMetrixFlag = toggled;
-    zh_updateRuleMetrix();
+    xh_updateRuleMetrix();
 }
 //======================================================
-void X_AbstractPlotterDataManager::zh_updateRuleMetrix()
+void X_AbstractPlotterDataManager::xh_updateRuleMetrix()
 {
     if(!xv_energyRuleMetrixFlag || xv_calibrationFactors.isEmpty() ||
             (!(xv_calibrationFactors.value(1, 0.0) == 0.0 ||
@@ -749,24 +749,24 @@ void X_AbstractPlotterDataManager::zh_updateRuleMetrix()
 
 }
 ////===========================================================
-//void X_PlotterDataManager::zh_updateEnergyCalibrationOnRule(qint64 arrayId)
+//void X_PlotterDataManager::xh_updateEnergyCalibrationOnRule(qint64 arrayId)
 //{
 //    if(!xv_switchRuleMetrixAction->isChecked() || xv_currentArrayId != arrayId)
 //    {
 //        return;
 //    }
 
-//    zh_switchRuleMetrix(xv_switchRuleMetrixAction->isChecked());
+//    xh_switchRuleMetrix(xv_switchRuleMetrixAction->isChecked());
 //}
 //===========================================================
-void X_AbstractPlotterDataManager::zh_onArrayMaxParametersChanged(int arrayId, int maxIntensity, int channelCount)
+void X_AbstractPlotterDataManager::xh_onArrayMaxParametersChanged(int arrayId, int maxIntensity, int channelCount)
 {
     if(arrayId != xv_currentArrayId || xv_plotter == nullptr)
     {
         return;
     }
 
-    zh_setPlotterVerticalAbsMax((qreal)maxIntensity);
+    xh_setPlotterVerticalAbsMax((qreal)maxIntensity);
     //   xv_plotter->xp_setVerticalAbsMax((qreal)maxIntensity);
 
     //   // windows height recalc
@@ -784,10 +784,10 @@ void X_AbstractPlotterDataManager::zh_onArrayMaxParametersChanged(int arrayId, i
     //   }
     //   xv_plotter->xp_updatePlot();
 
-    //   //zh_setMaxParametersToDefaultItem((qreal)maxIntensity, (qreal)channelCount);
+    //   //xh_setMaxParametersToDefaultItem((qreal)maxIntensity, (qreal)channelCount);
 }
 //===========================================================
-void X_AbstractPlotterDataManager::zh_setPlotterVerticalAbsMax(qreal maxIntensity)
+void X_AbstractPlotterDataManager::xh_setPlotterVerticalAbsMax(qreal maxIntensity)
 {
     xv_plotter->xp_setVerticalAbsMax((qreal)maxIntensity);
 
@@ -807,7 +807,7 @@ void X_AbstractPlotterDataManager::zh_setPlotterVerticalAbsMax(qreal maxIntensit
     xv_plotter->xp_updatePlot();
 }
 //===========================================================
-void X_AbstractPlotterDataManager::zh_setMaxParametersToDefaultItem(qreal maxY, qreal maxX)
+void X_AbstractPlotterDataManager::xh_setMaxParametersToDefaultItem(qreal maxY, qreal maxX)
 {
     QList<QGraphicsItem*>defaultItemList = xv_plotter->xp_itemListForType(DefaultRectItemType);
     if(defaultItemList.isEmpty())
@@ -830,12 +830,12 @@ void X_AbstractPlotterDataManager::zh_setMaxParametersToDefaultItem(qreal maxY, 
     defaultItem->xp_fitItemInRect(rect);
 }
 //===========================================================
-void X_AbstractPlotterDataManager::zh_definePlotScaling(bool& plotIsScaled)
+void X_AbstractPlotterDataManager::xh_definePlotScaling(bool& plotIsScaled)
 {
     plotIsScaled = xv_plotter->xp_isPlotScaled();
 }
 //===========================================================
-void X_AbstractPlotterDataManager::zh_findItemInCursorAreaImage(QImage cursorAreaImage)
+void X_AbstractPlotterDataManager::xh_findItemInCursorAreaImage(QImage cursorAreaImage)
 {
     // central pixel
     int centralPointRow = cursorAreaImage.height()/2;

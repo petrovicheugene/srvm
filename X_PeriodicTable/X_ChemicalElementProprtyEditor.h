@@ -34,32 +34,32 @@ public slots:
 
 protected:
 
-    void zh_saveSettings() override;
-    void zh_restoreSettings() override;
+    void xh_saveSettings() override;
+    void xh_restoreSettings() override;
     bool eventFilter(QObject *watched, QEvent *event) override;
     void closeEvent(QCloseEvent* event) override;
 
 private slots:
 
-    void zh_addNewChemicalElementPropertySection();
-    void zh_removeSelectedChemicalElementPropertySections();
-    void zh_addNewChemicalElementProperty();
-    void zh_removeSelectedChemicalElementProperties();
-    void zh_copyPropertyToClipboard();
-    void zh_pastePropertyFromClipboard();
+    void xh_addNewChemicalElementPropertySection();
+    void xh_removeSelectedChemicalElementPropertySections();
+    void xh_addNewChemicalElementProperty();
+    void xh_removeSelectedChemicalElementProperties();
+    void xh_copyPropertyToClipboard();
+    void xh_pastePropertyFromClipboard();
 
-    void zh_onTreeElementSelectionChange(const QItemSelection& selected,
+    void xh_onTreeElementSelectionChange(const QItemSelection& selected,
                                          const QItemSelection& deselected);
-    void zh_onPropertyTableElementSelectionChange(const QItemSelection& selected,
+    void xh_onPropertyTableElementSelectionChange(const QItemSelection& selected,
                                                   const QItemSelection& deselected);
-    void zh_setPropertiesSourceFilePath(const QString& fileName);
-    void zh_onClipboardDataChange();
-    void zh_treeColumnVisibilityControl();
-    void zh_onModelColumnsInserted(const QModelIndex& parent, int first, int last);
+    void xh_setPropertiesSourceFilePath(const QString& fileName);
+    void xh_onClipboardDataChange();
+    void xh_treeColumnVisibilityControl();
+    void xh_onModelColumnsInserted(const QModelIndex& parent, int first, int last);
 
-    void zh_onLoadButtonClick();
-    void zh_onCloseButtonClick();
-    void zh_onSaveButtonClick();
+    void xh_onLoadButtonClick();
+    void xh_onCloseButtonClick();
+    void xh_onSaveButtonClick();
 
 private:
 
@@ -94,28 +94,28 @@ private:
     QPushButton* xv_closeButton;
 
     // FUNCS
-    void zh_createActions();
-    void zh_createComponents();
-    void zh_createMenu();
-    void zh_createConnections();
+    void xh_createActions();
+    void xh_createComponents();
+    void xh_createMenu();
+    void xh_createConnections();
 
-    QWidget* zh_createPropertySectionTreeWidget();
-    QWidget* zh_createPropertyTableWidget();
+    QWidget* xh_createPropertySectionTreeWidget();
+    QWidget* xh_createPropertyTableWidget();
 
-    bool zh_addChemicalElementPropertySectionBranch(const QList<int>& zNumberList,
+    bool xh_addChemicalElementPropertySectionBranch(const QList<int>& zNumberList,
                                                     const QStringList& sectionBranch);
-    bool zh_currentChemicalElementSectionBrunch(QStringList &branch) const;
+    bool xh_currentChemicalElementSectionBrunch(QStringList &branch) const;
 
-    bool zh_insertChemicalElementPropertiesToCurrentBranch(const PropertyList& propertyList);
+    bool xh_insertChemicalElementPropertiesToCurrentBranch(const PropertyList& propertyList);
 
-    bool zh_selectedX_NumberList(QList<int>& zNumberList) const;
-    bool zh_currentX_Number(int& currentX_Number) const;
-    void zh_adjustRemoveSectionAbility(const QItemSelection& selected);
-    void zh_adjustRemoveAndCopyPropertyAbility(const QItemSelection& selected);
-    void zh_adjustPastePropertyAbility();
-    void zh_savePropertyDataToFile();
-    QString zh_dataFileFolder() const;
-    QString zh_standardLocation() const;
+    bool xh_selectedX_NumberList(QList<int>& zNumberList) const;
+    bool xh_currentX_Number(int& currentX_Number) const;
+    void xh_adjustRemoveSectionAbility(const QItemSelection& selected);
+    void xh_adjustRemoveAndCopyPropertyAbility(const QItemSelection& selected);
+    void xh_adjustPastePropertyAbility();
+    void xh_savePropertyDataToFile();
+    QString xh_dataFileFolder() const;
+    QString xh_standardLocation() const;
 
 };
 //======================================================

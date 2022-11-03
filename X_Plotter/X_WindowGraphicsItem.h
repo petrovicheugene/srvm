@@ -38,7 +38,7 @@ protected:
 
    // FUNCS
    void mouseReleaseEvent(QGraphicsSceneMouseEvent * event) override;
-   void zh_recalcShapeAndBoundingRect();
+   void xh_recalcShapeAndBoundingRect();
 
 private:
 

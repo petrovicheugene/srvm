@@ -213,7 +213,7 @@ void X_CustomCheckableVerticalHeaderView::paintSection(QPainter *painter,
     }
     //    }
 
-    QRect decorationRect = zh_decorationRect(opt.rect);
+    QRect decorationRect = xh_decorationRect(opt.rect);
 
     if (decorationRect.normalized().isValid())
     {
@@ -280,7 +280,7 @@ void X_CustomCheckableVerticalHeaderView::mousePressEvent(QMouseEvent *event)
                 int sectionHeight = sectionSize(logIndex);
                 QSize sectionRectSize = QSize(viewport()->width(), sectionHeight);
                 QRect itemRect = QRect(QPoint(0, sectionPos), sectionRectSize);
-                QRect decorationRect = zh_decorationRect(itemRect);
+                QRect decorationRect = xh_decorationRect(itemRect);
                 if (decorationRect.contains(event->pos()))
                 {
                     // edit
@@ -313,7 +313,7 @@ QSize X_CustomCheckableVerticalHeaderView::sectionSizeFromContents(int logicalIn
 {
     QSize size = QHeaderView::sectionSizeFromContents(logicalIndex);
     QRect sectionRect = QRect(QPoint(0, 0), size);
-    QRect decorationRect = zh_decorationRect(sectionRect);
+    QRect decorationRect = xh_decorationRect(sectionRect);
 
     if (decorationRect.normalized().isValid())
     {
@@ -323,7 +323,7 @@ QSize X_CustomCheckableVerticalHeaderView::sectionSizeFromContents(int logicalIn
     return size;
 }
 //=========================================================
-QRect X_CustomCheckableVerticalHeaderView::zh_decorationRect(const QRect &sectionRect) const
+QRect X_CustomCheckableVerticalHeaderView::xh_decorationRect(const QRect &sectionRect) const
 {
     QStyle *style = this->style();
     if (!style)

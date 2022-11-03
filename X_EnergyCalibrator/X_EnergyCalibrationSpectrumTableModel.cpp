@@ -14,7 +14,7 @@ X_EnergyCalibrationSpectrumTableModel::X_EnergyCalibrationSpectrumTableModel(QOb
 //=========================================================
 X_EnergyCalibrationSpectrumTableModel::~X_EnergyCalibrationSpectrumTableModel()
 {
-    zh_restoreSpectrumVisibleAndCheckedState();
+    xh_restoreSpectrumVisibleAndCheckedState();
 }
 //=========================================================
 Qt::ItemFlags X_EnergyCalibrationSpectrumTableModel::flags(const QModelIndex & index) const
@@ -192,8 +192,8 @@ void X_EnergyCalibrationSpectrumTableModel::xp_loadSpectrumData(QMap<quint8, QLi
 {
     beginResetModel();
     xv_spectrumMap = spectrumMap;
-    zh_recalcMaxSpectrumParameters();
-    zh_saveSpectrumVisibleAndCheckedState();
+    xh_recalcMaxSpectrumParameters();
+    xh_saveSpectrumVisibleAndCheckedState();
     endResetModel();
 }
 //=========================================================
@@ -225,11 +225,11 @@ void X_EnergyCalibrationSpectrumTableModel::xp_setGainFactorFilter(quint8 curren
 {
     beginResetModel();
     xv_gainFactorFilter = currentGainFactor;
-    zh_recalcMaxSpectrumParameters();
+    xh_recalcMaxSpectrumParameters();
     endResetModel();
 }
 //=========================================================
-void X_EnergyCalibrationSpectrumTableModel::zh_recalcMaxSpectrumParameters()
+void X_EnergyCalibrationSpectrumTableModel::xh_recalcMaxSpectrumParameters()
 {
     xv_maxIntensity = 0;
     xv_maxChannelNumber = 0;
@@ -247,7 +247,7 @@ void X_EnergyCalibrationSpectrumTableModel::zh_recalcMaxSpectrumParameters()
     }
 }
 //=========================================================
-void X_EnergyCalibrationSpectrumTableModel::zh_saveSpectrumVisibleAndCheckedState()
+void X_EnergyCalibrationSpectrumTableModel::xh_saveSpectrumVisibleAndCheckedState()
 {
     for(auto gainFactor :  xv_spectrumMap.keys())
     {
@@ -259,7 +259,7 @@ void X_EnergyCalibrationSpectrumTableModel::zh_saveSpectrumVisibleAndCheckedStat
     }
 }
 //=========================================================
-void X_EnergyCalibrationSpectrumTableModel::zh_restoreSpectrumVisibleAndCheckedState()
+void X_EnergyCalibrationSpectrumTableModel::xh_restoreSpectrumVisibleAndCheckedState()
 {
     int spectrumIndex = 0;
     for(auto gainFactor :  xv_spectrumVisibilityMap.keys())

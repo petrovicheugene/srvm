@@ -19,19 +19,19 @@ X_HelpBrowser::X_HelpBrowser(QWidget *parent ) :
                                               tr("Help"));
     setWindowTitle(winTitle);
 
-    zh_createComponents();
-    zh_createConnections();
+    xh_createComponents();
+    xh_createConnections();
     xp_setButtonIcon(BIC_BLUE);
-    zh_dialogControl();
-    zh_restoreSettings();
+    xh_dialogControl();
+    xh_restoreSettings();
 }
 //==============================================
 X_HelpBrowser::~X_HelpBrowser()
 {
-    zh_saveSettings();
+    xh_saveSettings();
 }
 //==============================================
-void X_HelpBrowser::zh_createComponents()
+void X_HelpBrowser::xh_createComponents()
 {
     QVBoxLayout* mainLayout = new QVBoxLayout;
     setLayout(mainLayout);
@@ -91,7 +91,7 @@ void X_HelpBrowser::xp_setButtonIcon(X_HelpBrowser::ButtonIconColor buttonIconCo
     xv_forwardAction->setIcon(forwardIcon);
 }
 //==============================================
-void X_HelpBrowser::zh_createConnections()
+void X_HelpBrowser::xh_createConnections()
 {
     //connect(mv_browser, SIGNAL((bool)), mv_homeAction, SLOT(setEnabled(bool)));
     connect(xv_browser, SIGNAL(backwardAvailable(bool)), xv_backwardAction, SLOT(setEnabled(bool)));
@@ -102,13 +102,13 @@ void X_HelpBrowser::zh_createConnections()
     connect(xv_forwardAction, SIGNAL(triggered()), xv_browser, SLOT(forward()));
 }
 //==============================================
-void X_HelpBrowser::zh_dialogControl()
+void X_HelpBrowser::xh_dialogControl()
 {
     xv_backwardAction->setEnabled(xv_browser->isBackwardAvailable());
     xv_forwardAction->setEnabled(xv_browser->isForwardAvailable());
 }
 //==============================================
-bool X_HelpBrowser::zh_openSettingsGroup(QSettings* settings) const
+bool X_HelpBrowser::xh_openSettingsGroup(QSettings* settings) const
 {
     if(settings == nullptr)
     {
@@ -125,7 +125,7 @@ bool X_HelpBrowser::zh_openSettingsGroup(QSettings* settings) const
     return true;
 }
 //==============================================
-bool X_HelpBrowser::zh_closeSettingsGroup(QSettings* settings) const
+bool X_HelpBrowser::xh_closeSettingsGroup(QSettings* settings) const
 {
     if(settings == nullptr)
     {
@@ -141,10 +141,10 @@ bool X_HelpBrowser::zh_closeSettingsGroup(QSettings* settings) const
     return true;
 }
 //==============================================
-void X_HelpBrowser::zh_restoreSettings()
+void X_HelpBrowser::xh_restoreSettings()
 {
     QSettings settings;
-    if(!zh_openSettingsGroup(&settings))
+    if(!xh_openSettingsGroup(&settings))
     {
         return;
     }
@@ -155,20 +155,20 @@ void X_HelpBrowser::zh_restoreSettings()
         restoreGeometry(vData.toByteArray());
     }
 
-    zh_closeSettingsGroup(&settings);
+    xh_closeSettingsGroup(&settings);
 }
 //==============================================
-void X_HelpBrowser::zh_saveSettings() const
+void X_HelpBrowser::xh_saveSettings() const
 {
     QSettings settings;
-    if(!zh_openSettingsGroup(&settings))
+    if(!xh_openSettingsGroup(&settings))
     {
         return;
     }
 
     settings.setValue(xv_geometryValueName, saveGeometry());
 
-    zh_closeSettingsGroup(&settings);
+    xh_closeSettingsGroup(&settings);
 }
 //==============================================
 X_HelpBrowser* X_HelpBrowser::xp_instance(QWidget *parent)

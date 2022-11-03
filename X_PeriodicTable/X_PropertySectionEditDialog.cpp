@@ -20,36 +20,36 @@ X_PropertySectionEditDialog::X_PropertySectionEditDialog(const QStringList& bran
 {
     setWindowTitle(qApp->applicationDisplayName());
 
-    zh_createComponents();
-    zh_createConnections();
+    xh_createComponents();
+    xh_createConnections();
     xp_setCurrentSectionBranch(branch);
-    zh_setUpAdditionTargetButtons(currentVisible, selectedVisible );
+    xh_setUpAdditionTargetButtons(currentVisible, selectedVisible );
 
 }
 //======================================================
-void X_PropertySectionEditDialog::zh_createComponents()
+void X_PropertySectionEditDialog::xh_createComponents()
 {
-    zh_addWidgetToMainLayout(zh_createControlWidget());
-    zh_addStretchToMainLayout();
+    xh_addWidgetToMainLayout(xh_createControlWidget());
+    xh_addStretchToMainLayout();
 
-    xv_okButton = zh_createBasementButton(tr("Ok"),
+    xv_okButton = xh_createBasementButton(tr("Ok"),
                                           tr("Save section and close dialog"),
                                           QIcon());
-    xv_cancelButton = zh_createBasementButton(tr("Cancel"),
+    xv_cancelButton = xh_createBasementButton(tr("Cancel"),
                                               tr("Close dialog without savimg section"),
                                               QIcon());
 }
 //======================================================
-void X_PropertySectionEditDialog::zh_createConnections()
+void X_PropertySectionEditDialog::xh_createConnections()
 {
     connect(xv_okButton, &QPushButton::clicked,
-            this, &X_PropertySectionEditDialog::zh_onOkButtonClick);
+            this, &X_PropertySectionEditDialog::xh_onOkButtonClick);
     connect(xv_cancelButton, &QPushButton::clicked,
-            this, &X_PropertySectionEditDialog::zh_onCloseButtonClick);
+            this, &X_PropertySectionEditDialog::xh_onCloseButtonClick);
 
 }
 //======================================================
-QWidget* X_PropertySectionEditDialog::zh_createControlWidget()
+QWidget* X_PropertySectionEditDialog::xh_createControlWidget()
 {
     QWidget* widget = new QWidget(this);
     QVBoxLayout* mainLayout = new QVBoxLayout;
@@ -97,7 +97,7 @@ QWidget* X_PropertySectionEditDialog::zh_createControlWidget()
     return widget;
 }
 //======================================================
-void X_PropertySectionEditDialog::zh_onOkButtonClick()
+void X_PropertySectionEditDialog::xh_onOkButtonClick()
 {
     if(xv_sectionLineEdit->text().isEmpty())
     {
@@ -109,12 +109,12 @@ void X_PropertySectionEditDialog::zh_onOkButtonClick()
     accept();
 }
 //======================================================
-void X_PropertySectionEditDialog::zh_onCloseButtonClick()
+void X_PropertySectionEditDialog::xh_onCloseButtonClick()
 {
     reject();
 }
 //======================================================
-void X_PropertySectionEditDialog::zh_setUpAdditionTargetButtons(bool currentVisible,
+void X_PropertySectionEditDialog::xh_setUpAdditionTargetButtons(bool currentVisible,
                                                                bool selectedVisible)
 {
     xv_toCurrentChemicalElementRadioButton->setVisible(currentVisible);

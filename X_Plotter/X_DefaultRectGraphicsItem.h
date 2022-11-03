@@ -58,7 +58,7 @@ private:
     bool xv_medianaLineVisible;
 
     // FUNCS
-    void zh_remakePainterPaths();
+    void xh_remakePainterPaths();
 
 
 };

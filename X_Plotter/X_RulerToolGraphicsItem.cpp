@@ -76,17 +76,17 @@ void X_RulerToolGraphicsItem::xp_setProperties(QPointF startPosition,
 //======================================================
 void X_RulerToolGraphicsItem::xp_updateItem()
 {
-    zh_recalcShapeAndBoundingRect();
+    xh_recalcShapeAndBoundingRect();
     update();
 }
 //======================================================
-void X_RulerToolGraphicsItem::zh_recalcShapeAndBoundingRect()
+void X_RulerToolGraphicsItem::xh_recalcShapeAndBoundingRect()
 {
     prepareGeometryChange();
 
     QPainterPath linePainterPath;
 
-    double offset = zh_convertPixelsToSceneHeight(5);
+    double offset = xh_convertPixelsToSceneHeight(5);
     linePainterPath.moveTo(xv_startPosition.x(), xv_viewportSceneRect.top() + offset);
     linePainterPath.lineTo(xv_startPosition.x(), 0.0);
 
@@ -108,22 +108,22 @@ void X_RulerToolGraphicsItem::zh_recalcShapeAndBoundingRect()
     QRectF textRect = xv_textItem->boundingRect();
     QPointF textPos = xv_endPosition;
 
-    textPos.setY(textPos.y() - zh_convertPixelsToSceneHeight(qRound(textRect.height())));
+    textPos.setY(textPos.y() - xh_convertPixelsToSceneHeight(qRound(textRect.height())));
 
-    if(xv_endPosition.x() + zh_convertPixelsToSceneWidth(qRound(textRect.width())) >  xv_viewportSceneRect.right())
+    if(xv_endPosition.x() + xh_convertPixelsToSceneWidth(qRound(textRect.width())) >  xv_viewportSceneRect.right())
     {
-        textPos.setX(xv_viewportSceneRect.right() - zh_convertPixelsToSceneWidth(qRound(textRect.width())));
+        textPos.setX(xv_viewportSceneRect.right() - xh_convertPixelsToSceneWidth(qRound(textRect.width())));
     }
 
     xv_textItem->setPos(textPos);
 }
 //======================================================
-double X_RulerToolGraphicsItem::zh_convertPixelsToSceneWidth(int pixelCount) const
+double X_RulerToolGraphicsItem::xh_convertPixelsToSceneWidth(int pixelCount) const
 {
     return (xv_viewportSceneRect.width() / xv_viewportSize.width()) * pixelCount;
 }
 //======================================================
-double X_RulerToolGraphicsItem::zh_convertPixelsToSceneHeight(int pixelCount) const
+double X_RulerToolGraphicsItem::xh_convertPixelsToSceneHeight(int pixelCount) const
 {
     return (xv_viewportSceneRect.height() / xv_viewportSize.height()) * pixelCount;
 }

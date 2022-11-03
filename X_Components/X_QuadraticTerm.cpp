@@ -9,9 +9,9 @@ X_QuadraticTerm::X_QuadraticTerm(const X_CalibrationWindow *window,
 {
     xv_type = TT_QUADRATIC;
     xv_window = window;
-    zh_setName();
-    zh_connectToWindow();
-    zh_connectToCalibration(parent);
+    xh_setName();
+    xh_connectToWindow();
+    xh_connectToCalibration(parent);
 }
 //===================================================================
 bool X_QuadraticTerm::xp_calcValue(const X_AbstractSpectrum * spectrum, qreal& value)
@@ -59,24 +59,24 @@ const X_CalibrationWindow* X_QuadraticTerm::xp_window() const
     return xv_window;
 }
 //===================================================================
-void X_QuadraticTerm::zh_updateTermNameForWindowName()
+void X_QuadraticTerm::xh_updateTermNameForWindowName()
 {
     if(!sender())
     {
         return;
     }
 
-    zh_setName();
+    xh_setName();
     emit xg_termNameChanged();
 }
 //===================================================================
-void X_QuadraticTerm::zh_setName()
+void X_QuadraticTerm::xh_setName()
 {
     // xv_name = "(" + windowName + ")" + QChar(0x00B2);
     xv_name = xv_window->xp_windowName() + QChar(0x00B2);
 }
 //===================================================================
-void X_QuadraticTerm::zh_onWindowTypeChange(X_CalibrationWindow::WindowType previousType,
+void X_QuadraticTerm::xh_onWindowTypeChange(X_CalibrationWindow::WindowType previousType,
                                            X_CalibrationWindow::WindowType currentType)
 {
     if(!sender() || sender() != xv_window)
@@ -90,20 +90,20 @@ void X_QuadraticTerm::zh_onWindowTypeChange(X_CalibrationWindow::WindowType prev
     }
 }
 //===================================================================
-void X_QuadraticTerm::zh_connectToWindow()
+void X_QuadraticTerm::xh_connectToWindow()
 {
     if(xv_window)
     {
         connect(xv_window, &X_CalibrationWindow::destroyed,
-                this, &X_QuadraticTerm::zh_onWindowDestroying);
+                this, &X_QuadraticTerm::xh_onWindowDestroying);
         connect(xv_window, &X_CalibrationWindow::xg_windowNameChanged,
-                this, &X_QuadraticTerm::zh_updateTermNameForWindowName);
+                this, &X_QuadraticTerm::xh_updateTermNameForWindowName);
         connect(this, &X_QuadraticTerm::xg_requestWindowIntensity,
                 xv_window, &X_CalibrationWindow::xp_calcWindowIntensity);
         connect(xv_window, &X_CalibrationWindow::xg_windowMarginsChanged,
                 this, &X_QuadraticTerm::xg_termWindowMarginChanged);
         connect(xv_window, &X_CalibrationWindow::xg_windowTypeChanged,
-                this, &X_QuadraticTerm::zh_onWindowTypeChange);
+                this, &X_QuadraticTerm::xh_onWindowTypeChange);
     }
 }
 //===================================================================

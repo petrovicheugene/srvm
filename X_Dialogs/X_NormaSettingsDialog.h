@@ -26,7 +26,7 @@ public slots:
 
 private slots:
 
-    void zh_onDialogAccepted();
+    void xh_onDialogAccepted();
 
 private:
 
@@ -46,11 +46,11 @@ private:
     const QString xv_useModifierString = "useModifier";
 
     // FUNCS
-    void zh_createComponents();
-    void zh_createConnections();
-    QWidget* zh_createControlWidget();
-    void zh_restoreSettings() override;
-    void zh_saveSettings() override;
+    void xh_createComponents();
+    void xh_createConnections();
+    QWidget* xh_createControlWidget();
+    void xh_restoreSettings() override;
+    void xh_saveSettings() override;
 
     // VARS
     bool xv_normaSettingsApplied;

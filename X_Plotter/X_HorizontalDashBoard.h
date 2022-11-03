@@ -62,19 +62,19 @@ private:
     Qt::Orientation xv_orientation;
     bool xv_increase;
     // FUNCS
-    void zh_createComponents();
-    void zh_createConnections();
-    void zh_startTimer();
+    void xh_createComponents();
+    void xh_createConnections();
+    void xh_startTimer();
 
 private slots:
 
-    void zh_increaseVertical();
-    void zh_increaseHorizontal();
-    void zh_decreaseVertical();
-    void zh_decreaseHorizontal();
-    void zh_fitViewInScene() const;
-    void zh_hideGrid(bool) const;
-    void zh_killTimer();
+    void xh_increaseVertical();
+    void xh_increaseHorizontal();
+    void xh_decreaseVertical();
+    void xh_decreaseHorizontal();
+    void xh_fitViewInScene() const;
+    void xh_hideGrid(bool) const;
+    void xh_killTimer();
 
 
 };

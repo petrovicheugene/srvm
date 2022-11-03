@@ -9,7 +9,7 @@ X_SimpleTerm::X_SimpleTerm(const X_CalibrationWindow* window,
     xv_type = TT_SIMPLE;
     xv_name = window->xp_windowName();
 
-    zh_connectToWindow(window);
+    xh_connectToWindow(window);
 }
 //===================================================================
 bool X_SimpleTerm::xp_calcValue(const X_AbstractSpectrum * spectrum, qreal& value)
@@ -56,7 +56,7 @@ const X_CalibrationWindow* X_SimpleTerm::xp_window() const
     return xv_window;
 }
 //===================================================================
-void X_SimpleTerm::zh_updateTermNameForWindowName()
+void X_SimpleTerm::xh_updateTermNameForWindowName()
 {
     if(!sender() || xv_window->xp_windowName() == xv_name)
     {
@@ -67,7 +67,7 @@ void X_SimpleTerm::zh_updateTermNameForWindowName()
     emit xg_termNameChanged();
 }
 //===================================================================
-void X_SimpleTerm::zh_onWindowTypeChange(X_CalibrationWindow::WindowType previousType,
+void X_SimpleTerm::xh_onWindowTypeChange(X_CalibrationWindow::WindowType previousType,
                                         X_CalibrationWindow::WindowType currentType)
 {
     if(!sender() || sender() != xv_window)
@@ -81,20 +81,20 @@ void X_SimpleTerm::zh_onWindowTypeChange(X_CalibrationWindow::WindowType previou
     }
 }
 //===================================================================
-void X_SimpleTerm::zh_connectToWindow(const X_CalibrationWindow* window)
+void X_SimpleTerm::xh_connectToWindow(const X_CalibrationWindow* window)
 {
     if(window)
     {
         connect(window, &X_CalibrationWindow::destroyed,
-                this, &X_SimpleTerm::zh_onWindowDestroying);
+                this, &X_SimpleTerm::xh_onWindowDestroying);
         connect(window, &X_CalibrationWindow::xg_windowNameChanged,
-                this, &X_SimpleTerm::zh_updateTermNameForWindowName);
+                this, &X_SimpleTerm::xh_updateTermNameForWindowName);
         connect(this, &X_SimpleTerm::xg_requestWindowIntensity,
                 window, &X_CalibrationWindow::xp_calcWindowIntensity);
         connect(window, &X_CalibrationWindow::xg_windowMarginsChanged,
                 this, &X_SimpleTerm::xg_termWindowMarginChanged);
         connect(window, &X_CalibrationWindow::xg_windowTypeChanged,
-                this, &X_SimpleTerm::zh_onWindowTypeChange);
+                this, &X_SimpleTerm::xh_onWindowTypeChange);
     }
 }
 //===================================================================

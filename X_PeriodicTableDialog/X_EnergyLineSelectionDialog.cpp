@@ -23,17 +23,17 @@ X_EnergyLineSelectionDialog::X_EnergyLineSelectionDialog(QWidget *parent) : QDia
     xv_energyLineName = QString();
     xv_energyLineEnergyValue = 0.0;
 
-    zh_createComponents();
-    zh_createConnections();
-    zh_restoreSettings();
+    xh_createComponents();
+    xh_createConnections();
+    xh_restoreSettings();
 }
 //=============================================================
 X_EnergyLineSelectionDialog::~X_EnergyLineSelectionDialog()
 {
-    zh_saveSettings();
+    xh_saveSettings();
 }
 //=============================================================
-void X_EnergyLineSelectionDialog::zh_createComponents()
+void X_EnergyLineSelectionDialog::xh_createComponents()
 {
     // models
     xv_chemicalElementPropertyTreeModel = new X_ChemicalElementPropertyTreeModel(this);
@@ -95,20 +95,20 @@ void X_EnergyLineSelectionDialog::zh_createComponents()
     buttonBox->addButton(xv_cancelButton, QDialogButtonBox::ActionRole);
 }
 //=============================================================
-void X_EnergyLineSelectionDialog::zh_createConnections()
+void X_EnergyLineSelectionDialog::xh_createConnections()
 {
     xv_periodicTableWidget->xp_setModel(xv_chemicalElementPropertyTreeModel);
 
     connect(xv_periodicTableWidget, &X_PeriodicTableWidget::xg_selectedChemicalElementChanged,
-            this, &X_EnergyLineSelectionDialog::zh_onSelectedChemicalElementChange);
+            this, &X_EnergyLineSelectionDialog::xh_onSelectedChemicalElementChange);
 
     connect(xv_okButton, &QPushButton::clicked,
-            this, &X_EnergyLineSelectionDialog::zh_onOkClick);
+            this, &X_EnergyLineSelectionDialog::xh_onOkClick);
     connect(xv_cancelButton, &QPushButton::clicked,
             this, &X_EnergyLineSelectionDialog::reject);
 
     connect(xv_chemicalElementPropertyTableView->selectionModel(), &QItemSelectionModel::currentChanged,
-            this, &X_EnergyLineSelectionDialog::zh_onCurrentEnergyLineChange);
+            this, &X_EnergyLineSelectionDialog::xh_onCurrentEnergyLineChange);
 
 }
 //=============================================================
@@ -127,7 +127,7 @@ QString X_EnergyLineSelectionDialog::xp_energyLineName() const
     return xv_energyLineName;
 }
 //=============================================================
-void X_EnergyLineSelectionDialog::zh_saveSettings()
+void X_EnergyLineSelectionDialog::xh_saveSettings()
 {
     QSettings settings;
     settings.beginGroup(qApp->applicationVersion());
@@ -141,7 +141,7 @@ void X_EnergyLineSelectionDialog::zh_saveSettings()
     settings.endGroup();
 }
 //=============================================================
-void X_EnergyLineSelectionDialog::zh_restoreSettings()
+void X_EnergyLineSelectionDialog::xh_restoreSettings()
 {
     QSettings settings;
     settings.beginGroup(qApp->applicationVersion());
@@ -166,12 +166,12 @@ void X_EnergyLineSelectionDialog::zh_restoreSettings()
     settings.endGroup();
 }
 //=============================================================
-void X_EnergyLineSelectionDialog::zh_onOkClick()
+void X_EnergyLineSelectionDialog::xh_onOkClick()
 {
     accept();
 }
 //=============================================================
-void X_EnergyLineSelectionDialog::zh_onSelectedChemicalElementChange(int X_Number, bool selected)
+void X_EnergyLineSelectionDialog::xh_onSelectedChemicalElementChange(int X_Number, bool selected)
 {
     QList<int> selectedChemicalElementList = xv_periodicTableWidget->xp_selectedChemicalElementList();
 
@@ -188,7 +188,7 @@ void X_EnergyLineSelectionDialog::zh_onSelectedChemicalElementChange(int X_Numbe
     xv_chemicalPropertyProxyTableModel->xp_onCurrentTreeElementChanged(energyLinesSectionIndex, QModelIndex());
 }
 //=============================================================
-void X_EnergyLineSelectionDialog::zh_onCurrentEnergyLineChange(const QModelIndex& current, const QModelIndex& previous)
+void X_EnergyLineSelectionDialog::xh_onCurrentEnergyLineChange(const QModelIndex& current, const QModelIndex& previous)
 {
     if(!current.isValid())
     {
@@ -253,11 +253,11 @@ void X_EnergyLineSelectionDialog::zh_onCurrentEnergyLineChange(const QModelIndex
         }
     }
 
-    zh_updateSelectedLineLineEdit();
+    xh_updateSelectedLineLineEdit();
 
 }
 //=============================================================
-void X_EnergyLineSelectionDialog::zh_updateSelectedLineLineEdit()
+void X_EnergyLineSelectionDialog::xh_updateSelectedLineLineEdit()
 {
     QString selectedLineText = tr("%1 %2 - %3 (kEv)").
             arg(xv_chemicalElementSymbol, xv_energyLineName, QString::number(xv_energyLineEnergyValue));

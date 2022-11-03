@@ -31,9 +31,9 @@ public slots:
 
 private slots:
 
-    void zh_onOkClick();
-    void zh_onSelectedChemicalElementChange(int X_Number, bool selected);
-    void zh_onCurrentEnergyLineChange(const QModelIndex& current, const QModelIndex& previous);
+    void xh_onOkClick();
+    void xh_onSelectedChemicalElementChange(int X_Number, bool selected);
+    void xh_onCurrentEnergyLineChange(const QModelIndex& current, const QModelIndex& previous);
 
 private:
 
@@ -59,11 +59,11 @@ private:
     QPushButton* xv_cancelButton;
 
     // FUNCS
-    void zh_createComponents();
-    void zh_createConnections();
-    void zh_saveSettings();
-    void zh_restoreSettings();
-    void zh_updateSelectedLineLineEdit();
+    void xh_createComponents();
+    void xh_createConnections();
+    void xh_saveSettings();
+    void xh_restoreSettings();
+    void xh_updateSelectedLineLineEdit();
 
 
 };

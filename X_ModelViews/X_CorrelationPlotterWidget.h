@@ -28,8 +28,8 @@ private:
    QVBoxLayout* frameLayout;
    X_Plotter* xv_plotter;
    // FUNCS
-   void zh_createComponents();
-   void zh_createConnections();
+   void xh_createComponents();
+   void xh_createConnections();
 
 };
 //==============================================================

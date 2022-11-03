@@ -21,10 +21,10 @@ X_CustomTermDialog::X_CustomTermDialog(X_RawCustomTerm rawTerm) : X_BaseDialog()
     setWindowFlag(Qt::WindowStaysOnTopHint);
 
     xv_rawTerm = rawTerm;
-    zh_createComponents();
-    zh_createConnections();
+    xh_createComponents();
+    xh_createConnections();
 
-    zh_restoreSettings();
+    xh_restoreSettings();
 
     if (xv_rawTerm.termType != X_AbstractTerm::TT_CUSTOM)
     {
@@ -47,10 +47,10 @@ X_CustomTermDialog::X_CustomTermDialog(X_Calibration* calibration, int termIndex
     xv_rawTerm.termState = X_AbstractTerm::TS_CONST_EXCLUDED;
 
     xv_calibration = calibration;
-    zh_createComponents();
-    zh_createConnections();
+    xh_createComponents();
+    xh_createConnections();
 
-    zh_restoreSettings();
+    xh_restoreSettings();
 
     if (termIndex > -1)
     {
@@ -73,39 +73,39 @@ X_CustomTermDialog::X_CustomTermDialog(X_Calibration* calibration, int termIndex
 //=========================================================
 X_CustomTermDialog::~X_CustomTermDialog()
 {
-    zh_saveSettings();
+    xh_saveSettings();
 }
 //=========================================================
-void X_CustomTermDialog::zh_restoreSettings()
+void X_CustomTermDialog::xh_restoreSettings()
 {
-    X_BaseDialog::zh_restoreSettings();
+    X_BaseDialog::xh_restoreSettings();
     QSettings settings;
-    zh_openDialogSettingsGroup(&settings);
+    xh_openDialogSettingsGroup(&settings);
 
     xv_useModifierForInsertingCheckBox->setChecked(settings.value(xv_useModifierString).toBool());
 
-    zh_closeDialogSettingsGroup(&settings);
+    xh_closeDialogSettingsGroup(&settings);
 }
 //=========================================================
-void X_CustomTermDialog::zh_saveSettings()
+void X_CustomTermDialog::xh_saveSettings()
 {
-    X_BaseDialog::zh_saveSettings();
+    X_BaseDialog::xh_saveSettings();
     QSettings settings;
-    zh_openDialogSettingsGroup(&settings);
+    xh_openDialogSettingsGroup(&settings);
 
     settings.setValue(xv_useModifierString, xv_useModifierForInsertingCheckBox->isChecked());
 
-    zh_closeDialogSettingsGroup(&settings);
+    xh_closeDialogSettingsGroup(&settings);
 }
 //=========================================================
-void X_CustomTermDialog::zh_createComponents()
+void X_CustomTermDialog::xh_createComponents()
 {
-    zh_addWidgetToMainLayout(zh_createControlWidget());
-    zh_addStretchToMainLayout();
+    xh_addWidgetToMainLayout(xh_createControlWidget());
+    xh_addStretchToMainLayout();
 
-    xv_okButton = zh_createBasementButton(tr("OK"), tr("Save parameter"), QIcon());
+    xv_okButton = xh_createBasementButton(tr("OK"), tr("Save parameter"), QIcon());
 
-    xv_closeButton = zh_createBasementButton(tr("Close"),
+    xv_closeButton = xh_createBasementButton(tr("Close"),
                                               tr("Close dialog"),
                                               QIcon());
 }
@@ -125,7 +125,7 @@ void X_CustomTermDialog::xp_insertVariable(const QString& variableName)
     }
 }
 //=========================================================
-void X_CustomTermDialog::zh_onOkButtonClick()
+void X_CustomTermDialog::xh_onOkButtonClick()
 {
     xv_messageLabel->clear();
     bool res = false;
@@ -143,19 +143,19 @@ void X_CustomTermDialog::zh_onOkButtonClick()
     //emit xg_requestTermUpdate(res, xv_rawTerm);
 }
 //=========================================================
-void X_CustomTermDialog::zh_onCloseButtonClick()
+void X_CustomTermDialog::xh_onCloseButtonClick()
 {
     reject();
 }
 //=========================================================
-void X_CustomTermDialog::zh_createConnections()
+void X_CustomTermDialog::xh_createConnections()
 {
-    connect(xv_okButton, &QPushButton::clicked, this, &X_CustomTermDialog::zh_onOkButtonClick);
-    connect(xv_closeButton, &QPushButton::clicked, this, &X_CustomTermDialog::zh_onCloseButtonClick);
+    connect(xv_okButton, &QPushButton::clicked, this, &X_CustomTermDialog::xh_onOkButtonClick);
+    connect(xv_closeButton, &QPushButton::clicked, this, &X_CustomTermDialog::xh_onCloseButtonClick);
     connect(xv_calibration, &X_Calibration::xg_message, this, &X_CustomTermDialog::xp_showMsg);
 }
 //=========================================================
-QWidget* X_CustomTermDialog::zh_createControlWidget()
+QWidget* X_CustomTermDialog::xh_createControlWidget()
 {
     QWidget* widget = new QWidget(this);
     QVBoxLayout* mainLayout = new QVBoxLayout;

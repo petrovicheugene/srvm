@@ -80,7 +80,7 @@ private:
     static QMap<WindowType, QPair<QString, QString>> xv_typeNameMap;
 
     // FUNCS
-    static QMap<WindowType, QPair<QString, QString> > zh_intTypeNameMap();
+    static QMap<WindowType, QPair<QString, QString> > xh_intTypeNameMap();
 
 };
 //====================================================

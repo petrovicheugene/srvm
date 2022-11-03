@@ -21,7 +21,7 @@ X_ChartPointOptions::X_ChartPointOptions()
     xv_verticalRulerMarkPrecision = 3;
     xv_verticalRulerLabelString = QString();
 
-    zh_recalcShapeAndBoundingRect();
+    xh_recalcShapeAndBoundingRect();
 }
 //====================================================
 X_ChartPointOptions::PointType X_ChartPointOptions::xp_pointType() const
@@ -37,8 +37,8 @@ bool X_ChartPointOptions::xp_setPointType(X_ChartPointOptions::PointType type)
     }
 
     xv_pointType = type;
-    zh_recalcShapeAndBoundingRect();
-    zh_updateItems();
+    xh_recalcShapeAndBoundingRect();
+    xh_updateItems();
     return true;
 }
 //====================================================
@@ -55,8 +55,8 @@ bool X_ChartPointOptions::xp_setPointPixelSize(int pointSize)
     }
 
     xv_pointSize = pointSize;
-    zh_recalcShapeAndBoundingRect();
-    zh_updateItems();
+    xh_recalcShapeAndBoundingRect();
+    xh_updateItems();
     return true;
 }
 //====================================================
@@ -73,7 +73,7 @@ bool X_ChartPointOptions::xp_setOutLineWidth(int outLineWidth)
     }
 
     xv_outLineWidth = outLineWidth;
-    zh_updateItems();
+    xh_updateItems();
     return true;
 }
 //====================================================
@@ -90,7 +90,7 @@ bool X_ChartPointOptions::xp_setCurrentPointColor(QColor currentPointColor)
     }
 
     xv_currentPointColor = currentPointColor;
-    zh_updateItems();
+    xh_updateItems();
     return true;
 }
 //====================================================
@@ -107,7 +107,7 @@ bool X_ChartPointOptions::xp_setOutLineColor(QColor outLineColor)
     }
 
     xv_outLineColor = outLineColor;
-    zh_updateItems();
+    xh_updateItems();
     return true;
 }
 //====================================================
@@ -124,7 +124,7 @@ bool X_ChartPointOptions::xp_setPointColor(QColor pointColor)
     }
 
     xv_pointColor = pointColor;
-    zh_updateItems();
+    xh_updateItems();
     return true;
 }
 //====================================================
@@ -227,7 +227,7 @@ bool X_ChartPointOptions::xp_setRulerMarkPrecision(Qt::Orientation orientation, 
     return true;
 }
 //====================================================
-void X_ChartPointOptions::zh_recalcShapeAndBoundingRect()
+void X_ChartPointOptions::xh_recalcShapeAndBoundingRect()
 {
     // shape
     qreal pointHalfSize = (qreal)xv_pointSize / 2.0;
@@ -262,7 +262,7 @@ void X_ChartPointOptions::zh_recalcShapeAndBoundingRect()
     xv_boundingRect = rect;
 }
 //====================================================
-void X_ChartPointOptions::zh_updateItems() const
+void X_ChartPointOptions::xh_updateItems() const
 {
     foreach(X_ChartPointGraphicsItem* item, xv_seriesPointItemList)
     {

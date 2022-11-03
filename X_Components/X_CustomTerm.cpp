@@ -7,29 +7,29 @@
 X_CustomTerm::X_CustomTerm(X_Calibration* parent) : X_AbstractTerm(parent)
 {
     xv_type = TT_CUSTOM;
-    zh_createConnections();
+    xh_createConnections();
 }
 //===================================================================
-void X_CustomTerm::zh_createConnections()
+void X_CustomTerm::xh_createConnections()
 {
     connect(&xv_mathExpressionHandler,
             &X_MathExpressionHandler::zs_requestVariableValue,
             this,
-            &X_CustomTerm::zh_handleWindowIntensityRequest);
+            &X_CustomTerm::xh_handleWindowIntensityRequest);
     connect(&xv_mathExpressionHandler,
             &X_MathExpressionHandler::zs_errorReport,
             this,
-            &X_CustomTerm::zh_handleErrorReport);
+            &X_CustomTerm::xh_handleErrorReport);
 }
 //===================================================================
-void X_CustomTerm::zh_handleWindowIntensityRequest(const QString& windowName,
+void X_CustomTerm::xh_handleWindowIntensityRequest(const QString& windowName,
                                                   double& value,
                                                   bool& bRes)
 {
     emit zs_calcWindowIntensity(windowName, (const QObject*) xv_spectrum, value, true, &bRes);
 }
 //===================================================================
-void X_CustomTerm::zh_handleErrorReport(const QString& errorString,
+void X_CustomTerm::xh_handleErrorReport(const QString& errorString,
                                        int errorTokenStartPosition,
                                        int errorTokenEndPosition) const
 {
@@ -74,7 +74,7 @@ QList<qint64> X_CustomTerm::xp_termWindowIdList() const
     return windowIdList;
 }
 //===================================================================
-void X_CustomTerm::zh_updateTermNameForWindowName()
+void X_CustomTerm::xh_updateTermNameForWindowName()
 {
     if (!sender())
     {
@@ -85,11 +85,11 @@ void X_CustomTerm::zh_updateTermNameForWindowName()
     //        return;
     //    }
 
-    //    zh_setName();
+    //    xh_setName();
     //emit xg_termNameChanged();
 }
 //===================================================================
-void X_CustomTerm::zh_onWindowTypeChange(X_CalibrationWindow::WindowType previousType,
+void X_CustomTerm::xh_onWindowTypeChange(X_CalibrationWindow::WindowType previousType,
                                         X_CalibrationWindow::WindowType currentType)
 {
     //    if(!sender() || (sender() != xv_window1 && sender() != xv_window2))
@@ -122,7 +122,7 @@ void X_CustomTerm::xp_setName(const QString& name)
 bool X_CustomTerm::xp_setExpression(const QString& expression)
 {
     xv_expression = expression;
-    return zh_checkExpression(xv_expression);
+    return xh_checkExpression(xv_expression);
 }
 //===================================================================
 void X_CustomTerm::xp_setDescription(const QString& description)
@@ -130,7 +130,7 @@ void X_CustomTerm::xp_setDescription(const QString& description)
     xv_description = description;
 }
 //===================================================================
-bool X_CustomTerm::zh_checkExpression(const QString& expression)
+bool X_CustomTerm::xh_checkExpression(const QString& expression)
 {
     X_MathExpressionHandler mathExpressionHandler;
     X_MathExpressionVariableListMaker mathExpressionVariableListMaker;

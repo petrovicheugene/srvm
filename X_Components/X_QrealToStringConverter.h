@@ -12,7 +12,7 @@ public:
     static bool xp_setFormat(char);
     static bool xp_setPrecision(int);
     static QString xp_convert(qreal value);
-    static void zh_chopTailX_eroesFromDoubleString(QString&);
+    static void xh_chopTailX_eroesFromDoubleString(QString&);
 
 private:
 

@@ -43,7 +43,7 @@ public:
     int xp_rowOfChildItem(const X_ChemicalElementPropertyItem *child) const;
     void xp_completeChemicalElementPropertyNameList(PropertyNames &propertyNames) const;
     int xp_chemicalElementPropertyCount() const;
-    int zh_elementLevelNumber() const;
+    int xh_elementLevelNumber() const;
     int xp_zNumber(const X_ChemicalElementPropertyItem *callingItem) const;
     void xp_totalDescendantList(QList<X_ChemicalElementPropertyItem *> &descendantList) const;
 

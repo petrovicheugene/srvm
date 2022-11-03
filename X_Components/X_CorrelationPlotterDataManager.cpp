@@ -34,7 +34,7 @@ X_CorrelationPlotterDataManager::X_CorrelationPlotterDataManager(QObject *parent
     xv_calibrationRulerLabelBaseString = tr("Calibration");
     xv_deviationRulerLabelBaseString = tr("Deviation %");
 
-    zh_setUpChartPointOptions();
+    xh_setUpChartPointOptions();
 }
 //=====================================================================
 void X_CorrelationPlotterDataManager::xp_connectToPlotter(X_Plotter* plotter)
@@ -46,7 +46,7 @@ void X_CorrelationPlotterDataManager::xp_connectToPlotter(X_Plotter* plotter)
     xv_plotter->xp_fitInBoundingRect();
 
 
-    xv_plotter->xp_appendWidgetToDashboard(zh_createChartDataKindComboBoxWidget(),
+    xv_plotter->xp_appendWidgetToDashboard(xh_createChartDataKindComboBoxWidget(),
                                            X_HorizontalDashBoard::AWP_LEFT_OF_BUTTONS,
                                            Qt::AlignLeft,
                                            10);
@@ -56,7 +56,7 @@ void X_CorrelationPlotterDataManager::xp_connectToPlotter(X_Plotter* plotter)
     //   xv_plotter->xp_appendButtonsToDashboard(actionList, Qt::AlignLeft, 0);
 
     //   connect(xv_plotter, &X_Plotter::xg_cursorAreaImage,
-    //           this, &X_PlotterDataManager::zh_findItemInCursorAreaImage);
+    //           this, &X_PlotterDataManager::xh_findItemInCursorAreaImage);
 
     // rule settings // No label on right and top
     xv_plotter->xp_setLeftMarkRecalcFlag(false);
@@ -81,13 +81,13 @@ void X_CorrelationPlotterDataManager::xp_connectToSpectrumArrayRepository(X_Spec
     xv_spectrumArrayRepository = repository;
     // array repository <-> array model
     connect(repository, &X_SpectrumArrayRepository::xg_spectrumOperation,
-            this, &X_CorrelationPlotterDataManager::zh_onRepositoryArrayOperation);
+            this, &X_CorrelationPlotterDataManager::xh_onRepositoryArrayOperation);
     connect(repository, &X_SpectrumArrayRepository::xg_chemElementOperation,
-            this, &X_CorrelationPlotterDataManager::zh_onRepositoryChemElementOperation);
+            this, &X_CorrelationPlotterDataManager::xh_onRepositoryChemElementOperation);
     connect(repository, &X_SpectrumArrayRepository::xg_currentArrayIdChanged,
-            this, &X_CorrelationPlotterDataManager::zh_currentSpectrumArrayChanged);
+            this, &X_CorrelationPlotterDataManager::xh_currentSpectrumArrayChanged);
     connect(repository, &X_SpectrumArrayRepository::xg_currentSpectrumChanged,
-            this, &X_CorrelationPlotterDataManager::zh_currentSpectrumChanged);
+            this, &X_CorrelationPlotterDataManager::xh_currentSpectrumChanged);
 
 }
 //=====================================================================
@@ -95,13 +95,13 @@ void X_CorrelationPlotterDataManager::xp_connectToCalibrationRepository(X_Calibr
 {
     xv_calibrationRepository = repository;
     connect(repository, &X_CalibrationRepository::xg_calibrationOperation,
-            this, &X_CorrelationPlotterDataManager::zh_onRepositoryCalibrationOperation);
+            this, &X_CorrelationPlotterDataManager::xh_onRepositoryCalibrationOperation);
     connect(repository, &X_CalibrationRepository::xg_termOperation,
-            this, &X_CorrelationPlotterDataManager::zh_onRepositoryTermOperation);
+            this, &X_CorrelationPlotterDataManager::xh_onRepositoryTermOperation);
     connect(xv_calibrationRepository, &X_CalibrationRepository::xg_currentCalibrationChanged,
-            this, &X_CorrelationPlotterDataManager::zh_currentCalibrationChanged);
+            this, &X_CorrelationPlotterDataManager::xh_currentCalibrationChanged);
     connect(xv_calibrationRepository, &X_CalibrationRepository::xg_normalizerChanged,
-            this, &X_CorrelationPlotterDataManager::zh_onNormalizerChange);
+            this, &X_CorrelationPlotterDataManager::xh_onNormalizerChange);
 
 }
 //=====================================================================
@@ -127,7 +127,7 @@ void X_CorrelationPlotterDataManager::xp_setCurrentSpectrum(qint64 id) const
     xv_spectrumArrayRepository->xp_setSpectrumCurrent(id);
 }
 //=====================================================================
-bool X_CorrelationPlotterDataManager::zh_setRulerMetrixAndPrecisionToPlot(const X_ChartPointOptions& options) const
+bool X_CorrelationPlotterDataManager::xh_setRulerMetrixAndPrecisionToPlot(const X_ChartPointOptions& options) const
 {
     if(!xv_plotter)
     {
@@ -149,7 +149,7 @@ bool X_CorrelationPlotterDataManager::zh_setRulerMetrixAndPrecisionToPlot(const 
     return true;
 }
 //=====================================================================
-QWidget* X_CorrelationPlotterDataManager::zh_createChartDataKindComboBoxWidget()
+QWidget* X_CorrelationPlotterDataManager::xh_createChartDataKindComboBoxWidget()
 {
     QWidget* widget = new QWidget();
     QHBoxLayout* layout = new QHBoxLayout;
@@ -163,7 +163,7 @@ QWidget* X_CorrelationPlotterDataManager::zh_createChartDataKindComboBoxWidget()
     xv_chartDataKindComboBox = new QComboBox();
     label->setBuddy(xv_chartDataKindComboBox);
     connect(xv_chartDataKindComboBox, SIGNAL(currentIndexChanged(int)),
-            this, SLOT(zh_onChartDataKindChange(int)));
+            this, SLOT(xh_onChartDataKindChange(int)));
 
     xv_chartDataKindComboBox->addItem(tr("Equation term"), CDK_TERM);
     xv_chartDataKindComboBox->addItem(tr("Calibration"), CDK_CALIBRATION);
@@ -183,7 +183,7 @@ QWidget* X_CorrelationPlotterDataManager::zh_createChartDataKindComboBoxWidget()
     return widget;
 }
 //=====================================================================
-void X_CorrelationPlotterDataManager::zh_setUpChartPointOptions()
+void X_CorrelationPlotterDataManager::xh_setUpChartPointOptions()
 {
     // concentration chart
     xv_calibrationChartPointOptions.xp_setPointType(X_ChartPointOptions::PT_ROUND);
@@ -230,7 +230,7 @@ void X_CorrelationPlotterDataManager::zh_setUpChartPointOptions()
 
 }
 //=====================================================================
-void X_CorrelationPlotterDataManager::zh_rebuildChart()
+void X_CorrelationPlotterDataManager::xh_rebuildChart()
 {
     if(!xv_plotter || !xv_chartDataKindComboBox)
     {
@@ -264,14 +264,14 @@ void X_CorrelationPlotterDataManager::zh_rebuildChart()
     if(chartDataKind == CDK_TERM)
     {
         xv_defaultItem->xp_setMedianaLineVisible(false);
-        if(!zh_getTermToConcentrationData(chartPointMap, maxX, minX, maxY, minY))
+        if(!xh_getTermToConcentrationData(chartPointMap, maxX, minX, maxY, minY))
         {
             // TODO ERROR msg
             // return;
         }
-        zh_setRulerMetrixAndPrecisionToPlot(xv_termChartPointOptions);
-         //zh_setRulerMetrixAndPrecisionToPlot(xv_deviationChartPointOptions);
-        zh_recalcAndSetSceneRect(maxX, minX, maxY, minY, chartDataKind,
+        xh_setRulerMetrixAndPrecisionToPlot(xv_termChartPointOptions);
+         //xh_setRulerMetrixAndPrecisionToPlot(xv_deviationChartPointOptions);
+        xh_recalcAndSetSceneRect(maxX, minX, maxY, minY, chartDataKind,
                                  &xv_termChartPointOptions);
 
         // assign chartPoinOptions
@@ -280,13 +280,13 @@ void X_CorrelationPlotterDataManager::zh_rebuildChart()
     else if(chartDataKind == CDK_CALIBRATION)
     {
         xv_defaultItem->xp_setMedianaLineVisible(true);
-        if(!zh_getCalibrationToConcentrationData(chartPointMap, maxX, minX, maxY, minY))
+        if(!xh_getCalibrationToConcentrationData(chartPointMap, maxX, minX, maxY, minY))
         {
             // TODO ERROR msg
             // return;
         }
-        zh_setRulerMetrixAndPrecisionToPlot(xv_calibrationChartPointOptions);
-        zh_recalcAndSetSceneRect(maxX, minX, maxY, minY, chartDataKind,
+        xh_setRulerMetrixAndPrecisionToPlot(xv_calibrationChartPointOptions);
+        xh_recalcAndSetSceneRect(maxX, minX, maxY, minY, chartDataKind,
                                  &xv_calibrationChartPointOptions);
 
         // assign chartPoinOptions
@@ -295,13 +295,13 @@ void X_CorrelationPlotterDataManager::zh_rebuildChart()
     else if(chartDataKind == CDK_DEVIATION)
     {
         xv_defaultItem->xp_setMedianaLineVisible(false);
-        if(!zh_getDeviationToConcentrationData(chartPointMap, maxX, minX, maxY, minY))
+        if(!xh_getDeviationToConcentrationData(chartPointMap, maxX, minX, maxY, minY))
         {
             // TODO ERROR msg
             // return;
         }
-        zh_setRulerMetrixAndPrecisionToPlot(xv_deviationChartPointOptions);
-        zh_recalcAndSetSceneRect(maxX, minX, maxY, minY, chartDataKind,
+        xh_setRulerMetrixAndPrecisionToPlot(xv_deviationChartPointOptions);
+        xh_recalcAndSetSceneRect(maxX, minX, maxY, minY, chartDataKind,
                                  &xv_deviationChartPointOptions);
 
         // assign chartPoinOptions
@@ -363,7 +363,7 @@ void X_CorrelationPlotterDataManager::zh_rebuildChart()
 
 }
 //=====================================================================
-bool X_CorrelationPlotterDataManager::zh_getTermToConcentrationData(QMap<qint64, X_VisibilityPointF>& chartPointMap,
+bool X_CorrelationPlotterDataManager::xh_getTermToConcentrationData(QMap<qint64, X_VisibilityPointF>& chartPointMap,
                                                                    qreal &maxX, qreal &minX, qreal &maxY, qreal& minY )
 {
     if(!xv_calibrationRepository || !xv_spectrumArrayRepository || xv_currentArrayId < 0)
@@ -442,7 +442,7 @@ bool X_CorrelationPlotterDataManager::zh_getTermToConcentrationData(QMap<qint64,
     return true;
 }
 //=====================================================================
-bool X_CorrelationPlotterDataManager::zh_getCalibrationToConcentrationData(QMap<qint64, X_VisibilityPointF>& chartPointMap,
+bool X_CorrelationPlotterDataManager::xh_getCalibrationToConcentrationData(QMap<qint64, X_VisibilityPointF>& chartPointMap,
                                                                           qreal& maxX, qreal &minX, qreal& maxY, qreal& minY)
 {
     if(!xv_calibrationRepository || !xv_spectrumArrayRepository || xv_currentArrayId < 0)
@@ -528,7 +528,7 @@ bool X_CorrelationPlotterDataManager::zh_getCalibrationToConcentrationData(QMap<
     return true;
 }
 //=====================================================================
-bool X_CorrelationPlotterDataManager::zh_getDeviationToConcentrationData(QMap<qint64, X_VisibilityPointF> &chartPointMap,
+bool X_CorrelationPlotterDataManager::xh_getDeviationToConcentrationData(QMap<qint64, X_VisibilityPointF> &chartPointMap,
                                                                         qreal &maxX, qreal &minX, qreal& maxY, qreal& minY )
 {
     if(!xv_calibrationRepository || !xv_spectrumArrayRepository || xv_currentArrayId < 0)
@@ -627,7 +627,7 @@ bool X_CorrelationPlotterDataManager::zh_getDeviationToConcentrationData(QMap<qi
     return true;
 }
 //=====================================================================
-void X_CorrelationPlotterDataManager::zh_recalcAndSetSceneRect(const QMap<qint64, X_VisibilityPointF> &chartPointMap,
+void X_CorrelationPlotterDataManager::xh_recalcAndSetSceneRect(const QMap<qint64, X_VisibilityPointF> &chartPointMap,
                                                               const X_ChartPointOptions* chartPointOptions)
 {
     if(!xv_plotter)
@@ -703,7 +703,7 @@ void X_CorrelationPlotterDataManager::zh_recalcAndSetSceneRect(const QMap<qint64
     xv_defaultItem->xp_fitItemInRect(sceneRect);
 }
 //=====================================================================
-void X_CorrelationPlotterDataManager::zh_recalcAndSetSceneRect(qreal maxX, qreal minX,
+void X_CorrelationPlotterDataManager::xh_recalcAndSetSceneRect(qreal maxX, qreal minX,
                                                               qreal maxY, qreal minY, ChartDataKind chartDataKind,
                                                               const X_ChartPointOptions* chartPointOptions)
 {
@@ -775,7 +775,7 @@ void X_CorrelationPlotterDataManager::zh_recalcAndSetSceneRect(qreal maxX, qreal
     xv_defaultItem->xp_fitItemInRect(sceneRect.normalized());
 }
 //=====================================================================
-void X_CorrelationPlotterDataManager::zh_createAndPlaceChartPointItems(const QMap<qint64,
+void X_CorrelationPlotterDataManager::xh_createAndPlaceChartPointItems(const QMap<qint64,
                                                                       X_VisibilityPointF>& chartPointMap,
                                                                       X_ChartPointOptions* chartPointOptions)
 {
@@ -790,10 +790,10 @@ void X_CorrelationPlotterDataManager::zh_createAndPlaceChartPointItems(const QMa
 //=====================================================================
 void X_CorrelationPlotterDataManager::xp_currentTermChanged(int , int)
 {
-    zh_rebuildChart();
+    xh_rebuildChart();
 }
 //=====================================================================
-void X_CorrelationPlotterDataManager::zh_currentSpectrumChanged(qint64 currentSpectrumId,
+void X_CorrelationPlotterDataManager::xh_currentSpectrumChanged(qint64 currentSpectrumId,
                                                                int currentSpectrumIndex,
                                                                qint64 previousSpectrumId,
                                                                int previousSpectrumIndex)
@@ -814,12 +814,12 @@ void X_CorrelationPlotterDataManager::zh_currentSpectrumChanged(qint64 currentSp
     xv_plotter->xp_updatePlot();
 }
 //=====================================================================
-void X_CorrelationPlotterDataManager::zh_onChartDataKindChange(int)
+void X_CorrelationPlotterDataManager::xh_onChartDataKindChange(int)
 {
-    zh_rebuildChart();
+    xh_rebuildChart();
 }
 //=====================================================================
-void X_CorrelationPlotterDataManager::zh_currentSpectrumArrayChanged(qint64 currentArrayId, int currentArrayIndex)
+void X_CorrelationPlotterDataManager::xh_currentSpectrumArrayChanged(qint64 currentArrayId, int currentArrayIndex)
 {
     if(xv_currentArrayIndex == currentArrayIndex && xv_currentArrayId == currentArrayId)
     {
@@ -829,13 +829,13 @@ void X_CorrelationPlotterDataManager::zh_currentSpectrumArrayChanged(qint64 curr
     //emit xg_currentOperation(OT_BEGIN_RESET, -1, -1);
     xv_currentArrayIndex = currentArrayIndex;
     xv_currentArrayId = currentArrayId;
-    zh_rebuildChart();
-    //    zh_defineColumnCounts();
-    //    zh_calculateCalibrationConcentrations();
+    xh_rebuildChart();
+    //    xh_defineColumnCounts();
+    //    xh_calculateCalibrationConcentrations();
     //    emit xg_currentOperation(OT_END_RESET, -1, -1);
 }
 //=====================================================================
-void X_CorrelationPlotterDataManager::zh_onRepositoryArrayOperation(X_SpectrumArrayRepository::SpectrumOperationType type,
+void X_CorrelationPlotterDataManager::xh_onRepositoryArrayOperation(X_SpectrumArrayRepository::SpectrumOperationType type,
                                                                    int arrayIndex, int first, int last)
 {
     if(xv_currentArrayIndex != arrayIndex)
@@ -843,10 +843,10 @@ void X_CorrelationPlotterDataManager::zh_onRepositoryArrayOperation(X_SpectrumAr
         return;
     }
 
-    zh_rebuildChart();
+    xh_rebuildChart();
 }
 //=====================================================================
-void X_CorrelationPlotterDataManager::zh_onRepositoryChemElementOperation(X_SpectrumArrayRepository::ChemElementOperationType type,
+void X_CorrelationPlotterDataManager::xh_onRepositoryChemElementOperation(X_SpectrumArrayRepository::ChemElementOperationType type,
                                                                          int arrayIndex, int first, int last)
 {
     if(xv_currentArrayIndex != arrayIndex)
@@ -854,10 +854,10 @@ void X_CorrelationPlotterDataManager::zh_onRepositoryChemElementOperation(X_Spec
         return;
     }
 
-    zh_rebuildChart();
+    xh_rebuildChart();
 }
 //=====================================================================
-void X_CorrelationPlotterDataManager::zh_onRepositoryCalibrationOperation(X_CalibrationRepository::CalibrationOperationType type, int first, int last)
+void X_CorrelationPlotterDataManager::xh_onRepositoryCalibrationOperation(X_CalibrationRepository::CalibrationOperationType type, int first, int last)
 {
     if(xv_currentCalibrationIndex >= first && xv_currentCalibrationIndex <= last)
     {
@@ -880,13 +880,13 @@ void X_CorrelationPlotterDataManager::zh_onRepositoryCalibrationOperation(X_Cali
                     type == X_CalibrationRepository::COT_END_REMOVE_CALIBRATIONS ||
                     type == X_CalibrationRepository::COT_END_INSERT_CALIBRATIONS)
             {
-                zh_rebuildChart();
+                xh_rebuildChart();
             }
         }
     }
 }
 //=====================================================================
-void X_CorrelationPlotterDataManager::zh_onRepositoryTermOperation(X_CalibrationRepository::TermOperationType type, int calibrationIndex, int first, int last)
+void X_CorrelationPlotterDataManager::xh_onRepositoryTermOperation(X_CalibrationRepository::TermOperationType type, int calibrationIndex, int first, int last)
 {
     if(calibrationIndex == xv_currentCalibrationIndex)
     {
@@ -904,7 +904,7 @@ void X_CorrelationPlotterDataManager::zh_onRepositoryTermOperation(X_Calibration
                     type == X_CalibrationRepository::TOT_TERM_WINDOW_MARGIN_CHANGED ||
                     type == X_CalibrationRepository::TOT_TERM_FACTOR_CHANGED )
             {
-                zh_rebuildChart();
+                xh_rebuildChart();
             }
         }
         else if(chartDataKind == CDK_TERM)
@@ -912,13 +912,13 @@ void X_CorrelationPlotterDataManager::zh_onRepositoryTermOperation(X_Calibration
             if(type == X_CalibrationRepository::TOT_TERM_NAME_CHANGED ||
                     type == X_CalibrationRepository::TOT_TERM_WINDOW_MARGIN_CHANGED)
             {
-                zh_rebuildChart();
+                xh_rebuildChart();
             }
         }
     }
 }
 //=====================================================================
-void X_CorrelationPlotterDataManager::zh_currentCalibrationChanged(qint64 calibrationId, int calibrationIndex)
+void X_CorrelationPlotterDataManager::xh_currentCalibrationChanged(qint64 calibrationId, int calibrationIndex)
 {
     if(xv_currentCalibrationId == calibrationId && xv_currentCalibrationIndex == calibrationIndex)
     {
@@ -927,14 +927,14 @@ void X_CorrelationPlotterDataManager::zh_currentCalibrationChanged(qint64 calibr
 
     xv_currentCalibrationId = calibrationId;
     xv_currentCalibrationIndex = calibrationIndex;
-    zh_rebuildChart();
+    xh_rebuildChart();
 }
 //=====================================================================
-void X_CorrelationPlotterDataManager::zh_onNormalizerChange(qint64 calibrationId)
+void X_CorrelationPlotterDataManager::xh_onNormalizerChange(qint64 calibrationId)
 {
     if(xv_currentCalibrationId == calibrationId)
     {
-        zh_rebuildChart();
+        xh_rebuildChart();
     }
 }
 //=====================================================================

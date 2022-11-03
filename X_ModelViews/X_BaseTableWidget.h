@@ -45,7 +45,7 @@ signals:
 
 protected slots:
 
-    void zh_onSelectionChange(const QItemSelection& selected,
+    void xh_onSelectionChange(const QItemSelection& selected,
                               const QItemSelection& deselected);
 
 protected:
@@ -62,12 +62,12 @@ protected:
      \brief
 
     */
-    void zh_createComponents();
+    void xh_createComponents();
     /*!
      \brief
 
     */
-    void zh_createConnections();
+    void xh_createConnections();
 
 
 };

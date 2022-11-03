@@ -22,9 +22,9 @@
 // STATIC
 //=========================================================
 const QString X_Calibration::simplePolynomEquationString(
-    X_Calibration::zh_initPlynomialEquationString());
+    X_Calibration::xh_initPlynomialEquationString());
 const QString X_Calibration::fractionalEquationString(
-    X_Calibration::zh_initFractionalEquationString1());
+    X_Calibration::xh_initFractionalEquationString1());
 const QString X_Calibration::xv_defaultWindowName(QObject::tr("Peak #"));
 
 bool X_Calibration::xv_useBaseTermInFractionalEquationByDefault = false;
@@ -33,9 +33,9 @@ qint64 X_Calibration::xv_lastCalibrationId = 0;
 int X_Calibration::xv_lastColorIndex = 0;
 int X_Calibration::xv_precision = 15;
 QMap<X_Calibration::EquationType, QString> X_Calibration::xv_eqationTypeStringMap
-    = X_Calibration::zh_initEquationTypeStringMap();
+    = X_Calibration::xh_initEquationTypeStringMap();
 //=========================================================
-QMap<X_Calibration::EquationType, QString> X_Calibration::zh_initEquationTypeStringMap()
+QMap<X_Calibration::EquationType, QString> X_Calibration::xh_initEquationTypeStringMap()
 {
     QMap<X_Calibration::EquationType, QString> map;
     map.insert(ET_NOT_DEFINED, tr("Not defined"));
@@ -44,7 +44,7 @@ QMap<X_Calibration::EquationType, QString> X_Calibration::zh_initEquationTypeStr
     return map;
 }
 //=========================================================
-QString X_Calibration::zh_initPlynomialEquationString()
+QString X_Calibration::xh_initPlynomialEquationString()
 {
     QString simplePolynomEquationString
         = "<table border=0 cellspacing=0 cellpadding=0>"
@@ -69,7 +69,7 @@ QString X_Calibration::zh_initPlynomialEquationString()
     return simplePolynomEquationString;
 }
 //=========================================================
-QString X_Calibration::zh_initFractionalEquationString()
+QString X_Calibration::xh_initFractionalEquationString()
 {
     QString fractionalEquationString
         = "<table border=0 cellspacing=0 cellpadding=0>"
@@ -106,7 +106,7 @@ QString X_Calibration::zh_initFractionalEquationString()
     return fractionalEquationString;
 }
 //=========================================================
-QString X_Calibration::zh_initFractionalEquationString1()
+QString X_Calibration::xh_initFractionalEquationString1()
 {
     QString fractionalEquationString
         = "<table border=0 cellspacing=0 cellpadding=0>"
@@ -537,14 +537,14 @@ int X_Calibration::xp_createNewCalibrationWindow(int firstChannel,
 
     if (calibrationWindow->xp_windowType() == X_CalibrationWindow::WT_PEAK)
     {
-        zh_createTermsForWindow(calibrationWindow);
+        xh_createTermsForWindow(calibrationWindow);
     }
     xv_dirty = true;
     xv_dateTime = QDateTime::currentDateTime();
     emit xg_dirtyChanged(xv_dirty);
 
     return windowNewIndex;
-    // zh_createTermsForWindow(calibrationWindow);
+    // xh_createTermsForWindow(calibrationWindow);
 }
 //=========================================================
 int X_Calibration::xp_createNewCalibrationWindow(const X_RawWindow& rawWindow)
@@ -577,19 +577,19 @@ int X_Calibration::xp_createNewCalibrationWindow(const X_RawWindow& rawWindow)
 
     if (calibrationWindow->xp_windowType() == X_CalibrationWindow::WT_PEAK)
     {
-        zh_createTermsForWindow(calibrationWindow);
+        xh_createTermsForWindow(calibrationWindow);
     }
     xv_dirty = false;
     emit xg_dirtyChanged(xv_dirty);
     return windowNewIndex;
 }
 //=========================================================
-void X_Calibration::zh_createTermsForWindow(const X_CalibrationWindow* window)
+void X_Calibration::xh_createTermsForWindow(const X_CalibrationWindow* window)
 {
     // creation simple
     int windowIndex = xv_windowList.indexOf(const_cast<X_CalibrationWindow*>(window));
 
-    if (!zh_windowHasTerms(window, X_AbstractTerm::TT_SIMPLE))
+    if (!xh_windowHasTerms(window, X_AbstractTerm::TT_SIMPLE))
     {
         // define newTermIndex;
         int newTermIndex = -1;
@@ -628,7 +628,7 @@ void X_Calibration::zh_createTermsForWindow(const X_CalibrationWindow* window)
     }
 
     // quadratic
-    if (!zh_windowHasTerms(window, X_AbstractTerm::TT_QUADRATIC))
+    if (!xh_windowHasTerms(window, X_AbstractTerm::TT_QUADRATIC))
     {
         // define newTermIndex;
         int newTermIndex = -1;
@@ -685,7 +685,7 @@ void X_Calibration::zh_createTermsForWindow(const X_CalibrationWindow* window)
     }
 }
 //=========================================================
-bool X_Calibration::zh_windowHasTerms(const X_CalibrationWindow* window,
+bool X_Calibration::xh_windowHasTerms(const X_CalibrationWindow* window,
                                      X_AbstractTerm::TermType type) const
 {
     for (int t = 0; t < xv_termList.count(); t++)
@@ -704,7 +704,7 @@ bool X_Calibration::zh_windowHasTerms(const X_CalibrationWindow* window,
     return false;
 }
 //=========================================================
-int X_Calibration::zh_termIndex(const X_AbstractTerm* term) const
+int X_Calibration::xh_termIndex(const X_AbstractTerm* term) const
 {
     if (!term)
     {
@@ -722,7 +722,7 @@ int X_Calibration::zh_termIndex(const X_AbstractTerm* term) const
     return -1;
 }
 //=========================================================
-void X_Calibration::zh_chopTailX_eroesFromInterceptString()
+void X_Calibration::xh_chopTailX_eroesFromInterceptString()
 {
     for (int i = xv_interceptString.length() - 1; i > 0; i--)
     {
@@ -735,17 +735,17 @@ void X_Calibration::zh_chopTailX_eroesFromInterceptString()
     }
 }
 //=========================================================
-qreal* X_Calibration::zh_termFactorPointer(int termIndex) const
+qreal* X_Calibration::xh_termFactorPointer(int termIndex) const
 {
     if (termIndex < 0 || termIndex >= xv_termList.count())
     {
         return 0;
     }
 
-    return xv_termList.value(termIndex)->zh_termFactorPointer();
+    return xv_termList.value(termIndex)->xh_termFactorPointer();
 }
 //=========================================================
-int X_Calibration::zh_findNextTermIndex(X_AbstractTerm::TermType termType) const
+int X_Calibration::xh_findNextTermIndex(X_AbstractTerm::TermType termType) const
 {
     if (termType == X_AbstractTerm::TT_SIMPLE)
     {
@@ -911,7 +911,7 @@ bool X_Calibration::xp_setTermFactorString(int termIndex, const QString& factorS
         return false;
     }
 
-    if (xv_termList.at(termIndex)->zh_setTermFactor(factorString))
+    if (xv_termList.at(termIndex)->xh_setTermFactor(factorString))
     {
         emit xg_termOperation(TOT_TERM_FACTOR_CHANGED, termIndex, termIndex);
         xv_dirty = true;
@@ -1117,7 +1117,7 @@ void X_Calibration::xp_updateCustomTerm(bool& res, X_RawCustomTerm& rawTerm)
         return;
     }
 
-    if (!zh_checkCustomString(rawTerm))
+    if (!xh_checkCustomString(rawTerm))
     {
         res = false;
         return;
@@ -1165,14 +1165,14 @@ int X_Calibration::xp_createCustomTerm(X_AbstractTerm::TermState termState,
                                       const QString& termFactor)
 {
     // define next term index
-    int termIndex = zh_findNextTermIndex(X_AbstractTerm::TT_CUSTOM);
+    int termIndex = xh_findNextTermIndex(X_AbstractTerm::TT_CUSTOM);
 
     X_CustomTerm* customTerm = new X_CustomTerm(this);
     customTerm->xp_setTermState(termState);
     customTerm->xp_setName(name);
     customTerm->xp_setExpression(equation);
     customTerm->xp_setDescription(description);
-    customTerm->zh_setTermFactor(termFactor);
+    customTerm->xh_setTermFactor(termFactor);
 
     connect(customTerm,
             &X_CustomTerm::zs_calcWindowIntensity,
@@ -1199,7 +1199,7 @@ int X_Calibration::xp_createTerm(QList<int>& windowIndexList,
                                 const QString& termFactor)
 {
     // define next term index
-    int termIndex = zh_findNextTermIndex(termType);
+    int termIndex = xh_findNextTermIndex(termType);
     X_AbstractTerm* term = nullptr;
     if (termType == X_AbstractTerm::TT_SIMPLE)
     {
@@ -1215,7 +1215,7 @@ int X_Calibration::xp_createTerm(QList<int>& windowIndexList,
 
         term = new X_SimpleTerm(window, this);
         term->xp_setTermState(termState);
-        term->zh_setTermFactor(termFactor);
+        term->xh_setTermFactor(termFactor);
         //        emit xg_termOperation(TOT_BEGIN_INSERT_TERM, termIndex, termIndex);
         //        xv_termList.insert(termIndex, simpleTerm);
         //        emit xg_termOperation(TOT_END_INSERT_TERM, termIndex, termIndex);
@@ -1234,7 +1234,7 @@ int X_Calibration::xp_createTerm(QList<int>& windowIndexList,
 
         term = new X_QuadraticTerm(window, this);
         term->xp_setTermState(termState);
-        term->zh_setTermFactor(termFactor);
+        term->xh_setTermFactor(termFactor);
     }
     else if (termType == X_AbstractTerm::TT_MIXED)
     {
@@ -1255,7 +1255,7 @@ int X_Calibration::xp_createTerm(QList<int>& windowIndexList,
         }
         term = new X_MixedTerm(window1, window2, this);
         term->xp_setTermState(termState);
-        term->zh_setTermFactor(termFactor);
+        term->xh_setTermFactor(termFactor);
     }
     else if (termType == X_AbstractTerm::TT_NOT_DEFINED)
     {
@@ -1280,30 +1280,30 @@ int X_Calibration::xp_applyRawTerm(X_RawTerm& rawTerm)
         X_RawCustomTerm* customTerm = static_cast<X_RawCustomTerm*>(&rawTerm);
         if (customTerm->termId >= 0)
         {
-            termIndex = zh_termIndexForTermId(customTerm->termId);
+            termIndex = xh_termIndexForTermId(customTerm->termId);
         }
     }
 
     if (termIndex < 0)
     {
-        termIndex = zh_termIndexForRawTerm(rawTerm);
+        termIndex = xh_termIndexForRawTerm(rawTerm);
     }
 
     if (termIndex >= 0)
     {
-        zh_updateExistingTerm(termIndex, rawTerm);
+        xh_updateExistingTerm(termIndex, rawTerm);
         return termIndex;
     }
     else
     {
         // new term
-        termIndex = zh_createNewTerm(rawTerm);
+        termIndex = xh_createNewTerm(rawTerm);
     }
 
     return termIndex;
 }
 //=========================================================
-int X_Calibration::zh_createNewTerm(X_RawTerm& rawTerm)
+int X_Calibration::xh_createNewTerm(X_RawTerm& rawTerm)
 {
     if (rawTerm.termType == X_AbstractTerm::TT_CUSTOM)
     {
@@ -1319,7 +1319,7 @@ int X_Calibration::zh_createNewTerm(X_RawTerm& rawTerm)
     {
         QList<int> windowIndexList;
 
-        if (!zh_createWindowIndexList(windowIndexList, rawTerm))
+        if (!xh_createWindowIndexList(windowIndexList, rawTerm))
         {
             return -1;
         }
@@ -1327,9 +1327,9 @@ int X_Calibration::zh_createNewTerm(X_RawTerm& rawTerm)
     }
 }
 //=========================================================
-bool X_Calibration::zh_createWindowIndexList(QMap<QString, int>& windowIndexMap, X_RawTerm& rawTerm)
+bool X_Calibration::xh_createWindowIndexList(QMap<QString, int>& windowIndexMap, X_RawTerm& rawTerm)
 {
-    if (!zh_checkCustomString(rawTerm))
+    if (!xh_checkCustomString(rawTerm))
     {
         return false;
     }
@@ -1352,7 +1352,7 @@ bool X_Calibration::zh_createWindowIndexList(QMap<QString, int>& windowIndexMap,
     return true;
 }
 //=========================================================
-bool X_Calibration::zh_checkCustomString(X_RawTerm& rawTerm)
+bool X_Calibration::xh_checkCustomString(X_RawTerm& rawTerm)
 {
     if (rawTerm.termType == X_AbstractTerm::TT_CUSTOM)
     {
@@ -1369,7 +1369,7 @@ bool X_Calibration::zh_checkCustomString(X_RawTerm& rawTerm)
         connect(&mathExpressionVariableListMaker,
                 &X_MathExpressionVariableListMaker::zs_variableCheckRequest,
                 this,
-                &X_Calibration::zh_windowIsExist);
+                &X_Calibration::xh_windowIsExist);
 
         double res;
         if (!mathExpressionHandler.xp_calculateExpression(rawTerm.customString, res))
@@ -1392,9 +1392,9 @@ bool X_Calibration::zh_checkCustomString(X_RawTerm& rawTerm)
     return false;
 }
 //=========================================================
-bool X_Calibration::zh_createWindowIndexList(QList<int>& windowIndexList, X_RawTerm& rawTerm)
+bool X_Calibration::xh_createWindowIndexList(QList<int>& windowIndexList, X_RawTerm& rawTerm)
 {
-    if (!zh_checkCustomString(rawTerm))
+    if (!xh_checkCustomString(rawTerm))
     {
         return false;
     }
@@ -1417,7 +1417,7 @@ bool X_Calibration::zh_createWindowIndexList(QList<int>& windowIndexList, X_RawT
     return true;
 }
 //=========================================================
-bool X_Calibration::zh_updateExistingTerm(int termIndex, X_RawTerm& rawTerm)
+bool X_Calibration::xh_updateExistingTerm(int termIndex, X_RawTerm& rawTerm)
 {
     bool res = false;
     if (rawTerm.termType == X_AbstractTerm::TT_CUSTOM)
@@ -1437,7 +1437,7 @@ bool X_Calibration::zh_updateExistingTerm(int termIndex, X_RawTerm& rawTerm)
     else
     {
         xv_termList[termIndex]->xp_setTermState(rawTerm.termState);
-        xv_termList[termIndex]->zh_setTermFactor(rawTerm.factor);
+        xv_termList[termIndex]->xh_setTermFactor(rawTerm.factor);
         res = true;
     }
 
@@ -1446,7 +1446,7 @@ bool X_Calibration::zh_updateExistingTerm(int termIndex, X_RawTerm& rawTerm)
     return res;
 }
 //=========================================================
-int X_Calibration::zh_termIndexForRawTerm(const X_RawTerm& rawTerm) const
+int X_Calibration::xh_termIndexForRawTerm(const X_RawTerm& rawTerm) const
 {
     // check out is the term already exist
     for (int t = 0; t < xv_termList.count(); t++)
@@ -1480,7 +1480,7 @@ int X_Calibration::zh_termIndexForRawTerm(const X_RawTerm& rawTerm) const
     return -1;
 }
 //=========================================================
-int X_Calibration::zh_termIndexForTermId(qint64 termId) const
+int X_Calibration::xh_termIndexForTermId(qint64 termId) const
 {
     for (int t = 0; t < xv_termList.count(); t++)
     {
@@ -1612,7 +1612,7 @@ bool X_Calibration::xp_setEquationIntercept(qreal value)
 
     xv_intercept = value;
     xv_interceptString = QString::number(value, 'f', 15);
-    zh_chopTailX_eroesFromInterceptString();
+    xh_chopTailX_eroesFromInterceptString();
     emit xg_interceptChanged();
     xv_dateTime = QDateTime::currentDateTime();
     xv_dirty = true;
@@ -1783,14 +1783,14 @@ void X_Calibration::xp_createEquationDataForEquationRecalc(QMap<int, qreal*>& fa
         termState = xv_termList.value(t)->xv_termState;
         if (termState == X_AbstractTerm::TS_CONST_INCLUDED || termState == X_AbstractTerm::TS_INCLUDED)
         {
-            factorMap.insert(t, xv_termList.value(t)->zh_termFactorPointer());
+            factorMap.insert(t, xv_termList.value(t)->xh_termFactorPointer());
         }
     }
 
     freeTermPtr = &xv_intercept;
 }
 //=========================================================
-void X_Calibration::zh_notifyCalibrationRecalc()
+void X_Calibration::xh_notifyCalibrationRecalc()
 {
     // conform free term string to value
 
@@ -1799,7 +1799,7 @@ void X_Calibration::zh_notifyCalibrationRecalc()
     // conform equation terms
     for (int t = 0; t < xv_termList.count(); t++)
     {
-        xv_termList.value(t)->zh_conformStringWithValue();
+        xv_termList.value(t)->xh_conformStringWithValue();
     }
     emit xg_termOperation(TOT_TERM_FACTOR_CHANGED, 0, xv_termList.count() - 1);
     xv_dirty = true;
@@ -1818,7 +1818,7 @@ void X_Calibration::xp_resetEquationTerms()
             res = res || true;
         }
         xv_termList[t]->xv_termFactor = 0.0;
-        xv_termList[t]->zh_conformStringWithValue();
+        xv_termList[t]->xh_conformStringWithValue();
     }
 
     emit xg_termOperation(TOT_TERM_FACTOR_CHANGED, 0, xv_termList.count() - 1);
@@ -1867,7 +1867,7 @@ void X_Calibration::xp_setDateTime(QDateTime dateTime)
     xv_dateTime = dateTime;
 }
 //=========================================================
-void X_Calibration::zh_onTermNameChange()
+void X_Calibration::xh_onTermNameChange()
 {
     X_AbstractTerm* term = qobject_cast<X_AbstractTerm*>(sender());
     if (term == 0)
@@ -1875,7 +1875,7 @@ void X_Calibration::zh_onTermNameChange()
         return;
     }
 
-    int termIndex = zh_termIndex(term);
+    int termIndex = xh_termIndex(term);
 
     emit xg_termOperation(TOT_TERM_NAME_CHANGED, termIndex, termIndex);
     xv_dateTime = QDateTime::currentDateTime();
@@ -1883,21 +1883,21 @@ void X_Calibration::zh_onTermNameChange()
     emit xg_dirtyChanged(xv_dirty);
 }
 //=========================================================
-void X_Calibration::zh_onTermWindowMarginChange()
+void X_Calibration::xh_onTermWindowMarginChange()
 {
     X_AbstractTerm* term = qobject_cast<X_AbstractTerm*>(sender());
     if (!term)
     {
         return;
     }
-    int termIndex = zh_termIndex(term);
+    int termIndex = xh_termIndex(term);
     emit xg_termOperation(TOT_TERM_WINDOW_MARGIN_CHANGED, termIndex, termIndex);
     xv_dirty = true;
     xv_dateTime = QDateTime::currentDateTime();
     emit xg_dirtyChanged(xv_dirty);
 }
 //=========================================================
-void X_Calibration::zh_removeTerm(X_AbstractTerm* term)
+void X_Calibration::xh_removeTerm(X_AbstractTerm* term)
 {
     for (int i = 0; i < xv_termList.count(); i++)
     {
@@ -1914,7 +1914,7 @@ void X_Calibration::zh_removeTerm(X_AbstractTerm* term)
     }
 }
 //=========================================================
-void X_Calibration::zh_onNormalizerChange()
+void X_Calibration::xh_onNormalizerChange()
 {
     if (sender() == xv_termNormalizer)
     {
@@ -1931,7 +1931,7 @@ void X_Calibration::zh_onNormalizerChange()
     }
 }
 //=========================================================
-bool X_Calibration::zh_isWindowExist(const QString& windowName)
+bool X_Calibration::xh_isWindowExist(const QString& windowName)
 {
     for (int i = 0; i < xv_windowList.count(); i++)
     {
@@ -2048,7 +2048,7 @@ bool X_Calibration::xp_setCalibrationWindowType(int windowIndex, X_CalibrationWi
         emit xg_windowOperation(WOT_WINDOW_CHANGED, windowIndex, windowIndex);
         if (type == X_CalibrationWindow::WT_PEAK)
         {
-            zh_createTermsForWindow(xv_windowList.at(windowIndex));
+            xh_createTermsForWindow(xv_windowList.at(windowIndex));
         }
         xv_dateTime = QDateTime::currentDateTime();
         xv_dirty = true;
@@ -2123,7 +2123,7 @@ qint64 X_Calibration::xp_calibrationWindowId(int windowIndex) const
     return xv_windowList.at(windowIndex)->xp_windowId();
 }
 //=========================================================
-void X_Calibration::zh_windowIsExist(const QString& windowName, bool& res) const
+void X_Calibration::xh_windowIsExist(const QString& windowName, bool& res) const
 {
     res = xp_windowIndexForName(windowName) >= 0;
 }

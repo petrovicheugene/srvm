@@ -29,8 +29,8 @@ private:
 
 
     // FUNCS
-    void zh_createComponents(const QString &calibrationName);
-    void zh_createConnections();
+    void xh_createComponents(const QString &calibrationName);
+    void xh_createConnections();
 
 
 };

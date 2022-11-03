@@ -1,15 +1,14 @@
 //==========================================================
 #include "X_XMLCalibrationIOHandler.h"
 #include "X_Calibration.h"
-#include <QDebug>
 
+#include <QDebug>
 #include <QDateTime>
 #include <QFileDialog>
 #include <QFileInfo>
 #include <QStandardPaths>
 #include <QXmlStreamReader>
 //==========================================================
-QFileDialog* X_XMLCalibrationIOHandler::xv_calibrationDialog = nullptr;
 //==========================================================
 X_XMLCalibrationIOHandler::X_XMLCalibrationIOHandler(QObject* parent) : QObject(parent)
 {
@@ -32,28 +31,47 @@ QString X_XMLCalibrationIOHandler::xp_getCalibrationOpenFile(const QString& cali
 QStringList X_XMLCalibrationIOHandler::xp_getCalibrationOpenFiles(const QString& calibrationFolderPath)
 {
     QString locationDirString = xp_checkDirPath(calibrationFolderPath);
-//    QStringList fileNames = QFileDialog::getOpenFileNames(
+    //    QStringList fileNames = QFileDialog::getOpenFileNames(
+    //        nullptr,
+    //        tr("Open file"),
+    //        locationDirString,
+    //        tr("XML Calibration files(*.clbx);;XML files(*.xml);;All files(*.*)"));
+    //    return fileNames;
+
+//    X_FileDialog dialog(
 //        nullptr,
 //        tr("Open file"),
 //        locationDirString,
 //        tr("XML Calibration files(*.clbx);;XML files(*.xml);;All files(*.*)"));
-    if(!xv_calibrationDialog)
-    {
-        xv_calibrationDialog = new QFileDialog;
-        xv_calibrationDialog->setDirectory(locationDirString);
-        xv_calibrationDialog->setNameFilter(tr("XML Calibration files(*.clbx);;XML files(*.xml);;All files(*.*)"));
-        xv_calibrationDialog->setWindowTitle(tr("Open calibration files"));
-        xv_calibrationDialog->setFileMode(QFileDialog::ExistingFiles);
-        xv_calibrationDialog->setModal(true);
-    }
+//    dialog.exec();
 
-    xv_calibrationDialog->exec();
+    QFileDialog xv_fileDialog(nullptr,
+        tr("Open file"),
+        locationDirString,
+        tr("XML Calibration files(*.clbx);;XML files(*.xml);;All files(*.*)"));
+    xv_fileDialog.setOptions(QFileDialog::DontUseNativeDialog);
+    xv_fileDialog.setFileMode(QFileDialog::ExistingFiles);
+    xv_fileDialog.exec();
+    QStringList fileNames = xv_fileDialog.selectedFiles();
 
-    //QStringList fileNames = dialog->selectedFiles();
-    qDebug() << "DIALOG AFTER SHOW" ;
-    //delete dialog;
-    xv_calibrationDialog->close();
-    return QStringList();
+
+    // return fileNames;
+    //    if(!xv_calibrationDialog)
+    //    {
+    //        xv_calibrationDialog = new QFileDialog;
+    //        xv_calibrationDialog->setDirectory(locationDirString);
+    //        xv_calibrationDialog->setNameFilter(tr("XML Calibration files(*.clbx);;XML files(*.xml);;All files(*.*)"));
+    //        xv_calibrationDialog->setWindowTitle(tr("Open calibration files"));
+    //        xv_calibrationDialog->setFileMode(QFileDialog::ExistingFiles);
+    //        xv_calibrationDialog->setModal(true);
+    //    }
+
+    //    xv_calibrationDialog->exec();
+
+    //    //QStringList fileNames = dialog->selectedFiles();
+    //    //delete dialog;
+    //    xv_calibrationDialog->close();
+    return fileNames;
 }
 //==========================================================
 QString X_XMLCalibrationIOHandler::xp_getCalibrationSaveFile(const QString& calibrationFilePath)
@@ -88,7 +106,7 @@ QString X_XMLCalibrationIOHandler::xp_checkDirPath(const QString& calibrationFol
 }
 //==========================================================
 bool X_XMLCalibrationIOHandler::xp_writeCalibrationToFile(QFile& file,
-                                                         const X_Calibration* calibration)
+                                                          const X_Calibration* calibration)
 {
     if (!(file.openMode() & QIODevice::WriteOnly))
     {
@@ -322,7 +340,7 @@ bool X_XMLCalibrationIOHandler::xp_getCalibrationFromFile(QFile& file, X_Calibra
         // property root element detection section
         if (!rootDetectedFlag)
         {
-            if (!zh_detectRoot(reader, magicStringDetectionFlag))
+            if (!xh_detectRoot(reader, magicStringDetectionFlag))
             {
                 continue;
             }
@@ -350,7 +368,7 @@ bool X_XMLCalibrationIOHandler::xp_getCalibrationFromFile(QFile& file, X_Calibra
         {
             // handling inserted levels
             parentTagStack.push(reader.name().toString());
-            zh_parseXMLElement(calibration, reader);
+            xh_parseXMLElement(calibration, reader);
         }
     }
 
@@ -374,8 +392,8 @@ bool X_XMLCalibrationIOHandler::xp_getCalibrationFromFile(QFile& file, X_Calibra
 }
 //============================================================
 // returns true if closing tag that was opened in calling function is closed
-void X_XMLCalibrationIOHandler::zh_parseXMLElement(X_Calibration* calibration,
-                                                  QXmlStreamReader& reader)
+void X_XMLCalibrationIOHandler::xh_parseXMLElement(X_Calibration* calibration,
+                                                   QXmlStreamReader& reader)
 {
     // current start tag handling
     QString currentTagName = reader.name().toString();
@@ -402,7 +420,7 @@ void X_XMLCalibrationIOHandler::zh_parseXMLElement(X_Calibration* calibration,
         if (reader.isStartElement())
         {
             parentTagStack.push(currentTagName);
-            zh_parseXMLElement(calibration, reader);
+            xh_parseXMLElement(calibration, reader);
             continue;
         }
         else if (reader.isCharacters())
@@ -573,8 +591,8 @@ void X_XMLCalibrationIOHandler::zh_parseXMLElement(X_Calibration* calibration,
     //    }
 }
 //============================================================
-bool X_XMLCalibrationIOHandler::zh_detectRoot(const QXmlStreamReader& reader,
-                                             bool& magicStringDetectionFlag) const
+bool X_XMLCalibrationIOHandler::xh_detectRoot(const QXmlStreamReader& reader,
+                                              bool& magicStringDetectionFlag) const
 {
     // true - element name == root, error - trnado magic string existing flag
     if (reader.tokenType() != QXmlStreamReader::StartElement || reader.name() != xv_ROOT)
@@ -594,7 +612,7 @@ bool X_XMLCalibrationIOHandler::zh_detectRoot(const QXmlStreamReader& reader,
     return true;
 }
 //============================================================
-bool X_XMLCalibrationIOHandler::zh_checkfilePath(const QString& path) const
+bool X_XMLCalibrationIOHandler::xh_checkfilePath(const QString& path) const
 {
     QFileInfo fileInfo(path);
     if ((!fileInfo.exists()) || (!fileInfo.isFile()))

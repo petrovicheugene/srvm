@@ -111,7 +111,7 @@ QString X_QrealToStringConverter::xp_convert(qreal value)
     return valueString;
 }
 //===============================================
-void X_QrealToStringConverter::zh_chopTailX_eroesFromDoubleString(QString& string)
+void X_QrealToStringConverter::xh_chopTailX_eroesFromDoubleString(QString& string)
 {
     // check string
     bool ok;

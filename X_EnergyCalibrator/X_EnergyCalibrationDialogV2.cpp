@@ -46,12 +46,12 @@ X_EnergyCalibrationDialogV2::X_EnergyCalibrationDialogV2(QMap<quint8, QList<X_Sp
     setWindowTitle(tr("Energy calibration"));
     setWindowFlags(Qt::Tool);
 
-    zh_createComponents();
-    zh_createConnections();
-    zh_createContextMenu();
-    zh_setElementLineControlsAndComponentVisibility();
-    zh_restoreSettings();
-    zh_loadSpectrumData(spectrumMap);
+    xh_createComponents();
+    xh_createConnections();
+    xh_createContextMenu();
+    xh_setElementLineControlsAndComponentVisibility();
+    xh_restoreSettings();
+    xh_loadSpectrumData(spectrumMap);
     xv_askSaveForGainFactor = false;
 
     if(xv_plotter != nullptr)
@@ -68,10 +68,10 @@ void X_EnergyCalibrationDialogV2::xp_setAskSaveForGainfactorFlag(bool flag)
 //======================================================
 X_EnergyCalibrationDialogV2::~X_EnergyCalibrationDialogV2()
 {
-    zh_saveSettings();
+    xh_saveSettings();
 }
 //======================================================
-void X_EnergyCalibrationDialogV2::zh_createComponents()
+void X_EnergyCalibrationDialogV2::xh_createComponents()
 {
     xv_spectrumModel = new X_EnergyCalibrationSpectrumTableModel(this);
 
@@ -95,7 +95,7 @@ void X_EnergyCalibrationDialogV2::zh_createComponents()
     gainFactorLayout->addStretch();
 
     // main widget
-    mainLayout->addWidget(zh_createMainWidget());
+    mainLayout->addWidget(xh_createMainWidget());
 
     // Basement
 
@@ -116,7 +116,7 @@ void X_EnergyCalibrationDialogV2::zh_createComponents()
     buttonBox->addButton(xv_closeButton, QDialogButtonBox::ActionRole);
 }
 //======================================================
-QWidget* X_EnergyCalibrationDialogV2::zh_createMainWidget()
+QWidget* X_EnergyCalibrationDialogV2::xh_createMainWidget()
 {
     QWidget* mainWidget = new QWidget;
     QVBoxLayout* mainGroupBoxlayout = new QVBoxLayout;
@@ -142,13 +142,13 @@ QWidget* X_EnergyCalibrationDialogV2::zh_createMainWidget()
     rightLayout->addWidget(xv_spectrumTableView);
 
     // element lines
-    rightLayout->addWidget(zh_createElementLinesWidgetAndComponents());
+    rightLayout->addWidget(xh_createElementLinesWidgetAndComponents());
     rightLayout->addStretch();
 
     return mainWidget;
 }
 //======================================================
-QWidget* X_EnergyCalibrationDialogV2::zh_createElementLinesWidgetAndComponents()
+QWidget* X_EnergyCalibrationDialogV2::xh_createElementLinesWidgetAndComponents()
 {
     QGroupBox* mainControlWidget = new QGroupBox;
     QVBoxLayout* mainLayout = new QVBoxLayout;
@@ -176,7 +176,7 @@ QWidget* X_EnergyCalibrationDialogV2::zh_createElementLinesWidgetAndComponents()
 
     for(int i = 0; i < xv_calibrationLineNumber; i++)
     {
-        zh_createElementLineControlsAndComponents(dataLayout, i);
+        xh_createElementLineControlsAndComponents(dataLayout, i);
     }
 
     mainLayout->addStretch();
@@ -192,12 +192,12 @@ QWidget* X_EnergyCalibrationDialogV2::zh_createElementLinesWidgetAndComponents()
     return mainControlWidget;
 }
 //======================================================
-void X_EnergyCalibrationDialogV2::zh_createElementLineControlsAndComponents(QGridLayout* layout, int elementNumber)
+void X_EnergyCalibrationDialogV2::xh_createElementLineControlsAndComponents(QGridLayout* layout, int elementNumber)
 {
     // calibration line
     X_EnergyCalibrationLine* calibrationLine = new X_EnergyCalibrationLine(this);
     connect(calibrationLine, &X_EnergyCalibrationLine::xg_lineColor,
-            this, &X_EnergyCalibrationDialogV2::zh_onLineColorChange);
+            this, &X_EnergyCalibrationDialogV2::xh_onLineColorChange);
     xv_energyCalibrationLineList.append(calibrationLine);
 
     // claibration line graphic item
@@ -208,7 +208,7 @@ void X_EnergyCalibrationDialogV2::zh_createElementLineControlsAndComponents(QGri
     QAction* channelNumberAction = new QAction(calibrationLine);
     channelNumberAction->setText(tr("Energy line #%1").arg(QString::number(elementNumber + 1)));
     connect(channelNumberAction, &QAction::triggered,
-            this, &X_EnergyCalibrationDialogV2::zh_onChannelNumberAction);
+            this, &X_EnergyCalibrationDialogV2::xh_onChannelNumberAction);
     xv_channelNumberActionList.append(channelNumberAction);
 
     QList<QWidget*> widgetList;
@@ -237,7 +237,7 @@ void X_EnergyCalibrationDialogV2::zh_createElementLineControlsAndComponents(QGri
     channelNumberSpinBox->setRange(0, 2048);
     widgetList.append(channelNumberSpinBox);
     connect(calibrationLine, &X_EnergyCalibrationLine::xg_channelNumber,
-            this, &X_EnergyCalibrationDialogV2::zh_onChannelNumberChange);
+            this, &X_EnergyCalibrationDialogV2::xh_onChannelNumberChange);
     connect(calibrationLine, &X_EnergyCalibrationLine::xg_channelNumber,
             channelNumberSpinBox, &QSpinBox::setValue);
     connect(channelNumberSpinBox, SIGNAL(valueChanged(int)),
@@ -293,7 +293,7 @@ void X_EnergyCalibrationDialogV2::zh_createElementLineControlsAndComponents(QGri
     connect(selectLineButton, &QPushButton::clicked,
             selectEnergyLineAction, &QAction::trigger);
     connect(selectEnergyLineAction, &QAction::triggered,
-            this, &X_EnergyCalibrationDialogV2::zh_onSelectEnergyLineAction);
+            this, &X_EnergyCalibrationDialogV2::xh_onSelectEnergyLineAction);
 
     QToolButton* clearLineButton = new QToolButton(this);
     clearLineButton->setText("X");
@@ -305,18 +305,18 @@ void X_EnergyCalibrationDialogV2::zh_createElementLineControlsAndComponents(QGri
     connect(clearLineButton, &QPushButton::clicked,
             clearEnergyLineAction, &QAction::trigger);
     connect(clearEnergyLineAction, &QAction::triggered,
-            this, &X_EnergyCalibrationDialogV2::zh_onClearEnergyLineAction);
+            this, &X_EnergyCalibrationDialogV2::xh_onClearEnergyLineAction);
 
     xv_elementLinesWidgetList.append(widgetList);
 
 }
 //======================================================
-void X_EnergyCalibrationDialogV2::zh_createContextMenu()
+void X_EnergyCalibrationDialogV2::xh_createContextMenu()
 {
     xv_plotter->xp_setContextMenu(xv_channelNumberActionList);
 }
 //======================================================
-void X_EnergyCalibrationDialogV2::zh_createConnections()
+void X_EnergyCalibrationDialogV2::xh_createConnections()
 {
     xv_spectrumTableView->setModel(xv_spectrumModel);
     X_SpectrumTableDelegate* spectrumTableDelegate = new X_SpectrumTableDelegate(xv_spectrumTableView);
@@ -324,25 +324,25 @@ void X_EnergyCalibrationDialogV2::zh_createConnections()
     xv_spectrumTableView->setItemDelegate(spectrumTableDelegate);
 
     connect(xv_calculateButton, &QPushButton::clicked,
-            this, &X_EnergyCalibrationDialogV2::zh_calculateAndWriteEnergyCalibration);
+            this, &X_EnergyCalibrationDialogV2::xh_calculateAndWriteEnergyCalibration);
     connect(xv_closeButton, &QPushButton::clicked,
             this, &X_EnergyCalibrationDialogV2::close);
     connect(xv_gainFactorComboBox, SIGNAL(currentIndexChanged(int)),
-            this, SLOT(zh_onCurrentGainFactorIndexChange(int)));
+            this, SLOT(xh_onCurrentGainFactorIndexChange(int)));
 
     connect(xv_spectrumModel, &X_EnergyCalibrationSpectrumTableModel::modelReset,
-            this, &X_EnergyCalibrationDialogV2::zh_onModelReset);
+            this, &X_EnergyCalibrationDialogV2::xh_onModelReset);
     connect(xv_spectrumModel, &X_EnergyCalibrationSpectrumTableModel::dataChanged,
-            this, &X_EnergyCalibrationDialogV2::zh_onModelDataChange);
+            this, &X_EnergyCalibrationDialogV2::xh_onModelDataChange);
 
     connect(xv_plotter, &X_Plotter::xg_mousePressedAt,
-            this, &X_EnergyCalibrationDialogV2::zh_onMousePressedOnPlotter);
+            this, &X_EnergyCalibrationDialogV2::xh_onMousePressedOnPlotter);
 
     connect(xv_peakInEnergyCalibrationCountComboBox, SIGNAL(currentIndexChanged(int)),
-            this, SLOT(zh_onCurrentPeackCountIndexChange(int)));
+            this, SLOT(xh_onCurrentPeackCountIndexChange(int)));
 }
 //======================================================
-void X_EnergyCalibrationDialogV2::zh_loadSpectrumData(QMap<quint8, QList<X_SpeSpectrum *> > &spectrumMap)
+void X_EnergyCalibrationDialogV2::xh_loadSpectrumData(QMap<quint8, QList<X_SpeSpectrum *> > &spectrumMap)
 {
     // gain factor
     QString itemString;
@@ -358,7 +358,7 @@ void X_EnergyCalibrationDialogV2::zh_loadSpectrumData(QMap<quint8, QList<X_SpeSp
     xv_spectrumModel->xp_loadSpectrumData(spectrumMap);
 }
 //======================================================
-//void X_EnergyCalibrationDialogV2::zh_restoreLineColorList()
+//void X_EnergyCalibrationDialogV2::xh_restoreLineColorList()
 //{
 //    QSettings settings;
 //    settings.beginGroup(qApp->applicationVersion());
@@ -387,7 +387,7 @@ void X_EnergyCalibrationDialogV2::zh_loadSpectrumData(QMap<quint8, QList<X_SpeSp
 //    settings.endGroup();
 //}
 //======================================================
-void X_EnergyCalibrationDialogV2::zh_restoreSettings()
+void X_EnergyCalibrationDialogV2::xh_restoreSettings()
 {
     QSettings settings;
     settings.beginGroup(qApp->applicationVersion());
@@ -434,7 +434,7 @@ void X_EnergyCalibrationDialogV2::zh_restoreSettings()
     settings.endGroup();
 }
 //======================================================
-void X_EnergyCalibrationDialogV2::zh_saveSettings()
+void X_EnergyCalibrationDialogV2::xh_saveSettings()
 {
     QSettings settings;
     settings.beginGroup(qApp->applicationVersion());
@@ -453,11 +453,11 @@ void X_EnergyCalibrationDialogV2::zh_saveSettings()
     settings.endGroup();
 }
 //======================================================
-void X_EnergyCalibrationDialogV2::zh_calculateAndWriteEnergyCalibration()
+void X_EnergyCalibrationDialogV2::xh_calculateAndWriteEnergyCalibration()
 {
     // calculate energy scale factors
     QList<double> energyCalibrationFactorList;
-    if(!zh_calculateEnergyFactors(energyCalibrationFactorList))
+    if(!xh_calculateEnergyFactors(energyCalibrationFactorList))
     {
         return;
     }
@@ -476,7 +476,7 @@ void X_EnergyCalibrationDialogV2::zh_calculateAndWriteEnergyCalibration()
     }
 }
 //======================================================
-void X_EnergyCalibrationDialogV2::zh_onCurrentGainFactorIndexChange(int currentIndex)
+void X_EnergyCalibrationDialogV2::xh_onCurrentGainFactorIndexChange(int currentIndex)
 {
     if(currentIndex < 0 || currentIndex >= xv_gainFactorComboBox->count())
     {
@@ -496,7 +496,7 @@ void X_EnergyCalibrationDialogV2::zh_onCurrentGainFactorIndexChange(int currentI
 
 }
 //======================================================
-void X_EnergyCalibrationDialogV2::zh_onCurrentPeackCountIndexChange(int currentIndex)
+void X_EnergyCalibrationDialogV2::xh_onCurrentPeackCountIndexChange(int currentIndex)
 {
     QComboBox* comboBox = qobject_cast<QComboBox*>(sender());
     if(!comboBox)
@@ -504,11 +504,11 @@ void X_EnergyCalibrationDialogV2::zh_onCurrentPeackCountIndexChange(int currentI
         return;
     }
 
-    zh_setElementLineControlsAndComponentVisibility();
-    zh_updateVerticalLines();
+    xh_setElementLineControlsAndComponentVisibility();
+    xh_updateVerticalLines();
 }
 //======================================================
-void X_EnergyCalibrationDialogV2::zh_onModelReset()
+void X_EnergyCalibrationDialogV2::xh_onModelReset()
 {
     // current plotter state
     qreal distortionFactor;
@@ -542,10 +542,10 @@ void X_EnergyCalibrationDialogV2::zh_onModelReset()
 
     QRectF boundingRect = xv_plotter->xp_boundingRect();
     X_VerticalLineGraphicsItem::xp_setTopAndButtonMargins(boundingRect.top(),boundingRect.bottom());
-    zh_updateVerticalLines();
+    xh_updateVerticalLines();
 }
 //======================================================
-void X_EnergyCalibrationDialogV2::zh_onModelDataChange(const QModelIndex& topLeft,
+void X_EnergyCalibrationDialogV2::xh_onModelDataChange(const QModelIndex& topLeft,
                                                       const QModelIndex& bottomRight)
 {
     // update spectrum Visibility
@@ -572,13 +572,13 @@ void X_EnergyCalibrationDialogV2::zh_onModelDataChange(const QModelIndex& topLef
     }
 }
 //======================================================
-void X_EnergyCalibrationDialogV2::zh_onMousePressedOnPlotter(QPointF scenePos)
+void X_EnergyCalibrationDialogV2::xh_onMousePressedOnPlotter(QPointF scenePos)
 {
 
 
 }
 //======================================================
-void X_EnergyCalibrationDialogV2::zh_onChannelNumberAction()
+void X_EnergyCalibrationDialogV2::xh_onChannelNumberAction()
 {
     QAction* action = qobject_cast<QAction*>(sender());
     if(!action)
@@ -601,17 +601,17 @@ void X_EnergyCalibrationDialogV2::zh_onChannelNumberAction()
     energyCalibrationLine->xp_setChannelNumber(static_cast<int>(vData.toPointF().x()));
 }
 //======================================================
-void X_EnergyCalibrationDialogV2::zh_onLineColorChange(QColor color)
+void X_EnergyCalibrationDialogV2::xh_onLineColorChange(QColor color)
 {
-    zh_updateVerticalLines();
+    xh_updateVerticalLines();
 }
 //======================================================
-void X_EnergyCalibrationDialogV2::zh_onChannelNumberChange(int channelValue)
+void X_EnergyCalibrationDialogV2::xh_onChannelNumberChange(int channelValue)
 {
-    zh_updateVerticalLines();
+    xh_updateVerticalLines();
 }
 //======================================================
-void X_EnergyCalibrationDialogV2::zh_updateVerticalLines()
+void X_EnergyCalibrationDialogV2::xh_updateVerticalLines()
 {
     QList<QGraphicsItem*>lineList = xv_plotter->xp_itemListForType(VerticalLineItemType);
     foreach(QGraphicsItem* graphicsItem, lineList)
@@ -624,7 +624,7 @@ void X_EnergyCalibrationDialogV2::zh_updateVerticalLines()
     }
 }
 //======================================================
-void X_EnergyCalibrationDialogV2::zh_onSelectEnergyLineAction()
+void X_EnergyCalibrationDialogV2::xh_onSelectEnergyLineAction()
 {
     QAction* action = qobject_cast<QAction*>(sender());
     if(!action)
@@ -652,7 +652,7 @@ void X_EnergyCalibrationDialogV2::zh_onSelectEnergyLineAction()
 
 }
 //======================================================
-void X_EnergyCalibrationDialogV2::zh_onClearEnergyLineAction()
+void X_EnergyCalibrationDialogV2::xh_onClearEnergyLineAction()
 {
     QAction* action = qobject_cast<QAction*>(sender());
     if(!action)
@@ -672,7 +672,7 @@ void X_EnergyCalibrationDialogV2::zh_onClearEnergyLineAction()
 
 }
 //======================================================
-bool X_EnergyCalibrationDialogV2::zh_calculateEnergyFactors(QList<double>& energyCalibrationFactorList)
+bool X_EnergyCalibrationDialogV2::xh_calculateEnergyFactors(QList<double>& energyCalibrationFactorList)
 {
     QList<QPair<int, double> > calibrationLineSrcDataList;
     bool skipLine;
@@ -779,7 +779,7 @@ bool X_EnergyCalibrationDialogV2::zh_calculateEnergyFactors(QList<double>& energ
     return true;
 }
 //======================================================
-void X_EnergyCalibrationDialogV2::zh_setElementLineControlsAndComponentVisibility()
+void X_EnergyCalibrationDialogV2::xh_setElementLineControlsAndComponentVisibility()
 {
     QVariant vData = xv_peakInEnergyCalibrationCountComboBox->currentData();
     if(!vData.isValid() || !vData.canConvert<int>())

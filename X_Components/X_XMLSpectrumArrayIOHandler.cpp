@@ -41,7 +41,7 @@ bool X_XMLSpectrumArrayIOHandler::xp_readSpectrumArray (QFile& file, QList<X_Raw
         // property root element detection section
         if(!rootDetectedFlag)
         {
-            if(!zh_detectRoot(reader, magicStringDetectionFlag))
+            if(!xh_detectRoot(reader, magicStringDetectionFlag))
             {
                 continue;
             }
@@ -67,7 +67,7 @@ bool X_XMLSpectrumArrayIOHandler::xp_readSpectrumArray (QFile& file, QList<X_Raw
         }
         else if(reader.isStartElement())
         {
-            zh_parseXMLElement(rawArrayList, -1, -1, reader);
+            xh_parseXMLElement(rawArrayList, -1, -1, reader);
         }
         else if(reader.isEndElement())
         {
@@ -94,7 +94,7 @@ bool X_XMLSpectrumArrayIOHandler::xp_readSpectrumArray (QFile& file, QList<X_Raw
 }
 //============================================================
 // returns true if closing tag opened in calling function is readed
-void X_XMLSpectrumArrayIOHandler::zh_parseXMLElement(QList<X_RawSpectrumArray> &array,
+void X_XMLSpectrumArrayIOHandler::xh_parseXMLElement(QList<X_RawSpectrumArray> &array,
                                                     int currentArrayIndex,
                                                     int currentSpectrumIndex,
                                                     QXmlStreamReader& reader) const
@@ -166,7 +166,7 @@ void X_XMLSpectrumArrayIOHandler::zh_parseXMLElement(QList<X_RawSpectrumArray> &
         if(reader.isStartElement())
         {
             // insertedElementOpened = true;
-            zh_parseXMLElement(array, currentArrayIndex, currentSpectrumIndex, reader);
+            xh_parseXMLElement(array, currentArrayIndex, currentSpectrumIndex, reader);
             continue;
 //            if(closingTagReadedFlag)
 //            {
@@ -274,7 +274,7 @@ bool X_XMLSpectrumArrayIOHandler::xp_writeSpectrumArray(QFile& file, const QList
     return true;
 }
 //============================================================
-bool X_XMLSpectrumArrayIOHandler::zh_detectRoot(const QXmlStreamReader& reader, bool& magicStringDetectionFlag) const
+bool X_XMLSpectrumArrayIOHandler::xh_detectRoot(const QXmlStreamReader& reader, bool& magicStringDetectionFlag) const
 {
     // true - element name == root, error - trnado magic string existing flag
     if(reader.tokenType() != QXmlStreamReader::StartElement ||
@@ -296,7 +296,7 @@ bool X_XMLSpectrumArrayIOHandler::zh_detectRoot(const QXmlStreamReader& reader, 
 }
 
 //============================================================
-bool X_XMLSpectrumArrayIOHandler::zh_checkfilePath(const QString& path) const
+bool X_XMLSpectrumArrayIOHandler::xh_checkfilePath(const QString& path) const
 {
     QFileInfo fileInfo(path);
     if((!fileInfo.exists()) || (!fileInfo.isFile()))

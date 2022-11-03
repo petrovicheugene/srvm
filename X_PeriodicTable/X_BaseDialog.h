@@ -39,31 +39,31 @@ protected:
 
     // FUNCS
 
-    void zh_createBaseComponents();
-    virtual void zh_saveSettings();
-    virtual void zh_restoreSettings();
-    bool zh_openDialogSettingsGroup(QSettings* settings);
-    bool zh_closeDialogSettingsGroup(QSettings* settings);
+    void xh_createBaseComponents();
+    virtual void xh_saveSettings();
+    virtual void xh_restoreSettings();
+    bool xh_openDialogSettingsGroup(QSettings* settings);
+    bool xh_closeDialogSettingsGroup(QSettings* settings);
 
-    void zh_insertLayoutToMainLayout(int index,
+    void xh_insertLayoutToMainLayout(int index,
                                      QLayout* layout,
                                      int stretch = 0);
-    void zh_insertWidgetToMainLayout(int index,
+    void xh_insertWidgetToMainLayout(int index,
                                      QWidget* widget ,
                                      int stretch = 0,
                                      Qt::Alignment alignment = Qt::Alignment());
-    void zh_addLayoutToMainLayout(QLayout* layout,
+    void xh_addLayoutToMainLayout(QLayout* layout,
                                   int stretch = 0);
-    void zh_addWidgetToMainLayout(QWidget* widget,
+    void xh_addWidgetToMainLayout(QWidget* widget,
                                   int stretch = 0,
                                   Qt::Alignment alignment = Qt::Alignment());
-    void zh_addStretchToMainLayout(int stretch = 0);
+    void xh_addStretchToMainLayout(int stretch = 0);
 
-    QPushButton* zh_createBasementButton(QString text = QString(),
+    QPushButton* xh_createBasementButton(QString text = QString(),
                                          QString toolTip = QString(),
                                          QIcon icon = QIcon());
 
-    bool zh_ctrlXHandling(QEvent *event);
+    bool xh_ctrlXHandling(QEvent *event);
 
 };
 //====================================================

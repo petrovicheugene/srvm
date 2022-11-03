@@ -42,16 +42,16 @@ private:
     QString xv_errorMessage;
 
     // FUNCS
-    void zh_createAvailableLocaleList();
-    bool zh_nativeLanguageNameForTranslatorFile(const QString& translatorFileName,
+    void xh_createAvailableLocaleList();
+    bool xh_nativeLanguageNameForTranslatorFile(const QString& translatorFileName,
                                                 QString& languageName) const;
-    void zh_getApplicationLocale(QLocale &locale);
-    bool zh_getApplicationLocaleFromSettings(QLocale &locale);
+    void xh_getApplicationLocale(QLocale &locale);
+    bool xh_getApplicationLocaleFromSettings(QLocale &locale);
 
-    void zh_openSettings(QSettings& settings) const;
-    void zh_closeSettings(QSettings& settings) const;
-    void zh_setErrorMessage(const QString &msg);
-    QString zh_localeNameForTranslator(const QString& translatorFileName) const;
+    void xh_openSettings(QSettings& settings) const;
+    void xh_closeSettings(QSettings& settings) const;
+    void xh_setErrorMessage(const QString &msg);
+    QString xh_localeNameForTranslator(const QString& translatorFileName) const;
 
 };
 //================================================

@@ -16,11 +16,11 @@ X_HorizontalDashBoard::X_HorizontalDashBoard(QWidget *parent) : QFrame(parent)
     xv_plotGraphicsView = 0;
     xv_plotGraphicsScene = 0;
     xv_timer = 0;
-    zh_createComponents();
-    zh_createConnections();
+    xh_createComponents();
+    xh_createConnections();
 }
 //===========================================================
-void X_HorizontalDashBoard::zh_createComponents()
+void X_HorizontalDashBoard::xh_createComponents()
 {
     xv_mainLayout = new QHBoxLayout;
     xv_mainLayout->setContentsMargins(0, 0, 0, 0);
@@ -183,7 +183,7 @@ void X_HorizontalDashBoard::xp_setDistortionSliderVisible(bool visible)
 //===========================================================
 void X_HorizontalDashBoard::timerEvent(QTimerEvent* event)
 {
-    zh_killTimer();
+    xh_killTimer();
     if(!xv_plotGraphicsView)
     {
         return;
@@ -193,36 +193,36 @@ void X_HorizontalDashBoard::timerEvent(QTimerEvent* event)
     xv_timer = startTimer(100);
 }
 //===========================================================
-void X_HorizontalDashBoard::zh_createConnections()
+void X_HorizontalDashBoard::xh_createConnections()
 {
     connect(xv_increaseVerticalButton, &QToolButton::pressed,
-            this, &X_HorizontalDashBoard::zh_increaseVertical);
+            this, &X_HorizontalDashBoard::xh_increaseVertical);
     connect(xv_increaseHorizontalButton, &QToolButton::pressed,
-            this, &X_HorizontalDashBoard::zh_increaseHorizontal);
+            this, &X_HorizontalDashBoard::xh_increaseHorizontal);
     connect(xv_decreaseVerticalButton, &QToolButton::pressed,
-            this, &X_HorizontalDashBoard::zh_decreaseVertical);
+            this, &X_HorizontalDashBoard::xh_decreaseVertical);
     connect(xv_decreaseHorizontalButton, &QToolButton::pressed,
-            this, &X_HorizontalDashBoard::zh_decreaseHorizontal);
+            this, &X_HorizontalDashBoard::xh_decreaseHorizontal);
 
     connect(xv_increaseVerticalButton, &QToolButton::released,
-            this, &X_HorizontalDashBoard::zh_killTimer);
+            this, &X_HorizontalDashBoard::xh_killTimer);
     connect(xv_increaseHorizontalButton, &QToolButton::released,
-            this, &X_HorizontalDashBoard::zh_killTimer);
+            this, &X_HorizontalDashBoard::xh_killTimer);
     connect(xv_decreaseVerticalButton, &QToolButton::released,
-            this, &X_HorizontalDashBoard::zh_killTimer);
+            this, &X_HorizontalDashBoard::xh_killTimer);
     connect(xv_decreaseHorizontalButton, &QToolButton::released,
-            this, &X_HorizontalDashBoard::zh_killTimer);
+            this, &X_HorizontalDashBoard::xh_killTimer);
 
     connect(xv_hideGridButton, SIGNAL(toggled(bool)),
-            this, SLOT(zh_hideGrid(bool)));
+            this, SLOT(xh_hideGrid(bool)));
     connect(xv_fitViewInSceneButton, &QToolButton::clicked,
-            this, &X_HorizontalDashBoard::zh_fitViewInScene);
+            this, &X_HorizontalDashBoard::xh_fitViewInScene);
 
     connect(xv_distortionSlider, &QSlider::valueChanged,
             this, &X_HorizontalDashBoard::xg_distortionFactorChanged);
 }
 //===========================================================
-void X_HorizontalDashBoard::zh_killTimer()
+void X_HorizontalDashBoard::xh_killTimer()
 {
     if(xv_timer)
     {
@@ -231,7 +231,7 @@ void X_HorizontalDashBoard::zh_killTimer()
     }
 }
 //===========================================================
-void X_HorizontalDashBoard::zh_increaseVertical()
+void X_HorizontalDashBoard::xh_increaseVertical()
 {
     if(xv_plotGraphicsView == 0)
     {
@@ -240,10 +240,10 @@ void X_HorizontalDashBoard::zh_increaseVertical()
     xv_plotGraphicsView->xp_scale(Qt::Vertical, true);
     xv_orientation = Qt::Vertical;
     xv_increase = true;
-    zh_startTimer();
+    xh_startTimer();
 }
 //===========================================================
-void X_HorizontalDashBoard::zh_increaseHorizontal()
+void X_HorizontalDashBoard::xh_increaseHorizontal()
 {
     if(xv_plotGraphicsView == 0)
     {
@@ -252,10 +252,10 @@ void X_HorizontalDashBoard::zh_increaseHorizontal()
     xv_plotGraphicsView->xp_scale(Qt::Horizontal, true);
     xv_orientation = Qt::Horizontal;
     xv_increase = true;
-    zh_startTimer();
+    xh_startTimer();
 }
 //===========================================================
-void X_HorizontalDashBoard::zh_decreaseVertical()
+void X_HorizontalDashBoard::xh_decreaseVertical()
 {
     if(xv_plotGraphicsView == 0)
     {
@@ -264,10 +264,10 @@ void X_HorizontalDashBoard::zh_decreaseVertical()
     xv_plotGraphicsView->xp_scale(Qt::Vertical, false);
     xv_orientation = Qt::Vertical;
     xv_increase = false;
-    zh_startTimer();
+    xh_startTimer();
 }
 //===========================================================
-void X_HorizontalDashBoard::zh_decreaseHorizontal()
+void X_HorizontalDashBoard::xh_decreaseHorizontal()
 {
     if(xv_plotGraphicsView == 0)
     {
@@ -276,10 +276,10 @@ void X_HorizontalDashBoard::zh_decreaseHorizontal()
     xv_plotGraphicsView->xp_scale(Qt::Horizontal, false);
     xv_orientation = Qt::Horizontal;
     xv_increase = false;
-    zh_startTimer();
+    xh_startTimer();
 }
 //===========================================================
-void X_HorizontalDashBoard::zh_fitViewInScene() const
+void X_HorizontalDashBoard::xh_fitViewInScene() const
 {
     if(xv_plotGraphicsView == 0 || xv_plotGraphicsScene == 0)
     {
@@ -301,7 +301,7 @@ void X_HorizontalDashBoard::zh_fitViewInScene() const
     //xv_plotGraphicsView->ensureVisible(rectToFit, 2, 2);
 }
 //===========================================================
-void X_HorizontalDashBoard::zh_hideGrid(bool toggled) const
+void X_HorizontalDashBoard::xh_hideGrid(bool toggled) const
 {
     if(xv_plotGraphicsView == 0)
     {
@@ -310,7 +310,7 @@ void X_HorizontalDashBoard::zh_hideGrid(bool toggled) const
     xv_plotGraphicsView->xp_setGridHidden(toggled);
 }
 //===========================================================
-void X_HorizontalDashBoard::zh_startTimer()
+void X_HorizontalDashBoard::xh_startTimer()
 {
     xv_timer = startTimer(300);
 }

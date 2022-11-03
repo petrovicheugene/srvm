@@ -35,8 +35,8 @@ signals:
 
 private slots:
 
-    virtual void zh_help();
-    virtual void zh_about();
+    virtual void xh_help();
+    virtual void xh_about();
 
 
 protected:
@@ -49,11 +49,11 @@ protected:
     QAction* xv_aboutQtAction;
 
     // FUNCS
-    void zh_createBaseActions();
-    void zh_createBaseConnections();
+    void xh_createBaseActions();
+    void xh_createBaseConnections();
 
-    virtual bool zh_openSettingsGroup(QSettings* settings);
-    virtual bool zh_closeSettingsGroup(QSettings* settings);
+    virtual bool xh_openSettingsGroup(QSettings* settings);
+    virtual bool xh_closeSettingsGroup(QSettings* settings);
 
 };
 //======================================================

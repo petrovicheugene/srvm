@@ -37,7 +37,7 @@ private:
 
 private slots:
 
-    void zh_onRepositoryOperation(X_ChemElementDataManager::OperationType, int first, int last);
+    void xh_onRepositoryOperation(X_ChemElementDataManager::OperationType, int first, int last);
 
 };
 //===========================================================

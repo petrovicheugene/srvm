@@ -65,8 +65,8 @@ private:
     // max = max^logFactor * xv_k
 
     // FUNCS
-    void zh_calculatePainterPath();
-    qreal zh_sceneDistortionPositionForValue(qreal value);
+    void xh_calculatePainterPath();
+    qreal xh_sceneDistortionPositionForValue(qreal value);
 
 };
 //======================================================

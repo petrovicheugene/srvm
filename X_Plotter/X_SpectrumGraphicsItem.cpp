@@ -102,7 +102,7 @@ void X_SpectrumGraphicsItem::xp_setSpectrumData(const QList<quint32>& data)
 {
     xv_spectrumData = data;
     // painter path calculation
-    zh_calculatePainterPath();
+    xh_calculatePainterPath();
     update(xv_boundingRect);
 }
 //======================================================
@@ -118,7 +118,7 @@ void X_SpectrumGraphicsItem::xp_updateSpectrumData(const X_AbstractSpectrum *spe
     xv_spectrumId = spectrum->xp_spectrumId();
 
     // painter path calculation
-    zh_calculatePainterPath();
+    xh_calculatePainterPath();
     if(xv_spectrumId != xv_currentSpectrumId)
     {
         setVisible(spectrum->xp_isSpectrumVisible());
@@ -127,7 +127,7 @@ void X_SpectrumGraphicsItem::xp_updateSpectrumData(const X_AbstractSpectrum *spe
     update(xv_boundingRect);
 }
 //======================================================
-void X_SpectrumGraphicsItem::zh_calculatePainterPath()
+void X_SpectrumGraphicsItem::xh_calculatePainterPath()
 {
     prepareGeometryChange();
     QPointF point(0.0, 0.0);
@@ -137,7 +137,7 @@ void X_SpectrumGraphicsItem::zh_calculatePainterPath()
     qreal scValue = 0.0;
     for(int i = 0; i < xv_spectrumData.count(); i++)
     {
-        scValue = zh_sceneDistortionPositionForValue((qreal)(xv_spectrumData.value(i)));
+        scValue = xh_sceneDistortionPositionForValue((qreal)(xv_spectrumData.value(i)));
         point = QPointF((qreal)i,  scValue*-1);
         newShape.lineTo(point);
         point = QPointF((qreal)(i+1),  scValue*-1);
@@ -155,7 +155,7 @@ void X_SpectrumGraphicsItem::zh_calculatePainterPath()
     xv_boundingRect.setBottom(xv_boundingRect.bottom()+5);
 }
 //======================================================
-qreal X_SpectrumGraphicsItem::zh_sceneDistortionPositionForValue(qreal value)
+qreal X_SpectrumGraphicsItem::xh_sceneDistortionPositionForValue(qreal value)
 {
     if(xv_distortionFactor == 1 || xv_distortionCorrectionFactor == 0)
     {
@@ -183,7 +183,7 @@ void X_SpectrumGraphicsItem::xp_setDistortion(qreal distortionFactor, qreal dist
 
     xv_distortionCorrectionFactor = distortionCorrectionFactor;
 
-    zh_calculatePainterPath();
+    xh_calculatePainterPath();
     update(xv_boundingRect);
 }
 //======================================================

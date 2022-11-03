@@ -47,7 +47,7 @@ int X_VerticalLineGraphicsItem::type() const
 void X_VerticalLineGraphicsItem::xp_updateItem()
 {
     setVisible(xv_energyCalibrationLine->xp_isEnabled());
-    zh_recalcShapeAndBoundingRect();
+    xh_recalcShapeAndBoundingRect();
     update();
 }
 //======================================================
@@ -68,7 +68,7 @@ bool X_VerticalLineGraphicsItem::xp_setTopAndButtonMargins(qreal top, qreal bott
     return true;
 }
 //======================================================
-void X_VerticalLineGraphicsItem::zh_recalcShapeAndBoundingRect()
+void X_VerticalLineGraphicsItem::xh_recalcShapeAndBoundingRect()
 {
     prepareGeometryChange();
     double xPosition = static_cast<double>(xv_energyCalibrationLine->xp_channelNumber()) + 0.5;

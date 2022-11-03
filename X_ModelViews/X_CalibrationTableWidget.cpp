@@ -20,11 +20,11 @@
 //==============================================================
 X_CalibrationTableWidget::X_CalibrationTableWidget(QWidget *parent) : QWidget(parent)
 {
-    zh_createComponents();
-    zh_createConnections();
+    xh_createComponents();
+    xh_createConnections();
 }
 //==============================================================
-void X_CalibrationTableWidget::zh_createComponents()
+void X_CalibrationTableWidget::xh_createComponents()
 {
     xv_mainLayout = new QVBoxLayout;
     xv_mainLayout->setContentsMargins(0, 0, 0, 0);
@@ -40,10 +40,10 @@ void X_CalibrationTableWidget::zh_createComponents()
     xv_mainLayout->addLayout(xv_buttonLayout);
 }
 //==============================================================
-void X_CalibrationTableWidget::zh_createConnections()
+void X_CalibrationTableWidget::xh_createConnections()
 {
     connect(xv_table, &QTableView::customContextMenuRequested,
-            this, &X_CalibrationTableWidget::zh_onContextMenuRequest);
+            this, &X_CalibrationTableWidget::xh_onContextMenuRequest);
 }
 //==============================================================
 void X_CalibrationTableWidget::xp_setModel(QAbstractItemModel* model)
@@ -79,17 +79,17 @@ void X_CalibrationTableWidget::xp_setModel(QAbstractItemModel* model)
     xv_table->setAlternatingRowColors(true);
 
     connect(xv_table->selectionModel(), &QItemSelectionModel::currentChanged,
-            this, &X_CalibrationTableWidget::zh_onCurrentCalibrationChange);
+            this, &X_CalibrationTableWidget::xh_onCurrentCalibrationChange);
     connect(xv_table->selectionModel(), &QItemSelectionModel::selectionChanged,
-            this, &X_CalibrationTableWidget::zh_onSelectedCalibrationChange);
+            this, &X_CalibrationTableWidget::xh_onSelectedCalibrationChange);
     connect(model,
             &QAbstractItemModel::rowsMoved,
             this,
-            &X_CalibrationTableWidget::zh_onRowCountChange);
+            &X_CalibrationTableWidget::xh_onRowCountChange);
     connect(model,
             &QAbstractItemModel::rowsRemoved,
             this,
-            &X_CalibrationTableWidget::zh_onRowCountChange);
+            &X_CalibrationTableWidget::xh_onRowCountChange);
 
     connect(chemElementComboBoxDelegate,
             &X_ChemElementComboBoxDelegate::xg_requestChemElementList,
@@ -97,7 +97,7 @@ void X_CalibrationTableWidget::xp_setModel(QAbstractItemModel* model)
             &X_CalibrationTableWidget::xg_requestChemElementList);
 }
 //==============================================================
-void X_CalibrationTableWidget::zh_onRowCountChange(const QModelIndex& parent,
+void X_CalibrationTableWidget::xh_onRowCountChange(const QModelIndex& parent,
                                                   int first,
                                                   int last)
 {
@@ -230,19 +230,19 @@ void X_CalibrationTableWidget::xp_startCurrentCalibrationEdition()
     xv_table->edit(currentIndex);
 }
 //==============================================================
-void X_CalibrationTableWidget::zh_onCurrentCalibrationChange(const QModelIndex & current, const QModelIndex & previous)
+void X_CalibrationTableWidget::xh_onCurrentCalibrationChange(const QModelIndex & current, const QModelIndex & previous)
 {
     emit xg_currentCalibrationChanged(current.row(), previous.row());
 }
 //==============================================================
-void X_CalibrationTableWidget::zh_onSelectedCalibrationChange(const QItemSelection & selected, const QItemSelection & deselected)
+void X_CalibrationTableWidget::xh_onSelectedCalibrationChange(const QItemSelection & selected, const QItemSelection & deselected)
 {
     QList<int> selectedList;
     xp_selectedCalibrationIndexList(selectedList);
     emit xg_selectedCalibrationChanged(selectedList);
 }
 //==============================================================
-void X_CalibrationTableWidget::zh_onContextMenuRequest(const QPoint &pos)
+void X_CalibrationTableWidget::xh_onContextMenuRequest(const QPoint &pos)
 {
     QMenu *menu=new QMenu(this);
     menu->setAttribute(Qt::WA_DeleteOnClose);

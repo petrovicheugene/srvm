@@ -18,7 +18,7 @@ X_TranslatorManager::X_TranslatorManager(QObject* parent,
     xv_resoucesTranslatorDirName = resoucesTranslatorDirName;
     xv_internalTranslatorDir = internalTranslatorDir;
     xv_prefix = prefix;
-    zh_createAvailableLocaleList();
+    xh_createAvailableLocaleList();
 }
 //================================================
 bool X_TranslatorManager::xp_installTranslatorsToApplication()
@@ -27,14 +27,14 @@ bool X_TranslatorManager::xp_installTranslatorsToApplication()
 
     if(!qApp )
     {
-        zh_setErrorMessage(tr("Cannot install application translator. "
+        xh_setErrorMessage(tr("Cannot install application translator. "
                               "The pointer of the application is invalid!"));
         return false;
     }
 
     // get language name
     QLocale appLocale;
-    zh_getApplicationLocale(appLocale);
+    xh_getApplicationLocale(appLocale);
 
     QTranslator* appTranslator = new QTranslator(qApp);
     QDir appDir(QApplication::applicationDirPath());
@@ -52,7 +52,7 @@ bool X_TranslatorManager::xp_installTranslatorsToApplication()
 
     if(!res)
     {
-        zh_setErrorMessage(tr("Cannot install application translator. Unknown error."));
+        xh_setErrorMessage(tr("Cannot install application translator. Unknown error."));
         delete appTranslator;
         return false;
     }
@@ -72,7 +72,7 @@ bool X_TranslatorManager::xp_installTranslatorsToApplication()
 
     if(!res)
     {
-        zh_setErrorMessage(tr("Cannot install Qt translator. Unknown error."));
+        xh_setErrorMessage(tr("Cannot install Qt translator. Unknown error."));
         delete qtTranslator;
         return false;
     }
@@ -100,7 +100,7 @@ QString X_TranslatorManager::xp_lastError() const
     return xv_errorMessage;
 }
 //================================================
-void X_TranslatorManager::zh_createAvailableLocaleList()
+void X_TranslatorManager::xh_createAvailableLocaleList()
 {
     // application base name
     QString appBaseName = qApp->applicationName().isEmpty()?
@@ -119,7 +119,7 @@ void X_TranslatorManager::zh_createAvailableLocaleList()
     foreach(QString translatorFileName, translatorFileNameStringList)
     {
         QLocale locale(QLocale::c());
-        localeName = zh_localeNameForTranslator(translatorFileName);
+        localeName = xh_localeNameForTranslator(translatorFileName);
         locale = QLocale(localeName);
 
         if(locale == QLocale::c())
@@ -134,10 +134,10 @@ void X_TranslatorManager::zh_createAvailableLocaleList()
     }
 }
 //================================================
-bool X_TranslatorManager::zh_nativeLanguageNameForTranslatorFile(const QString& translatorFileName,
+bool X_TranslatorManager::xh_nativeLanguageNameForTranslatorFile(const QString& translatorFileName,
                                                                 QString& languageName) const
 {
-    QString localeName = zh_localeNameForTranslator(translatorFileName);
+    QString localeName = xh_localeNameForTranslator(translatorFileName);
     if(localeName.isEmpty())
     {
         return false;
@@ -176,7 +176,7 @@ void X_TranslatorManager::xp_setApplicationLanguage (const QString& languageName
         }
 
         QLocale currentLocale;
-        zh_getApplicationLocale(currentLocale);
+        xh_getApplicationLocale(currentLocale);
 
         if(currentLocale == locale)
         {
@@ -189,9 +189,9 @@ void X_TranslatorManager::xp_setApplicationLanguage (const QString& languageName
         }
 
         QSettings settings;
-        zh_openSettings(settings);
+        xh_openSettings(settings);
         settings.setValue(xv_appLanguageSettingsName, QVariant(locale.name()));
-        zh_closeSettings(settings);
+        xh_closeSettings(settings);
         if(ok)
         {
             *ok = true;
@@ -199,7 +199,7 @@ void X_TranslatorManager::xp_setApplicationLanguage (const QString& languageName
         return;
     }
 
-    zh_setErrorMessage(tr("Cannot set the selected langusge. Translator not found!"));
+    xh_setErrorMessage(tr("Cannot set the selected langusge. Translator not found!"));
     if(ok)
     {
         *ok = false;
@@ -209,7 +209,7 @@ void X_TranslatorManager::xp_setApplicationLanguage (const QString& languageName
 void X_TranslatorManager::xp_currentLanguageName(QString& languageName, bool *ok)
 {
     QLocale locale;
-    zh_getApplicationLocale(locale);
+    xh_getApplicationLocale(locale);
 
     if(locale == QLocale::c())
     {
@@ -232,7 +232,7 @@ void X_TranslatorManager::xp_currentLanguageName(QString& languageName, bool *ok
 void X_TranslatorManager::xp_currentLocaleName(QString& localeName, bool *ok)
 {
     QLocale locale;
-    zh_getApplicationLocale(locale);
+    xh_getApplicationLocale(locale);
 
     if(locale == QLocale::c())
     {
@@ -251,30 +251,30 @@ void X_TranslatorManager::xp_currentLocaleName(QString& localeName, bool *ok)
     }
 }
 //================================================
-void X_TranslatorManager::zh_getApplicationLocale(QLocale& locale)
+void X_TranslatorManager::xh_getApplicationLocale(QLocale& locale)
 {
-    if(!zh_getApplicationLocaleFromSettings(locale))
+    if(!xh_getApplicationLocaleFromSettings(locale))
     {
         locale = QLocale::system();
     }
 }
 //================================================
-bool X_TranslatorManager::zh_getApplicationLocaleFromSettings(QLocale &locale)
+bool X_TranslatorManager::xh_getApplicationLocaleFromSettings(QLocale &locale)
 {
     QSettings settings;
-    zh_openSettings(settings);
+    xh_openSettings(settings);
     if(!settings.contains(xv_appLanguageSettingsName))
     {
-        zh_setErrorMessage(tr("Language for application is not set!"));
+        xh_setErrorMessage(tr("Language for application is not set!"));
         return false;
     }
 
     QVariant vData = settings.value(xv_appLanguageSettingsName);
-    zh_closeSettings(settings);
+    xh_closeSettings(settings);
 
     if(!vData.isValid() || vData.isNull() || !vData.canConvert<QString>())
     {
-        zh_setErrorMessage(tr("Cannot get translator file name from settings!"));
+        xh_setErrorMessage(tr("Cannot get translator file name from settings!"));
         return false;
     }
 
@@ -284,7 +284,7 @@ bool X_TranslatorManager::zh_getApplicationLocaleFromSettings(QLocale &locale)
     return true;
 }
 //================================================
-void X_TranslatorManager::zh_openSettings(QSettings &settings) const
+void X_TranslatorManager::xh_openSettings(QSettings &settings) const
 {
     QString version = qApp->applicationVersion();
     if(!version.isEmpty())
@@ -293,7 +293,7 @@ void X_TranslatorManager::zh_openSettings(QSettings &settings) const
     }
 }
 //================================================
-void X_TranslatorManager::zh_closeSettings(QSettings& settings) const
+void X_TranslatorManager::xh_closeSettings(QSettings& settings) const
 {
     while (!settings.group().isEmpty())
     {
@@ -301,13 +301,13 @@ void X_TranslatorManager::zh_closeSettings(QSettings& settings) const
     }
 }
 //================================================
-void X_TranslatorManager::zh_setErrorMessage(const QString& msg)
+void X_TranslatorManager::xh_setErrorMessage(const QString& msg)
 {
     xv_errorMessage = msg;
     qWarning().noquote() << xv_errorMessage;
 }
 //================================================
-QString X_TranslatorManager::zh_localeNameForTranslator(const QString& translatorFileName) const
+QString X_TranslatorManager::xh_localeNameForTranslator(const QString& translatorFileName) const
 {
     QString localeName = translatorFileName;
     localeName.truncate(localeName.lastIndexOf('.')); // "TranslationExample_de"

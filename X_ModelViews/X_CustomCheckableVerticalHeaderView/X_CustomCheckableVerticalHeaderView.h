@@ -27,9 +27,9 @@ protected:
     void mouseReleaseEvent(QMouseEvent* event);
     void mouseDoubleClickEvent(QMouseEvent* e);
 
-    QRect zh_decorationRect(const QRect &sectionRect) const;
-    bool zh_isFirstVisibleSection(int section) const;
-    bool zh_isLastVisibleSection(int section) const;
+    QRect xh_decorationRect(const QRect &sectionRect) const;
+    bool xh_isFirstVisibleSection(int section) const;
+    bool xh_isLastVisibleSection(int section) const;
 
 signals:
 

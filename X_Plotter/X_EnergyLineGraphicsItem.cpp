@@ -77,11 +77,11 @@ int X_EnergyLineGraphicsItem::type() const
 //======================================================
 void X_EnergyLineGraphicsItem::xp_updateItem()
 {
-    zh_recalcShapeAndBoundingRect();
+    xh_recalcShapeAndBoundingRect();
     update();
 }
 //======================================================
-void X_EnergyLineGraphicsItem::zh_recalcShapeAndBoundingRect()
+void X_EnergyLineGraphicsItem::xh_recalcShapeAndBoundingRect()
 {
     prepareGeometryChange();
 
@@ -134,21 +134,21 @@ void X_EnergyLineGraphicsItem::xp_setFontPixelSize(int pixelSize)
 void X_EnergyLineGraphicsItem::xp_setHeightPercent(int percent)
 {
     xv_heightPercent = percent;
-    zh_recalcShapeAndBoundingRect();
+    xh_recalcShapeAndBoundingRect();
     update();
 }
 //======================================================
 void X_EnergyLineGraphicsItem::xp_setXPosition(double xPos)
 {
     xv_xPosition = xPos;
-    zh_recalcShapeAndBoundingRect();
+    xh_recalcShapeAndBoundingRect();
     update();
 }
 //======================================================
 void X_EnergyLineGraphicsItem::xp_setColor(QColor color)
 {
     xv_color = color;
-    zh_recalcShapeAndBoundingRect();
+    xh_recalcShapeAndBoundingRect();
     update();
 }
 //======================================================

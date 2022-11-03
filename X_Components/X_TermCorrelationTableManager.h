@@ -68,16 +68,16 @@ public slots:
 
 private slots:
 
-    void zh_currentSpectrumArrayChanged(qint64, int);
-    void zh_onRepositoryChemElementOperation(X_SpectrumArrayRepository::ChemElementOperationType type,
+    void xh_currentSpectrumArrayChanged(qint64, int);
+    void xh_onRepositoryChemElementOperation(X_SpectrumArrayRepository::ChemElementOperationType type,
                                              int arrayIndex, int first, int last);
-    void zh_currentCalibrationChanged(qint64 calibrationId, int calibrationIndex);
-    void zh_onRepositoryTermOperation(X_CalibrationRepository::TermOperationType, int, int, int);
-    void zh_onCalibrationRepositoryOperation(X_CalibrationRepository::CalibrationOperationType, int, int);
-    void zh_onSpectrumOperation(X_SpectrumArrayRepository::SpectrumOperationType, int, int, int);
-    void zh_onCalibrationNormalizerChange(qint64 calibrationId);
-    void zh_recalcCalibrationFactors();
-    void zh_onCalibrationValuesChanged(qint64 calibrationId);
+    void xh_currentCalibrationChanged(qint64 calibrationId, int calibrationIndex);
+    void xh_onRepositoryTermOperation(X_CalibrationRepository::TermOperationType, int, int, int);
+    void xh_onCalibrationRepositoryOperation(X_CalibrationRepository::CalibrationOperationType, int, int);
+    void xh_onSpectrumOperation(X_SpectrumArrayRepository::SpectrumOperationType, int, int, int);
+    void xh_onCalibrationNormalizerChange(qint64 calibrationId);
+    void xh_recalcCalibrationFactors();
+    void xh_onCalibrationValuesChanged(qint64 calibrationId);
 
 private:
 
@@ -123,15 +123,15 @@ private:
 
     // FUNCS
 
-    bool zh_convertColRowForInterCorrelationMatrix(int& row, int& col) const;
-    bool zh_convertColRowForCovariationMatrix(int& row, int& col) const;
+    bool xh_convertColRowForInterCorrelationMatrix(int& row, int& col) const;
+    bool xh_convertColRowForCovariationMatrix(int& row, int& col) const;
 
-    void zh_startCalculationCorrelationsAndCovariations();
-    void zh_calcTermDispersions();
-    void zh_calcConcentrationAndFreeTermDispersions();
-    void zh_calcIntercorrelationsAndCovariations();
-    void zh_calcConcentrationCorrelationsAndCavariations();
-    void zh_calcResidualTermCorrelation();
+    void xh_startCalculationCorrelationsAndCovariations();
+    void xh_calcTermDispersions();
+    void xh_calcConcentrationAndFreeTermDispersions();
+    void xh_calcIntercorrelationsAndCovariations();
+    void xh_calcConcentrationCorrelationsAndCavariations();
+    void xh_calcResidualTermCorrelation();
 
 };
 //==================================================================

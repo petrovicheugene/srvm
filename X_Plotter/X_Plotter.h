@@ -139,11 +139,11 @@ protected:
 
 private slots:
 
-   void zh_verticalDistortionChanged(int);
-   void zh_scrollBarVisible(Qt::Orientation, bool&);
+   void xh_verticalDistortionChanged(int);
+   void xh_scrollBarVisible(Qt::Orientation, bool&);
 
-   void zh_mouseScenePositionChanged(QPointF scenePos) const;
-   void zh_mouseLeaved() const;
+   void xh_mouseScenePositionChanged(QPointF scenePos) const;
+   void xh_mouseLeaved() const;
 
 private:
 
@@ -178,16 +178,16 @@ private:
    bool xv_userResizesWidget;
 
    // FUNCS
-   void zh_createComponents();
-   void zh_createConnections();
-   void zh_connectScrollBars();
-   void zh_updateScrollBarsVisible();
+   void xh_createComponents();
+   void xh_createConnections();
+   void xh_connectScrollBars();
+   void xh_updateScrollBarsVisible();
 
-   void zh_scrollBarVisibleControl(int min , int max);
-   void zh_notifySceneRect(int value);
+   void xh_scrollBarVisibleControl(int min , int max);
+   void xh_notifySceneRect(int value);
 
-   bool zh_recalcVerticalDistortionFactors(qreal distortionValue);
-   void zh_recalcRulesAndItemCoordinates();
+   bool xh_recalcVerticalDistortionFactors(qreal distortionValue);
+   void xh_recalcRulesAndItemCoordinates();
 
 };
 //====================================================

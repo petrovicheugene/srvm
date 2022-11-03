@@ -13,7 +13,7 @@ X_PrimitivePlot::X_PrimitivePlot(QWidget *parent) : QFrame(parent)
 //=======================================================
 void X_PrimitivePlot::xp_paintData(const X_SpectrumPaintData &paintData)
 {
-    zh_recalcPaintData(paintData);
+    xh_recalcPaintData(paintData);
     repaint();
 }
 //=======================================================
@@ -47,32 +47,32 @@ void X_PrimitivePlot::paintEvent(QPaintEvent * event)
 
     if(xv_paintStyle == PS_DOTS)
     {
-        zh_paintDots(&painter);
+        xh_paintDots(&painter);
     }
     else if(xv_paintStyle == PS_STAIRS)
     {
-        zh_paintStairs(&painter);
+        xh_paintStairs(&painter);
     }
     else if(xv_paintStyle == PS_POLYGON)
     {
-        zh_paintPlygon(&painter);
+        xh_paintPlygon(&painter);
     }
     else if(xv_paintStyle == PS_STAIRS_POLYGON)
     {
-        zh_paintStairsPolygon(&painter);
+        xh_paintStairsPolygon(&painter);
     }
     else
     {
-        zh_paintStraight(&painter);
+        xh_paintStraight(&painter);
     }
 }
 //=======================================================
-void X_PrimitivePlot::zh_paintDots(QStylePainter* painter)
+void X_PrimitivePlot::xh_paintDots(QStylePainter* painter)
 {
 
 }
 //=======================================================
-void X_PrimitivePlot::zh_paintPlygon(QStylePainter* painter)
+void X_PrimitivePlot::xh_paintPlygon(QStylePainter* painter)
 {
     //QPolygon polygon(xv_paintData.spectrumData);
     painter->save();
@@ -88,7 +88,7 @@ void X_PrimitivePlot::zh_paintPlygon(QStylePainter* painter)
     painter->restore();
 }
 //=======================================================
-void X_PrimitivePlot::zh_paintStairsPolygon(QStylePainter* painter)
+void X_PrimitivePlot::xh_paintStairsPolygon(QStylePainter* painter)
 {
     painter->save();
     painter->setPen(QPen(QBrush(xv_penColor), 1));
@@ -112,17 +112,17 @@ void X_PrimitivePlot::zh_paintStairsPolygon(QStylePainter* painter)
     painter->restore();
 }
 //=======================================================
-void X_PrimitivePlot::zh_paintStairs(QStylePainter* painter)
+void X_PrimitivePlot::xh_paintStairs(QStylePainter* painter)
 {
 
 }
 //=======================================================
-void X_PrimitivePlot::zh_paintStraight(QStylePainter* painter)
+void X_PrimitivePlot::xh_paintStraight(QStylePainter* painter)
 {
 
 }
 //=======================================================
-void X_PrimitivePlot::zh_recalcPaintData(const X_SpectrumPaintData &paintData)
+void X_PrimitivePlot::xh_recalcPaintData(const X_SpectrumPaintData &paintData)
 {
     // log Coordinates
     double channelPerPixel = (double)paintData.maxChannel / (double)(this->width() - 2);

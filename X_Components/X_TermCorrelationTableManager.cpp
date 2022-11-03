@@ -43,19 +43,19 @@ void X_TermCorrelationTableManager::xp_connectToCalibrationRepository(X_Calibrat
     emit xg_currentOperation(TOT_BEGIN_RESET, -1, -1);
     xv_calibrationRepository = repository;
     connect(xv_calibrationRepository, &X_CalibrationRepository::xg_termOperation,
-            this, &X_TermCorrelationTableManager::zh_onRepositoryTermOperation);
+            this, &X_TermCorrelationTableManager::xh_onRepositoryTermOperation);
     //    connect(repository, &X_CalibrationRepository::xg_calibrationWindowOperation,
-    //            this, &X_TermCorrelationTableManager::zh_onCalibrationWindowOperation);
+    //            this, &X_TermCorrelationTableManager::xh_onCalibrationWindowOperation);
 
     connect(xv_calibrationRepository, &X_CalibrationRepository::xg_currentCalibrationChanged,
-            this, &X_TermCorrelationTableManager::zh_currentCalibrationChanged);
+            this, &X_TermCorrelationTableManager::xh_currentCalibrationChanged);
     connect(xv_calibrationRepository, &X_CalibrationRepository::xg_calibrationOperation,
-            this, &X_TermCorrelationTableManager::zh_onCalibrationRepositoryOperation);
+            this, &X_TermCorrelationTableManager::xh_onCalibrationRepositoryOperation);
     connect(xv_calibrationRepository, &X_CalibrationRepository::xg_normalizerChanged,
-            this, &X_TermCorrelationTableManager::zh_onCalibrationNormalizerChange);
+            this, &X_TermCorrelationTableManager::xh_onCalibrationNormalizerChange);
 
     connect(xv_calibrationRepository, &X_CalibrationRepository::xg_invokeCalibrationRecalc,
-            this, &X_TermCorrelationTableManager::zh_recalcCalibrationFactors);
+            this, &X_TermCorrelationTableManager::xh_recalcCalibrationFactors);
 
     connect(this, &X_TermCorrelationTableManager::xg_currentTermChanged,
             xv_calibrationRepository, &X_CalibrationRepository::xp_onCurrentTermChange);
@@ -72,13 +72,13 @@ void X_TermCorrelationTableManager::xp_connectToSpectrumArrayRepository(X_Spectr
     xv_spectrumArrayRepository = repository;
     // array repository <-> array model
     //    connect(repository, &X_SpectrumArrayRepository::xg_spectrumOperation,
-    //            this, &X_JointSpectraDataManager::zh_onRepositoryArrayOperation);
+    //            this, &X_JointSpectraDataManager::xh_onRepositoryArrayOperation);
     connect(repository, &X_SpectrumArrayRepository::xg_chemElementOperation,
-            this, &X_TermCorrelationTableManager::zh_onRepositoryChemElementOperation);
+            this, &X_TermCorrelationTableManager::xh_onRepositoryChemElementOperation);
     connect(repository, &X_SpectrumArrayRepository::xg_currentArrayIdChanged,
-            this, &X_TermCorrelationTableManager::zh_currentSpectrumArrayChanged);
+            this, &X_TermCorrelationTableManager::xh_currentSpectrumArrayChanged);
     connect(repository, &X_SpectrumArrayRepository::xg_spectrumOperation,
-            this, &X_TermCorrelationTableManager::zh_onSpectrumOperation);
+            this, &X_TermCorrelationTableManager::xh_onSpectrumOperation);
 
 }
 //=============================================================================
@@ -88,7 +88,7 @@ void X_TermCorrelationTableManager::xp_connectToJointSpectraDataManager(X_JointS
     connect(this, &X_TermCorrelationTableManager::xg_calculateCalibrationQualityData,
             jointSpectraDataManager, &X_JointSpectraDataManager::xp_calculateCalibrationQualityData);
     connect(jointSpectraDataManager, &X_JointSpectraDataManager::xg_calibrationValuesChanged,
-            this, &X_TermCorrelationTableManager::zh_onCalibrationValuesChanged);
+            this, &X_TermCorrelationTableManager::xh_onCalibrationValuesChanged);
 
 }
 //=============================================================================
@@ -178,7 +178,7 @@ QVariant X_TermCorrelationTableManager::xp_data(QModelIndex index) const
             return QVariant();
         }
 
-        if(!zh_convertColRowForInterCorrelationMatrix(row, col))
+        if(!xh_convertColRowForInterCorrelationMatrix(row, col))
         {
             return QVariant(tr("Error"));
         }
@@ -393,14 +393,14 @@ void X_TermCorrelationTableManager::xp_setNextUsersTermState(int termLogIndex)
     xv_calibrationRepository->xp_setNextUsersTermState(xv_currentCalibrationId, termLogIndex);
 }
 //=============================================================================
-void X_TermCorrelationTableManager::zh_onCalibrationValuesChanged(qint64 calibrationId)
+void X_TermCorrelationTableManager::xh_onCalibrationValuesChanged(qint64 calibrationId)
 {
     if(xv_currentCalibrationId != calibrationId)
     {
         return;
     }
 
-    zh_calcResidualTermCorrelation();
+    xh_calcResidualTermCorrelation();
     int factorCount = 0;
     X_AbstractTerm::TermState termState;
     for(int t = 0; t < xv_calibrationRepository->xp_termCount(xv_currentCalibrationId); t++)
@@ -416,7 +416,7 @@ void X_TermCorrelationTableManager::zh_onCalibrationValuesChanged(qint64 calibra
     emit xg_calculateCalibrationQualityData(false, xv_currentCalibrationId, factorCount + 1, xv_sumSquareAverageConcentrationDispersion);
 }
 //=============================================================================
-void X_TermCorrelationTableManager::zh_currentSpectrumArrayChanged(qint64 currentArrayId, int currentArrayIndex)
+void X_TermCorrelationTableManager::xh_currentSpectrumArrayChanged(qint64 currentArrayId, int currentArrayIndex)
 {
     if((xv_currentArrayIndex == currentArrayIndex && xv_currentArrayId == currentArrayId) || !xv_calibrationRepository)
     {
@@ -428,7 +428,7 @@ void X_TermCorrelationTableManager::zh_currentSpectrumArrayChanged(qint64 curren
 
     xv_currentArrayIndex = currentArrayIndex;
     xv_currentArrayId = currentArrayId;
-    zh_startCalculationCorrelationsAndCovariations();
+    xh_startCalculationCorrelationsAndCovariations();
     emit xg_currentOperation(TOT_DATA_CHANGED, 0, xp_rowCount() - 1);
 
     // equation quality recalc
@@ -447,7 +447,7 @@ void X_TermCorrelationTableManager::zh_currentSpectrumArrayChanged(qint64 curren
     emit xg_calculateCalibrationQualityData(false, xv_currentCalibrationId, factorCount + 1, xv_sumSquareAverageConcentrationDispersion);
 }
 //==================================================================
-void X_TermCorrelationTableManager::zh_onRepositoryChemElementOperation(X_SpectrumArrayRepository::ChemElementOperationType type,
+void X_TermCorrelationTableManager::xh_onRepositoryChemElementOperation(X_SpectrumArrayRepository::ChemElementOperationType type,
                                                                        int arrayIndex, int first, int last)
 {
     if(xv_currentArrayIndex != arrayIndex || xv_currentCalibrationId < 0
@@ -481,7 +481,7 @@ void X_TermCorrelationTableManager::zh_onRepositoryChemElementOperation(X_Spectr
     }
     else if(type == X_SpectrumArrayRepository::CEOT_END_INSERT_CHEM_ELEMENT)
     {
-        zh_startCalculationCorrelationsAndCovariations();
+        xh_startCalculationCorrelationsAndCovariations();
         emit xg_currentOperation(TOT_DATA_CHANGED, 0, xp_rowCount() - 1);
     }
     else if(type == X_SpectrumArrayRepository::CEOT_REMOVE_CHEM_ELEMENT)
@@ -491,12 +491,12 @@ void X_TermCorrelationTableManager::zh_onRepositoryChemElementOperation(X_Spectr
     }
     else if(type == X_SpectrumArrayRepository::CEOT_END_REMOVE_CHEM_ELEMENT)
     {
-        //        zh_calcChemElementCorrelations();
+        //        xh_calcChemElementCorrelations();
         //        emit xg_currentOperation(TOT_DATA_CHANGED, 0, xp_rowCount() - 1);
     }
     else if(type == X_SpectrumArrayRepository::CEOT_CHEM_ELEMENT_CHANGED)
     {
-        zh_startCalculationCorrelationsAndCovariations();
+        xh_startCalculationCorrelationsAndCovariations();
         emit xg_currentOperation(TOT_DATA_CHANGED, 0, xp_rowCount() - 1);
         //        emit xg_currentOperation(OT_COLUMN_HEADER_CHANGED, visibleFirst, visibleLast);
     }
@@ -526,7 +526,7 @@ void X_TermCorrelationTableManager::zh_onRepositoryChemElementOperation(X_Spectr
     }
 }
 //=============================================================================
-void X_TermCorrelationTableManager::zh_currentCalibrationChanged(qint64 calibrationId, int calibrationIndex)
+void X_TermCorrelationTableManager::xh_currentCalibrationChanged(qint64 calibrationId, int calibrationIndex)
 {
     if(xv_currentCalibrationId == calibrationId && xv_currentCalibrationIndex == calibrationIndex)
     {
@@ -537,11 +537,11 @@ void X_TermCorrelationTableManager::zh_currentCalibrationChanged(qint64 calibrat
 
     xv_currentCalibrationId = calibrationId;
     xv_currentCalibrationIndex = calibrationIndex;
-    zh_startCalculationCorrelationsAndCovariations();
+    xh_startCalculationCorrelationsAndCovariations();
     emit xg_currentOperation(TOT_END_RESET, -1, -1);
 }
 //=============================================================================
-void X_TermCorrelationTableManager::zh_onRepositoryTermOperation(X_CalibrationRepository::TermOperationType type,
+void X_TermCorrelationTableManager::xh_onRepositoryTermOperation(X_CalibrationRepository::TermOperationType type,
                                                                 int calibrationIndex, int first, int last)
 {
     if(xv_calibrationRepository == nullptr)
@@ -575,7 +575,7 @@ void X_TermCorrelationTableManager::zh_onRepositoryTermOperation(X_CalibrationRe
         xv_columnCountCorrector = 0;
         emit xg_currentOperation(TOT_END_INSERT_COLUMN, first + xv_firstNonTermColumnCount, last + xv_firstNonTermColumnCount);
 
-        zh_startCalculationCorrelationsAndCovariations();
+        xh_startCalculationCorrelationsAndCovariations();
         emit xg_currentOperation(TOT_DATA_CHANGED, 0, xp_rowCount() - 1);
     }
     else if(type == X_CalibrationRepository::TOT_BEGIN_REMOVE_TERM)
@@ -589,7 +589,7 @@ void X_TermCorrelationTableManager::zh_onRepositoryTermOperation(X_CalibrationRe
         emit xg_currentOperation(TOT_BEGIN_REMOVE_COLUMN, first + xv_firstNonTermColumnCount, last + xv_firstNonTermColumnCount);
         xv_columnCountCorrector = 0;
         emit xg_currentOperation(TOT_END_REMOVE_COLUMN, first + xv_firstNonTermColumnCount, last + xv_firstNonTermColumnCount);
-        zh_startCalculationCorrelationsAndCovariations();
+        xh_startCalculationCorrelationsAndCovariations();
         emit xg_currentOperation(TOT_DATA_CHANGED, 0, xp_rowCount() - 1);
     }
     else if(type == X_CalibrationRepository::TOT_TERM_NAME_CHANGED)
@@ -603,7 +603,7 @@ void X_TermCorrelationTableManager::zh_onRepositoryTermOperation(X_CalibrationRe
     }
     else if(type == X_CalibrationRepository::TOT_TERM_WINDOW_MARGIN_CHANGED)
     {
-        zh_startCalculationCorrelationsAndCovariations();
+        xh_startCalculationCorrelationsAndCovariations();
         emit xg_currentOperation(TOT_DATA_CHANGED, 0, xp_rowCount() - 1);
     }
     else if(type == X_CalibrationRepository::TOT_TERM_FACTOR_CHANGED)
@@ -612,7 +612,7 @@ void X_TermCorrelationTableManager::zh_onRepositoryTermOperation(X_CalibrationRe
     }
 }
 //=============================================================================
-void X_TermCorrelationTableManager::zh_onCalibrationRepositoryOperation(X_CalibrationRepository::CalibrationOperationType type,
+void X_TermCorrelationTableManager::xh_onCalibrationRepositoryOperation(X_CalibrationRepository::CalibrationOperationType type,
                                                                        int first, int last)
 {
     if(xv_calibrationRepository == nullptr || xv_currentCalibrationId < 0)
@@ -631,7 +631,7 @@ void X_TermCorrelationTableManager::zh_onCalibrationRepositoryOperation(X_Calibr
             }
             else if(type == X_CalibrationRepository::COT_END_RESET)
             {
-                zh_startCalculationCorrelationsAndCovariations();
+                xh_startCalculationCorrelationsAndCovariations();
                 emit xg_currentOperation(TOT_DATA_CHANGED, 0, xp_rowCount() - 1);
             }
             else if(type == X_CalibrationRepository::COT_INSERT_CALIBRATIONS)
@@ -641,7 +641,7 @@ void X_TermCorrelationTableManager::zh_onCalibrationRepositoryOperation(X_Calibr
             }
             else if(type == X_CalibrationRepository::COT_END_INSERT_CALIBRATIONS)
             {
-                zh_startCalculationCorrelationsAndCovariations();
+                xh_startCalculationCorrelationsAndCovariations();
                 emit xg_currentOperation(TOT_DATA_CHANGED, 0, xp_rowCount() - 1);
             }
             else if(type == X_CalibrationRepository::COT_REMOVE_CALIBRATIONS)
@@ -651,33 +651,33 @@ void X_TermCorrelationTableManager::zh_onCalibrationRepositoryOperation(X_Calibr
             }
             else if(type == X_CalibrationRepository::COT_END_REMOVE_CALIBRATIONS)
             {
-                zh_startCalculationCorrelationsAndCovariations();
+                xh_startCalculationCorrelationsAndCovariations();
                 emit xg_currentOperation(TOT_DATA_CHANGED, 0, xp_rowCount() - 1);
             }
             else if(type == X_CalibrationRepository::COT_CALIBRATION_NAME_CHANGED)
             {
-                zh_startCalculationCorrelationsAndCovariations();
+                xh_startCalculationCorrelationsAndCovariations();
                 emit xg_currentOperation(TOT_DATA_CHANGED, 0, xp_rowCount() - 1);
             }
             else if(type == X_CalibrationRepository::COT_CALIBRATION_CHEM_ELEMENT_CHANGED)
             {
-                zh_startCalculationCorrelationsAndCovariations();
+                xh_startCalculationCorrelationsAndCovariations();
                 emit xg_currentOperation(TOT_HORIX_ONTAL_HEADER_CHANGED, 0, 0);
                 emit xg_currentOperation(TOT_DATA_CHANGED, 0, xp_rowCount() - 1);
             }
             else if(type == X_CalibrationRepository::COT_CALIBRATION_EQUATION_TYPE_CHANGED)
             {
-                zh_startCalculationCorrelationsAndCovariations();
+                xh_startCalculationCorrelationsAndCovariations();
             }
             else if(type == X_CalibrationRepository::COT_CALIBRATION_EQUATION_BASE_TERM_CHANGED)
             {
-                zh_startCalculationCorrelationsAndCovariations();
+                xh_startCalculationCorrelationsAndCovariations();
             }
         }
     }
 }
 //=============================================================================
-void X_TermCorrelationTableManager::zh_onSpectrumOperation(X_SpectrumArrayRepository::SpectrumOperationType type,
+void X_TermCorrelationTableManager::xh_onSpectrumOperation(X_SpectrumArrayRepository::SpectrumOperationType type,
                                                           int arrayIndex, int first, int last)
 {
     if(!xv_spectrumArrayRepository || xv_currentArrayIndex != arrayIndex)
@@ -694,7 +694,7 @@ void X_TermCorrelationTableManager::zh_onSpectrumOperation(X_SpectrumArrayReposi
             || type == X_SpectrumArrayRepository::SOT_CHECKED_CHANGED
             || type == X_SpectrumArrayRepository::SOT_CONCENTRATION_CHANGED)
     {
-        zh_startCalculationCorrelationsAndCovariations();
+        xh_startCalculationCorrelationsAndCovariations();
         emit xg_currentOperation(TOT_DATA_CHANGED, 0, xp_rowCount() -1);
 
         // equation quality recalc
@@ -718,7 +718,7 @@ void X_TermCorrelationTableManager::zh_onSpectrumOperation(X_SpectrumArrayReposi
     }
     //    else if(type == X_SpectrumArrayRepository::SOT_END_REMOVE_SPECTRA)
     //    {
-    //        zh_startCalculationCorrelationsAndCovariations();
+    //        xh_startCalculationCorrelationsAndCovariations();
     //        emit xg_currentOperation(TOT_DATA_CHANGED, 0, xp_rowCount() -1);
     //        // equation quality recalc
     //        int factorCount = 0;
@@ -738,7 +738,7 @@ void X_TermCorrelationTableManager::zh_onSpectrumOperation(X_SpectrumArrayReposi
     //    }
     //    else if(type == X_SpectrumArrayRepository::SOT_CHECKED_CHANGED)
     //    {
-    //        zh_startCalculationCorrelationsAndCovariations();
+    //        xh_startCalculationCorrelationsAndCovariations();
     //        emit xg_currentOperation(TOT_DATA_CHANGED, 0, xp_rowCount() -1);
     //        // equation quality recalc
     //        int factorCount = 0;
@@ -764,7 +764,7 @@ void X_TermCorrelationTableManager::zh_onSpectrumOperation(X_SpectrumArrayReposi
 
     xv_currentArrayIndex = currentArrayIndex;
     xv_currentArrayId = currentArrayId;
-    zh_startCalculationCorrelationsAndCovariations();
+    xh_startCalculationCorrelationsAndCovariations();
     emit xg_currentOperation(TOT_DATA_CHANGED, 0, xp_rowCount() - 1);
 
     // equation quality recalc
@@ -787,18 +787,18 @@ void X_TermCorrelationTableManager::zh_onSpectrumOperation(X_SpectrumArrayReposi
 
 }
 //=============================================================================
-void X_TermCorrelationTableManager::zh_onCalibrationNormalizerChange(qint64 calibrationId)
+void X_TermCorrelationTableManager::xh_onCalibrationNormalizerChange(qint64 calibrationId)
 {
     if(xv_currentCalibrationId != calibrationId)
     {
         return;
     }
 
-    zh_startCalculationCorrelationsAndCovariations();
+    xh_startCalculationCorrelationsAndCovariations();
     emit xg_currentOperation(TOT_DATA_CHANGED, 0, xp_rowCount() -1);
 }
 //=============================================================================
-void X_TermCorrelationTableManager::zh_recalcCalibrationFactors()
+void X_TermCorrelationTableManager::xh_recalcCalibrationFactors()
 {
     if(!xv_calibrationRepository || xv_currentCalibrationId < 0)
     {
@@ -827,7 +827,7 @@ void X_TermCorrelationTableManager::zh_recalcCalibrationFactors()
     // matrixes - ok
 
     // get calibration that will be recalced
-    X_Calibration* calibration = xv_calibrationRepository->zh_calibrationForId(xv_currentCalibrationId);
+    X_Calibration* calibration = xv_calibrationRepository->xh_calibrationForId(xv_currentCalibrationId);
     if(!calibration)
     {
         // TODO Error message
@@ -921,7 +921,7 @@ void X_TermCorrelationTableManager::zh_recalcCalibrationFactors()
 
         *freeTerm = averageBaseValue / averageConcentration;
         // force signal emit
-        xv_calibrationRepository->zh_notifyCalibrationRecalc(xv_currentCalibrationId);
+        xv_calibrationRepository->xh_notifyCalibrationRecalc(xv_currentCalibrationId);
         emit xg_calculateCalibrationQualityData(true, xv_currentCalibrationId, 1, xv_sumSquareAverageConcentrationDispersion);
         return;
     }
@@ -952,7 +952,7 @@ void X_TermCorrelationTableManager::zh_recalcCalibrationFactors()
         {
             row = factorIndexList.at(rowi);
             col = factorIndexList.at(coli);
-            if(!zh_convertColRowForCovariationMatrix(row, col))
+            if(!xh_convertColRowForCovariationMatrix(row, col))
             {
                 // TODO error report
                 return;
@@ -1008,14 +1008,14 @@ void X_TermCorrelationTableManager::zh_recalcCalibrationFactors()
     }
 
     // force signal emit
-    xv_calibrationRepository->zh_notifyCalibrationRecalc(xv_currentCalibrationId);
+    xv_calibrationRepository->xh_notifyCalibrationRecalc(xv_currentCalibrationId);
     // factor count + 1 - free member
 
     emit xg_calculateCalibrationQualityData(true, xv_currentCalibrationId, factorCount + 1, xv_sumSquareAverageConcentrationDispersion);
     calibration->xp_setCurrentDateTime();
 }
 //=============================================================================
-bool X_TermCorrelationTableManager::zh_convertColRowForInterCorrelationMatrix(int& row, int& col) const
+bool X_TermCorrelationTableManager::xh_convertColRowForInterCorrelationMatrix(int& row, int& col) const
 {
     if(col < row)
     {
@@ -1036,7 +1036,7 @@ bool X_TermCorrelationTableManager::zh_convertColRowForInterCorrelationMatrix(in
     return true;
 }
 //=============================================================================
-bool X_TermCorrelationTableManager::zh_convertColRowForCovariationMatrix(int& row, int& col) const
+bool X_TermCorrelationTableManager::xh_convertColRowForCovariationMatrix(int& row, int& col) const
 {
     if(col < row)
     {
@@ -1057,7 +1057,7 @@ bool X_TermCorrelationTableManager::zh_convertColRowForCovariationMatrix(int& ro
     return true;
 }
 //=============================================================================
-void X_TermCorrelationTableManager::zh_startCalculationCorrelationsAndCovariations()
+void X_TermCorrelationTableManager::xh_startCalculationCorrelationsAndCovariations()
 {
     if(!xv_spectrumArrayRepository || xv_currentArrayId < 0 || !xv_calibrationRepository)
     {
@@ -1082,24 +1082,24 @@ void X_TermCorrelationTableManager::zh_startCalculationCorrelationsAndCovariatio
 
     // dispersions
 
-    zh_calcTermDispersions();
-    zh_calcConcentrationAndFreeTermDispersions();
+    xh_calcTermDispersions();
+    xh_calcConcentrationAndFreeTermDispersions();
 
     if(xv_termDispersionMatrix.isEmpty())
     {
         return;
     }
     // correlations
-    zh_calcIntercorrelationsAndCovariations();
-    zh_calcResidualTermCorrelation();
+    xh_calcIntercorrelationsAndCovariations();
+    xh_calcResidualTermCorrelation();
     if(xv_concentrationDispersionList.isEmpty())
     {
         return;
     }
-    zh_calcConcentrationCorrelationsAndCavariations();
+    xh_calcConcentrationCorrelationsAndCavariations();
 }
 //=============================================================================
-void X_TermCorrelationTableManager::zh_calcTermDispersions()
+void X_TermCorrelationTableManager::xh_calcTermDispersions()
 {
     xv_termDispersionMatrix.clear();
     xv_averageTermValueList.clear();
@@ -1179,7 +1179,7 @@ void X_TermCorrelationTableManager::zh_calcTermDispersions()
     }
 }
 //=============================================================================
-void X_TermCorrelationTableManager::zh_calcConcentrationAndFreeTermDispersions()
+void X_TermCorrelationTableManager::xh_calcConcentrationAndFreeTermDispersions()
 {
     xv_concentrationDispersionList.clear();
     xv_sumSquareAverageConcentrationDispersion = 0.0;
@@ -1296,7 +1296,7 @@ void X_TermCorrelationTableManager::zh_calcConcentrationAndFreeTermDispersions()
     }
 }
 //=============================================================================
-void X_TermCorrelationTableManager::zh_calcIntercorrelationsAndCovariations()
+void X_TermCorrelationTableManager::xh_calcIntercorrelationsAndCovariations()
 {
     xv_termIntercorrelationMatrix.clear();
     xv_termCovariationMatrix.clear();
@@ -1370,7 +1370,7 @@ void X_TermCorrelationTableManager::zh_calcIntercorrelationsAndCovariations()
     }
 }
 //=============================================================================
-void X_TermCorrelationTableManager::zh_calcConcentrationCorrelationsAndCavariations()
+void X_TermCorrelationTableManager::xh_calcConcentrationCorrelationsAndCavariations()
 {
     // clear list
     xv_concentrationCorrelationList.clear();
@@ -1437,7 +1437,7 @@ void X_TermCorrelationTableManager::zh_calcConcentrationCorrelationsAndCavariati
     }
 }
 //=============================================================================
-void X_TermCorrelationTableManager::zh_calcResidualTermCorrelation()
+void X_TermCorrelationTableManager::xh_calcResidualTermCorrelation()
 {
     xv_residualCorrelationList.clear();
 

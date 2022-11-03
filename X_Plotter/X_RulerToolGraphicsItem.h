@@ -24,7 +24,7 @@ public:
 
 protected:
 
-    void zh_recalcShapeAndBoundingRect();
+    void xh_recalcShapeAndBoundingRect();
 
 private:
 
@@ -43,8 +43,8 @@ private:
     QPainterPath xv_linePainterPath;
 
     // FUNCS
-    double zh_convertPixelsToSceneWidth(int pixelCount) const;
-    double zh_convertPixelsToSceneHeight(int pixelCount) const;
+    double xh_convertPixelsToSceneWidth(int pixelCount) const;
+    double xh_convertPixelsToSceneHeight(int pixelCount) const;
 
 
 };

@@ -24,14 +24,14 @@ bool X_PasteData::xp_loadData(const QString& dataString, const QStringList &chem
     }
 
     // Devide string to terms
-    if(!zh_devideStringToTerms(dataString))
+    if(!xh_devideStringToTerms(dataString))
     {
         xp_reset();
         return false;
     }
 
     // check first line
-    xv_firstLineType = zh_checkClipboardLine(xv_dataTable.value(0), chemElementList);
+    xv_firstLineType = xh_checkClipboardLine(xv_dataTable.value(0), chemElementList);
 
     // check other lines
     if(xv_dataTable.count() == 1)
@@ -49,7 +49,7 @@ bool X_PasteData::xp_loadData(const QString& dataString, const QStringList &chem
         LineType lineType;
         for(int i = 1; i < xv_dataTable.count(); i++)
         {
-            lineType = zh_checkClipboardLine(xv_dataTable.value(i), chemElementList);
+            lineType = xh_checkClipboardLine(xv_dataTable.value(i), chemElementList);
             if(lineType != LT_DATA)
             {
                 xp_reset();
@@ -61,7 +61,7 @@ bool X_PasteData::xp_loadData(const QString& dataString, const QStringList &chem
     return true;
 }
 //====================================================
-bool X_PasteData::zh_devideStringToTerms(const QString& dataString)
+bool X_PasteData::xh_devideStringToTerms(const QString& dataString)
 {
     // devide into strings and remove empty lines
     QStringList lines =  dataString.split(QRegularExpression("\\n|\\v"));
@@ -93,7 +93,7 @@ bool X_PasteData::zh_devideStringToTerms(const QString& dataString)
     return !xv_dataTable.isEmpty();
 }
 //====================================================
-X_PasteData::LineType X_PasteData::zh_checkClipboardLine(const QStringList& line,
+X_PasteData::LineType X_PasteData::xh_checkClipboardLine(const QStringList& line,
                                                        const QStringList& chemElementList) const
 {
     LineType lineType = LT_NOT_DEFINED;

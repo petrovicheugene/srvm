@@ -64,7 +64,7 @@ protected:
 
 private slots:
 
-    void zh_onAppFontDatabaseChange();
+    void xh_onAppFontDatabaseChange();
 
 private:
 
@@ -96,23 +96,23 @@ private:
 
 
     // FUNCS
-    void zh_setDefaultFonts();
-    void zh_setDefaultColors();
-    void zh_createConnections();
+    void xh_setDefaultFonts();
+    void xh_setDefaultColors();
+    void xh_createConnections();
 
     void xp_updatePropertyViewPortRects();
-    void zh_recalcPropertyWindowRects();
-    void zh_recalcViewPortRectSize(QSize boundingViewPortSize,
+    void xh_recalcPropertyWindowRects();
+    void xh_recalcViewPortRectSize(QSize boundingViewPortSize,
                                    QSize windowSize,
                                    QSize &viewPortSize) const;
-    int zh_marginSpacing() const;
+    int xh_marginSpacing() const;
 
-    QFont zh_symbolFont() const;
-    QFont zh_zNumberFont() const;
-    QFont zh_nameFont() const;
+    QFont xh_symbolFont() const;
+    QFont xh_zNumberFont() const;
+    QFont xh_nameFont() const;
 
-    QColor zh_textColor() const;
-    QPalette zh_currentPalette() const;
+    QColor xh_textColor() const;
+    QPalette xh_currentPalette() const;
 
 };
 //======================================================

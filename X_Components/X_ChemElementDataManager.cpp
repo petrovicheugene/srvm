@@ -14,7 +14,7 @@ void X_ChemElementDataManager::xp_connectToSpectraArrayRepository(X_SpectrumArra
     xv_repositiry = repository;
     // array repository <-> array model
     connect(repository, &X_SpectrumArrayRepository::xg_chemElementOperation,
-            this, &X_ChemElementDataManager::zh_onRepositoryChemElementOperation);
+            this, &X_ChemElementDataManager::xh_onRepositoryChemElementOperation);
     connect(repository, &X_SpectrumArrayRepository::xg_currentArrayIdChanged,
             this, &X_ChemElementDataManager::xp_currentArrayChanged);
 }
@@ -97,7 +97,7 @@ void X_ChemElementDataManager::xp_currentArrayChanged(qint64 currentArrayId, int
     emit xg_currentOperation(OT_END_RESET_DATA, -1, -1);
 }
 //=========================================================
-void X_ChemElementDataManager::zh_onRepositoryChemElementOperation(X_SpectrumArrayRepository::ChemElementOperationType type,
+void X_ChemElementDataManager::xh_onRepositoryChemElementOperation(X_SpectrumArrayRepository::ChemElementOperationType type,
                                                                   int arrayIndex, int first, int last)
 {
     if(xv_currentArrayIndex != arrayIndex)

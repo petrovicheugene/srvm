@@ -168,7 +168,7 @@ public:
     int xp_baseTermIndexForCalibrationId(qint64 calibrationId);
     qint64 xp_baseTermIdForCalibrationId(qint64 calibrationId);
 
-    void zh_notifyCalibrationRecalc(qint64 calibrationId) const;
+    void xh_notifyCalibrationRecalc(qint64 calibrationId) const;
 
     X_CalibrationQualityData xp_calibrationQualityData(qint64 calibrationId) const;
 
@@ -222,36 +222,36 @@ public slots:
 
 private slots:
 
-    void zh_appendCalibrationsToArray(const QStringList&fileNameList);
-    void zh_onNewCalibrationAction();
-    void zh_onRemoveCalibrationsAction();
-    void zh_onNewWindowAction();
-    void zh_onRemoveWindowAction();
-    void zh_onRecalcEquationFactorsAction();
+    void xh_appendCalibrationsToArray(const QStringList&fileNameList);
+    void xh_onNewCalibrationAction();
+    void xh_onRemoveCalibrationsAction();
+    void xh_onNewWindowAction();
+    void xh_onRemoveWindowAction();
+    void xh_onRecalcEquationFactorsAction();
 
-    void zh_onCreateMixedTermsAction();
-    void zh_onRemoveMixedTermsAction();
-    void zh_onCreateCustomTermAction();
-    void zh_onRemoveCustomTermAction();
+    void xh_onCreateMixedTermsAction();
+    void xh_onRemoveMixedTermsAction();
+    void xh_onCreateCustomTermAction();
+    void xh_onRemoveCustomTermAction();
 
-    void zh_onWindowOperation(X_Calibration::WindowOperationType type, int first, int last);
-    void zh_onTermOperation(X_Calibration::TremOperationType type, int first, int last);
-    void zh_onNormalizerChange() const;
-    void zh_onCalibrationFreeTermChange() const;
-    void zh_onCalibrationDirtyChange(bool dirty) const;
-    void zh_createCalibrationAndStartSaving(QString path, QString name) const;
-    void zh_onCalibrationSaving(const X_Calibration* calibration, QString absFilePath);
+    void xh_onWindowOperation(X_Calibration::WindowOperationType type, int first, int last);
+    void xh_onTermOperation(X_Calibration::TremOperationType type, int first, int last);
+    void xh_onNormalizerChange() const;
+    void xh_onCalibrationFreeTermChange() const;
+    void xh_onCalibrationDirtyChange(bool dirty) const;
+    void xh_createCalibrationAndStartSaving(QString path, QString name) const;
+    void xh_onCalibrationSaving(const X_Calibration* calibration, QString absFilePath);
 
-    void zh_onSetCalibrationVisibleAction();
-    void zh_onSetCalibrationInvisibleAction();
-    void zh_onInvertCalibrationVisibilityAction();
-    void zh_onSetWindowsVisibleAction();
-    void zh_onSetWindowsInvisibleAction();
-    void zh_onInvertWindowsVisibilityAction();
-    void zh_onCopySelectedCalibrationAction();
-    void zh_onCopySelectedWindowsAction();
-    void zh_onPasteWindowsAction();
-    void zh_onResetTermStateAction();
+    void xh_onSetCalibrationVisibleAction();
+    void xh_onSetCalibrationInvisibleAction();
+    void xh_onInvertCalibrationVisibilityAction();
+    void xh_onSetWindowsVisibleAction();
+    void xh_onSetWindowsInvisibleAction();
+    void xh_onInvertWindowsVisibilityAction();
+    void xh_onCopySelectedCalibrationAction();
+    void xh_onCopySelectedWindowsAction();
+    void xh_onPasteWindowsAction();
+    void xh_onResetTermStateAction();
 
 private:
 
@@ -301,21 +301,21 @@ private:
     bool xv_blockCalibrationRecalc;
 
     // FUNCS
-    void zh_createActions();
-    void zh_createConnections();
+    void xh_createActions();
+    void xh_createConnections();
 
-    void zh_removeCalibration(int);
-    bool zh_createCalibrationFromFile(const QString&);
-    bool zh_createNewCalibration(const QString&);
-    bool zh_appendCalibrationToList(X_Calibration*);
-    void zh_actionEnablingControl();
+    void xh_removeCalibration(int);
+    bool xh_createCalibrationFromFile(const QString&);
+    bool xh_createNewCalibration(const QString&);
+    bool xh_appendCalibrationToList(X_Calibration*);
+    void xh_actionEnablingControl();
 
-    void zh_removeCalibrationWindow(int currentCalibrationIndex, int spectrumWindowIndex);
-    X_Calibration* zh_calibrationForId(qint64) const;
-    int zh_calibrationIndexForId(qint64) const;
-    bool zh_copyCalibration(int calibrationIndex);
-    bool zh_copyWindowsTermsAndEquation(int calibrationIndex, X_Calibration *trgCalibration);
-    int zh_findCorrespondingTermIndex(int srcTermIndex,
+    void xh_removeCalibrationWindow(int currentCalibrationIndex, int spectrumWindowIndex);
+    X_Calibration* xh_calibrationForId(qint64) const;
+    int xh_calibrationIndexForId(qint64) const;
+    bool xh_copyCalibration(int calibrationIndex);
+    bool xh_copyWindowsTermsAndEquation(int calibrationIndex, X_Calibration *trgCalibration);
+    int xh_findCorrespondingTermIndex(int srcTermIndex,
                                       const X_Calibration *srcCalibration, const X_Calibration *trgCalibration);
 };
 //======================================================

@@ -6,7 +6,7 @@
 // STATIC
 //======================================================================
 QMap<X_TermNormalizer::NormaType, QString> X_TermNormalizer::xv_normaTypeStringMap =
-        X_TermNormalizer::zh_initNormaTypeStringMap();
+        X_TermNormalizer::xh_initNormaTypeStringMap();
 //======================================================================
 QStringList X_TermNormalizer::xp_normaTypeList()
 {
@@ -27,7 +27,7 @@ X_TermNormalizer::NormaType X_TermNormalizer::xp_normaTypeForString(const QStrin
     return xv_normaTypeStringMap.key(string);
 }
 //======================================================================
-QMap<X_TermNormalizer::NormaType, QString> X_TermNormalizer::zh_initNormaTypeStringMap()
+QMap<X_TermNormalizer::NormaType, QString> X_TermNormalizer::xh_initNormaTypeStringMap()
 {
     QMap<X_TermNormalizer::NormaType, QString> map;
     map.insert(NT_NONE, tr("None"));
@@ -46,18 +46,18 @@ X_TermNormalizer::X_TermNormalizer(X_Calibration *parent) : QObject(parent)
     xv_calibration = parent;
     xv_normaType = NT_NONE;
     xv_customNormaString = QString();
-    zh_createConnections();
+    xh_createConnections();
 
 }
 //======================================================================
 void X_TermNormalizer::xp_connectToWindow(X_CalibrationWindow* window)
 {
     connect(window, &X_CalibrationWindow::xg_windowTypeChanged,
-            this, &X_TermNormalizer::zh_onWindowTypeChange);
+            this, &X_TermNormalizer::xh_onWindowTypeChange);
     connect(window, &X_CalibrationWindow::destroyed,
-            this, &X_TermNormalizer::zh_onWindowDestroy);
+            this, &X_TermNormalizer::xh_onWindowDestroy);
     connect(window, &X_CalibrationWindow::xg_windowMarginsChanged,
-            this, &X_TermNormalizer::zh_onWindowMarginsChange);
+            this, &X_TermNormalizer::xh_onWindowMarginsChange);
 
 }
 //======================================================================
@@ -132,7 +132,7 @@ bool X_TermNormalizer::xp_normalizeValue(const X_AbstractSpectrum* spectrum, qre
     }
 
     qreal normaValue;
-    if(!zh_calcNormaValue(spectrum, normaValue))
+    if(!xh_calcNormaValue(spectrum, normaValue))
     {
         return false;
     }
@@ -166,7 +166,7 @@ bool X_TermNormalizer::xp_calcAndSetNormaValue(const X_AbstractSpectrum *spectru
 {
     xp_resetNormaValue();
     qreal normaValue;
-    if(!zh_calcNormaValue(spectrum, normaValue))
+    if(!xh_calcNormaValue(spectrum, normaValue))
     {
         return false;
     }
@@ -177,7 +177,7 @@ bool X_TermNormalizer::xp_calcAndSetNormaValue(const X_AbstractSpectrum *spectru
     return true;
 }
 //======================================================================
-bool X_TermNormalizer::zh_calcNormaValue(const X_AbstractSpectrum *spectrum, qreal& normaValue) const
+bool X_TermNormalizer::xh_calcNormaValue(const X_AbstractSpectrum *spectrum, qreal& normaValue) const
 {
     normaValue = 0;
     if(!spectrum)
@@ -193,7 +193,7 @@ bool X_TermNormalizer::zh_calcNormaValue(const X_AbstractSpectrum *spectrum, qre
     if(xv_normaType == NT_COHERENT)
     {
         qint64 windowIntensity = 0;
-        if(!zh_getWindowsValue(X_CalibrationWindow::WT_COHERENT, spectrum, windowIntensity))
+        if(!xh_getWindowsValue(X_CalibrationWindow::WT_COHERENT, spectrum, windowIntensity))
         {
             return false;
         }
@@ -202,7 +202,7 @@ bool X_TermNormalizer::zh_calcNormaValue(const X_AbstractSpectrum *spectrum, qre
     else  if(xv_normaType == NT_INCOHERENT)
     {
         qint64 windowIntensity = 0;
-        if(!zh_getWindowsValue(X_CalibrationWindow::WT_INCOHERENT, spectrum, windowIntensity))
+        if(!xh_getWindowsValue(X_CalibrationWindow::WT_INCOHERENT, spectrum, windowIntensity))
         {
             return false;
         }
@@ -212,12 +212,12 @@ bool X_TermNormalizer::zh_calcNormaValue(const X_AbstractSpectrum *spectrum, qre
     {
         qint64 coherentValue = 0;
         qint64 incoherentValue = 0;
-        if(!zh_getWindowsValue(X_CalibrationWindow::WT_INCOHERENT, spectrum, incoherentValue))
+        if(!xh_getWindowsValue(X_CalibrationWindow::WT_INCOHERENT, spectrum, incoherentValue))
         {
             return false;
         }
 
-        if(!zh_getWindowsValue(X_CalibrationWindow::WT_COHERENT, spectrum, coherentValue))
+        if(!xh_getWindowsValue(X_CalibrationWindow::WT_COHERENT, spectrum, coherentValue))
         {
             return false;
         }
@@ -233,12 +233,12 @@ bool X_TermNormalizer::zh_calcNormaValue(const X_AbstractSpectrum *spectrum, qre
     {
         qint64 coherentValue = 0;
         qint64 incoherentValue = 0;
-        if(!zh_getWindowsValue(X_CalibrationWindow::WT_INCOHERENT, spectrum, incoherentValue))
+        if(!xh_getWindowsValue(X_CalibrationWindow::WT_INCOHERENT, spectrum, incoherentValue))
         {
             return false;
         }
 
-        if(!zh_getWindowsValue(X_CalibrationWindow::WT_COHERENT, spectrum, coherentValue))
+        if(!xh_getWindowsValue(X_CalibrationWindow::WT_COHERENT, spectrum, coherentValue))
         {
             return false;
         }
@@ -265,13 +265,13 @@ void X_TermNormalizer::xp_resetNormaValue()
     xv_normaValueBuffer = 0;
 }
 //======================================================================
-void X_TermNormalizer::zh_createConnections()
+void X_TermNormalizer::xh_createConnections()
 {
     connect(this, &X_TermNormalizer::xg_normalizerChanged,
-            xv_calibration, &X_Calibration::zh_onNormalizerChange);
+            xv_calibration, &X_Calibration::xh_onNormalizerChange);
 }
 //======================================================================
-bool X_TermNormalizer::zh_getWindowsValue(X_CalibrationWindow::WindowType type,
+bool X_TermNormalizer::xh_getWindowsValue(X_CalibrationWindow::WindowType type,
                                          const X_AbstractSpectrum* spectrum, qint64& value) const
 {
     qreal currentValue;
@@ -294,7 +294,7 @@ bool X_TermNormalizer::zh_getWindowsValue(X_CalibrationWindow::WindowType type,
     return true;
 }
 //======================================================================
-void X_TermNormalizer::zh_onWindowTypeChange(X_CalibrationWindow::WindowType previousType,
+void X_TermNormalizer::xh_onWindowTypeChange(X_CalibrationWindow::WindowType previousType,
                                             X_CalibrationWindow::WindowType currentType) const
 {
     if(xv_normaType == NT_NONE)
@@ -322,7 +322,7 @@ void X_TermNormalizer::zh_onWindowTypeChange(X_CalibrationWindow::WindowType pre
     }
 }
 //======================================================================
-void X_TermNormalizer::zh_onWindowDestroy(QObject* obj) const
+void X_TermNormalizer::xh_onWindowDestroy(QObject* obj) const
 {
     if(xv_normaType == NT_NONE)
     {
@@ -357,7 +357,7 @@ void X_TermNormalizer::zh_onWindowDestroy(QObject* obj) const
     }
 }
 //======================================================================
-void X_TermNormalizer::zh_onWindowMarginsChange() const
+void X_TermNormalizer::xh_onWindowMarginsChange() const
 {
     X_CalibrationWindow* window = qobject_cast<X_CalibrationWindow*>(sender());
 

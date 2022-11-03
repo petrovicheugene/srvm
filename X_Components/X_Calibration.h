@@ -208,7 +208,7 @@ public:
 
     void xp_createEquationDataForEquationRecalc(QMap<int, qreal*>& factorMap, qreal*& freeTermPtr);
 
-    void zh_notifyCalibrationRecalc();
+    void xh_notifyCalibrationRecalc();
     void xp_resetEquationTerms();
     X_CalibrationQualityData xp_calibrationQualityData() const;
     void xp_setCalibrationQualityData(X_CalibrationQualityData qualityData);
@@ -247,11 +247,11 @@ public slots:
 
 private slots:
 
-    void zh_onTermNameChange();
-    void zh_onTermWindowMarginChange();
-    void zh_removeTerm(X_AbstractTerm*);
-    void zh_onNormalizerChange();
-    void zh_windowIsExist(const QString& windowName, bool& res) const;
+    void xh_onTermNameChange();
+    void xh_onTermWindowMarginChange();
+    void xh_removeTerm(X_AbstractTerm*);
+    void xh_onNormalizerChange();
+    void xh_windowIsExist(const QString& windowName, bool& res) const;
 
 private:
     // VARS
@@ -285,20 +285,20 @@ private:
     QDateTime xv_dateTime;
 
     // FUNCS
-    bool zh_isWindowExist(const QString&);
-    void zh_createTermsForWindow(const X_CalibrationWindow*);
-    bool zh_windowHasTerms(const X_CalibrationWindow*, X_AbstractTerm::TermType) const;
-    int zh_termIndex(const X_AbstractTerm*) const;
-    void zh_chopTailX_eroesFromInterceptString();
-    qreal* zh_termFactorPointer(int termIndex) const;
-    int zh_termIndexForRawTerm(const X_RawTerm& rawTerm) const;
-    int zh_termIndexForTermId(qint64 termId) const;
-    int zh_findNextTermIndex(X_AbstractTerm::TermType) const;
-    bool zh_updateExistingTerm(int termIndex, X_RawTerm& rawTerm);
-    int zh_createNewTerm(X_RawTerm& rawTerm);
-    bool zh_createWindowIndexList(QList<int>& windowIndexList, X_RawTerm& rawTerm);
-    bool zh_createWindowIndexList(QMap<QString, int>& windowIndexMap, X_RawTerm& rawTerm);
-    bool zh_checkCustomString(X_RawTerm& rawTerm);
+    bool xh_isWindowExist(const QString&);
+    void xh_createTermsForWindow(const X_CalibrationWindow*);
+    bool xh_windowHasTerms(const X_CalibrationWindow*, X_AbstractTerm::TermType) const;
+    int xh_termIndex(const X_AbstractTerm*) const;
+    void xh_chopTailX_eroesFromInterceptString();
+    qreal* xh_termFactorPointer(int termIndex) const;
+    int xh_termIndexForRawTerm(const X_RawTerm& rawTerm) const;
+    int xh_termIndexForTermId(qint64 termId) const;
+    int xh_findNextTermIndex(X_AbstractTerm::TermType) const;
+    bool xh_updateExistingTerm(int termIndex, X_RawTerm& rawTerm);
+    int xh_createNewTerm(X_RawTerm& rawTerm);
+    bool xh_createWindowIndexList(QList<int>& windowIndexList, X_RawTerm& rawTerm);
+    bool xh_createWindowIndexList(QMap<QString, int>& windowIndexMap, X_RawTerm& rawTerm);
+    bool xh_checkCustomString(X_RawTerm& rawTerm);
 
     // STATIC
     // VARS
@@ -313,10 +313,10 @@ private:
     //  FUNCS
     static QList<QColor> xp_createColorList();
     static bool checkColor(QColor color);
-    static QMap<X_Calibration::EquationType, QString> zh_initEquationTypeStringMap();
-    static QString zh_initPlynomialEquationString();
-    static QString zh_initFractionalEquationString();
-    static QString zh_initFractionalEquationString1();
+    static QMap<X_Calibration::EquationType, QString> xh_initEquationTypeStringMap();
+    static QString xh_initPlynomialEquationString();
+    static QString xh_initFractionalEquationString();
+    static QString xh_initFractionalEquationString1();
 };
 //=========================================================
 #endif // QABSTRACTCALIBRATION_H

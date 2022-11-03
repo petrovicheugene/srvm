@@ -25,7 +25,7 @@ X_NumericDelegate::X_NumericDelegate(QWidget *parent) :
 QWidget* X_NumericDelegate::createEditor ( QWidget * parent, const QStyleOptionViewItem & option, const QModelIndex & index ) const
 {
     X_NumericEditor* editor = new X_NumericEditor(parent);
-    connect(editor, SIGNAL(enterClicked()), this, SLOT(zh_onEditorEnterClick()));
+    connect(editor, SIGNAL(enterClicked()), this, SLOT(xh_onEditorEnterClick()));
 
     X_NumericDelegate* pThis = const_cast<X_NumericDelegate*>(this);
     emit xg_requestEditorMinMax(pThis, index);
@@ -37,7 +37,7 @@ QWidget* X_NumericDelegate::createEditor ( QWidget * parent, const QStyleOptionV
     if(xv_immediatellyValueChangeFlag)
     {
         X_NumericDelegate* pThis = const_cast<X_NumericDelegate*>(this);
-        connect(editor, SIGNAL(valueChanged(double)), pThis, SLOT(zh_editorValueChanged(double)));
+        connect(editor, SIGNAL(valueChanged(double)), pThis, SLOT(xh_editorValueChanged(double)));
     }
     return editor;
 }
@@ -185,7 +185,7 @@ void X_NumericDelegate::xp_setFontBold(bool boldFlag)
     xv_fontBoldFlag = boldFlag;
 }
 //=================================================================
-void X_NumericDelegate::zh_onEditorEnterClick()
+void X_NumericDelegate::xh_onEditorEnterClick()
 {
     X_NumericEditor* editor = qobject_cast<X_NumericEditor*>(sender());
     if(editor->text().isEmpty())
@@ -201,7 +201,7 @@ void X_NumericDelegate::zh_onEditorEnterClick()
     emit xg_editNext(xv_editedIndex);
 }
 //=================================================================
-void X_NumericDelegate::zh_editorValueChanged(double value)
+void X_NumericDelegate::xh_editorValueChanged(double value)
 {
     X_NumericEditor* editor = qobject_cast<X_NumericEditor*>(sender());
     if(!editor)

@@ -21,29 +21,29 @@ X_NormaSettingsDialog::X_NormaSettingsDialog(QWidget* parent) : X_BaseDialog(par
     setAttribute(Qt::WA_DeleteOnClose);
 
     xv_normaSettingsApplied = false;
-    zh_createComponents();
-    zh_createConnections();
-    zh_restoreSettings();
+    xh_createComponents();
+    xh_createConnections();
+    xh_restoreSettings();
 }
 //============================================================
 X_NormaSettingsDialog::~X_NormaSettingsDialog()
 {
-    zh_saveSettings();
+    xh_saveSettings();
 }
 //============================================================
-void X_NormaSettingsDialog::zh_createComponents()
+void X_NormaSettingsDialog::xh_createComponents()
 {
-    zh_addWidgetToMainLayout(zh_createControlWidget());
-    zh_addStretchToMainLayout();
+    xh_addWidgetToMainLayout(xh_createControlWidget());
+    xh_addStretchToMainLayout();
 
-    xv_okButton = zh_createBasementButton(tr("OK"), tr("Save parameter"), QIcon());
+    xv_okButton = xh_createBasementButton(tr("OK"), tr("Save parameter"), QIcon());
 
-    xv_closeButton = zh_createBasementButton(tr("Cancel"),
+    xv_closeButton = xh_createBasementButton(tr("Cancel"),
                                              tr("Close dialog withiut saving changes"),
                                              QIcon());
 }
 //============================================================
-QWidget* X_NormaSettingsDialog::zh_createControlWidget()
+QWidget* X_NormaSettingsDialog::xh_createControlWidget()
 {
     QWidget* widget = new QWidget(this);
 
@@ -94,9 +94,9 @@ QWidget* X_NormaSettingsDialog::zh_createControlWidget()
     return widget;
 }
 //============================================================
-void X_NormaSettingsDialog::zh_createConnections()
+void X_NormaSettingsDialog::xh_createConnections()
 {
-    connect(xv_okButton, &QPushButton::clicked, this, &X_NormaSettingsDialog::zh_onDialogAccepted);
+    connect(xv_okButton, &QPushButton::clicked, this, &X_NormaSettingsDialog::xh_onDialogAccepted);
     connect(xv_closeButton, &QPushButton::clicked, this, &X_NormaSettingsDialog::reject);
 
     connect(xv_noNormaRadioButton,
@@ -153,29 +153,29 @@ void X_NormaSettingsDialog::zh_createConnections()
 
 }
 //=========================================================
-void X_NormaSettingsDialog::zh_restoreSettings()
+void X_NormaSettingsDialog::xh_restoreSettings()
 {
-    X_BaseDialog::zh_restoreSettings();
+    X_BaseDialog::xh_restoreSettings();
     QSettings settings;
-    zh_openDialogSettingsGroup(&settings);
+    xh_openDialogSettingsGroup(&settings);
 
     xv_useModifierForInsertingCheckBox->setChecked(settings.value(xv_useModifierString).toBool());
 
-    zh_closeDialogSettingsGroup(&settings);
+    xh_closeDialogSettingsGroup(&settings);
 }
 //=========================================================
-void X_NormaSettingsDialog::zh_saveSettings()
+void X_NormaSettingsDialog::xh_saveSettings()
 {
-    X_BaseDialog::zh_saveSettings();
+    X_BaseDialog::xh_saveSettings();
     QSettings settings;
-    zh_openDialogSettingsGroup(&settings);
+    xh_openDialogSettingsGroup(&settings);
 
     settings.setValue(xv_useModifierString, xv_useModifierForInsertingCheckBox->isChecked());
 
-    zh_closeDialogSettingsGroup(&settings);
+    xh_closeDialogSettingsGroup(&settings);
 }
 //============================================================
-void X_NormaSettingsDialog::zh_onDialogAccepted()
+void X_NormaSettingsDialog::xh_onDialogAccepted()
 {
     setResult(QDialog::Accepted);
     accept();

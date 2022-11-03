@@ -71,9 +71,9 @@ private:
     QColor xv_pointColor;
 
     // FUNCS
-    void zh_recalcShapeAndBoundingRect();
+    void xh_recalcShapeAndBoundingRect();
 
-    void zh_updateItems() const;
+    void xh_updateItems() const;
 
 };
 //============================================

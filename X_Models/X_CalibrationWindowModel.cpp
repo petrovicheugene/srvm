@@ -149,15 +149,15 @@ void X_CalibrationWindowModel::xp_connectToJointCalibrationWindowDataManager(X_C
     xv_dataManager = dataManager;
     // data manager <-> joint model
     connect(dataManager, &X_CalibrationWindowDataManager::xg_currentOperation,
-            this, &X_CalibrationWindowModel::zh_onDataManagerOperation);
+            this, &X_CalibrationWindowModel::xh_onDataManagerOperation);
 
     //    connect(dataManager, &X_JointCalibrationWindowDataManager::xg_currentOperation,
-    //            this, &X_JointCalibrationWindowModel::zh_onDataManagerOperation);
+    //            this, &X_JointCalibrationWindowModel::xh_onDataManagerOperation);
 
     endResetModel();
 }
 //==================================================================
-void X_CalibrationWindowModel::zh_onDataManagerOperation(X_CalibrationWindowDataManager::OperationType type, int first, int last)
+void X_CalibrationWindowModel::xh_onDataManagerOperation(X_CalibrationWindowDataManager::OperationType type, int first, int last)
 {
     if(!xv_dataManager)
     {

@@ -37,7 +37,7 @@ bool X_LESGaussSolver::xp_solve()
         qreal maxValue;
         for(int i = 0; i < xv_freeTermList.count(); i++)
         {
-            if(!zh_putMaxValueOnDiagonal(i))
+            if(!xh_putMaxValueOnDiagonal(i))
             {
                 return false;
             }
@@ -46,7 +46,7 @@ bool X_LESGaussSolver::xp_solve()
             for(int r = i + 1; r < xv_freeTermList.count(); r++)
             {
                 rowFactor = -1.0 * xv_columnList.at(i).elements.at(r) / maxValue;
-                zh_addMultipliedRow(r, i, rowFactor);
+                xh_addMultipliedRow(r, i, rowFactor);
             }
         }
     }
@@ -100,7 +100,7 @@ void X_LESGaussSolver::xp_appendFreeTermList(const QList<qreal>& freeTermList)
     xv_freeTermList = freeTermList;
 }
 //==============================================================
-void X_LESGaussSolver::zh_swapRows(int row1, int row2)
+void X_LESGaussSolver::xh_swapRows(int row1, int row2)
 {
     for(int col = 0; col < xv_columnList.count(); col++)
     {
@@ -111,12 +111,12 @@ void X_LESGaussSolver::zh_swapRows(int row1, int row2)
     xv_freeTermList.swapItemsAt(row1, row2);
 }
 //==============================================================
-void X_LESGaussSolver::zh_swapColumns(int col1, int col2)
+void X_LESGaussSolver::xh_swapColumns(int col1, int col2)
 {
     xv_columnList.swapItemsAt(col1, col2);
 }
 //==============================================================
-bool X_LESGaussSolver::zh_putMaxValueOnDiagonal(int startIndex)
+bool X_LESGaussSolver::xh_putMaxValueOnDiagonal(int startIndex)
 {
     qreal maxAbsValue = 0.0;
     int maxValueColumn = -1;
@@ -153,12 +153,12 @@ bool X_LESGaussSolver::zh_putMaxValueOnDiagonal(int startIndex)
         return false;
     }
 
-    zh_swapRows(startIndex, maxValueRow);
-    zh_swapColumns(startIndex, maxValueColumn);
+    xh_swapRows(startIndex, maxValueRow);
+    xh_swapColumns(startIndex, maxValueColumn);
     return true;
 }
 //==============================================================
-void X_LESGaussSolver::zh_addMultipliedRow(int targetRow, int sourceRow, qreal factor)
+void X_LESGaussSolver::xh_addMultipliedRow(int targetRow, int sourceRow, qreal factor)
 {
     for(int col = 0; col < xv_columnList.count(); col++)
     {

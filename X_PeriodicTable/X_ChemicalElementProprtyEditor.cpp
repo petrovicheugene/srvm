@@ -37,23 +37,23 @@ X_ChemicalElementProprtyEditor::X_ChemicalElementProprtyEditor(QWidget *parent)
 {
     setWindowTitle(qApp->applicationDisplayName());
 
-    zh_createActions();
-    zh_createComponents();
-    zh_createMenu();
-    zh_createConnections();
-    zh_restoreSettings();
+    xh_createActions();
+    xh_createComponents();
+    xh_createMenu();
+    xh_createConnections();
+    xh_restoreSettings();
 
-    zh_adjustRemoveAndCopyPropertyAbility(QItemSelection());
-    zh_adjustRemoveSectionAbility(QItemSelection());
-    zh_adjustPastePropertyAbility();
+    xh_adjustRemoveAndCopyPropertyAbility(QItemSelection());
+    xh_adjustRemoveSectionAbility(QItemSelection());
+    xh_adjustPastePropertyAbility();
 }
 //======================================================
 X_ChemicalElementProprtyEditor::~X_ChemicalElementProprtyEditor()
 {
-    zh_saveSettings();
+    xh_saveSettings();
 }
 //======================================================
-void X_ChemicalElementProprtyEditor::zh_createActions()
+void X_ChemicalElementProprtyEditor::xh_createActions()
 {
     xv_addChemicalElementPropertySectionsAction = new QAction(this);
     xv_addChemicalElementPropertySectionsAction->setText(tr("Add"));
@@ -82,7 +82,7 @@ void X_ChemicalElementProprtyEditor::zh_createActions()
 
 }
 //======================================================
-void X_ChemicalElementProprtyEditor::zh_createComponents()
+void X_ChemicalElementProprtyEditor::xh_createComponents()
 {
     xv_clipboard = QGuiApplication::clipboard();
     xv_propertyFilterProxyModel = new X_ChemicalPropertyProxyTableModel(this);
@@ -94,25 +94,25 @@ void X_ChemicalElementProprtyEditor::zh_createComponents()
     fileNameLabelLayout->addWidget(label);
     xv_sourceFileNameLabel = new QLabel(this);
     fileNameLabelLayout->addWidget(xv_sourceFileNameLabel, xv_maxStretchValue, Qt::AlignVCenter | Qt::AlignLeft);
-    zh_addLayoutToMainLayout(fileNameLabelLayout, 0);
+    xh_addLayoutToMainLayout(fileNameLabelLayout, 0);
 
     xv_mainSplitter = new QSplitter(Qt::Horizontal, this);
-    zh_addWidgetToMainLayout(xv_mainSplitter, xv_maxStretchValue);
-    xv_mainSplitter->addWidget(zh_createPropertySectionTreeWidget());
-    xv_mainSplitter->addWidget(zh_createPropertyTableWidget());
+    xh_addWidgetToMainLayout(xv_mainSplitter, xv_maxStretchValue);
+    xv_mainSplitter->addWidget(xh_createPropertySectionTreeWidget());
+    xv_mainSplitter->addWidget(xh_createPropertyTableWidget());
 
-    xv_loadButton = zh_createBasementButton(tr("Load"),
+    xv_loadButton = xh_createBasementButton(tr("Load"),
                                             tr("Load chemical element properties from file"),
                                             QIcon());
-    xv_saveButton = zh_createBasementButton(tr("Save"),
+    xv_saveButton = xh_createBasementButton(tr("Save"),
                                             tr("Save chemical element properties to file"),
                                             QIcon());
-    xv_closeButton = zh_createBasementButton(tr("Close"),
+    xv_closeButton = xh_createBasementButton(tr("Close"),
                                              tr("Close editor"),
                                              QIcon());
 }
 //======================================================
-void X_ChemicalElementProprtyEditor::zh_createMenu()
+void X_ChemicalElementProprtyEditor::xh_createMenu()
 {
     xv_propertySectionTreeView->addAction(xv_addChemicalElementPropertySectionsAction);
     xv_propertySectionTreeView->addAction(xv_removeChemicalElementPropertySectionsAction);
@@ -128,34 +128,34 @@ void X_ChemicalElementProprtyEditor::zh_createMenu()
 
 }
 //======================================================
-void X_ChemicalElementProprtyEditor::zh_createConnections()
+void X_ChemicalElementProprtyEditor::xh_createConnections()
 {
     xv_propertyTableView->setModel(xv_propertyFilterProxyModel);
 
     connect(xv_addChemicalElementPropertySectionButton, &QPushButton::clicked,
             xv_addChemicalElementPropertySectionsAction, &QAction::trigger);
     connect(xv_addChemicalElementPropertySectionsAction, &QAction::triggered,
-            this, &X_ChemicalElementProprtyEditor::zh_addNewChemicalElementPropertySection);
+            this, &X_ChemicalElementProprtyEditor::xh_addNewChemicalElementPropertySection);
 
     connect(xv_removeChemicalElementPropertySectionButton, &QPushButton::clicked,
             xv_removeChemicalElementPropertySectionsAction, &QAction::trigger);
     connect(xv_removeChemicalElementPropertySectionsAction, &QAction::triggered,
-            this, &X_ChemicalElementProprtyEditor::zh_removeSelectedChemicalElementPropertySections);
+            this, &X_ChemicalElementProprtyEditor::xh_removeSelectedChemicalElementPropertySections);
 
     connect(xv_addChemicalElementPropertyButton, &QPushButton::clicked,
             xv_addChemicalElementPropertyAction, &QAction::trigger);
     connect(xv_addChemicalElementPropertyAction, &QAction::triggered,
-            this, &X_ChemicalElementProprtyEditor::zh_addNewChemicalElementProperty);
+            this, &X_ChemicalElementProprtyEditor::xh_addNewChemicalElementProperty);
 
     connect(xv_removeChemicalElementPropertiesButton, &QPushButton::clicked,
             xv_removeChemicalElementPropertiesAction, &QAction::trigger);
     connect(xv_removeChemicalElementPropertiesAction, &QAction::triggered,
-            this, &X_ChemicalElementProprtyEditor::zh_removeSelectedChemicalElementProperties);
+            this, &X_ChemicalElementProprtyEditor::xh_removeSelectedChemicalElementProperties);
 
     connect(xv_copyChemicalElementPropertiesAction, &QAction::triggered,
-            this, &X_ChemicalElementProprtyEditor::zh_copyPropertyToClipboard);
+            this, &X_ChemicalElementProprtyEditor::xh_copyPropertyToClipboard);
     connect(xv_pasteChemicalElementPropertiesAction, &QAction::triggered,
-            this, &X_ChemicalElementProprtyEditor::zh_pastePropertyFromClipboard);
+            this, &X_ChemicalElementProprtyEditor::xh_pastePropertyFromClipboard);
 
     connect(xv_expandAllAction, &QAction::triggered,
             xv_propertySectionTreeView, &QTreeView::expandAll);
@@ -163,17 +163,17 @@ void X_ChemicalElementProprtyEditor::zh_createConnections()
             xv_propertySectionTreeView, &QTreeView::collapseAll);
 
     connect(xv_clipboard, &QClipboard::dataChanged,
-            this, &X_ChemicalElementProprtyEditor::zh_onClipboardDataChange);
+            this, &X_ChemicalElementProprtyEditor::xh_onClipboardDataChange);
 
     connect(xv_loadButton, &QPushButton::clicked,
-            this, &X_ChemicalElementProprtyEditor::zh_onLoadButtonClick);
+            this, &X_ChemicalElementProprtyEditor::xh_onLoadButtonClick);
     connect(xv_saveButton, &QPushButton::clicked,
-            this, &X_ChemicalElementProprtyEditor::zh_onSaveButtonClick);
+            this, &X_ChemicalElementProprtyEditor::xh_onSaveButtonClick);
     connect(xv_closeButton, &QPushButton::clicked,
-            this, &X_ChemicalElementProprtyEditor::zh_onCloseButtonClick);
+            this, &X_ChemicalElementProprtyEditor::xh_onCloseButtonClick);
 }
 //======================================================
-QWidget* X_ChemicalElementProprtyEditor::zh_createPropertySectionTreeWidget()
+QWidget* X_ChemicalElementProprtyEditor::xh_createPropertySectionTreeWidget()
 {
     QWidget* sectionTreeWidget = new QWidget(this);
     QVBoxLayout* mainLayout = new QVBoxLayout;
@@ -210,7 +210,7 @@ QWidget* X_ChemicalElementProprtyEditor::zh_createPropertySectionTreeWidget()
     return sectionTreeWidget;
 }
 //======================================================
-QWidget* X_ChemicalElementProprtyEditor::zh_createPropertyTableWidget()
+QWidget* X_ChemicalElementProprtyEditor::xh_createPropertyTableWidget()
 {
     QWidget* propertyTableWidget = new QWidget(this);
     QVBoxLayout* mainLayout = new QVBoxLayout;
@@ -249,10 +249,10 @@ QWidget* X_ChemicalElementProprtyEditor::zh_createPropertyTableWidget()
     return propertyTableWidget;
 }
 //======================================================
-void X_ChemicalElementProprtyEditor::zh_saveSettings()
+void X_ChemicalElementProprtyEditor::xh_saveSettings()
 {
     QSettings settings;
-    if(!zh_openDialogSettingsGroup(&settings))
+    if(!xh_openDialogSettingsGroup(&settings))
     {
         return;
     }
@@ -262,13 +262,13 @@ void X_ChemicalElementProprtyEditor::zh_saveSettings()
     // close dialog group
     settings.endGroup();
 
-    zh_closeDialogSettingsGroup(&settings);
+    xh_closeDialogSettingsGroup(&settings);
 }
 //======================================================
-void X_ChemicalElementProprtyEditor::zh_restoreSettings()
+void X_ChemicalElementProprtyEditor::xh_restoreSettings()
 {
     QSettings settings;
-    if(!zh_openDialogSettingsGroup(&settings))
+    if(!xh_openDialogSettingsGroup(&settings))
     {
         return;
     }
@@ -278,7 +278,7 @@ void X_ChemicalElementProprtyEditor::zh_restoreSettings()
         xv_mainSplitter->restoreState(settings.value(xv_splitterStateName).toByteArray());
     }
 
-    zh_closeDialogSettingsGroup(&settings);
+    xh_closeDialogSettingsGroup(&settings);
 }
 //======================================================
 bool X_ChemicalElementProprtyEditor::eventFilter(QObject *watched, QEvent *event)
@@ -340,7 +340,7 @@ void X_ChemicalElementProprtyEditor::closeEvent(QCloseEvent* event)
 
         if(answer == QMessageBox::Yes)
         {
-            zh_savePropertyDataToFile();
+            xh_savePropertyDataToFile();
         }
     }
 }
@@ -362,29 +362,29 @@ void X_ChemicalElementProprtyEditor::xp_setModel(QAbstractItemModel* model)
             xv_propertyFilterProxyModel, &X_ChemicalPropertyProxyTableModel::xp_onSourceModelDataChanged);
 
     connect(xv_propertySectionTreeView->selectionModel(), &QItemSelectionModel::selectionChanged,
-            this, &X_ChemicalElementProprtyEditor::zh_onTreeElementSelectionChange);
+            this, &X_ChemicalElementProprtyEditor::xh_onTreeElementSelectionChange);
 
     connect(xv_propertyTableView->selectionModel(), &QItemSelectionModel::selectionChanged,
-            this, &X_ChemicalElementProprtyEditor::zh_onPropertyTableElementSelectionChange);
+            this, &X_ChemicalElementProprtyEditor::xh_onPropertyTableElementSelectionChange);
 
     connect(model, &QAbstractItemModel::columnsInserted,
-            this, &X_ChemicalElementProprtyEditor::zh_onModelColumnsInserted);
+            this, &X_ChemicalElementProprtyEditor::xh_onModelColumnsInserted);
 
     X_ChemicalElementPropertyTreeModel* treeModel = qobject_cast<X_ChemicalElementPropertyTreeModel*>(model);
     if(treeModel)
     {
         connect(treeModel, &X_ChemicalElementPropertyTreeModel::xg_propertiesSourceFilePathChanged,
-                this, &X_ChemicalElementProprtyEditor::zh_setPropertiesSourceFilePath);
-        zh_setPropertiesSourceFilePath(treeModel->xp_propertiesSourceFilePath());
+                this, &X_ChemicalElementProprtyEditor::xh_setPropertiesSourceFilePath);
+        xh_setPropertiesSourceFilePath(treeModel->xp_propertiesSourceFilePath());
     }
 
-    zh_treeColumnVisibilityControl();
+    xh_treeColumnVisibilityControl();
 }
 //======================================================
-void X_ChemicalElementProprtyEditor::zh_addNewChemicalElementPropertySection()
+void X_ChemicalElementProprtyEditor::xh_addNewChemicalElementPropertySection()
 {
     QStringList sectionBranch;
-    zh_currentChemicalElementSectionBrunch(sectionBranch);
+    xh_currentChemicalElementSectionBrunch(sectionBranch);
 
     // set first section chemical element symbol
     if(!sectionBranch.isEmpty())
@@ -393,7 +393,7 @@ void X_ChemicalElementProprtyEditor::zh_addNewChemicalElementPropertySection()
     }
 
     int currentX_Number;
-    if(zh_currentX_Number(currentX_Number))
+    if(xh_currentX_Number(currentX_Number))
     {
         QAbstractItemModel* model =
                 qobject_cast<QAbstractItemModel*>(xv_propertySectionTreeView->model());
@@ -431,7 +431,7 @@ void X_ChemicalElementProprtyEditor::zh_addNewChemicalElementPropertySection()
     }
     else if(dialog.xp_additionTarget() == X_PropertySectionEditDialog::AT_SELECTED)
     {
-        if(!zh_selectedX_NumberList(zNumberList))
+        if(!xh_selectedX_NumberList(zNumberList))
         {
             return;
         }
@@ -439,7 +439,7 @@ void X_ChemicalElementProprtyEditor::zh_addNewChemicalElementPropertySection()
     else if(dialog.xp_additionTarget() == X_PropertySectionEditDialog::AT_CURRENT)
     {
         int currentX_Number;
-        if(!zh_currentX_Number(currentX_Number))
+        if(!xh_currentX_Number(currentX_Number))
         {
             return;
         }
@@ -456,10 +456,10 @@ void X_ChemicalElementProprtyEditor::zh_addNewChemicalElementPropertySection()
     {
         sectionBranch.removeFirst();
     }
-    zh_addChemicalElementPropertySectionBranch(zNumberList, sectionBranch);
+    xh_addChemicalElementPropertySectionBranch(zNumberList, sectionBranch);
 }
 //======================================================
-void X_ChemicalElementProprtyEditor::zh_removeSelectedChemicalElementPropertySections()
+void X_ChemicalElementProprtyEditor::xh_removeSelectedChemicalElementPropertySections()
 {
     X_ChemicalElementPropertyTreeModel* model =
             qobject_cast<X_ChemicalElementPropertyTreeModel*>(xv_propertySectionTreeView->model());
@@ -476,10 +476,10 @@ void X_ChemicalElementProprtyEditor::zh_removeSelectedChemicalElementPropertySec
     model->xp_removeItems(selectedIndexList);
 }
 //======================================================
-void X_ChemicalElementProprtyEditor::zh_addNewChemicalElementProperty()
+void X_ChemicalElementProprtyEditor::xh_addNewChemicalElementProperty()
 {
     int currentX_Number;
-    if(!zh_currentX_Number(currentX_Number))
+    if(!xh_currentX_Number(currentX_Number))
     {
         QString msg = tr("Select chemical element or property section!");
         QMessageBox::critical(this, tr("Error"), msg, QMessageBox::Ok);
@@ -494,10 +494,10 @@ void X_ChemicalElementProprtyEditor::zh_addNewChemicalElementProperty()
 
     PropertyList propertyList;
     propertyList.append(dialog.xp_property());
-    zh_insertChemicalElementPropertiesToCurrentBranch(propertyList);
+    xh_insertChemicalElementPropertiesToCurrentBranch(propertyList);
 }
 //======================================================
-bool X_ChemicalElementProprtyEditor::zh_insertChemicalElementPropertiesToCurrentBranch(const PropertyList& propertyList)
+bool X_ChemicalElementProprtyEditor::xh_insertChemicalElementPropertiesToCurrentBranch(const PropertyList& propertyList)
 {
     X_ChemicalElementPropertyTreeModel* model =
             qobject_cast<X_ChemicalElementPropertyTreeModel*>(xv_propertySectionTreeView->model());
@@ -510,7 +510,7 @@ bool X_ChemicalElementProprtyEditor::zh_insertChemicalElementPropertiesToCurrent
     }
 
     int currentX_Number;
-    if(!zh_currentX_Number(currentX_Number))
+    if(!xh_currentX_Number(currentX_Number))
     {
         QString msg = tr("Select chemical element or property section!");
         QMessageBox::critical(this, tr("Error"), msg, QMessageBox::Ok);
@@ -518,7 +518,7 @@ bool X_ChemicalElementProprtyEditor::zh_insertChemicalElementPropertiesToCurrent
     }
 
     QStringList sectionBranch;
-    zh_currentChemicalElementSectionBrunch(sectionBranch);
+    xh_currentChemicalElementSectionBrunch(sectionBranch);
     // remove first chemical element section
     if(!sectionBranch.isEmpty())
     {
@@ -535,7 +535,7 @@ bool X_ChemicalElementProprtyEditor::zh_insertChemicalElementPropertiesToCurrent
     return true;
 }
 //======================================================
-void X_ChemicalElementProprtyEditor::zh_removeSelectedChemicalElementProperties()
+void X_ChemicalElementProprtyEditor::xh_removeSelectedChemicalElementProperties()
 {
     X_ChemicalElementPropertyTreeModel* model =
             qobject_cast<X_ChemicalElementPropertyTreeModel*>(xv_propertySectionTreeView->model());
@@ -563,13 +563,13 @@ void X_ChemicalElementProprtyEditor::zh_removeSelectedChemicalElementProperties(
     std::sort(rowList.begin(), rowList.end());
 
     int zNumber;
-    if(!zh_currentX_Number(zNumber))
+    if(!xh_currentX_Number(zNumber))
     {
         return;
     }
 
     QStringList branch;
-    zh_currentChemicalElementSectionBrunch(branch);
+    xh_currentChemicalElementSectionBrunch(branch);
     if(!branch.isEmpty())
     {
         branch.removeFirst();
@@ -582,12 +582,12 @@ void X_ChemicalElementProprtyEditor::zh_removeSelectedChemicalElementProperties(
 
 }
 //======================================================
-void X_ChemicalElementProprtyEditor::zh_copyPropertyToClipboard()
+void X_ChemicalElementProprtyEditor::xh_copyPropertyToClipboard()
 {
     // TODO Copy Selected Properties
 }
 //======================================================
-void X_ChemicalElementProprtyEditor::zh_pastePropertyFromClipboard()
+void X_ChemicalElementProprtyEditor::xh_pastePropertyFromClipboard()
 {
     if(!xv_clipboard->mimeData()->hasText()
             || xv_clipboard->text().isEmpty())
@@ -634,38 +634,38 @@ void X_ChemicalElementProprtyEditor::zh_pastePropertyFromClipboard()
             propertyList.append(QPair<QString, QString>(slittedRowList.at(row).value(0), slittedRowList.at(row).value(1)));
         }
 
-        zh_insertChemicalElementPropertiesToCurrentBranch(propertyList);
+        xh_insertChemicalElementPropertiesToCurrentBranch(propertyList);
     }
 }
 //======================================================
-void X_ChemicalElementProprtyEditor::zh_onTreeElementSelectionChange(const QItemSelection& selected,
+void X_ChemicalElementProprtyEditor::xh_onTreeElementSelectionChange(const QItemSelection& selected,
                                                                     const QItemSelection& deselected)
 {
-    zh_adjustRemoveSectionAbility(selected);
+    xh_adjustRemoveSectionAbility(selected);
 }
 //======================================================
-void X_ChemicalElementProprtyEditor::zh_onPropertyTableElementSelectionChange(const QItemSelection& selected,
+void X_ChemicalElementProprtyEditor::xh_onPropertyTableElementSelectionChange(const QItemSelection& selected,
                                                                              const QItemSelection& deselected)
 {
-    zh_adjustRemoveAndCopyPropertyAbility(selected);
+    xh_adjustRemoveAndCopyPropertyAbility(selected);
 }
 //======================================================
-void X_ChemicalElementProprtyEditor::zh_setPropertiesSourceFilePath(const QString& fileName)
+void X_ChemicalElementProprtyEditor::xh_setPropertiesSourceFilePath(const QString& fileName)
 {
     xv_sourceFileNameLabel->setText(fileName);
 }
 //======================================================
-void X_ChemicalElementProprtyEditor::zh_onClipboardDataChange()
+void X_ChemicalElementProprtyEditor::xh_onClipboardDataChange()
 {
-    zh_adjustPastePropertyAbility();
+    xh_adjustPastePropertyAbility();
 }
 //======================================================
-void X_ChemicalElementProprtyEditor::zh_onModelColumnsInserted(const QModelIndex& parent, int first, int last)
+void X_ChemicalElementProprtyEditor::xh_onModelColumnsInserted(const QModelIndex& parent, int first, int last)
 {
-    zh_treeColumnVisibilityControl();
+    xh_treeColumnVisibilityControl();
 }
 //======================================================
-void X_ChemicalElementProprtyEditor::zh_onLoadButtonClick()
+void X_ChemicalElementProprtyEditor::xh_onLoadButtonClick()
 {
     X_ChemicalElementPropertyTreeModel* model =
             qobject_cast<X_ChemicalElementPropertyTreeModel*>(xv_propertySectionTreeView->model());
@@ -687,11 +687,11 @@ void X_ChemicalElementProprtyEditor::zh_onLoadButtonClick()
 
         if(answer == QMessageBox::Yes)
         {
-            zh_savePropertyDataToFile();
+            xh_savePropertyDataToFile();
         }
     }
 
-    QString dataFileFolder = zh_dataFileFolder();
+    QString dataFileFolder = xh_dataFileFolder();
     QString fileDataPath = QFileDialog::getOpenFileName(this, tr("Open data file"), dataFileFolder, tr("XML Files (*.xml);;All Files (*.*)"));
     if(fileDataPath.isEmpty())
     {
@@ -705,7 +705,7 @@ void X_ChemicalElementProprtyEditor::zh_onLoadButtonClick()
 
 }
 //======================================================
-void X_ChemicalElementProprtyEditor::zh_onCloseButtonClick()
+void X_ChemicalElementProprtyEditor::xh_onCloseButtonClick()
 {
     X_ChemicalElementPropertyTreeModel* model =
             qobject_cast<X_ChemicalElementPropertyTreeModel*>(xv_propertySectionTreeView->model());
@@ -726,14 +726,14 @@ void X_ChemicalElementProprtyEditor::zh_onCloseButtonClick()
 
         if(answer == QMessageBox::Yes)
         {
-            zh_savePropertyDataToFile();
+            xh_savePropertyDataToFile();
         }
     }
 
     accept();
 }
 //======================================================
-void X_ChemicalElementProprtyEditor::zh_treeColumnVisibilityControl()
+void X_ChemicalElementProprtyEditor::xh_treeColumnVisibilityControl()
 {
     QAbstractItemModel* model = xv_propertySectionTreeView->model();
     if(!model)
@@ -749,7 +749,7 @@ void X_ChemicalElementProprtyEditor::zh_treeColumnVisibilityControl()
     xv_propertySectionTreeView->header()->setSectionResizeMode(0, QHeaderView::Stretch);
 }
 //======================================================
-bool X_ChemicalElementProprtyEditor::zh_addChemicalElementPropertySectionBranch(const QList<int>& zNumberList,
+bool X_ChemicalElementProprtyEditor::xh_addChemicalElementPropertySectionBranch(const QList<int>& zNumberList,
                                                                                const QStringList& sectionBranch)
 {
     if(sectionBranch.isEmpty())
@@ -806,11 +806,11 @@ bool X_ChemicalElementProprtyEditor::zh_addChemicalElementPropertySectionBranch(
         }
     }
 
-    zh_adjustRemoveSectionAbility(xv_propertySectionTreeView->selectionModel()->selection());
+    xh_adjustRemoveSectionAbility(xv_propertySectionTreeView->selectionModel()->selection());
     return true;
 }
 //======================================================
-bool X_ChemicalElementProprtyEditor::zh_currentChemicalElementSectionBrunch(QStringList& branch) const
+bool X_ChemicalElementProprtyEditor::xh_currentChemicalElementSectionBrunch(QStringList& branch) const
 {
     X_ChemicalElementPropertyTreeModel* model =
             qobject_cast<X_ChemicalElementPropertyTreeModel*>(xv_propertySectionTreeView->model());
@@ -823,7 +823,7 @@ bool X_ChemicalElementProprtyEditor::zh_currentChemicalElementSectionBrunch(QStr
     return model->xp_chemicalElementPropertySectionBranch(xv_propertySectionTreeView->currentIndex(), branch);
 }
 //======================================================
-bool X_ChemicalElementProprtyEditor::zh_selectedX_NumberList(QList<int>& zNumberList) const
+bool X_ChemicalElementProprtyEditor::xh_selectedX_NumberList(QList<int>& zNumberList) const
 {
     X_ChemicalElementPropertyTreeModel* model =
             qobject_cast<X_ChemicalElementPropertyTreeModel*>(xv_propertySectionTreeView->model());
@@ -856,7 +856,7 @@ bool X_ChemicalElementProprtyEditor::zh_selectedX_NumberList(QList<int>& zNumber
     return !zNumberList.isEmpty();
 }
 //======================================================
-bool X_ChemicalElementProprtyEditor::zh_currentX_Number(int& currentX_Number) const
+bool X_ChemicalElementProprtyEditor::xh_currentX_Number(int& currentX_Number) const
 {
     X_ChemicalElementPropertyTreeModel* model =
             qobject_cast<X_ChemicalElementPropertyTreeModel*>(xv_propertySectionTreeView->model());
@@ -869,7 +869,7 @@ bool X_ChemicalElementProprtyEditor::zh_currentX_Number(int& currentX_Number) co
     return model->xp_zNumberForIndex(xv_propertySectionTreeView->currentIndex(), currentX_Number);
 }
 //======================================================
-void X_ChemicalElementProprtyEditor::zh_adjustRemoveSectionAbility(const QItemSelection& selected)
+void X_ChemicalElementProprtyEditor::xh_adjustRemoveSectionAbility(const QItemSelection& selected)
 {
     X_ChemicalElementPropertyTreeModel* model =
             qobject_cast<X_ChemicalElementPropertyTreeModel*>(xv_propertySectionTreeView->model());
@@ -897,7 +897,7 @@ void X_ChemicalElementProprtyEditor::zh_adjustRemoveSectionAbility(const QItemSe
     xv_removeChemicalElementPropertySectionsAction->setEnabled(false);
 }
 //======================================================
-void X_ChemicalElementProprtyEditor::zh_adjustRemoveAndCopyPropertyAbility(const QItemSelection& selected)
+void X_ChemicalElementProprtyEditor::xh_adjustRemoveAndCopyPropertyAbility(const QItemSelection& selected)
 {
     X_ChemicalElementPropertyTreeModel* model =
             qobject_cast<X_ChemicalElementPropertyTreeModel*>(xv_propertySectionTreeView->model());
@@ -917,18 +917,18 @@ void X_ChemicalElementProprtyEditor::zh_adjustRemoveAndCopyPropertyAbility(const
 
 }
 //======================================================
-void X_ChemicalElementProprtyEditor::zh_adjustPastePropertyAbility()
+void X_ChemicalElementProprtyEditor::xh_adjustPastePropertyAbility()
 {
     xv_pasteChemicalElementPropertiesAction->setEnabled(xv_clipboard->mimeData()->hasText()
                                                         && !xv_clipboard->text().isEmpty());
 }
 //======================================================
-void X_ChemicalElementProprtyEditor::zh_onSaveButtonClick()
+void X_ChemicalElementProprtyEditor::xh_onSaveButtonClick()
 {
-    zh_savePropertyDataToFile();
+    xh_savePropertyDataToFile();
 }
 //======================================================
-void X_ChemicalElementProprtyEditor::zh_savePropertyDataToFile()
+void X_ChemicalElementProprtyEditor::xh_savePropertyDataToFile()
 {
     X_ChemicalElementPropertyTreeModel* model =
             qobject_cast<X_ChemicalElementPropertyTreeModel*>(xv_propertySectionTreeView->model());
@@ -941,7 +941,7 @@ void X_ChemicalElementProprtyEditor::zh_savePropertyDataToFile()
     }
 
     // get the file
-    QString dataFileFolder = zh_dataFileFolder();
+    QString dataFileFolder = xh_dataFileFolder();
     QString fileDataPath = QFileDialog::getSaveFileName(this, tr("Save data to file"), dataFileFolder, tr("XML Files (*.xml);;All Files (*.*)"));
     if(fileDataPath.isEmpty())
     {
@@ -979,14 +979,14 @@ void X_ChemicalElementProprtyEditor::zh_savePropertyDataToFile()
 
 }
 //======================================================
-QString X_ChemicalElementProprtyEditor::zh_dataFileFolder() const
+QString X_ChemicalElementProprtyEditor::xh_dataFileFolder() const
 {
     X_ChemicalElementPropertyTreeModel* model =
             qobject_cast<X_ChemicalElementPropertyTreeModel*>(xv_propertySectionTreeView->model());
 
     if(!model)
     {
-        return zh_standardLocation();
+        return xh_standardLocation();
     }
 
     QString currentPropertiesSourceFileName = model->xp_propertiesSourceFilePath();
@@ -994,13 +994,13 @@ QString X_ChemicalElementProprtyEditor::zh_dataFileFolder() const
 
     if(fileInfo.absolutePath().startsWith(":"))
     {
-        return zh_standardLocation();
+        return xh_standardLocation();
     }
 
     return fileInfo.absolutePath();
 }
 //======================================================
-QString X_ChemicalElementProprtyEditor::zh_standardLocation() const
+QString X_ChemicalElementProprtyEditor::xh_standardLocation() const
 {
     if(!QStandardPaths::standardLocations(QStandardPaths::DocumentsLocation).isEmpty())
     {

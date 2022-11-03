@@ -24,17 +24,17 @@ X_EnergyCalibrationDialog::X_EnergyCalibrationDialog(QWidget *parent)
     setWindowTitle(tr("Energy calbration"));
     setAttribute(Qt::WA_DeleteOnClose);
     setWindowFlags(Qt::WindowStaysOnTopHint | Qt::Tool);
-    zh_createComponents();
-    zh_createConnections();
-    zh_restoreSettings();
+    xh_createComponents();
+    xh_createConnections();
+    xh_restoreSettings();
 }
 //======================================================
 X_EnergyCalibrationDialog::~X_EnergyCalibrationDialog()
 {
-    zh_saveSettings();
+    xh_saveSettings();
 }
 //======================================================
-void X_EnergyCalibrationDialog::zh_createComponents()
+void X_EnergyCalibrationDialog::xh_createComponents()
 {
     // invisible components
     xv_peakWindowTableModel = new X_PeakWindowTableModel(this);
@@ -44,7 +44,7 @@ void X_EnergyCalibrationDialog::zh_createComponents()
     setLayout(mainLayout);
 
     // control widget
-    mainLayout->addWidget(zh_createControlWidget());
+    mainLayout->addWidget(xh_createControlWidget());
 
     // sparator line
     QFrame* line = new QFrame(this);
@@ -67,7 +67,7 @@ void X_EnergyCalibrationDialog::zh_createComponents()
     xv_cancelButton->setFocus();
 }
 //======================================================
-QWidget* X_EnergyCalibrationDialog::zh_createControlWidget()
+QWidget* X_EnergyCalibrationDialog::xh_createControlWidget()
 {
     QWidget* controlWidget = new QWidget();
 
@@ -95,17 +95,17 @@ QWidget* X_EnergyCalibrationDialog::zh_createControlWidget()
     return controlWidget;
 }
 //======================================================
-void X_EnergyCalibrationDialog::zh_createConnections()
+void X_EnergyCalibrationDialog::xh_createConnections()
 {
     connect(xv_cancelButton, &QPushButton::clicked,
             this, &X_EnergyCalibrationDialog::close);
     connect(xv_okButton, &QPushButton::clicked,
-            this, &X_EnergyCalibrationDialog::zh_calculateSaveAndClose);
+            this, &X_EnergyCalibrationDialog::xh_calculateSaveAndClose);
 
     connect(xv_okButton, &QPushButton::clicked,
-            this, &X_EnergyCalibrationDialog::zh_calculateSaveAndClose);
+            this, &X_EnergyCalibrationDialog::xh_calculateSaveAndClose);
     connect(xv_okButton, &QPushButton::clicked,
-            this, &X_EnergyCalibrationDialog::zh_calculateSaveAndClose);
+            this, &X_EnergyCalibrationDialog::xh_calculateSaveAndClose);
 
     xv_peakTableWidget->xp_setModel(xv_peakWindowTableModel);
     connect(xv_peakWindowTableModel, &X_PeakWindowTableModel::xg_inquiryCurrentIndex,
@@ -117,7 +117,7 @@ void X_EnergyCalibrationDialog::zh_createConnections()
     xv_peakTableWidget->xp_appendContextActions(xv_peakWindowTableModel->xp_contextActions());
 }
 //======================================================
-void X_EnergyCalibrationDialog::zh_restoreSettings()
+void X_EnergyCalibrationDialog::xh_restoreSettings()
 {
     QSettings settings;
     QVariant vData;
@@ -134,7 +134,7 @@ void X_EnergyCalibrationDialog::zh_restoreSettings()
     settings.endGroup();
 }
 //======================================================
-void X_EnergyCalibrationDialog::zh_saveSettings() const
+void X_EnergyCalibrationDialog::xh_saveSettings() const
 {
     QSettings settings;
     settings.beginGroup(qApp->applicationVersion());
@@ -158,7 +158,7 @@ void X_EnergyCalibrationDialog::xp_setMeasuringConditionsAndSpectrum(quint8 gain
 
 }
 //======================================================
-void X_EnergyCalibrationDialog::zh_calculateSaveAndClose()
+void X_EnergyCalibrationDialog::xh_calculateSaveAndClose()
 {
 
     close();

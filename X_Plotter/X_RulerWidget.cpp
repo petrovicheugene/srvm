@@ -19,7 +19,7 @@ X_RulerWidget::X_RulerWidget(QWidget *parent) : QWidget(parent)
     xv_lineWidth = 1;
 
     xv_infoLabel = new QLabel(this);
-    zh_recalcRuleSizes();
+    xh_recalcRuleSizes();
 }
 //=========================================================
 void X_RulerWidget::xp_setPlotView(QWidget* plot)
@@ -227,7 +227,7 @@ void X_RulerWidget::xp_setLeftMarkRecalcMetrix(const QString& label, bool labelV
 {
     xv_leftRulerProperty.ruleLabel = label;
     xv_leftRulerProperty.ruleLabelVisibility = labelVisibility;
-    zh_recalcRuleSizes();
+    xh_recalcRuleSizes();
     xv_leftRulerProperty.K0 = K0;
     xv_leftRulerProperty.K1 = K1;
     xv_leftRulerProperty.K2 = K2;
@@ -238,7 +238,7 @@ void X_RulerWidget::xp_setRightMarkRecalcMetrix(const QString& label, bool label
 {
     xv_rightRulerProperty.ruleLabel = label;
     xv_rightRulerProperty.ruleLabelVisibility = labelVisibility;
-    zh_recalcRuleSizes();
+    xh_recalcRuleSizes();
     xv_rightRulerProperty.K0 = K0;
     xv_rightRulerProperty.K1 = K1;
     xv_rightRulerProperty.K2 = K2;
@@ -249,7 +249,7 @@ void X_RulerWidget::xp_setTopMarkRecalcMetrix(const QString& label, bool labelVi
 {
     xv_topRulerProperty.ruleLabel = label;
     xv_topRulerProperty.ruleLabelVisibility = labelVisibility;
-    zh_recalcRuleSizes();
+    xh_recalcRuleSizes();
     xv_topRulerProperty.K0 = K0;
     xv_topRulerProperty.K1 = K1;
     xv_topRulerProperty.K2 = K2;
@@ -260,7 +260,7 @@ void X_RulerWidget::xp_setBottomMarkRecalcMetrix(const QString& label, bool labe
 {
     xv_bottomRulerProperty.ruleLabel = label;
     xv_bottomRulerProperty.ruleLabelVisibility = labelVisibility;
-    zh_recalcRuleSizes();
+    xh_recalcRuleSizes();
     xv_bottomRulerProperty.K0 = K0;
     xv_bottomRulerProperty.K1 = K1;
     xv_bottomRulerProperty.K2 = K2;
@@ -584,10 +584,10 @@ void X_RulerWidget::paintEvent(QPaintEvent* event)
         QPen pen(QBrush(xv_lineColor), xv_lineWidth);
         painter.setPen(pen);
 
-        zh_paintLeftRule(&painter);
-        zh_paintRightRule(&painter);
-        zh_paintTopRule(&painter);
-        zh_paintBottomRule(&painter);
+        xh_paintLeftRule(&painter);
+        xh_paintRightRule(&painter);
+        xh_paintTopRule(&painter);
+        xh_paintBottomRule(&painter);
 
 
         QRect boundRect = xv_plot->geometry().adjusted(-1, -1, 0, 0);
@@ -599,7 +599,7 @@ void X_RulerWidget::paintEvent(QPaintEvent* event)
     QWidget::paintEvent(event);
 }
 //=========================================================
-void X_RulerWidget::zh_paintLeftRule(QPainter* painter)
+void X_RulerWidget::xh_paintLeftRule(QPainter* painter)
 {
     if(!xv_leftRulerProperty.visibility || xv_YRuleList == nullptr)
     {
@@ -670,7 +670,7 @@ void X_RulerWidget::zh_paintLeftRule(QPainter* painter)
     painter->restore();
 }
 //=========================================================
-void X_RulerWidget::zh_paintRightRule(QPainter* painter)
+void X_RulerWidget::xh_paintRightRule(QPainter* painter)
 {
     if(!xv_rightRulerProperty.visibility || xv_YRuleList == nullptr)
     {
@@ -741,7 +741,7 @@ void X_RulerWidget::zh_paintRightRule(QPainter* painter)
     painter->restore();
 }
 //=========================================================
-void X_RulerWidget::zh_paintTopRule(QPainter* painter)
+void X_RulerWidget::xh_paintTopRule(QPainter* painter)
 {
     if(!xv_topRulerProperty.visibility || xv_XRuleList == nullptr)
     {
@@ -806,7 +806,7 @@ void X_RulerWidget::zh_paintTopRule(QPainter* painter)
     painter->restore();
 }
 //=========================================================
-void X_RulerWidget::zh_paintBottomRule(QPainter* painter)
+void X_RulerWidget::xh_paintBottomRule(QPainter* painter)
 {
     if(!xv_bottomRulerProperty.visibility || xv_XRuleList == nullptr)
     {
@@ -871,7 +871,7 @@ void X_RulerWidget::zh_paintBottomRule(QPainter* painter)
     painter->restore();
 }
 //=========================================================
-void X_RulerWidget::zh_recalcRuleSizes()
+void X_RulerWidget::xh_recalcRuleSizes()
 {
     int fontSize = qMax( qMax(xv_leftRulerProperty.fontSize, xv_rightRulerProperty.fontSize),
                          qMax(xv_topRulerProperty.fontSize, xv_bottomRulerProperty.fontSize));

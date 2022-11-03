@@ -42,14 +42,14 @@ private:
     explicit X_HelpBrowser(QWidget *parent  = 0);
     virtual ~X_HelpBrowser();
 
-    void zh_createComponents();
-    void zh_createConnections();
-    void zh_dialogControl();
+    void xh_createComponents();
+    void xh_createConnections();
+    void xh_dialogControl();
 
-    bool zh_openSettingsGroup(QSettings* settings) const;
-    bool zh_closeSettingsGroup(QSettings* settings) const;
-    void zh_restoreSettings();
-    void zh_saveSettings() const;
+    bool xh_openSettingsGroup(QSettings* settings) const;
+    bool xh_closeSettingsGroup(QSettings* settings) const;
+    void xh_restoreSettings();
+    void xh_saveSettings() const;
 
 };
 //==============================================

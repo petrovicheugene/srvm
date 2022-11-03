@@ -14,11 +14,11 @@ void X_CalibrationWindowDataManager::xp_connectToSpectraArrayRepository(X_Spectr
 {
     xv_spectrumArrayRepositiry = repository;
     connect(xv_spectrumArrayRepositiry, &X_SpectrumArrayRepository::xg_currentArrayIdChanged,
-            this, &X_CalibrationWindowDataManager::zh_currentSpectrumArrayChanged);
+            this, &X_CalibrationWindowDataManager::xh_currentSpectrumArrayChanged);
     connect(xv_spectrumArrayRepositiry, &X_SpectrumArrayRepository::xg_arrayMaxParametersChanged,
-            this, &X_CalibrationWindowDataManager::zh_onArrayMaxParametersChanged);
+            this, &X_CalibrationWindowDataManager::xh_onArrayMaxParametersChanged);
     connect(xv_spectrumArrayRepositiry, &X_SpectrumArrayRepository::xg_currentSpectrumChanged,
-            this, &X_CalibrationWindowDataManager::zh_onCurrentSpectrumChange);
+            this, &X_CalibrationWindowDataManager::xh_onCurrentSpectrumChange);
 
 }
 //=============================================================================
@@ -26,9 +26,9 @@ void X_CalibrationWindowDataManager::xp_connectToCalibrationRepository(X_Calibra
 {
     xv_calibrationRepository = repository;
     connect(repository, &X_CalibrationRepository::xg_calibrationWindowOperation,
-            this, &X_CalibrationWindowDataManager::zh_onRepositoryWindowOperation);
+            this, &X_CalibrationWindowDataManager::xh_onRepositoryWindowOperation);
     connect(repository, &X_CalibrationRepository::xg_currentCalibrationChanged,
-            this, &X_CalibrationWindowDataManager::zh_onCurrentCalibrationChange);
+            this, &X_CalibrationWindowDataManager::xh_onCurrentCalibrationChange);
 }
 //=============================================================================
 int X_CalibrationWindowDataManager::xp_rowCount() const
@@ -47,7 +47,7 @@ int X_CalibrationWindowDataManager::xp_columnCount() const
     // return xv_spectrumDataColumnCount + xv_visibleChemElementCount + xv_visibleCalibrationCount;
 }
 //=============================================================================
-void X_CalibrationWindowDataManager::zh_onArrayMaxParametersChanged(qint64 arrayId, int intensity, int channels)
+void X_CalibrationWindowDataManager::xh_onArrayMaxParametersChanged(qint64 arrayId, int intensity, int channels)
 {
     if(xv_currentSpectrumArrayId != arrayId)
     {
@@ -57,7 +57,7 @@ void X_CalibrationWindowDataManager::zh_onArrayMaxParametersChanged(qint64 array
     emit xg_setChannelMinMax(0, channels);
 }
 //=============================================================================
-void X_CalibrationWindowDataManager::zh_onCurrentCalibrationChange(qint64 calibrationId, int calibrationIndex)
+void X_CalibrationWindowDataManager::xh_onCurrentCalibrationChange(qint64 calibrationId, int calibrationIndex)
 {
     if(xv_currentCalibrationId == calibrationId)
     {
@@ -71,7 +71,7 @@ void X_CalibrationWindowDataManager::zh_onCurrentCalibrationChange(qint64 calibr
     emit xg_currentOperation(OT_END_RESET_DATA, -1, -1);
 }
 //=============================================================================
-void X_CalibrationWindowDataManager::zh_onRepositoryWindowOperation(X_CalibrationRepository::WindowOperationType type,
+void X_CalibrationWindowDataManager::xh_onRepositoryWindowOperation(X_CalibrationRepository::WindowOperationType type,
                                                                    int calibrationIndex, int first, int last)
 {
     if(xv_calibrationRepository == nullptr)
@@ -115,7 +115,7 @@ void X_CalibrationWindowDataManager::zh_onRepositoryWindowOperation(X_Calibratio
     }
 }
 //=============================================================================
-void X_CalibrationWindowDataManager::zh_currentSpectrumArrayChanged(qint64 arrayId, int arrayIndex)
+void X_CalibrationWindowDataManager::xh_currentSpectrumArrayChanged(qint64 arrayId, int arrayIndex)
 {
     xv_currentSpectrumArrayId = arrayId;
     int channelCount = xv_spectrumArrayRepositiry->xp_arrayChannelCount(arrayIndex);
@@ -123,7 +123,7 @@ void X_CalibrationWindowDataManager::zh_currentSpectrumArrayChanged(qint64 array
     emit xg_currentOperation(OT_DATA_CHANGED, 0, xp_rowCount() - 1);
 }
 //=============================================================================
-void X_CalibrationWindowDataManager::zh_onCurrentSpectrumChange(qint64, int, qint64, int)
+void X_CalibrationWindowDataManager::xh_onCurrentSpectrumChange(qint64, int, qint64, int)
 {
     emit xg_currentOperation(OT_DATA_CHANGED, 0, xp_rowCount() - 1);
 }

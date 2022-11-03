@@ -9,9 +9,9 @@ X_MixedTerm::X_MixedTerm(const X_CalibrationWindow* window1,
     xv_window1 = window1;
     xv_window2 = window2;
 
-    zh_setName();
-    zh_connectToWindows();
-    zh_connectToCalibration(parent);
+    xh_setName();
+    xh_connectToWindows();
+    xh_connectToCalibration(parent);
 }
 //===================================================================
 bool X_MixedTerm::xp_calcValue(const X_AbstractSpectrum * spectrum, qreal& value)
@@ -77,7 +77,7 @@ QList<qint64> X_MixedTerm::xp_termWindowIdList() const
     return windowIdList;
 }
 //===================================================================
-void X_MixedTerm::zh_updateTermNameForWindowName()
+void X_MixedTerm::xh_updateTermNameForWindowName()
 {
     if(!sender())
     {
@@ -88,11 +88,11 @@ void X_MixedTerm::zh_updateTermNameForWindowName()
         return;
     }
 
-    zh_setName();
+    xh_setName();
     emit xg_termNameChanged();
 }
 //===================================================================
-void X_MixedTerm::zh_onWindowTypeChange(X_CalibrationWindow::WindowType previousType,
+void X_MixedTerm::xh_onWindowTypeChange(X_CalibrationWindow::WindowType previousType,
                                    X_CalibrationWindow::WindowType currentType)
 {
     if(!sender() || (sender() != xv_window1 && sender() != xv_window2))
@@ -106,39 +106,39 @@ void X_MixedTerm::zh_onWindowTypeChange(X_CalibrationWindow::WindowType previous
     }
 }
 //===================================================================
-void X_MixedTerm::zh_setName()
+void X_MixedTerm::xh_setName()
 {
     xv_name = xv_window1->xp_windowName() +"*"+ xv_window2->xp_windowName();
 }
 //===================================================================
-void X_MixedTerm::zh_connectToWindows()
+void X_MixedTerm::xh_connectToWindows()
 {
     if(xv_window1)
     {
         connect(xv_window1, &X_CalibrationWindow::destroyed,
-                this, &X_MixedTerm::zh_onWindowDestroying);
+                this, &X_MixedTerm::xh_onWindowDestroying);
         connect(xv_window1, &X_CalibrationWindow::xg_windowNameChanged,
-                this, &X_MixedTerm::zh_updateTermNameForWindowName);
+                this, &X_MixedTerm::xh_updateTermNameForWindowName);
         connect(this, &X_MixedTerm::xg_requestWindow1Intensity,
                 xv_window1, &X_CalibrationWindow::xp_calcWindowIntensity);
         connect(xv_window1, &X_CalibrationWindow::xg_windowMarginsChanged,
                 this, &X_MixedTerm::xg_termWindowMarginChanged);
         connect(xv_window1, &X_CalibrationWindow::xg_windowTypeChanged,
-                this, &X_MixedTerm::zh_onWindowTypeChange);
+                this, &X_MixedTerm::xh_onWindowTypeChange);
     }
 
     if(xv_window2)
     {
         connect(xv_window2, &X_CalibrationWindow::destroyed,
-                this, &X_MixedTerm::zh_onWindowDestroying);
+                this, &X_MixedTerm::xh_onWindowDestroying);
         connect(xv_window2, &X_CalibrationWindow::xg_windowNameChanged,
-                this, &X_MixedTerm::zh_updateTermNameForWindowName);
+                this, &X_MixedTerm::xh_updateTermNameForWindowName);
         connect(this, &X_MixedTerm::xg_requestWindow2Intensity,
                 xv_window2, &X_CalibrationWindow::xp_calcWindowIntensity);
         connect(xv_window2, &X_CalibrationWindow::xg_windowMarginsChanged,
                 this, &X_MixedTerm::xg_termWindowMarginChanged);
         connect(xv_window2, &X_CalibrationWindow::xg_windowTypeChanged,
-                this, &X_MixedTerm::zh_onWindowTypeChange);
+                this, &X_MixedTerm::xh_onWindowTypeChange);
     }
 
 }

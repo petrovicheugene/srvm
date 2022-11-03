@@ -49,9 +49,9 @@ private:
     int xv_maxIntensity;
 
     // FUNCS
-    void zh_recalcMaxSpectrumParameters();
-    void zh_saveSpectrumVisibleAndCheckedState();
-    void zh_restoreSpectrumVisibleAndCheckedState();
+    void xh_recalcMaxSpectrumParameters();
+    void xh_saveSpectrumVisibleAndCheckedState();
+    void xh_restoreSpectrumVisibleAndCheckedState();
 
 };
 //=========================================================

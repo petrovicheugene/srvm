@@ -61,11 +61,11 @@ private:
     X_SelectedEnergyLineTableModel* xv_selectedEnergyLineTableModel;
 
     // FUNCS
-    void zh_createComponents();
-    void zh_createConnections();
-    void zh_energyLinesForX_Number(int X_Number, PropertyList &propertyList);
-    void zh_energyLinesRelativeIntensityForX_Number(int X_Number, PropertyList &propertyList);
-    void zh_chemicalElementSymbol(int X_Number, QString& symbol);
+    void xh_createComponents();
+    void xh_createConnections();
+    void xh_energyLinesForX_Number(int X_Number, PropertyList &propertyList);
+    void xh_energyLinesRelativeIntensityForX_Number(int X_Number, PropertyList &propertyList);
+    void xh_chemicalElementSymbol(int X_Number, QString& symbol);
 
 };
 //======================================================

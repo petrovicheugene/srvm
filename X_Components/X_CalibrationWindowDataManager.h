@@ -53,11 +53,11 @@ public slots:
 
 private slots:
 
-    void zh_onCurrentCalibrationChange(qint64 calibrationId, int calibrationIndex);
-    void zh_onRepositoryWindowOperation(X_CalibrationRepository::WindowOperationType, int, int, int);
-    void zh_currentSpectrumArrayChanged(qint64, int);
-    void zh_onArrayMaxParametersChanged(qint64 arrayId, int intensity, int channels);
-    void zh_onCurrentSpectrumChange(qint64, int, qint64, int);
+    void xh_onCurrentCalibrationChange(qint64 calibrationId, int calibrationIndex);
+    void xh_onRepositoryWindowOperation(X_CalibrationRepository::WindowOperationType, int, int, int);
+    void xh_currentSpectrumArrayChanged(qint64, int);
+    void xh_onArrayMaxParametersChanged(qint64 arrayId, int intensity, int channels);
+    void xh_onCurrentSpectrumChange(qint64, int, qint64, int);
 
 private:
 

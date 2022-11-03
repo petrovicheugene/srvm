@@ -40,7 +40,7 @@ X_AbstractSpectrum::X_AbstractSpectrum(const QList<quint32> &intensityList,
         }
     }
 
-    // zh_recalcSpectrumPainterPath();
+    // xh_recalcSpectrumPainterPath();
 }
 //==========================================================
 X_AbstractSpectrum::~X_AbstractSpectrum()
@@ -160,7 +160,7 @@ void X_AbstractSpectrum::xp_setSpectrumData(QList<quint32> data)
         }
     }
 
-    zh_recalcSpectrumPainterPath();
+    xh_recalcSpectrumPainterPath();
 }
 //==========================================================
 QString X_AbstractSpectrum::xp_name() const
@@ -267,7 +267,7 @@ bool X_AbstractSpectrum::xp_isCompleted() const
     return xv_completed;
 }
 //==========================================================
-void X_AbstractSpectrum::zh_recalcSpectrumPainterPath()
+void X_AbstractSpectrum::xh_recalcSpectrumPainterPath()
 {
     QPointF point(0.0, 0.0);
     QPainterPath newShape;

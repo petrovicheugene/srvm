@@ -37,10 +37,10 @@ public slots:
 
 private slots:
 
-    void zh_editNext(QModelIndex editedIndex);
-    void zh_onCurrentTermChanged(QModelIndex current, QModelIndex previous);
-    void zh_onTermDoubleClick(const QModelIndex& index);
-    void zh_onContextMenuRequest(const QPoint &pos);
+    void xh_editNext(QModelIndex editedIndex);
+    void xh_onCurrentTermChanged(QModelIndex current, QModelIndex previous);
+    void xh_onTermDoubleClick(const QModelIndex& index);
+    void xh_onContextMenuRequest(const QPoint &pos);
 
 private:
 
@@ -51,8 +51,8 @@ private:
     QList<QAction*> xv_contextMenuActionList;
 
     // FUNCS
-    void zh_createComponents();
-    void zh_createConnections();
+    void xh_createComponents();
+    void xh_createConnections();
 
 };
 //========================================================
