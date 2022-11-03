@@ -1,7 +1,7 @@
 //===============================================
 #include "MainWindow.h"
-#include "ZGeneral.h"
-#include "ZTranslatorManager.h"
+#include "X_General.h"
+#include "X_TranslatorManager.h"
 
 #include <windows.h>
 #include <QApplication>
@@ -19,7 +19,7 @@
  messages qDebug, qInfo, qWarning, qCritical and qFatal.
 
  Further these messages are redirected to MainWindow that should have a receive function
- "zp_handleStandardLogMessage(QtMsgType type,
+ "xp_handleStandardLogMessage(QtMsgType type,
                          const QMessageLogContext &context,
                          const QString &msg)".
  At the same time the messages are outputing in standard output stream
@@ -84,7 +84,7 @@ void messageHandler(QtMsgType type, const QMessageLogContext &context, const QSt
     if(pMainWindow != nullptr && (msgTypesToHandleInMainWindowSet.contains(type)))
     {
         // let the application handles message (for example for saving in log)
-        pMainWindow->zp_handleStandardLogMessage(type, context, msg);
+        pMainWindow->xp_handleStandardLogMessage(type, context, msg);
     }
 
     // Standard output
@@ -139,7 +139,7 @@ void messageHandler(QtMsgType type, const QMessageLogContext &context, const QSt
 int main(int argc, char *argv[])
 {
     //    QApplication a(argc, argv);
-    //    QPixmap pixmap(":/images/ZImages/SDC_TA3.png");
+    //    QPixmap pixmap(":/images/X_Images/SDC_TA3.png");
     //    QSplashScreen splash(pixmap);
     //    splash.show();
     //    splash.showMessage("Loading codecs...", Qt::AlignBottom | Qt::AlignRight, Qt::white );
@@ -273,14 +273,14 @@ int main(int argc, char *argv[])
     qApp->setProperty("appIcon", QString(APP_ICON));
 #endif
 
-    ZTranslatorManager languageManager;
-    languageManager.zp_installTranslatorsToApplication();
+    X_TranslatorManager languageManager;
+    languageManager.xp_installTranslatorsToApplication();
 
 
     // set dots on the splitter handle
     qApp->setStyleSheet(
-                "QSplitter::handle:vertical {height: 4px; image: url(:/images/ZImages/vSplitterHandler.png);}"
-                "QSplitter::handle:horizontal {width: 4px; image: url(:/images/ZImages/hSplitterHandler.png);}"
+                "QSplitter::handle:vertical {height: 4px; image: url(:/images/X_Images/vSplitterHandler.png);}"
+                "QSplitter::handle:horizontal {width: 4px; image: url(:/images/X_Images/hSplitterHandler.png);}"
                 );
 
     // horizontal lines on table header views on win10
@@ -305,7 +305,7 @@ int main(int argc, char *argv[])
 
     // launch app
 
-    //  pixmap = QPixmap(":/images/ZImages/Chemistry.png");
+    //  pixmap = QPixmap(":/images/X_Images/Chemistry.png");
     //  QSplashScreen dbSplash(pixmap);
     //  dbSplash.show();
     //  dbSplash.showMessage("Connecting to database...", Qt::AlignBottom | Qt::AlignRight, Qt::white );

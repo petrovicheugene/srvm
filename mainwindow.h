@@ -2,47 +2,47 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 //==========================================================
-#include "ZBaseMainWindow.h"
-#include "ZTermCorrelationTableWidget.h"
+#include "X_BaseMainWindow.h"
+#include "X_TermCorrelationTableWidget.h"
 //==========================================================
-class ZFileActionManager;
-class ZSpectrumArrayWidget;
-class ZJointSpectrumTableWidget;
-class ZChemElementWidget;
-class ZCalibrationTableWidget;
-class ZCalibrationWindowTableWidget;
-class ZTermCorrelationTableWidget;
-class ZEquationSettingsDashBoard;
-class ZCorrelationPlotterWidget;
-class ZWidgetWithSidebar;
-class ZMessagePanel;
-class ZMessageWidget;
-class ZEnergyLineTableWidget;
+class X_FileActionManager;
+class X_SpectrumArrayWidget;
+class X_JointSpectrumTableWidget;
+class X_ChemElementWidget;
+class X_CalibrationTableWidget;
+class X_CalibrationWindowTableWidget;
+class X_TermCorrelationTableWidget;
+class X_EquationSettingsDashBoard;
+class X_CorrelationPlotterWidget;
+class X_WidgetWithSidebar;
+class X_MessagePanel;
+class X_MessageWidget;
+class X_EnergyLineTableWidget;
 
 class QAction;
 class QFrame;
 class QMenu;
-class ZPlotter;
-class ZHelpBrowser;
+class X_Plotter;
+class X_HelpBrowser;
 
-class ZArrayModel;
-class ZJointSpectraModel;
-class ZChemElementModel;
-class ZCalibrationModel;
-class ZCalibrationWindowModel;
-class ZTermCorrelationTableModel;
+class X_ArrayModel;
+class X_JointSpectraModel;
+class X_ChemElementModel;
+class X_CalibrationModel;
+class X_CalibrationWindowModel;
+class X_TermCorrelationTableModel;
 
-class ZSpectrumArrayRepository;
-class ZCalibrationRepository;
+class X_SpectrumArrayRepository;
+class X_CalibrationRepository;
 
-class ZJointSpectraDataManager;
-class ZChemElementDataManager;
-class ZCalibrationWindowDataManager;
-class ZAbstractPlotterDataManager;
-class ZCorrelationPlotterDataManager;
-class ZTermCorrelationTableManager;
+class X_JointSpectraDataManager;
+class X_ChemElementDataManager;
+class X_CalibrationWindowDataManager;
+class X_AbstractPlotterDataManager;
+class X_CorrelationPlotterDataManager;
+class X_TermCorrelationTableManager;
 //==========================================================
-class MainWindow : public ZBaseMainWindow
+class MainWindow : public X_BaseMainWindow
 {
     Q_OBJECT
 
@@ -52,9 +52,9 @@ public:
 
 signals:
 
-    void zg_saveSettings();
+    void xg_saveSettings();
 
-    void zg_plainLogMessage(int msgType,
+    void xg_plainLogMessage(int msgType,
                             const QString &msg);
 
 private slots:
@@ -71,58 +71,58 @@ private:
 
     // VARS
     // actions
-    QAction* zv_exitAction;
-    //QAction* zv_languageControlAction;
-    QMenu* zv_languageMenu;
-    // QAction* zv_openCalibrationProjectAction;
-    //    QAction* zv_helpAction;
+    QAction* xv_exitAction;
+    //QAction* xv_languageControlAction;
+    QMenu* xv_languageMenu;
+    // QAction* xv_openCalibrationProjectAction;
+    //    QAction* xv_helpAction;
 
     // docks
-    QList<QDockWidget*> zv_dockList;
-    QDockWidget* zv_spectrumArrayDock;
-    QDockWidget* zv_calibrationDock;
-    QDockWidget* zv_correlationPlotterDock;
-    QDockWidget* zv_chemElementArrayDock;
-    QDockWidget* zv_messagePanelDock;
-    QDockWidget* zv_energyLineTableDock;
+    QList<QDockWidget*> xv_dockList;
+    QDockWidget* xv_spectrumArrayDock;
+    QDockWidget* xv_calibrationDock;
+    QDockWidget* xv_correlationPlotterDock;
+    QDockWidget* xv_chemElementArrayDock;
+    QDockWidget* xv_messagePanelDock;
+    QDockWidget* xv_energyLineTableDock;
 
     // views
-    ZWidgetWithSidebar* zv_spectraSidebarWidget;
-    ZWidgetWithSidebar* zv_calibrationSidebarWidget;
+    X_WidgetWithSidebar* xv_spectraSidebarWidget;
+    X_WidgetWithSidebar* xv_calibrationSidebarWidget;
 
-    ZSpectrumArrayWidget* zv_spectrumArrayWidget;
-    ZJointSpectrumTableWidget* zv_spectrumTableWidget;
-    ZChemElementWidget* zv_chemElementWidget;
-    ZCalibrationTableWidget* zv_calibrationTableWidget;
-    ZCalibrationWindowTableWidget* zv_calibrationWindowTableWidget;
+    X_SpectrumArrayWidget* xv_spectrumArrayWidget;
+    X_JointSpectrumTableWidget* xv_spectrumTableWidget;
+    X_ChemElementWidget* xv_chemElementWidget;
+    X_CalibrationTableWidget* xv_calibrationTableWidget;
+    X_CalibrationWindowTableWidget* xv_calibrationWindowTableWidget;
 
-    ZTermCorrelationTableWidget* zv_termCorrelationTableWidget;
-    ZEquationSettingsDashBoard* zv_equationSettingsPanelWidget;
-    ZCorrelationPlotterWidget* zv_correlationPlotterWidget;
-    ZEnergyLineTableWidget* zv_energyLineTableWidget;
+    X_TermCorrelationTableWidget* xv_termCorrelationTableWidget;
+    X_EquationSettingsDashBoard* xv_equationSettingsPanelWidget;
+    X_CorrelationPlotterWidget* xv_correlationPlotterWidget;
+    X_EnergyLineTableWidget* xv_energyLineTableWidget;
 
-    ZMessageWidget* zv_messageWidget;
-    ZPlotter* zv_plotter;
+    X_MessageWidget* xv_messageWidget;
+    X_Plotter* xv_plotter;
 
     // models
-    ZArrayModel* zv_arrayModel;
-    ZJointSpectraModel* zv_jointSpectraModel;
-    ZChemElementModel* zv_chemElementModel;
-    ZCalibrationModel* zv_calibrationModel;
-    ZCalibrationWindowModel* zv_jointCalibrationWindowModel;
-    ZTermCorrelationTableModel* zv_termCorrelationTableModel;
+    X_ArrayModel* xv_arrayModel;
+    X_JointSpectraModel* xv_jointSpectraModel;
+    X_ChemElementModel* xv_chemElementModel;
+    X_CalibrationModel* xv_calibrationModel;
+    X_CalibrationWindowModel* xv_jointCalibrationWindowModel;
+    X_TermCorrelationTableModel* xv_termCorrelationTableModel;
 
     // components
-    ZHelpBrowser* mv_helpBrowser;
-    ZFileActionManager* zv_fileActionManager;
-    ZSpectrumArrayRepository* zv_spectrumArrayRepository;
-    ZJointSpectraDataManager* zv_jointSpectraDataManager;
-    ZCalibrationRepository* zv_calibrationRepository;
-    ZCalibrationWindowDataManager* zv_jointCalibrationWindowDataManager;
-    ZChemElementDataManager* zv_chemElementDataManager;
-    ZAbstractPlotterDataManager* zv_plotterDataManager;
-    ZCorrelationPlotterDataManager* zv_calculationPlotterManager;
-    ZTermCorrelationTableManager* zv_termCorrelationTableManager;
+    X_HelpBrowser* mv_helpBrowser;
+    X_FileActionManager* xv_fileActionManager;
+    X_SpectrumArrayRepository* xv_spectrumArrayRepository;
+    X_JointSpectraDataManager* xv_jointSpectraDataManager;
+    X_CalibrationRepository* xv_calibrationRepository;
+    X_CalibrationWindowDataManager* xv_jointCalibrationWindowDataManager;
+    X_ChemElementDataManager* xv_chemElementDataManager;
+    X_AbstractPlotterDataManager* xv_plotterDataManager;
+    X_CorrelationPlotterDataManager* xv_calculationPlotterManager;
+    X_TermCorrelationTableManager* xv_termCorrelationTableManager;
 
     // FUNCS
     void closeEvent(QCloseEvent* e);
