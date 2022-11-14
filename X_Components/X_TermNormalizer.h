@@ -4,9 +4,11 @@
 //======================================================================
 #include <QObject>
 #include "X_CalibrationWindow.h"
+#include "X_MathExpressionHandler.h"
 //======================================================================
 class X_AbstractSpectrum;
 class X_Calibration;
+class X_SpeSpectrum;
 //======================================================================
 class X_TermNormalizer : public QObject
 {
@@ -31,8 +33,8 @@ public:
 
     void xp_connectToWindow(X_CalibrationWindow* window);
 
-    bool xp_normalizeValue(const X_AbstractSpectrum *spectrum, qreal &value) const;
-    bool xp_normalizeValue(qreal &value) const;
+    bool xp_normalizeValue(const X_AbstractSpectrum *spectrum, qreal &value);
+    bool xp_normalizeValue(qreal &value);
     bool xp_calcAndSetNormaValue(const X_AbstractSpectrum *spectrum);
     void xp_resetNormaValue();
 
@@ -49,6 +51,12 @@ signals:
     void xg_requestCoherentIntensity(qint64&) const;
     void xg_requestIncoherentIntensity(qint64&) const;
 
+    void xg_calcWindowIntensity(
+        const QString& windowName, const QObject*, qreal&, bool keepBufferClean, bool* ok);
+    void xg_errorReport(const QString& errorMsg) const;
+    void xg_windowIsExist(const QString& name, bool& res) const;
+
+
 public slots:
 
 
@@ -60,12 +68,22 @@ private slots:
     void xh_onWindowDestroy(QObject* obj) const;
     void xh_onWindowMarginsChange() const;
 
+    void xh_handleWindowIntensityRequest(const QString& varName,
+                                         double& value,
+                                         bool& bRes);
+    void xh_handleErrorReport(const QString& errorString,
+                              int errorTokenStartPosition,
+                              int errorTokenEndPosition) const;
+
 private:
 
     // VARS
     NormaType xv_normaType;
     X_Calibration* xv_calibration;
     QString xv_customNormaString;
+    X_MathExpressionHandler xv_mathExpressionHandler;
+    const X_SpeSpectrum* xv_spectrum = nullptr;
+
     // buffer
     qint64 xv_spectrumIdBuffer;
     qreal xv_normaValueBuffer;
@@ -73,7 +91,7 @@ private:
     // FUNCS
     void xh_createConnections();
     bool xh_getWindowsValue(X_CalibrationWindow::WindowType type, const X_AbstractSpectrum* spectrum, qint64& value) const;
-    bool xh_calcNormaValue(const X_AbstractSpectrum *spectrum, qreal& normaValue) const;
+    bool xh_calcNormaValue(const X_AbstractSpectrum *spectrum, qreal& normaValue);
 
 
     // STATIC

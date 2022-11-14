@@ -233,7 +233,6 @@ void X_AbstractPlotterDataManager::xp_onPlotterViewPortRectChange(QRectF rect)
 //===========================================================
 void X_AbstractPlotterDataManager::xh_updateRulerTool(QPointF startPoint, QPointF endPoint, bool visibility)
 {
-    // qDebug() << "UPDATE RT" << startPoint.x() << endPoint.x() << visibility;
     QRectF plotterRect = xv_plotter->xp_viewportSceneRect();
     QSize plotterPixelSize = xv_plotter->xp_viewportPixelSize();
 
@@ -383,8 +382,8 @@ void X_AbstractPlotterDataManager::xp_currentArrayChanged(qint64 currentArrayId,
 
     QList<X_AbstractSpectrum*> spectrumList = xv_spectrumArrayRepositiry->xp_spectrumListForArray(xv_currentArrayIndex);
     X_SpectrumGraphicsItem* spectrumItem;
-    qreal distortionFactor;
-    qreal distortionCorrectionFactor;
+    qreal distortionFactor = 0.0;
+    qreal distortionCorrectionFactor = 0.0;
     xv_plotter->xp_verticalDistortionFactors(distortionFactor, distortionCorrectionFactor);
     bool isPlotScaled = xv_plotter->xp_isPlotScaled();
     for(int i = 0; i < spectrumList.count(); i++)
@@ -501,8 +500,8 @@ void X_AbstractPlotterDataManager::xh_onRepositoryArrayOperation(X_SpectrumArray
     }
     else if(type == X_SpectrumArrayRepository::SOT_END_INSERT_SPECTRA)
     {
-        qreal distortionFactor;
-        qreal distortionCorrectionFactor;
+        qreal distortionFactor = 0.0;
+        qreal distortionCorrectionFactor = 0.0;
         xv_plotter->xp_verticalDistortionFactors(distortionFactor, distortionCorrectionFactor);
         bool isPlotScaled = xv_plotter->xp_isPlotScaled();
 

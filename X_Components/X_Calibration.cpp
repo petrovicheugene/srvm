@@ -191,6 +191,7 @@ X_Calibration::X_Calibration(const QString& name, QObject* parent) : QObject(par
     xp_setEquationIntercept(0.0);
     xv_baseTermId = -1;
     xv_dateTime = QDateTime::currentDateTime();
+    xh_createConnections();
 }
 //=========================================================
 X_Calibration::X_Calibration(const X_Calibration* calibration, const QString& name, QObject* parent)
@@ -228,9 +229,25 @@ X_Calibration::X_Calibration(const X_Calibration* calibration, const QString& na
     xp_setEquationIntercept(0.0);
     xv_baseTermId = -1;
     xv_dateTime = QDateTime::currentDateTime();
+    xh_createConnections();
 }
 //=========================================================
 X_Calibration::~X_Calibration() {}
+
+
+//=========================================================
+void X_Calibration::xh_createConnections()
+{
+    connect(xv_termNormalizer,
+            &X_TermNormalizer::xg_calcWindowIntensity,
+            this,
+            &X_Calibration::xp_calcWindowIntensity);
+    connect(xv_termNormalizer,
+            &X_TermNormalizer::xg_errorReport,
+            this,
+            &X_Calibration::xg_message);
+
+}
 //=========================================================
 QDateTime X_Calibration::xp_dateTime() const
 {
@@ -429,11 +446,11 @@ qint64 X_Calibration::xp_calibrationId() const
     return xv_calibrationId;
 }
 //=========================================================
-bool X_Calibration::xp_calcConcentration(const X_AbstractSpectrum* const spectrum,
+bool X_Calibration::xp_calcConcentration(const X_AbstractSpectrum * const spectrum,
                                         qreal& concentration)
 {
-    concentration = 0;
-    if (spectrum == 0 || xv_equationType == ET_NOT_DEFINED)
+    concentration = 0.0;
+    if (spectrum == nullptr || xv_equationType == ET_NOT_DEFINED)
     {
         return false;
     }
@@ -474,7 +491,7 @@ bool X_Calibration::xp_calcConcentration(const X_AbstractSpectrum* const spectru
     if (xv_equationType == ET_FRACTIONAL)
     {
         // concentration goes to denominator. check out it
-        if (concentration == 0)
+        if (concentration == 0.0)
         {
             return false;
         }
@@ -488,6 +505,52 @@ bool X_Calibration::xp_calcConcentration(const X_AbstractSpectrum* const spectru
         concentration = value / concentration;
     } // end ET_FRACTIONAL
 
+    return true;
+}
+//=========================================================
+bool X_Calibration::xp_calcActiveTermvalueSum(const X_AbstractSpectrum*  const spectrum,
+                                              qreal& sumValue)
+{
+    sumValue = 0.0;
+    if (spectrum == nullptr || xv_equationType == ET_NOT_DEFINED)
+    {
+        return false;
+    }
+
+    // calc norma
+    if (!xv_termNormalizer->xp_calcAndSetNormaValue(spectrum))
+    {
+        return false;
+    }
+
+    qreal termIntensity = 0.0;
+    // calc polynom
+    for (int t = 0; t < xv_termList.count(); t++)
+    {
+        // exclude base term if !xv_useBaseTermInFractionalEquation
+        if (xv_equationType == ET_FRACTIONAL && !xv_useBaseTermInFractionalEquation
+            && xv_termList.at(t)->xp_termId() == xv_baseTermId)
+        {
+            continue;
+        }
+
+        if(xv_termList.at(t)->xp_termState() == X_AbstractTerm::TS_NOT_DEFINED ||
+            xv_termList.at(t)->xp_termState() == X_AbstractTerm::TS_EXAM_WAITING ||
+            xv_termList.at(t)->xp_termState() == X_AbstractTerm::TS_EXCEPTED ||
+            xv_termList.at(t)->xp_termState() == X_AbstractTerm::TS_CONST_EXCLUDED )
+        {
+            continue;
+        }
+
+        if(xv_termList.at(t)->xp_calcTermIntensity(spectrum, termIntensity))
+        {
+            sumValue += termIntensity;
+        }
+        else
+        {
+            termIntensity = 0.0;
+        }
+    }
     return true;
 }
 //=========================================================
@@ -925,7 +988,7 @@ bool X_Calibration::xp_setTermFactorString(int termIndex, const QString& factorS
 //=========================================================
 bool X_Calibration::xp_termVariablePart(int termIndex,
                                        const X_AbstractSpectrum* spectrum,
-                                       qreal& value) const
+                                       qreal& value)
 {
     if (termIndex < 0 || termIndex >= xv_termList.count() || !spectrum)
     {
@@ -933,7 +996,7 @@ bool X_Calibration::xp_termVariablePart(int termIndex,
     }
 
     value = 0.0;
-    bool res = xv_termList.at(termIndex)->xp_calcTermVariablePart(spectrum, value);
+    bool res = xv_termList.at(termIndex)->xp_calcTermIntensity(spectrum, value);
     if (res)
     {
         res = xv_termNormalizer->xp_normalizeValue(spectrum, value);
@@ -957,7 +1020,7 @@ bool X_Calibration::xp_calcBaseTermValue(const X_AbstractSpectrum* spectrum, qre
     {
         if (xv_termList.at(t)->xp_termId() == xv_baseTermId)
         {
-            if (!xv_termList.at(t)->xp_calcTermVariablePart(spectrum, value))
+            if (!xv_termList.at(t)->xp_calcTermIntensity(spectrum, value))
             {
                 return false;
             }
@@ -1175,11 +1238,11 @@ int X_Calibration::xp_createCustomTerm(X_AbstractTerm::TermState termState,
     customTerm->xh_setTermFactor(termFactor);
 
     connect(customTerm,
-            &X_CustomTerm::zs_calcWindowIntensity,
+            &X_CustomTerm::xg_calcWindowIntensity,
             this,
             &X_Calibration::xp_calcWindowIntensity);
     connect(customTerm,
-            &X_CustomTerm::zs_errorReport,
+            &X_CustomTerm::xg_errorReport,
             this,
             &X_Calibration::xg_message);
 
@@ -1359,15 +1422,15 @@ bool X_Calibration::xh_checkCustomString(X_RawTerm& rawTerm)
         X_MathExpressionHandler mathExpressionHandler;
         X_MathExpressionVariableListMaker mathExpressionVariableListMaker;
         connect(&mathExpressionHandler,
-                &X_MathExpressionHandler::zs_requestVariableValue,
+                &X_MathExpressionHandler::xg_requestVariableValue,
                 &mathExpressionVariableListMaker,
                 &X_MathExpressionVariableListMaker::xp_insertVariableValue);
         connect(&mathExpressionHandler,
-                &X_MathExpressionHandler::zs_errorReport,
+                &X_MathExpressionHandler::xg_errorReport,
                 &mathExpressionVariableListMaker,
                 &X_MathExpressionVariableListMaker::xp_setError);
         connect(&mathExpressionVariableListMaker,
-                &X_MathExpressionVariableListMaker::zs_variableCheckRequest,
+                &X_MathExpressionVariableListMaker::xg_variableCheckRequest,
                 this,
                 &X_Calibration::xh_windowIsExist);
 

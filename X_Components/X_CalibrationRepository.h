@@ -119,8 +119,12 @@ public:
     QColor xp_calibrationWindowColor(qint64 calibrationId, int windowIndex) const;
     qint64 xp_calibrationWindowId(qint64 calibrationId, int windowIndex) const;
     const X_CalibrationWindow* xp_calibrationWindow(qint64 calibrationId, int windowIndex) const;
-    bool xp_calculateConcentration(int row, const X_AbstractSpectrum*, qreal& concentration) const;
-    bool xp_calculateConcentrationForId(qint64 calibrationId, const X_AbstractSpectrum* spectrum, qreal& concentration) const;
+    bool xp_calculateConcentration(int row, const X_AbstractSpectrum *, qreal& concentration) const;
+    bool xp_calculateConcentrationForId(qint64 calibrationId, const X_AbstractSpectrum *spectrum, qreal& concentration) const;
+
+    bool xp_calculateActiveTermValueSumForId(qint64 calibrationId, const X_AbstractSpectrum* spectrum, qreal& value) const;
+
+
 
     // terms
     int xp_termCount(qint64 calibrationId) const;

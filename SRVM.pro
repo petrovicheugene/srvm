@@ -15,7 +15,7 @@ RC_ICONS = "X_Images/SRVM-8.ico"
 
 #Application version
 VER_MAJ=22
-VER_MIN=09
+VER_MIN=10
 VER_PAT=01
 
 PRODUCT_SHORT_NAME="SRVM"

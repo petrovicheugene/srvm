@@ -724,6 +724,24 @@ bool X_CalibrationRepository::xp_calculateConcentrationForId(
     return calibration->xp_calcConcentration(spectrum, concentration);
 }
 //======================================================
+bool X_CalibrationRepository::xp_calculateActiveTermValueSumForId(qint64 calibrationId,
+                                         const X_AbstractSpectrum* spectrum,
+                                         qreal& value) const
+{
+    if (calibrationId < 0)
+    {
+        return false;
+    }
+
+    X_Calibration* calibration = xh_calibrationForId(calibrationId);
+    if (!calibration)
+    {
+        return false;
+    }
+
+    return calibration->xp_calcActiveTermvalueSum(spectrum, value);
+}
+//======================================================
 int X_CalibrationRepository::xp_termCount(qint64 calibrationId) const
 {
     const X_Calibration* calibration = xh_calibrationForId(calibrationId);
@@ -1090,7 +1108,7 @@ bool X_CalibrationRepository::xp_termVariablePart(
     const X_AbstractSpectrum* spectrum,
     qreal& value)
 {
-    const X_Calibration* calibration = xh_calibrationForId(calibrationId);
+    X_Calibration* calibration = xh_calibrationForId(calibrationId);
     if (!calibration)
     {
         return false;

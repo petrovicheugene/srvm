@@ -85,7 +85,14 @@ void messageHandler(QtMsgType type, const QMessageLogContext &context, const QSt
     if(pMainWindow != nullptr && (msgTypesToHandleInMainWindowSet.contains(type)))
     {
         // let the application handles message (for example for saving in log)
-        pMainWindow->xp_handleStandardLogMessage(type, context, msg);
+        try
+        {
+            pMainWindow->xp_handleStandardLogMessage(type, context, msg);
+        }
+        catch (...)
+        {
+
+        }
     }
 
     // Standard output

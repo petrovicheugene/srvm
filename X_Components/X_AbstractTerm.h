@@ -37,7 +37,7 @@ public:
 
     // FUNCS
     virtual bool xp_calcValue(const X_AbstractSpectrum*, qreal&) = 0;
-    virtual bool xp_calcTermVariablePart(const X_AbstractSpectrum*, qreal &value) = 0; // w/o factor
+    virtual bool xp_calcTermIntensity(const X_AbstractSpectrum*, qreal &value) = 0; // w/o factor
     QString xp_termName() const;
     X_AbstractTerm::TermType xp_termType() const;
     virtual bool xp_termBelongsToWindow(const X_CalibrationWindow*) const = 0;
@@ -84,11 +84,11 @@ protected slots:
 protected:
 
     // VARS
-    qint64 xv_termId;
-    TermType xv_type;
+    qint64 xv_termId = -1;
+    TermType xv_type = TT_NOT_DEFINED;
     QString xv_termFactorString;
-    qreal xv_termFactor;
-    TermState xv_termState;
+    qreal xv_termFactor = 0.0;
+    TermState xv_termState = TS_NOT_DEFINED;
     QString xv_name;
 
     //    QList<qint64> xv_unnormalizedValueList;

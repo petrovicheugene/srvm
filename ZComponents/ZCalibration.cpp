@@ -445,7 +445,7 @@ bool ZCalibration::zp_calcConcentration(const ZAbstractSpectrum* const spectrum,
     }
 
     // calc polynom
-    qreal value;
+    qreal value = 0.0;
     for (int t = 0; t < zv_termList.count(); t++)
     {
         // exclude base term if !zv_useBaseTermInFractionalEquation

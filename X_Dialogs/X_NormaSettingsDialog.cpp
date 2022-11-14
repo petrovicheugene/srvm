@@ -1,6 +1,5 @@
 //============================================================
 #include "X_NormaSettingsDialog.h"
-#include "X_General.h"
 
 #include <QApplication>
 #include <QCheckBox>
@@ -96,8 +95,10 @@ QWidget* X_NormaSettingsDialog::xh_createControlWidget()
 //============================================================
 void X_NormaSettingsDialog::xh_createConnections()
 {
-    connect(xv_okButton, &QPushButton::clicked, this, &X_NormaSettingsDialog::xh_onDialogAccepted);
-    connect(xv_closeButton, &QPushButton::clicked, this, &X_NormaSettingsDialog::reject);
+    connect(xv_okButton, &QPushButton::clicked,
+            this, &X_NormaSettingsDialog::xh_onDialogAccepted);
+    connect(xv_closeButton, &QPushButton::clicked,
+            this, &X_NormaSettingsDialog::reject);
 
     connect(xv_noNormaRadioButton,
             &QRadioButton::toggled,

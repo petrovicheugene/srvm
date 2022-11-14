@@ -17,7 +17,7 @@ public:
 
     // FUNCS
     bool xp_calcValue(const X_AbstractSpectrum*, qreal&) override;
-    bool xp_calcTermVariablePart(const X_AbstractSpectrum*, qreal &value) override; // w/o factor
+    bool xp_calcTermIntensity(const X_AbstractSpectrum*, qreal &value) override; // w/o factor
     bool xp_termBelongsToWindow(const X_CalibrationWindow*) const override;
     QList<qint64> xp_termWindowIdList() const override;
     const X_CalibrationWindow* xp_window() const;

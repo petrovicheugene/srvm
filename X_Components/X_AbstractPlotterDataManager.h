@@ -69,7 +69,7 @@ private:
     QString xv_horizontalRecalcedRuleLabel;
     bool xv_energyRuleMetrixFlag;
 
-    qreal xv_boundingRectTopFactor;
+    qreal xv_boundingRectTopFactor = 0.0;
     QRectF xv_defaultSceneRect = QRectF(QPointF(0.0,-100.0), QPointF(2048.0, 0.0));
     //QList<QGraphicsItem*> xv_spectrumGraphicsItemList;
     QList<double> xv_calibrationFactors;

@@ -79,7 +79,7 @@ public:
     bool xp_appendNewChemElement(QString chemElement = QString());
     bool xp_removeChemElement(int);
 
-    const X_AbstractSpectrum* xp_spectrum(int index) const;
+    const X_AbstractSpectrum *xp_spectrum(int index) const;
     QList<X_AbstractSpectrum*> xp_spectrumList() const;
 
     int xp_maxIntensity() const;

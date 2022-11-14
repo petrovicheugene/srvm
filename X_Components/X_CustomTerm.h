@@ -15,7 +15,7 @@ public:
 
    // FUNCS
     bool xp_calcValue(const X_AbstractSpectrum*, qreal&) override;
-    bool xp_calcTermVariablePart(const X_AbstractSpectrum*, qreal& value) override; // w/o factor
+    bool xp_calcTermIntensity(const X_AbstractSpectrum*, qreal& value) override; // w/o factor
     bool xp_termBelongsToWindow(const X_CalibrationWindow*) const override;
     QList<qint64> xp_termWindowIdList() const override;
 
@@ -28,9 +28,9 @@ public:
 
 signals:
 
-    void zs_calcWindowIntensity(
+    void xg_calcWindowIntensity(
         const QString& windowName, const QObject*, qreal&, bool keepBufferClean, bool* ok);
-    void zs_errorReport(const QString& errorMsg) const;
+    void xg_errorReport(const QString& errorMsg) const;
     void xg_windowIsExist(const QString& name, bool& res) const;
 
 protected slots:

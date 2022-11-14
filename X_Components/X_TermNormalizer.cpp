@@ -2,6 +2,7 @@
 #include "X_TermNormalizer.h"
 #include "X_AbstractSpectrum.h"
 #include "X_Calibration.h"
+#include "X_SpeSpectrum.h"
 //======================================================================
 // STATIC
 //======================================================================
@@ -124,7 +125,7 @@ bool X_TermNormalizer::xp_setNormalizerParameters(X_TermNormalizer::NormaType ty
     return res;
 }
 //======================================================================
-bool X_TermNormalizer::xp_normalizeValue(const X_AbstractSpectrum* spectrum, qreal& value ) const
+bool X_TermNormalizer::xp_normalizeValue(const X_AbstractSpectrum* spectrum, qreal& value )
 {
     if(xv_normaType == NT_NONE)
     {
@@ -146,7 +147,7 @@ bool X_TermNormalizer::xp_normalizeValue(const X_AbstractSpectrum* spectrum, qre
     return true;
 }
 //======================================================================
-bool X_TermNormalizer::xp_normalizeValue(qreal &value) const
+bool X_TermNormalizer::xp_normalizeValue(qreal &value)
 {
     if(xv_normaType == NT_NONE)
     {
@@ -177,7 +178,7 @@ bool X_TermNormalizer::xp_calcAndSetNormaValue(const X_AbstractSpectrum *spectru
     return true;
 }
 //======================================================================
-bool X_TermNormalizer::xh_calcNormaValue(const X_AbstractSpectrum *spectrum, qreal& normaValue) const
+bool X_TermNormalizer::xh_calcNormaValue(const X_AbstractSpectrum *spectrum, qreal& normaValue)
 {
     normaValue = 0;
     if(!spectrum)
@@ -252,8 +253,11 @@ bool X_TermNormalizer::xh_calcNormaValue(const X_AbstractSpectrum *spectrum, qre
     }
     else if(xv_normaType == NT_CUSTOM)
     {
-        // TODO custom normalization
-        normaValue = 1;
+
+        xv_spectrum = static_cast<const X_SpeSpectrum*>(spectrum);
+        bool res = xv_mathExpressionHandler.xp_calculateExpression(xv_customNormaString, normaValue);
+        xv_spectrum = nullptr;
+        return res;
     }
 
     return true;
@@ -269,6 +273,16 @@ void X_TermNormalizer::xh_createConnections()
 {
     connect(this, &X_TermNormalizer::xg_normalizerChanged,
             xv_calibration, &X_Calibration::xh_onNormalizerChange);
+
+    connect(&xv_mathExpressionHandler,
+            &X_MathExpressionHandler::xg_requestVariableValue,
+            this,
+            &X_TermNormalizer::xh_handleWindowIntensityRequest);
+    connect(&xv_mathExpressionHandler,
+            &X_MathExpressionHandler::xg_errorReport,
+            this,
+            &X_TermNormalizer::xh_handleErrorReport);
+
 }
 //======================================================================
 bool X_TermNormalizer::xh_getWindowsValue(X_CalibrationWindow::WindowType type,
@@ -375,3 +389,18 @@ void X_TermNormalizer::xh_onWindowMarginsChange() const
     }
 }
 //======================================================================
+void X_TermNormalizer::xh_handleWindowIntensityRequest(const QString& windowName,
+                                                   double& value,
+                                                   bool& bRes)
+{
+    emit xg_calcWindowIntensity(windowName, (const QObject*) xv_spectrum, value, true, &bRes);
+}
+//===================================================================
+void X_TermNormalizer::xh_handleErrorReport(const QString& errorString,
+                                        int errorTokenStartPosition,
+                                        int errorTokenEndPosition) const
+{
+   emit xg_errorReport(QString("%1 (%2)!").arg(errorString, QString::number(errorTokenStartPosition)));
+
+}
+//===================================================================

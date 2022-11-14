@@ -85,7 +85,7 @@ public:
     bool xp_setSpectrumCheckedForId(qint64 arrayId, qint64 spectrumId, bool checked);
     void xp_setSpectrumCurrent(qint64 spectrumId) const;
 
-    const X_AbstractSpectrum* xp_spectrum(int arrayIndex, int spectrumIndex) const;
+    const X_AbstractSpectrum *xp_spectrum(int arrayIndex, int spectrumIndex) const;
     QList<X_AbstractSpectrum*> xp_spectrumListForArray(int arrayIndex) const;
     QList<quint32> xp_spectrumData(int arrayIndex, int spectrumIndex) const;
     int xp_arrayChannelCount(int arrayIndex);

@@ -17,8 +17,8 @@ public:
 
 signals:
 
-    void zs_requestVariableValue(const QString& varName, double& value, bool& bRes) const;
-    void zs_errorReport(const QString& errorString,
+    void xg_requestVariableValue(const QString& varName, double& value, bool& bRes) const;
+    void xg_errorReport(const QString& errorString,
                         int errorTokenStartPosition,
                         int errorTokenEndPosition) const;
 

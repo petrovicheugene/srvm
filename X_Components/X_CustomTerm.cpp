@@ -13,11 +13,11 @@ X_CustomTerm::X_CustomTerm(X_Calibration* parent) : X_AbstractTerm(parent)
 void X_CustomTerm::xh_createConnections()
 {
     connect(&xv_mathExpressionHandler,
-            &X_MathExpressionHandler::zs_requestVariableValue,
+            &X_MathExpressionHandler::xg_requestVariableValue,
             this,
             &X_CustomTerm::xh_handleWindowIntensityRequest);
     connect(&xv_mathExpressionHandler,
-            &X_MathExpressionHandler::zs_errorReport,
+            &X_MathExpressionHandler::xg_errorReport,
             this,
             &X_CustomTerm::xh_handleErrorReport);
 }
@@ -26,14 +26,14 @@ void X_CustomTerm::xh_handleWindowIntensityRequest(const QString& windowName,
                                                   double& value,
                                                   bool& bRes)
 {
-    emit zs_calcWindowIntensity(windowName, (const QObject*) xv_spectrum, value, true, &bRes);
+    emit xg_calcWindowIntensity(windowName, (const QObject*) xv_spectrum, value, true, &bRes);
 }
 //===================================================================
 void X_CustomTerm::xh_handleErrorReport(const QString& errorString,
                                        int errorTokenStartPosition,
                                        int errorTokenEndPosition) const
 {
-    emit zs_errorReport(QString("%1 (%2)!").arg(errorString, QString::number(errorTokenStartPosition)));
+    emit xg_errorReport(QString("%1 (%2)!").arg(errorString, QString::number(errorTokenStartPosition)));
 
 }
 //===================================================================
@@ -53,7 +53,7 @@ bool X_CustomTerm::xp_calcValue(const X_AbstractSpectrum* spectrum, qreal& value
     return res;
 }
 //===================================================================
-bool X_CustomTerm::xp_calcTermVariablePart(const X_AbstractSpectrum* spectrum,
+bool X_CustomTerm::xp_calcTermIntensity(const X_AbstractSpectrum* spectrum,
                                           qreal& value) // w/o factor
 {
     xv_spectrum = spectrum;
@@ -135,15 +135,15 @@ bool X_CustomTerm::xh_checkExpression(const QString& expression)
     X_MathExpressionHandler mathExpressionHandler;
     X_MathExpressionVariableListMaker mathExpressionVariableListMaker;
     connect(&mathExpressionHandler,
-            &X_MathExpressionHandler::zs_requestVariableValue,
+            &X_MathExpressionHandler::xg_requestVariableValue,
             &mathExpressionVariableListMaker,
             &X_MathExpressionVariableListMaker::xp_insertVariableValue);
     connect(&mathExpressionHandler,
-            &X_MathExpressionHandler::zs_errorReport,
+            &X_MathExpressionHandler::xg_errorReport,
             &mathExpressionVariableListMaker,
             &X_MathExpressionVariableListMaker::xp_setError);
     connect(&mathExpressionVariableListMaker,
-            &X_MathExpressionVariableListMaker::zs_variableCheckRequest,
+            &X_MathExpressionVariableListMaker::xg_variableCheckRequest,
             this,
             &X_CustomTerm::xg_windowIsExist);
 
@@ -155,7 +155,7 @@ bool X_CustomTerm::xh_checkExpression(const QString& expression)
         int errorEndPos;
         mathExpressionVariableListMaker.xp_error(error, errorStartPos, errorEndPos);
         QString msg = tr("Error in the term \"%1\" expression: %2").arg(xv_name, error);
-        emit zs_errorReport(msg);
+        emit xg_errorReport(msg);
         return false;
     }
     xv_windowList = mathExpressionVariableListMaker.xp_variableList();

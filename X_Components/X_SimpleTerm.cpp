@@ -31,7 +31,7 @@ bool X_SimpleTerm::xp_calcValue(const X_AbstractSpectrum * spectrum, qreal& valu
     return true;
 }
 //===================================================================
-bool X_SimpleTerm::xp_calcTermVariablePart(const X_AbstractSpectrum* spectrum, qreal &value)  // w/o factor
+bool X_SimpleTerm::xp_calcTermIntensity(const X_AbstractSpectrum* spectrum, qreal &value)  // w/o factor
 {
     value = 0;
     bool ok;

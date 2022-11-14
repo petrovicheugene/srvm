@@ -102,7 +102,10 @@ public:
     void xp_setDirty(bool);
     QColor xp_color() const;
     qint64 xp_calibrationId() const;
-    bool xp_calcConcentration(const X_AbstractSpectrum* const, qreal& concentration);
+    bool xp_calcConcentration(const X_AbstractSpectrum * const,
+                              qreal& concentration);
+    bool xp_calcActiveTermvalueSum(const X_AbstractSpectrum * const spectrum,
+                                   qreal& value);
 
     // windows
     int xp_createNewCalibrationWindow(
@@ -158,8 +161,8 @@ public:
     QString xp_termFactorString(int termIndex) const;
     bool xp_termFactorString(int termIndex, QString& factorString) const;
     bool xp_setTermFactorString(int termIndex, const QString& factorString);
-    bool xp_termVariablePart(int termIndex, const X_AbstractSpectrum* spectrum, qreal& value) const;
-    bool xp_calcBaseTermValue(const X_AbstractSpectrum* spectrum, qreal& value) const;
+    bool xp_termVariablePart(int termIndex, const X_AbstractSpectrum *spectrum, qreal& value);
+    bool xp_calcBaseTermValue(const X_AbstractSpectrum *spectrum, qreal& value) const;
     bool xp_createMixedTerms(int termIndex);
     bool xp_removeMixedTerms();
     bool xp_removeCustomTerm(int termIndex);
@@ -285,6 +288,7 @@ private:
     QDateTime xv_dateTime;
 
     // FUNCS
+    void xh_createConnections();
     bool xh_isWindowExist(const QString&);
     void xh_createTermsForWindow(const X_CalibrationWindow*);
     bool xh_windowHasTerms(const X_CalibrationWindow*, X_AbstractTerm::TermType) const;
@@ -299,6 +303,7 @@ private:
     bool xh_createWindowIndexList(QList<int>& windowIndexList, X_RawTerm& rawTerm);
     bool xh_createWindowIndexList(QMap<QString, int>& windowIndexMap, X_RawTerm& rawTerm);
     bool xh_checkCustomString(X_RawTerm& rawTerm);
+
 
     // STATIC
     // VARS

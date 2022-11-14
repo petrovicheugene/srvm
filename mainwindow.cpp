@@ -256,8 +256,6 @@ void MainWindow::xh_appLanguageControl()
     bool ok = false;
     translatorManager.xp_currentLanguageName(currentLanguageName, &ok);
 
-    qDebug() << "Current lang" << currentLanguageName << "Installied lang" << action->text();
-
     if(ok && action->text() == currentLanguageName)
     {
         return;

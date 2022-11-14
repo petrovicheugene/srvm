@@ -354,7 +354,6 @@ void X_EnergyCalibrationDialogV2::xh_loadSpectrumData(QMap<quint8, QList<X_SpeSp
     xv_gainFactorComboBox->setCurrentIndex(0);
 
     // spectrum model data
-    qDebug() << "LOAD DATA TO SPECTRUM MODEL";
     xv_spectrumModel->xp_loadSpectrumData(spectrumMap);
 }
 //======================================================

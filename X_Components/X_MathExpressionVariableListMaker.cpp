@@ -32,7 +32,7 @@ void X_MathExpressionVariableListMaker::xp_insertVariableValue(const QString& va
                                                               double& value,
                                                               bool& bRes)
 {
-    emit zs_variableCheckRequest(varName, bRes);
+    emit xg_variableCheckRequest(varName, bRes);
     if (!bRes )
     {
         return;

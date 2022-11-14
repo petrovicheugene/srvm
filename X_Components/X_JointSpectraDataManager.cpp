@@ -838,10 +838,10 @@ bool X_JointSpectraDataManager::xp_calculateConcentrationResidualList(qint64 cal
         return false;
     }
 
-    qreal concentration;
-    const X_AbstractSpectrum* spectrum;
-    bool res;
-    qreal residual;
+    qreal concentration = 0.0;
+    const X_AbstractSpectrum* spectrum = nullptr;
+    bool res = false;
+    qreal residual = 0.0;
     qreal averageResidual = 0.0;
     int checkedSpectrumCount = 0;
     for(int s = 0; s < xv_spectrumArrayRepository->xp_spectrumCount(xv_currentArrayIndex); s++)
@@ -859,11 +859,17 @@ bool X_JointSpectraDataManager::xp_calculateConcentrationResidualList(qint64 cal
         checkedSpectrumCount ++;
         // calculate calibration concentration value
         res = xv_calibrationRepository->xp_calculateConcentrationForId(calibrationId, spectrum, concentration);
+
+        //        res = xv_calibrationRepository->xp_calculateActiveTermValueSumForId(calibrationId,
+        //                                                                       spectrum,
+        //                                                                       termIntensitySum);
+
         if(res)
         {
             // get chem concentration
             //calc residual and put it in residualList
             residual = spectrum->xp_concentrationValue(chemElementId) - concentration;
+
             averageResidual += residual;
             residualDispersionList.append(residual);
         }
@@ -880,10 +886,10 @@ bool X_JointSpectraDataManager::xp_calculateConcentrationResidualList(qint64 cal
 
     averageResidual /= static_cast<qreal>(checkedSpectrumCount);
 
-    for(int r = 0; r < residualDispersionList.count(); r++)
-    {
-        residualDispersionList[r] = residualDispersionList.at(r) - averageResidual;
-    }
+//    for(int r = 0; r < residualDispersionList.count(); r++)
+//    {
+//        residualDispersionList[r] = residualDispersionList.at(r) - averageResidual;
+//    }
     return true;
 }
 //==================================================================

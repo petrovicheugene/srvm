@@ -165,6 +165,7 @@ QVariant X_TermCorrelationTableManager::xp_data(QModelIndex index) const
             return QVariant();
         }
 
+
         return QVariant(xv_residualCorrelationList.at(index.row()));
     }
     else if(index.column() >= xv_firstNonTermColumnCount)
@@ -862,8 +863,6 @@ void X_TermCorrelationTableManager::xh_recalcCalibrationFactors()
     qreal* freeTerm;
     calibration->xp_createEquationDataForEquationRecalc(factorToIndexMap, freeTerm);
 
-    qDebug() << factorToIndexMap;
-
     if (factorToIndexMap.isEmpty())
     {
         if(calibration->xp_equationType() != X_Calibration::ET_FRACTIONAL)
@@ -883,7 +882,7 @@ void X_TermCorrelationTableManager::xh_recalcCalibrationFactors()
         qreal averageConcentration = 0.0;
         qreal averageBaseValue = 0.0;
         int checkedSpectrumCount = 0;
-        qreal value;
+        qreal value = 0.0;
         const X_AbstractSpectrum* spectrum;
         for(int s = 0; s < xv_spectrumArrayRepository->xp_spectrumCount(xv_currentArrayIndex); s++)
         {
@@ -1089,6 +1088,7 @@ void X_TermCorrelationTableManager::xh_startCalculationCorrelationsAndCovariatio
     {
         return;
     }
+
     // correlations
     xh_calcIntercorrelationsAndCovariations();
     xh_calcResidualTermCorrelation();
@@ -1448,6 +1448,7 @@ void X_TermCorrelationTableManager::xh_calcResidualTermCorrelation()
     {
         return;
     }
+
     // get residual list
     QList<qreal> residualDispersionList;
     if(!xv_jointSpectraDataManager->xp_calculateConcentrationResidualList(xv_currentCalibrationId,
@@ -1497,7 +1498,15 @@ void X_TermCorrelationTableManager::xh_calcResidualTermCorrelation()
         }
 
         correlation = numerator / (sqrt(tDenominator) * sqrt(rDenominator));
-        correlationString = QString::number(correlation, 'f', 3);
+        if(correlation != correlation)
+        {
+            correlationString = QString("");
+        }
+        else
+        {
+            correlationString = QString::number(correlation, 'f', 6);
+        }
+
         xv_residualCorrelationList.append(correlationString);
     }
 }

@@ -107,18 +107,18 @@ QString X_AbstractSpectrum::xp_concentrationString(qint64 chemElementId) const
 qreal X_AbstractSpectrum::xp_concentrationValue(qint64 chemElementId) const
 {
     QString concentrationString =  xp_concentrationString(chemElementId);
-    qreal concentration;
+    qreal concentration = 0.0;
     bool ok;
     if(concentrationString.isEmpty())
     {
-        concentration = 0;
+        concentration = 0.0;
     }
     else
     {
         concentration = concentrationString.toDouble(&ok);
         if(!ok)
         {
-            concentration = 0;
+            concentration = 0.0;
         }
     }
     return concentration;

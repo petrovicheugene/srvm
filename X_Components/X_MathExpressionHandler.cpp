@@ -578,7 +578,7 @@ bool X_MathExpressionHandler::xh_variableValue(double& result)
     }
     else if (xv_tokenType == TT_VARIABLE || xv_tokenType == TT_CELL)
     {
-        emit zs_requestVariableValue(simplifiedToken, result, res);
+        emit xg_requestVariableValue(simplifiedToken, result, res);
         if (!res)
         {
             xh_handleError(5);
@@ -614,7 +614,7 @@ void X_MathExpressionHandler::xh_handleError(int error)
         break;
     }
 
-    emit zs_errorReport(errorString, xv_tokenStartPosition, xv_tokenEndPosition);
+    emit xg_errorReport(errorString, xv_tokenStartPosition, xv_tokenEndPosition);
 }
 //===================================================
 //bool X_EquationHandler::mf_checkSpacesInToken()

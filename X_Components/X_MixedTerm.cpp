@@ -42,7 +42,7 @@ bool X_MixedTerm::xp_calcValue(const X_AbstractSpectrum * spectrum, qreal& value
     return true;
 }
 //===================================================================
-bool X_MixedTerm::xp_calcTermVariablePart(const X_AbstractSpectrum* spectrum, qreal &value)  // w/o factor
+bool X_MixedTerm::xp_calcTermIntensity(const X_AbstractSpectrum* spectrum, qreal &value)  // w/o factor
 {
     value= 0.0;
     bool ok;

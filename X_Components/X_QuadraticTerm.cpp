@@ -33,7 +33,7 @@ bool X_QuadraticTerm::xp_calcValue(const X_AbstractSpectrum * spectrum, qreal& v
     return true;
 }
 //===================================================================
-bool X_QuadraticTerm::xp_calcTermVariablePart(const X_AbstractSpectrum* spectrum, qreal& value)  // w/o factor
+bool X_QuadraticTerm::xp_calcTermIntensity(const X_AbstractSpectrum* spectrum, qreal& value)  // w/o factor
 {
     value = 0.0;
     bool ok;
