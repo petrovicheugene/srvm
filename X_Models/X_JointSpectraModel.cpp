@@ -338,6 +338,7 @@ void X_JointSpectraModel::xp_convertSelectedToString(QString& selectionString) c
     QMap<int, QModelIndex>::const_iterator cit;
     QVariant vData;
     QChar separator = '\t';
+
     for(rit = xv_selectedIndexMap.begin(); rit != xv_selectedIndexMap.end(); rit++)
     {
         columnList = rit.value();
@@ -357,6 +358,7 @@ void X_JointSpectraModel::xp_convertSelectedToString(QString& selectionString) c
                 selectionString += separator;
             }
         }
+
         // row is comlete
         // if(rit != xv_selectedIndexMap.end() - 1)
         if(rit.key() != xv_selectedIndexMap.lastKey())

@@ -1,10 +1,10 @@
 //===============================================
 #include "MainWindow.h"
-#include "X_General.h"
 #include "X_TranslatorManager.h"
 
 #include <windows.h>
 #include <QApplication>
+#include <QOperatingSystemVersion>
 #include <QTranslator>
 #include <QTextCodec>
 #include <QDir>
@@ -201,9 +201,29 @@ int main(int argc, char *argv[])
                 );
 
     // horizontal lines on table header views on win10
-    if (QSysInfo::productVersion() == "10")
+//    if (QSysInfo::productVersion() == "10")
+//    {
+//        qApp->setStyleSheet("QHeaderView::section{"
+//                            "border-top:0px solid #D8D8D8;"
+//                            "border-left:0px solid #D8D8D8;"
+//                            "border-right:1px solid #D8D8D8;"
+//                            "border-bottom: 1px solid #D8D8D8;"
+//                            "background-color:white;"
+//                            "padding:4px;"
+//                            "}"
+//                            "QTableCornerButton::section{"
+//                            "border-top:0px solid #D8D8D8;"
+//                            "border-left:0px solid #D8D8D8;"
+//                            "border-right:1px solid #D8D8D8;"
+//                            "border-bottom: 1px solid #D8D8D8;"
+//                            "background-color:white;"
+//                            "}");
+//    }
+
+    QOperatingSystemVersion currentOS = QOperatingSystemVersion::current();
+    if (currentOS >= QOperatingSystemVersion(QOperatingSystemVersion::Windows10))
     {
-        qApp->setStyleSheet("QHeaderView::section{"
+        qApp->setStyleSheet("QHeaderView::section {"
                             "border-top:0px solid #D8D8D8;"
                             "border-left:0px solid #D8D8D8;"
                             "border-right:1px solid #D8D8D8;"
@@ -211,14 +231,22 @@ int main(int argc, char *argv[])
                             "background-color:white;"
                             "padding:4px;"
                             "}"
-                            "QTableCornerButton::section{"
+                            "QTableCornerButton::section {"
                             "border-top:0px solid #D8D8D8;"
                             "border-left:0px solid #D8D8D8;"
                             "border-right:1px solid #D8D8D8;"
                             "border-bottom: 1px solid #D8D8D8;"
                             "background-color:white;"
-                            "}");
+                            "}"
+                            "QPushButton {font : bold;}"
+                            "QHeaderView {font : bold;}");
     }
+    else
+    {
+        qApp->setStyleSheet("QPushButton {font : bold;}"
+                            "QHeaderView {font : bold;}");
+    }
+
 
     // launch app
 

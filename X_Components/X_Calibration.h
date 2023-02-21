@@ -5,7 +5,6 @@
 #include "X_AbstractTerm.h"
 #include "X_CalibrationQualityData.h"
 #include "X_CalibrationWindow.h"
-#include "X_CustomTerm.h"
 #include "X_RawTerm.h"
 #include "X_RawWindow.h"
 #include <QColor>

@@ -5,6 +5,7 @@
 #include <QObject>
 
 #include <QApplication>
+#include <QDir>
 #include <QMap>
 #include <QSettings>
 //================================================
@@ -13,9 +14,9 @@ class X_TranslatorManager : public QObject
     Q_OBJECT
 public:
     explicit X_TranslatorManager(QObject* parent = nullptr,
-            QString  resoucesTranslatorDirName = ":translators",
-                              QString internalTranslatorDir = qApp->applicationDirPath(),
-                              QString prefix = "_");
+                                 QString  resoucesTranslatorDirName = ":translators",
+                                 QString internalTranslatorDir = QDir(qApp->applicationDirPath()).absoluteFilePath("translations"),
+                                 QString prefix = "_");
 
     bool xp_installTranslatorsToApplication();
     QString xp_lastError() const;

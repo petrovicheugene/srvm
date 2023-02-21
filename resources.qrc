@@ -232,6 +232,5 @@
         <file>qtbase_en.qm</file>
         <file>qtbase_ru.qm</file>
         <file>SRVM_ru.qm</file>
-        <file>SRVM_ru.ts</file>
     </qresource>
 </RCC>

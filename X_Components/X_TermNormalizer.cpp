@@ -6,8 +6,8 @@
 //======================================================================
 // STATIC
 //======================================================================
-QMap<X_TermNormalizer::NormaType, QString> X_TermNormalizer::xv_normaTypeStringMap =
-        X_TermNormalizer::xh_initNormaTypeStringMap();
+QMap<X_TermNormalizer::NormaType, QString> X_TermNormalizer::xv_normaTypeStringMap;// =
+    //X_TermNormalizer::xh_initNormaTypeStringMap();
 //======================================================================
 QStringList X_TermNormalizer::xp_normaTypeList()
 {
@@ -44,6 +44,12 @@ QMap<X_TermNormalizer::NormaType, QString> X_TermNormalizer::xh_initNormaTypeStr
 //======================================================================
 X_TermNormalizer::X_TermNormalizer(X_Calibration *parent) : QObject(parent)
 {
+    if(xv_normaTypeStringMap.isEmpty())
+    {
+        xv_normaTypeStringMap =
+            X_TermNormalizer::xh_initNormaTypeStringMap();
+    }
+
     xv_calibration = parent;
     xv_normaType = NT_NONE;
     xv_customNormaString = QString();
@@ -102,7 +108,7 @@ QString X_TermNormalizer::xp_normaCustomString() const
 }
 //======================================================================
 bool X_TermNormalizer::xp_setNormalizerParameters(X_TermNormalizer::NormaType type,
-                              const QString& customString)
+                                                  const QString& customString)
 {
     bool res = false;
     if(type != xv_normaType)
@@ -286,7 +292,7 @@ void X_TermNormalizer::xh_createConnections()
 }
 //======================================================================
 bool X_TermNormalizer::xh_getWindowsValue(X_CalibrationWindow::WindowType type,
-                                         const X_AbstractSpectrum* spectrum, qint64& value) const
+                                          const X_AbstractSpectrum* spectrum, qint64& value) const
 {
     qreal currentValue;
     bool ok;
@@ -309,7 +315,7 @@ bool X_TermNormalizer::xh_getWindowsValue(X_CalibrationWindow::WindowType type,
 }
 //======================================================================
 void X_TermNormalizer::xh_onWindowTypeChange(X_CalibrationWindow::WindowType previousType,
-                                            X_CalibrationWindow::WindowType currentType) const
+                                             X_CalibrationWindow::WindowType currentType) const
 {
     if(xv_normaType == NT_NONE)
     {
@@ -323,14 +329,14 @@ void X_TermNormalizer::xh_onWindowTypeChange(X_CalibrationWindow::WindowType pre
     }
 
     if((previousType == X_CalibrationWindow::WT_COHERENT || currentType == X_CalibrationWindow::WT_COHERENT) &&
-            (xv_normaType == NT_COHERENT ||  xv_normaType == NT_COHERENT_INCOHERENT
-             || xv_normaType == NT_INCOHERENT_COHERENT))
+        (xv_normaType == NT_COHERENT ||  xv_normaType == NT_COHERENT_INCOHERENT
+         || xv_normaType == NT_INCOHERENT_COHERENT))
     {
         emit xg_normalizerChanged();
     }
     else if((previousType == X_CalibrationWindow::WT_INCOHERENT || currentType == X_CalibrationWindow::WT_INCOHERENT) &&
-            (xv_normaType == NT_INCOHERENT ||  xv_normaType == NT_COHERENT_INCOHERENT
-             || xv_normaType == NT_INCOHERENT_COHERENT))
+             (xv_normaType == NT_INCOHERENT ||  xv_normaType == NT_COHERENT_INCOHERENT
+              || xv_normaType == NT_INCOHERENT_COHERENT))
     {
         emit xg_normalizerChanged();
     }
@@ -358,14 +364,14 @@ void X_TermNormalizer::xh_onWindowDestroy(QObject* obj) const
 
     X_CalibrationWindow::WindowType windowType = window->xp_windowType();
     if(windowType == X_CalibrationWindow::WT_COHERENT &&
-            (xv_normaType == NT_COHERENT ||  xv_normaType == NT_COHERENT_INCOHERENT
-             || xv_normaType == NT_INCOHERENT_COHERENT))
+        (xv_normaType == NT_COHERENT ||  xv_normaType == NT_COHERENT_INCOHERENT
+         || xv_normaType == NT_INCOHERENT_COHERENT))
     {
         emit xg_normalizerChanged();
     }
     else if(windowType == X_CalibrationWindow::WT_INCOHERENT &&
-            (xv_normaType == NT_INCOHERENT ||  xv_normaType == NT_COHERENT_INCOHERENT
-             || xv_normaType == NT_INCOHERENT_COHERENT))
+             (xv_normaType == NT_INCOHERENT ||  xv_normaType == NT_COHERENT_INCOHERENT
+              || xv_normaType == NT_INCOHERENT_COHERENT))
     {
         emit xg_normalizerChanged();
     }
@@ -376,31 +382,31 @@ void X_TermNormalizer::xh_onWindowMarginsChange() const
     X_CalibrationWindow* window = qobject_cast<X_CalibrationWindow*>(sender());
 
     if(window->xp_windowType() == X_CalibrationWindow::WT_INCOHERENT &&
-            (xv_normaType == NT_INCOHERENT ||  xv_normaType == NT_COHERENT_INCOHERENT
-             || xv_normaType == NT_INCOHERENT_COHERENT))
+        (xv_normaType == NT_INCOHERENT ||  xv_normaType == NT_COHERENT_INCOHERENT
+         || xv_normaType == NT_INCOHERENT_COHERENT))
     {
         emit xg_normalizerChanged();
     }
     else if(window->xp_windowType() == X_CalibrationWindow::WT_COHERENT &&
-            (xv_normaType == NT_COHERENT ||  xv_normaType == NT_COHERENT_INCOHERENT
-             || xv_normaType == NT_INCOHERENT_COHERENT))
+             (xv_normaType == NT_COHERENT ||  xv_normaType == NT_COHERENT_INCOHERENT
+              || xv_normaType == NT_INCOHERENT_COHERENT))
     {
         emit xg_normalizerChanged();
     }
 }
 //======================================================================
 void X_TermNormalizer::xh_handleWindowIntensityRequest(const QString& windowName,
-                                                   double& value,
-                                                   bool& bRes)
+                                                       double& value,
+                                                       bool& bRes)
 {
     emit xg_calcWindowIntensity(windowName, (const QObject*) xv_spectrum, value, true, &bRes);
 }
 //===================================================================
 void X_TermNormalizer::xh_handleErrorReport(const QString& errorString,
-                                        int errorTokenStartPosition,
-                                        int errorTokenEndPosition) const
+                                            int errorTokenStartPosition,
+                                            int errorTokenEndPosition) const
 {
-   emit xg_errorReport(QString("%1 (%2)!").arg(errorString, QString::number(errorTokenStartPosition)));
+    emit xg_errorReport(QString("%1 (%2)!").arg(errorString, QString::number(errorTokenStartPosition)));
 
 }
 //===================================================================

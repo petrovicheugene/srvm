@@ -38,7 +38,7 @@ void X_NormaSettingsDialog::xh_createComponents()
     xv_okButton = xh_createBasementButton(tr("OK"), tr("Save parameter"), QIcon());
 
     xv_closeButton = xh_createBasementButton(tr("Cancel"),
-                                             tr("Close dialog withiut saving changes"),
+                                             tr("Close dialog without saving changes"),
                                              QIcon());
 }
 //============================================================

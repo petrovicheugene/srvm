@@ -4,103 +4,103 @@
 <context>
     <name>MainWindow</name>
     <message>
-        <location filename="MainWindow.cpp" line="134"/>
+        <location filename="MainWindow.cpp" line="135"/>
         <source>The spectrum array list has been modified.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="135"/>
+        <location filename="MainWindow.cpp" line="136"/>
         <source>Do you want to save your changes?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="163"/>
+        <location filename="MainWindow.cpp" line="164"/>
         <source>There are calibrations that have been modified.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="164"/>
+        <location filename="MainWindow.cpp" line="165"/>
         <source>Do you want to save them?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="201"/>
+        <location filename="MainWindow.cpp" line="202"/>
         <source>Exit</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="202"/>
+        <location filename="MainWindow.cpp" line="203"/>
         <source>Exit the application</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="270"/>
+        <location filename="MainWindow.cpp" line="269"/>
         <source>The language of application has been changed.
 In order for the changes to take effect, please restart the application.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="276"/>
+        <location filename="MainWindow.cpp" line="275"/>
         <source>Unknown language settings error.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="280"/>
+        <location filename="MainWindow.cpp" line="279"/>
         <source>Language settings</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="311"/>
+        <location filename="MainWindow.cpp" line="310"/>
         <source>Spectra</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="336"/>
+        <location filename="MainWindow.cpp" line="335"/>
         <source>Calibrations</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="379"/>
+        <location filename="MainWindow.cpp" line="378"/>
         <source>Plot</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="391"/>
+        <location filename="MainWindow.cpp" line="390"/>
         <source>Message</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="403"/>
+        <location filename="MainWindow.cpp" line="402"/>
         <source>Energy lines</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="456"/>
+        <location filename="MainWindow.cpp" line="455"/>
         <source>File</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="465"/>
+        <location filename="MainWindow.cpp" line="464"/>
         <source>Edit</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="473"/>
+        <location filename="MainWindow.cpp" line="472"/>
         <source>View</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="481"/>
+        <location filename="MainWindow.cpp" line="480"/>
         <source>Actions</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="489"/>
+        <location filename="MainWindow.cpp" line="488"/>
         <source>Help</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="719"/>
+        <location filename="MainWindow.cpp" line="718"/>
         <source>Application language</source>
         <translation type="unfinished"></translation>
     </message>
@@ -108,33 +108,33 @@ In order for the changes to take effect, please restart the application.</source
 <context>
     <name>QObject</name>
     <message>
-        <location filename="X_Components/X_Calibration.cpp" line="28"/>
+        <location filename="X_Components/X_Calibration.cpp" line="27"/>
         <source>Peak #</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="X_Components/X_CalibrationRepository.cpp" line="2287"/>
+        <location filename="X_Components/X_CalibrationRepository.cpp" line="2322"/>
         <location filename="X_Components/X_SpectrumArray.cpp" line="480"/>
         <source>Cannot handle file of type &quot;%1&quot;!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="X_Components/X_CalibrationWindow.cpp" line="17"/>
+        <location filename="X_Components/X_CalibrationWindow.cpp" line="19"/>
         <source>Not defined</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="X_Components/X_CalibrationWindow.cpp" line="21"/>
+        <location filename="X_Components/X_CalibrationWindow.cpp" line="23"/>
         <source>Peak</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="X_Components/X_CalibrationWindow.cpp" line="25"/>
+        <location filename="X_Components/X_CalibrationWindow.cpp" line="27"/>
         <source>Coherent</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="X_Components/X_CalibrationWindow.cpp" line="29"/>
+        <location filename="X_Components/X_CalibrationWindow.cpp" line="31"/>
         <source>Incoherent</source>
         <translation type="unfinished"></translation>
     </message>
@@ -263,33 +263,92 @@ In order for the changes to take effect, please restart the application.</source
 <context>
     <name>X_AbstractPlotterDataManager</name>
     <message>
-        <location filename="X_Components/X_AbstractPlotterDataManager.cpp" line="32"/>
+        <location filename="X_Components/X_AbstractPlotterDataManager.cpp" line="31"/>
         <source>Intensity</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="X_Components/X_AbstractPlotterDataManager.cpp" line="33"/>
+        <location filename="X_Components/X_AbstractPlotterDataManager.cpp" line="32"/>
         <source>Channels</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="X_Components/X_AbstractPlotterDataManager.cpp" line="34"/>
+        <location filename="X_Components/X_AbstractPlotterDataManager.cpp" line="33"/>
         <source>Energy</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="X_Components/X_AbstractPlotterDataManager.cpp" line="266"/>
+        <location filename="X_Components/X_AbstractPlotterDataManager.cpp" line="264"/>
         <source>Start: %1&lt;br&gt;End: %2</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="X_Components/X_AbstractPlotterDataManager.cpp" line="281"/>
+        <location filename="X_Components/X_AbstractPlotterDataManager.cpp" line="279"/>
         <source>&lt;br&gt;Integral: %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="X_Components/X_AbstractPlotterDataManager.cpp" line="743"/>
+        <location filename="X_Components/X_AbstractPlotterDataManager.cpp" line="741"/>
         <source>kEv</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>X_AbstractTerm</name>
+    <message>
+        <location filename="X_Components/X_AbstractTerm.cpp" line="17"/>
+        <location filename="X_Components/X_AbstractTerm.cpp" line="29"/>
+        <source>Not defined</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="X_Components/X_AbstractTerm.cpp" line="18"/>
+        <source>Simple</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="X_Components/X_AbstractTerm.cpp" line="19"/>
+        <source>Quadratic</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="X_Components/X_AbstractTerm.cpp" line="20"/>
+        <source>Mixed</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="X_Components/X_AbstractTerm.cpp" line="21"/>
+        <source>Custom</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="X_Components/X_AbstractTerm.cpp" line="30"/>
+        <source>Constantly Included</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="X_Components/X_AbstractTerm.cpp" line="31"/>
+        <source>Constantly Excluded</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="X_Components/X_AbstractTerm.cpp" line="32"/>
+        <source>Exam Waiting</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="X_Components/X_AbstractTerm.cpp" line="33"/>
+        <source>Excepted</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="X_Components/X_AbstractTerm.cpp" line="34"/>
+        <source>Included</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="X_Components/X_AbstractTerm.cpp" line="35"/>
+        <source>Base</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -352,27 +411,27 @@ In order for the changes to take effect, please restart the application.</source
 <context>
     <name>X_Calibration</name>
     <message>
-        <location filename="X_Components/X_Calibration.cpp" line="41"/>
+        <location filename="X_Components/X_Calibration.cpp" line="40"/>
         <source>Not defined</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="X_Components/X_Calibration.cpp" line="42"/>
+        <location filename="X_Components/X_Calibration.cpp" line="41"/>
         <source>Polynomial</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="X_Components/X_Calibration.cpp" line="43"/>
+        <location filename="X_Components/X_Calibration.cpp" line="42"/>
         <source>Fractional</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="X_Components/X_Calibration.cpp" line="1114"/>
+        <location filename="X_Components/X_Calibration.cpp" line="1178"/>
         <source>Updated term type is not &quot;Custom&quot;!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="X_Components/X_Calibration.cpp" line="1382"/>
+        <location filename="X_Components/X_Calibration.cpp" line="1446"/>
         <source> (position %1)</source>
         <translation type="unfinished"></translation>
     </message>
@@ -418,213 +477,223 @@ In order for the changes to take effect, please restart the application.</source
 <context>
     <name>X_CalibrationRepository</name>
     <message>
-        <location filename="X_Components/X_CalibrationRepository.cpp" line="36"/>
+        <location filename="X_Components/X_CalibrationRepository.cpp" line="37"/>
         <source>Calibration #</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="X_Components/X_CalibrationRepository.cpp" line="1339"/>
+        <location filename="X_Components/X_CalibrationRepository.cpp" line="1143"/>
+        <source>Clear current calibration list?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="X_Components/X_CalibrationRepository.cpp" line="1144"/>
+        <source>Calibration appending</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="X_Components/X_CalibrationRepository.cpp" line="1374"/>
         <source>selected calibration</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="X_Components/X_CalibrationRepository.cpp" line="1343"/>
+        <location filename="X_Components/X_CalibrationRepository.cpp" line="1378"/>
         <source>selected calibrations</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="X_Components/X_CalibrationRepository.cpp" line="1346"/>
-        <location filename="X_Components/X_CalibrationRepository.cpp" line="1441"/>
+        <location filename="X_Components/X_CalibrationRepository.cpp" line="1381"/>
+        <location filename="X_Components/X_CalibrationRepository.cpp" line="1476"/>
         <source>Do you want to remove %1 from the list?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="X_Components/X_CalibrationRepository.cpp" line="1349"/>
+        <location filename="X_Components/X_CalibrationRepository.cpp" line="1384"/>
         <source>Calibration removing</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="X_Components/X_CalibrationRepository.cpp" line="1434"/>
+        <location filename="X_Components/X_CalibrationRepository.cpp" line="1469"/>
         <source>selected window</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="X_Components/X_CalibrationRepository.cpp" line="1438"/>
+        <location filename="X_Components/X_CalibrationRepository.cpp" line="1473"/>
         <source>selected windows</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="X_Components/X_CalibrationRepository.cpp" line="1444"/>
+        <location filename="X_Components/X_CalibrationRepository.cpp" line="1479"/>
         <source>Window removing</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="X_Components/X_CalibrationRepository.cpp" line="2280"/>
+        <location filename="X_Components/X_CalibrationRepository.cpp" line="2315"/>
         <source>Error: &quot;%1&quot; is not a file!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="X_Components/X_CalibrationRepository.cpp" line="2301"/>
-        <location filename="X_Components/X_CalibrationRepository.cpp" line="2306"/>
+        <location filename="X_Components/X_CalibrationRepository.cpp" line="2336"/>
+        <location filename="X_Components/X_CalibrationRepository.cpp" line="2341"/>
         <source>Cannot read file &quot;%1&quot;! %2</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="X_Components/X_CalibrationRepository.cpp" line="2307"/>
+        <location filename="X_Components/X_CalibrationRepository.cpp" line="2342"/>
         <source>Unknown error</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="X_Components/X_CalibrationRepository.cpp" line="2489"/>
+        <location filename="X_Components/X_CalibrationRepository.cpp" line="2524"/>
         <source>New calibration</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="X_Components/X_CalibrationRepository.cpp" line="2491"/>
+        <location filename="X_Components/X_CalibrationRepository.cpp" line="2526"/>
         <source>Append a new calibration to the list</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="X_Components/X_CalibrationRepository.cpp" line="2512"/>
+        <location filename="X_Components/X_CalibrationRepository.cpp" line="2547"/>
         <source>Remove selected calibrations</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="X_Components/X_CalibrationRepository.cpp" line="2514"/>
+        <location filename="X_Components/X_CalibrationRepository.cpp" line="2549"/>
         <source>Remove selected calibrations from the list</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="X_Components/X_CalibrationRepository.cpp" line="2520"/>
+        <location filename="X_Components/X_CalibrationRepository.cpp" line="2555"/>
         <source>New window</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="X_Components/X_CalibrationRepository.cpp" line="2521"/>
+        <location filename="X_Components/X_CalibrationRepository.cpp" line="2556"/>
         <source>Append a new window to the list</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="X_Components/X_CalibrationRepository.cpp" line="2526"/>
+        <location filename="X_Components/X_CalibrationRepository.cpp" line="2561"/>
         <source>Remove selected windows</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="X_Components/X_CalibrationRepository.cpp" line="2528"/>
+        <location filename="X_Components/X_CalibrationRepository.cpp" line="2563"/>
         <source>Remove selected windows from the list</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="X_Components/X_CalibrationRepository.cpp" line="2534"/>
+        <location filename="X_Components/X_CalibrationRepository.cpp" line="2569"/>
         <source>Recalculate calibration</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="X_Components/X_CalibrationRepository.cpp" line="2536"/>
+        <location filename="X_Components/X_CalibrationRepository.cpp" line="2571"/>
         <source>Recalculate equation factors for current calibration</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="X_Components/X_CalibrationRepository.cpp" line="2542"/>
-        <location filename="X_Components/X_CalibrationRepository.cpp" line="2543"/>
+        <location filename="X_Components/X_CalibrationRepository.cpp" line="2577"/>
+        <location filename="X_Components/X_CalibrationRepository.cpp" line="2578"/>
         <source>Create mixed terms</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="X_Components/X_CalibrationRepository.cpp" line="2548"/>
+        <location filename="X_Components/X_CalibrationRepository.cpp" line="2583"/>
         <source>Remove mixed terms</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="X_Components/X_CalibrationRepository.cpp" line="2550"/>
+        <location filename="X_Components/X_CalibrationRepository.cpp" line="2585"/>
         <source>Remove mixed terms from the list</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="X_Components/X_CalibrationRepository.cpp" line="2555"/>
-        <location filename="X_Components/X_CalibrationRepository.cpp" line="2556"/>
+        <location filename="X_Components/X_CalibrationRepository.cpp" line="2590"/>
+        <location filename="X_Components/X_CalibrationRepository.cpp" line="2591"/>
         <source>Create custom term</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="X_Components/X_CalibrationRepository.cpp" line="2561"/>
+        <location filename="X_Components/X_CalibrationRepository.cpp" line="2596"/>
         <source>Remove custom term</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="X_Components/X_CalibrationRepository.cpp" line="2563"/>
+        <location filename="X_Components/X_CalibrationRepository.cpp" line="2598"/>
         <source>Remove custom term from the list</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="X_Components/X_CalibrationRepository.cpp" line="2569"/>
+        <location filename="X_Components/X_CalibrationRepository.cpp" line="2604"/>
         <source>Set calibration visible</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="X_Components/X_CalibrationRepository.cpp" line="2571"/>
+        <location filename="X_Components/X_CalibrationRepository.cpp" line="2606"/>
         <source>Set visible calibration column</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="X_Components/X_CalibrationRepository.cpp" line="2576"/>
+        <location filename="X_Components/X_CalibrationRepository.cpp" line="2611"/>
         <source>Set calibration invisible</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="X_Components/X_CalibrationRepository.cpp" line="2578"/>
+        <location filename="X_Components/X_CalibrationRepository.cpp" line="2613"/>
         <source>Set invisible calibration column</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="X_Components/X_CalibrationRepository.cpp" line="2585"/>
-        <location filename="X_Components/X_CalibrationRepository.cpp" line="2587"/>
-        <source>Invert calibration visibility</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="X_Components/X_CalibrationRepository.cpp" line="2592"/>
-        <location filename="X_Components/X_CalibrationRepository.cpp" line="2593"/>
-        <source>Set window visible</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="X_Components/X_CalibrationRepository.cpp" line="2598"/>
-        <location filename="X_Components/X_CalibrationRepository.cpp" line="2599"/>
-        <source>Set window invisible</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="X_Components/X_CalibrationRepository.cpp" line="2605"/>
-        <location filename="X_Components/X_CalibrationRepository.cpp" line="2607"/>
-        <source>Invert window visibility</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="X_Components/X_CalibrationRepository.cpp" line="2614"/>
-        <location filename="X_Components/X_CalibrationRepository.cpp" line="2616"/>
-        <source>Duplicate selected calibrations</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="X_Components/X_CalibrationRepository.cpp" line="2621"/>
+        <location filename="X_Components/X_CalibrationRepository.cpp" line="2620"/>
         <location filename="X_Components/X_CalibrationRepository.cpp" line="2622"/>
-        <source>Copy selected windows</source>
+        <source>Invert calibration visibility</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="X_Components/X_CalibrationRepository.cpp" line="2627"/>
         <location filename="X_Components/X_CalibrationRepository.cpp" line="2628"/>
-        <source>Paste windows</source>
+        <source>Set window visible</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="X_Components/X_CalibrationRepository.cpp" line="2633"/>
+        <location filename="X_Components/X_CalibrationRepository.cpp" line="2634"/>
+        <source>Set window invisible</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="X_Components/X_CalibrationRepository.cpp" line="2640"/>
+        <location filename="X_Components/X_CalibrationRepository.cpp" line="2642"/>
+        <source>Invert window visibility</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="X_Components/X_CalibrationRepository.cpp" line="2649"/>
+        <location filename="X_Components/X_CalibrationRepository.cpp" line="2651"/>
+        <source>Duplicate selected calibrations</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="X_Components/X_CalibrationRepository.cpp" line="2656"/>
+        <location filename="X_Components/X_CalibrationRepository.cpp" line="2657"/>
+        <source>Copy selected windows</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="X_Components/X_CalibrationRepository.cpp" line="2662"/>
+        <location filename="X_Components/X_CalibrationRepository.cpp" line="2663"/>
+        <source>Paste windows</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="X_Components/X_CalibrationRepository.cpp" line="2668"/>
         <source>Reset terms</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="X_Components/X_CalibrationRepository.cpp" line="2634"/>
+        <location filename="X_Components/X_CalibrationRepository.cpp" line="2669"/>
         <source>Reset equation terms</source>
         <translation type="unfinished"></translation>
     </message>
@@ -764,157 +833,157 @@ In order for the changes to take effect, please restart the application.</source
 <context>
     <name>X_ChemicalElementProprtyEditor</name>
     <message>
-        <location filename="X_PeriodicTable/X_ChemicalElementProprtyEditor.cpp" line="58"/>
-        <location filename="X_PeriodicTable/X_ChemicalElementProprtyEditor.cpp" line="64"/>
+        <location filename="X_PeriodicTable/X_ChemicalElementProprtyEditor.cpp" line="59"/>
+        <location filename="X_PeriodicTable/X_ChemicalElementProprtyEditor.cpp" line="65"/>
         <source>Add</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="X_PeriodicTable/X_ChemicalElementProprtyEditor.cpp" line="61"/>
-        <location filename="X_PeriodicTable/X_ChemicalElementProprtyEditor.cpp" line="67"/>
+        <location filename="X_PeriodicTable/X_ChemicalElementProprtyEditor.cpp" line="62"/>
+        <location filename="X_PeriodicTable/X_ChemicalElementProprtyEditor.cpp" line="68"/>
         <source>Remove</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="X_PeriodicTable/X_ChemicalElementProprtyEditor.cpp" line="70"/>
+        <location filename="X_PeriodicTable/X_ChemicalElementProprtyEditor.cpp" line="71"/>
         <source>Copy</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="X_PeriodicTable/X_ChemicalElementProprtyEditor.cpp" line="73"/>
+        <location filename="X_PeriodicTable/X_ChemicalElementProprtyEditor.cpp" line="74"/>
         <source>Paste</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="X_PeriodicTable/X_ChemicalElementProprtyEditor.cpp" line="76"/>
+        <location filename="X_PeriodicTable/X_ChemicalElementProprtyEditor.cpp" line="77"/>
         <source>Expand all</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="X_PeriodicTable/X_ChemicalElementProprtyEditor.cpp" line="79"/>
+        <location filename="X_PeriodicTable/X_ChemicalElementProprtyEditor.cpp" line="80"/>
         <source>Collapse all</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="X_PeriodicTable/X_ChemicalElementProprtyEditor.cpp" line="91"/>
+        <location filename="X_PeriodicTable/X_ChemicalElementProprtyEditor.cpp" line="92"/>
         <source>Source file:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="X_PeriodicTable/X_ChemicalElementProprtyEditor.cpp" line="103"/>
+        <location filename="X_PeriodicTable/X_ChemicalElementProprtyEditor.cpp" line="104"/>
         <source>Load</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="X_PeriodicTable/X_ChemicalElementProprtyEditor.cpp" line="104"/>
+        <location filename="X_PeriodicTable/X_ChemicalElementProprtyEditor.cpp" line="105"/>
         <source>Load chemical element properties from file</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="X_PeriodicTable/X_ChemicalElementProprtyEditor.cpp" line="106"/>
+        <location filename="X_PeriodicTable/X_ChemicalElementProprtyEditor.cpp" line="107"/>
         <source>Save</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="X_PeriodicTable/X_ChemicalElementProprtyEditor.cpp" line="107"/>
+        <location filename="X_PeriodicTable/X_ChemicalElementProprtyEditor.cpp" line="108"/>
         <source>Save chemical element properties to file</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="X_PeriodicTable/X_ChemicalElementProprtyEditor.cpp" line="109"/>
+        <location filename="X_PeriodicTable/X_ChemicalElementProprtyEditor.cpp" line="110"/>
         <source>Close</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="X_PeriodicTable/X_ChemicalElementProprtyEditor.cpp" line="110"/>
+        <location filename="X_PeriodicTable/X_ChemicalElementProprtyEditor.cpp" line="111"/>
         <source>Close editor</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="X_PeriodicTable/X_ChemicalElementProprtyEditor.cpp" line="182"/>
+        <location filename="X_PeriodicTable/X_ChemicalElementProprtyEditor.cpp" line="183"/>
         <source>Property sections:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="X_PeriodicTable/X_ChemicalElementProprtyEditor.cpp" line="219"/>
+        <location filename="X_PeriodicTable/X_ChemicalElementProprtyEditor.cpp" line="220"/>
         <source>Property:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="X_PeriodicTable/X_ChemicalElementProprtyEditor.cpp" line="334"/>
-        <location filename="X_PeriodicTable/X_ChemicalElementProprtyEditor.cpp" line="681"/>
-        <location filename="X_PeriodicTable/X_ChemicalElementProprtyEditor.cpp" line="720"/>
-        <source>Chemical element properties were changed.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="X_PeriodicTable/X_ChemicalElementProprtyEditor.cpp" line="335"/>
         <location filename="X_PeriodicTable/X_ChemicalElementProprtyEditor.cpp" line="682"/>
         <location filename="X_PeriodicTable/X_ChemicalElementProprtyEditor.cpp" line="721"/>
+        <source>Chemical element properties were changed.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="X_PeriodicTable/X_ChemicalElementProprtyEditor.cpp" line="336"/>
+        <location filename="X_PeriodicTable/X_ChemicalElementProprtyEditor.cpp" line="683"/>
+        <location filename="X_PeriodicTable/X_ChemicalElementProprtyEditor.cpp" line="722"/>
         <source>Do you want to save them to file?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="X_PeriodicTable/X_ChemicalElementProprtyEditor.cpp" line="483"/>
-        <location filename="X_PeriodicTable/X_ChemicalElementProprtyEditor.cpp" line="514"/>
+        <location filename="X_PeriodicTable/X_ChemicalElementProprtyEditor.cpp" line="484"/>
+        <location filename="X_PeriodicTable/X_ChemicalElementProprtyEditor.cpp" line="515"/>
         <source>Select chemical element or property section!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="X_PeriodicTable/X_ChemicalElementProprtyEditor.cpp" line="484"/>
-        <location filename="X_PeriodicTable/X_ChemicalElementProprtyEditor.cpp" line="507"/>
-        <location filename="X_PeriodicTable/X_ChemicalElementProprtyEditor.cpp" line="515"/>
-        <location filename="X_PeriodicTable/X_ChemicalElementProprtyEditor.cpp" line="530"/>
-        <location filename="X_PeriodicTable/X_ChemicalElementProprtyEditor.cpp" line="674"/>
-        <location filename="X_PeriodicTable/X_ChemicalElementProprtyEditor.cpp" line="702"/>
-        <location filename="X_PeriodicTable/X_ChemicalElementProprtyEditor.cpp" line="938"/>
-        <location filename="X_PeriodicTable/X_ChemicalElementProprtyEditor.cpp" line="953"/>
+        <location filename="X_PeriodicTable/X_ChemicalElementProprtyEditor.cpp" line="485"/>
+        <location filename="X_PeriodicTable/X_ChemicalElementProprtyEditor.cpp" line="508"/>
+        <location filename="X_PeriodicTable/X_ChemicalElementProprtyEditor.cpp" line="516"/>
+        <location filename="X_PeriodicTable/X_ChemicalElementProprtyEditor.cpp" line="531"/>
+        <location filename="X_PeriodicTable/X_ChemicalElementProprtyEditor.cpp" line="675"/>
+        <location filename="X_PeriodicTable/X_ChemicalElementProprtyEditor.cpp" line="703"/>
+        <location filename="X_PeriodicTable/X_ChemicalElementProprtyEditor.cpp" line="939"/>
+        <location filename="X_PeriodicTable/X_ChemicalElementProprtyEditor.cpp" line="954"/>
         <source>Error</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="X_PeriodicTable/X_ChemicalElementProprtyEditor.cpp" line="506"/>
+        <location filename="X_PeriodicTable/X_ChemicalElementProprtyEditor.cpp" line="507"/>
         <source>Cannot access to chemical element property model.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="X_PeriodicTable/X_ChemicalElementProprtyEditor.cpp" line="673"/>
+        <location filename="X_PeriodicTable/X_ChemicalElementProprtyEditor.cpp" line="674"/>
         <source>There is no chemical elment model for load data.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="X_PeriodicTable/X_ChemicalElementProprtyEditor.cpp" line="694"/>
+        <location filename="X_PeriodicTable/X_ChemicalElementProprtyEditor.cpp" line="695"/>
         <source>Open data file</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="X_PeriodicTable/X_ChemicalElementProprtyEditor.cpp" line="694"/>
-        <location filename="X_PeriodicTable/X_ChemicalElementProprtyEditor.cpp" line="944"/>
+        <location filename="X_PeriodicTable/X_ChemicalElementProprtyEditor.cpp" line="695"/>
+        <location filename="X_PeriodicTable/X_ChemicalElementProprtyEditor.cpp" line="945"/>
         <source>XML Files (*.xml);;All Files (*.*)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="X_PeriodicTable/X_ChemicalElementProprtyEditor.cpp" line="790"/>
+        <location filename="X_PeriodicTable/X_ChemicalElementProprtyEditor.cpp" line="791"/>
         <source>Cannot add chemical element property branch to chemical element %1 with error &quot;%2&quot;.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="X_PeriodicTable/X_ChemicalElementProprtyEditor.cpp" line="937"/>
+        <location filename="X_PeriodicTable/X_ChemicalElementProprtyEditor.cpp" line="938"/>
         <source>There is no property model!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="X_PeriodicTable/X_ChemicalElementProprtyEditor.cpp" line="944"/>
+        <location filename="X_PeriodicTable/X_ChemicalElementProprtyEditor.cpp" line="945"/>
         <source>Save data to file</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="X_PeriodicTable/X_ChemicalElementProprtyEditor.cpp" line="957"/>
+        <location filename="X_PeriodicTable/X_ChemicalElementProprtyEditor.cpp" line="958"/>
         <source>File &quot;%1&quot; have been saved successfully.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="X_PeriodicTable/X_ChemicalElementProprtyEditor.cpp" line="962"/>
+        <location filename="X_PeriodicTable/X_ChemicalElementProprtyEditor.cpp" line="963"/>
         <source>Do you want to set the file as default chemical element properties source or reset source file to default?</source>
         <translation type="unfinished"></translation>
     </message>
@@ -995,42 +1064,42 @@ In order for the changes to take effect, please restart the application.</source
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="X_Dialogs/X_CustomTermDialog.cpp" line="107"/>
+        <location filename="X_Dialogs/X_CustomTermDialog.cpp" line="106"/>
         <source>OK</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="X_Dialogs/X_CustomTermDialog.cpp" line="107"/>
+        <location filename="X_Dialogs/X_CustomTermDialog.cpp" line="106"/>
         <source>Save parameter</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="X_Dialogs/X_CustomTermDialog.cpp" line="109"/>
+        <location filename="X_Dialogs/X_CustomTermDialog.cpp" line="108"/>
         <source>Close</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="X_Dialogs/X_CustomTermDialog.cpp" line="110"/>
+        <location filename="X_Dialogs/X_CustomTermDialog.cpp" line="109"/>
         <source>Close dialog</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="X_Dialogs/X_CustomTermDialog.cpp" line="167"/>
+        <location filename="X_Dialogs/X_CustomTermDialog.cpp" line="166"/>
         <source>Term name:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="X_Dialogs/X_CustomTermDialog.cpp" line="176"/>
+        <location filename="X_Dialogs/X_CustomTermDialog.cpp" line="175"/>
         <source>Equation:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="X_Dialogs/X_CustomTermDialog.cpp" line="185"/>
+        <location filename="X_Dialogs/X_CustomTermDialog.cpp" line="184"/>
         <source>Description:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="X_Dialogs/X_CustomTermDialog.cpp" line="194"/>
+        <location filename="X_Dialogs/X_CustomTermDialog.cpp" line="193"/>
         <source>Use modifier for inserting window name</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1107,6 +1176,11 @@ In order for the changes to take effect, please restart the application.</source
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="X_EnergyCalibrator/X_EnergyCalibrationDialogV2.cpp" line="232"/>
+        <source>Peak center</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location filename="X_EnergyCalibrator/X_EnergyCalibrationDialogV2.cpp" line="257"/>
         <source>kEv</source>
         <translation type="unfinished"></translation>
@@ -1117,39 +1191,39 @@ In order for the changes to take effect, please restart the application.</source
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="X_EnergyCalibrator/X_EnergyCalibrationDialogV2.cpp" line="471"/>
+        <location filename="X_EnergyCalibrator/X_EnergyCalibrationDialogV2.cpp" line="470"/>
         <source>Do you want to bind the energy calibration to the current gain factor equals %1?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="X_EnergyCalibrator/X_EnergyCalibrationDialogV2.cpp" line="472"/>
+        <location filename="X_EnergyCalibrator/X_EnergyCalibrationDialogV2.cpp" line="471"/>
         <source>Energy calibration error</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="X_EnergyCalibrator/X_EnergyCalibrationDialogV2.cpp" line="698"/>
+        <location filename="X_EnergyCalibrator/X_EnergyCalibrationDialogV2.cpp" line="697"/>
         <source>Cannot calculate energy calibration.&lt;br&gt;Ambiguity in source data of energy lines.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="X_EnergyCalibrator/X_EnergyCalibrationDialogV2.cpp" line="699"/>
-        <location filename="X_EnergyCalibrator/X_EnergyCalibrationDialogV2.cpp" line="722"/>
-        <location filename="X_EnergyCalibrator/X_EnergyCalibrationDialogV2.cpp" line="762"/>
+        <location filename="X_EnergyCalibrator/X_EnergyCalibrationDialogV2.cpp" line="698"/>
+        <location filename="X_EnergyCalibrator/X_EnergyCalibrationDialogV2.cpp" line="721"/>
+        <location filename="X_EnergyCalibrator/X_EnergyCalibrationDialogV2.cpp" line="761"/>
         <source>Error</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="X_EnergyCalibrator/X_EnergyCalibrationDialogV2.cpp" line="721"/>
+        <location filename="X_EnergyCalibrator/X_EnergyCalibrationDialogV2.cpp" line="720"/>
         <source>Cannot calculate energy calibration.&lt;br&gt;Insufficient source data of energy lines.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="X_EnergyCalibrator/X_EnergyCalibrationDialogV2.cpp" line="761"/>
+        <location filename="X_EnergyCalibrator/X_EnergyCalibrationDialogV2.cpp" line="760"/>
         <source>Calculation of energy calibration factors fails. Error: %1.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="X_EnergyCalibrator/X_EnergyCalibrationDialogV2.cpp" line="772"/>
+        <location filename="X_EnergyCalibrator/X_EnergyCalibrationDialogV2.cpp" line="771"/>
         <source>Energy calibration has been calculated successfully&lt;br&gt;K0 - %1&lt;br&gt;K1 - %2&lt;br&gt;K2 - %3&lt;br&gt;</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1209,165 +1283,195 @@ In order for the changes to take effect, please restart the application.</source
 <context>
     <name>X_EquationChooseDialog</name>
     <message>
-        <location filename="X_Dialogs/X_EquationChooseDialog.cpp" line="23"/>
+        <location filename="X_Dialogs/X_EquationChooseDialog.cpp" line="21"/>
         <source>Equation settings</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="X_Dialogs/X_EquationChooseDialog.cpp" line="87"/>
+        <location filename="X_Dialogs/X_EquationChooseDialog.cpp" line="80"/>
         <source>Base term:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="X_Dialogs/X_EquationChooseDialog.cpp" line="97"/>
+        <location filename="X_Dialogs/X_EquationChooseDialog.cpp" line="90"/>
         <source>Normalization term:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="X_Dialogs/X_EquationChooseDialog.cpp" line="105"/>
+        <source>Ok</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="X_Dialogs/X_EquationChooseDialog.cpp" line="108"/>
+        <source>Cancel</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
     <name>X_FileActionManager</name>
     <message>
-        <location filename="X_Components/X_FileActionManager.cpp" line="225"/>
+        <location filename="X_Components/X_FileActionManager.cpp" line="201"/>
         <source>&amp;Open spectrum array list</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="X_Components/X_FileActionManager.cpp" line="228"/>
+        <location filename="X_Components/X_FileActionManager.cpp" line="204"/>
         <source>&amp;Save spectrum array list</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="X_Components/X_FileActionManager.cpp" line="233"/>
+        <location filename="X_Components/X_FileActionManager.cpp" line="208"/>
         <source>Save spectrum array list &amp;as...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="X_Components/X_FileActionManager.cpp" line="239"/>
+        <location filename="X_Components/X_FileActionManager.cpp" line="213"/>
         <source>Open &amp;calibrations</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="X_Components/X_FileActionManager.cpp" line="243"/>
+        <location filename="X_Components/X_FileActionManager.cpp" line="216"/>
         <source>Save calibration</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="X_Components/X_FileActionManager.cpp" line="248"/>
+        <location filename="X_Components/X_FileActionManager.cpp" line="220"/>
         <source>Save calibration as...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="X_Components/X_FileActionManager.cpp" line="254"/>
+        <location filename="X_Components/X_FileActionManager.cpp" line="225"/>
         <source>Open calibration &amp;project</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="X_Components/X_FileActionManager.cpp" line="297"/>
-        <location filename="X_Components/X_FileActionManager.cpp" line="890"/>
+        <location filename="X_Components/X_FileActionManager.cpp" line="267"/>
+        <location filename="X_Components/X_FileActionManager.cpp" line="978"/>
         <source>Select file to open</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="X_Components/X_FileActionManager.cpp" line="299"/>
-        <location filename="X_Components/X_FileActionManager.cpp" line="312"/>
+        <location filename="X_Components/X_FileActionManager.cpp" line="269"/>
+        <location filename="X_Components/X_FileActionManager.cpp" line="281"/>
+        <location filename="X_Components/X_FileActionManager.cpp" line="881"/>
+        <location filename="X_Components/X_FileActionManager.cpp" line="904"/>
         <source>Spectrum array files(*.%1);;XML files(%2);;All files(%3)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="X_Components/X_FileActionManager.cpp" line="310"/>
+        <location filename="X_Components/X_FileActionManager.cpp" line="279"/>
+        <location filename="X_Components/X_FileActionManager.cpp" line="902"/>
         <source>Select file to save</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="X_Components/X_FileActionManager.cpp" line="363"/>
+        <location filename="X_Components/X_FileActionManager.cpp" line="331"/>
         <source>File &quot;%1&quot; does not exist!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="X_Components/X_FileActionManager.cpp" line="364"/>
-        <location filename="X_Components/X_FileActionManager.cpp" line="373"/>
+        <location filename="X_Components/X_FileActionManager.cpp" line="332"/>
+        <location filename="X_Components/X_FileActionManager.cpp" line="341"/>
         <source>File open error</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="X_Components/X_FileActionManager.cpp" line="372"/>
+        <location filename="X_Components/X_FileActionManager.cpp" line="340"/>
         <source>&quot;%1&quot; is a folder!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="X_Components/X_FileActionManager.cpp" line="391"/>
+        <location filename="X_Components/X_FileActionManager.cpp" line="359"/>
         <source>Error: &quot;%1&quot; is not a file!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="X_Components/X_FileActionManager.cpp" line="401"/>
-        <location filename="X_Components/X_FileActionManager.cpp" line="581"/>
+        <location filename="X_Components/X_FileActionManager.cpp" line="367"/>
+        <location filename="X_Components/X_FileActionManager.cpp" line="540"/>
         <source>Error handling file &quot;%1&quot;! Cannot handle &quot;%2&quot; files.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="X_Components/X_FileActionManager.cpp" line="403"/>
-        <location filename="X_Components/X_FileActionManager.cpp" line="583"/>
+        <location filename="X_Components/X_FileActionManager.cpp" line="369"/>
+        <location filename="X_Components/X_FileActionManager.cpp" line="542"/>
         <source>File handling error</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="X_Components/X_FileActionManager.cpp" line="416"/>
-        <location filename="X_Components/X_FileActionManager.cpp" line="421"/>
-        <location filename="X_Components/X_FileActionManager.cpp" line="597"/>
-        <location filename="X_Components/X_FileActionManager.cpp" line="602"/>
-        <location filename="X_Components/X_FileActionManager.cpp" line="676"/>
-        <location filename="X_Components/X_FileActionManager.cpp" line="681"/>
-        <location filename="X_Components/X_FileActionManager.cpp" line="741"/>
-        <location filename="X_Components/X_FileActionManager.cpp" line="746"/>
-        <location filename="X_Components/X_FileActionManager.cpp" line="901"/>
-        <location filename="X_Components/X_FileActionManager.cpp" line="906"/>
+        <location filename="X_Components/X_FileActionManager.cpp" line="382"/>
+        <location filename="X_Components/X_FileActionManager.cpp" line="386"/>
+        <location filename="X_Components/X_FileActionManager.cpp" line="556"/>
+        <location filename="X_Components/X_FileActionManager.cpp" line="560"/>
+        <location filename="X_Components/X_FileActionManager.cpp" line="678"/>
+        <location filename="X_Components/X_FileActionManager.cpp" line="682"/>
+        <location filename="X_Components/X_FileActionManager.cpp" line="816"/>
+        <location filename="X_Components/X_FileActionManager.cpp" line="820"/>
+        <location filename="X_Components/X_FileActionManager.cpp" line="1106"/>
+        <location filename="X_Components/X_FileActionManager.cpp" line="1110"/>
         <source>Cannot read file &quot;%1&quot;! %2</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="X_Components/X_FileActionManager.cpp" line="422"/>
-        <location filename="X_Components/X_FileActionManager.cpp" line="603"/>
+        <location filename="X_Components/X_FileActionManager.cpp" line="386"/>
+        <location filename="X_Components/X_FileActionManager.cpp" line="560"/>
         <location filename="X_Components/X_FileActionManager.cpp" line="682"/>
-        <location filename="X_Components/X_FileActionManager.cpp" line="747"/>
-        <location filename="X_Components/X_FileActionManager.cpp" line="907"/>
+        <location filename="X_Components/X_FileActionManager.cpp" line="820"/>
+        <location filename="X_Components/X_FileActionManager.cpp" line="1110"/>
         <source>Unknown error</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="X_Components/X_FileActionManager.cpp" line="719"/>
+        <location filename="X_Components/X_FileActionManager.cpp" line="795"/>
         <source>Do you want to save calibration project?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="X_Components/X_FileActionManager.cpp" line="721"/>
+        <location filename="X_Components/X_FileActionManager.cpp" line="797"/>
         <source>Calibration saving</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="X_Components/X_FileActionManager.cpp" line="794"/>
-        <source>Select spectrum file</source>
+        <location filename="X_Components/X_FileActionManager.cpp" line="865"/>
+        <source>Select spectra file</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="X_Components/X_FileActionManager.cpp" line="796"/>
+        <location filename="X_Components/X_FileActionManager.cpp" line="867"/>
         <source>SRV spectrum files(%1);;All files(%2)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="X_Components/X_FileActionManager.cpp" line="818"/>
-        <location filename="X_Components/X_FileActionManager.cpp" line="934"/>
+        <location filename="X_Components/X_FileActionManager.cpp" line="879"/>
+        <location filename="X_Components/X_FileActionManager.cpp" line="935"/>
+        <source>Open file</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="X_Components/X_FileActionManager.cpp" line="937"/>
+        <location filename="X_Components/X_FileActionManager.cpp" line="959"/>
+        <source>XML Calibration files(*.clbx);;XML files(*.xml);;All files(*.*)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="X_Components/X_FileActionManager.cpp" line="957"/>
+        <source>Save file</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="X_Components/X_FileActionManager.cpp" line="1043"/>
+        <location filename="X_Components/X_FileActionManager.cpp" line="1137"/>
         <source>Data loading from file &quot;%1&quot; failed.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="X_Components/X_FileActionManager.cpp" line="820"/>
-        <location filename="X_Components/X_FileActionManager.cpp" line="936"/>
+        <location filename="X_Components/X_FileActionManager.cpp" line="1044"/>
+        <location filename="X_Components/X_FileActionManager.cpp" line="1138"/>
         <source>Loading error</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="X_Components/X_FileActionManager.cpp" line="892"/>
+        <location filename="X_Components/X_FileActionManager.cpp" line="980"/>
         <source>Calibration project files(%1);;XML files(%2);;All files(%3)</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1445,8 +1549,34 @@ In order for the changes to take effect, please restart the application.</source
 <context>
     <name>X_NormaSettingsDialog</name>
     <message>
-        <location filename="X_Dialogs/X_NormaSettingsDialog.cpp" line="16"/>
+        <location filename="X_Dialogs/X_NormaSettingsDialog.cpp" line="18"/>
         <source>Normalization settings</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="X_Dialogs/X_NormaSettingsDialog.cpp" line="38"/>
+        <source>OK</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="X_Dialogs/X_NormaSettingsDialog.cpp" line="38"/>
+        <source>Save parameter</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="X_Dialogs/X_NormaSettingsDialog.cpp" line="40"/>
+        <source>Cancel</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="X_Dialogs/X_NormaSettingsDialog.cpp" line="41"/>
+        <source>Close dialog without saving changes</source>
+        <oldsource>Close dialog withiut saving changes</oldsource>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="X_Dialogs/X_NormaSettingsDialog.cpp" line="89"/>
+        <source>Use modifier for inserting window name</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -1546,57 +1676,57 @@ In order for the changes to take effect, please restart the application.</source
 <context>
     <name>X_PropertySectionEditDialog</name>
     <message>
-        <location filename="X_PeriodicTable/X_PropertySectionEditDialog.cpp" line="34"/>
+        <location filename="X_PeriodicTable/X_PropertySectionEditDialog.cpp" line="35"/>
         <source>Ok</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="X_PeriodicTable/X_PropertySectionEditDialog.cpp" line="35"/>
+        <location filename="X_PeriodicTable/X_PropertySectionEditDialog.cpp" line="36"/>
         <source>Save section and close dialog</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="X_PeriodicTable/X_PropertySectionEditDialog.cpp" line="37"/>
+        <location filename="X_PeriodicTable/X_PropertySectionEditDialog.cpp" line="38"/>
         <source>Cancel</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="X_PeriodicTable/X_PropertySectionEditDialog.cpp" line="38"/>
+        <location filename="X_PeriodicTable/X_PropertySectionEditDialog.cpp" line="39"/>
         <source>Close dialog without savimg section</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="X_PeriodicTable/X_PropertySectionEditDialog.cpp" line="58"/>
+        <location filename="X_PeriodicTable/X_PropertySectionEditDialog.cpp" line="59"/>
         <source>Current section branch:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="X_PeriodicTable/X_PropertySectionEditDialog.cpp" line="68"/>
+        <location filename="X_PeriodicTable/X_PropertySectionEditDialog.cpp" line="69"/>
         <source>Section name:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="X_PeriodicTable/X_PropertySectionEditDialog.cpp" line="76"/>
+        <location filename="X_PeriodicTable/X_PropertySectionEditDialog.cpp" line="77"/>
         <source>Add to</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="X_PeriodicTable/X_PropertySectionEditDialog.cpp" line="83"/>
+        <location filename="X_PeriodicTable/X_PropertySectionEditDialog.cpp" line="84"/>
         <source>Current chemical element</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="X_PeriodicTable/X_PropertySectionEditDialog.cpp" line="88"/>
+        <location filename="X_PeriodicTable/X_PropertySectionEditDialog.cpp" line="89"/>
         <source>Selected chemical elements</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="X_PeriodicTable/X_PropertySectionEditDialog.cpp" line="93"/>
+        <location filename="X_PeriodicTable/X_PropertySectionEditDialog.cpp" line="94"/>
         <source>All chemical elements</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="X_PeriodicTable/X_PropertySectionEditDialog.cpp" line="104"/>
+        <location filename="X_PeriodicTable/X_PropertySectionEditDialog.cpp" line="105"/>
         <source>Error</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1756,7 +1886,8 @@ In order for the changes to take effect, please restart the application.</source
     </message>
     <message>
         <location filename="X_Components/X_SpectrumArrayRepository.cpp" line="845"/>
-        <source>Clear existing array list?</source>
+        <source>Clear current array list?</source>
+        <oldsource>Clear existing array list?</oldsource>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -1798,12 +1929,12 @@ In order for the changes to take effect, please restart the application.</source
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="X_Components/X_SpectrumArrayRepository.cpp" line="1300"/>
+        <location filename="X_Components/X_SpectrumArrayRepository.cpp" line="1299"/>
         <source>Select an array you want to append spectra to!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="X_Components/X_SpectrumArrayRepository.cpp" line="1301"/>
+        <location filename="X_Components/X_SpectrumArrayRepository.cpp" line="1300"/>
         <source>Spectra appending</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2031,17 +2162,17 @@ Do you want to paste data to them?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="X_Components/X_TermCorrelationTableManager.cpp" line="183"/>
+        <location filename="X_Components/X_TermCorrelationTableManager.cpp" line="184"/>
         <source>Error</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="X_Components/X_TermCorrelationTableManager.cpp" line="295"/>
+        <location filename="X_Components/X_TermCorrelationTableManager.cpp" line="296"/>
         <source>Factor</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="X_Components/X_TermCorrelationTableManager.cpp" line="314"/>
+        <location filename="X_Components/X_TermCorrelationTableManager.cpp" line="315"/>
         <source>Residual</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2054,32 +2185,32 @@ Do you want to paste data to them?</source>
 <context>
     <name>X_TermNormalizer</name>
     <message>
-        <location filename="X_Components/X_TermNormalizer.cpp" line="33"/>
+        <location filename="X_Components/X_TermNormalizer.cpp" line="34"/>
         <source>None</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="X_Components/X_TermNormalizer.cpp" line="34"/>
+        <location filename="X_Components/X_TermNormalizer.cpp" line="35"/>
         <source>Coherent</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="X_Components/X_TermNormalizer.cpp" line="35"/>
+        <location filename="X_Components/X_TermNormalizer.cpp" line="36"/>
         <source>Incoherent</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="X_Components/X_TermNormalizer.cpp" line="36"/>
+        <location filename="X_Components/X_TermNormalizer.cpp" line="37"/>
         <source>Coherent / Incoherent</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="X_Components/X_TermNormalizer.cpp" line="37"/>
+        <location filename="X_Components/X_TermNormalizer.cpp" line="38"/>
         <source>Incoherent / Coherent</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="X_Components/X_TermNormalizer.cpp" line="38"/>
+        <location filename="X_Components/X_TermNormalizer.cpp" line="39"/>
         <source>Custom</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2143,54 +2274,54 @@ Do you want to paste data to them?</source>
 <context>
     <name>X_XMLCalibrationIOHandler</name>
     <message>
-        <location filename="X_Components/X_XMLCalibrationIOHandler.cpp" line="26"/>
+        <location filename="X_Components/X_XMLCalibrationIOHandler.cpp" line="25"/>
         <source>Select file to open</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="X_Components/X_XMLCalibrationIOHandler.cpp" line="28"/>
-        <location filename="X_Components/X_XMLCalibrationIOHandler.cpp" line="37"/>
-        <location filename="X_Components/X_XMLCalibrationIOHandler.cpp" line="45"/>
+        <location filename="X_Components/X_XMLCalibrationIOHandler.cpp" line="27"/>
+        <location filename="X_Components/X_XMLCalibrationIOHandler.cpp" line="51"/>
+        <location filename="X_Components/X_XMLCalibrationIOHandler.cpp" line="83"/>
         <source>XML Calibration files(*.clbx);;XML files(*.xml);;All files(*.*)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="X_Components/X_XMLCalibrationIOHandler.cpp" line="35"/>
+        <location filename="X_Components/X_XMLCalibrationIOHandler.cpp" line="49"/>
         <source>Open file</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="X_Components/X_XMLCalibrationIOHandler.cpp" line="43"/>
+        <location filename="X_Components/X_XMLCalibrationIOHandler.cpp" line="81"/>
         <source>Save file</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="X_Components/X_XMLCalibrationIOHandler.cpp" line="73"/>
+        <location filename="X_Components/X_XMLCalibrationIOHandler.cpp" line="113"/>
         <source>File &quot;%1&quot; is not open in write mode!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="X_Components/X_XMLCalibrationIOHandler.cpp" line="260"/>
+        <location filename="X_Components/X_XMLCalibrationIOHandler.cpp" line="301"/>
         <source>Cannot write to file &quot;%1&quot;! %2</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="X_Components/X_XMLCalibrationIOHandler.cpp" line="284"/>
+        <location filename="X_Components/X_XMLCalibrationIOHandler.cpp" line="324"/>
         <source>File &quot;%1&quot; is not open in read mode!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="X_Components/X_XMLCalibrationIOHandler.cpp" line="310"/>
+        <location filename="X_Components/X_XMLCalibrationIOHandler.cpp" line="350"/>
         <source>File &quot;%1&quot; is not recognized!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="X_Components/X_XMLCalibrationIOHandler.cpp" line="337"/>
+        <location filename="X_Components/X_XMLCalibrationIOHandler.cpp" line="377"/>
         <source>File &quot;%1&quot; parsing failed! %2</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="X_Components/X_XMLCalibrationIOHandler.cpp" line="344"/>
+        <location filename="X_Components/X_XMLCalibrationIOHandler.cpp" line="384"/>
         <source>Cannot read file &quot;%1&quot;! %2</source>
         <translation type="unfinished"></translation>
     </message>

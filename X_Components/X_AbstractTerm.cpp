@@ -1,25 +1,22 @@
 //============================================================
 #include "X_AbstractTerm.h"
-#include "X_General.h"
-#include "X_CalibrationWindow.h"
 #include "X_Calibration.h"
-#include "X_SpectrumArray.h"
 #include <QPointer>
 //============================================================
 // STATIC
 qint64 X_AbstractTerm::xv_lastTermId = 0;
 int X_AbstractTerm::xv_precision = 15;
-QMap<X_AbstractTerm::TermType, QString> X_AbstractTerm::xv_typeNameMap = X_AbstractTerm::xh_intTypeNameMap();
-QMap<X_AbstractTerm::TermState, QString> X_AbstractTerm::xv_stateNameMap = X_AbstractTerm::xh_intStateNameMap();
+QMap<X_AbstractTerm::TermType, QString> X_AbstractTerm::xv_typeNameMap;// = X_AbstractTerm::xh_intTypeNameMap();
+QMap<X_AbstractTerm::TermState, QString> X_AbstractTerm::xv_stateNameMap;// = X_AbstractTerm::xh_intStateNameMap();
 //============================================================
 QMap<X_AbstractTerm::TermType, QString> X_AbstractTerm::xh_intTypeNameMap()
 {
     QMap<X_AbstractTerm::TermType, QString> map;
-    map.insert(TT_NOT_DEFINED, "Not defined");
-    map.insert(TT_SIMPLE, "Simple");
-    map.insert(TT_QUADRATIC, "Quadratic");
-    map.insert(TT_MIXED, "Mixed");
-    map.insert(TT_CUSTOM, "Custom");
+    map.insert(TT_NOT_DEFINED, tr("Not defined"));
+    map.insert(TT_SIMPLE, tr("Simple"));
+    map.insert(TT_QUADRATIC, tr("Quadratic"));
+    map.insert(TT_MIXED, tr("Mixed"));
+    map.insert(TT_CUSTOM, tr("Custom"));
 
     return map;
 }
@@ -27,13 +24,13 @@ QMap<X_AbstractTerm::TermType, QString> X_AbstractTerm::xh_intTypeNameMap()
 QMap<X_AbstractTerm::TermState, QString> X_AbstractTerm::xh_intStateNameMap()
 {
     QMap<X_AbstractTerm::TermState, QString> map;
-    map.insert(TS_NOT_DEFINED, "Not defined");
-    map.insert(TS_CONST_INCLUDED, "Constantly Included");
-    map.insert(TS_CONST_EXCLUDED, "Constantly Excluded");
-    map.insert(TS_EXAM_WAITING, "Exam Waiting");
-    map.insert(TS_EXCEPTED, "Excepted");
-    map.insert(TS_INCLUDED, "Included");
-    map.insert(TS_BASE, "Base");
+    map.insert(TS_NOT_DEFINED, tr("Not defined"));
+    map.insert(TS_CONST_INCLUDED, tr("Constantly Included"));
+    map.insert(TS_CONST_EXCLUDED, tr("Constantly Excluded"));
+    map.insert(TS_EXAM_WAITING, tr("Exam Waiting"));
+    map.insert(TS_EXCEPTED, tr("Excepted"));
+    map.insert(TS_INCLUDED, tr("Included"));
+    map.insert(TS_BASE, tr("Base"));
 
     return map;
 }
@@ -81,13 +78,18 @@ X_AbstractTerm::TermState X_AbstractTerm::xp_termStateFromString(const QString& 
 // END STATIC
 //============================================================
 X_AbstractTerm::X_AbstractTerm(X_Calibration *calibration) :
-      QObject(calibration)
+    QObject(calibration)
 {
     xh_connectToCalibration(calibration);
     xv_type = TT_NOT_DEFINED;
     xv_termState = TS_CONST_EXCLUDED;
     // xp_setTermFactor(0.0); // xv_termFactorString = 0;
     xh_setTermFactor("0.0");
+    if(xv_lastTermId <= 0)
+    {
+        xv_typeNameMap = X_AbstractTerm::xh_intTypeNameMap();
+        xv_stateNameMap = X_AbstractTerm::xh_intStateNameMap();
+    }
     xv_termId = xv_lastTermId++;
 }
 //============================================================
@@ -251,8 +253,8 @@ bool X_AbstractTerm::xh_setTermFactor(qreal factor)
 
     xv_termFactor = factor;
     xh_conformStringWithValue();
-//    xv_termFactorString = QString::number(factor, 'f', 15);
-//    xh_chopTailX_eroesFromTermFactorString();
+    //    xv_termFactorString = QString::number(factor, 'f', 15);
+    //    xh_chopTailX_eroesFromTermFactorString();
     return true;
 }
 //============================================================

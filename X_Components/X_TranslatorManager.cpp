@@ -37,7 +37,7 @@ bool X_TranslatorManager::xp_installTranslatorsToApplication()
     xh_getApplicationLocale(appLocale);
 
     QTranslator* appTranslator = new QTranslator(qApp);
-    QDir appDir(QApplication::applicationDirPath());
+    //QDir appDir(QApplication::applicationDirPath());
 
     bool res = appTranslator->load(appLocale, qApp->applicationName(), xv_prefix, xv_internalTranslatorDir);
     if(!res)

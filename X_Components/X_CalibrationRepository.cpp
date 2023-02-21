@@ -8,7 +8,6 @@
 #include "X_XMLCalibrationIOHandler.h"
 
 #include <algorithm>
-#include <QClipboard>
 #include <QDebug>
 #include <QFile>
 #include <QFileInfo>

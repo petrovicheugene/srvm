@@ -15,7 +15,7 @@ RC_ICONS = "X_Images/SRVM-8.ico"
 
 #Application version
 VER_MAJ=22
-VER_MIN=10
+VER_MIN=11
 VER_PAT=01
 
 PRODUCT_SHORT_NAME="SRVM"
@@ -54,7 +54,6 @@ VERSION=$${VER_MAJ}.$${VER_MIN}.$${VER_PAT}
 CONFIG(debug, debug|release) {
     BUILD_FLAG = debug
     LIB_SUFFIX = d
-
 } else {
     BUILD_FLAG = release
 }
@@ -72,7 +71,11 @@ DEFINES += APP_ICON=\"\\\"$${RC_ICONS}\\\"\"
 CONFIG(release, debug|release):DEFINES += QT_NO_DEBUG_OUTPUT
 #by default defined: in Debug mode QT_DEBUG, in Release mode QT_NO_DEBUG
 
-QMAKE_CXXFLAGS_WARN_ON += -Wno-unused-parameter
+QMAKE_CXXFLAGS_WARN_ON += -Wall
+
+gcc {
+    QMAKE_CXXFLAGS_WARN_ON += -Wno-unused-parameter
+}
 
 #LIBS_PATH = $${PROJECT_ROOT_PATH}/lib.$${OS_SUFFIX}/
 #EXPORT_PATH = $${PROJECT_ROOT_PATH}/export/

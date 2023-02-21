@@ -229,7 +229,7 @@ void X_EnergyCalibrationDialogV2::xh_createElementLineControlsAndComponents(QGri
             colorBtn, &X_ColorButton::xp_setColor);
 
     label = new QLabel(this);
-    label->setText("Peak center");
+    label->setText(tr("Peak center"));
     widgetList.append(label);
     layout->addWidget(label, startRow + 1, 1, 1, 1);
 

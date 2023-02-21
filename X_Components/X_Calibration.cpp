@@ -2,7 +2,6 @@
 #include "X_Calibration.h"
 #include "X_AbstractSpectrum.h"
 #include "X_CustomTerm.h"
-#include "X_EquationSettingsData.h"
 #include "X_General.h"
 #include "X_MathExpressionHandler.h"
 #include "X_MathExpressionVariableListMaker.h"
@@ -32,8 +31,8 @@ QList<QColor> X_Calibration::xv_colorList = X_Calibration::xp_createColorList();
 qint64 X_Calibration::xv_lastCalibrationId = 0;
 int X_Calibration::xv_lastColorIndex = 0;
 int X_Calibration::xv_precision = 15;
-QMap<X_Calibration::EquationType, QString> X_Calibration::xv_eqationTypeStringMap
-    = X_Calibration::xh_initEquationTypeStringMap();
+QMap<X_Calibration::EquationType, QString> X_Calibration::xv_eqationTypeStringMap;
+   //= X_Calibration::xh_initEquationTypeStringMap();
 //=========================================================
 QMap<X_Calibration::EquationType, QString> X_Calibration::xh_initEquationTypeStringMap()
 {
@@ -182,6 +181,12 @@ X_Calibration::X_Calibration(const QString& name, QObject* parent) : QObject(par
     xv_gainFactor = 0;
     //    xv_energyUnit = "not defined";
 
+    if(xv_lastCalibrationId <= 0)
+    {
+        xv_eqationTypeStringMap
+            = X_Calibration::xh_initEquationTypeStringMap();
+    }
+
     xv_calibrationId = xv_lastCalibrationId++;
     xv_chemElement = glDefaultChemElementString;
     xv_termNormalizer = new X_TermNormalizer(this);
@@ -217,7 +222,11 @@ X_Calibration::X_Calibration(const X_Calibration* calibration, const QString& na
     //    xv_energyCalibrationFactorK2 = calibration->xv_energyCalibrationFactorK2;
     xv_gainFactor = calibration->xv_gainFactor;
     //    xv_energyUnit = calibration->xv_energyUnit;
-
+    if(xv_lastCalibrationId <= 0)
+    {
+        xv_eqationTypeStringMap
+            = X_Calibration::xh_initEquationTypeStringMap();
+    }
     xv_calibrationId = xv_lastCalibrationId++;
     xv_chemElement = calibration->xv_chemElement;
 

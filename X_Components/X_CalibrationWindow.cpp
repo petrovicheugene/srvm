@@ -1,16 +1,16 @@
 //====================================================
 #include "X_CalibrationWindow.h"
 #include "X_AbstractSpectrum.h"
-#include "X_AbstractTerm.h"
 #include <QPointer>
 
 //====================================================
 qint64 X_CalibrationWindow::xv_lastWindowId = 0;
-QMap<X_CalibrationWindow::WindowType, QPair<QString, QString>> X_CalibrationWindow::xv_typeNameMap
-    = X_CalibrationWindow::xh_intTypeNameMap();
+QMap<X_CalibrationWindow::WindowType, QPair<QString, QString>> X_CalibrationWindow::xv_typeNameMap;
+    // = X_CalibrationWindow::xh_intTypeNameMap();
 //====================================================
 QMap<X_CalibrationWindow::WindowType, QPair<QString, QString>> X_CalibrationWindow::xh_intTypeNameMap()
 {
+
     QMap<X_CalibrationWindow::WindowType, QPair<QString, QString>> map;
     QPair<QString, QString> pair;
     pair.first = "Not defined";
@@ -42,6 +42,11 @@ X_CalibrationWindow::X_CalibrationWindow(QObject* parent) : QObject(parent)
 
     xv_type = WT_NOT_DEFINED;
     xv_visible = true;
+    if(xv_lastWindowId <= 0)
+    {
+        xv_typeNameMap
+            = X_CalibrationWindow::xh_intTypeNameMap();
+    }
     xv_windowId = xv_lastWindowId++;
 }
 //====================================================
@@ -70,6 +75,13 @@ X_CalibrationWindow::X_CalibrationWindow(
     xv_firstChannel = firstChannel;
     xv_lastChannel = lastChannel;
     xv_visible = true;
+
+    if(xv_lastWindowId <= 0)
+    {
+        xv_typeNameMap
+            = X_CalibrationWindow::xh_intTypeNameMap();
+    }
+
     xv_windowId = xv_lastWindowId++;
 }
 //====================================================
@@ -210,9 +222,9 @@ X_CalibrationWindow::WindowType X_CalibrationWindow::xp_typeFromString(const QSt
 }
 //====================================================
 void X_CalibrationWindow::xp_calcWindowIntensity(const QObject* spectrumObject,
-                                                qreal& intensityValue,
-                                                bool useBuffer,
-                                                bool* ok)
+                                                 qreal& intensityValue,
+                                                 bool useBuffer,
+                                                 bool* ok)
 {
     const X_AbstractSpectrum* spectrum = qobject_cast<const X_AbstractSpectrum*>(spectrumObject);
 
