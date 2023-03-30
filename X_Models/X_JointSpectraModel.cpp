@@ -104,7 +104,7 @@ QVariant X_JointSpectraModel::data(const QModelIndex & index, int role) const
     return QVariant();
 }
 //==================================================================
-bool	X_JointSpectraModel::setData(const QModelIndex & index, const QVariant & value, int role)
+bool X_JointSpectraModel::setData(const QModelIndex & index, const QVariant & value, int role)
 {
     if(!xv_dataManager || !index.isValid()
             || index.row() < 0 || index.row() >=  rowCount()
@@ -167,17 +167,17 @@ QVariant X_JointSpectraModel::headerData(int section, Qt::Orientation orientatio
         }
     }
 
-    if(role == Qt::FontRole)
-    {
-        QFont font = QAbstractItemModel::headerData(section, orientation, role).value<QFont>();
-        font.setBold(true);
-        return QVariant(font);
-    }
+//    if(role == Qt::FontRole)
+//    {
+//        QFont font = QAbstractItemModel::headerData(section, orientation, role).value<QFont>();
+//        font.setBold(true);
+//        return QVariant(font);
+//    }
 
-    if(role == Qt::ForegroundRole)
-    {
-        return QVariant(QColor(Qt::darkGreen));
-    }
+//    if(role == Qt::ForegroundRole)
+//    {
+//        return QVariant(QColor(Qt::darkGreen));
+//    }
 
     return QVariant();
 }

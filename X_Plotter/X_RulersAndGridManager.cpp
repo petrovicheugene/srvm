@@ -3,8 +3,8 @@
 #include "X_PlotGraphicsView.h"
 #include "X_RulerWidget.h"
 #include "X_Plotter.h"
-#include "X_General.h"
 
+#include <QLocale>
 #include <math.h>
 #include <QPoint>
 #include <QPointF>
@@ -190,7 +190,8 @@ void X_RulersAndGridManager::xh_recalcBottomRule()
             QString integralPart = intervalPartList.value(0, QString());
 
             bool ok;
-            double nIntegralPart = qAbs(integralPart.toDouble(&ok));
+            QLocale locale;
+            double nIntegralPart = qAbs(locale.toDouble(integralPart, &ok));
             if(!ok)
             {
                 newScMarkInterval = maxScMarkInterval;
@@ -206,7 +207,7 @@ void X_RulersAndGridManager::xh_recalcBottomRule()
                 integralPart = QString::number(xv_markIntervalList.value(i), 'f', 1);
                 maxScMarkIntervalString = integralPart + QString("E") + intervalPartList.value(1);
 
-                newScMarkInterval = maxScMarkIntervalString.toDouble(&ok);
+                newScMarkInterval = locale.toDouble(maxScMarkIntervalString, &ok);
                 if(!ok || newScMarkInterval < xv_minimalHorizontalScaleInterval)
                 {
                     newScMarkInterval = maxScMarkInterval;
@@ -425,7 +426,8 @@ void X_RulersAndGridManager::xh_recalcLeftRule()
             QString integralPart = intervalPartList.value(0, QString());
 
             bool ok;
-            double nIntegralPart = qAbs(integralPart.toDouble(&ok));
+            QLocale locale;
+            double nIntegralPart = qAbs(locale.toDouble(integralPart, &ok));
             if(!ok)
             {
                 newScMarkInterval = minScMarkInterval;
@@ -441,7 +443,7 @@ void X_RulersAndGridManager::xh_recalcLeftRule()
                 integralPart = QString::number(xv_markIntervalList.value(i), 'f', 1);
                 maxScMarkIntervalString = integralPart + QString("E") + intervalPartList.value(1);
 
-                newScMarkInterval = maxScMarkIntervalString.toDouble(&ok);
+                newScMarkInterval = locale.toDouble(maxScMarkIntervalString, &ok);
                 if(!ok || newScMarkInterval < xv_minimalHorizontalScaleInterval)
                 {
                     newScMarkInterval = minScMarkInterval;

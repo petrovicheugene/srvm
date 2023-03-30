@@ -1701,7 +1701,9 @@ QString X_Calibration::xp_equationInterceptString() const
 bool X_Calibration::xp_setEquationInterceptString(const QString& interceptString)
 {
     bool ok;
-    qreal intercept = interceptString.toDouble(&ok);
+    QLocale locale;
+    qreal intercept =  locale.toDouble(interceptString, &ok);
+
     if (!ok)
     {
         return false;

@@ -2,6 +2,7 @@
 #include "X_MathExpressionHandler.h"
 #include <math.h>
 #include <QDebug>
+#include <QLocale>
 #include <QRegExp>
 #include <QStack>
 //===================================================
@@ -566,10 +567,10 @@ bool X_MathExpressionHandler::xh_variableValue(double& result)
 {
     bool res;
     QString simplifiedToken = xv_token.simplified();
-
+    QLocale locale;
     if (xv_tokenType == TT_DOUBLE || xv_tokenType == TT_INTEGER)
     {
-        result = simplifiedToken.toDouble(&res);
+        result = locale.toDouble(simplifiedToken, &res);
         if (!res)
         {
             xh_handleError(4);

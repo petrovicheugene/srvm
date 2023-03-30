@@ -4,6 +4,7 @@
 
 #include <algorithm>
 #include <QDebug>
+#include <QLocale>
 //=============================================================
 //=============================================================
 X_SelectedEnergyLineTableModel::X_SelectedEnergyLineTableModel(QObject *parent)
@@ -302,7 +303,8 @@ bool X_SelectedEnergyLineTableModel::xp_energyLineEnergyValue(const QString& ele
         }
 
         bool ok;
-        energyValue = energyValueString.toDouble(&ok);
+        QLocale locale;
+        energyValue = locale.toDouble(energyValueString, &ok);
         if(!ok)
         {
             continue;

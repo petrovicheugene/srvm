@@ -141,7 +141,8 @@ bool X_SpeAuxData::xp_setEnergyK0(const QString& string)
         return false;
     }
     bool ok;
-    xv_energyK0 = string.toDouble(&ok);
+    QLocale locale;
+    xv_energyK0 = locale.toDouble(string, &ok);
     return ok;
 }
 //=================================================
@@ -157,7 +158,8 @@ bool X_SpeAuxData::xp_setEnergyK1(const QString& string)
         return false;
     }
     bool ok;
-    xv_energyK1 = string.toDouble(&ok);
+    QLocale locale;
+    xv_energyK1 = locale.toDouble(string, &ok);
     return ok;
 }
 //=================================================
@@ -173,7 +175,8 @@ bool X_SpeAuxData::xp_setEnergyK2(const QString& string)
         return false;
     }
     bool ok;
-    xv_energyK2 = string.toDouble(&ok);
+    QLocale locale;
+    xv_energyK2 = locale.toDouble(string, &ok);
     return ok;
 }
 //=================================================
@@ -200,7 +203,8 @@ bool X_SpeAuxData::xp_setPeakWidthK0(const QString& string)
         return false;
     }
     bool ok;
-    xv_peakWidthK0 = string.toDouble(&ok);
+    QLocale locale;
+    xv_peakWidthK0 = locale.toDouble(string, &ok);
     return ok;
 }
 //=================================================
@@ -211,7 +215,8 @@ bool X_SpeAuxData::xp_setPeakWidthK1(const QString& string)
         return false;
     }
     bool ok;
-    xv_peakWidthK1 = string.toDouble(&ok);
+    QLocale locale;
+    xv_peakWidthK1 = locale.toDouble(string, &ok);
     return ok;
 }
 //=================================================
@@ -222,7 +227,8 @@ bool X_SpeAuxData::xp_setPeakWidthK2(const QString& string)
         return false;
     }
     bool ok;
-    xv_peakWidthK2 = string.toDouble(&ok);
+    QLocale locale;
+    xv_peakWidthK2 = locale.toDouble(string, &ok);
     return ok;
 }
 //=================================================

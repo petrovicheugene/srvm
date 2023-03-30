@@ -252,7 +252,10 @@ bool X_JointSpectraDataManager::xp_setChemConcentration(int row, int column, con
     }
 
     bool ok;
-    consentration.toDouble(&ok);
+    QLocale locale;
+    locale.toDouble(consentration, &ok);
+    // consentration.toDouble(&ok);
+
     if(!ok)
     {
         return false;
@@ -340,7 +343,7 @@ void X_JointSpectraDataManager::xp_calculateCalibrationQualityData(bool saveToCa
     qreal chemConcentration;
     qreal summSquareConcentrationDispersion = 0.0;
     bool ok;
-
+    QLocale locale;
     for(int s = 0; s < xv_spectrumArrayRepository->xp_spectrumCount(xv_currentArrayIndex); s++)
     {
         spectrum = xv_spectrumArrayRepository->xp_spectrum(xv_currentArrayIndex, s);
@@ -353,7 +356,8 @@ void X_JointSpectraDataManager::xp_calculateCalibrationQualityData(bool saveToCa
         // chemConc
         chemConcentration = spectrum->xp_concentrationValue(calibrationChemElementId);
         // calibr conc
-        calibrationConcentration = calibrationConcentrationList.at(s).toDouble(&ok);
+
+        calibrationConcentration = locale.toDouble(calibrationConcentrationList.at(s), &ok);
         if(!ok)
         {
             emit xg_calibrationQualityData(saveToCalibration, calibrationId, qualityData);
@@ -842,7 +846,7 @@ bool X_JointSpectraDataManager::xp_calculateConcentrationResidualList(qint64 cal
     const X_AbstractSpectrum* spectrum = nullptr;
     bool res = false;
     qreal residual = 0.0;
-    qreal averageResidual = 0.0;
+//    qreal averageResidual = 0.0;
     int checkedSpectrumCount = 0;
     for(int s = 0; s < xv_spectrumArrayRepository->xp_spectrumCount(xv_currentArrayIndex); s++)
     {
@@ -870,7 +874,7 @@ bool X_JointSpectraDataManager::xp_calculateConcentrationResidualList(qint64 cal
             //calc residual and put it in residualList
             residual = spectrum->xp_concentrationValue(chemElementId) - concentration;
 
-            averageResidual += residual;
+//            averageResidual += residual;
             residualDispersionList.append(residual);
         }
         else
@@ -884,7 +888,7 @@ bool X_JointSpectraDataManager::xp_calculateConcentrationResidualList(qint64 cal
         return false;
     }
 
-    averageResidual /= static_cast<qreal>(checkedSpectrumCount);
+//    averageResidual /= static_cast<qreal>(checkedSpectrumCount);
 
 //    for(int r = 0; r < residualDispersionList.count(); r++)
 //    {

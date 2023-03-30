@@ -1,5 +1,6 @@
 //====================================================
 #include "X_PasteData.h"
+#include <QLocale>
 #include <QRegularExpression>
 //====================================================
 X_PasteData::X_PasteData()
@@ -17,16 +18,15 @@ void X_PasteData::xp_reset()
 bool X_PasteData::xp_loadData(const QString& dataString, const QStringList &chemElementList)
 {
     xp_reset();
+
     if(dataString.isEmpty())
     {
-        xp_reset();
         return false;
     }
 
     // Devide string to terms
     if(!xh_devideStringToTerms(dataString))
     {
-        xp_reset();
         return false;
     }
 
@@ -63,6 +63,9 @@ bool X_PasteData::xp_loadData(const QString& dataString, const QStringList &chem
 //====================================================
 bool X_PasteData::xh_devideStringToTerms(const QString& dataString)
 {
+    QLocale locale;
+    QString decimalSeparator = locale.decimalPoint();
+
     // devide into strings and remove empty lines
     QStringList lines =  dataString.split(QRegularExpression("\\n|\\v"));
     if(lines.isEmpty())
@@ -71,16 +74,19 @@ bool X_PasteData::xh_devideStringToTerms(const QString& dataString)
     }
 
     // remove last empty line
-    while(lines.last().isEmpty())
+    while(!lines.isEmpty() && lines.last().isEmpty())
     {
         lines.removeLast();
     }
+
 
     // devide lines into parts
     foreach(QString line, lines)
     {
         // remove whitespace from the start and end
         line = line.simplified();
+        line.replace(QRegularExpression("[,.]"), decimalSeparator);
+
         QStringList lineValueList = line.split(QRegularExpression("\\t|\\s{1,}"));
         // define column count
         if(xv_columnCount < lineValueList.count())
@@ -97,17 +103,21 @@ X_PasteData::LineType X_PasteData::xh_checkClipboardLine(const QStringList& line
                                                        const QStringList& chemElementList) const
 {
     LineType lineType = LT_NOT_DEFINED;
-    bool ok;
+    bool hasMatch;
+    QLocale locale;
 
     foreach(QString lineTerm, line)
     {
         if(lineTerm.isEmpty())
         {
-            lineTerm = "0.0";
+            lineTerm = QString::number(0.0, 'f', 1);
         }
 
-        lineTerm.toDouble(&ok);
-        if(ok)
+        QRegularExpression re("^[+-]?\\d{1,}[,.]?(\\d{1,}([eE][+-]?\\d{1,})?)?$");
+        QRegularExpressionMatch match = re.match(lineTerm);
+        hasMatch = match.hasMatch(); // true
+
+        if(hasMatch)
         {
             if(lineType == LT_NOT_DEFINED)
             {

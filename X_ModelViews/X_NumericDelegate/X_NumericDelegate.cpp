@@ -42,7 +42,7 @@ QWidget* X_NumericDelegate::createEditor ( QWidget * parent, const QStyleOptionV
     return editor;
 }
 //=================================================================
-void	X_NumericDelegate::paint ( QPainter * painter, const QStyleOptionViewItem & option, const QModelIndex & index ) const
+void X_NumericDelegate::paint ( QPainter * painter, const QStyleOptionViewItem & option, const QModelIndex & index ) const
 {
     QStyleOptionViewItem newOption(option);
 
@@ -55,20 +55,25 @@ void	X_NumericDelegate::paint ( QPainter * painter, const QStyleOptionViewItem &
     QStyledItemDelegate::paint(painter, newOption, index);
 }
 //=================================================================
-void	X_NumericDelegate::setEditorData ( QWidget * editor, const QModelIndex & index ) const
+void X_NumericDelegate::setEditorData ( QWidget * editor, const QModelIndex & index ) const
 {
     QString val = index.model()->data(index, Qt::DisplayRole).toString();
     X_NumericEditor* numericEditor = qobject_cast<X_NumericEditor*>(editor);
     numericEditor->setText(val);
 }
 //=================================================================
-void	X_NumericDelegate::setModelData ( QWidget * editor, QAbstractItemModel * model, const QModelIndex & index ) const
+void X_NumericDelegate::setModelData ( QWidget * editor, QAbstractItemModel * model, const QModelIndex & index ) const
 {
     X_NumericEditor* numericEditor = qobject_cast<X_NumericEditor*>(editor);
     QString valString  = numericEditor->text();
 
+    QLocale locale;
+    QString decimalString = locale.decimalPoint();
     bool ok;
-    double val = valString.toDouble(&ok);
+
+    // double val = valString.toDouble(&ok);
+    double val = locale.toDouble(valString, &ok);
+
     bool removeLastTree = false;
     MessageType messageType = MT_NO_MESSAGE;
 
@@ -87,7 +92,8 @@ void	X_NumericDelegate::setModelData ( QWidget * editor, QAbstractItemModel * mo
         removeLastTree = true;
     }
 
-    valString.replace(QRegularExpression(","), ".");
+    valString.replace(QRegularExpression("[,.]"), decimalString);
+
     valString.replace(QRegularExpression("e"), "E");
     bool powerTypeRecord = valString.contains(QRegularExpression("[eE]"));
 
@@ -118,7 +124,7 @@ void	X_NumericDelegate::setModelData ( QWidget * editor, QAbstractItemModel * mo
         if((i == 0 && powerTypeRecord == false && parts.count() == 2) ||
                 (i == 0 && powerTypeRecord == true && parts.count() == 3))
         {
-            newNumericString = newNumericString + ".";
+            newNumericString = newNumericString + decimalString;
         }
 
         if( (i == 0 &&  powerTypeRecord == true && parts.count() == 2) ||
@@ -154,7 +160,7 @@ QSize X_NumericDelegate::sizeHint ( const QStyleOptionViewItem & option, const Q
     return QStyledItemDelegate::sizeHint (option, index);
 }
 //=================================================================
-void	X_NumericDelegate::updateEditorGeometry ( QWidget * editor, const QStyleOptionViewItem & option, const QModelIndex & index ) const
+void X_NumericDelegate::updateEditorGeometry ( QWidget * editor, const QStyleOptionViewItem & option, const QModelIndex & index ) const
 {
     QStyledItemDelegate::updateEditorGeometry (editor, option, index);
 }

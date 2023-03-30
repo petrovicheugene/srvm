@@ -2,7 +2,6 @@
 #include "X_EnergyCalibrationDialogV2.h"
 
 #include "X_ColorButton.h"
-#include "X_General.h"
 #include "X_GraphicsItemUserTypes.h"
 #include "X_EnergyCalibrationLine.h"
 #include "X_EnergyCalibrationSpectrumTableModel.h"
@@ -484,7 +483,7 @@ void X_EnergyCalibrationDialogV2::xh_onCurrentGainFactorIndexChange(int currentI
     }
 
     QVariant vData = xv_gainFactorComboBox->itemData(currentIndex);
-    if(!vData.isValid() | !vData.canConvert<quint8>())
+    if(!vData.isValid() || !vData.canConvert<quint8>())
     {
         xv_spectrumModel->xp_setGainFactorFilter(0);
         return;

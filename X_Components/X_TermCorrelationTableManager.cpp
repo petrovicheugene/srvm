@@ -219,18 +219,18 @@ QVariant X_TermCorrelationTableManager::xp_cellColor(QModelIndex index) const
 
     qreal correlationValue = 0;
     bool ok;
-
+    QLocale locale;
     // chem Correlations
     if(index.column() < xv_firstNonTermColumnCount)
     {
         // correlations in column
         if(index.column() == 1)
         {
-            correlationValue = qAbs(xv_concentrationCorrelationList.value(index.row(), QString()).toDouble(&ok));
+            correlationValue = qAbs(locale.toDouble(xv_concentrationCorrelationList.value(index.row(), QString()), &ok));
         }
         else if(index.column() == 2)
         {
-            correlationValue = qAbs(xv_residualCorrelationList.value(index.row(), QString()).toDouble(&ok));
+            correlationValue = qAbs(locale.toDouble(xv_residualCorrelationList.value(index.row(), QString()), &ok));
         }
         else
         {

@@ -261,7 +261,9 @@ bool X_AbstractTerm::xh_setTermFactor(qreal factor)
 bool X_AbstractTerm::xh_setTermFactor(const QString& termFactorString)
 {
     bool ok;
-    qreal termFactor = termFactorString.toDouble(&ok);
+    QLocale locale;
+    qreal termFactor = locale.toDouble(termFactorString, &ok);
+
     if(!ok)
     {
         return false;

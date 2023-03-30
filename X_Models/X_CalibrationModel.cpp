@@ -315,17 +315,17 @@ QVariant X_CalibrationModel::headerData(int section, Qt::Orientation orientation
         }
     }
 
-    if(role == Qt::FontRole)
-    {
-        QFont font = QAbstractItemModel::headerData(section, orientation, role).value<QFont>();
-        font.setBold(true);
-        return QVariant(font);
-    }
+//    if(role == Qt::FontRole)
+//    {
+//        QFont font = QAbstractItemModel::headerData(section, orientation, role).value<QFont>();
+//        font.setBold(true);
+//        return QVariant(font);
+//    }
 
-    if(role == Qt::ForegroundRole)
-    {
-        return QVariant(QColor(Qt::darkGreen));
-    }
+//    if(role == Qt::ForegroundRole)
+//    {
+//        return QVariant(QColor(Qt::darkGreen));
+//    }
 
     return QVariant();
 }

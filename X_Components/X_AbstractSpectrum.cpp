@@ -115,7 +115,9 @@ qreal X_AbstractSpectrum::xp_concentrationValue(qint64 chemElementId) const
     }
     else
     {
-        concentration = concentrationString.toDouble(&ok);
+        QLocale locale;
+        concentration = locale.toDouble(concentrationString, &ok);
+
         if(!ok)
         {
             concentration = 0.0;

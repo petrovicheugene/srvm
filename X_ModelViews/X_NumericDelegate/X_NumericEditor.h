@@ -52,7 +52,7 @@ public slots:
 
 protected slots:
 
-    void xp_checkChangedText(const QString&);
+    void xp_checkChangedText(const QString&valueString);
 
 };
 //================================================================

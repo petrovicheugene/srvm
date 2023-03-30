@@ -14,42 +14,28 @@ greaterThan(QT_MAJOR_VERSION, 5): QT += core5compat
 RC_ICONS = "X_Images/SRVM-8.ico"
 
 #Application version
-VER_MAJ=22
-VER_MIN=11
-VER_PAT=01
+VER_MAJ=23
+VER_MIN=03
+VER_PAT=03
 
 PRODUCT_SHORT_NAME="SRVM"
 PRODUCT_FILE_BASE_NAME="SRVM"
 QMAKE_TARGET_PRODUCT="SRV M"
 QMAKE_TARGET_DESCRIPTION="The application for the creation of the spectrometer calibration"
 QMAKE_TARGET_COMPANY="TechnoAnalyt"
-QMAKE_TARGET_COPYRIGHT="Copyright © $${QMAKE_TARGET_COMPANY} Ltd. 2015 - 2022. All rights reserved."
+QMAKE_TARGET_COPYRIGHT="Copyright © $${QMAKE_TARGET_COMPANY} Ltd. 2015 - 2023. All rights reserved."
 COMPANY_URL=www.tehnoanalit.com
-
-#-------------------------------------------------
-# in common.pri will be defined VERSION, TARGET, DEBUG SETTINGS
-# global APP DEFINES
-#-------------------------------------------------
-#include(./common.pri )
-#include(./app.pri )
-
-# common.pri
-#-------------------------------------------------
-PROJECT_ROOT_PATH = $${PWD}/
 
 win32: OS_SUFFIX = win32
 linux-g++: OS_SUFFIX = linux
 
 CONFIG += c++11
 CONFIG += c++14
-#CONFIG += c++17
+CONFIG += c++17
 #preserve src directory structure in build directory
 #CONFIG += object_parallel_to_source
 
-#CONFIG -= debug_and_release
-#CONFIG -= debug_and_release_target
-
-VERSION=$${VER_MAJ}.$${VER_MIN}.$${VER_PAT}
+VERSION=$${VER_MAJ}$${VER_MIN}.$${VER_PAT}
 
 CONFIG(debug, debug|release) {
     BUILD_FLAG = debug
@@ -77,83 +63,16 @@ gcc {
     QMAKE_CXXFLAGS_WARN_ON += -Wno-unused-parameter
 }
 
-#LIBS_PATH = $${PROJECT_ROOT_PATH}/lib.$${OS_SUFFIX}/
-#EXPORT_PATH = $${PROJECT_ROOT_PATH}/export/
-#IMPORT_PATH = $${PROJECT_ROOT_PATH}/import/
-#COMMON_PATH = $${PROJECT_ROOT_PATH}/src/common/
-#BIN_PATH = $${PROJECT_ROOT_PATH}/bin/$${QMAKE_TARGET_PRODUCT}/$${BUILD_FLAG}/
-
-#BUILD_PATH = $${PROJECT_ROOT_PATH}/build/$${QMAKE_TARGET_PRODUCT}/$${BUILD_FLAG}/
-#RCC_DIR = $${BUILD_PATH}/rcc/
-#UI_DIR = $${BUILD_PATH}/ui/
-#MOC_DIR = $${BUILD_PATH}/moc/
-#OBJECTS_DIR = $${BUILD_PATH}/obj/
-#MAKEFILE = $${BUILD_PATH}/Makefile
-
-#LIBS += -L$${LIBS_PATH}/
-#INCLUDEPATH += $${EXPORT_PATH}/
-#INCLUDEPATH += $${IMPORT_PATH}/
-#INCLUDEPATH += $${COMMON_PATH}/
 linux-g++: QMAKE_CXXFLAGS += -std=c++11
 
-# app.pri
-#-------------------------------------------------
-#DESTDIR = $${BIN_PATH}/
 linux-g++: QMAKE_LFLAGS += -Wl,--rpath=\\\$\$ORIGIN/../../lib.$${OS_SUFFIX}/
 
 CONFIG(debug, debug|release) {
     TARGET=$${PRODUCT_FILE_BASE_NAME}-$${VERSION}.$${BUILD_FLAG}
 } else {
     TARGET=$${PRODUCT_FILE_BASE_NAME}
-    DESTDIR=$${PWD}\..\bin\
+    DESTDIR=$$dirname(PWD)/bin/
 }
-
-
-#END
-
-#PRO VARS
-#Application version
-#RC_ICONS = "X_Images/SRVM-8.ico"
-
-#VER_MAJ=1
-#VER_MIN=0
-#VER_PAT=0
-
-#VER_RELEASE=b
-
-#DEBUG SETTINGS
-#CONFIG(release, debug|release):DEFINES += QT_NO_DEBUG_OUTPUT
-#by default defined: in Debug mode QT_DEBUG, in Release mode QT_NO_DEBUG
-
-#EXE_BASE_NAME=SRVM
-#QMAKE_TARGET_PRODUCT="SRV M"
-#QMAKE_TARGET_DESCRIPTION="Creation of spectrometer calibration"
-#QMAKE_TARGET_COMPANY="TechnoAnalyt"
-#QMAKE_TARGET_COPYRIGHT="Copyright © $${QMAKE_TARGET_COMPANY} Ltd. 2015 - 2017.  All rights reserved."
-#COMPANY_URL=tehnoanalit.com
-
-#CONFIG += $$VER_RELEASE
-#CONFIG += c++11
-
-#VERSION=$${VER_MAJ}.$${VER_MIN}.$${VER_PAT}
-
-#Target version
-#CONFIG(debug, debug|release):{
-#TARGET=$${EXE_BASE_NAME}-$${VERSION}
-#}else{
-#TARGET=$${EXE_BASE_NAME}-$${VERSION}.$${VER_RELEASE}
-#}
-
-#Define the preprocessor macro to get the application version in the application.
-#DEFINES += APP_PRODUCT=\"\\\"$${QMAKE_TARGET_PRODUCT}\\\"\"
-#DEFINES += APP_EXE_BASE_NAME=\"\\\"$${EXE_BASE_NAME}\\\"\"
-#DEFINES += APP_VERSION=\"\\\"$${VERSION}.$${VER_RELEASE}\\\"\"
-#DEFINES += APP_COMPANY=\"\\\"$${QMAKE_TARGET_COMPANY}\\\"\"
-#DEFINES += APP_COMPANY_URL=\"\\\"$${COMPANY_URL}\\\"\"
-#DEFINES += APP_COPYRIGHT=\"\\\"$${QMAKE_TARGET_COPYRIGHT}\\\"\"
-
-#TRANSLATIONS = $${EXE_BASE_NAME}_ru.ts
-#QMAKE_CXXFLAGS_WARN_ON += -Wno-unused-parameter
 
 #END OF CHIEF SETTINGS
 TRANSLATIONS = $${PRODUCT_FILE_BASE_NAME}_ru.ts \
@@ -460,5 +379,9 @@ DISTFILES += \
     X_BaseMainWindow/green_right.ico
 
 CONFIG(release, debug|release) {
-    QMAKE_POST_LINK="C:\Qt\6.4.0\mingw_64\bin\windeployqt.exe "$${DESTDIR} $${DESTDIR}
+    isEmpty(QMAKE_POST_LINK){
+        QMAKE_POST_LINK += "C:/Qt/$$QT_VERSION/mingw_64/bin/windeployqt.exe $$DESTDIR"
+    }else{
+        QMAKE_POST_LINK += & "C:/Qt/$$QT_VERSION/mingw_64/bin/windeployqt.exe $$DESTDIR"
+    }
 }

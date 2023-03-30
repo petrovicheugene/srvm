@@ -260,7 +260,8 @@ qreal X_SpectrumArray::xp_chemConcentrationValue(qint64 chemElementId,
                                                 int spectrumIndex) const
 {
     bool ok;
-    qreal value = xp_chemConcentration(chemElementId, spectrumIndex).toDouble(&ok);
+    QLocale locale;
+    qreal value = locale.toDouble(xp_chemConcentration(chemElementId, spectrumIndex), &ok);
     if(!ok)
     {
         return 0.0;

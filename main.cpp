@@ -1,19 +1,20 @@
-//===============================================
+//======================================================
 #include "MainWindow.h"
 #include "X_TranslatorManager.h"
 
-#include <windows.h>
+// #include <windows.h>
 #include <QApplication>
+#include <QDir>
+#include <iostream>
 #include <QOperatingSystemVersion>
+#include <QPixmap>
+#include <QPointer>
+#include <QSet>
+#include <QSplashScreen>
 #include <QTranslator>
 #include <QTextCodec>
-#include <QDir>
-#include <QSplashScreen>
-#include <QPixmap>
-#include <iostream>
-#include <QSet>
-#include <QException>
-//===============================================
+
+//#include <QException>
 //======================================================
 /*!
 \brief  This module contains a function "messageHandler" for receiving standard
@@ -45,7 +46,7 @@
 //{
 
 // main window pointer
-static MainWindow* pMainWindow = nullptr;
+static QPointer<MainWindow> pMainWindow = nullptr;
 static QSet<QtMsgType> msgTypesToHandleInMainWindowSet;
 
 // settings of format of debug output mssages to stderr
@@ -156,6 +157,8 @@ int main(int argc, char *argv[])
     QTextCodec* codec = QTextCodec::codecForName("windows-1251");
     QTextCodec::setCodecForLocale(codec);
 
+
+
     QApplication a(argc, argv);
     //
     initMsgTypesToHandleInMainWindow();
@@ -246,6 +249,13 @@ int main(int argc, char *argv[])
         qApp->setStyleSheet("QPushButton {font : bold;}"
                             "QHeaderView {font : bold;}");
     }
+
+    // set path for sqlite plugin
+    QStringList paths = QCoreApplication::libraryPaths();
+    paths.append(".");
+    paths.append("platforms");
+    //paths.append("sqldrivers");
+    QCoreApplication::setLibraryPaths(paths);
 
 
     // launch app

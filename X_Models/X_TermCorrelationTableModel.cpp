@@ -138,23 +138,23 @@ QVariant	X_TermCorrelationTableModel::headerData(int section, Qt::Orientation or
     //        }
     //    }
 
-    if(role == Qt::FontRole)
-    {
-        if(orientation == Qt::Horizontal)
-        {
-            QFont font = QAbstractItemModel::headerData(section, orientation, role).value<QFont>();
-            font.setBold(true);
-            return QVariant(font);
-        }
-    }
+//    if(role == Qt::FontRole)
+//    {
+//        if(orientation == Qt::Horizontal)
+//        {
+//            QFont font = QAbstractItemModel::headerData(section, orientation, role).value<QFont>();
+//            font.setBold(true);
+//            return QVariant(font);
+//        }
+//    }
 
-    if(role == Qt::ForegroundRole)
-    {
-        if(orientation == Qt::Horizontal)
-        {
-            return QVariant(QColor(Qt::darkGreen));
-        }
-    }
+//    if(role == Qt::ForegroundRole)
+//    {
+//        if(orientation == Qt::Horizontal)
+//        {
+//            return QVariant(QColor(Qt::darkGreen));
+//        }
+//    }
 
     if(role == NS_DataRole::IconRole)
     {

@@ -106,7 +106,6 @@ extern const QString glWarning = QObject::tr("Warning");
 extern const QString glCommon = QObject::tr("Common");
 extern const QString glColor = QObject::tr("Color");
 extern const QString glSelectColor = QObject::tr("Color...");
-
 }
 
 // Menu strings

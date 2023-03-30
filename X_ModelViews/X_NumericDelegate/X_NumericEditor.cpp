@@ -3,6 +3,7 @@
 #include <QLineEdit>
 #include <limits>
 #include <QDebug>
+#include <QLocale>
 #include <math.h>
 #include <QMessageBox>
 #include <QKeyEvent>
@@ -19,7 +20,9 @@ X_NumericEditor::X_NumericEditor(QWidget *parent) :
 
     //int maxPartSymbols = QString::number(m_max).count();
     lineEdit()->setAlignment(Qt::AlignVCenter | Qt::AlignRight);
+
     lineEdit()->setValidator(new QDoubleValidator());
+
     lineEdit()->setText("0.0");
     connect(lineEdit(), &QLineEdit::textChanged,
             this, &X_NumericEditor::xp_checkChangedText);
@@ -31,14 +34,14 @@ X_NumericEditor::StepEnabled	X_NumericEditor::stepEnabled () const
     return X_NumericEditor::StepDownEnabled | X_NumericEditor::StepUpEnabled;
 }
 //================================================================
-void	X_NumericEditor::stepBy ( int steps )
+void X_NumericEditor::stepBy ( int steps )
 {
+    QLocale locale;
+    QString decimalSeparator = locale.decimalPoint();
     QString numericString = lineEdit()->text();
     int cursorPos = lineEdit()->cursorPosition();
 
-    //double doubleValue = numericString.toDouble();
-
-    numericString.replace(QRegularExpression(","), ".");
+    numericString.replace(QRegularExpression("[,.]"), decimalSeparator);
     //numericString.replace(QRegExp("e"), "E");
 
     QStringList parts = numericString.split(QRegularExpression("[,.Ee]"),Qt::KeepEmptyParts);
@@ -166,7 +169,7 @@ void	X_NumericEditor::stepBy ( int steps )
 
     lineEdit()->setText(newNumericString);
     bool ok;
-    double newValue = newNumericString.toDouble(&ok);
+    double newValue = locale.toDouble(newNumericString, &ok);
     if(ok)
     {
         emit valueChanged(newValue);
@@ -223,6 +226,8 @@ bool X_NumericEditor::checkNewNumber(QStringList parts,
                                     QString& newNumericString,
                                     int& newPartCount)
 {
+    QLocale locale;
+    QString decimalSeparator = locale.decimalPoint();
     newNumericString.clear();
     //    newNumericString = QString::number(changedPartNumeric);
 
@@ -250,7 +255,8 @@ bool X_NumericEditor::checkNewNumber(QStringList parts,
         if((i == 0 && !powerTypeRecord && parts.count() == 2) ||
                 (i == 0 && powerTypeRecord && parts.count() == 3))
         {
-            newNumericString = newNumericString + ".";
+            // newNumericString = newNumericString + ".";
+            newNumericString = newNumericString + decimalSeparator;
         }
 
         if( (i == 0 &&  powerTypeRecord && parts.count() == 2) ||
@@ -260,8 +266,7 @@ bool X_NumericEditor::checkNewNumber(QStringList parts,
         }
     }
 
-    double newValue = newNumericString.toDouble();
-
+    double newValue = locale.toDouble(newNumericString);
     newPartCount = partString.length();
 
     if(newValue < xv_min || newValue > xv_max)
@@ -283,7 +288,8 @@ void X_NumericEditor::setMinMax(double min, double max)
 //================================================================
 void X_NumericEditor::setText(QString numericString)
 {
-
+    QLocale locale;
+    QString decimalSeparator = locale.decimalPoint();
     bool removeLastTree = false;
 //    if(val < xv_min )
 //    {
@@ -312,7 +318,8 @@ void X_NumericEditor::setText(QString numericString)
             numericString = numericString + parts.value(i);
             if(i == 0)
             {
-                numericString = numericString + ".";
+                numericString = numericString + decimalSeparator;
+                // numericString = numericString + ".";
             }
 
             if(i == 1)
@@ -323,7 +330,8 @@ void X_NumericEditor::setText(QString numericString)
     }
 
     bool ok;
-    double val = numericString.toDouble(&ok);
+
+    double val = locale.toDouble(numericString, &ok);
 
     if(val < xv_min )
     {
@@ -333,7 +341,6 @@ void X_NumericEditor::setText(QString numericString)
     {
         xv_max = val;
     }
-
 
     lineEdit()->setText(numericString);
     lineEdit()->selectAll();
@@ -351,7 +358,8 @@ QString X_NumericEditor::text()
 //================================================================
 double X_NumericEditor::value()
 {
-    return lineEdit()->text().toDouble();
+    QLocale locale;
+    return locale.toDouble(lineEdit()->text());
 }
 //================================================================
 QSize X_NumericEditor::sizeHint() const
@@ -368,20 +376,30 @@ QSize X_NumericEditor::sizeHint() const
     return size;
 }
 //================================================================
-void X_NumericEditor::xp_checkChangedText(const QString& newValueString)
+void X_NumericEditor::xp_checkChangedText(const QString& valueString)
 {
-    if(newValueString.isEmpty())
+    if(valueString.isEmpty())
     {
         lineEdit()->setText(QString::number(0.0));
         return;
     }
 
-    bool ok;
-    qreal newValue = newValueString.toDouble(&ok);
-    if(!ok && lineEdit()->isUndoAvailable())
+    QLocale locale;
+    QString decimalSeparator = locale.decimalPoint();
+//    QString newValueString = valueString;
+//    qDebug() << "NEW" << newValueString << "EDITLINE" << lineEdit()->text();
+
+    QRegularExpression re("^[+-]?\\d{1,}[,.]?(\\d{1,}([eE][+-]?\\d{1,})?)?$");
+    QRegularExpressionMatch match = re.match(valueString);
+    if(!match.hasMatch())
     {
-        lineEdit()->undo();
+        lineEdit()->setText(lineEdit()->text().chopped(1));
     }
+
+    // replace decimalSeparator
+    lineEdit()->setText(lineEdit()->text().replace(QRegularExpression("[,.]"), decimalSeparator));
+
+    qreal newValue = locale.toDouble(valueString);
 
     if(newValue > xv_max)
     {

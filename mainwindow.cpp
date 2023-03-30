@@ -114,7 +114,7 @@ MainWindow::MainWindow(QWidget *parent)
 //==========================================================
 MainWindow::~MainWindow()
 {
-
+    qApp->processEvents();
 }
 //==========================================================
 void MainWindow::closeEvent(QCloseEvent* e)
