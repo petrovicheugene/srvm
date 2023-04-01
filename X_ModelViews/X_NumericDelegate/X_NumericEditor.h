@@ -12,7 +12,8 @@ class X_NumericEditor : public QAbstractSpinBox
     Q_OBJECT
 public:
     explicit X_NumericEditor(QWidget *parent = 0);
-    
+    ~X_NumericEditor();
+
     virtual void	stepBy ( int steps );
     virtual void keyPressEvent(QKeyEvent *event);
 

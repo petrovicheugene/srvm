@@ -1,6 +1,6 @@
 //======================================================
 #include "X_EnergyCalibrationLine.h"
-#include <QLocale>
+#include "X_LocaleDoubleConverter.h"
 //======================================================
 X_EnergyCalibrationLine::X_EnergyCalibrationLine(QObject *parent)
     : QObject(parent)
@@ -45,8 +45,7 @@ void X_EnergyCalibrationLine::xp_setEnergyValue(double energyValue)
 void X_EnergyCalibrationLine::xp_setEnergyValueString(const QString& value)
 {
     bool ok;
-    QLocale locale;
-    double dValue = locale.toDouble(value, &ok);
+    double dValue = X_LocaleDoubleConverter::toDouble(value, &ok);
     if(!ok)
     {
         return;

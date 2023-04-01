@@ -1,6 +1,7 @@
 //=============================================================
 #include "X_SelectedEnergyLineTableModel.h"
 #include "X_General.h"
+#include "X_LocaleDoubleConverter.h"
 
 #include <algorithm>
 #include <QDebug>
@@ -303,8 +304,7 @@ bool X_SelectedEnergyLineTableModel::xp_energyLineEnergyValue(const QString& ele
         }
 
         bool ok;
-        QLocale locale;
-        energyValue = locale.toDouble(energyValueString, &ok);
+        energyValue = X_LocaleDoubleConverter::toDouble(energyValueString, &ok);
         if(!ok)
         {
             continue;

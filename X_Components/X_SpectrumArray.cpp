@@ -3,6 +3,7 @@
 #include "X_SpeSpectrum.h"
 #include "X_SpeIOHandler.h"
 #include "X_General.h"
+#include "X_LocaleDoubleConverter.h"
 
 #include <QDebug>
 #include <QFileInfo>
@@ -260,8 +261,7 @@ qreal X_SpectrumArray::xp_chemConcentrationValue(qint64 chemElementId,
                                                 int spectrumIndex) const
 {
     bool ok;
-    QLocale locale;
-    qreal value = locale.toDouble(xp_chemConcentration(chemElementId, spectrumIndex), &ok);
+    qreal value = X_LocaleDoubleConverter::toDouble(xp_chemConcentration(chemElementId, spectrumIndex), &ok);
     if(!ok)
     {
         return 0.0;

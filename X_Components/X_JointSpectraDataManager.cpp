@@ -1,7 +1,7 @@
 //==================================================================
 #include <math.h>
 #include "X_JointSpectraDataManager.h"
-#include "X_General.h"
+#include "X_LocaleDoubleConverter.h"
 #include "X_SpectrumPaintData.h"
 #include <math.h>
 //==================================================================
@@ -252,8 +252,7 @@ bool X_JointSpectraDataManager::xp_setChemConcentration(int row, int column, con
     }
 
     bool ok;
-    QLocale locale;
-    locale.toDouble(consentration, &ok);
+    X_LocaleDoubleConverter::toDouble(consentration, &ok);
     // consentration.toDouble(&ok);
 
     if(!ok)
@@ -342,8 +341,8 @@ void X_JointSpectraDataManager::xp_calculateCalibrationQualityData(bool saveToCa
     qreal calibrationConcentration;
     qreal chemConcentration;
     qreal summSquareConcentrationDispersion = 0.0;
+
     bool ok;
-    QLocale locale;
     for(int s = 0; s < xv_spectrumArrayRepository->xp_spectrumCount(xv_currentArrayIndex); s++)
     {
         spectrum = xv_spectrumArrayRepository->xp_spectrum(xv_currentArrayIndex, s);
@@ -357,7 +356,7 @@ void X_JointSpectraDataManager::xp_calculateCalibrationQualityData(bool saveToCa
         chemConcentration = spectrum->xp_concentrationValue(calibrationChemElementId);
         // calibr conc
 
-        calibrationConcentration = locale.toDouble(calibrationConcentrationList.at(s), &ok);
+        calibrationConcentration = X_LocaleDoubleConverter::toDouble(calibrationConcentrationList.at(s), &ok);
         if(!ok)
         {
             emit xg_calibrationQualityData(saveToCalibration, calibrationId, qualityData);

@@ -1,6 +1,7 @@
 //============================================================
 #include "X_AbstractTerm.h"
 #include "X_Calibration.h"
+#include "X_LocaleDoubleConverter.h"
 #include <QPointer>
 //============================================================
 // STATIC
@@ -261,8 +262,7 @@ bool X_AbstractTerm::xh_setTermFactor(qreal factor)
 bool X_AbstractTerm::xh_setTermFactor(const QString& termFactorString)
 {
     bool ok;
-    QLocale locale;
-    qreal termFactor = locale.toDouble(termFactorString, &ok);
+    qreal termFactor = X_LocaleDoubleConverter::toDouble(termFactorString, &ok);
 
     if(!ok)
     {

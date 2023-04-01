@@ -905,13 +905,13 @@ bool X_Plotter::xh_recalcVerticalDistortionFactors(qreal distortionValue)
        return false;
     }
 
-    if(distortionValue < 0)
+    if(distortionValue < 0.0)
     {
-        distortionValue = 0;
+        distortionValue = 0.0;
     }
-    else if(distortionValue > 15)
+    else if(distortionValue > 15.0)
     {
-        distortionValue = 15;
+        distortionValue = 15.0;
     }
     xv_verticalDistortionFactor = 1.0 - static_cast<qreal>(distortionValue) / 20.0;
     xv_verticalDistortionCorrectionFactor = xv_verticalAbsMax / pow(xv_verticalAbsMax, xv_verticalDistortionFactor);

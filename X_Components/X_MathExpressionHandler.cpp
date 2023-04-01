@@ -1,8 +1,9 @@
 //===================================================
 #include "X_MathExpressionHandler.h"
+#include "X_LocaleDoubleConverter.h"
 #include <math.h>
 #include <QDebug>
-#include <QLocale>
+// #include <QLocale>
 #include <QRegExp>
 #include <QStack>
 //===================================================
@@ -567,10 +568,9 @@ bool X_MathExpressionHandler::xh_variableValue(double& result)
 {
     bool res;
     QString simplifiedToken = xv_token.simplified();
-    QLocale locale;
     if (xv_tokenType == TT_DOUBLE || xv_tokenType == TT_INTEGER)
     {
-        result = locale.toDouble(simplifiedToken, &res);
+        result = X_LocaleDoubleConverter::toDouble(simplifiedToken, &res);
         if (!res)
         {
             xh_handleError(4);

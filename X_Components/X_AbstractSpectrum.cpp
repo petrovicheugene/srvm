@@ -2,6 +2,7 @@
 #include "X_AbstractSpectrum.h"
 #include <QFileInfo>
 #include "X_CalibrationWindow.h"
+#include "X_LocaleDoubleConverter.h"
 //==========================================================
 qint64 X_AbstractSpectrum::xv_lastSpectrumId = 0;
 //==========================================================
@@ -115,8 +116,7 @@ qreal X_AbstractSpectrum::xp_concentrationValue(qint64 chemElementId) const
     }
     else
     {
-        QLocale locale;
-        concentration = locale.toDouble(concentrationString, &ok);
+        concentration = X_LocaleDoubleConverter::toDouble(concentrationString, &ok);
 
         if(!ok)
         {

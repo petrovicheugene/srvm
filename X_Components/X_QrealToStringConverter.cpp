@@ -1,6 +1,6 @@
 //===============================================
 #include "X_QrealToStringConverter.h"
-#include "qlocale.h"
+#include "X_LocaleDoubleConverter.h"
 //===============================================
 char X_QrealToStringConverter::xv_format = 'g';
 int X_QrealToStringConverter::xv_precision = 15;
@@ -116,8 +116,7 @@ void X_QrealToStringConverter::xh_chopTailX_eroesFromDoubleString(QString& strin
 {
     // check string
     bool ok;
-    QLocale locale;
-    locale.toDouble(string, &ok);
+    X_LocaleDoubleConverter::toDouble(string, &ok);
     if(!ok)
     {
         return;

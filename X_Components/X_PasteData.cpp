@@ -1,6 +1,7 @@
 //====================================================
 #include "X_PasteData.h"
-#include <QLocale>
+#include "X_LocaleDoubleConverter.h"
+
 #include <QRegularExpression>
 //====================================================
 X_PasteData::X_PasteData()
@@ -63,8 +64,8 @@ bool X_PasteData::xp_loadData(const QString& dataString, const QStringList &chem
 //====================================================
 bool X_PasteData::xh_devideStringToTerms(const QString& dataString)
 {
-    QLocale locale;
-    QString decimalSeparator = locale.decimalPoint();
+//    QLocale locale;
+//    QString decimalSeparator = locale.decimalPoint();
 
     // devide into strings and remove empty lines
     QStringList lines =  dataString.split(QRegularExpression("\\n|\\v"));
@@ -79,15 +80,20 @@ bool X_PasteData::xh_devideStringToTerms(const QString& dataString)
         lines.removeLast();
     }
 
-
     // devide lines into parts
     foreach(QString line, lines)
     {
         // remove whitespace from the start and end
         line = line.simplified();
-        line.replace(QRegularExpression("[,.]"), decimalSeparator);
 
-        QStringList lineValueList = line.split(QRegularExpression("\\t|\\s{1,}"));
+        static QRegularExpression separatorRe("\\t|\\s{1,}");
+        QStringList lineValueList = line.split(separatorRe);
+
+        for (int i = 0; i < lineValueList.count(); ++i)
+        {
+            lineValueList[i] = X_LocaleDoubleConverter::toLocalDoubleString(lineValueList.at(i));
+        }
+
         // define column count
         if(xv_columnCount < lineValueList.count())
         {
@@ -103,8 +109,6 @@ X_PasteData::LineType X_PasteData::xh_checkClipboardLine(const QStringList& line
                                                        const QStringList& chemElementList) const
 {
     LineType lineType = LT_NOT_DEFINED;
-    bool hasMatch;
-    QLocale locale;
 
     foreach(QString lineTerm, line)
     {
@@ -113,11 +117,13 @@ X_PasteData::LineType X_PasteData::xh_checkClipboardLine(const QStringList& line
             lineTerm = QString::number(0.0, 'f', 1);
         }
 
-        QRegularExpression re("^[+-]?\\d{1,}[,.]?(\\d{1,}([eE][+-]?\\d{1,})?)?$");
-        QRegularExpressionMatch match = re.match(lineTerm);
-        hasMatch = match.hasMatch(); // true
+//        static QRegularExpression re("^[+-]?\\d{1,}[,.]?(\\d{1,}([eE][+-]?\\d{1,})?)?$");
+//        QRegularExpressionMatch match = re.match(lineTerm);
+//        hasMatch = match.hasMatch(); // true
+        bool ok = false;
+        lineTerm = X_LocaleDoubleConverter::toLocalDoubleString(lineTerm, &ok);
 
-        if(hasMatch)
+        if(ok)
         {
             if(lineType == LT_NOT_DEFINED)
             {

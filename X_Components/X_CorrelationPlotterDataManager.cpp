@@ -1,10 +1,10 @@
 //=====================================================================
-#include "X_CorrelationPlotterDataManager.h"
-#include "X_Plotter.h"
-#include "X_General.h"
-#include "X_GraphicsItemUserTypes.h"
-#include "X_DefaultRectGraphicsItem.h"
 #include "X_ChartPointGraphicsItem.h"
+#include "X_CorrelationPlotterDataManager.h"
+#include "X_DefaultRectGraphicsItem.h"
+#include "X_GraphicsItemUserTypes.h"
+#include "X_LocaleDoubleConverter.h"
+#include "X_Plotter.h"
 #include "X_TermCorrelationTableWidget.h"
 
 #include <QGraphicsView>
@@ -389,7 +389,6 @@ bool X_CorrelationPlotterDataManager::xh_getTermToConcentrationData(QMap<qint64,
     qreal termValue;
     qreal concentration;
     bool ok;
-    QLocale locale;
     X_VisibilityPointF point;
     bool isDataOk;
 
@@ -409,7 +408,7 @@ bool X_CorrelationPlotterDataManager::xh_getTermToConcentrationData(QMap<qint64,
             termValue = 0.0;
         }
 
-        concentration =  locale.toDouble(spectrum->xp_concentrationString(chemElementId), &ok);
+        concentration =  X_LocaleDoubleConverter::toDouble(spectrum->xp_concentrationString(chemElementId), &ok);
         if(!ok)
         {
             isDataOk = false;
@@ -467,7 +466,6 @@ bool X_CorrelationPlotterDataManager::xh_getCalibrationToConcentrationData(QMap<
     X_VisibilityPointF point;
     bool isDataOk;
     qreal maxConcentrationValue;
-    QLocale locale;
 
     maxX = 0.0;
     minX = 0.0;
@@ -485,7 +483,7 @@ bool X_CorrelationPlotterDataManager::xh_getCalibrationToConcentrationData(QMap<
         }
 
         // concentration = spectrum->xp_concentrationString(chemElementId).toDouble(&ok);
-        concentration = locale.toDouble(spectrum->xp_concentrationString(chemElementId), &ok);
+        concentration = X_LocaleDoubleConverter::toDouble(spectrum->xp_concentrationString(chemElementId), &ok);
         if(!ok)
         {
             isDataOk = false;
@@ -552,10 +550,10 @@ bool X_CorrelationPlotterDataManager::xh_getDeviationToConcentrationData(QMap<qi
     qreal calibrationValue;
     qreal concentration;
     qreal deviationValue;
+
     bool ok;
     X_VisibilityPointF point;
     bool isDataOk;
-    QLocale locale;
     maxX = 0.0;
     minX = 0.0;
     maxY = 0.0;
@@ -572,7 +570,7 @@ bool X_CorrelationPlotterDataManager::xh_getDeviationToConcentrationData(QMap<qi
             deviationValue = 0.0;
         }
 
-        concentration =  locale.toDouble(spectrum->xp_concentrationString(chemElementId), &ok);
+        concentration =  X_LocaleDoubleConverter::toDouble(spectrum->xp_concentrationString(chemElementId), &ok);
 
         if(!ok)
         {
