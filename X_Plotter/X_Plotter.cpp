@@ -664,16 +664,18 @@ void X_Plotter::xp_fitInBoundingRect()
     xv_horizontalScrollBar->blockSignals(true);
 
     QRectF itemBoundingRect = xv_plotScene->itemsBoundingRect();
-    xv_plotScene->setSceneRect(itemBoundingRect);
     QRectF rectToFit;
+
     if(itemBoundingRect.isValid())
     {
         rectToFit = itemBoundingRect;
+        xv_plotScene->setSceneRect(itemBoundingRect);
     }
     else
     {
         rectToFit = xv_plotScene->sceneRect();
     }
+
     xv_plotView->xp_fitInView(rectToFit);
 
     // deblock signals

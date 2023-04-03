@@ -32,7 +32,6 @@ X_NumericEditor::X_NumericEditor(QWidget *parent) :
 //================================================================
 X_NumericEditor::~X_NumericEditor()
 {
-    qDebug() << "NUM EDITOR DESTRUCTOR";
 }
 //================================================================
 X_NumericEditor::StepEnabled	X_NumericEditor::stepEnabled () const

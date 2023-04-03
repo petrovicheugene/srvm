@@ -190,7 +190,6 @@ void X_RulersAndGridManager::xh_recalcBottomRule()
             QString integralPart = intervalPartList.value(0, QString());
 
             bool ok;
-            double r = X_LocaleDoubleConverter::toDouble(integralPart, &ok);
             double nIntegralPart = qAbs(X_LocaleDoubleConverter::toDouble(integralPart, &ok));
             if(!ok)
             {
@@ -320,7 +319,9 @@ void X_RulersAndGridManager::xh_recalcBottomRule()
         RulePoint::MarkType markType;
 
         // Marks
-        for(qreal sc = newScScratchInterval; sc <= xv_sceneRectForPaint.right(); sc+= newScScratchInterval)
+        qreal sc = newScScratchInterval;
+        // for(qreal sc = newScScratchInterval; sc <= xv_sceneRectForPaint.right(); sc+= newScScratchInterval)
+        while(sc <= xv_sceneRectForPaint.right())
         {
             // count in mark interval
             if(++scratchInMarkIntervalCount >= markScratchesInterval)
@@ -335,6 +336,7 @@ void X_RulersAndGridManager::xh_recalcBottomRule()
 
             if(sc < xv_sceneRectForPaint.left())
             {
+                sc+= newScScratchInterval;
                 continue;
             }
 
@@ -354,11 +356,14 @@ void X_RulersAndGridManager::xh_recalcBottomRule()
             qreal vp = sc*xv_K + xv_A;
             rulePoint = RulePoint(vp, sc, markType);
             xv_XRulePointList.append(rulePoint);
-        }
+            sc+= newScScratchInterval;
+         }
 
         scratchInMarkIntervalCount = -1;
         scratchInEmptyMarkInterval = -1;
-        for(qreal sc = 0; sc >= xv_sceneRectForPaint.left(); sc-= newScScratchInterval)
+        sc = 0;
+        // for(qreal sc = 0; sc >= xv_sceneRectForPaint.left(); sc-= newScScratchInterval)
+        while(sc >= xv_sceneRectForPaint.left())
         {
             // count in mark interval
             if(++scratchInMarkIntervalCount >= markScratchesInterval)
@@ -373,6 +378,7 @@ void X_RulersAndGridManager::xh_recalcBottomRule()
 
             if(sc > xv_sceneRectForPaint.right())
             {
+                sc-= newScScratchInterval;
                 continue;
             }
 
@@ -392,6 +398,7 @@ void X_RulersAndGridManager::xh_recalcBottomRule()
             qreal vp = sc*xv_K + xv_A;
             rulePoint = RulePoint(vp, sc, markType);
             xv_XRulePointList.append(rulePoint);
+            sc-= newScScratchInterval;
         }
     }
 }
