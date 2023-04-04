@@ -266,8 +266,8 @@ void MainWindow::xh_appLanguageControl()
     QString msg;
     if(ok)
     {
-        msg = tr("The language of application has been changed.\n"
-                 "In order for the changes to take effect, please restart the application.");
+        msg = QString("%1\n%2").arg(tr("The language of application has been changed."),
+                                    tr("In order for the changes to take effect, please restart the application."));
     }
     else
     {
