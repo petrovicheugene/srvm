@@ -3,6 +3,7 @@
 #include "X_AbstractSpectrum.h"
 #include "X_CustomTerm.h"
 #include "X_General.h"
+#include "X_LocaleDoubleConverter.h"
 #include "X_MathExpressionHandler.h"
 #include "X_MathExpressionVariableListMaker.h"
 #include "X_MixedTerm.h"
@@ -1701,8 +1702,7 @@ QString X_Calibration::xp_equationInterceptString() const
 bool X_Calibration::xp_setEquationInterceptString(const QString& interceptString)
 {
     bool ok;
-    QLocale locale;
-    qreal intercept =  locale.toDouble(interceptString, &ok);
+    qreal intercept =  X_LocaleDoubleConverter::toDouble(interceptString, &ok);
 
     if (!ok)
     {

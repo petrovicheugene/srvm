@@ -1,10 +1,10 @@
 //========================================================
 #include "X_RulersAndGridManager.h"
+#include "X_LocaleDoubleConverter.h"
 #include "X_PlotGraphicsView.h"
 #include "X_RulerWidget.h"
 #include "X_Plotter.h"
 
-#include <QLocale>
 #include <math.h>
 #include <QPoint>
 #include <QPointF>
@@ -172,7 +172,7 @@ void X_RulersAndGridManager::xh_recalcBottomRule()
             && xv_rulerWidget != nullptr)
     {
         int maxVpMarkInterval = xv_rulerWidget->xp_maxMarkWidth() * 2 ;
-        qreal maxScMarkInterval = xv_plotView->mapToScene(QPoint(maxVpMarkInterval,0)).x()
+        qreal maxScMarkInterval = xv_plotView->mapToScene(QPoint(maxVpMarkInterval, 0)).x()
                 - xv_plotView->mapToScene(QPoint(0,0)).x();
 
         // new mark and scratch interval calculation
@@ -190,8 +190,7 @@ void X_RulersAndGridManager::xh_recalcBottomRule()
             QString integralPart = intervalPartList.value(0, QString());
 
             bool ok;
-            QLocale locale;
-            double nIntegralPart = qAbs(locale.toDouble(integralPart, &ok));
+            double nIntegralPart = qAbs(X_LocaleDoubleConverter::toDouble(integralPart, &ok));
             if(!ok)
             {
                 newScMarkInterval = maxScMarkInterval;
@@ -207,7 +206,7 @@ void X_RulersAndGridManager::xh_recalcBottomRule()
                 integralPart = QString::number(xv_markIntervalList.value(i), 'f', 1);
                 maxScMarkIntervalString = integralPart + QString("E") + intervalPartList.value(1);
 
-                newScMarkInterval = locale.toDouble(maxScMarkIntervalString, &ok);
+                newScMarkInterval = X_LocaleDoubleConverter::toDouble(maxScMarkIntervalString, &ok);
                 if(!ok || newScMarkInterval < xv_minimalHorizontalScaleInterval)
                 {
                     newScMarkInterval = maxScMarkInterval;
@@ -320,7 +319,9 @@ void X_RulersAndGridManager::xh_recalcBottomRule()
         RulePoint::MarkType markType;
 
         // Marks
-        for(qreal sc = newScScratchInterval; sc <= xv_sceneRectForPaint.right(); sc+= newScScratchInterval)
+        qreal sc = newScScratchInterval;
+        // for(qreal sc = newScScratchInterval; sc <= xv_sceneRectForPaint.right(); sc+= newScScratchInterval)
+        while(sc <= xv_sceneRectForPaint.right())
         {
             // count in mark interval
             if(++scratchInMarkIntervalCount >= markScratchesInterval)
@@ -335,6 +336,7 @@ void X_RulersAndGridManager::xh_recalcBottomRule()
 
             if(sc < xv_sceneRectForPaint.left())
             {
+                sc+= newScScratchInterval;
                 continue;
             }
 
@@ -354,11 +356,14 @@ void X_RulersAndGridManager::xh_recalcBottomRule()
             qreal vp = sc*xv_K + xv_A;
             rulePoint = RulePoint(vp, sc, markType);
             xv_XRulePointList.append(rulePoint);
-        }
+            sc+= newScScratchInterval;
+         }
 
         scratchInMarkIntervalCount = -1;
         scratchInEmptyMarkInterval = -1;
-        for(qreal sc = 0; sc >= xv_sceneRectForPaint.left(); sc-= newScScratchInterval)
+        sc = 0;
+        // for(qreal sc = 0; sc >= xv_sceneRectForPaint.left(); sc-= newScScratchInterval)
+        while(sc >= xv_sceneRectForPaint.left())
         {
             // count in mark interval
             if(++scratchInMarkIntervalCount >= markScratchesInterval)
@@ -373,6 +378,7 @@ void X_RulersAndGridManager::xh_recalcBottomRule()
 
             if(sc > xv_sceneRectForPaint.right())
             {
+                sc-= newScScratchInterval;
                 continue;
             }
 
@@ -392,6 +398,7 @@ void X_RulersAndGridManager::xh_recalcBottomRule()
             qreal vp = sc*xv_K + xv_A;
             rulePoint = RulePoint(vp, sc, markType);
             xv_XRulePointList.append(rulePoint);
+            sc-= newScScratchInterval;
         }
     }
 }
@@ -426,8 +433,7 @@ void X_RulersAndGridManager::xh_recalcLeftRule()
             QString integralPart = intervalPartList.value(0, QString());
 
             bool ok;
-            QLocale locale;
-            double nIntegralPart = qAbs(locale.toDouble(integralPart, &ok));
+            double nIntegralPart = qAbs(X_LocaleDoubleConverter::toDouble(integralPart, &ok));
             if(!ok)
             {
                 newScMarkInterval = minScMarkInterval;
@@ -443,7 +449,7 @@ void X_RulersAndGridManager::xh_recalcLeftRule()
                 integralPart = QString::number(xv_markIntervalList.value(i), 'f', 1);
                 maxScMarkIntervalString = integralPart + QString("E") + intervalPartList.value(1);
 
-                newScMarkInterval = locale.toDouble(maxScMarkIntervalString, &ok);
+                newScMarkInterval = X_LocaleDoubleConverter::toDouble(maxScMarkIntervalString, &ok);
                 if(!ok || newScMarkInterval < xv_minimalHorizontalScaleInterval)
                 {
                     newScMarkInterval = minScMarkInterval;

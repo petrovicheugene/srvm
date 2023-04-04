@@ -106,6 +106,7 @@ INCLUDEPATH += X_Plotter \
 SOURCES += main.cpp \
     MainWindow.cpp \
     X_Components/X_AbstractPlotterDataManager.cpp \
+    X_Components/X_LocaleDoubleConverter.cpp \
     X_Components/X_MathExpressionHandler.cpp \
     X_Components/X_MathExpressionVariableListMaker.cpp \
     X_Components/X_XMLCalibrationProjectIOHandler.cpp \
@@ -230,6 +231,7 @@ SOURCES += main.cpp \
 HEADERS  += \
     MainWindow.h \
     X_Components/X_AbstractPlotterDataManager.h \
+    X_Components/X_LocaleDoubleConverter.h \
     X_Components/X_MathExpressionHandler.h \
     X_Components/X_MathExpressionVariableListMaker.h \
     X_Components/X_XMLCalibrationProjectIOHandler.h \

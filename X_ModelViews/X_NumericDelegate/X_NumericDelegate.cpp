@@ -1,6 +1,8 @@
 //=================================================================
 #include "X_NumericDelegate.h"
 #include "X_NumericEditor.h"
+#include "X_LocaleDoubleConverter.h"
+
 #include <QDoubleSpinBox>
 #include <QLineEdit>
 #include <QTextEdit>
@@ -72,7 +74,7 @@ void X_NumericDelegate::setModelData ( QWidget * editor, QAbstractItemModel * mo
     bool ok;
 
     // double val = valString.toDouble(&ok);
-    double val = locale.toDouble(valString, &ok);
+    double val = X_LocaleDoubleConverter::toDouble(valString, &ok);
 
     bool removeLastTree = false;
     MessageType messageType = MT_NO_MESSAGE;
@@ -198,6 +200,7 @@ void X_NumericDelegate::xh_onEditorEnterClick()
     {
         editor->setValue(0);
     }
+
     emit commitData(editor);
     if(xv_isEditorAlive)
     {

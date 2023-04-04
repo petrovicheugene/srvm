@@ -1,5 +1,6 @@
 //=================================================
 #include "X_SpeAuxData.h"
+#include "X_LocaleDoubleConverter.h"
 //=================================================
 X_SpeAuxData::X_SpeAuxData()
     : X_AbstractSpectrumAuxData(DT_SPE)
@@ -140,9 +141,9 @@ bool X_SpeAuxData::xp_setEnergyK0(const QString& string)
     {
         return false;
     }
+
     bool ok;
-    QLocale locale;
-    xv_energyK0 = locale.toDouble(string, &ok);
+    xv_energyK0 = X_LocaleDoubleConverter::toDouble(string, &ok);
     return ok;
 }
 //=================================================
@@ -157,9 +158,9 @@ bool X_SpeAuxData::xp_setEnergyK1(const QString& string)
     {
         return false;
     }
+
     bool ok;
-    QLocale locale;
-    xv_energyK1 = locale.toDouble(string, &ok);
+    xv_energyK1 = X_LocaleDoubleConverter::toDouble(string, &ok);
     return ok;
 }
 //=================================================
@@ -174,9 +175,9 @@ bool X_SpeAuxData::xp_setEnergyK2(const QString& string)
     {
         return false;
     }
+
     bool ok;
-    QLocale locale;
-    xv_energyK2 = locale.toDouble(string, &ok);
+    xv_energyK2 = X_LocaleDoubleConverter::toDouble(string, &ok);
     return ok;
 }
 //=================================================
@@ -202,9 +203,9 @@ bool X_SpeAuxData::xp_setPeakWidthK0(const QString& string)
     {
         return false;
     }
+
     bool ok;
-    QLocale locale;
-    xv_peakWidthK0 = locale.toDouble(string, &ok);
+    xv_peakWidthK0 = X_LocaleDoubleConverter::toDouble(string, &ok);
     return ok;
 }
 //=================================================
@@ -214,9 +215,9 @@ bool X_SpeAuxData::xp_setPeakWidthK1(const QString& string)
     {
         return false;
     }
+
     bool ok;
-    QLocale locale;
-    xv_peakWidthK1 = locale.toDouble(string, &ok);
+    xv_peakWidthK1 = X_LocaleDoubleConverter::toDouble(string, &ok);
     return ok;
 }
 //=================================================
@@ -226,9 +227,9 @@ bool X_SpeAuxData::xp_setPeakWidthK2(const QString& string)
     {
         return false;
     }
+
     bool ok;
-    QLocale locale;
-    xv_peakWidthK2 = locale.toDouble(string, &ok);
+    xv_peakWidthK2 = X_LocaleDoubleConverter::toDouble(string, &ok);
     return ok;
 }
 //=================================================

@@ -1,9 +1,10 @@
 //================================================================
 #include "X_NumericEditor.h"
+#include "X_LocaleDoubleConverter.h"
+
 #include <QLineEdit>
 #include <limits>
 #include <QDebug>
-#include <QLocale>
 #include <math.h>
 #include <QMessageBox>
 #include <QKeyEvent>
@@ -29,6 +30,10 @@ X_NumericEditor::X_NumericEditor(QWidget *parent) :
 
 }
 //================================================================
+X_NumericEditor::~X_NumericEditor()
+{
+}
+//================================================================
 X_NumericEditor::StepEnabled	X_NumericEditor::stepEnabled () const
 {
     return X_NumericEditor::StepDownEnabled | X_NumericEditor::StepUpEnabled;
@@ -36,23 +41,30 @@ X_NumericEditor::StepEnabled	X_NumericEditor::stepEnabled () const
 //================================================================
 void X_NumericEditor::stepBy ( int steps )
 {
-    QLocale locale;
-    QString decimalSeparator = locale.decimalPoint();
-    QString numericString = lineEdit()->text();
+    //QLocale locale;
+    //QString decimalSeparator = locale.decimalPoint();
+    //QString numericString = lineEdit()->text();
+    bool ok = false;
+    QString numericString = X_LocaleDoubleConverter::toLocalDoubleString(lineEdit()->text(), &ok);
+    if(!ok)
+    {
+        return;
+    }
+
     int cursorPos = lineEdit()->cursorPosition();
 
-    numericString.replace(QRegularExpression("[,.]"), decimalSeparator);
+    //numericString.replace(QRegularExpression("[,.]"), decimalSeparator);
     //numericString.replace(QRegExp("e"), "E");
-
-    QStringList parts = numericString.split(QRegularExpression("[,.Ee]"),Qt::KeepEmptyParts);
+    static QRegularExpression commaDotEeRegExp("[,.Ee]");
+    QStringList parts = numericString.split(commaDotEeRegExp, Qt::KeepEmptyParts);
 
     for(int i  = 0; i < parts.count(); i++)
     {
         if(parts.value(i) == "")
             parts[i] = "0";
     }
-
-    bool powerTypeRecord = numericString.contains(QRegularExpression("[eE]"));
+    static QRegularExpression EeRegExp("[Ee]");
+    bool powerTypeRecord = numericString.contains(EeRegExp);
 
     // defining which part is the cursor on
     if(parts.isEmpty() || parts.count() > 3)
@@ -80,7 +92,7 @@ void X_NumericEditor::stepBy ( int steps )
     case 2:
 
         secondSeparatorPos = numericString.length() - 1;
-        firstSeparatorPos = numericString.indexOf(QRegularExpression("[,.Ee]"));
+        firstSeparatorPos = numericString.indexOf(commaDotEeRegExp);
         if(cursorPos > firstSeparatorPos)
         {
             changedPartNumber = 1;
@@ -94,9 +106,10 @@ void X_NumericEditor::stepBy ( int steps )
 
         break;
     case 3:
+        static QRegularExpression commaDotRegExp("[,.]");
+        firstSeparatorPos = numericString.indexOf(commaDotRegExp);
 
-        firstSeparatorPos = numericString.indexOf(QRegularExpression("[,.]"));
-        secondSeparatorPos = numericString.indexOf(QRegularExpression("[Ee]"));
+        secondSeparatorPos = numericString.indexOf(EeRegExp);
 
         if(cursorPos <= firstSeparatorPos )
         {
@@ -134,7 +147,7 @@ void X_NumericEditor::stepBy ( int steps )
     }
 
     bool partValueEqualLimit = false;
-    int newPartCount;
+    int newPartCount = 0;
     for(int s = 0; s < qAbs(steps); s++)
     {
         if(fractionlPartMax > 0)
@@ -168,8 +181,8 @@ void X_NumericEditor::stepBy ( int steps )
     }
 
     lineEdit()->setText(newNumericString);
-    bool ok;
-    double newValue = locale.toDouble(newNumericString, &ok);
+    ok = false;
+    double newValue = X_LocaleDoubleConverter::toDouble(newNumericString, &ok);
     if(ok)
     {
         emit valueChanged(newValue);
@@ -266,7 +279,7 @@ bool X_NumericEditor::checkNewNumber(QStringList parts,
         }
     }
 
-    double newValue = locale.toDouble(newNumericString);
+    double newValue = X_LocaleDoubleConverter::toDouble(newNumericString);
     newPartCount = partString.length();
 
     if(newValue < xv_min || newValue > xv_max)
@@ -306,7 +319,8 @@ void X_NumericEditor::setText(QString numericString)
 
     if(removeLastTree)
     {
-        QStringList parts = numericString.split(QRegularExpression("[,.Ee]"),Qt::KeepEmptyParts);
+        static QRegularExpression commaDotEeRegExp("[,.Ee]");
+        QStringList parts = numericString.split(commaDotEeRegExp, Qt::KeepEmptyParts);
 
         QString fractionalPart = parts.value(1);
         fractionalPart.remove(fractionalPart.length() - 3 , 3);
@@ -330,8 +344,7 @@ void X_NumericEditor::setText(QString numericString)
     }
 
     bool ok;
-
-    double val = locale.toDouble(numericString, &ok);
+    double val = X_LocaleDoubleConverter::toDouble(numericString, &ok);
 
     if(val < xv_min )
     {
@@ -358,8 +371,7 @@ QString X_NumericEditor::text()
 //================================================================
 double X_NumericEditor::value()
 {
-    QLocale locale;
-    return locale.toDouble(lineEdit()->text());
+    return X_LocaleDoubleConverter::toDouble(lineEdit()->text());
 }
 //================================================================
 QSize X_NumericEditor::sizeHint() const
@@ -384,30 +396,13 @@ void X_NumericEditor::xp_checkChangedText(const QString& valueString)
         return;
     }
 
-    QLocale locale;
-    QString decimalSeparator = locale.decimalPoint();
-//    QString newValueString = valueString;
-//    qDebug() << "NEW" << newValueString << "EDITLINE" << lineEdit()->text();
+    bool ok = false;
+    X_LocaleDoubleConverter::toLocalDoubleString(valueString, &ok);
 
-    QRegularExpression re("^[+-]?\\d{1,}[,.]?(\\d{1,}([eE][+-]?\\d{1,})?)?$");
-    QRegularExpressionMatch match = re.match(valueString);
-    if(!match.hasMatch())
+    // revert wrong symbol entering
+    if(!ok)
     {
         lineEdit()->setText(lineEdit()->text().chopped(1));
-    }
-
-    // replace decimalSeparator
-    lineEdit()->setText(lineEdit()->text().replace(QRegularExpression("[,.]"), decimalSeparator));
-
-    qreal newValue = locale.toDouble(valueString);
-
-    if(newValue > xv_max)
-    {
-        lineEdit()->setText(QString::number(xv_max));
-    }
-    else if(newValue < xv_min)
-    {
-        lineEdit()->setText(QString::number(xv_min));
     }
 }
 //================================================================
