@@ -573,7 +573,7 @@ void X_PlotGraphicsView::mouseMoveEvent(QMouseEvent* event)
     QGraphicsView::mouseMoveEvent(event);
 }
 //=============================================================
-bool X_PlotGraphicsView::viewportEvent(QEvent * event)
+/* bool X_PlotGraphicsView::viewportEvent(QEvent * event)
 {
     if(event->type() == QEvent::Paint && xv_plotMode == PM_RULER)
     {
@@ -611,6 +611,59 @@ bool X_PlotGraphicsView::viewportEvent(QEvent * event)
         if(xv_rulersAndGreedManager)
         {
             xv_rulersAndGreedManager->xp_recalcRulesAndGrid();
+        }
+    }
+
+    return QGraphicsView::viewportEvent(event);
+}
+*/
+//=============================================================
+bool X_PlotGraphicsView::viewportEvent(QEvent * event)
+{
+    if(event->type() == QEvent::Paint && scene())
+    {
+        QTransform matrix = transform();
+
+        if(matrix.m11() < 0.0 || matrix.m22() < 0.0 || matrix.m33() < 0.0)
+        {
+            matrix.reset();
+            setTransform(matrix);
+            xp_fitInView(sceneRect());
+        }
+
+        if( xv_plotMode == PM_RULER)
+        {
+            emit xg_rulerToolChanged(mapToScene(xv_mousePressStartViewPos),
+                                     mapToScene(xv_currentMousePos), true);
+        }
+
+        if(xv_rulersAndGreedManager )
+        {
+            xv_rulersAndGreedManager->xp_recalcRulesAndGrid();
+        }
+    }
+    else if(event->type() == QEvent::HoverLeave || event->type() == QEvent::Leave)
+    {
+        emit xg_mouseLeaved();
+    }
+    else if(event->type() == QEvent::Resize && scene())
+    {
+        QResizeEvent* resizeEvent = static_cast<QResizeEvent*>(event);
+
+        if(xv_scaleViewWhenResizeFlag
+                &&resizeEvent->oldSize().width() != 0
+                && resizeEvent->oldSize().height() != 0)
+        {
+            QPointF sceneCenterPos = mapToScene(viewport()->rect()).boundingRect().center();
+
+            double dx = (double)(resizeEvent->size().width())
+                    / (double)(resizeEvent->oldSize().width());
+
+            double dy = (double)(resizeEvent->size().height())
+                    / (double)(resizeEvent->oldSize().height());
+
+            scale(dx, dy);
+            centerOn(sceneCenterPos);
         }
     }
 
