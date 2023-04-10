@@ -29,7 +29,6 @@
 #include "X_CorrelationPlotterWidget.h"
 #include "X_TermCorrelationTableWidget.h"
 #include "X_Plotter.h"
-#include "X_MessagePanel.h"
 #include "X_MessageWidget.h"
 #include "X_EnergyLineTableWidget.h"
 // models
@@ -411,7 +410,6 @@ void MainWindow::xh_createComponents()
     // setting to widget dock
     xv_energyLineTableDock->setWidget(frame);
 
-
     // tabblifying docks by default
     // this->tabifyDockWidget(xv_messagePanelDock, xv_calibrationArrayDock);
 
@@ -656,7 +654,6 @@ void MainWindow::xh_createConnections()
             xv_energyLineTableWidget, &X_EnergyLineTableWidget::xp_energyLineVisibility);
     connect(xv_plotterDataManager, &X_AbstractPlotterDataManager::xg_requestEnergyLineColor,
             xv_energyLineTableWidget, &X_EnergyLineTableWidget::xp_energyLineColor);
-
 
     // equation dashboard
     //xv_equationSettingsPanelWidget->xp_connectToCalibrationRepository(xv_calibrationRepository);

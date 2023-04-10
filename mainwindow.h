@@ -4,6 +4,7 @@
 //==========================================================
 #include "X_BaseMainWindow.h"
 #include "X_TermCorrelationTableWidget.h"
+#include <QDockWidget>
 //==========================================================
 class X_FileActionManager;
 class X_SpectrumArrayWidget;
@@ -66,66 +67,65 @@ private slots:
                               bool &ok) const;
 
 
-
 private:
 
     // VARS
     // actions
-    QAction* xv_exitAction;
+    QAction* xv_exitAction = nullptr;
     //QAction* xv_languageControlAction;
-    QMenu* xv_languageMenu;
+    QMenu* xv_languageMenu = nullptr;
     // QAction* xv_openCalibrationProjectAction;
     //    QAction* xv_helpAction;
 
     // docks
     QList<QDockWidget*> xv_dockList;
-    QDockWidget* xv_spectrumArrayDock;
-    QDockWidget* xv_calibrationDock;
-    QDockWidget* xv_correlationPlotterDock;
-    QDockWidget* xv_chemElementArrayDock;
-    QDockWidget* xv_messagePanelDock;
-    QDockWidget* xv_energyLineTableDock;
+    QDockWidget* xv_spectrumArrayDock = nullptr;
+    QDockWidget* xv_calibrationDock = nullptr;
+    QDockWidget* xv_correlationPlotterDock = nullptr;
+//    QDockWidget* xv_chemElementArrayDock = nullptr;
+    QDockWidget* xv_messagePanelDock = nullptr;
+    QDockWidget* xv_energyLineTableDock = nullptr;
 
     // views
-    X_WidgetWithSidebar* xv_spectraSidebarWidget;
-    X_WidgetWithSidebar* xv_calibrationSidebarWidget;
+    X_WidgetWithSidebar* xv_spectraSidebarWidget = nullptr;
+    X_WidgetWithSidebar* xv_calibrationSidebarWidget = nullptr;
 
-    X_SpectrumArrayWidget* xv_spectrumArrayWidget;
-    X_JointSpectrumTableWidget* xv_spectrumTableWidget;
-    X_ChemElementWidget* xv_chemElementWidget;
-    X_CalibrationTableWidget* xv_calibrationTableWidget;
-    X_CalibrationWindowTableWidget* xv_calibrationWindowTableWidget;
+    X_SpectrumArrayWidget* xv_spectrumArrayWidget = nullptr;
+    X_JointSpectrumTableWidget* xv_spectrumTableWidget = nullptr;
+    X_ChemElementWidget* xv_chemElementWidget = nullptr;
+    X_CalibrationTableWidget* xv_calibrationTableWidget = nullptr;
+    X_CalibrationWindowTableWidget* xv_calibrationWindowTableWidget = nullptr;
 
-    X_TermCorrelationTableWidget* xv_termCorrelationTableWidget;
-    X_EquationSettingsDashBoard* xv_equationSettingsPanelWidget;
-    X_CorrelationPlotterWidget* xv_correlationPlotterWidget;
-    X_EnergyLineTableWidget* xv_energyLineTableWidget;
+    X_TermCorrelationTableWidget* xv_termCorrelationTableWidget = nullptr;
+    X_EquationSettingsDashBoard* xv_equationSettingsPanelWidget = nullptr;
+    X_CorrelationPlotterWidget* xv_correlationPlotterWidget = nullptr;
+    X_EnergyLineTableWidget* xv_energyLineTableWidget = nullptr;
 
-    X_MessageWidget* xv_messageWidget;
-    X_Plotter* xv_plotter;
+    X_MessageWidget* xv_messageWidget = nullptr;
+    X_Plotter* xv_plotter = nullptr;
 
     // models
-    X_ArrayModel* xv_arrayModel;
-    X_JointSpectraModel* xv_jointSpectraModel;
-    X_ChemElementModel* xv_chemElementModel;
-    X_CalibrationModel* xv_calibrationModel;
-    X_CalibrationWindowModel* xv_jointCalibrationWindowModel;
-    X_TermCorrelationTableModel* xv_termCorrelationTableModel;
+    X_ArrayModel* xv_arrayModel = nullptr;
+    X_JointSpectraModel* xv_jointSpectraModel = nullptr;
+    X_ChemElementModel* xv_chemElementModel = nullptr;
+    X_CalibrationModel* xv_calibrationModel = nullptr;
+    X_CalibrationWindowModel* xv_jointCalibrationWindowModel = nullptr;
+    X_TermCorrelationTableModel* xv_termCorrelationTableModel = nullptr;
 
     // components
-    X_HelpBrowser* mv_helpBrowser;
-    X_FileActionManager* xv_fileActionManager;
-    X_SpectrumArrayRepository* xv_spectrumArrayRepository;
-    X_JointSpectraDataManager* xv_jointSpectraDataManager;
-    X_CalibrationRepository* xv_calibrationRepository;
-    X_CalibrationWindowDataManager* xv_jointCalibrationWindowDataManager;
-    X_ChemElementDataManager* xv_chemElementDataManager;
-    X_AbstractPlotterDataManager* xv_plotterDataManager;
-    X_CorrelationPlotterDataManager* xv_calculationPlotterManager;
-    X_TermCorrelationTableManager* xv_termCorrelationTableManager;
+    X_HelpBrowser* mv_helpBrowser = nullptr;
+    X_FileActionManager* xv_fileActionManager = nullptr;
+    X_SpectrumArrayRepository* xv_spectrumArrayRepository = nullptr;
+    X_JointSpectraDataManager* xv_jointSpectraDataManager = nullptr;
+    X_CalibrationRepository* xv_calibrationRepository = nullptr;
+    X_CalibrationWindowDataManager* xv_jointCalibrationWindowDataManager = nullptr;
+    X_ChemElementDataManager* xv_chemElementDataManager = nullptr;
+    X_AbstractPlotterDataManager* xv_plotterDataManager = nullptr;
+    X_CorrelationPlotterDataManager* xv_calculationPlotterManager = nullptr;
+    X_TermCorrelationTableManager* xv_termCorrelationTableManager = nullptr;
 
     // FUNCS
-    void closeEvent(QCloseEvent* e);
+    void closeEvent(QCloseEvent* e) override;
     void xh_createActions();
     void xh_createComponents();
     QFrame* xh_setWidgetToFrame(QWidget*);
