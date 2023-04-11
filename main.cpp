@@ -83,7 +83,7 @@ void initMsgTypesToHandleInMainWindow()
 //======================================================
 void messageHandler(QtMsgType type, const QMessageLogContext &context, const QString &msg)
 {
-    if(pMainWindow != nullptr && (msgTypesToHandleInMainWindowSet.contains(type)))
+    if(pMainWindow && (msgTypesToHandleInMainWindowSet.contains(type)))
     {
         // let the application handles message (for example for saving in log)
         try

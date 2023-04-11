@@ -408,7 +408,6 @@ void X_RulersAndGridManager::xh_recalcLeftRule()
     // cleaning
     xv_YRulePointList.clear();
 
-
     if(xv_viewportGlobalRect.top() != xv_viewportGlobalRect.bottom()
             && xv_viewportSceneRect.top() != xv_viewportSceneRect.bottom()
             && xv_rulerWidget != nullptr)
