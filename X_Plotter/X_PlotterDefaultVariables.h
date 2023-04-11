@@ -1,10 +1,10 @@
 #ifndef X_PLOTTERDEFAULVARIABLES
 #define X_PLOTTERDEFAULVARIABLES
 
-extern const double gl_defaultSpectrumX_Value;
-extern const double gl_currentSpectrumX_Value;
-extern const double gl_defaultWindowX_Value;
-extern const double gl_currentWindowX_Value;
+extern const double gl_defaultSpectrumZValue;
+extern const double gl_currentSpectrumZValue;
+extern const double gl_defaultWindowZValue;
+extern const double gl_currentWindowZValue;
 
 #endif // X_PLOTTERDEFAULVARIABLES
 

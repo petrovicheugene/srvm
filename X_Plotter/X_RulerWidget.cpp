@@ -223,7 +223,7 @@ bool X_RulerWidget::xp_setBottomMarkPrecision(int precision)
     return true;
 }
 //=========================================================
-void X_RulerWidget::xp_setLeftMarkRecalcMetrix(const QString& label, bool labelVisibility,qreal K0, qreal K1, qreal K2)
+void X_RulerWidget::xp_setLeftMarkRecalcMetrix(const QString& label, bool labelVisibility,double K0, double K1, double K2)
 {
     xv_leftRulerProperty.ruleLabel = label;
     xv_leftRulerProperty.ruleLabelVisibility = labelVisibility;
@@ -234,7 +234,7 @@ void X_RulerWidget::xp_setLeftMarkRecalcMetrix(const QString& label, bool labelV
     update();
 }
 //=========================================================
-void X_RulerWidget::xp_setRightMarkRecalcMetrix(const QString& label, bool labelVisibility,qreal K0, qreal K1, qreal K2)
+void X_RulerWidget::xp_setRightMarkRecalcMetrix(const QString& label, bool labelVisibility,double K0, double K1, double K2)
 {
     xv_rightRulerProperty.ruleLabel = label;
     xv_rightRulerProperty.ruleLabelVisibility = labelVisibility;
@@ -245,7 +245,7 @@ void X_RulerWidget::xp_setRightMarkRecalcMetrix(const QString& label, bool label
     update();
 }
 //=========================================================
-void X_RulerWidget::xp_setTopMarkRecalcMetrix(const QString& label, bool labelVisibility,qreal K0, qreal K1, qreal K2)
+void X_RulerWidget::xp_setTopMarkRecalcMetrix(const QString& label, bool labelVisibility,double K0, double K1, double K2)
 {
     xv_topRulerProperty.ruleLabel = label;
     xv_topRulerProperty.ruleLabelVisibility = labelVisibility;
@@ -256,7 +256,7 @@ void X_RulerWidget::xp_setTopMarkRecalcMetrix(const QString& label, bool labelVi
     update();
 }
 //=========================================================
-void X_RulerWidget::xp_setBottomMarkRecalcMetrix(const QString& label, bool labelVisibility,qreal K0, qreal K1, qreal K2)
+void X_RulerWidget::xp_setBottomMarkRecalcMetrix(const QString& label, bool labelVisibility,double K0, double K1, double K2)
 {
     xv_bottomRulerProperty.ruleLabel = label;
     xv_bottomRulerProperty.ruleLabelVisibility = labelVisibility;
@@ -311,7 +311,7 @@ void X_RulerWidget::xp_setBottomMarkRecalcFlag(bool flag)
     update();
 }
 //=========================================================
-void X_RulerWidget::xp_setHorizontalMarkRecalcFactors(const QString& label, qreal K0, qreal K1, qreal K2)
+void X_RulerWidget::xp_setHorizontalMarkRecalcFactors(const QString& label, double K0, double K1, double K2)
 {
     xv_topRulerProperty.ruleLabel = label;
     xv_topRulerProperty.K0 = K0;
@@ -325,7 +325,7 @@ void X_RulerWidget::xp_setHorizontalMarkRecalcFactors(const QString& label, qrea
     update();
 }
 //=========================================================
-void X_RulerWidget::xp_horizontalMarkRecalcFactors(QString& label, qreal& K0, qreal& K1, qreal& K2) const
+void X_RulerWidget::xp_horizontalMarkRecalcFactors(QString& label, double& K0, double& K1, double& K2) const
 {
     label = xv_topRulerProperty.ruleLabel;
     K0 = xv_topRulerProperty.K0;
@@ -334,7 +334,7 @@ void X_RulerWidget::xp_horizontalMarkRecalcFactors(QString& label, qreal& K0, qr
 
 }
 //=========================================================
-void X_RulerWidget::xp_setVerticalMarkRecalcFactors(const QString& label, qreal K0, qreal K1, qreal K2)
+void X_RulerWidget::xp_setVerticalMarkRecalcFactors(const QString& label, double K0, double K1, double K2)
 {
     xv_leftRulerProperty.ruleLabel = label;
     xv_leftRulerProperty.K0 = K0;
@@ -468,14 +468,14 @@ void X_RulerWidget::xp_setInfoLabelVisible(bool visible)
 //=========================================================
 void X_RulerWidget::resizeEvent(QResizeEvent* event)
 {
-    if(xv_plot != nullptr)
+    if(xv_plot != 0)
     {
         // plot layout
         int newPlotWidth = event->size().width() - xv_leftRulerProperty.rulerSize() -
-                xv_rightRulerProperty.rulerSize();
+                           xv_rightRulerProperty.rulerSize();
 
         int newPliotHeight = event->size().height() - xv_topRulerProperty.rulerSize() -
-                xv_bottomRulerProperty.rulerSize();
+                             xv_bottomRulerProperty.rulerSize();
 
         if(newPlotWidth < 50 || newPliotHeight < 20)
         {
@@ -518,7 +518,7 @@ void X_RulerWidget::resizeEvent(QResizeEvent* event)
         xv_topRulerProperty.markRect = QRect(QPoint(0,0), QSize(event->size().width(), xv_topRulerProperty.markLineSize));
         if(xv_topRulerProperty.ruleLabelVisibility)
         {
-          int dy2 = static_cast<int>((xv_topRulerProperty.markRect.height()  - xv_maxMarkHeight*1.5) * -1.0);
+            int dy2 = (xv_topRulerProperty.markRect.height()  - xv_maxMarkHeight*1.5) * -1;
             xv_topRulerProperty.ruleLabelRect = xv_topRulerProperty.markRect.adjusted(0,0,0,dy2);
         }
         else
@@ -530,7 +530,7 @@ void X_RulerWidget::resizeEvent(QResizeEvent* event)
                                                 QSize(event->size().width(), xv_bottomRulerProperty.markLineSize));
         if(xv_bottomRulerProperty.ruleLabelVisibility)
         {
-          int dy1 = static_cast<int>((xv_bottomRulerProperty.markRect.height()  - xv_maxMarkHeight*1.5));
+            int dy1 = (xv_bottomRulerProperty.markRect.height()  - xv_maxMarkHeight*1.5);
             xv_bottomRulerProperty.ruleLabelRect = xv_bottomRulerProperty.markRect.adjusted(0, dy1, 0,0);
         }
         else
@@ -542,7 +542,7 @@ void X_RulerWidget::resizeEvent(QResizeEvent* event)
                                               QSize(xv_leftRulerProperty.markLineSize, geometryRect.height() + (xv_maxMarkHeight*2)));
         if(xv_leftRulerProperty.ruleLabelVisibility)
         {
-          int dx2 = static_cast<int>((xv_leftRulerProperty.markRect.width() - xv_maxMarkHeight*1.5) * -1.0);
+            int dx2 = (xv_leftRulerProperty.markRect.width() - xv_maxMarkHeight*1.5) * -1;
             xv_leftRulerProperty.ruleLabelRect = xv_leftRulerProperty.markRect.adjusted(0,0, dx2, 0);
         }
         else
@@ -554,7 +554,7 @@ void X_RulerWidget::resizeEvent(QResizeEvent* event)
                                                QSize(xv_rightRulerProperty.markLineSize, geometryRect.height() + (xv_maxMarkHeight*2)));
         if(xv_rightRulerProperty.ruleLabelVisibility)
         {
-          int dx1 = static_cast<int>(xv_leftRulerProperty.markRect.width() - xv_maxMarkHeight*1.5);
+            int dx1 = xv_leftRulerProperty.markRect.width() - xv_maxMarkHeight*1.5;
             xv_rightRulerProperty.ruleLabelRect = xv_rightRulerProperty.markRect.adjusted(dx1, 0, 0, 0 );
         }
         else
@@ -577,7 +577,7 @@ void X_RulerWidget::resizeEvent(QResizeEvent* event)
 //=========================================================
 void X_RulerWidget::paintEvent(QPaintEvent* event)
 {
-    if(xv_plot != nullptr && !xv_dontRepaint)
+    if(xv_plot != 0 && !xv_dontRepaint)
     {
         QPainter painter(this);
         painter.setWindow(event->rect());
@@ -601,7 +601,7 @@ void X_RulerWidget::paintEvent(QPaintEvent* event)
 //=========================================================
 void X_RulerWidget::xh_paintLeftRule(QPainter* painter)
 {
-    if(!xv_leftRulerProperty.visibility || xv_YRuleList == nullptr)
+    if(!xv_leftRulerProperty.visibility || xv_YRuleList == 0)
     {
         return;
     }
@@ -610,46 +610,46 @@ void X_RulerWidget::xh_paintLeftRule(QPainter* painter)
     QFont font = this->font();
     font.setPixelSize(xv_leftRulerProperty.fontSize);
     QFontMetrics fontMetrics(font);
-    QRect markRect;
+    QRectF markRect;
     painter->setFont(font);
 
-    int y;
+    double y;
     for(int i = 0; i < xv_YRuleList->count(); i++)
     {
         // scratch
-        y = mapFromGlobal(QPoint(0, qRound(xv_YRuleList->value(i).globalPos))).y();
+        y = mapFromGlobal(QPointF(0.0, qRound(xv_YRuleList->value(i).globalPos))).y();
 
         if(xv_leftRulerProperty.scratchRect.isValid())
         {
-            painter->drawLine(xv_leftRulerProperty.scratchRect.left() , y,
-                              xv_leftRulerProperty.scratchRect.right(), y);
+            painter->drawLine(QPointF(xv_leftRulerProperty.scratchRect.left() , y),
+                              QPointF(xv_leftRulerProperty.scratchRect.right(), y));
 
         }
         // Mark
         if(xv_leftRulerProperty.markRect.isValid() && xv_YRuleList->value(i).markType != RulePoint::MT_SCRATCH)
         {
             // scratch
-            painter->drawLine(xv_leftRulerProperty.markRect.right() - xv_leftRulerProperty.scratchLineSize, y,
-                              xv_leftRulerProperty.markRect.right(), y);
+            painter->drawLine(QPointF(xv_leftRulerProperty.markRect.right() - xv_leftRulerProperty.scratchLineSize, y),
+                              QPointF(xv_leftRulerProperty.markRect.right(), y));
 
 
             // mark
             if(xv_YRuleList->value(i).markType == RulePoint::MT_MARK)
             {
-                qreal markValue = xv_YRuleList->value(i).markValue * -1;
+                double markValue = xv_YRuleList->value(i).markValue * -1;
                 if(xv_leftRulerProperty.recalcMarkLabel)
                 {
                     markValue = pow(markValue, 2.0)*xv_leftRulerProperty.K2
-                            + markValue*xv_leftRulerProperty.K1
-                            + xv_leftRulerProperty.K0;
+                                + markValue*xv_leftRulerProperty.K1
+                                + xv_leftRulerProperty.K0;
                 }
                 QString mark = QString::number(markValue, xv_leftRulerProperty.format, xv_leftRulerProperty.precision);
-                markRect = QRect(QPoint(0, 0),
-                                 QSize(fontMetrics.horizontalAdvance(mark), xv_maxMarkHeight));
-                markRect.moveCenter(QPoint(xv_leftRulerProperty.markRect.right()
-                                           - xv_leftRulerProperty.scratchLineSize
-                                           - xv_leftRulerProperty.markOffsetFromScratch
-                                           - markRect.width()/2, y));
+                markRect = QRectF(QPointF(0.0, 0.0),
+                                 QSizeF(fontMetrics.horizontalAdvance(mark), xv_maxMarkHeight));
+                markRect.moveCenter(QPointF(xv_leftRulerProperty.markRect.right()
+                                               - xv_leftRulerProperty.scratchLineSize
+                                               - xv_leftRulerProperty.markOffsetFromScratch
+                                               - markRect.width()/2.0, y));
                 painter->drawText(markRect, mark);
             }
         }
@@ -658,11 +658,11 @@ void X_RulerWidget::xh_paintLeftRule(QPainter* painter)
     if(xv_leftRulerProperty.ruleLabelVisibility)
     {
         painter->rotate(-90);
-        QRect ruleLabelRectForRotatedPainter;
+        QRectF ruleLabelRectForRotatedPainter;
         ruleLabelRectForRotatedPainter.setBottom(xv_leftRulerProperty.ruleLabelRect.right());
         ruleLabelRectForRotatedPainter.setTop(xv_leftRulerProperty.ruleLabelRect.left());
-        ruleLabelRectForRotatedPainter.setRight(xv_leftRulerProperty.ruleLabelRect.top() * -1);
-        ruleLabelRectForRotatedPainter.setLeft(xv_leftRulerProperty.ruleLabelRect.bottom() * -1);
+        ruleLabelRectForRotatedPainter.setRight(xv_leftRulerProperty.ruleLabelRect.top() * -1.0);
+        ruleLabelRectForRotatedPainter.setLeft(xv_leftRulerProperty.ruleLabelRect.bottom() * -1.0);
         painter->setRenderHint(QPainter::Antialiasing, true);
         painter->drawText(ruleLabelRectForRotatedPainter, Qt::AlignCenter, xv_leftRulerProperty.ruleLabel);
     }
@@ -672,7 +672,7 @@ void X_RulerWidget::xh_paintLeftRule(QPainter* painter)
 //=========================================================
 void X_RulerWidget::xh_paintRightRule(QPainter* painter)
 {
-    if(!xv_rightRulerProperty.visibility || xv_YRuleList == nullptr)
+    if(!xv_rightRulerProperty.visibility || xv_YRuleList == 0)
     {
         return;
     }
@@ -681,47 +681,47 @@ void X_RulerWidget::xh_paintRightRule(QPainter* painter)
     QFont font = this->font();
     font.setPixelSize(xv_rightRulerProperty.fontSize);
     QFontMetrics fontMetrics(font);
-    QRect markRect;
+    QRectF markRect;
     painter->setFont(font);
 
-    int y;
+    double y;
     for(int i = 0; i < xv_YRuleList->count(); i++)
     {
         // scratch
-        y = mapFromGlobal(QPoint(0, qRound(xv_YRuleList->value(i).globalPos))).y();
+        y = mapFromGlobal(QPointF(0.0, qRound(xv_YRuleList->value(i).globalPos))).y();
 
         if(xv_rightRulerProperty.scratchRect.isValid())
         {
-            painter->drawLine(xv_rightRulerProperty.scratchRect.left() , y,
-                              xv_rightRulerProperty.scratchRect.right(), y);
+            painter->drawLine(QPointF(xv_rightRulerProperty.scratchRect.left() , y),
+                              QPointF(xv_rightRulerProperty.scratchRect.right(), y));
 
         }
         // Mark
         if(xv_rightRulerProperty.markRect.isValid() && xv_YRuleList->value(i).markType != RulePoint::MT_SCRATCH)
         {
             // scratch
-            painter->drawLine(xv_rightRulerProperty.markRect.left() + xv_rightRulerProperty.scratchLineSize, y,
-                              xv_rightRulerProperty.markRect.left(), y);
+            painter->drawLine(QPointF(xv_rightRulerProperty.markRect.left() + xv_rightRulerProperty.scratchLineSize, y),
+                              QPointF(xv_rightRulerProperty.markRect.left(), y));
 
 
             // mark
             if(xv_YRuleList->value(i).markType == RulePoint::MT_MARK)
             {
-                qreal markValue = xv_YRuleList->value(i).markValue * -1;
+                double markValue = xv_YRuleList->value(i).markValue * -1;
                 if(xv_rightRulerProperty.recalcMarkLabel)
                 {
                     markValue = pow(markValue, 2.0)*xv_rightRulerProperty.K2
-                            + markValue*xv_rightRulerProperty.K1
-                            + xv_rightRulerProperty.K0;
+                                + markValue*xv_rightRulerProperty.K1
+                                + xv_rightRulerProperty.K0;
                 }
 
                 QString mark = QString::number(markValue, xv_rightRulerProperty.format, xv_rightRulerProperty.precision);
-                markRect = QRect(QPoint(0, 0),
-                                 QSize(fontMetrics.horizontalAdvance(mark), xv_maxMarkHeight));
-                markRect.moveCenter(QPoint(xv_rightRulerProperty.markRect.left()
-                                           + xv_rightRulerProperty.scratchLineSize
-                                           + xv_rightRulerProperty.markOffsetFromScratch
-                                           + markRect.width()/2, y));
+                markRect = QRectF(QPointF(0.0, 0.0),
+                                 QSizeF(fontMetrics.horizontalAdvance(mark), xv_maxMarkHeight));
+                markRect.moveCenter(QPointF(xv_rightRulerProperty.markRect.left()
+                                               + xv_rightRulerProperty.scratchLineSize
+                                               + xv_rightRulerProperty.markOffsetFromScratch
+                                               + markRect.width()/2.0, y));
                 painter->drawText(markRect, mark);
             }
         }
@@ -730,11 +730,11 @@ void X_RulerWidget::xh_paintRightRule(QPainter* painter)
     if(xv_rightRulerProperty.ruleLabelVisibility)
     {
         painter->rotate(-90);
-        QRect ruleLabelRectForRotatedPainter;
+        QRectF ruleLabelRectForRotatedPainter;
         ruleLabelRectForRotatedPainter.setBottom(xv_rightRulerProperty.ruleLabelRect.right());
         ruleLabelRectForRotatedPainter.setTop(xv_rightRulerProperty.ruleLabelRect.left());
-        ruleLabelRectForRotatedPainter.setRight(xv_rightRulerProperty.ruleLabelRect.top() * -1);
-        ruleLabelRectForRotatedPainter.setLeft(xv_rightRulerProperty.ruleLabelRect.bottom() * -1);
+        ruleLabelRectForRotatedPainter.setRight(xv_rightRulerProperty.ruleLabelRect.top() * -1.0);
+        ruleLabelRectForRotatedPainter.setLeft(xv_rightRulerProperty.ruleLabelRect.bottom() * -1.0);
         painter->setRenderHint(QPainter::Antialiasing, true);
         painter->drawText(ruleLabelRectForRotatedPainter, Qt::AlignCenter, xv_rightRulerProperty.ruleLabel);
     }
@@ -743,22 +743,22 @@ void X_RulerWidget::xh_paintRightRule(QPainter* painter)
 //=========================================================
 void X_RulerWidget::xh_paintTopRule(QPainter* painter)
 {
-    if(!xv_topRulerProperty.visibility || xv_XRuleList == nullptr)
+    if(!xv_topRulerProperty.visibility || xv_XRuleList == 0)
     {
         return;
     }
     painter->save();
 
-    int x;
+    double x;
     for(int i = 0; i < xv_XRuleList->count(); i++)
     {
         // scratch
-        x = mapFromGlobal(QPoint(qRound(xv_XRuleList->value(i).globalPos), 0)).x();
+        x = mapFromGlobal(QPointF(qRound(xv_XRuleList->value(i).globalPos), 0.0)).x();
 
         if(xv_topRulerProperty.scratchRect.isValid())
         {
-            painter->drawLine(x, xv_topRulerProperty.scratchRect.top(),
-                              x, xv_topRulerProperty.scratchRect.bottom());
+            painter->drawLine(QPointF(x, xv_topRulerProperty.scratchRect.top()),
+                              QPointF(x, xv_topRulerProperty.scratchRect.bottom()));
         }
         // Mark
         if(xv_topRulerProperty.markRect.isValid() && xv_XRuleList->value(i).markType != RulePoint::MT_SCRATCH)
@@ -766,31 +766,31 @@ void X_RulerWidget::xh_paintTopRule(QPainter* painter)
             QFont font = this->font();
             font.setPixelSize(xv_topRulerProperty.fontSize);
             QFontMetrics fontMetrics(font);
-            QRect markRect;
+            QRectF markRect;
             painter->setFont(font);
             // scratch
-            painter->drawLine(x, xv_topRulerProperty.markRect.bottom() -  xv_topRulerProperty.scratchLineSize, x,
-                              xv_topRulerProperty.markRect.bottom());
+            painter->drawLine(QPointF(x, xv_topRulerProperty.markRect.bottom() -  xv_topRulerProperty.scratchLineSize),
+                              QPointF(x, xv_topRulerProperty.markRect.bottom()));
 
 
             // mark
             if(xv_XRuleList->value(i).markType == RulePoint::MT_MARK)
             {
-                qreal markValue = xv_XRuleList->value(i).markValue;
+                double markValue = xv_XRuleList->value(i).markValue;
                 if(xv_topRulerProperty.recalcMarkLabel)
                 {
                     markValue = pow(markValue, 2.0)*xv_topRulerProperty.K2
-                            + markValue*xv_topRulerProperty.K1
-                            + xv_topRulerProperty.K0;
+                                + markValue*xv_topRulerProperty.K1
+                                + xv_topRulerProperty.K0;
                 }
 
                 QString mark = QString::number(markValue, xv_topRulerProperty.format, xv_topRulerProperty.precision);
-                markRect = QRect(QPoint(0, 0),
-                                 QSize(fontMetrics.horizontalAdvance(mark), xv_maxMarkHeight));
+                markRect = QRectF(QPointF(0.0, 0.0),
+                                 QSizeF(fontMetrics.horizontalAdvance(mark), xv_maxMarkHeight));
                 markRect.moveCenter(QPoint(x, xv_topRulerProperty.markRect.bottom()
-                                           - xv_topRulerProperty.scratchLineSize
-                                           - xv_topRulerProperty.markOffsetFromScratch
-                                           - markRect.height()/2));
+                                                  - xv_topRulerProperty.scratchLineSize
+                                                  - xv_topRulerProperty.markOffsetFromScratch
+                                                  - markRect.height()/2.0));
                 painter->drawText(markRect, mark);
             }
         }
@@ -808,22 +808,22 @@ void X_RulerWidget::xh_paintTopRule(QPainter* painter)
 //=========================================================
 void X_RulerWidget::xh_paintBottomRule(QPainter* painter)
 {
-    if(!xv_bottomRulerProperty.visibility || xv_XRuleList == nullptr)
+    if(!xv_bottomRulerProperty.visibility || xv_XRuleList == 0)
     {
         return;
     }
     painter->save();
 
-    int x;
+    double x;
     for(int i = 0; i < xv_XRuleList->count(); i++)
     {
         // scratch
-        x = mapFromGlobal(QPoint(qRound(xv_XRuleList->value(i).globalPos), 0)).x();
+        x = mapFromGlobal(QPointF(qRound(xv_XRuleList->value(i).globalPos), 0.0)).x();
 
         if(xv_bottomRulerProperty.scratchRect.isValid())
         {
-            painter->drawLine(x, xv_bottomRulerProperty.scratchRect.top(),
-                              x, xv_bottomRulerProperty.scratchRect.bottom());
+            painter->drawLine(QPointF(x, xv_bottomRulerProperty.scratchRect.top()),
+                              QPointF(x, xv_bottomRulerProperty.scratchRect.bottom()));
         }
         // Mark
         if(xv_bottomRulerProperty.markRect.isValid() && xv_XRuleList->value(i).markType != RulePoint::MT_SCRATCH)
@@ -831,31 +831,31 @@ void X_RulerWidget::xh_paintBottomRule(QPainter* painter)
             QFont font = this->font();
             font.setPixelSize(xv_bottomRulerProperty.fontSize);
             QFontMetrics fontMetrics(font);
-            QRect markRect;
+            QRectF markRect;
             painter->setFont(font);
             // scratch
-            painter->drawLine(x, xv_bottomRulerProperty.markRect.top() + xv_bottomRulerProperty.scratchLineSize, x,
-                              xv_bottomRulerProperty.markRect.top());
+            painter->drawLine(QPointF(x, xv_bottomRulerProperty.markRect.top() + xv_bottomRulerProperty.scratchLineSize),
+                              QPointF(x, xv_bottomRulerProperty.markRect.top()));
 
 
             // mark
             if(xv_XRuleList->value(i).markType == RulePoint::MT_MARK)
             {
-                qreal markValue = xv_XRuleList->value(i).markValue;
+                double markValue = xv_XRuleList->value(i).markValue;
                 if(xv_bottomRulerProperty.recalcMarkLabel)
                 {
                     markValue = pow(markValue, 2.0)*xv_bottomRulerProperty.K2
-                            + markValue*xv_bottomRulerProperty.K1
-                            + xv_bottomRulerProperty.K0;
+                                + markValue*xv_bottomRulerProperty.K1
+                                + xv_bottomRulerProperty.K0;
                 }
 
                 QString mark = QString::number(markValue, xv_bottomRulerProperty.format, xv_bottomRulerProperty.precision);
-                markRect = QRect(QPoint(0, 0),
-                                 QSize(fontMetrics.horizontalAdvance(mark), xv_maxMarkHeight));
-                markRect.moveCenter(QPoint(x, xv_bottomRulerProperty.markRect.top()
-                                           + xv_bottomRulerProperty.scratchLineSize
-                                           + xv_bottomRulerProperty.markOffsetFromScratch
-                                           + markRect.height()/2));
+                markRect = QRectF(QPointF(0.0, 0.0),
+                                 QSizeF(fontMetrics.horizontalAdvance(mark), xv_maxMarkHeight));
+                markRect.moveCenter(QPointF(x, xv_bottomRulerProperty.markRect.top()
+                                                  + xv_bottomRulerProperty.scratchLineSize
+                                                  + xv_bottomRulerProperty.markOffsetFromScratch
+                                                  + markRect.height()/2.0));
                 painter->drawText(markRect, mark);
             }
         }
@@ -874,9 +874,9 @@ void X_RulerWidget::xh_paintBottomRule(QPainter* painter)
 void X_RulerWidget::xh_recalcRuleSizes()
 {
     int fontSize = qMax( qMax(xv_leftRulerProperty.fontSize, xv_rightRulerProperty.fontSize),
-                         qMax(xv_topRulerProperty.fontSize, xv_bottomRulerProperty.fontSize));
+                        qMax(xv_topRulerProperty.fontSize, xv_bottomRulerProperty.fontSize));
     int precision = qMax( qMax(xv_leftRulerProperty.precision, xv_rightRulerProperty.precision),
-                          qMax(xv_topRulerProperty.precision, xv_bottomRulerProperty.precision));
+                         qMax(xv_topRulerProperty.precision, xv_bottomRulerProperty.precision));
 
     QFont f = font();
     f.setPixelSize(fontSize);
@@ -899,27 +899,27 @@ void X_RulerWidget::xh_recalcRuleSizes()
     xv_rightRulerProperty.markOffsetFromScratch = fm.horizontalAdvance("8");
 
     // mark line sizes
-    xv_topRulerProperty.markLineSize = static_cast<int>(xv_maxMarkHeight * 1.5);
-    xv_bottomRulerProperty.markLineSize = static_cast<int>(xv_maxMarkHeight * 1.5);
+    xv_topRulerProperty.markLineSize = xv_maxMarkHeight * 1.5;
+    xv_bottomRulerProperty.markLineSize = xv_maxMarkHeight * 1.5;
     xv_leftRulerProperty.markLineSize = xv_maxMarkWidth + xv_leftRulerProperty.markOffsetFromScratch + xv_leftRulerProperty.scratchLineSize;
     xv_rightRulerProperty.markLineSize = xv_maxMarkWidth  + xv_rightRulerProperty.markOffsetFromScratch + xv_rightRulerProperty.scratchLineSize;
 
     // adding space for rule name
     if(xv_leftRulerProperty.ruleLabelVisibility)
     {
-      xv_leftRulerProperty.markLineSize += static_cast<int>(xv_maxMarkHeight * 1.5);
+        xv_leftRulerProperty.markLineSize += xv_maxMarkHeight * 1.5;
     }
     if(xv_rightRulerProperty.ruleLabelVisibility)
     {
-      xv_rightRulerProperty.markLineSize += static_cast<int>(xv_maxMarkHeight * 1.5);
+        xv_rightRulerProperty.markLineSize += xv_maxMarkHeight * 1.5;
     }
     if(xv_topRulerProperty.ruleLabelVisibility)
     {
-      xv_topRulerProperty.markLineSize += static_cast<int>(xv_maxMarkHeight * 1.5);
+        xv_topRulerProperty.markLineSize += xv_maxMarkHeight * 1.5;
     }
     if(xv_bottomRulerProperty.ruleLabelVisibility)
     {
-        xv_bottomRulerProperty.markLineSize += static_cast<int>(xv_maxMarkHeight * 1.5);
+        xv_bottomRulerProperty.markLineSize += xv_maxMarkHeight * 1.5;
     }
 }
 //=========================================================

@@ -16,7 +16,7 @@ public:
 
     explicit X_ChartPointGraphicsItem(const X_CorrelationPlotterDataManager* dataManager,
                                      const X_VisibilityPointF &visibilityPoint,
-                                      X_ChartPointOptions* seriesPointOptions,
+                                     X_ChartPointOptions* seriesPointOptions,
                                       qint64 relatedObjectId,
                                       QGraphicsItem * parent = 0);
     ~X_ChartPointGraphicsItem();
@@ -35,14 +35,14 @@ public:
 
     qint64 xp_relatedObjectId() const;
     void xp_applyVisibilityAndPos(const X_VisibilityPointF&, X_ChartPointOptions* chartPointOptions);
-    //qint64 xp_pointId();
+    //qint64 zp_pointId();
     void xp_updateCurrentItem();
 
 protected:
 
     // FUNCS
-    virtual void	mousePressEvent(QGraphicsSceneMouseEvent * event) override;
-    virtual void	mouseReleaseEvent(QGraphicsSceneMouseEvent * event) override;
+    virtual void mousePressEvent(QGraphicsSceneMouseEvent * event) override;
+    virtual void mouseReleaseEvent(QGraphicsSceneMouseEvent * event) override;
 
 private:
 
@@ -54,7 +54,7 @@ private:
     static QColor xv_currentColor;
     static qint64 xv_currentSpectrumId;
 
-    //QRectF xv_boundingRect;
+    //QRectF zv_boundingRect;
 };
 //======================================================
 #endif // X_SERIESPOINTGRAPHICSITEM_H

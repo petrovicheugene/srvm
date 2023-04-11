@@ -1,6 +1,6 @@
 //======================================================
 #include "X_RulerToolGraphicsItem.h"
-#include "X_TextGraphicsItem.h"
+//#include "X_TextGraphicsItem.h"
 
 #include <QBrush>
 #include <QColor>

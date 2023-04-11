@@ -47,10 +47,11 @@ signals:
     void xg_mouseScenePositionChanged(QPointF scenePos) const;
     void xg_mouseLeaved() const;
 
-   void xg_requestForScrollBarVisible(Qt::Orientation, bool&);
-   void xg_cursorAreaImage(QImage);
-   void xg_viewportRectChanged(QRectF) const;
-   void xg_rulerToolChanged(QPointF startPoint, QPointF endPoint, bool visibility) const;
+    void xg_inquiryForScrollBarVisible(Qt::Orientation, bool&);
+    void xg_cursorAreaImage(QImage);
+    void xg_mousePressedAt(QPointF);
+    void xg_viewportRectChanged(QRectF) const;
+    void xg_rulerToolChanged(QPointF startPoint, QPointF endPoint, bool visibility) const;
 
 
 protected:
@@ -60,16 +61,21 @@ protected:
     void wheelEvent(QWheelEvent * event);
     void mousePressEvent(QMouseEvent* event);
     void mouseReleaseEvent(QMouseEvent* event);
+
     void mouseMoveEvent(QMouseEvent *event);
     bool viewportEvent(QEvent* event);
     void drawBackground(QPainter * painter, const QRectF & rect);
+    void drawForeground(QPainter *painter, const QRectF &rect);
+
+    void contextMenuEvent(QContextMenuEvent *event);
 
     // just hidden
-    void	setViewport(QWidget * widget);
+    void setViewport(QWidget * widget);
 
     void fitInView(const QRectF &rect, Qt::AspectRatioMode aspectRatioMode = Qt::IgnoreAspectRatio);
-    void fitInView(qreal x, qreal y, qreal w, qreal h, Qt::AspectRatioMode aspectRatioMode = Qt::IgnoreAspectRatio);
+    void fitInView(double x, double y, double w, double h, Qt::AspectRatioMode aspectRatioMode = Qt::IgnoreAspectRatio);
     void fitInView(const QGraphicsItem *item, Qt::AspectRatioMode aspectRatioMode = Qt::IgnoreAspectRatio);
+
 
 private:
 
@@ -78,7 +84,6 @@ private:
                   PM_PAD_DRAGGING,
                   PM_RUBBER_BAND,
                   PM_RULER};
-
 
     X_RulersAndGridManager* xv_rulersAndGreedManager;
     PlotMode xv_plotMode;
@@ -90,10 +95,9 @@ private:
     bool xv_scaleViewWhenResizeFlag;
     bool xv_drawGridFlag;
 
-    qreal xv_minSideSizeOfVisibleScene;
+    double xv_minSideSizeOfVisibleScene;
     int xv_rubberBandSideMinSize;
     int xv_ruleToolMinSize;
-
     QList<RulePoint> * xv_XRuleList;
     QList<RulePoint> * xv_YRuleList;
 

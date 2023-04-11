@@ -8,8 +8,8 @@
 #include <QStyleOptionGraphicsItem>
 //======================================================
 QColor X_WindowGraphicsItem::xv_currentWindowColor = QColor(Qt::red);
-qreal X_WindowGraphicsItem::xv_topMargin = -100;
-qreal X_WindowGraphicsItem::xv_bottomMargin = 0;
+double X_WindowGraphicsItem::xv_topMargin = -100;
+double X_WindowGraphicsItem::xv_bottomMargin = 0;
 qint64 X_WindowGraphicsItem::xv_currentWindowId = -1;
 quint8 X_WindowGraphicsItem::xv_alphaCannelValue = 30;
 
@@ -21,10 +21,10 @@ X_WindowGraphicsItem::X_WindowGraphicsItem(const X_CalibrationWindow* window,
 {
     xv_windowId = window->xp_windowId();
     xv_color = color;
-    xv_leftMargin = (qreal)window->xp_firstChannel();
-    xv_rightMargin = (qreal)(window->xp_lastChannel() + 1);
-
-    setZValue(gl_defaultWindowX_Value);
+    xv_leftMargin = (double)window->xp_firstChannel();
+    xv_rightMargin = (double)(window->xp_lastChannel() + 1);
+    
+    setZValue(gl_defaultWindowZValue);
     xv_lineColor = xv_color;
     xv_brushColor = xv_color;
     xv_brushColor.setAlpha(xv_alphaCannelValue);
@@ -37,7 +37,9 @@ QRectF X_WindowGraphicsItem::boundingRect() const
     return xv_boundingRect;
 }
 //======================================================
-void X_WindowGraphicsItem::paint(QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget)
+void X_WindowGraphicsItem::paint(QPainter * painter,
+                                const QStyleOptionGraphicsItem * option,
+                                QWidget * widget)
 {
     painter->save();
     // window body
@@ -75,9 +77,9 @@ void X_WindowGraphicsItem::xp_setCurrentWindowId(qint64 id)
     xv_currentWindowId = id;
 }
 //======================================================
-bool X_WindowGraphicsItem::xp_setTopAndButtonMargins(qreal top, qreal bottom)
+bool X_WindowGraphicsItem::xp_setTopAndButtonMargins(double top, double bottom)
 {
-    if(top == bottom)
+    if(top - bottom == 0.0)
     {
         return false;
     }
@@ -103,7 +105,7 @@ qint64 X_WindowGraphicsItem::xp_windowId() const
     return xv_windowId;
 }
 //======================================================
-void X_WindowGraphicsItem::xp_setLeftRightMargins(qreal first, qreal last)
+void X_WindowGraphicsItem::xp_setLeftRightMargins(double first, double last)
 {
     if(first > last)
     {
@@ -120,7 +122,7 @@ void X_WindowGraphicsItem::xp_updateCurrentWindow(bool visible)
 {
     if(xv_currentWindowId == xv_windowId)
     {
-        setZValue(gl_currentWindowX_Value);
+        setZValue(gl_currentWindowZValue);
         xv_lineColor = xv_color;
         xv_brushColor = xv_currentWindowColor;
         xv_brushColor.setAlpha(xv_alphaCannelValue);
@@ -130,7 +132,7 @@ void X_WindowGraphicsItem::xp_updateCurrentWindow(bool visible)
     {
         //      if(zValue() != gl_defaultWindowX_Value)
         //      {
-        setZValue(gl_defaultWindowX_Value);
+        setZValue(gl_defaultWindowZValue);
         xv_lineColor = xv_color;
         xv_brushColor = xv_color;
         xv_brushColor.setAlpha(xv_alphaCannelValue);
@@ -190,7 +192,7 @@ void X_WindowGraphicsItem::xh_recalcShapeAndBoundingRect()
 
     // paint rect shape
     QPainterPath newRectPaintShape;
-    qreal shift = (qAbs(xv_bottomMargin - xv_topMargin)) / 2;
+    double shift = (qAbs(xv_bottomMargin - xv_topMargin)) / 2;
     topLeftPoint = QPointF(xv_leftMargin, xv_topMargin - shift);
     bottomRightPoint = QPointF(xv_rightMargin, xv_bottomMargin + shift);
     QRectF paintRect(topLeftPoint, bottomRightPoint);

@@ -120,7 +120,7 @@ void X_RulersAndGridManager::xp_recalcRulesAndGrid()
 
     if(xv_viewportGlobalRect == viewportGlobalRect
             && xv_viewportSceneRect == viewportSceneRect
-            && xv_globalX_eroPoint == globalX_eroPoint
+        && xv_globalZeroPoint == globalX_eroPoint
             && xv_distortionFactor - distortionFactor == 0.0
             && xv_distortionCorrectionFactor - distortionCorrectionFactor == 0.0)
     {
@@ -132,7 +132,7 @@ void X_RulersAndGridManager::xp_recalcRulesAndGrid()
     xv_distortionCorrectionFactor = distortionCorrectionFactor;
     xv_viewportGlobalRect = viewportGlobalRect;
     xv_viewportSceneRect = viewportSceneRect;
-    xv_globalX_eroPoint = globalX_eroPoint;
+    xv_globalZeroPoint = globalX_eroPoint;
     xh_recalcRectsForPaint();
 
     // bottom rule haven't be distorted
@@ -171,13 +171,13 @@ void X_RulersAndGridManager::xh_recalcBottomRule()
             && xv_viewportSceneRect.left() - xv_viewportSceneRect.right() != 0.0
             && xv_rulerWidget != nullptr)
     {
-        int maxVpMarkInterval = xv_rulerWidget->xp_maxMarkWidth() * 2 ;
-        qreal maxScMarkInterval = xv_plotView->mapToScene(QPoint(maxVpMarkInterval, 0)).x()
-                - xv_plotView->mapToScene(QPoint(0,0)).x();
+        int maxVpMarkInterval = xv_rulerWidget->xp_maxMarkWidth() * 2;
+        qreal maxScMarkInterval = qAbs(xv_plotView->mapToScene(QPoint(maxVpMarkInterval, 0)).x()
+                                       - xv_plotView->mapToScene(QPoint(0,0)).x());
 
         // new mark and scratch interval calculation
-        qreal newScMarkInterval = 1;
-        qreal newScScratchInterval = 1;
+        qreal newScMarkInterval = 1.0;
+        qreal newScScratchInterval = 1.0;
 
         if(maxScMarkInterval < xv_minimalHorizontalScaleInterval)
         {
@@ -225,7 +225,7 @@ void X_RulersAndGridManager::xh_recalcBottomRule()
                     newScScratchInterval = newScMarkInterval / devisionList.value(i, 1.0);
                     QPoint vp_scratchIntervalPos = xv_plotView->mapFromScene(QPointF(newScScratchInterval, xv_viewportSceneRect.top()));
                     int firstSratchXPos = xv_plotView->viewport()->mapToGlobal(vp_scratchIntervalPos).x();
-                    int newVpScratchInterval = qAbs(firstSratchXPos - xv_globalX_eroPoint.x());
+                    int newVpScratchInterval = qAbs(firstSratchXPos - xv_globalZeroPoint.x());
                     if(newVpScratchInterval < xv_minimalScratchVpInterval || newScScratchInterval < xv_minimalHorizontalScaleInterval)
                     {
                         newScScratchInterval = newScMarkInterval;
@@ -245,7 +245,7 @@ void X_RulersAndGridManager::xh_recalcBottomRule()
                     newScScratchInterval = newScMarkInterval / devisionList.value(i, 1.0);
                     QPoint vp_scratchIntervalPos = xv_plotView->mapFromScene(QPointF(newScScratchInterval, xv_viewportSceneRect.top()));
                     int firstSratchXPos = xv_plotView->viewport()->mapToGlobal(vp_scratchIntervalPos).x();
-                    int newVpScratchInterval = qAbs(firstSratchXPos - xv_globalX_eroPoint.x());
+                    int newVpScratchInterval = qAbs(firstSratchXPos - xv_globalZeroPoint.x());
                     if(newVpScratchInterval < xv_minimalScratchVpInterval || newScScratchInterval < xv_minimalHorizontalScaleInterval)
                     {
                         newScScratchInterval = newScMarkInterval;
@@ -261,7 +261,7 @@ void X_RulersAndGridManager::xh_recalcBottomRule()
                 newScScratchInterval = newScMarkInterval / 5.0;
                 QPoint vp_scratchIntervalPos = xv_plotView->mapFromScene(QPointF(newScScratchInterval, xv_viewportSceneRect.top()));
                 int firstSratchXPos = xv_plotView->viewport()->mapToGlobal(vp_scratchIntervalPos).x();
-                int newVpScratchInterval = qAbs(firstSratchXPos - xv_globalX_eroPoint.x());
+                int newVpScratchInterval = qAbs(firstSratchXPos - xv_globalZeroPoint.x());
                 if(newVpScratchInterval < xv_minimalScratchVpInterval || newScScratchInterval < xv_minimalHorizontalScaleInterval)
                 {
                     newScScratchInterval = newScMarkInterval;
@@ -320,7 +320,6 @@ void X_RulersAndGridManager::xh_recalcBottomRule()
 
         // Marks
         qreal sc = newScScratchInterval;
-        // for(qreal sc = newScScratchInterval; sc <= xv_sceneRectForPaint.right(); sc+= newScScratchInterval)
         while(sc <= xv_sceneRectForPaint.right())
         {
             // count in mark interval
@@ -357,13 +356,12 @@ void X_RulersAndGridManager::xh_recalcBottomRule()
             rulePoint = RulePoint(vp, sc, markType);
             xv_XRulePointList.append(rulePoint);
             sc+= newScScratchInterval;
-         }
+        }
 
         scratchInMarkIntervalCount = -1;
         scratchInEmptyMarkInterval = -1;
         sc = 0;
-        // for(qreal sc = 0; sc >= xv_sceneRectForPaint.left(); sc-= newScScratchInterval)
-        while(sc >= xv_sceneRectForPaint.left())
+        while( sc >= xv_sceneRectForPaint.left())
         {
             // count in mark interval
             if(++scratchInMarkIntervalCount >= markScratchesInterval)
@@ -414,8 +412,8 @@ void X_RulersAndGridManager::xh_recalcLeftRule()
     {
 
         xv_minVpMarkInterval = xv_rulerWidget->xp_maxMarkHeight() * 3 ;
-        qreal minScMarkInterval = xv_plotView->mapToScene(QPoint(0, xv_minVpMarkInterval)).y()
-                - xv_plotView->mapToScene(QPoint(0,0)).y();
+        qreal minScMarkInterval = qAbs(xv_plotView->mapToScene(QPoint(0, xv_minVpMarkInterval)).y()
+                                       - xv_plotView->mapToScene(QPoint(0,0)).y());
 
         // new mark and scratch interval calculation
         qreal newScMarkInterval = xv_minimalVerticalScaleInterval;
@@ -467,7 +465,7 @@ void X_RulersAndGridManager::xh_recalcLeftRule()
                     newScScratchInterval = newScMarkInterval / devisionList.value(i, 1.0);
                     QPoint vp_scratchIntervalPos = xv_plotView->mapFromScene(QPointF(xv_viewportSceneRect.left(), newScScratchInterval));
                     int firstSratchYPos = xv_plotView->viewport()->mapToGlobal(vp_scratchIntervalPos).y();
-                    int newVpScratchInterval = qAbs(firstSratchYPos - xv_globalX_eroPoint.y());
+                    int newVpScratchInterval = qAbs(firstSratchYPos - xv_globalZeroPoint.y());
                     if(newVpScratchInterval < xv_minimalScratchVpInterval || newScScratchInterval < xv_minimalVerticalScaleInterval)
                     {
                         newScScratchInterval = newScMarkInterval;
@@ -487,7 +485,7 @@ void X_RulersAndGridManager::xh_recalcLeftRule()
                     newScScratchInterval = newScMarkInterval / devisionList.value(i, 1.0);
                     QPoint vp_scratchIntervalPos = xv_plotView->mapFromScene(QPointF(xv_viewportSceneRect.left(), newScScratchInterval));
                     int firstSratchYPos = xv_plotView->viewport()->mapToGlobal(vp_scratchIntervalPos).y();
-                    int newVpScratchInterval = qAbs(firstSratchYPos - xv_globalX_eroPoint.y());
+                    int newVpScratchInterval = qAbs(firstSratchYPos - xv_globalZeroPoint.y());
                     if(newVpScratchInterval < xv_minimalScratchVpInterval || newScScratchInterval < xv_minimalVerticalScaleInterval)
                     {
                         newScScratchInterval = newScMarkInterval;
@@ -503,7 +501,7 @@ void X_RulersAndGridManager::xh_recalcLeftRule()
                 newScScratchInterval = newScMarkInterval / 5.0;
                 QPoint vp_scratchIntervalPos = xv_plotView->mapFromScene(QPointF(xv_viewportSceneRect.left(), newScScratchInterval));
                 int firstSratchYPos = xv_plotView->viewport()->mapToGlobal(vp_scratchIntervalPos).y();
-                int newVpScratchInterval = qAbs(firstSratchYPos - xv_globalX_eroPoint.y());
+                int newVpScratchInterval = qAbs(firstSratchYPos - xv_globalZeroPoint.y());
                 if(newVpScratchInterval < xv_minimalScratchVpInterval || newScScratchInterval < xv_minimalVerticalScaleInterval)
                 {
                     newScScratchInterval = newScMarkInterval;
@@ -560,7 +558,8 @@ void X_RulersAndGridManager::xh_recalcLeftRule()
         RulePoint rulePoint;
         RulePoint::MarkType markType;
         // Marks
-        for(qreal sc = newScScratchInterval; sc <= xv_sceneRectForPaint.bottom(); sc+= newScScratchInterval)
+        qreal sc = newScScratchInterval;
+        while( sc <= xv_sceneRectForPaint.bottom())
         {
             // count in mark interval
             if(++scratchInMarkIntervalCount >= markScratchesInterval)
@@ -575,6 +574,7 @@ void X_RulersAndGridManager::xh_recalcLeftRule()
 
             if(sc < xv_sceneRectForPaint.top() )
             {
+                sc+= newScScratchInterval;
                 continue;
             }
 
@@ -594,11 +594,13 @@ void X_RulersAndGridManager::xh_recalcLeftRule()
             qreal vp = sc*xv_K + xv_A;
             rulePoint = RulePoint(vp, sc, markType);
             xv_YRulePointList.append(rulePoint);
+            sc+= newScScratchInterval;
         }
 
         scratchInMarkIntervalCount = -1;
         scratchInEmptyMarkInterval = -1;
-        for(qreal sc = 0; sc >= xv_sceneRectForPaint.top(); sc-= newScScratchInterval)
+        sc = 0.0;
+        while( sc >= xv_sceneRectForPaint.top() )
         {
             // count in mark interval
             if(++scratchInMarkIntervalCount >= markScratchesInterval)
@@ -613,6 +615,7 @@ void X_RulersAndGridManager::xh_recalcLeftRule()
 
             if(sc > xv_sceneRectForPaint.bottom())
             {
+                sc-= newScScratchInterval;
                 continue;
             }
 
@@ -632,6 +635,7 @@ void X_RulersAndGridManager::xh_recalcLeftRule()
             qreal vp = sc*xv_K + xv_A;
             rulePoint = RulePoint(vp, sc, markType);
             xv_YRulePointList.append(rulePoint);
+            sc-= newScScratchInterval;
         }
     }
 }

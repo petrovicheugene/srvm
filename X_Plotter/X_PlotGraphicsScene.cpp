@@ -1,11 +1,8 @@
 //====================================================
 #include "X_PlotGraphicsScene.h"
-#include "X_GraphicsItemUserTypes.h"
-#include "X_WindowGraphicsItem.h"
-#include "X_SpectrumGraphicsItem.h"
-#include "X_General.h"
 #include "QPushButton"
 
+#include <QApplication>
 #include <QGraphicsItem>
 //====================================================
 X_PlotGraphicsScene::X_PlotGraphicsScene(QObject * parent)
@@ -20,7 +17,7 @@ X_PlotGraphicsScene::X_PlotGraphicsScene(const QRectF & sceneRect, QObject * par
     xh_createConnections();
 }
 //====================================================
-X_PlotGraphicsScene::X_PlotGraphicsScene(qreal x, qreal y, qreal width, qreal height, QObject * parent)
+X_PlotGraphicsScene::X_PlotGraphicsScene(double x, double y, double width, double height, QObject * parent)
     : QGraphicsScene(x,  y,  width,  height, parent)
 {
     xh_createConnections();
@@ -28,8 +25,17 @@ X_PlotGraphicsScene::X_PlotGraphicsScene(qreal x, qreal y, qreal width, qreal he
 //====================================================
 X_PlotGraphicsScene::~X_PlotGraphicsScene()
 {
-    //    QList<QGraphicsItem*> itemList = items();
-    //    qDeleteAll(itemList);
+//    disconnect(this, &QGraphicsScene::sceneRectChanged,
+//               this, &X_PlotGraphicsScene::xh_onSceneRectChange);
+
+    QList<QGraphicsItem*> itemList = items();
+
+    foreach(auto item, itemList)
+    {
+        QGraphicsScene::removeItem(item);
+    }
+
+    qDeleteAll(itemList);
 }
 //====================================================
 void X_PlotGraphicsScene::xp_addItem(QGraphicsItem * item)
@@ -46,11 +52,16 @@ void X_PlotGraphicsScene::xp_addItem(QGraphicsItem * item)
 //====================================================
 void X_PlotGraphicsScene::xp_removeItem(QGraphicsItem * item)
 {
-//    if(item->type() == WindowItemType)
-//    {
-//        X_WindowGraphicsItem* windowItem = qgraphicsitem_cast<X_WindowGraphicsItem*>(item);
-//        xv_windowItemList.removeAt(xv_windowItemList.indexOf(windowItem));
-//    }
+    //    if(item->type() == WindowItemType)
+    //    {
+    //        X_WindowGraphicsItem* windowItem = qgraphicsitem_cast<X_WindowGraphicsItem*>(item);
+    //        xv_windowItemList.removeAt(xv_windowItemList.indexOf(windowItem));
+    //    }
+    if(!items().contains(item))
+    {
+        return;
+    }
+
     QGraphicsScene::removeItem(item);
     delete item;
 }

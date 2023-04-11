@@ -1,6 +1,7 @@
 //======================================================
 #include "X_SpectrumGraphicsItem.h"
 #include "X_AbstractSpectrum.h"
+#include "X_GraphicsItemUserTypes.h"
 #include "X_PlotterDefaultVariables.h"
 
 #include <QPainter>
@@ -11,9 +12,9 @@ QColor X_SpectrumGraphicsItem::xv_currentColor = QColor(Qt::red);
 qint64 X_SpectrumGraphicsItem::xv_currentSpectrumId = -1;
 //======================================================
 X_SpectrumGraphicsItem::X_SpectrumGraphicsItem(const X_AbstractSpectrum *spectrum,
-                                             qreal boundingRectTopFactor,
-                                             qreal distortionFactor,
-                                             qreal distortionCorrectionFactor,
+                                             double boundingRectTopFactor,
+                                             double distortionFactor,
+                                             double distortionCorrectionFactor,
                                              QGraphicsItem *parent) : QGraphicsItem(parent)
 {
     if(boundingRectTopFactor < 1)
@@ -47,7 +48,7 @@ X_SpectrumGraphicsItem::X_SpectrumGraphicsItem(const X_AbstractSpectrum *spectru
     GraphicsItemFlags flags = this->flags();
     flags |= ItemIsFocusable | ItemIsSelectable;
     setFlags(flags);
-    setZValue(gl_defaultSpectrumX_Value);
+    setZValue(gl_defaultSpectrumZValue);
 
 
     //qDebug() << "SPE VIS" << spectrum->xp_isSpectrumVisible();
@@ -134,18 +135,18 @@ void X_SpectrumGraphicsItem::xh_calculatePainterPath()
     QPainterPath newShape;
     newShape.moveTo(point);
 
-    qreal scValue = 0.0;
+    double scValue = 0.0;
     for(int i = 0; i < xv_spectrumData.count(); i++)
     {
-        scValue = xh_sceneDistortionPositionForValue((qreal)(xv_spectrumData.value(i)));
-        point = QPointF((qreal)i,  scValue*-1);
+        scValue = xh_sceneDistortionPositionForValue((double)(xv_spectrumData.value(i)));
+        point = QPointF((double)i,  scValue*-1);
         newShape.lineTo(point);
-        point = QPointF((qreal)(i+1),  scValue*-1);
+        point = QPointF((double)(i+1),  scValue*-1);
         newShape.lineTo(point);
     }
 
     // last point
-    point = QPointF((qreal)(xv_spectrumData.count() - 1),  0);
+    point = QPointF((double)(xv_spectrumData.count() - 1),  0);
     newShape.lineTo(point);
     xv_spectrumPainterPath = QPainterPath();
     xv_spectrumPainterPath = newShape;
@@ -155,18 +156,18 @@ void X_SpectrumGraphicsItem::xh_calculatePainterPath()
     xv_boundingRect.setBottom(xv_boundingRect.bottom()+5);
 }
 //======================================================
-qreal X_SpectrumGraphicsItem::xh_sceneDistortionPositionForValue(qreal value)
+double X_SpectrumGraphicsItem::xh_sceneDistortionPositionForValue(double value)
 {
     if(xv_distortionFactor == 1 || xv_distortionCorrectionFactor == 0)
     {
         return value;
     }
 
-    qreal distortedValue = pow(value, xv_distortionFactor) * xv_distortionCorrectionFactor;
+    double distortedValue = pow(value, xv_distortionFactor) * xv_distortionCorrectionFactor;
     return distortedValue;
 }
 //======================================================
-void X_SpectrumGraphicsItem::xp_setDistortion(qreal distortionFactor, qreal distortionCorrectionFactor)
+void X_SpectrumGraphicsItem::xp_setDistortion(double distortionFactor, double distortionCorrectionFactor)
 {
     if(distortionFactor > 1.0)
     {
@@ -192,16 +193,11 @@ bool X_SpectrumGraphicsItem::xp_isSpectrumCurrent()
     return xv_currentSpectrumId == xv_spectrumId;
 }
 //======================================================
-QColor X_SpectrumGraphicsItem::xp_spectrumColor() const
-{
-    return xv_color;
-}
-//======================================================
 void X_SpectrumGraphicsItem::xp_updateCurrentSpectrum(bool visible)
 {
     if(xv_currentSpectrumId == xv_spectrumId)
     {
-        setZValue(gl_currentSpectrumX_Value);
+        setZValue(gl_currentSpectrumZValue);
         xv_paintColor = xv_currentColor;
         setVisible(true);
     }
@@ -209,7 +205,7 @@ void X_SpectrumGraphicsItem::xp_updateCurrentSpectrum(bool visible)
     {
         //      if(zValue() != gl_defaultSpectrumX_Value)
         //      {
-        setZValue(gl_defaultSpectrumX_Value);
+        setZValue(gl_defaultSpectrumZValue);
         xv_paintColor = xv_color;
         setVisible(visible);
         //      }
@@ -235,5 +231,10 @@ void X_SpectrumGraphicsItem::focusInEvent(QFocusEvent *event)
 void X_SpectrumGraphicsItem::focusOutEvent(QFocusEvent *event)
 {
     QGraphicsItem::focusOutEvent(event);
+}
+//======================================================
+QColor X_SpectrumGraphicsItem::xp_spectrumColor() const
+{
+    return xv_color;
 }
 //======================================================

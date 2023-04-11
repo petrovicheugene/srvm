@@ -56,9 +56,9 @@ public:
     QString ruleLabel;
 
     // recalc marks factors
-    qreal K0; // free member
-    qreal K1;
-    qreal K2; // square member factor
+    double K0; // free member
+    double K1;
+    double K2; // square member factor
 };
 //=========================================================
 class X_RulerWidget : public QWidget
@@ -98,19 +98,19 @@ public:
     bool xp_setTopMarkPrecision(int precision);
     bool xp_setBottomMarkPrecision(int precision);
 
-    void xp_setLeftMarkRecalcMetrix(const QString&, bool labelVisibility,qreal K0, qreal K1, qreal K2);
-    void xp_setRightMarkRecalcMetrix(const QString&, bool labelVisibility,qreal K0, qreal K1, qreal K2);
-    void xp_setTopMarkRecalcMetrix(const QString&, bool labelVisibility,qreal K0, qreal K1, qreal K2);
-    void xp_setBottomMarkRecalcMetrix(const QString&, bool labelVisibility,qreal K0, qreal K1, qreal K2);
+    void xp_setLeftMarkRecalcMetrix(const QString&, bool labelVisibility,double K0, double K1, double K2);
+    void xp_setRightMarkRecalcMetrix(const QString&, bool labelVisibility,double K0, double K1, double K2);
+    void xp_setTopMarkRecalcMetrix(const QString&, bool labelVisibility,double K0, double K1, double K2);
+    void xp_setBottomMarkRecalcMetrix(const QString&, bool labelVisibility,double K0, double K1, double K2);
 
     void xp_setLeftMarkRecalcFlag(bool flag);
     void xp_setRightMarkRecalcFlag(bool flag);
     void xp_setTopMarkRecalcFlag(bool flag);
     void xp_setBottomMarkRecalcFlag(bool flag);
 
-    void xp_setHorizontalMarkRecalcFactors(const QString &label, qreal K0, qreal K1, qreal K2);
-    void xp_horizontalMarkRecalcFactors(QString& label, qreal& K0, qreal& K1, qreal& K2) const;
-    void xp_setVerticalMarkRecalcFactors(const QString &label, qreal K0, qreal K1, qreal K2);
+    void xp_setHorizontalMarkRecalcFactors(const QString &label, double K0, double K1, double K2);
+    void xp_horizontalMarkRecalcFactors(QString& label, double& K0, double& K1, double& K2) const;
+    void xp_setVerticalMarkRecalcFactors(const QString &label, double K0, double K1, double K2);
 
     void xp_setTopRuleVisibility(bool visibility);
     void xp_setBottomRuleVisibility(bool visibility);
@@ -134,7 +134,6 @@ public:
     int xp_maxMarkHeight();
 
     void xp_setInfoLabelText(const QString& text);
-
     void xp_setInfoLabelVisible(bool visible);
 
 signals:

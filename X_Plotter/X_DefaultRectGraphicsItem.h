@@ -11,7 +11,7 @@ class X_AntialiasingLine : public QGraphicsLineItem
 public:
     explicit X_AntialiasingLine(QGraphicsItem * parent = 0) : QGraphicsLineItem(parent){}
     explicit X_AntialiasingLine(const QLineF & line, QGraphicsItem * parent = 0) : QGraphicsLineItem(line, parent){}
-    explicit X_AntialiasingLine(qreal x1, qreal y1, qreal x2, qreal y2, QGraphicsItem * parent = 0) : QGraphicsLineItem(x1, y1, x2, y2,parent){}
+    explicit X_AntialiasingLine(double x1, double y1, double x2, double y2, QGraphicsItem * parent = 0) : QGraphicsLineItem(x1, y1, x2, y2,parent){}
     virtual ~X_AntialiasingLine(){}
     void paint(QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget = 0) override
     {

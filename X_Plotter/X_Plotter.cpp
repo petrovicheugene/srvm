@@ -1,32 +1,26 @@
 //====================================================
-#include "X_EnergyLineGraphicsItem.h"
 #include "X_Plotter.h"
 #include "X_PlotGraphicsScene.h"
 #include "X_PlotGraphicsView.h"
 #include "X_RulersAndGridManager.h"
 #include "X_RulerWidget.h"
+#include "X_EnergyLineGraphicsItem.h"
 #include "X_SpectrumGraphicsItem.h"
-#include "X_WindowGraphicsItem.h"
-#include "X_ChartPointGraphicsItem.h"
-#include "X_General.h"
-#include "X_PlotterDefaultVariables.h"
 
-#include <math.h>
 #include <QApplication>
+#include <QLabel>
 #include <QScrollBar>
 #include <QVBoxLayout>
 #include <QHBoxLayout>
 #include <QGridLayout>
 #include <QScrollBar>
-
 #include <QDebug>
 #include <math.h>
 //====================================================
-extern const qreal gl_defaultSpectrumX_Value = 2;
-extern const qreal gl_currentSpectrumX_Value = 3;
-extern const qreal gl_defaultWindowX_Value = 1;
-extern const qreal gl_currentWindowX_Value = 4;
-
+extern const double gl_defaultSpectrumZValue = 2;
+extern const double gl_currentSpectrumZValue = 3;
+extern const double gl_defaultWindowZValue = 1;
+extern const double gl_currentWindowZValue = 4;
 
 //====================================================
 X_Plotter::X_Plotter(QWidget *parent) : QWidget(parent)
@@ -56,7 +50,12 @@ X_Plotter::X_Plotter(QWidget *parent) : QWidget(parent)
 //    return xv_plotScene;
 //}
 //====================================================
-bool X_Plotter::xp_setMinimalVerticalScaleInterval(qreal interval)
+X_Plotter::~X_Plotter()
+{
+    delete xv_plotScene;
+}
+//====================================================
+bool X_Plotter::xp_setMinimalVerticalScaleInterval(double interval)
 {
     if(!xv_rulersAndGreedManager)
     {
@@ -65,7 +64,7 @@ bool X_Plotter::xp_setMinimalVerticalScaleInterval(qreal interval)
     return xv_rulersAndGreedManager->xp_setMinimalVerticalScaleInterval(interval);
 }
 //====================================================
-qreal X_Plotter::xp_minimalVerticalScaleInterval()
+double X_Plotter::xp_minimalVerticalScaleInterval()
 {
     if(!xv_rulersAndGreedManager)
     {
@@ -74,7 +73,7 @@ qreal X_Plotter::xp_minimalVerticalScaleInterval()
     return xv_rulersAndGreedManager->xp_minimalVerticalScaleInterval();
 }
 //====================================================
-bool X_Plotter::xp_setMinimalHorizontalScaleInterval(qreal interval)
+bool X_Plotter::xp_setMinimalHorizontalScaleInterval(double interval)
 {
     if(!xv_rulersAndGreedManager)
     {
@@ -83,7 +82,7 @@ bool X_Plotter::xp_setMinimalHorizontalScaleInterval(qreal interval)
     return xv_rulersAndGreedManager->xp_setMinimalHorizontalScaleInterval(interval);
 }
 //====================================================
-qreal X_Plotter::xp_minimalHorizontalScaleInterval()
+double X_Plotter::xp_minimalHorizontalScaleInterval()
 {
     if(!xv_rulersAndGreedManager)
     {
@@ -236,7 +235,7 @@ bool X_Plotter::xp_setBottomMarkPrecision(int precision)
     return xv_rulerWidget->xp_setBottomMarkPrecision(precision);
 }
 //====================================================
-void X_Plotter::xp_setHorizontalMarkRecalcFactors(const QString &label, qreal K0, qreal K1, qreal K2)
+void X_Plotter::xp_setHorizontalMarkRecalcFactors(const QString &label, double K0, double K1, double K2)
 {
     if(!xv_rulerWidget)
     {
@@ -245,7 +244,7 @@ void X_Plotter::xp_setHorizontalMarkRecalcFactors(const QString &label, qreal K0
     xv_rulerWidget->xp_setHorizontalMarkRecalcFactors(label, K0, K1, K2);
 }
 //====================================================
-void X_Plotter::xp_setVerticalMarkRecalcFactors(const QString &label, qreal K0, qreal K1, qreal K2)
+void X_Plotter::xp_setVerticalMarkRecalcFactors(const QString &label, double K0, double K1, double K2)
 {
     if(!xv_rulerWidget)
     {
@@ -254,7 +253,7 @@ void X_Plotter::xp_setVerticalMarkRecalcFactors(const QString &label, qreal K0, 
     xv_rulerWidget->xp_setVerticalMarkRecalcFactors(label, K0, K1, K2);
 }
 //====================================================
-void X_Plotter::xp_setLeftMarkRecalcMetrix(const QString& label, bool labelVisibility,qreal K0, qreal K1, qreal K2)
+void X_Plotter::xp_setLeftMarkRecalcMetrix(const QString& label, bool labelVisibility,double K0, double K1, double K2)
 {
     if(!xv_rulerWidget)
     {
@@ -263,7 +262,7 @@ void X_Plotter::xp_setLeftMarkRecalcMetrix(const QString& label, bool labelVisib
     xv_rulerWidget->xp_setLeftMarkRecalcMetrix(label, labelVisibility, K0, K1, K2);
 }
 //====================================================
-void X_Plotter::xp_setRightMarkRecalcMetrix(const QString& label, bool labelVisibility,qreal K0, qreal K1, qreal K2)
+void X_Plotter::xp_setRightMarkRecalcMetrix(const QString& label, bool labelVisibility,double K0, double K1, double K2)
 {
     if(!xv_rulerWidget)
     {
@@ -272,7 +271,7 @@ void X_Plotter::xp_setRightMarkRecalcMetrix(const QString& label, bool labelVisi
     xv_rulerWidget->xp_setRightMarkRecalcMetrix(label, labelVisibility, K0, K1, K2);
 }
 //====================================================
-void X_Plotter::xp_setTopMarkRecalcMetrix(const QString& label, bool labelVisibility,qreal K0, qreal K1, qreal K2)
+void X_Plotter::xp_setTopMarkRecalcMetrix(const QString& label, bool labelVisibility,double K0, double K1, double K2)
 {
     if(!xv_rulerWidget)
     {
@@ -281,7 +280,7 @@ void X_Plotter::xp_setTopMarkRecalcMetrix(const QString& label, bool labelVisibi
     xv_rulerWidget->xp_setTopMarkRecalcMetrix(label, labelVisibility, K0, K1, K2);
 }
 //====================================================
-void X_Plotter::xp_setBottomMarkRecalcMetrix(const QString& label, bool labelVisibility,qreal K0, qreal K1, qreal K2)
+void X_Plotter::xp_setBottomMarkRecalcMetrix(const QString& label, bool labelVisibility,double K0, double K1, double K2)
 {
     if(!xv_rulerWidget)
     {
@@ -395,13 +394,14 @@ void X_Plotter::xp_clearItemsExeptType(int type)
 //====================================================
 void X_Plotter::xp_addItem(QGraphicsItem * item)
 {
-    if(item == 0)
+    if(item == nullptr)
     {
         return;
     }
 
     xv_plotScene->xp_addItem(item);
     QRectF itemBoundingSceneRect = xv_plotScene->itemsBoundingRect();
+
     if(xv_autoDefineVerticalAbsMax)
     {
         xp_setVerticalAbsMax(itemBoundingSceneRect.top());
@@ -410,14 +410,14 @@ void X_Plotter::xp_addItem(QGraphicsItem * item)
 //====================================================
 void X_Plotter::xp_removeItem(QGraphicsItem * item)
 {
-    if(item == 0)
-    {
-        return;
-    }
-    item->setVisible(false);
+//    if(!item)
+//    {
+//        return;
+//    }
+
+    //item->setVisible(false);
     xv_plotScene->xp_removeItem(item);
     xv_plotView->update();
-
 }
 //====================================================
 void X_Plotter::xp_removeItemsForType(int type)
@@ -431,11 +431,6 @@ void X_Plotter::xp_removeItemsForType(int type)
 //====================================================
 QList<QGraphicsItem*> X_Plotter::xp_itemListForType(int type) const
 {
-    if(!xv_plotScene)
-    {
-        return QList<QGraphicsItem*>();
-    }
-
     QList<QGraphicsItem*> itemList = xv_plotScene->items();
     for(int i = itemList.count()-1; i >= 0; i--)
     {
@@ -450,7 +445,7 @@ QList<QGraphicsItem*> X_Plotter::xp_itemListForType(int type) const
 //====================================================
 int X_Plotter::xp_itemCount() const
 {
-    if(xv_plotScene == 0)
+    if(xv_plotScene == nullptr)
     {
         return 0;
     }
@@ -488,9 +483,9 @@ void X_Plotter::xp_appendWidgetToDashboard(QWidget* widget,
                                              extraSeparatorSpacing);
 }
 //====================================================
-void X_Plotter::xp_setVerticalAbsMax(qreal max)
+void X_Plotter::xp_setVerticalAbsMax(double max)
 {
-    if(xv_verticalAbsMax == qAbs(max))
+    if(xv_verticalAbsMax - qAbs(max) == 0.0)
     {
         return;
     }
@@ -502,7 +497,7 @@ void X_Plotter::xp_setVerticalAbsMax(qreal max)
     }
 }
 //====================================================
-qreal X_Plotter::xp_verticalAbsMax() const
+double X_Plotter::xp_verticalAbsMax() const
 {
     return xv_verticalAbsMax;
 }
@@ -512,7 +507,7 @@ void X_Plotter::xp_setAutoDefineVerticalAbsMax(bool flag)
     xv_autoDefineVerticalAbsMax = flag;
 }
 //====================================================
-void X_Plotter::xp_verticalDistortionFactors(qreal& distortionFactor, qreal& distortionCorrectionFactor)
+void X_Plotter::xp_verticalDistortionFactors(double& distortionFactor, double& distortionCorrectionFactor)
 {
     distortionFactor = xv_verticalDistortionFactor;
     distortionCorrectionFactor = xv_verticalDistortionCorrectionFactor;
@@ -675,7 +670,6 @@ void X_Plotter::xp_fitInBoundingRect()
     {
         rectToFit = xv_plotScene->sceneRect();
     }
-
     xv_plotView->xp_fitInView(rectToFit);
 
     // deblock signals
@@ -710,7 +704,8 @@ bool X_Plotter::eventFilter(QObject *obj, QEvent *event)
         xv_mouseButtonDown = true;
         bool res = QObject::eventFilter(obj, event);
         return res;
-    }else if(event->type() == QEvent::MouseButtonRelease
+    }
+    else if(event->type() == QEvent::MouseButtonRelease
             || event->type() == QEvent::NonClientAreaMouseButtonRelease)
     {
         xv_mouseButtonDown = false;
@@ -727,7 +722,7 @@ bool X_Plotter::eventFilter(QObject *obj, QEvent *event)
 //====================================================
 void X_Plotter::xh_verticalDistortionChanged(int distortionValue)
 {
-    if(xh_recalcVerticalDistortionFactors(static_cast<qreal>(distortionValue)))
+    if(xh_recalcVerticalDistortionFactors(static_cast<double>(distortionValue)))
     {
         xh_recalcRulesAndItemCoordinates();
         xv_plotView->xp_update();
@@ -746,6 +741,11 @@ void X_Plotter::xh_scrollBarVisible(Qt::Orientation orientation, bool& visible)
     }
 }
 //====================================================
+void X_Plotter::xh_onMousePress(QPointF mouseScenePos)
+{
+
+}
+//====================================================
 void X_Plotter::xh_mouseScenePositionChanged(QPointF scenePos) const
 {
     if(!xv_rulerWidget)
@@ -756,7 +756,6 @@ void X_Plotter::xh_mouseScenePositionChanged(QPointF scenePos) const
 
     QString text = tr("Channel: %1").arg(QString::number(scenePos.x(), 'f', 0));
 
-    QString energyString;
     if(!(xv_energyCalibrationFactorList.value(2, 0.0) == 0.0 &&
          (xv_energyCalibrationFactorList.value(1, 0.0) == 1.0 ||
           xv_energyCalibrationFactorList.value(1, 0.0) == 0.0) &&
@@ -784,8 +783,8 @@ void X_Plotter::xh_createComponents()
     xv_verticalScrollBar = new QScrollBar(Qt::Vertical, this);
     xv_horizontalScrollBar = new QScrollBar(Qt::Horizontal, this);
     xv_plotScene = new X_PlotGraphicsScene(this);
-    xv_plotView = new X_PlotGraphicsView(0);
-    xv_rulerWidget = new X_RulerWidget(0);
+    xv_plotView = new X_PlotGraphicsView(nullptr);
+    xv_rulerWidget = new X_RulerWidget(nullptr);
     xv_rulersAndGreedManager = new X_RulersAndGridManager(this);
     xv_dashBoard = new X_HorizontalDashBoard(this);
     xv_rulerWidget->xp_setPlotView(xv_plotView);
@@ -843,11 +842,12 @@ void X_Plotter::xh_createConnections()
     xv_dashBoard->xp_setPlotGraphicsScene(xv_plotScene);
     connect(xv_dashBoard, &X_HorizontalDashBoard::xg_distortionFactorChanged,
             this, &X_Plotter::xh_verticalDistortionChanged);
-    connect(xv_plotView, &X_PlotGraphicsView::xg_requestForScrollBarVisible,
+    connect(xv_plotView, &X_PlotGraphicsView::xg_inquiryForScrollBarVisible,
             this, &X_Plotter::xh_scrollBarVisible);
     connect(xv_plotView, &X_PlotGraphicsView::xg_cursorAreaImage,
             this, &X_Plotter::xg_cursorAreaImage);
-
+    connect(xv_plotView, &X_PlotGraphicsView::xg_mousePressedAt,
+            this, &X_Plotter::xg_mousePressedAt);
     connect(xv_plotView, &X_PlotGraphicsView::xg_viewportRectChanged,
             this, &X_Plotter::xg_viewportRectChanged);
 
@@ -872,6 +872,7 @@ void X_Plotter::xh_connectScrollBars()
             this, &X_Plotter::xh_notifySceneRect);
     connect(xv_verticalScrollBar, &QScrollBar::valueChanged,
             this, &X_Plotter::xh_notifySceneRect);
+
 }
 //====================================================
 void X_Plotter::xh_updateScrollBarsVisible()
@@ -897,25 +898,28 @@ void X_Plotter::xh_notifySceneRect(int value)
 {
     QRectF viewportRect;
     xv_plotView->xp_viewPortSceneRect(viewportRect);
-    emit xg_viewportRectChanged(viewportRect);
+    if(!viewportRect.isNull())
+    {
+        emit xg_viewportRectChanged(viewportRect);
+    }
 }
 //====================================================
-bool X_Plotter::xh_recalcVerticalDistortionFactors(qreal distortionValue)
+bool X_Plotter::xh_recalcVerticalDistortionFactors(double distortionValue)
 {
     if(xv_verticalAbsMax == 0.0)
     {
-       return false;
+        return false;
     }
 
-    if(distortionValue < 0.0)
+    if(distortionValue < 0)
     {
-        distortionValue = 0.0;
+        distortionValue = 0;
     }
-    else if(distortionValue > 15.0)
+    else if(distortionValue > 15)
     {
-        distortionValue = 15.0;
+        distortionValue = 15;
     }
-    xv_verticalDistortionFactor = 1.0 - static_cast<qreal>(distortionValue) / 20.0;
+    xv_verticalDistortionFactor = 1.0 - static_cast<double>(distortionValue) / 20.0;
     xv_verticalDistortionCorrectionFactor = xv_verticalAbsMax / pow(xv_verticalAbsMax, xv_verticalDistortionFactor);
 
     return true;
@@ -923,7 +927,7 @@ bool X_Plotter::xh_recalcVerticalDistortionFactors(qreal distortionValue)
 //====================================================
 void X_Plotter::xh_recalcRulesAndItemCoordinates()
 {
-    if(xv_rulersAndGreedManager != 0)
+    if(xv_rulersAndGreedManager != nullptr)
     {
         xv_rulersAndGreedManager->xp_recalcRulesAndGrid();
         xv_rulerWidget->update();

@@ -33,6 +33,7 @@ public:
     int xp_distortionValue();
     void xp_setDistortionSliderVisible(bool visible);
 
+
 signals:
 
     void xg_distortionFactorChanged(int);
@@ -47,6 +48,8 @@ private:
 
     // VARS
     QHBoxLayout* xv_mainLayout;
+    QHBoxLayout* xv_leftLayout;
+
     QToolButton* xv_hideGridButton;
     QToolButton* xv_increaseVerticalButton;
     QToolButton* xv_increaseHorizontalButton;
@@ -55,6 +58,7 @@ private:
     QToolButton* xv_fitViewInSceneButton;
 
     QSlider* xv_distortionSlider;
+
 
     X_PlotGraphicsView* xv_plotGraphicsView;
     X_PlotGraphicsScene* xv_plotGraphicsScene;

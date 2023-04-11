@@ -24,11 +24,11 @@ public:
    // FUNCS
    static void xp_setCurrentWindowColor(QColor);
    static void xp_setCurrentWindowId(qint64);
-   static bool xp_setTopAndButtonMargins(qreal top, qreal bottom);
+   static bool xp_setTopAndButtonMargins(double top, double bottom);
    static bool xp_setAlphaChannelValue(quint8 alpha);
 
    qint64 xp_windowId() const;
-   void xp_setLeftRightMargins(qreal, qreal);
+   void xp_setLeftRightMargins(double, double);
    void xp_updateCurrentWindow(bool);
    void xp_updateItem();
 
@@ -47,11 +47,11 @@ private:
    QColor xv_lineColor;
    QColor xv_brushColor;
    qint64 xv_windowId;
-   qreal xv_leftMargin;
-   qreal xv_rightMargin;
+   double xv_leftMargin;
+   double xv_rightMargin;
 
-   static qreal xv_topMargin;
-   static qreal xv_bottomMargin;
+   static double xv_topMargin;
+   static double xv_bottomMargin;
    static qint64 xv_currentWindowId;
    static quint8 xv_alphaCannelValue;
 

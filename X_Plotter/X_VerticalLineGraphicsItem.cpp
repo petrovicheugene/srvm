@@ -51,7 +51,7 @@ void X_VerticalLineGraphicsItem::xp_updateItem()
     update();
 }
 //======================================================
-bool X_VerticalLineGraphicsItem::xp_setTopAndButtonMargins(qreal top, qreal bottom)
+bool X_VerticalLineGraphicsItem::xp_setTopAndButtonMargins(double top, double bottom)
 {
     if(top - bottom == 0.0)
     {
@@ -83,7 +83,7 @@ void X_VerticalLineGraphicsItem::xh_recalcShapeAndBoundingRect()
     xv_boundingRect = windowRect;
 
     // line
-    qreal shift = (qAbs(xv_bottomMargin - xv_topMargin)) / 2;
+    double shift = (qAbs(xv_bottomMargin - xv_topMargin)) / 2;
 
     QPainterPath newLinePaintShape;
     QPointF bottomPoint = QPointF(xPosition, xv_bottomMargin + shift);

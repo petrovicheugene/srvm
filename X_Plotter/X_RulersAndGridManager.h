@@ -106,7 +106,7 @@ private:
     QRect xv_globalRectForPaint; // +1 pix more than xv_viewportGlobalRect
     QRectF xv_sceneRectForPaint; // +1 pix more than xv_viewportSceneRect
 
-    QPoint xv_globalX_eroPoint;
+    QPoint xv_globalZeroPoint;
     QList<qreal> xv_markIntervalList;
 
     // FUNCS

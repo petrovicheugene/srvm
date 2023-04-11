@@ -3,7 +3,6 @@
 #define X_SPECTRUMGRAPHICSITEM_H
 //======================================================
 #include <QGraphicsItem>
-#include "X_GraphicsItemUserTypes.h"
 //======================================================
 class X_AbstractSpectrum;
 //======================================================
@@ -12,10 +11,10 @@ class X_SpectrumGraphicsItem : public QGraphicsItem
 public:
 
     explicit X_SpectrumGraphicsItem(const X_AbstractSpectrum* spectrum,
-                          qreal boundingRectTopFactor,
-                          qreal distortionFactor,
-                          qreal distortionCorrectionFactor,
-                          QGraphicsItem * parent = 0);
+                          double boundingRectTopFactor,
+                          double distortionFactor,
+                          double distortionCorrectionFactor,
+                          QGraphicsItem * parent = nullptr);
     QRectF boundingRect() const override;
     void paint(QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget = 0) override;
     QPainterPath shape() const override;
@@ -28,11 +27,10 @@ public:
     qint64 xp_spectrumId();
     void xp_updateSpectrumData(const X_AbstractSpectrum *);
 
-    void xp_setDistortion(qreal distortionFactor, qreal distortionCorrectionFactor);
+    void xp_setDistortion(double distortionFactor, double distortionCorrectionFactor);
     bool xp_isSpectrumCurrent();
 
     void xp_updateCurrentSpectrum(bool visible);
-
     QColor xp_spectrumColor() const;
 
 protected:
@@ -55,18 +53,18 @@ private:
     static QColor xv_currentColor;
     static qint64 xv_currentSpectrumId;
 
-    qreal xv_distortionFactor;
-    qreal xv_distortionCorrectionFactor;
-    // qreal xv_sceneRectTop;
-    qreal xv_boundingRectTopFactor;
-    // qreal xv_k;
+    double xv_distortionFactor;
+    double xv_distortionCorrectionFactor;
+    // double xv_sceneRectTop;
+    double xv_boundingRectTopFactor;
+    // double xv_k;
 
     // y' = y^xv_logFactor * xv_k
     // max = max^logFactor * xv_k
 
     // FUNCS
     void xh_calculatePainterPath();
-    qreal xh_sceneDistortionPositionForValue(qreal value);
+    double xh_sceneDistortionPositionForValue(double value);
 
 };
 //======================================================

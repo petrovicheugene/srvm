@@ -81,7 +81,7 @@ void X_HorizontalDashBoard::xp_appendButtonsToDashboard(QList<QAction*>& actionL
     int insertIndex;
     if(position == AWP_LEFT_OF_BUTTONS)
     {
-        insertIndex = 1; // 0 - log slider
+        insertIndex = 1; // o - log slider
     }
     else
     {
@@ -297,8 +297,9 @@ void X_HorizontalDashBoard::xh_fitViewInScene() const
     {
         rectToFit = xv_plotGraphicsScene->sceneRect();
     }
+
     xv_plotGraphicsView->xp_fitInView(rectToFit);
-    //xv_plotGraphicsView->ensureVisible(rectToFit, 2, 2);
+
 }
 //===========================================================
 void X_HorizontalDashBoard::xh_hideGrid(bool toggled) const

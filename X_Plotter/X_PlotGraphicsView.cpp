@@ -1,16 +1,16 @@
 //=============================================================
 #include "X_PlotGraphicsView.h"
 #include "X_RulersAndGridManager.h"
-#include "X_General.h"
 
 #include <QApplication>
-#include <QDebug>
 #include <QRubberBand>
 #include <QGraphicsItem>
 #include <QWheelEvent>
+#include <QMenu>
 #include <QMouseEvent>
 #include <QScrollBar>
 #include <QPixmap>
+#include <ostream>
 //=============================================================
 X_PlotGraphicsView::X_PlotGraphicsView(QWidget* parent) : QGraphicsView(parent)
 {
@@ -22,20 +22,22 @@ X_PlotGraphicsView::X_PlotGraphicsView(QWidget* parent) : QGraphicsView(parent)
     xv_scaleViewWhenResizeFlag = false;
     xv_drawGridFlag = true;
     xv_rulersAndGreedManager = nullptr;
-    xv_minSideSizeOfVisibleScene = 15;
+    xv_minSideSizeOfVisibleScene = 15.0;
     xv_rubberBandSideMinSize = 5;
+    xv_ruleToolMinSize = 5;
     xv_colorPickUpAuxCoverageSize = 1;
     xv_gridColor = viewport()->palette().color(QPalette::Mid);
 
     xv_XRuleList = nullptr;
     xv_YRuleList = nullptr;
 
-    viewport()->setMinimumSize(QSize(100, 100));
+    viewport()->setMinimumSize(QSize(100, 20));
 
     setViewportUpdateMode(QGraphicsView::FullViewportUpdate);
     //setViewportUpdateMode(QGraphicsView::SmartViewportUpdate);
     setMouseTracking(true);
     xh_createConnections();
+
 }
 //=============================================================
 void X_PlotGraphicsView::xp_setScaleViewWhenResizeFlag(bool flag)
@@ -100,7 +102,7 @@ void X_PlotGraphicsView::xp_scale(Qt::Orientation orientation, bool increase)
     QRectF oldDisplayedSceneRect = mapToScene(viewport()->rect()).boundingRect();
     QRectF sceneItemBoundingRect = scene()->itemsBoundingRect();
 
-    qreal scaleRate;
+    double scaleRate;
     if(orientation == Qt::Vertical)
     {
         if(increase)
@@ -133,7 +135,7 @@ void X_PlotGraphicsView::xp_scale(Qt::Orientation orientation, bool increase)
         if(scaleRate > 1)
         {
             QRectF newDisplayedSceneRect = mapToScene(viewport()->rect()).boundingRect();
-            qreal centerPosShift = (oldDisplayedSceneRect.height() - newDisplayedSceneRect.height()) / 2;
+            double centerPosShift = (oldDisplayedSceneRect.height() - newDisplayedSceneRect.height()) / 2;
             xv_sceneCenterPos = mapToScene(viewport()->rect()).boundingRect().center();
             xv_sceneCenterPos.setY(xv_sceneCenterPos.y() + centerPosShift);
             centerOn(xv_sceneCenterPos);
@@ -173,7 +175,7 @@ void X_PlotGraphicsView::xp_scale(Qt::Orientation orientation, bool increase)
     //    QRectF displayedSceneRect = oldDisplayedSceneRect;
     //    QRectF sceneItemBoundingRect = scene()->itemsBoundingRect();
 
-    //    qreal scaleRate;
+    //    double scaleRate;
     //    if(increase)
     //    {
     //        scaleRate = 0.1;
@@ -306,6 +308,78 @@ QRectF X_PlotGraphicsView::xp_currentVisibleSceneRect() const
 //=============================================================
 void X_PlotGraphicsView::wheelEvent(QWheelEvent * event)
 {
+//    if(xv_plotMode != PM_REGULAR || !scene())
+//    {
+//        return;
+//    }
+
+//    xv_sceneMousePos = mapToScene(event->position().toPoint());
+//    QRectF oldDisplayedSceneRect = mapToScene(viewport()->rect().adjusted(2,-1,-2,1)).boundingRect();
+//    oldDisplayedSceneRect = mapToScene(viewport()->rect()).boundingRect();
+
+//    //QRectF oldDisplayedSceneRect = mapToScene(viewport()->rect()).boundingRect();
+
+//    QRectF displayedSceneRect = oldDisplayedSceneRect;
+//    double rightPartFactor = 0.1 *(displayedSceneRect.right() - xv_sceneMousePos.x())
+//            / (displayedSceneRect.right() - displayedSceneRect.left());
+//    double topPartFactor = 0.1* (xv_sceneMousePos.y() - displayedSceneRect.top())
+//            / (displayedSceneRect.bottom() - displayedSceneRect.top());
+
+//    double leftPartFactor = 0.1 - rightPartFactor;
+//    double bottomPartFactor = 0.1 - topPartFactor;
+
+//    if (event->pixelDelta().isNull() > 0)
+//    {
+//        topPartFactor *= -1;
+//        leftPartFactor *= -1;
+//    }
+//    else
+//    {
+//        rightPartFactor *= -1;
+//        bottomPartFactor *= -1;
+//    }
+
+//    displayedSceneRect.setTop(displayedSceneRect.top() + topPartFactor*displayedSceneRect.height());
+//    displayedSceneRect.setBottom(displayedSceneRect.bottom() + bottomPartFactor*displayedSceneRect.height());
+//    displayedSceneRect.setLeft(displayedSceneRect.left() + leftPartFactor*displayedSceneRect.width());
+//    displayedSceneRect.setRight(displayedSceneRect.right() + rightPartFactor*displayedSceneRect.width());
+
+//    QRectF sceneItemBoundingRect = scene()->itemsBoundingRect();
+//    if(displayedSceneRect.top() < sceneItemBoundingRect.top())
+//    {
+//        displayedSceneRect.setTop(sceneItemBoundingRect.top());
+//    }
+//    if(displayedSceneRect.bottom() > sceneItemBoundingRect.bottom())
+//    {
+//        displayedSceneRect.setBottom(sceneItemBoundingRect.bottom());
+//    }
+//    if(displayedSceneRect.left() < sceneItemBoundingRect.left())
+//    {
+//        displayedSceneRect.setLeft(sceneItemBoundingRect.left());
+//    }
+//    if(displayedSceneRect.right() > sceneItemBoundingRect.right())
+//    {
+//        displayedSceneRect.setRight(sceneItemBoundingRect.right());
+//    }
+
+//    if(displayedSceneRect.height() < xv_minSideSizeOfVisibleScene)
+//    {
+//        displayedSceneRect.setTop(oldDisplayedSceneRect.top());
+//        displayedSceneRect.setBottom(oldDisplayedSceneRect.bottom());
+//    }
+//    if(displayedSceneRect.width() < xv_minSideSizeOfVisibleScene)
+//    {
+//        displayedSceneRect.setLeft(oldDisplayedSceneRect.left());
+//        displayedSceneRect.setRight(oldDisplayedSceneRect.right());
+//    }
+
+//    xp_fitInView(displayedSceneRect.normalized());
+//    //ensureVisible(displayedSceneRect.normalized(), 2, 2);
+//    xv_sceneCenterPos = mapToScene(viewport()->rect()).boundingRect().center();
+//    xv_sceneMousePos = mapToScene(event->position().toPoint());
+
+
+
     if(xv_plotMode != PM_REGULAR || !scene())
     {
         return;
@@ -315,15 +389,16 @@ void X_PlotGraphicsView::wheelEvent(QWheelEvent * event)
     QRectF oldDisplayedSceneRect = mapToScene(viewport()->rect().adjusted(2,-1,-2,1)).boundingRect();
     //QRectF oldDisplayedSceneRect = mapToScene(viewport()->rect()).boundingRect();
     QRectF displayedSceneRect = oldDisplayedSceneRect;
-    qreal rightPartFactor = 0.1 *(displayedSceneRect.right() - xv_sceneMousePos.x())
-            / (displayedSceneRect.right() - displayedSceneRect.left());
-    qreal topPartFactor = 0.1* (xv_sceneMousePos.y() - displayedSceneRect.top())
-            / (displayedSceneRect.bottom() - displayedSceneRect.top());
+    double rightPartFactor = 0.1 *(displayedSceneRect.right() - xv_sceneMousePos.x())
+                            / (displayedSceneRect.right() - displayedSceneRect.left());
+    double topPartFactor = 0.1* (xv_sceneMousePos.y() - displayedSceneRect.top())
+                          / (displayedSceneRect.bottom() - displayedSceneRect.top());
 
-    qreal leftPartFactor = 0.1 - rightPartFactor;
-    qreal bottomPartFactor = 0.1 - topPartFactor;
+    double leftPartFactor = 0.1 - rightPartFactor;
+    double bottomPartFactor = 0.1 - topPartFactor;
 
     if(event->angleDelta().y() > 0)
+    // if (event->pixelDelta().isNull() > 0)
     {
         topPartFactor *= -1;
         leftPartFactor *= -1;
@@ -387,6 +462,7 @@ void X_PlotGraphicsView::mousePressEvent(QMouseEvent* event)
         xv_sceneCenterPos = mapToScene(viewport()->rect()).boundingRect().center();
         xv_sceneMousePos = mapToScene(event->pos());
         xv_mousePressStartViewPos = event->pos();
+        emit xg_mousePressedAt(xv_sceneMousePos);
         return;
         // }
     }
@@ -470,8 +546,8 @@ void X_PlotGraphicsView::mouseMoveEvent(QMouseEvent* event)
     if(xv_plotMode == PM_PAD_DRAGGING)
     {
         QPointF newSceneMousePos = mapToScene(event->pos());
-        qreal deltaX = xv_sceneMousePos.x() - newSceneMousePos.x();
-        qreal deltaY = xv_sceneMousePos.y() - newSceneMousePos.y();
+        double deltaX = xv_sceneMousePos.x() - newSceneMousePos.x();
+        double deltaY = xv_sceneMousePos.y() - newSceneMousePos.y();
         QPointF newSceneCenter(xv_sceneCenterPos.x() + deltaX, xv_sceneCenterPos.y() + deltaY);
         centerOn(newSceneCenter);
         xv_sceneCenterPos = mapToScene(viewport()->rect()).boundingRect().center();
@@ -530,8 +606,8 @@ void X_PlotGraphicsView::mouseMoveEvent(QMouseEvent* event)
             qApp->setOverrideCursor(Qt::ClosedHandCursor);
             xv_plotMode = PM_PAD_DRAGGING;
             QPointF newSceneMousePos = mapToScene(event->pos());
-            qreal deltaX = xv_sceneMousePos.x() - newSceneMousePos.x();
-            qreal deltaY = xv_sceneMousePos.y() - newSceneMousePos.y();
+            double deltaX = xv_sceneMousePos.x() - newSceneMousePos.x();
+            double deltaY = xv_sceneMousePos.y() - newSceneMousePos.y();
             QPointF newSceneCenter(xv_sceneCenterPos.x() + deltaX, xv_sceneCenterPos.y() + deltaY);
             centerOn(newSceneCenter);
             xv_sceneCenterPos = mapToScene(viewport()->rect()).boundingRect().center();
@@ -572,51 +648,6 @@ void X_PlotGraphicsView::mouseMoveEvent(QMouseEvent* event)
     }
     QGraphicsView::mouseMoveEvent(event);
 }
-//=============================================================
-/* bool X_PlotGraphicsView::viewportEvent(QEvent * event)
-{
-    if(event->type() == QEvent::Paint && xv_plotMode == PM_RULER)
-    {
-        emit xg_rulerToolChanged(mapToScene(xv_mousePressStartViewPos),
-                                 mapToScene(xv_currentMousePos), true);
-    }
-
-    if(event->type() == QEvent::HoverLeave || event->type() == QEvent::Leave)
-    {
-        emit xg_mouseLeaved();
-    }
-
-    if(event->type() == QEvent::Resize && scene())
-    {
-        QResizeEvent* resizeEvent = static_cast<QResizeEvent*>(event);
-
-        if(xv_scaleViewWhenResizeFlag
-                &&resizeEvent->oldSize().width() != 0
-                && resizeEvent->oldSize().height() != 0)
-        {
-            QPointF sceneCenterPos = mapToScene(viewport()->rect()).boundingRect().center();
-
-            double dx = (double)(resizeEvent->size().width())
-                    / (double)(resizeEvent->oldSize().width());
-
-            double dy = (double)(resizeEvent->size().height())
-                    / (double)(resizeEvent->oldSize().height());
-
-            scale(dx, dy);
-            centerOn(sceneCenterPos);
-        }
-    }
-    else if(event->type() == QEvent::Paint && scene())
-    {
-        if(xv_rulersAndGreedManager)
-        {
-            xv_rulersAndGreedManager->xp_recalcRulesAndGrid();
-        }
-    }
-
-    return QGraphicsView::viewportEvent(event);
-}
-*/
 //=============================================================
 bool X_PlotGraphicsView::viewportEvent(QEvent * event)
 {
@@ -672,21 +703,21 @@ bool X_PlotGraphicsView::viewportEvent(QEvent * event)
 //=============================================================
 void X_PlotGraphicsView::drawBackground(QPainter * painter, const QRectF & rect)
 {
-    if(xv_rulersAndGreedManager != 0 && xv_drawGridFlag)
+    if(xv_rulersAndGreedManager != nullptr && xv_drawGridFlag)
     {
         // rect adjusting
-        qreal K_width = rect.width() * 1.1/
+        double K_width = rect.width() * 1.1/
                 rect.width();
-        qreal K_height = rect.height()  * 1.1/
+        double K_height = rect.height()  * 1.1/
                 rect.height();
 
-        int dPix = 1;
-        const QRectF adjustedRect = rect.adjusted(-1*K_width*dPix, -1*K_height*dPix, K_width*dPix, K_height*dPix);
+        double dPix = 1;
+        const QRectF adjustedRect = rect.adjusted(-1.0*K_width*dPix, -1.0*K_height*dPix, K_width*dPix, K_height*dPix);
         // painter for MARK GRID
         painter->save();
 
         // X
-        if(xv_XRuleList != 0)
+        if(xv_XRuleList != nullptr)
         {
             for(int i = 0; i < xv_XRuleList->count(); i++)
             {
@@ -703,13 +734,13 @@ void X_PlotGraphicsView::drawBackground(QPainter * painter, const QRectF & rect)
                     pen.setCosmetic(true);
                 }
                 painter->setPen(pen);
-                painter->drawLine(xv_XRuleList->value(i).scenePos, adjustedRect.top(),
-                                  xv_XRuleList->value(i).scenePos, adjustedRect.bottom());
+                painter->drawLine(QPointF(xv_XRuleList->value(i).scenePos, adjustedRect.top()),
+                                  QPointF(xv_XRuleList->value(i).scenePos, adjustedRect.bottom()));
             }
         }
 
         // Y
-        if(xv_YRuleList != 0)
+        if(xv_YRuleList != nullptr)
         {
             for(int i = 0; i < xv_YRuleList->count(); i++)
             {
@@ -726,8 +757,9 @@ void X_PlotGraphicsView::drawBackground(QPainter * painter, const QRectF & rect)
                     pen.setCosmetic(true);
                 }
                 painter->setPen(pen);
-                painter->drawLine(adjustedRect.left(), xv_YRuleList->value(i).scenePos,
-                                  adjustedRect.right(), xv_YRuleList->value(i).scenePos);
+                painter->drawLine(QPointF(adjustedRect.left(), xv_YRuleList->value(i).scenePos),
+                                  QPointF(adjustedRect.right(), xv_YRuleList->value(i).scenePos));
+
             }
         }
         painter->restore();
@@ -735,6 +767,27 @@ void X_PlotGraphicsView::drawBackground(QPainter * painter, const QRectF & rect)
     }
 
     QGraphicsView::drawBackground(painter, rect);
+}
+//=============================================================
+void X_PlotGraphicsView::drawForeground(QPainter *painter, const QRectF &rect)
+{
+    QGraphicsView::drawForeground(painter, rect);
+}
+//=============================================================
+void X_PlotGraphicsView::contextMenuEvent(QContextMenuEvent *event)
+{
+    if(xv_plotMode == PM_REGULAR && xv_mousePressStartViewPos == event->pos())
+    {
+        QMenu menu;
+        menu.addActions(this->actions());
+        menu.move(mapToGlobal(event->pos()));
+        QAction* action =  menu.exec();
+        if(action != nullptr)
+        {
+            action->setData(QVariant(mapToScene(event->pos())));
+            action->trigger();
+        }
+    }
 }
 //=============================================================
 void X_PlotGraphicsView::xh_createConnections()

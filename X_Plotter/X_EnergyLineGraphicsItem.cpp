@@ -86,7 +86,7 @@ void X_EnergyLineGraphicsItem::xh_recalcShapeAndBoundingRect()
     prepareGeometryChange();
 
     // line
-    qreal shift = (qAbs(xv_bottomMargin - xv_topMargin)) * (1 - ((0.8/100) * xv_heightPercent));
+    double shift = (qAbs(xv_bottomMargin - xv_topMargin)) * (1 - ((0.8/100) * xv_heightPercent));
     QPainterPath newLinePainterPath;
     QPointF bottomPoint = QPointF(xv_xPosition, 0.0);
     QPointF topPoint = QPointF(xv_xPosition, xv_topMargin + shift);
@@ -109,7 +109,7 @@ void X_EnergyLineGraphicsItem::xh_recalcShapeAndBoundingRect()
     xv_textItem->setPos(textPos);
 }
 //======================================================
-bool X_EnergyLineGraphicsItem::xp_setTopAndButtonMargins(qreal top, qreal bottom)
+bool X_EnergyLineGraphicsItem::xp_setTopAndButtonMargins(double top, double bottom)
 {
     if(top - bottom == 0.0)
     {
