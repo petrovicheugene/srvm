@@ -874,7 +874,7 @@ void X_FileActionManager::xp_defineSpectrumFilesAndInitAppending()
 //======================================================
 void X_FileActionManager::xh_onOpenSpectrumArrayAction() // outputs RawArray
 {
-    QString locationDirString = X_XMLCalibrationIOHandler::xp_checkDirPath(xv_calibrationFolderPath);
+    //QString locationDirString = X_XMLCalibrationIOHandler::xp_checkDirPath(xv_calibrationFolderPath);
     QFileDialog* fileDialog = new QFileDialog(nullptr,
                                               tr("Open file"),
                                               xv_spectrumArrayFolderPath,

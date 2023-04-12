@@ -790,7 +790,7 @@ bool X_ChemicalElementProprtyEditor::xh_addChemicalElementPropertySectionBranch(
             QMessageBox msgBox;
             msgBox.setText(tr("Cannot add chemical element property branch to chemical element %1 with error \"%2\".")
                            .arg(chemicalElement, errorMsg));
-            msgBox.setInformativeText("Do you want to continue anyway?");
+            msgBox.setInformativeText(tr("Do you want to continue anyway?"));
             msgBox.setStandardButtons(QMessageBox::Yes | QMessageBox::No);
             msgBox.setDefaultButton(QMessageBox::Yes);
             int answer = msgBox.exec();

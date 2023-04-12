@@ -509,7 +509,7 @@ bool X_SpectrumArray::xp_appendSpectrum(const X_RawSpectrum& rawSpectrum, bool l
                     }
                     question += "\r\n";
                 }
-                question += "Do you want to continue loading?";
+                question += tr("Do you want to continue loading?");
 
                 QMessageBox msgBox;
                 msgBox.setIcon(QMessageBox::Question);

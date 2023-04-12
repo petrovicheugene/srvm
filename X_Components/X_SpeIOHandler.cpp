@@ -209,7 +209,7 @@ bool X_SpeIOHandler::xp_saveSpectrumToFile(const QString& path,
 
         QMessageBox msgBox;
         msgBox.setText(tr("The file \"%1\" is already exists.").arg(fileInfo.absoluteFilePath()));
-        msgBox.setInformativeText("Do you want to update it?");
+        msgBox.setInformativeText(tr("Do you want to update it?"));
         msgBox.setStandardButtons(QMessageBox::Yes | QMessageBox::YesToAll
                                   | QMessageBox::No | QMessageBox::NoToAll);
         msgBox.setDefaultButton(QMessageBox::Yes);
