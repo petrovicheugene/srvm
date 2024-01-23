@@ -445,7 +445,7 @@ bool ZCalibration::zp_calcConcentration(const ZAbstractSpectrum* const spectrum,
     }
 
     // calc polynom
-    qreal value;
+    qreal value = 0.0;
     for (int t = 0; t < zv_termList.count(); t++)
     {
         // exclude base term if !zv_useBaseTermInFractionalEquation
@@ -1123,10 +1123,18 @@ void ZCalibration::zp_updateCustomTerm(bool& res, ZRawCustomTerm& rawTerm)
         return;
     }
 
-    // create a new term
-    int id = zp_applyRawTerm(rawTerm);
-    res = id < 0 ? false : true;
-    rawTerm.termId = id;
+    int termIndex = zp_applyRawTerm(rawTerm);
+    res = termIndex < 0 ? false : true;
+    rawTerm.termId = termIndex;
+
+    // Update
+    zv_dirty = true;
+    zv_dateTime = QDateTime::currentDateTime();
+    emit zg_dirtyChanged(zv_dirty);
+
+    emit zg_termOperation(TOT_TERM_CHANGED, termIndex, termIndex);
+
+
 }
 //=========================================================
 void ZCalibration::zp_calcWindowIntensity(const QString& windowName,
@@ -1394,7 +1402,7 @@ bool ZCalibration::zh_checkCustomString(ZRawTerm& rawTerm)
 //=========================================================
 bool ZCalibration::zh_createWindowIndexList(QList<int>& windowIndexList, ZRawTerm& rawTerm)
 {
-    if (!zh_checkCustomString(rawTerm))
+    if (rawTerm.termType == ZAbstractTerm::TT_CUSTOM && !zh_checkCustomString(rawTerm))
     {
         return false;
     }
@@ -1440,8 +1448,6 @@ bool ZCalibration::zh_updateExistingTerm(int termIndex, ZRawTerm& rawTerm)
         zv_termList[termIndex]->zh_setTermFactor(rawTerm.factor);
         res = true;
     }
-
-
 
     return res;
 }
@@ -2416,10 +2422,10 @@ QList<QColor> ZCalibration::zp_createColorList()
 
     while (colorList.count() < 1500)
     {
-        qsrand(QDateTime::currentMSecsSinceEpoch() + 500);
-        red = ((qrand() % 24) * 10) + 15;
-        green = ((qrand() % 24) * 10) + 15;
-        blue = ((qrand() % 24) * 10) + 15;
+        srand(QDateTime::currentMSecsSinceEpoch() + 500);
+        red = ((rand() % 24) * 10) + 15;
+        green = ((rand() % 24) * 10) + 15;
+        blue = ((rand() % 24) * 10) + 15;
 
         color = QColor(red, green, blue);
         if (ZCalibration::checkColor(color))

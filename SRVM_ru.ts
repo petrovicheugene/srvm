@@ -4,7 +4,7 @@
 <context>
     <name>MainWindow</name>
     <message>
-        <location filename="MainWindow.cpp" line="336"/>
+        <location filename="MainWindow.cpp" line="335"/>
         <source>Calibrations</source>
         <translation>Градуировки</translation>
     </message>
@@ -37,32 +37,32 @@
         <translation type="vanished">О библиотеке Qt</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="134"/>
+        <location filename="MainWindow.cpp" line="135"/>
         <source>The spectrum array list has been modified.</source>
         <translation>Массив спектров был изменен.</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="135"/>
+        <location filename="MainWindow.cpp" line="136"/>
         <source>Do you want to save your changes?</source>
         <translation>Сохранить изменения?</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="163"/>
+        <location filename="MainWindow.cpp" line="164"/>
         <source>There are calibrations that have been modified.</source>
         <translation>Градуировки были изменены.</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="164"/>
+        <location filename="MainWindow.cpp" line="165"/>
         <source>Do you want to save them?</source>
         <translation>Сохранить изменения?</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="201"/>
+        <location filename="MainWindow.cpp" line="202"/>
         <source>Exit</source>
         <translation>Выход</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="202"/>
+        <location filename="MainWindow.cpp" line="203"/>
         <source>Exit the application</source>
         <translation>Выйти из приложения</translation>
     </message>
@@ -75,7 +75,7 @@
         <translation type="vanished">Информация о программе</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="489"/>
+        <location filename="MainWindow.cpp" line="488"/>
         <source>Help</source>
         <translation>Помощь</translation>
     </message>
@@ -84,63 +84,63 @@
         <translation type="vanished">Открыть руководство пользователя</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="270"/>
+        <location filename="MainWindow.cpp" line="269"/>
         <source>The language of application has been changed.
 In order for the changes to take effect, please restart the application.</source>
         <translation>Язык приложения был изменен.\nДля применения изменений перезапустите приложение.</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="276"/>
+        <location filename="MainWindow.cpp" line="275"/>
         <source>Unknown language settings error.</source>
         <translation>Неизвестная ошибка установки языка приложения.</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="280"/>
+        <location filename="MainWindow.cpp" line="279"/>
         <source>Language settings</source>
         <translation>Настройка языка приложения</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="311"/>
+        <location filename="MainWindow.cpp" line="310"/>
         <source>Spectra</source>
         <translation>Спектры</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="379"/>
+        <location filename="MainWindow.cpp" line="378"/>
         <source>Plot</source>
         <translation>Графики</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="391"/>
+        <location filename="MainWindow.cpp" line="390"/>
         <source>Message</source>
         <translation>Сообщения</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="403"/>
+        <location filename="MainWindow.cpp" line="402"/>
         <source>Energy lines</source>
         <translation>Характеристические линии элементов</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="456"/>
+        <location filename="MainWindow.cpp" line="455"/>
         <source>File</source>
         <translation>Файл</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="465"/>
+        <location filename="MainWindow.cpp" line="464"/>
         <source>Edit</source>
         <translation>Правка</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="473"/>
+        <location filename="MainWindow.cpp" line="472"/>
         <source>View</source>
         <translation>Вид</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="481"/>
+        <location filename="MainWindow.cpp" line="480"/>
         <source>Actions</source>
         <translation>Действия</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="719"/>
+        <location filename="MainWindow.cpp" line="718"/>
         <source>Application language</source>
         <translation>Язык приложения</translation>
     </message>
@@ -220,27 +220,27 @@ In order for the changes to take effect, please restart the application.</source
 <context>
     <name>QObject</name>
     <message>
-        <location filename="ZComponents/ZCalibration.cpp" line="28"/>
+        <location filename="X_Components/X_Calibration.cpp" line="27"/>
         <source>Peak #</source>
         <translation>Пик #</translation>
     </message>
     <message>
-        <location filename="ZComponents/ZCalibrationWindow.cpp" line="17"/>
+        <location filename="X_Components/X_CalibrationWindow.cpp" line="19"/>
         <source>Not defined</source>
         <translation>Не определено</translation>
     </message>
     <message>
-        <location filename="ZComponents/ZCalibrationWindow.cpp" line="21"/>
+        <location filename="X_Components/X_CalibrationWindow.cpp" line="23"/>
         <source>Peak</source>
         <translation>Пик</translation>
     </message>
     <message>
-        <location filename="ZComponents/ZCalibrationWindow.cpp" line="25"/>
+        <location filename="X_Components/X_CalibrationWindow.cpp" line="27"/>
         <source>Coherent</source>
         <translation>Когерентный</translation>
     </message>
     <message>
-        <location filename="ZComponents/ZCalibrationWindow.cpp" line="29"/>
+        <location filename="X_Components/X_CalibrationWindow.cpp" line="31"/>
         <source>Incoherent</source>
         <translation>Некогерентный</translation>
     </message>
@@ -289,168 +289,227 @@ In order for the changes to take effect, please restart the application.</source
         <translation type="vanished">Общая интенсивность:</translation>
     </message>
     <message>
-        <location filename="ZComponents/ZCalibrationRepository.cpp" line="2287"/>
-        <location filename="ZComponents/ZSpectrumArray.cpp" line="480"/>
+        <location filename="X_Components/X_CalibrationRepository.cpp" line="2322"/>
+        <location filename="X_Components/X_SpectrumArray.cpp" line="480"/>
         <source>Cannot handle file of type &quot;%1&quot;!</source>
         <translation>Невозможно обработать файл типа &quot;%1&quot;!</translation>
     </message>
     <message>
-        <location filename="ZGeneral.cpp" line="95"/>
+        <location filename="X_General.cpp" line="95"/>
         <source>Settings</source>
         <translation>Настройки</translation>
     </message>
     <message>
-        <location filename="ZGeneral.cpp" line="96"/>
+        <location filename="X_General.cpp" line="96"/>
         <source>Run settings of the application</source>
         <translation>Настройки приложения</translation>
     </message>
     <message>
-        <location filename="ZGeneral.cpp" line="97"/>
+        <location filename="X_General.cpp" line="97"/>
         <source>Exit</source>
         <translation>Выход</translation>
     </message>
     <message>
-        <location filename="ZGeneral.cpp" line="98"/>
+        <location filename="X_General.cpp" line="98"/>
         <source>Exit the application</source>
         <translation>Выйти из приложения</translation>
     </message>
     <message>
-        <location filename="ZGeneral.cpp" line="99"/>
+        <location filename="X_General.cpp" line="99"/>
         <source>About</source>
         <translation>О программе</translation>
     </message>
     <message>
-        <location filename="ZGeneral.cpp" line="100"/>
+        <location filename="X_General.cpp" line="100"/>
         <source>About the application</source>
         <translation>Информация о программе</translation>
     </message>
     <message>
-        <location filename="ZGeneral.cpp" line="101"/>
-        <location filename="ZGeneral.cpp" line="119"/>
+        <location filename="X_General.cpp" line="101"/>
+        <location filename="X_General.cpp" line="119"/>
         <source>Help</source>
         <translation>Помощь</translation>
     </message>
     <message>
-        <location filename="ZGeneral.cpp" line="102"/>
+        <location filename="X_General.cpp" line="102"/>
         <source>Show user guide</source>
         <translation>Открыть руководство пользователя</translation>
     </message>
     <message>
-        <location filename="ZGeneral.cpp" line="104"/>
+        <location filename="X_General.cpp" line="104"/>
         <source>Error</source>
         <translation>Ошибка</translation>
     </message>
     <message>
-        <location filename="ZGeneral.cpp" line="105"/>
+        <location filename="X_General.cpp" line="105"/>
         <source>Warning</source>
         <translation>Предупреждение</translation>
     </message>
     <message>
-        <location filename="ZGeneral.cpp" line="106"/>
+        <location filename="X_General.cpp" line="106"/>
         <source>Common</source>
         <translation>Общие</translation>
     </message>
     <message>
-        <location filename="ZGeneral.cpp" line="107"/>
+        <location filename="X_General.cpp" line="107"/>
         <source>Color</source>
         <translation>Цвет</translation>
     </message>
     <message>
-        <location filename="ZGeneral.cpp" line="108"/>
+        <location filename="X_General.cpp" line="108"/>
         <source>Color...</source>
         <translation>Цвет...</translation>
     </message>
     <message>
-        <location filename="ZGeneral.cpp" line="115"/>
+        <location filename="X_General.cpp" line="115"/>
         <source>File</source>
         <translation>Файл</translation>
     </message>
     <message>
-        <location filename="ZGeneral.cpp" line="116"/>
+        <location filename="X_General.cpp" line="116"/>
         <source>Edit</source>
         <translation>Редактирование</translation>
     </message>
     <message>
-        <location filename="ZGeneral.cpp" line="117"/>
+        <location filename="X_General.cpp" line="117"/>
         <source>View</source>
         <translation>Вид</translation>
     </message>
     <message>
-        <location filename="ZGeneral.cpp" line="118"/>
+        <location filename="X_General.cpp" line="118"/>
         <source>Actions</source>
         <translation>Действия</translation>
     </message>
     <message>
-        <location filename="ZGeneral.cpp" line="124"/>
+        <location filename="X_General.cpp" line="124"/>
         <source>OK</source>
         <translation>Ок</translation>
     </message>
     <message>
-        <location filename="ZGeneral.cpp" line="125"/>
+        <location filename="X_General.cpp" line="125"/>
         <source>Apply</source>
         <translation>Применить</translation>
     </message>
     <message>
-        <location filename="ZGeneral.cpp" line="126"/>
+        <location filename="X_General.cpp" line="126"/>
         <source>Cancel</source>
         <translation>Отмена</translation>
     </message>
     <message>
-        <location filename="ZGeneral.cpp" line="127"/>
+        <location filename="X_General.cpp" line="127"/>
         <source>Browse</source>
         <translation>Просмотр</translation>
     </message>
     <message>
-        <location filename="ZGeneral.cpp" line="128"/>
+        <location filename="X_General.cpp" line="128"/>
         <source>New</source>
         <translation>Новый</translation>
     </message>
     <message>
-        <location filename="ZGeneral.cpp" line="134"/>
+        <location filename="X_General.cpp" line="134"/>
         <source>Open file</source>
         <translation>Открыть файл</translation>
     </message>
     <message>
-        <location filename="ZGeneral.cpp" line="135"/>
+        <location filename="X_General.cpp" line="135"/>
         <source>Select color</source>
         <translation>Выбор цвета</translation>
     </message>
 </context>
 <context>
-    <name>ZAbstractPlotterDataManager</name>
+    <name>X_AbstractPlotterDataManager</name>
     <message>
-        <location filename="ZComponents/ZAbstractPlotterDataManager.cpp" line="32"/>
+        <location filename="X_Components/X_AbstractPlotterDataManager.cpp" line="31"/>
         <source>Intensity</source>
         <translation>Интенсивность</translation>
     </message>
     <message>
-        <location filename="ZComponents/ZAbstractPlotterDataManager.cpp" line="33"/>
+        <location filename="X_Components/X_AbstractPlotterDataManager.cpp" line="32"/>
         <source>Channels</source>
         <translation>Каналы</translation>
     </message>
     <message>
-        <location filename="ZComponents/ZAbstractPlotterDataManager.cpp" line="34"/>
+        <location filename="X_Components/X_AbstractPlotterDataManager.cpp" line="33"/>
         <source>Energy</source>
         <translation>Энергия</translation>
     </message>
     <message>
-        <location filename="ZComponents/ZAbstractPlotterDataManager.cpp" line="266"/>
+        <location filename="X_Components/X_AbstractPlotterDataManager.cpp" line="264"/>
         <source>Start: %1&lt;br&gt;End: %2</source>
         <translation>Начало: %1&lt;br&gt;Конец: %2</translation>
     </message>
     <message>
-        <location filename="ZComponents/ZAbstractPlotterDataManager.cpp" line="281"/>
+        <location filename="X_Components/X_AbstractPlotterDataManager.cpp" line="279"/>
         <source>&lt;br&gt;Integral: %1</source>
         <translation>&lt;br&gt;Интеграл: %1</translation>
     </message>
     <message>
-        <location filename="ZComponents/ZAbstractPlotterDataManager.cpp" line="743"/>
+        <location filename="X_Components/X_AbstractPlotterDataManager.cpp" line="741"/>
         <source>kEv</source>
         <translation>кЭв</translation>
     </message>
 </context>
 <context>
-    <name>ZAddCalibrationDialog</name>
+    <name>X_AbstractTerm</name>
+    <message>
+        <location filename="X_Components/X_AbstractTerm.cpp" line="17"/>
+        <location filename="X_Components/X_AbstractTerm.cpp" line="29"/>
+        <source>Not defined</source>
+        <translation>Не определено</translation>
+    </message>
+    <message>
+        <location filename="X_Components/X_AbstractTerm.cpp" line="18"/>
+        <source>Simple</source>
+        <translation>Простой</translation>
+    </message>
+    <message>
+        <location filename="X_Components/X_AbstractTerm.cpp" line="19"/>
+        <source>Quadratic</source>
+        <translation>Квадратичный</translation>
+    </message>
+    <message>
+        <location filename="X_Components/X_AbstractTerm.cpp" line="20"/>
+        <source>Mixed</source>
+        <translation>Смешанный</translation>
+    </message>
+    <message>
+        <location filename="X_Components/X_AbstractTerm.cpp" line="21"/>
+        <source>Custom</source>
+        <translation>Пользовательский</translation>
+    </message>
+    <message>
+        <location filename="X_Components/X_AbstractTerm.cpp" line="30"/>
+        <source>Constantly Included</source>
+        <translation>Постоянно включенный</translation>
+    </message>
+    <message>
+        <location filename="X_Components/X_AbstractTerm.cpp" line="31"/>
+        <source>Constantly Excluded</source>
+        <translation>Постоянно исключенный</translation>
+    </message>
+    <message>
+        <location filename="X_Components/X_AbstractTerm.cpp" line="32"/>
+        <source>Exam Waiting</source>
+        <translation>На очереди</translation>
+    </message>
+    <message>
+        <location filename="X_Components/X_AbstractTerm.cpp" line="33"/>
+        <source>Excepted</source>
+        <translation>Исключенный</translation>
+    </message>
+    <message>
+        <location filename="X_Components/X_AbstractTerm.cpp" line="34"/>
+        <source>Included</source>
+        <translation>Включенный</translation>
+    </message>
+    <message>
+        <location filename="X_Components/X_AbstractTerm.cpp" line="35"/>
+        <source>Base</source>
+        <translation>База</translation>
+    </message>
+</context>
+<context>
+    <name>X_AddCalibrationDialog</name>
     <message>
         <source>Add calibration</source>
         <translation type="vanished">Добавить градуировку</translation>
@@ -501,7 +560,7 @@ In order for the changes to take effect, please restart the application.</source
     </message>
 </context>
 <context>
-    <name>ZAddSampleDialog</name>
+    <name>X_AddSampleDialog</name>
     <message>
         <source>Samples</source>
         <translation type="vanished">Пробы</translation>
@@ -556,91 +615,91 @@ In order for the changes to take effect, please restart the application.</source
     </message>
 </context>
 <context>
-    <name>ZArrayModel</name>
+    <name>X_ArrayModel</name>
     <message>
-        <location filename="ZModels/ZArrayModel.cpp" line="126"/>
+        <location filename="X_Models/X_ArrayModel.cpp" line="126"/>
         <source>Array</source>
         <translation>Массив</translation>
     </message>
     <message>
-        <location filename="ZModels/ZArrayModel.cpp" line="130"/>
+        <location filename="X_Models/X_ArrayModel.cpp" line="130"/>
         <source>Gain Factor</source>
-        <translation>К.У.</translation>
+        <translation>Коэффициент усиления</translation>
     </message>
     <message>
-        <location filename="ZModels/ZArrayModel.cpp" line="134"/>
+        <location filename="X_Models/X_ArrayModel.cpp" line="134"/>
         <source>Exposition</source>
-        <translation>Эксп.</translation>
+        <translation>Экспозиция</translation>
     </message>
 </context>
 <context>
-    <name>ZBaseMainWindow</name>
+    <name>X_BaseMainWindow</name>
     <message>
-        <location filename="ZBaseMainWindow/ZBaseMainWindow.cpp" line="33"/>
+        <location filename="X_BaseMainWindow/X_BaseMainWindow.cpp" line="33"/>
         <source>Help</source>
         <translation>Помощь</translation>
     </message>
     <message>
-        <location filename="ZBaseMainWindow/ZBaseMainWindow.cpp" line="34"/>
+        <location filename="X_BaseMainWindow/X_BaseMainWindow.cpp" line="34"/>
         <source>About</source>
         <translation>О программе</translation>
     </message>
     <message>
-        <location filename="ZBaseMainWindow/ZBaseMainWindow.cpp" line="35"/>
+        <location filename="X_BaseMainWindow/X_BaseMainWindow.cpp" line="35"/>
         <source>About Qt</source>
         <translation>О Qt</translation>
     </message>
     <message>
-        <location filename="ZBaseMainWindow/ZBaseMainWindow.cpp" line="106"/>
+        <location filename="X_BaseMainWindow/X_BaseMainWindow.cpp" line="106"/>
         <source>About %1</source>
         <translation>О %1</translation>
     </message>
     <message>
-        <location filename="ZBaseMainWindow/ZBaseMainWindow.cpp" line="139"/>
+        <location filename="X_BaseMainWindow/X_BaseMainWindow.cpp" line="139"/>
         <source>Eugene Petrovich</source>
         <translation>Петрович Евгений</translation>
     </message>
     <message>
-        <location filename="ZBaseMainWindow/ZBaseMainWindow.cpp" line="140"/>
+        <location filename="X_BaseMainWindow/X_BaseMainWindow.cpp" line="140"/>
         <source>Author</source>
         <translation>Автор</translation>
     </message>
     <message>
-        <location filename="ZBaseMainWindow/ZBaseMainWindow.cpp" line="141"/>
+        <location filename="X_BaseMainWindow/X_BaseMainWindow.cpp" line="141"/>
         <source>Version</source>
         <translation>Версия</translation>
     </message>
 </context>
 <context>
-    <name>ZCalibration</name>
+    <name>X_Calibration</name>
     <message>
-        <location filename="ZComponents/ZCalibration.cpp" line="41"/>
+        <location filename="X_Components/X_Calibration.cpp" line="40"/>
         <source>Not defined</source>
         <translation>Не определено</translation>
     </message>
     <message>
-        <location filename="ZComponents/ZCalibration.cpp" line="42"/>
+        <location filename="X_Components/X_Calibration.cpp" line="41"/>
         <source>Polynomial</source>
         <translation>Полином</translation>
     </message>
     <message>
-        <location filename="ZComponents/ZCalibration.cpp" line="43"/>
+        <location filename="X_Components/X_Calibration.cpp" line="42"/>
         <source>Fractional</source>
         <translation>Дробное</translation>
     </message>
     <message>
-        <location filename="ZComponents/ZCalibration.cpp" line="1114"/>
+        <location filename="X_Components/X_Calibration.cpp" line="1178"/>
         <source>Updated term type is not &quot;Custom&quot;!</source>
         <translation>Тип изменяемого параметра не является пользовательским!</translation>
     </message>
     <message>
-        <location filename="ZComponents/ZCalibration.cpp" line="1382"/>
+        <location filename="X_Components/X_Calibration.cpp" line="1446"/>
         <source> (position %1)</source>
         <translation> (позиция %1)</translation>
     </message>
 </context>
 <context>
-    <name>ZCalibrationListDialog</name>
+    <name>X_CalibrationListDialog</name>
     <message>
         <source>Calibrations</source>
         <translation type="vanished">Градуировки</translation>
@@ -739,186 +798,196 @@ In order for the changes to take effect, please restart the application.</source
     </message>
 </context>
 <context>
-    <name>ZCalibrationModel</name>
+    <name>X_CalibrationModel</name>
     <message>
-        <location filename="ZModels/ZCalibrationModel.cpp" line="69"/>
+        <location filename="X_Models/X_CalibrationModel.cpp" line="69"/>
         <source>, no base</source>
         <translation>, без базы</translation>
     </message>
     <message>
-        <location filename="ZModels/ZCalibrationModel.cpp" line="73"/>
+        <location filename="X_Models/X_CalibrationModel.cpp" line="73"/>
         <source>, base: </source>
         <translation>, база: </translation>
     </message>
     <message>
-        <location filename="ZModels/ZCalibrationModel.cpp" line="275"/>
+        <location filename="X_Models/X_CalibrationModel.cpp" line="275"/>
         <source>Calibration</source>
         <translation>Градуировка</translation>
     </message>
     <message>
-        <location filename="ZModels/ZCalibrationModel.cpp" line="279"/>
+        <location filename="X_Models/X_CalibrationModel.cpp" line="279"/>
         <source>Chem. element</source>
         <translation>Элемент</translation>
     </message>
     <message>
-        <location filename="ZModels/ZCalibrationModel.cpp" line="283"/>
+        <location filename="X_Models/X_CalibrationModel.cpp" line="283"/>
         <source>Equation</source>
         <translation>Уравнение</translation>
     </message>
     <message>
-        <location filename="ZModels/ZCalibrationModel.cpp" line="287"/>
+        <location filename="X_Models/X_CalibrationModel.cpp" line="287"/>
         <source>Normalization</source>
         <translation>Нормировка</translation>
     </message>
     <message>
-        <location filename="ZModels/ZCalibrationModel.cpp" line="291"/>
+        <location filename="X_Models/X_CalibrationModel.cpp" line="291"/>
         <source>Intercept</source>
         <translation>Свободный член</translation>
     </message>
 </context>
 <context>
-    <name>ZCalibrationRepository</name>
+    <name>X_CalibrationRepository</name>
     <message>
-        <location filename="ZComponents/ZCalibrationRepository.cpp" line="36"/>
+        <location filename="X_Components/X_CalibrationRepository.cpp" line="37"/>
         <source>Calibration #</source>
         <translation>Градуировка #</translation>
     </message>
     <message>
-        <location filename="ZComponents/ZCalibrationRepository.cpp" line="1339"/>
+        <location filename="X_Components/X_CalibrationRepository.cpp" line="1143"/>
+        <source>Clear current calibration list?</source>
+        <translation>Очистить текущий список градуировок?</translation>
+    </message>
+    <message>
+        <location filename="X_Components/X_CalibrationRepository.cpp" line="1144"/>
+        <source>Calibration appending</source>
+        <translation>Добавление калибровок</translation>
+    </message>
+    <message>
+        <location filename="X_Components/X_CalibrationRepository.cpp" line="1374"/>
         <source>selected calibration</source>
         <oldsource>calibration</oldsource>
         <translation>выделенную градуировку</translation>
     </message>
     <message>
-        <location filename="ZComponents/ZCalibrationRepository.cpp" line="1343"/>
+        <location filename="X_Components/X_CalibrationRepository.cpp" line="1378"/>
         <source>selected calibrations</source>
         <oldsource>calibrations</oldsource>
         <translation>выделенные градуировки</translation>
     </message>
     <message>
-        <location filename="ZComponents/ZCalibrationRepository.cpp" line="1346"/>
-        <location filename="ZComponents/ZCalibrationRepository.cpp" line="1441"/>
+        <location filename="X_Components/X_CalibrationRepository.cpp" line="1381"/>
+        <location filename="X_Components/X_CalibrationRepository.cpp" line="1476"/>
         <source>Do you want to remove %1 from the list?</source>
         <oldsource>Do you want to remove selected %1 from the list?</oldsource>
         <translation>Удалить %1 из списка?</translation>
     </message>
     <message>
-        <location filename="ZComponents/ZCalibrationRepository.cpp" line="1349"/>
+        <location filename="X_Components/X_CalibrationRepository.cpp" line="1384"/>
         <source>Calibration removing</source>
         <translation>Удаление градуировки</translation>
     </message>
     <message>
-        <location filename="ZComponents/ZCalibrationRepository.cpp" line="1434"/>
+        <location filename="X_Components/X_CalibrationRepository.cpp" line="1469"/>
         <source>selected window</source>
         <oldsource>window</oldsource>
         <translation>выделенное окно</translation>
     </message>
     <message>
-        <location filename="ZComponents/ZCalibrationRepository.cpp" line="1438"/>
+        <location filename="X_Components/X_CalibrationRepository.cpp" line="1473"/>
         <source>selected windows</source>
         <oldsource>windows</oldsource>
         <translation>выделенные окна</translation>
     </message>
     <message>
-        <location filename="ZComponents/ZCalibrationRepository.cpp" line="1444"/>
+        <location filename="X_Components/X_CalibrationRepository.cpp" line="1479"/>
         <source>Window removing</source>
         <translation>Удаление окон</translation>
     </message>
     <message>
-        <location filename="ZComponents/ZCalibrationRepository.cpp" line="2280"/>
+        <location filename="X_Components/X_CalibrationRepository.cpp" line="2315"/>
         <source>Error: &quot;%1&quot; is not a file!</source>
         <translation>Ошибка: &quot;%1&quot; не файл!</translation>
     </message>
     <message>
-        <location filename="ZComponents/ZCalibrationRepository.cpp" line="2301"/>
-        <location filename="ZComponents/ZCalibrationRepository.cpp" line="2306"/>
+        <location filename="X_Components/X_CalibrationRepository.cpp" line="2336"/>
+        <location filename="X_Components/X_CalibrationRepository.cpp" line="2341"/>
         <source>Cannot read file &quot;%1&quot;! %2</source>
         <translation>Невозможно прочитать файл &quot;%1&quot;! %2</translation>
     </message>
     <message>
-        <location filename="ZComponents/ZCalibrationRepository.cpp" line="2307"/>
+        <location filename="X_Components/X_CalibrationRepository.cpp" line="2342"/>
         <source>Unknown error</source>
         <translation>Неизвестная ошибка</translation>
     </message>
     <message>
-        <location filename="ZComponents/ZCalibrationRepository.cpp" line="2489"/>
+        <location filename="X_Components/X_CalibrationRepository.cpp" line="2524"/>
         <source>New calibration</source>
         <translation>Новая градуировка</translation>
     </message>
     <message>
-        <location filename="ZComponents/ZCalibrationRepository.cpp" line="2491"/>
+        <location filename="X_Components/X_CalibrationRepository.cpp" line="2526"/>
         <source>Append a new calibration to the list</source>
         <translation>Добавить новую градуировку в список</translation>
     </message>
     <message>
-        <location filename="ZComponents/ZCalibrationRepository.cpp" line="2512"/>
+        <location filename="X_Components/X_CalibrationRepository.cpp" line="2547"/>
         <source>Remove selected calibrations</source>
         <translation>Удалить выделенные градуировки</translation>
     </message>
     <message>
-        <location filename="ZComponents/ZCalibrationRepository.cpp" line="2514"/>
+        <location filename="X_Components/X_CalibrationRepository.cpp" line="2549"/>
         <source>Remove selected calibrations from the list</source>
         <translation>Удалить выделенные градуировки из списка</translation>
     </message>
     <message>
-        <location filename="ZComponents/ZCalibrationRepository.cpp" line="2520"/>
+        <location filename="X_Components/X_CalibrationRepository.cpp" line="2555"/>
         <source>New window</source>
         <translation>Новое окно</translation>
     </message>
     <message>
-        <location filename="ZComponents/ZCalibrationRepository.cpp" line="2521"/>
+        <location filename="X_Components/X_CalibrationRepository.cpp" line="2556"/>
         <source>Append a new window to the list</source>
         <translation>Добавить новое окно в список</translation>
     </message>
     <message>
-        <location filename="ZComponents/ZCalibrationRepository.cpp" line="2526"/>
+        <location filename="X_Components/X_CalibrationRepository.cpp" line="2561"/>
         <source>Remove selected windows</source>
         <translation>Удалить выделенные окна</translation>
     </message>
     <message>
-        <location filename="ZComponents/ZCalibrationRepository.cpp" line="2528"/>
+        <location filename="X_Components/X_CalibrationRepository.cpp" line="2563"/>
         <source>Remove selected windows from the list</source>
         <translation>Удалить выделенные окна из списка</translation>
     </message>
     <message>
-        <location filename="ZComponents/ZCalibrationRepository.cpp" line="2534"/>
+        <location filename="X_Components/X_CalibrationRepository.cpp" line="2569"/>
         <source>Recalculate calibration</source>
         <translation>Пересчитать градуировку</translation>
     </message>
     <message>
-        <location filename="ZComponents/ZCalibrationRepository.cpp" line="2536"/>
+        <location filename="X_Components/X_CalibrationRepository.cpp" line="2571"/>
         <source>Recalculate equation factors for current calibration</source>
         <translation>Пересчитать коэффициенты уравнения для текущей градуировки</translation>
     </message>
     <message>
-        <location filename="ZComponents/ZCalibrationRepository.cpp" line="2542"/>
-        <location filename="ZComponents/ZCalibrationRepository.cpp" line="2543"/>
+        <location filename="X_Components/X_CalibrationRepository.cpp" line="2577"/>
+        <location filename="X_Components/X_CalibrationRepository.cpp" line="2578"/>
         <source>Create mixed terms</source>
         <translation>Создать смешанный параметр</translation>
     </message>
     <message>
-        <location filename="ZComponents/ZCalibrationRepository.cpp" line="2548"/>
+        <location filename="X_Components/X_CalibrationRepository.cpp" line="2583"/>
         <source>Remove mixed terms</source>
         <translation>Удалить смешанные параметры</translation>
     </message>
     <message>
-        <location filename="ZComponents/ZCalibrationRepository.cpp" line="2550"/>
+        <location filename="X_Components/X_CalibrationRepository.cpp" line="2585"/>
         <source>Remove mixed terms from the list</source>
         <translation>Удалить смешанные параметры из списка</translation>
     </message>
     <message>
-        <location filename="ZComponents/ZCalibrationRepository.cpp" line="2555"/>
-        <location filename="ZComponents/ZCalibrationRepository.cpp" line="2556"/>
+        <location filename="X_Components/X_CalibrationRepository.cpp" line="2590"/>
+        <location filename="X_Components/X_CalibrationRepository.cpp" line="2591"/>
         <source>Create custom term</source>
         <translation>Создать пользовательский параметр</translation>
     </message>
     <message>
-        <location filename="ZComponents/ZCalibrationRepository.cpp" line="2561"/>
+        <location filename="X_Components/X_CalibrationRepository.cpp" line="2596"/>
         <source>Remove custom term</source>
         <translation>Удалить ползовательский параметр</translation>
     </message>
     <message>
-        <location filename="ZComponents/ZCalibrationRepository.cpp" line="2563"/>
+        <location filename="X_Components/X_CalibrationRepository.cpp" line="2598"/>
         <source>Remove custom term from the list</source>
         <translation>Удалить ползовательдский параметр из списка</translation>
     </message>
@@ -931,142 +1000,142 @@ In order for the changes to take effect, please restart the application.</source
         <translation type="vanished">Удалить выделенные пользовательские предикторы из списка</translation>
     </message>
     <message>
-        <location filename="ZComponents/ZCalibrationRepository.cpp" line="2569"/>
+        <location filename="X_Components/X_CalibrationRepository.cpp" line="2604"/>
         <source>Set calibration visible</source>
         <translation>Показать все градуировки</translation>
     </message>
     <message>
-        <location filename="ZComponents/ZCalibrationRepository.cpp" line="2571"/>
+        <location filename="X_Components/X_CalibrationRepository.cpp" line="2606"/>
         <source>Set visible calibration column</source>
         <translation>Показать в таблице все колонки градуировок</translation>
     </message>
     <message>
-        <location filename="ZComponents/ZCalibrationRepository.cpp" line="2576"/>
+        <location filename="X_Components/X_CalibrationRepository.cpp" line="2611"/>
         <source>Set calibration invisible</source>
         <translation>Скрыть все градуировки</translation>
     </message>
     <message>
-        <location filename="ZComponents/ZCalibrationRepository.cpp" line="2578"/>
+        <location filename="X_Components/X_CalibrationRepository.cpp" line="2613"/>
         <source>Set invisible calibration column</source>
         <translation>Скрыть в таблице все колонки градуировок</translation>
     </message>
     <message>
-        <location filename="ZComponents/ZCalibrationRepository.cpp" line="2585"/>
-        <location filename="ZComponents/ZCalibrationRepository.cpp" line="2587"/>
+        <location filename="X_Components/X_CalibrationRepository.cpp" line="2620"/>
+        <location filename="X_Components/X_CalibrationRepository.cpp" line="2622"/>
         <source>Invert calibration visibility</source>
         <translation>Инвертировать видимость градуировок</translation>
     </message>
     <message>
-        <location filename="ZComponents/ZCalibrationRepository.cpp" line="2592"/>
-        <location filename="ZComponents/ZCalibrationRepository.cpp" line="2593"/>
+        <location filename="X_Components/X_CalibrationRepository.cpp" line="2627"/>
+        <location filename="X_Components/X_CalibrationRepository.cpp" line="2628"/>
         <source>Set window visible</source>
         <translation>Показать все окна</translation>
     </message>
     <message>
-        <location filename="ZComponents/ZCalibrationRepository.cpp" line="2598"/>
-        <location filename="ZComponents/ZCalibrationRepository.cpp" line="2599"/>
+        <location filename="X_Components/X_CalibrationRepository.cpp" line="2633"/>
+        <location filename="X_Components/X_CalibrationRepository.cpp" line="2634"/>
         <source>Set window invisible</source>
         <translation>Скрыть все окна</translation>
     </message>
     <message>
-        <location filename="ZComponents/ZCalibrationRepository.cpp" line="2605"/>
-        <location filename="ZComponents/ZCalibrationRepository.cpp" line="2607"/>
+        <location filename="X_Components/X_CalibrationRepository.cpp" line="2640"/>
+        <location filename="X_Components/X_CalibrationRepository.cpp" line="2642"/>
         <source>Invert window visibility</source>
         <translation>Инвертировать видимость окон</translation>
     </message>
     <message>
-        <location filename="ZComponents/ZCalibrationRepository.cpp" line="2614"/>
-        <location filename="ZComponents/ZCalibrationRepository.cpp" line="2616"/>
+        <location filename="X_Components/X_CalibrationRepository.cpp" line="2649"/>
+        <location filename="X_Components/X_CalibrationRepository.cpp" line="2651"/>
         <source>Duplicate selected calibrations</source>
         <translation>Копировать выделенные градуировки</translation>
     </message>
     <message>
-        <location filename="ZComponents/ZCalibrationRepository.cpp" line="2621"/>
-        <location filename="ZComponents/ZCalibrationRepository.cpp" line="2622"/>
+        <location filename="X_Components/X_CalibrationRepository.cpp" line="2656"/>
+        <location filename="X_Components/X_CalibrationRepository.cpp" line="2657"/>
         <source>Copy selected windows</source>
         <translation>Копировать выделенные окна</translation>
     </message>
     <message>
-        <location filename="ZComponents/ZCalibrationRepository.cpp" line="2627"/>
-        <location filename="ZComponents/ZCalibrationRepository.cpp" line="2628"/>
+        <location filename="X_Components/X_CalibrationRepository.cpp" line="2662"/>
+        <location filename="X_Components/X_CalibrationRepository.cpp" line="2663"/>
         <source>Paste windows</source>
         <translation>Вставить окна</translation>
     </message>
     <message>
-        <location filename="ZComponents/ZCalibrationRepository.cpp" line="2633"/>
+        <location filename="X_Components/X_CalibrationRepository.cpp" line="2668"/>
         <source>Reset terms</source>
         <translation>Исключить все  параметры</translation>
     </message>
     <message>
-        <location filename="ZComponents/ZCalibrationRepository.cpp" line="2634"/>
+        <location filename="X_Components/X_CalibrationRepository.cpp" line="2669"/>
         <source>Reset equation terms</source>
         <translation>Исключение всех параметров из уравнения</translation>
     </message>
 </context>
 <context>
-    <name>ZCalibrationWindowDataManager</name>
+    <name>X_CalibrationWindowDataManager</name>
     <message>
-        <location filename="ZComponents/ZCalibrationWindowDataManager.cpp" line="135"/>
+        <location filename="X_Components/X_CalibrationWindowDataManager.cpp" line="135"/>
         <source>Window</source>
         <translation>Окно</translation>
     </message>
     <message>
-        <location filename="ZComponents/ZCalibrationWindowDataManager.cpp" line="139"/>
+        <location filename="X_Components/X_CalibrationWindowDataManager.cpp" line="139"/>
         <source>Type</source>
         <translation>Тип</translation>
     </message>
     <message>
-        <location filename="ZComponents/ZCalibrationWindowDataManager.cpp" line="143"/>
+        <location filename="X_Components/X_CalibrationWindowDataManager.cpp" line="143"/>
         <source>Intensity</source>
         <translation>Интенсивность</translation>
     </message>
     <message>
-        <location filename="ZComponents/ZCalibrationWindowDataManager.cpp" line="147"/>
+        <location filename="X_Components/X_CalibrationWindowDataManager.cpp" line="147"/>
         <source>First channel</source>
         <translation>Начальный канал</translation>
     </message>
     <message>
-        <location filename="ZComponents/ZCalibrationWindowDataManager.cpp" line="151"/>
+        <location filename="X_Components/X_CalibrationWindowDataManager.cpp" line="151"/>
         <source>Last channel</source>
         <translation>Конечный канал</translation>
     </message>
     <message>
-        <location filename="ZComponents/ZCalibrationWindowDataManager.cpp" line="155"/>
+        <location filename="X_Components/X_CalibrationWindowDataManager.cpp" line="155"/>
         <source>Simple factor</source>
         <translation>Коэффициент простого параметра</translation>
     </message>
     <message>
-        <location filename="ZComponents/ZCalibrationWindowDataManager.cpp" line="159"/>
+        <location filename="X_Components/X_CalibrationWindowDataManager.cpp" line="159"/>
         <source>Square factor</source>
         <translation>Коэффициент квадратичного параметра</translation>
     </message>
 </context>
 <context>
-    <name>ZChemElementComboBoxDelegate</name>
+    <name>X_ChemElementComboBoxDelegate</name>
     <message>
-        <location filename="ZModelViews/ZChemElementComboBoxDelegate/ZChemElementComboBoxDelegate.cpp" line="11"/>
+        <location filename="X_ModelViews/X_ChemElementComboBoxDelegate/X_ChemElementComboBoxDelegate.cpp" line="11"/>
         <source>Not defined</source>
         <translation>Не определено</translation>
     </message>
 </context>
 <context>
-    <name>ZChemElementDataManager</name>
+    <name>X_ChemElementDataManager</name>
     <message>
-        <location filename="ZComponents/ZChemElementDataManager.cpp" line="61"/>
+        <location filename="X_Components/X_ChemElementDataManager.cpp" line="61"/>
         <source>Chemical element</source>
         <translation>Элемент</translation>
     </message>
 </context>
 <context>
-    <name>ZChemElementModel</name>
+    <name>X_ChemElementModel</name>
     <message>
-        <location filename="ZModels/ZChemElementModel.cpp" line="133"/>
+        <location filename="X_Models/X_ChemElementModel.cpp" line="133"/>
         <source>Chemical element</source>
         <translation>Элемент</translation>
     </message>
 </context>
 <context>
-    <name>ZChemicalDialog</name>
+    <name>X_ChemicalDialog</name>
     <message>
         <source>Chemical:</source>
         <translation type="vanished">Химический элемент:</translation>
@@ -1089,237 +1158,237 @@ In order for the changes to take effect, please restart the application.</source
     </message>
 </context>
 <context>
-    <name>ZChemicalElementPropertyIOManager</name>
+    <name>X_ChemicalElementPropertyIOManager</name>
     <message>
-        <location filename="ZPeriodicTable/ZChemicalElementPropertyIOManager.cpp" line="166"/>
-        <location filename="ZPeriodicTable/ZChemicalElementPropertyIOManager.cpp" line="257"/>
+        <location filename="X_PeriodicTable/X_ChemicalElementPropertyIOManager.cpp" line="166"/>
+        <location filename="X_PeriodicTable/X_ChemicalElementPropertyIOManager.cpp" line="257"/>
         <source>There is no repository to load data.</source>
         <translation>Нет репозитория для загрузки.</translation>
     </message>
     <message>
-        <location filename="ZPeriodicTable/ZChemicalElementPropertyIOManager.cpp" line="185"/>
+        <location filename="X_PeriodicTable/X_ChemicalElementPropertyIOManager.cpp" line="185"/>
         <source>Cannot read header line from file &quot;%1&quot;!</source>
         <oldsource>Cannot read header line from file &quot;&amp;1&quot;!</oldsource>
         <translation>Невозможно прочитать строку заголовка в файле &quot;%1&quot;!</translation>
     </message>
     <message>
-        <location filename="ZPeriodicTable/ZChemicalElementPropertyIOManager.cpp" line="193"/>
+        <location filename="X_PeriodicTable/X_ChemicalElementPropertyIOManager.cpp" line="193"/>
         <source>Property name list in file &quot;%1&quot; is empty!</source>
         <oldsource>Property name list in file &quot;&amp;1&quot; is empty!</oldsource>
         <translation>Пустой список имен свойств в файле &quot;%1&quot;!</translation>
     </message>
     <message>
-        <location filename="ZPeriodicTable/ZChemicalElementPropertyIOManager.cpp" line="264"/>
+        <location filename="X_PeriodicTable/X_ChemicalElementPropertyIOManager.cpp" line="264"/>
         <source>There is no chemical element repository to which load data.</source>
         <translation>Нет репозитория химических элементов для загрузки данных.</translation>
     </message>
     <message>
-        <location filename="ZPeriodicTable/ZChemicalElementPropertyIOManager.cpp" line="271"/>
+        <location filename="X_PeriodicTable/X_ChemicalElementPropertyIOManager.cpp" line="271"/>
         <source>Cannot open file &quot;%1&quot; in read mode.</source>
         <translation>Невозможно открыть файл &quot;%1&quot; в режиме чтения.</translation>
     </message>
     <message>
-        <location filename="ZPeriodicTable/ZChemicalElementPropertyIOManager.cpp" line="280"/>
+        <location filename="X_PeriodicTable/X_ChemicalElementPropertyIOManager.cpp" line="280"/>
         <source>Cannot recognize file &quot;%1&quot; as data source.&lt;br&gt;Root type is invalid</source>
         <translation>Невозможно распознать файл &quot;%1&quot; как источник данных.&lt;br&gt;Несуществующий тип корневого элемента</translation>
     </message>
     <message>
-        <location filename="ZPeriodicTable/ZChemicalElementPropertyIOManager.cpp" line="434"/>
+        <location filename="X_PeriodicTable/X_ChemicalElementPropertyIOManager.cpp" line="434"/>
         <source>There is no chemical element repository from which save data.</source>
         <translation>Нет репозитория химических элементов для сохранения данных.</translation>
     </message>
     <message>
-        <location filename="ZPeriodicTable/ZChemicalElementPropertyIOManager.cpp" line="441"/>
+        <location filename="X_PeriodicTable/X_ChemicalElementPropertyIOManager.cpp" line="441"/>
         <source>Cannot open file &quot;%1&quot; in write mode.</source>
         <translation>Невозможно открыть файл &quot;%1&quot; в режиме записи.</translation>
     </message>
     <message>
-        <location filename="ZPeriodicTable/ZChemicalElementPropertyIOManager.cpp" line="495"/>
+        <location filename="X_PeriodicTable/X_ChemicalElementPropertyIOManager.cpp" line="495"/>
         <source>There is no repository to extract data.</source>
         <translation>Нет репозитория для загрузки данных.</translation>
     </message>
 </context>
 <context>
-    <name>ZChemicalElementPropertyTreeModel</name>
+    <name>X_ChemicalElementPropertyTreeModel</name>
     <message>
-        <location filename="ZPeriodicTable/ZChemicalElementPropertyTreeModel.cpp" line="542"/>
-        <location filename="ZPeriodicTable/ZChemicalElementPropertyTreeModel.cpp" line="590"/>
-        <location filename="ZPeriodicTable/ZChemicalElementPropertyTreeModel.cpp" line="630"/>
-        <location filename="ZPeriodicTable/ZChemicalElementPropertyTreeModel.cpp" line="896"/>
-        <location filename="ZPeriodicTable/ZChemicalElementPropertyTreeModel.cpp" line="911"/>
-        <location filename="ZPeriodicTable/ZChemicalElementPropertyTreeModel.cpp" line="949"/>
-        <source>Cannot get model item for Z number %1!</source>
-        <translation>Невозможно получить элемент модели для Z номера &quot;%1&quot;!</translation>
+        <location filename="X_PeriodicTable/X_ChemicalElementPropertyTreeModel.cpp" line="542"/>
+        <location filename="X_PeriodicTable/X_ChemicalElementPropertyTreeModel.cpp" line="590"/>
+        <location filename="X_PeriodicTable/X_ChemicalElementPropertyTreeModel.cpp" line="630"/>
+        <location filename="X_PeriodicTable/X_ChemicalElementPropertyTreeModel.cpp" line="896"/>
+        <location filename="X_PeriodicTable/X_ChemicalElementPropertyTreeModel.cpp" line="911"/>
+        <location filename="X_PeriodicTable/X_ChemicalElementPropertyTreeModel.cpp" line="949"/>
+        <source>Cannot get model item for X_ number %1!</source>
+        <translation>Невозможно получить элемент модели для X_ номера &quot;%1&quot;!</translation>
     </message>
     <message>
-        <location filename="ZPeriodicTable/ZChemicalElementPropertyTreeModel.cpp" line="568"/>
-        <location filename="ZPeriodicTable/ZChemicalElementPropertyTreeModel.cpp" line="613"/>
-        <location filename="ZPeriodicTable/ZChemicalElementPropertyTreeModel.cpp" line="653"/>
-        <location filename="ZPeriodicTable/ZChemicalElementPropertyTreeModel.cpp" line="934"/>
-        <source>Cannot get model item &quot;%1&quot; for Z number %2!</source>
-        <translation>Невозможно получить элемент модели &quot;%1&quot; для Z номера &quot;%2&quot;!</translation>
+        <location filename="X_PeriodicTable/X_ChemicalElementPropertyTreeModel.cpp" line="568"/>
+        <location filename="X_PeriodicTable/X_ChemicalElementPropertyTreeModel.cpp" line="613"/>
+        <location filename="X_PeriodicTable/X_ChemicalElementPropertyTreeModel.cpp" line="653"/>
+        <location filename="X_PeriodicTable/X_ChemicalElementPropertyTreeModel.cpp" line="934"/>
+        <source>Cannot get model item &quot;%1&quot; for X_ number %2!</source>
+        <translation>Невозможно получить элемент модели &quot;%1&quot; для X_ номера &quot;%2&quot;!</translation>
     </message>
 </context>
 <context>
-    <name>ZChemicalElementProprtyEditor</name>
+    <name>X_ChemicalElementProprtyEditor</name>
     <message>
-        <location filename="ZPeriodicTable/ZChemicalElementProprtyEditor.cpp" line="58"/>
-        <location filename="ZPeriodicTable/ZChemicalElementProprtyEditor.cpp" line="64"/>
+        <location filename="X_PeriodicTable/X_ChemicalElementProprtyEditor.cpp" line="59"/>
+        <location filename="X_PeriodicTable/X_ChemicalElementProprtyEditor.cpp" line="65"/>
         <source>Add</source>
         <translation>Добавить</translation>
     </message>
     <message>
-        <location filename="ZPeriodicTable/ZChemicalElementProprtyEditor.cpp" line="61"/>
-        <location filename="ZPeriodicTable/ZChemicalElementProprtyEditor.cpp" line="67"/>
+        <location filename="X_PeriodicTable/X_ChemicalElementProprtyEditor.cpp" line="62"/>
+        <location filename="X_PeriodicTable/X_ChemicalElementProprtyEditor.cpp" line="68"/>
         <source>Remove</source>
         <translation>Удалить</translation>
     </message>
     <message>
-        <location filename="ZPeriodicTable/ZChemicalElementProprtyEditor.cpp" line="70"/>
+        <location filename="X_PeriodicTable/X_ChemicalElementProprtyEditor.cpp" line="71"/>
         <source>Copy</source>
         <translation>Копировать</translation>
     </message>
     <message>
-        <location filename="ZPeriodicTable/ZChemicalElementProprtyEditor.cpp" line="73"/>
+        <location filename="X_PeriodicTable/X_ChemicalElementProprtyEditor.cpp" line="74"/>
         <source>Paste</source>
         <translation>Вставить</translation>
     </message>
     <message>
-        <location filename="ZPeriodicTable/ZChemicalElementProprtyEditor.cpp" line="76"/>
+        <location filename="X_PeriodicTable/X_ChemicalElementProprtyEditor.cpp" line="77"/>
         <source>Expand all</source>
         <translation>Развернуть все</translation>
     </message>
     <message>
-        <location filename="ZPeriodicTable/ZChemicalElementProprtyEditor.cpp" line="79"/>
+        <location filename="X_PeriodicTable/X_ChemicalElementProprtyEditor.cpp" line="80"/>
         <source>Collapse all</source>
         <translation>Свернуть все</translation>
     </message>
     <message>
-        <location filename="ZPeriodicTable/ZChemicalElementProprtyEditor.cpp" line="91"/>
+        <location filename="X_PeriodicTable/X_ChemicalElementProprtyEditor.cpp" line="92"/>
         <source>Source file:</source>
         <translation>Файл источника:</translation>
     </message>
     <message>
-        <location filename="ZPeriodicTable/ZChemicalElementProprtyEditor.cpp" line="103"/>
+        <location filename="X_PeriodicTable/X_ChemicalElementProprtyEditor.cpp" line="104"/>
         <source>Load</source>
         <translation>Загрузить</translation>
     </message>
     <message>
-        <location filename="ZPeriodicTable/ZChemicalElementProprtyEditor.cpp" line="104"/>
+        <location filename="X_PeriodicTable/X_ChemicalElementProprtyEditor.cpp" line="105"/>
         <source>Load chemical element properties from file</source>
         <translation>Загрузить свойства химических элементов из файла</translation>
     </message>
     <message>
-        <location filename="ZPeriodicTable/ZChemicalElementProprtyEditor.cpp" line="106"/>
+        <location filename="X_PeriodicTable/X_ChemicalElementProprtyEditor.cpp" line="107"/>
         <source>Save</source>
         <translation>Сохранить</translation>
     </message>
     <message>
-        <location filename="ZPeriodicTable/ZChemicalElementProprtyEditor.cpp" line="107"/>
+        <location filename="X_PeriodicTable/X_ChemicalElementProprtyEditor.cpp" line="108"/>
         <source>Save chemical element properties to file</source>
         <translation>Сохранить свойства химических элементов в файл</translation>
     </message>
     <message>
-        <location filename="ZPeriodicTable/ZChemicalElementProprtyEditor.cpp" line="109"/>
+        <location filename="X_PeriodicTable/X_ChemicalElementProprtyEditor.cpp" line="110"/>
         <source>Close</source>
         <translation>Закрыть</translation>
     </message>
     <message>
-        <location filename="ZPeriodicTable/ZChemicalElementProprtyEditor.cpp" line="110"/>
+        <location filename="X_PeriodicTable/X_ChemicalElementProprtyEditor.cpp" line="111"/>
         <source>Close editor</source>
         <translation>Закрыть редактор</translation>
     </message>
     <message>
-        <location filename="ZPeriodicTable/ZChemicalElementProprtyEditor.cpp" line="182"/>
+        <location filename="X_PeriodicTable/X_ChemicalElementProprtyEditor.cpp" line="183"/>
         <source>Property sections:</source>
         <translation>Раздел свойств:</translation>
     </message>
     <message>
-        <location filename="ZPeriodicTable/ZChemicalElementProprtyEditor.cpp" line="219"/>
+        <location filename="X_PeriodicTable/X_ChemicalElementProprtyEditor.cpp" line="220"/>
         <source>Property:</source>
         <translation>Свойство:</translation>
     </message>
     <message>
-        <location filename="ZPeriodicTable/ZChemicalElementProprtyEditor.cpp" line="334"/>
-        <location filename="ZPeriodicTable/ZChemicalElementProprtyEditor.cpp" line="681"/>
-        <location filename="ZPeriodicTable/ZChemicalElementProprtyEditor.cpp" line="720"/>
+        <location filename="X_PeriodicTable/X_ChemicalElementProprtyEditor.cpp" line="335"/>
+        <location filename="X_PeriodicTable/X_ChemicalElementProprtyEditor.cpp" line="682"/>
+        <location filename="X_PeriodicTable/X_ChemicalElementProprtyEditor.cpp" line="721"/>
         <source>Chemical element properties were changed.</source>
         <translation>Свойства химических элементов были изменены.</translation>
     </message>
     <message>
-        <location filename="ZPeriodicTable/ZChemicalElementProprtyEditor.cpp" line="335"/>
-        <location filename="ZPeriodicTable/ZChemicalElementProprtyEditor.cpp" line="682"/>
-        <location filename="ZPeriodicTable/ZChemicalElementProprtyEditor.cpp" line="721"/>
+        <location filename="X_PeriodicTable/X_ChemicalElementProprtyEditor.cpp" line="336"/>
+        <location filename="X_PeriodicTable/X_ChemicalElementProprtyEditor.cpp" line="683"/>
+        <location filename="X_PeriodicTable/X_ChemicalElementProprtyEditor.cpp" line="722"/>
         <source>Do you want to save them to file?</source>
         <translation>Сохранить их в файл?</translation>
     </message>
     <message>
-        <location filename="ZPeriodicTable/ZChemicalElementProprtyEditor.cpp" line="483"/>
-        <location filename="ZPeriodicTable/ZChemicalElementProprtyEditor.cpp" line="514"/>
+        <location filename="X_PeriodicTable/X_ChemicalElementProprtyEditor.cpp" line="484"/>
+        <location filename="X_PeriodicTable/X_ChemicalElementProprtyEditor.cpp" line="515"/>
         <source>Select chemical element or property section!</source>
         <translation>Выберите химический элемент или раздел свойств!</translation>
     </message>
     <message>
-        <location filename="ZPeriodicTable/ZChemicalElementProprtyEditor.cpp" line="484"/>
-        <location filename="ZPeriodicTable/ZChemicalElementProprtyEditor.cpp" line="507"/>
-        <location filename="ZPeriodicTable/ZChemicalElementProprtyEditor.cpp" line="515"/>
-        <location filename="ZPeriodicTable/ZChemicalElementProprtyEditor.cpp" line="530"/>
-        <location filename="ZPeriodicTable/ZChemicalElementProprtyEditor.cpp" line="674"/>
-        <location filename="ZPeriodicTable/ZChemicalElementProprtyEditor.cpp" line="702"/>
-        <location filename="ZPeriodicTable/ZChemicalElementProprtyEditor.cpp" line="938"/>
-        <location filename="ZPeriodicTable/ZChemicalElementProprtyEditor.cpp" line="953"/>
+        <location filename="X_PeriodicTable/X_ChemicalElementProprtyEditor.cpp" line="485"/>
+        <location filename="X_PeriodicTable/X_ChemicalElementProprtyEditor.cpp" line="508"/>
+        <location filename="X_PeriodicTable/X_ChemicalElementProprtyEditor.cpp" line="516"/>
+        <location filename="X_PeriodicTable/X_ChemicalElementProprtyEditor.cpp" line="531"/>
+        <location filename="X_PeriodicTable/X_ChemicalElementProprtyEditor.cpp" line="675"/>
+        <location filename="X_PeriodicTable/X_ChemicalElementProprtyEditor.cpp" line="703"/>
+        <location filename="X_PeriodicTable/X_ChemicalElementProprtyEditor.cpp" line="939"/>
+        <location filename="X_PeriodicTable/X_ChemicalElementProprtyEditor.cpp" line="954"/>
         <source>Error</source>
         <translation>Ошибка</translation>
     </message>
     <message>
-        <location filename="ZPeriodicTable/ZChemicalElementProprtyEditor.cpp" line="506"/>
+        <location filename="X_PeriodicTable/X_ChemicalElementProprtyEditor.cpp" line="507"/>
         <source>Cannot access to chemical element property model.</source>
         <translation>Модель свойств химических элементов недоступна.</translation>
     </message>
     <message>
-        <location filename="ZPeriodicTable/ZChemicalElementProprtyEditor.cpp" line="673"/>
+        <location filename="X_PeriodicTable/X_ChemicalElementProprtyEditor.cpp" line="674"/>
         <source>There is no chemical elment model for load data.</source>
         <translation>Нет модели химических элементов для загрузки данных.</translation>
     </message>
     <message>
-        <location filename="ZPeriodicTable/ZChemicalElementProprtyEditor.cpp" line="694"/>
+        <location filename="X_PeriodicTable/X_ChemicalElementProprtyEditor.cpp" line="695"/>
         <source>Open data file</source>
         <translation>Открыть файл данных</translation>
     </message>
     <message>
-        <location filename="ZPeriodicTable/ZChemicalElementProprtyEditor.cpp" line="694"/>
-        <location filename="ZPeriodicTable/ZChemicalElementProprtyEditor.cpp" line="944"/>
+        <location filename="X_PeriodicTable/X_ChemicalElementProprtyEditor.cpp" line="695"/>
+        <location filename="X_PeriodicTable/X_ChemicalElementProprtyEditor.cpp" line="945"/>
         <source>XML Files (*.xml);;All Files (*.*)</source>
         <translation>XML файлы (*.xml);;Все файлы (*.*)</translation>
     </message>
     <message>
-        <location filename="ZPeriodicTable/ZChemicalElementProprtyEditor.cpp" line="790"/>
+        <location filename="X_PeriodicTable/X_ChemicalElementProprtyEditor.cpp" line="791"/>
         <source>Cannot add chemical element property branch to chemical element %1 with error &quot;%2&quot;.</source>
         <translation>Невозможно добавить раздел свойств химических элементов %1. Ошибка &quot;%2&quot;.</translation>
     </message>
     <message>
-        <location filename="ZPeriodicTable/ZChemicalElementProprtyEditor.cpp" line="937"/>
+        <location filename="X_PeriodicTable/X_ChemicalElementProprtyEditor.cpp" line="938"/>
         <source>There is no property model!</source>
         <translation>Нет модели свойств химических элементов!</translation>
     </message>
     <message>
-        <location filename="ZPeriodicTable/ZChemicalElementProprtyEditor.cpp" line="944"/>
+        <location filename="X_PeriodicTable/X_ChemicalElementProprtyEditor.cpp" line="945"/>
         <source>Save data to file</source>
         <translation>Сохранить данные в файл</translation>
     </message>
     <message>
-        <location filename="ZPeriodicTable/ZChemicalElementProprtyEditor.cpp" line="957"/>
+        <location filename="X_PeriodicTable/X_ChemicalElementProprtyEditor.cpp" line="958"/>
         <source>File &quot;%1&quot; have been saved successfully.</source>
         <translation>Файл &quot;%1&quot; был успешно сохранен.</translation>
     </message>
     <message>
-        <location filename="ZPeriodicTable/ZChemicalElementProprtyEditor.cpp" line="962"/>
+        <location filename="X_PeriodicTable/X_ChemicalElementProprtyEditor.cpp" line="963"/>
         <source>Do you want to set the file as default chemical element properties source or reset source file to default?</source>
         <translation>Сделать файл источником свойств химических элементов или сбросить до значения по умолчанию?</translation>
     </message>
 </context>
 <context>
-    <name>ZChemicalListDialog</name>
+    <name>X_ChemicalListDialog</name>
     <message>
         <source>Chemicals</source>
         <translation type="vanished">Химические элементы</translation>
@@ -1398,20 +1467,20 @@ In order for the changes to take effect, please restart the application.</source
     </message>
 </context>
 <context>
-    <name>ZChemicalPropertyProxyTableModel</name>
+    <name>X_ChemicalPropertyProxyTableModel</name>
     <message>
-        <location filename="ZPeriodicTable/ZChemicalPropertyProxyTableModel.cpp" line="14"/>
+        <location filename="X_PeriodicTable/X_ChemicalPropertyProxyTableModel.cpp" line="14"/>
         <source>Property</source>
         <translation>Свойство</translation>
     </message>
     <message>
-        <location filename="ZPeriodicTable/ZChemicalPropertyProxyTableModel.cpp" line="15"/>
+        <location filename="X_PeriodicTable/X_ChemicalPropertyProxyTableModel.cpp" line="15"/>
         <source>Value</source>
         <translation>Значение</translation>
     </message>
 </context>
 <context>
-    <name>ZChemicalTask</name>
+    <name>X_ChemicalTask</name>
     <message>
         <source>There is no chemical task that has id=%1.</source>
         <translation type="vanished">Не существует задания для химического элемента с id %1.</translation>
@@ -1438,7 +1507,7 @@ In order for the changes to take effect, please restart the application.</source
     </message>
 </context>
 <context>
-    <name>ZChemicalTaskCalibrationModel</name>
+    <name>X_ChemicalTaskCalibrationModel</name>
     <message>
         <source>Name</source>
         <translation type="vanished">Имя</translation>
@@ -1457,7 +1526,7 @@ In order for the changes to take effect, please restart the application.</source
     </message>
 </context>
 <context>
-    <name>ZChemicalTaskDialog</name>
+    <name>X_ChemicalTaskDialog</name>
     <message>
         <source>Chemical task</source>
         <translation type="vanished">Задание для химического элемента</translation>
@@ -1532,7 +1601,7 @@ In order for the changes to take effect, please restart the application.</source
     </message>
 </context>
 <context>
-    <name>ZChemicalTaskListDialog</name>
+    <name>X_ChemicalTaskListDialog</name>
     <message>
         <source>Chemical tasks</source>
         <translation type="vanished">Задания для химических элементов</translation>
@@ -1667,15 +1736,15 @@ In order for the changes to take effect, please restart the application.</source
     </message>
 </context>
 <context>
-    <name>ZColorButton</name>
+    <name>X_ColorButton</name>
     <message>
-        <location filename="ZWidgets/ZColorButton.cpp" line="68"/>
+        <location filename="X_Widgets/X_ColorButton.cpp" line="68"/>
         <source>Select color</source>
         <translation>Выбор цвета</translation>
     </message>
 </context>
 <context>
-    <name>ZCommonSettingsWidget</name>
+    <name>X_CommonSettingsWidget</name>
     <message>
         <source>Application password settings:</source>
         <translation type="vanished">Настройка пароля для приложения:</translation>
@@ -1730,102 +1799,102 @@ In order for the changes to take effect, please restart the application.</source
     </message>
 </context>
 <context>
-    <name>ZCorrelationPlotterDataManager</name>
+    <name>X_CorrelationPlotterDataManager</name>
     <message>
-        <location filename="ZComponents/ZCorrelationPlotterDataManager.cpp" line="32"/>
+        <location filename="X_Components/X_CorrelationPlotterDataManager.cpp" line="32"/>
         <source>Concentration</source>
         <translation>Концентрация</translation>
     </message>
     <message>
-        <location filename="ZComponents/ZCorrelationPlotterDataManager.cpp" line="33"/>
+        <location filename="X_Components/X_CorrelationPlotterDataManager.cpp" line="33"/>
         <source>Term</source>
         <translation>Параметр</translation>
     </message>
     <message>
-        <location filename="ZComponents/ZCorrelationPlotterDataManager.cpp" line="34"/>
-        <location filename="ZComponents/ZCorrelationPlotterDataManager.cpp" line="169"/>
+        <location filename="X_Components/X_CorrelationPlotterDataManager.cpp" line="34"/>
+        <location filename="X_Components/X_CorrelationPlotterDataManager.cpp" line="169"/>
         <source>Calibration</source>
         <translation>Градуировка</translation>
     </message>
     <message>
-        <location filename="ZComponents/ZCorrelationPlotterDataManager.cpp" line="35"/>
+        <location filename="X_Components/X_CorrelationPlotterDataManager.cpp" line="35"/>
         <source>Deviation %</source>
         <translation>Отклонение (%)</translation>
     </message>
     <message>
-        <location filename="ZComponents/ZCorrelationPlotterDataManager.cpp" line="160"/>
+        <location filename="X_Components/X_CorrelationPlotterDataManager.cpp" line="160"/>
         <source>Display:</source>
         <translation>Показать:</translation>
     </message>
     <message>
-        <location filename="ZComponents/ZCorrelationPlotterDataManager.cpp" line="168"/>
+        <location filename="X_Components/X_CorrelationPlotterDataManager.cpp" line="168"/>
         <source>Equation term</source>
         <translation>Параметр</translation>
     </message>
     <message>
-        <location filename="ZComponents/ZCorrelationPlotterDataManager.cpp" line="170"/>
+        <location filename="X_Components/X_CorrelationPlotterDataManager.cpp" line="170"/>
         <source>Deviation</source>
         <translation>Отклонение</translation>
     </message>
 </context>
 <context>
-    <name>ZCustomTerm</name>
+    <name>X_CustomTerm</name>
     <message>
-        <location filename="ZComponents/ZCustomTerm.cpp" line="157"/>
+        <location filename="X_Components/X_CustomTerm.cpp" line="157"/>
         <source>Error in the term &quot;%1&quot; expression: %2</source>
         <translation>Ошибка в параметре &quot;%1&quot; выражение: %2</translation>
     </message>
 </context>
 <context>
-    <name>ZCustomTermDialog</name>
+    <name>X_CustomTermDialog</name>
     <message>
-        <location filename="ZDialogs/ZCustomTermDialog.cpp" line="32"/>
+        <location filename="X_Dialogs/X_CustomTermDialog.cpp" line="32"/>
         <source>The parameter type is not &quot;Custom&quot;!</source>
         <translation>Тип параметра не &quot;Пользовательский&quot;!</translation>
     </message>
     <message>
-        <location filename="ZDialogs/ZCustomTermDialog.cpp" line="107"/>
+        <location filename="X_Dialogs/X_CustomTermDialog.cpp" line="106"/>
         <source>OK</source>
         <translation>Ок</translation>
     </message>
     <message>
-        <location filename="ZDialogs/ZCustomTermDialog.cpp" line="107"/>
+        <location filename="X_Dialogs/X_CustomTermDialog.cpp" line="106"/>
         <source>Save parameter</source>
         <translation>Сохранить параметр</translation>
     </message>
     <message>
-        <location filename="ZDialogs/ZCustomTermDialog.cpp" line="109"/>
+        <location filename="X_Dialogs/X_CustomTermDialog.cpp" line="108"/>
         <source>Close</source>
         <translation>Закрыть</translation>
     </message>
     <message>
-        <location filename="ZDialogs/ZCustomTermDialog.cpp" line="110"/>
+        <location filename="X_Dialogs/X_CustomTermDialog.cpp" line="109"/>
         <source>Close dialog</source>
         <translation>Закрыть диалог</translation>
     </message>
     <message>
-        <location filename="ZDialogs/ZCustomTermDialog.cpp" line="167"/>
+        <location filename="X_Dialogs/X_CustomTermDialog.cpp" line="166"/>
         <source>Term name:</source>
         <translation>Имя параметра:</translation>
     </message>
     <message>
-        <location filename="ZDialogs/ZCustomTermDialog.cpp" line="176"/>
+        <location filename="X_Dialogs/X_CustomTermDialog.cpp" line="175"/>
         <source>Equation:</source>
         <translation>Выражение:</translation>
     </message>
     <message>
-        <location filename="ZDialogs/ZCustomTermDialog.cpp" line="185"/>
+        <location filename="X_Dialogs/X_CustomTermDialog.cpp" line="184"/>
         <source>Description:</source>
         <translation>Описание:</translation>
     </message>
     <message>
-        <location filename="ZDialogs/ZCustomTermDialog.cpp" line="194"/>
+        <location filename="X_Dialogs/X_CustomTermDialog.cpp" line="193"/>
         <source>Use modifier for inserting window name</source>
         <translation>Использовать модификатор для вставки имени окна</translation>
     </message>
 </context>
 <context>
-    <name>ZDashboardSettingsWidget</name>
+    <name>X_DashboardSettingsWidget</name>
     <message>
         <source>Progress bar style:</source>
         <translation type="vanished">Стиль индикатора выполнения:</translation>
@@ -1856,7 +1925,7 @@ In order for the changes to take effect, please restart the application.</source
     </message>
 </context>
 <context>
-    <name>ZDatabaseInspector</name>
+    <name>X_DatabaseInspector</name>
     <message>
         <source>The database file path &quot;%1&quot; is not an absolute path!</source>
         <translation type="vanished">Путь к файлу базы данных &quot;%1&quot; не абсолютный!</translation>
@@ -1913,7 +1982,7 @@ In order for the changes to take effect, please restart the application.</source
     </message>
 </context>
 <context>
-    <name>ZDatabasePropertiesDialog</name>
+    <name>X_DatabasePropertiesDialog</name>
     <message>
         <source>Name:</source>
         <translation type="vanished">Имя:</translation>
@@ -1940,7 +2009,7 @@ In order for the changes to take effect, please restart the application.</source
     </message>
 </context>
 <context>
-    <name>ZDeviceSettingsWidget</name>
+    <name>X_DeviceSettingsWidget</name>
     <message>
         <source>Device serial number:</source>
         <translation type="vanished">Серийный номер прибора:</translation>
@@ -2003,108 +2072,113 @@ In order for the changes to take effect, please restart the application.</source
     </message>
 </context>
 <context>
-    <name>ZEnergyCalibrationDialog</name>
+    <name>X_EnergyCalibrationDialog</name>
     <message>
-        <location filename="ZEnergyCalibrator/ZEnergyCalibrationDialog.cpp" line="24"/>
+        <location filename="X_EnergyCalibrator/X_EnergyCalibrationDialog.cpp" line="24"/>
         <source>Energy calbration</source>
         <translation>Энергетическая градуировка</translation>
     </message>
     <message>
-        <location filename="ZEnergyCalibrator/ZEnergyCalibrationDialog.cpp" line="60"/>
+        <location filename="X_EnergyCalibrator/X_EnergyCalibrationDialog.cpp" line="60"/>
         <source>OK</source>
         <translation>Ок</translation>
     </message>
     <message>
-        <location filename="ZEnergyCalibrator/ZEnergyCalibrationDialog.cpp" line="64"/>
+        <location filename="X_EnergyCalibrator/X_EnergyCalibrationDialog.cpp" line="64"/>
         <source>Cancel</source>
         <translation>Отмена</translation>
     </message>
     <message>
-        <location filename="ZEnergyCalibrator/ZEnergyCalibrationDialog.cpp" line="81"/>
+        <location filename="X_EnergyCalibrator/X_EnergyCalibrationDialog.cpp" line="81"/>
         <source>Gain factor:</source>
         <translation>Коэффициент усиления:</translation>
     </message>
 </context>
 <context>
-    <name>ZEnergyCalibrationDialogV2</name>
+    <name>X_EnergyCalibrationDialogV2</name>
     <message>
-        <location filename="ZEnergyCalibrator/ZEnergyCalibrationDialogV2.cpp" line="46"/>
+        <location filename="X_EnergyCalibrator/X_EnergyCalibrationDialogV2.cpp" line="46"/>
         <source>Energy calibration</source>
         <translation>Энергетическая градуировка</translation>
     </message>
     <message>
-        <location filename="ZEnergyCalibrator/ZEnergyCalibrationDialogV2.cpp" line="88"/>
+        <location filename="X_EnergyCalibrator/X_EnergyCalibrationDialogV2.cpp" line="88"/>
         <source>Gain factor</source>
         <translation>Коэффициент усиления</translation>
     </message>
     <message>
-        <location filename="ZEnergyCalibrator/ZEnergyCalibrationDialogV2.cpp" line="115"/>
+        <location filename="X_EnergyCalibrator/X_EnergyCalibrationDialogV2.cpp" line="115"/>
         <source>Close</source>
         <translation>Закрыть</translation>
     </message>
     <message>
-        <location filename="ZEnergyCalibrator/ZEnergyCalibrationDialogV2.cpp" line="162"/>
+        <location filename="X_EnergyCalibrator/X_EnergyCalibrationDialogV2.cpp" line="162"/>
         <source>Peak count in energy calibration:</source>
         <translation>Количество пиков в энергетической градуировке:</translation>
     </message>
     <message>
-        <location filename="ZEnergyCalibrator/ZEnergyCalibrationDialogV2.cpp" line="166"/>
+        <location filename="X_EnergyCalibrator/X_EnergyCalibrationDialogV2.cpp" line="166"/>
         <source>Two</source>
         <translation>Два</translation>
     </message>
     <message>
-        <location filename="ZEnergyCalibrator/ZEnergyCalibrationDialogV2.cpp" line="167"/>
+        <location filename="X_EnergyCalibrator/X_EnergyCalibrationDialogV2.cpp" line="167"/>
         <source>Three</source>
         <translation>Три</translation>
     </message>
     <message>
-        <location filename="ZEnergyCalibrator/ZEnergyCalibrationDialogV2.cpp" line="187"/>
+        <location filename="X_EnergyCalibrator/X_EnergyCalibrationDialogV2.cpp" line="187"/>
         <source>Calculate</source>
         <translation>Рассчитать</translation>
     </message>
     <message>
-        <location filename="ZEnergyCalibrator/ZEnergyCalibrationDialogV2.cpp" line="188"/>
+        <location filename="X_EnergyCalibrator/X_EnergyCalibrationDialogV2.cpp" line="188"/>
         <source>Calculate energy calibration</source>
         <translation>Рассчитать энергетическую градуировку</translation>
     </message>
     <message>
-        <location filename="ZEnergyCalibrator/ZEnergyCalibrationDialogV2.cpp" line="209"/>
-        <location filename="ZEnergyCalibrator/ZEnergyCalibrationDialogV2.cpp" line="218"/>
+        <location filename="X_EnergyCalibrator/X_EnergyCalibrationDialogV2.cpp" line="209"/>
+        <location filename="X_EnergyCalibrator/X_EnergyCalibrationDialogV2.cpp" line="218"/>
         <source>Energy line #%1</source>
         <translation>Энергетическая линия #%1</translation>
     </message>
     <message>
-        <location filename="ZEnergyCalibrator/ZEnergyCalibrationDialogV2.cpp" line="257"/>
+        <location filename="X_EnergyCalibrator/X_EnergyCalibrationDialogV2.cpp" line="232"/>
+        <source>Peak center</source>
+        <translation>Центр</translation>
+    </message>
+    <message>
+        <location filename="X_EnergyCalibrator/X_EnergyCalibrationDialogV2.cpp" line="257"/>
         <source>kEv</source>
         <translation>кЭв</translation>
     </message>
     <message>
-        <location filename="ZEnergyCalibrator/ZEnergyCalibrationDialogV2.cpp" line="351"/>
+        <location filename="X_EnergyCalibrator/X_EnergyCalibrationDialogV2.cpp" line="351"/>
         <source>Gain Factor: %1</source>
         <translation>Коэффициент усиления: %1</translation>
     </message>
     <message>
-        <location filename="ZEnergyCalibrator/ZEnergyCalibrationDialogV2.cpp" line="471"/>
+        <location filename="X_EnergyCalibrator/X_EnergyCalibrationDialogV2.cpp" line="470"/>
         <source>Do you want to bind the energy calibration to the current gain factor equals %1?</source>
         <translation>Связать энергетическую градуировку с текущим коэффициентом усиления %1?</translation>
     </message>
     <message>
-        <location filename="ZEnergyCalibrator/ZEnergyCalibrationDialogV2.cpp" line="472"/>
+        <location filename="X_EnergyCalibrator/X_EnergyCalibrationDialogV2.cpp" line="471"/>
         <source>Energy calibration error</source>
         <translation>Ошибка энергетической градуировки</translation>
     </message>
     <message>
-        <location filename="ZEnergyCalibrator/ZEnergyCalibrationDialogV2.cpp" line="698"/>
+        <location filename="X_EnergyCalibrator/X_EnergyCalibrationDialogV2.cpp" line="697"/>
         <source>Cannot calculate energy calibration.&lt;br&gt;Ambiguity in source data of energy lines.</source>
         <translation>Невозможно рассчитать энергетическую градуировку. &lt;br&gt;Неоднозначность в данных линий характеристического излучения.</translation>
     </message>
     <message>
-        <location filename="ZEnergyCalibrator/ZEnergyCalibrationDialogV2.cpp" line="721"/>
+        <location filename="X_EnergyCalibrator/X_EnergyCalibrationDialogV2.cpp" line="720"/>
         <source>Cannot calculate energy calibration.&lt;br&gt;Insufficient source data of energy lines.</source>
         <translation>Невозможно рассчитать энергетическую градуировку. &lt;br&gt;Недостаточно данных линий характеристического излучения.</translation>
     </message>
     <message>
-        <location filename="ZEnergyCalibrator/ZEnergyCalibrationDialogV2.cpp" line="772"/>
+        <location filename="X_EnergyCalibrator/X_EnergyCalibrationDialogV2.cpp" line="771"/>
         <source>Energy calibration has been calculated successfully&lt;br&gt;K0 - %1&lt;br&gt;K1 - %2&lt;br&gt;K2 - %3&lt;br&gt;</source>
         <translation>Энергетическая градуировка успешно рассчитана&lt;br&gt;K0 - %1&lt;br&gt;K1 - %2&lt;br&gt;K2 - %3&lt;br&gt;</translation>
     </message>
@@ -2117,9 +2191,9 @@ In order for the changes to take effect, please restart the application.</source
         <translation type="vanished">Неоднозначность в данных энергетических линий.</translation>
     </message>
     <message>
-        <location filename="ZEnergyCalibrator/ZEnergyCalibrationDialogV2.cpp" line="699"/>
-        <location filename="ZEnergyCalibrator/ZEnergyCalibrationDialogV2.cpp" line="722"/>
-        <location filename="ZEnergyCalibrator/ZEnergyCalibrationDialogV2.cpp" line="762"/>
+        <location filename="X_EnergyCalibrator/X_EnergyCalibrationDialogV2.cpp" line="698"/>
+        <location filename="X_EnergyCalibrator/X_EnergyCalibrationDialogV2.cpp" line="721"/>
+        <location filename="X_EnergyCalibrator/X_EnergyCalibrationDialogV2.cpp" line="761"/>
         <source>Error</source>
         <translation>Ошибка</translation>
     </message>
@@ -2128,121 +2202,131 @@ In order for the changes to take effect, please restart the application.</source
         <translation type="vanished">Не достаточно данных энергетических линий.</translation>
     </message>
     <message>
-        <location filename="ZEnergyCalibrator/ZEnergyCalibrationDialogV2.cpp" line="761"/>
+        <location filename="X_EnergyCalibrator/X_EnergyCalibrationDialogV2.cpp" line="760"/>
         <source>Calculation of energy calibration factors fails. Error: %1.</source>
         <translation>Расчет энергетической градуировки не выполнен. Ошибка: %1.</translation>
     </message>
 </context>
 <context>
-    <name>ZEnergyCalibrationSpectrumTableModel</name>
+    <name>X_EnergyCalibrationSpectrumTableModel</name>
     <message>
-        <location filename="ZEnergyCalibrator/ZEnergyCalibrationSpectrumTableModel.cpp" line="185"/>
+        <location filename="X_EnergyCalibrator/X_EnergyCalibrationSpectrumTableModel.cpp" line="185"/>
         <source>Name</source>
         <translation>Имя</translation>
     </message>
     <message>
-        <location filename="ZEnergyCalibrator/ZEnergyCalibrationSpectrumTableModel.cpp" line="218"/>
+        <location filename="X_EnergyCalibrator/X_EnergyCalibrationSpectrumTableModel.cpp" line="218"/>
         <source>Energy calibration in spectrum %1 has been changed</source>
         <translation>Энергетическая градуировка в спектре %1 была изменена</translation>
     </message>
 </context>
 <context>
-    <name>ZEnergyLineSelectionDialog</name>
+    <name>X_EnergyLineSelectionDialog</name>
     <message>
-        <location filename="ZPeriodicTableDialog/ZEnergyLineSelectionDialog.cpp" line="44"/>
+        <location filename="X_PeriodicTableDialog/X_EnergyLineSelectionDialog.cpp" line="44"/>
         <source>Energy line</source>
         <translation>Энергетическая линия</translation>
     </message>
     <message>
-        <location filename="ZPeriodicTableDialog/ZEnergyLineSelectionDialog.cpp" line="45"/>
+        <location filename="X_PeriodicTableDialog/X_EnergyLineSelectionDialog.cpp" line="45"/>
         <source>Energy value</source>
         <translation>Энергия</translation>
     </message>
     <message>
-        <location filename="ZPeriodicTableDialog/ZEnergyLineSelectionDialog.cpp" line="72"/>
+        <location filename="X_PeriodicTableDialog/X_EnergyLineSelectionDialog.cpp" line="72"/>
         <source>Selected line:</source>
         <translation>Линия характеристического излучения:</translation>
     </message>
     <message>
-        <location filename="ZPeriodicTableDialog/ZEnergyLineSelectionDialog.cpp" line="91"/>
+        <location filename="X_PeriodicTableDialog/X_EnergyLineSelectionDialog.cpp" line="91"/>
         <source>Ok</source>
         <translation>Ок</translation>
     </message>
     <message>
-        <location filename="ZPeriodicTableDialog/ZEnergyLineSelectionDialog.cpp" line="94"/>
+        <location filename="X_PeriodicTableDialog/X_EnergyLineSelectionDialog.cpp" line="94"/>
         <source>Cancel</source>
         <translation>Отмена</translation>
     </message>
     <message>
-        <location filename="ZPeriodicTableDialog/ZEnergyLineSelectionDialog.cpp" line="223"/>
-        <location filename="ZPeriodicTableDialog/ZEnergyLineSelectionDialog.cpp" line="230"/>
+        <location filename="X_PeriodicTableDialog/X_EnergyLineSelectionDialog.cpp" line="223"/>
+        <location filename="X_PeriodicTableDialog/X_EnergyLineSelectionDialog.cpp" line="230"/>
         <source>not defined</source>
         <translation>Не определено</translation>
     </message>
     <message>
-        <location filename="ZPeriodicTableDialog/ZEnergyLineSelectionDialog.cpp" line="262"/>
+        <location filename="X_PeriodicTableDialog/X_EnergyLineSelectionDialog.cpp" line="262"/>
         <source>%1 %2 - %3 (kEv)</source>
         <translation>%1 %2 - %3 (кЭв)</translation>
     </message>
 </context>
 <context>
-    <name>ZEquationChooseDialog</name>
+    <name>X_EquationChooseDialog</name>
     <message>
-        <location filename="ZDialogs/ZEquationChooseDialog.cpp" line="23"/>
+        <location filename="X_Dialogs/X_EquationChooseDialog.cpp" line="21"/>
         <source>Equation settings</source>
         <translation>Настройка уравнения</translation>
     </message>
     <message>
-        <location filename="ZDialogs/ZEquationChooseDialog.cpp" line="87"/>
+        <location filename="X_Dialogs/X_EquationChooseDialog.cpp" line="80"/>
         <source>Base term:</source>
         <translation>Базовый параметр:</translation>
     </message>
     <message>
-        <location filename="ZDialogs/ZEquationChooseDialog.cpp" line="97"/>
+        <location filename="X_Dialogs/X_EquationChooseDialog.cpp" line="90"/>
         <source>Normalization term:</source>
         <translation>Нормирующий параметр:</translation>
     </message>
+    <message>
+        <location filename="X_Dialogs/X_EquationChooseDialog.cpp" line="105"/>
+        <source>Ok</source>
+        <translation>Ок</translation>
+    </message>
+    <message>
+        <location filename="X_Dialogs/X_EquationChooseDialog.cpp" line="108"/>
+        <source>Cancel</source>
+        <translation>Отмена</translation>
+    </message>
 </context>
 <context>
-    <name>ZFileActionManager</name>
+    <name>X_FileActionManager</name>
     <message>
-        <location filename="ZComponents/ZFileActionManager.cpp" line="225"/>
+        <location filename="X_Components/X_FileActionManager.cpp" line="201"/>
         <source>&amp;Open spectrum array list</source>
         <translation>&amp;Открыть список массивов спектров</translation>
     </message>
     <message>
-        <location filename="ZComponents/ZFileActionManager.cpp" line="228"/>
+        <location filename="X_Components/X_FileActionManager.cpp" line="204"/>
         <source>&amp;Save spectrum array list</source>
         <translation>&amp;Сохранить список массивов спектров</translation>
     </message>
     <message>
-        <location filename="ZComponents/ZFileActionManager.cpp" line="233"/>
+        <location filename="X_Components/X_FileActionManager.cpp" line="208"/>
         <source>Save spectrum array list &amp;as...</source>
-        <translation>Сохранить список массивов спектров как ...</translation>
+        <translation>Сохранить список массивов спектров как...</translation>
     </message>
     <message>
-        <location filename="ZComponents/ZFileActionManager.cpp" line="239"/>
+        <location filename="X_Components/X_FileActionManager.cpp" line="213"/>
         <source>Open &amp;calibrations</source>
         <translation>Открыть &amp;градуировки</translation>
     </message>
     <message>
-        <location filename="ZComponents/ZFileActionManager.cpp" line="243"/>
+        <location filename="X_Components/X_FileActionManager.cpp" line="216"/>
         <source>Save calibration</source>
         <translation>Сохранить градуировки</translation>
     </message>
     <message>
-        <location filename="ZComponents/ZFileActionManager.cpp" line="248"/>
+        <location filename="X_Components/X_FileActionManager.cpp" line="220"/>
         <source>Save calibration as...</source>
         <translation>Сохранить градуировки как ...</translation>
     </message>
     <message>
-        <location filename="ZComponents/ZFileActionManager.cpp" line="254"/>
+        <location filename="X_Components/X_FileActionManager.cpp" line="225"/>
         <source>Open calibration &amp;project</source>
         <translation>Открыть проект &amp;калибровки</translation>
     </message>
     <message>
-        <location filename="ZComponents/ZFileActionManager.cpp" line="297"/>
-        <location filename="ZComponents/ZFileActionManager.cpp" line="890"/>
+        <location filename="X_Components/X_FileActionManager.cpp" line="267"/>
+        <location filename="X_Components/X_FileActionManager.cpp" line="978"/>
         <source>Select file to open</source>
         <translation>Выбор файла для открытия</translation>
     </message>
@@ -2251,94 +2335,118 @@ In order for the changes to take effect, please restart the application.</source
         <translation type="vanished">Массивы спектров(*.spe);;Все файлы(*.*)</translation>
     </message>
     <message>
-        <location filename="ZComponents/ZFileActionManager.cpp" line="299"/>
-        <location filename="ZComponents/ZFileActionManager.cpp" line="312"/>
+        <location filename="X_Components/X_FileActionManager.cpp" line="269"/>
+        <location filename="X_Components/X_FileActionManager.cpp" line="281"/>
+        <location filename="X_Components/X_FileActionManager.cpp" line="881"/>
+        <location filename="X_Components/X_FileActionManager.cpp" line="904"/>
         <source>Spectrum array files(*.%1);;XML files(%2);;All files(%3)</source>
         <translation>Файл массива спектров(*.%1);;XML файлы (%2);;Все файлы(%3)</translation>
     </message>
     <message>
-        <location filename="ZComponents/ZFileActionManager.cpp" line="310"/>
+        <location filename="X_Components/X_FileActionManager.cpp" line="279"/>
+        <location filename="X_Components/X_FileActionManager.cpp" line="902"/>
         <source>Select file to save</source>
         <translation>Выбор файла для сохранения</translation>
     </message>
     <message>
-        <location filename="ZComponents/ZFileActionManager.cpp" line="363"/>
+        <location filename="X_Components/X_FileActionManager.cpp" line="331"/>
         <source>File &quot;%1&quot; does not exist!</source>
         <translation>Файла &quot;%1&quot; не существует!</translation>
     </message>
     <message>
-        <location filename="ZComponents/ZFileActionManager.cpp" line="364"/>
-        <location filename="ZComponents/ZFileActionManager.cpp" line="373"/>
+        <location filename="X_Components/X_FileActionManager.cpp" line="332"/>
+        <location filename="X_Components/X_FileActionManager.cpp" line="341"/>
         <source>File open error</source>
         <translation>Ошибка открытия файла</translation>
     </message>
     <message>
-        <location filename="ZComponents/ZFileActionManager.cpp" line="372"/>
+        <location filename="X_Components/X_FileActionManager.cpp" line="340"/>
         <source>&quot;%1&quot; is a folder!</source>
         <translation>&quot;%1&quot; является папкой!</translation>
     </message>
     <message>
-        <location filename="ZComponents/ZFileActionManager.cpp" line="391"/>
+        <location filename="X_Components/X_FileActionManager.cpp" line="359"/>
         <source>Error: &quot;%1&quot; is not a file!</source>
         <translation>Ошибка: &quot;%1&quot; не файл!</translation>
     </message>
     <message>
-        <location filename="ZComponents/ZFileActionManager.cpp" line="401"/>
-        <location filename="ZComponents/ZFileActionManager.cpp" line="581"/>
+        <location filename="X_Components/X_FileActionManager.cpp" line="367"/>
+        <location filename="X_Components/X_FileActionManager.cpp" line="540"/>
         <source>Error handling file &quot;%1&quot;! Cannot handle &quot;%2&quot; files.</source>
         <translation>Ошибка обработки файла &quot;%1&quot;! Невозможно обработать файлы с расширением &quot;%2&quot;.</translation>
     </message>
     <message>
-        <location filename="ZComponents/ZFileActionManager.cpp" line="403"/>
-        <location filename="ZComponents/ZFileActionManager.cpp" line="583"/>
+        <location filename="X_Components/X_FileActionManager.cpp" line="369"/>
+        <location filename="X_Components/X_FileActionManager.cpp" line="542"/>
         <source>File handling error</source>
         <translation>Ошибка обработки файла</translation>
     </message>
     <message>
-        <location filename="ZComponents/ZFileActionManager.cpp" line="416"/>
-        <location filename="ZComponents/ZFileActionManager.cpp" line="421"/>
-        <location filename="ZComponents/ZFileActionManager.cpp" line="597"/>
-        <location filename="ZComponents/ZFileActionManager.cpp" line="602"/>
-        <location filename="ZComponents/ZFileActionManager.cpp" line="676"/>
-        <location filename="ZComponents/ZFileActionManager.cpp" line="681"/>
-        <location filename="ZComponents/ZFileActionManager.cpp" line="741"/>
-        <location filename="ZComponents/ZFileActionManager.cpp" line="746"/>
-        <location filename="ZComponents/ZFileActionManager.cpp" line="901"/>
-        <location filename="ZComponents/ZFileActionManager.cpp" line="906"/>
+        <location filename="X_Components/X_FileActionManager.cpp" line="382"/>
+        <location filename="X_Components/X_FileActionManager.cpp" line="386"/>
+        <location filename="X_Components/X_FileActionManager.cpp" line="556"/>
+        <location filename="X_Components/X_FileActionManager.cpp" line="560"/>
+        <location filename="X_Components/X_FileActionManager.cpp" line="678"/>
+        <location filename="X_Components/X_FileActionManager.cpp" line="682"/>
+        <location filename="X_Components/X_FileActionManager.cpp" line="816"/>
+        <location filename="X_Components/X_FileActionManager.cpp" line="820"/>
+        <location filename="X_Components/X_FileActionManager.cpp" line="1106"/>
+        <location filename="X_Components/X_FileActionManager.cpp" line="1110"/>
         <source>Cannot read file &quot;%1&quot;! %2</source>
         <translation>Невозможно прочитать файл &quot;%1&quot;! %2</translation>
     </message>
     <message>
-        <location filename="ZComponents/ZFileActionManager.cpp" line="422"/>
-        <location filename="ZComponents/ZFileActionManager.cpp" line="603"/>
-        <location filename="ZComponents/ZFileActionManager.cpp" line="682"/>
-        <location filename="ZComponents/ZFileActionManager.cpp" line="747"/>
-        <location filename="ZComponents/ZFileActionManager.cpp" line="907"/>
+        <location filename="X_Components/X_FileActionManager.cpp" line="386"/>
+        <location filename="X_Components/X_FileActionManager.cpp" line="560"/>
+        <location filename="X_Components/X_FileActionManager.cpp" line="682"/>
+        <location filename="X_Components/X_FileActionManager.cpp" line="820"/>
+        <location filename="X_Components/X_FileActionManager.cpp" line="1110"/>
         <source>Unknown error</source>
         <translation>Неизвестная ошибка</translation>
     </message>
     <message>
-        <location filename="ZComponents/ZFileActionManager.cpp" line="719"/>
+        <location filename="X_Components/X_FileActionManager.cpp" line="795"/>
         <source>Do you want to save calibration project?</source>
         <translation>Сохранить проект градуировки?</translation>
     </message>
     <message>
-        <location filename="ZComponents/ZFileActionManager.cpp" line="721"/>
+        <location filename="X_Components/X_FileActionManager.cpp" line="797"/>
         <source>Calibration saving</source>
         <translation>Сохранение градуировки</translation>
     </message>
     <message>
-        <location filename="ZComponents/ZFileActionManager.cpp" line="794"/>
-        <source>Select spectrum file</source>
+        <location filename="X_Components/X_FileActionManager.cpp" line="865"/>
+        <source>Select spectra file</source>
         <translation>Выбор файлов спектров</translation>
     </message>
     <message>
-        <location filename="ZComponents/ZFileActionManager.cpp" line="796"/>
+        <source>Select spectrum file</source>
+        <translation type="vanished">Выбор файлов спектров</translation>
+    </message>
+    <message>
+        <location filename="X_Components/X_FileActionManager.cpp" line="867"/>
         <source>SRV spectrum files(%1);;All files(%2)</source>
         <translation>Файлы спектров СРВ(%1);;Все файлы(%2)</translation>
     </message>
     <message>
-        <location filename="ZComponents/ZFileActionManager.cpp" line="892"/>
+        <location filename="X_Components/X_FileActionManager.cpp" line="879"/>
+        <location filename="X_Components/X_FileActionManager.cpp" line="935"/>
+        <source>Open file</source>
+        <translation>Открыть файл</translation>
+    </message>
+    <message>
+        <location filename="X_Components/X_FileActionManager.cpp" line="937"/>
+        <location filename="X_Components/X_FileActionManager.cpp" line="959"/>
+        <source>XML Calibration files(*.clbx);;XML files(*.xml);;All files(*.*)</source>
+        <translation>Файлы градуировки(*.clbx);;Файлы XML(*.xml);;Все файлы(*.*)</translation>
+    </message>
+    <message>
+        <location filename="X_Components/X_FileActionManager.cpp" line="957"/>
+        <source>Save file</source>
+        <translation>Сохранить файл</translation>
+    </message>
+    <message>
+        <location filename="X_Components/X_FileActionManager.cpp" line="980"/>
         <source>Calibration project files(%1);;XML files(%2);;All files(%3)</source>
         <translation>Файлы проектов градуировок(%1);;XML файлы(%2);;Всеl файлы(%3)</translation>
     </message>
@@ -2347,81 +2455,81 @@ In order for the changes to take effect, please restart the application.</source
         <translation type="vanished">СРВ спектры(*.spe);;Все файлы(*.*)</translation>
     </message>
     <message>
-        <location filename="ZComponents/ZFileActionManager.cpp" line="818"/>
-        <location filename="ZComponents/ZFileActionManager.cpp" line="934"/>
+        <location filename="X_Components/X_FileActionManager.cpp" line="1043"/>
+        <location filename="X_Components/X_FileActionManager.cpp" line="1137"/>
         <source>Data loading from file &quot;%1&quot; failed.</source>
         <translation>Не удалось загрузить данные из файла &quot;%1&quot;.</translation>
     </message>
     <message>
-        <location filename="ZComponents/ZFileActionManager.cpp" line="820"/>
-        <location filename="ZComponents/ZFileActionManager.cpp" line="936"/>
+        <location filename="X_Components/X_FileActionManager.cpp" line="1044"/>
+        <location filename="X_Components/X_FileActionManager.cpp" line="1138"/>
         <source>Loading error</source>
         <translation>Ошибка загрузки данных</translation>
     </message>
 </context>
 <context>
-    <name>ZHelpBrowser</name>
+    <name>X_HelpBrowser</name>
     <message>
-        <location filename="ZBaseMainWindow/ZHelpBrowser.cpp" line="19"/>
+        <location filename="X_BaseMainWindow/X_HelpBrowser.cpp" line="19"/>
         <source>Help</source>
         <translation>Помощь</translation>
     </message>
 </context>
 <context>
-    <name>ZJointSpectraDataManager</name>
+    <name>X_JointSpectraDataManager</name>
     <message>
-        <location filename="ZComponents/ZJointSpectraDataManager.cpp" line="150"/>
+        <location filename="X_Components/X_JointSpectraDataManager.cpp" line="150"/>
         <source>File</source>
         <translation>Файл</translation>
     </message>
     <message>
-        <location filename="ZComponents/ZJointSpectraDataManager.cpp" line="154"/>
+        <location filename="X_Components/X_JointSpectraDataManager.cpp" line="154"/>
         <source>Spectrum</source>
         <translation>Спектр</translation>
     </message>
 </context>
 <context>
-    <name>ZMathExpressionHandler</name>
+    <name>X_MathExpressionHandler</name>
     <message>
-        <location filename="ZComponents/ZMathExpressionHandler.cpp" line="598"/>
+        <location filename="X_Components/X_MathExpressionHandler.cpp" line="598"/>
         <source>Empty expression</source>
         <translation>Пустое выражение</translation>
     </message>
     <message>
-        <location filename="ZComponents/ZMathExpressionHandler.cpp" line="601"/>
+        <location filename="X_Components/X_MathExpressionHandler.cpp" line="601"/>
         <source>Division by zero</source>
         <translation>Деление на ноль</translation>
     </message>
     <message>
-        <location filename="ZComponents/ZMathExpressionHandler.cpp" line="604"/>
+        <location filename="X_Components/X_MathExpressionHandler.cpp" line="604"/>
         <source>Wrong token</source>
         <translation>Неправильный токен</translation>
     </message>
     <message>
-        <location filename="ZComponents/ZMathExpressionHandler.cpp" line="607"/>
+        <location filename="X_Components/X_MathExpressionHandler.cpp" line="607"/>
         <source>Bracket error</source>
         <translation>Ошибка скобок</translation>
     </message>
     <message>
-        <location filename="ZComponents/ZMathExpressionHandler.cpp" line="610"/>
+        <location filename="X_Components/X_MathExpressionHandler.cpp" line="610"/>
         <source>Cannot convert to double</source>
         <translation>Невозможно преобразовать тип в &quot;double&quot;</translation>
     </message>
     <message>
-        <location filename="ZComponents/ZMathExpressionHandler.cpp" line="613"/>
+        <location filename="X_Components/X_MathExpressionHandler.cpp" line="613"/>
         <source>Wrong variable</source>
         <translation>Неправильная переменная</translation>
     </message>
 </context>
 <context>
-    <name>ZMeasuringCommonWidget</name>
+    <name>X_MeasuringCommonWidget</name>
     <message>
         <source>Samples:</source>
         <translation type="vanished">Пробы:</translation>
     </message>
 </context>
 <context>
-    <name>ZMeasuringConditionsDialog</name>
+    <name>X_MeasuringConditionsDialog</name>
     <message>
         <source>Gain factor:</source>
         <translation type="vanished">Коэффициент усиления:</translation>
@@ -2440,7 +2548,7 @@ In order for the changes to take effect, please restart the application.</source
     </message>
 </context>
 <context>
-    <name>ZMeasuringConditionsListDialog</name>
+    <name>X_MeasuringConditionsListDialog</name>
     <message>
         <source>Measurement conditions</source>
         <translation type="vanished">Параметры измерения</translation>
@@ -2507,7 +2615,7 @@ In order for the changes to take effect, please restart the application.</source
     </message>
 </context>
 <context>
-    <name>ZMeasuringController</name>
+    <name>X_MeasuringController</name>
     <message>
         <source>Device connector is absent.
 Check device library and connection to device</source>
@@ -2584,7 +2692,7 @@ Check device library and connection to device</source>
     </message>
 </context>
 <context>
-    <name>ZMeasuringManager</name>
+    <name>X_MeasuringManager</name>
     <message>
         <source>Save series</source>
         <translation type="vanished">Сохранить задание для серии</translation>
@@ -2757,7 +2865,7 @@ Do you want to replace them?</source>
     </message>
 </context>
 <context>
-    <name>ZMeasuringResultTableModel</name>
+    <name>X_MeasuringResultTableModel</name>
     <message>
         <source>Sample</source>
         <translation type="vanished">Проба</translation>
@@ -2768,57 +2876,83 @@ Do you want to replace them?</source>
     </message>
 </context>
 <context>
-    <name>ZMeasuringTask</name>
+    <name>X_MeasuringTask</name>
     <message>
         <source>G.F. - %1, Exp. - %2</source>
         <translation type="vanished">К.У. - %1, Эксп. - %2</translation>
     </message>
 </context>
 <context>
-    <name>ZMessagePanel</name>
+    <name>X_MessagePanel</name>
     <message>
-        <location filename="ZWidgets/ZMessagePanel.cpp" line="33"/>
+        <location filename="X_Widgets/X_MessagePanel.cpp" line="33"/>
         <source>Clear messages</source>
         <translation>Очистить сообщения</translation>
     </message>
 </context>
 <context>
-    <name>ZMessageWidget</name>
+    <name>X_MessageWidget</name>
     <message>
-        <location filename="ZWidgets/ZMessageWidget.cpp" line="202"/>
+        <location filename="X_Widgets/X_MessageWidget.cpp" line="202"/>
         <source>Clear messages</source>
         <translation>Очистить сообщения</translation>
     </message>
 </context>
 <context>
-    <name>ZNormaSettingsDialog</name>
+    <name>X_NormaSettingsDialog</name>
     <message>
-        <location filename="ZDialogs/ZNormaSettingsDialog.cpp" line="16"/>
+        <location filename="X_Dialogs/X_NormaSettingsDialog.cpp" line="18"/>
         <source>Normalization settings</source>
         <translation>Настройка нормализации</translation>
     </message>
+    <message>
+        <location filename="X_Dialogs/X_NormaSettingsDialog.cpp" line="38"/>
+        <source>OK</source>
+        <translation>Ок</translation>
+    </message>
+    <message>
+        <location filename="X_Dialogs/X_NormaSettingsDialog.cpp" line="38"/>
+        <source>Save parameter</source>
+        <translation>Сохранить параметр</translation>
+    </message>
+    <message>
+        <location filename="X_Dialogs/X_NormaSettingsDialog.cpp" line="40"/>
+        <source>Cancel</source>
+        <translation>Отмена</translation>
+    </message>
+    <message>
+        <location filename="X_Dialogs/X_NormaSettingsDialog.cpp" line="41"/>
+        <source>Close dialog without saving changes</source>
+        <oldsource>Close dialog withiut saving changes</oldsource>
+        <translation>Закрыть диалог без сохранения изменений</translation>
+    </message>
+    <message>
+        <location filename="X_Dialogs/X_NormaSettingsDialog.cpp" line="89"/>
+        <source>Use modifier for inserting window name</source>
+        <translation>Использовать модификатор для вставки имени окна</translation>
+    </message>
 </context>
 <context>
-    <name>ZNumericDelegate</name>
+    <name>X_NumericDelegate</name>
     <message>
-        <location filename="ZModelViews/ZNumericDelegate/ZNumericDelegate.cpp" line="138"/>
-        <location filename="ZModelViews/ZNumericDelegate/ZNumericDelegate.cpp" line="143"/>
+        <location filename="X_ModelViews/X_NumericDelegate/X_NumericDelegate.cpp" line="138"/>
+        <location filename="X_ModelViews/X_NumericDelegate/X_NumericDelegate.cpp" line="143"/>
         <source>Limit exceed</source>
         <translation>Выход за предел</translation>
     </message>
     <message>
-        <location filename="ZModelViews/ZNumericDelegate/ZNumericDelegate.cpp" line="138"/>
+        <location filename="X_ModelViews/X_NumericDelegate/X_NumericDelegate.cpp" line="138"/>
         <source>The value exceeds maximum limit.</source>
         <translation>Значение вышло за максимальный предел.</translation>
     </message>
     <message>
-        <location filename="ZModelViews/ZNumericDelegate/ZNumericDelegate.cpp" line="143"/>
+        <location filename="X_ModelViews/X_NumericDelegate/X_NumericDelegate.cpp" line="143"/>
         <source>The value exceeds minimum limit.</source>
         <translation>Значение вышло за минимальный предел.</translation>
     </message>
 </context>
 <context>
-    <name>ZOperatorDialog</name>
+    <name>X_OperatorDialog</name>
     <message>
         <source>New operator</source>
         <translation type="vanished">Новый оператор</translation>
@@ -2897,7 +3031,7 @@ Do you want to replace them?</source>
     </message>
 </context>
 <context>
-    <name>ZPasswordChangeDialog</name>
+    <name>X_PasswordChangeDialog</name>
     <message>
         <source>Password settings</source>
         <translation type="vanished">Настройка пароля</translation>
@@ -2948,7 +3082,7 @@ Do you want to replace them?</source>
     </message>
 </context>
 <context>
-    <name>ZPasswordDialog</name>
+    <name>X_PasswordDialog</name>
     <message>
         <source>Password</source>
         <translation type="vanished">Пароль</translation>
@@ -2991,38 +3125,38 @@ Do you want to replace them?</source>
     </message>
 </context>
 <context>
-    <name>ZPeakWindowTableModel</name>
+    <name>X_PeakWindowTableModel</name>
     <message>
-        <location filename="ZEnergyCalibrator/ZPeakWindowTableModel.cpp" line="93"/>
+        <location filename="X_EnergyCalibrator/X_PeakWindowTableModel.cpp" line="93"/>
         <source>Append peak window</source>
         <translation>Добавить окно пика</translation>
     </message>
     <message>
-        <location filename="ZEnergyCalibrator/ZPeakWindowTableModel.cpp" line="98"/>
+        <location filename="X_EnergyCalibrator/X_PeakWindowTableModel.cpp" line="98"/>
         <source>Remove peak window</source>
         <translation>Удалить окно пика</translation>
     </message>
 </context>
 <context>
-    <name>ZPlotter</name>
+    <name>X_Plotter</name>
     <message>
-        <location filename="ZPlotter/ZPlotter.cpp" line="755"/>
+        <location filename="X_Plotter/X_Plotter.cpp" line="755"/>
         <source>Channel: %1</source>
         <translation>Канал: %1</translation>
     </message>
     <message>
-        <location filename="ZPlotter/ZPlotter.cpp" line="766"/>
+        <location filename="X_Plotter/X_Plotter.cpp" line="766"/>
         <source> Energy: %1</source>
         <translation> Энергия: %1</translation>
     </message>
     <message>
-        <location filename="ZPlotter/ZPlotter.cpp" line="770"/>
+        <location filename="X_Plotter/X_Plotter.cpp" line="770"/>
         <source> Intensity: %1</source>
         <translation> Интенсивность: %1</translation>
     </message>
 </context>
 <context>
-    <name>ZPlotterDataManager</name>
+    <name>X_PlotterDataManager</name>
     <message>
         <source>Intensity</source>
         <translation type="vanished">Интенсивность</translation>
@@ -3049,122 +3183,122 @@ Do you want to replace them?</source>
     </message>
 </context>
 <context>
-    <name>ZPropertyEditDialog</name>
+    <name>X_PropertyEditDialog</name>
     <message>
-        <location filename="ZPeriodicTable/ZPropertyEditDialog.cpp" line="26"/>
+        <location filename="X_PeriodicTable/X_PropertyEditDialog.cpp" line="26"/>
         <source>Ok</source>
         <translation>Ок</translation>
     </message>
     <message>
-        <location filename="ZPeriodicTable/ZPropertyEditDialog.cpp" line="27"/>
+        <location filename="X_PeriodicTable/X_PropertyEditDialog.cpp" line="27"/>
         <source>Save section and close dialog</source>
         <translation>Сохранить раздел и закрыть диалог</translation>
     </message>
     <message>
-        <location filename="ZPeriodicTable/ZPropertyEditDialog.cpp" line="29"/>
+        <location filename="X_PeriodicTable/X_PropertyEditDialog.cpp" line="29"/>
         <source>Cancel</source>
         <translation>Отмена</translation>
     </message>
     <message>
-        <location filename="ZPeriodicTable/ZPropertyEditDialog.cpp" line="30"/>
+        <location filename="X_PeriodicTable/X_PropertyEditDialog.cpp" line="30"/>
         <source>Close dialog without savimg section</source>
         <translation>Закрыть диалог без сохранения раздела</translation>
     </message>
     <message>
-        <location filename="ZPeriodicTable/ZPropertyEditDialog.cpp" line="51"/>
+        <location filename="X_PeriodicTable/X_PropertyEditDialog.cpp" line="51"/>
         <source>Chemical property name:</source>
         <translation>Имя свойства химического элемента:</translation>
     </message>
     <message>
-        <location filename="ZPeriodicTable/ZPropertyEditDialog.cpp" line="60"/>
+        <location filename="X_PeriodicTable/X_PropertyEditDialog.cpp" line="60"/>
         <source>Chemical property value:</source>
         <translation>Значение свойства химического элемента:</translation>
     </message>
     <message>
-        <location filename="ZPeriodicTable/ZPropertyEditDialog.cpp" line="75"/>
+        <location filename="X_PeriodicTable/X_PropertyEditDialog.cpp" line="75"/>
         <source>Input property name!</source>
         <translation>Введите имя свойства!</translation>
     </message>
     <message>
-        <location filename="ZPeriodicTable/ZPropertyEditDialog.cpp" line="76"/>
+        <location filename="X_PeriodicTable/X_PropertyEditDialog.cpp" line="76"/>
         <source>Error</source>
         <translation>Ошибка</translation>
     </message>
 </context>
 <context>
-    <name>ZPropertySectionEditDialog</name>
+    <name>X_PropertySectionEditDialog</name>
     <message>
-        <location filename="ZPeriodicTable/ZPropertySectionEditDialog.cpp" line="34"/>
+        <location filename="X_PeriodicTable/X_PropertySectionEditDialog.cpp" line="35"/>
         <source>Ok</source>
         <translation>Ок</translation>
     </message>
     <message>
-        <location filename="ZPeriodicTable/ZPropertySectionEditDialog.cpp" line="35"/>
+        <location filename="X_PeriodicTable/X_PropertySectionEditDialog.cpp" line="36"/>
         <source>Save section and close dialog</source>
         <translation>Сохранить раздел и закрыть диалог</translation>
     </message>
     <message>
-        <location filename="ZPeriodicTable/ZPropertySectionEditDialog.cpp" line="37"/>
+        <location filename="X_PeriodicTable/X_PropertySectionEditDialog.cpp" line="38"/>
         <source>Cancel</source>
         <translation>Отмена</translation>
     </message>
     <message>
-        <location filename="ZPeriodicTable/ZPropertySectionEditDialog.cpp" line="38"/>
+        <location filename="X_PeriodicTable/X_PropertySectionEditDialog.cpp" line="39"/>
         <source>Close dialog without savimg section</source>
         <translation>Закрыть диалог без сохранения раздела</translation>
     </message>
     <message>
-        <location filename="ZPeriodicTable/ZPropertySectionEditDialog.cpp" line="58"/>
+        <location filename="X_PeriodicTable/X_PropertySectionEditDialog.cpp" line="59"/>
         <source>Current section branch:</source>
         <translation>Текущий раздел:</translation>
     </message>
     <message>
-        <location filename="ZPeriodicTable/ZPropertySectionEditDialog.cpp" line="68"/>
+        <location filename="X_PeriodicTable/X_PropertySectionEditDialog.cpp" line="69"/>
         <source>Section name:</source>
         <translation>Имя раздела:</translation>
     </message>
     <message>
-        <location filename="ZPeriodicTable/ZPropertySectionEditDialog.cpp" line="76"/>
+        <location filename="X_PeriodicTable/X_PropertySectionEditDialog.cpp" line="77"/>
         <source>Add to</source>
         <translation>Добавить к</translation>
     </message>
     <message>
-        <location filename="ZPeriodicTable/ZPropertySectionEditDialog.cpp" line="83"/>
+        <location filename="X_PeriodicTable/X_PropertySectionEditDialog.cpp" line="84"/>
         <source>Current chemical element</source>
         <translation>Текущий химический элемент</translation>
     </message>
     <message>
-        <location filename="ZPeriodicTable/ZPropertySectionEditDialog.cpp" line="88"/>
+        <location filename="X_PeriodicTable/X_PropertySectionEditDialog.cpp" line="89"/>
         <source>Selected chemical elements</source>
         <translation>Выделенные химические элементы</translation>
     </message>
     <message>
-        <location filename="ZPeriodicTable/ZPropertySectionEditDialog.cpp" line="93"/>
+        <location filename="X_PeriodicTable/X_PropertySectionEditDialog.cpp" line="94"/>
         <source>All chemical elements</source>
         <translation>Все химические элементы</translation>
     </message>
     <message>
-        <location filename="ZPeriodicTable/ZPropertySectionEditDialog.cpp" line="104"/>
+        <location filename="X_PeriodicTable/X_PropertySectionEditDialog.cpp" line="105"/>
         <source>Error</source>
         <translation>Ошибка</translation>
     </message>
 </context>
 <context>
-    <name>ZSQLCommanderDialog</name>
+    <name>X_SQLCommanderDialog</name>
     <message>
         <source>Close</source>
         <translation type="vanished">Закрыть</translation>
     </message>
 </context>
 <context>
-    <name>ZSample</name>
+    <name>X_Sample</name>
     <message>
         <source>G.F. - %1, Exp. - %2</source>
         <translation type="vanished">К.У. - %1, Эксп. - %2</translation>
     </message>
 </context>
 <context>
-    <name>ZSampleTask</name>
+    <name>X_SampleTask</name>
     <message>
         <source>There is no sample task that has the id = %1.</source>
         <translation type="vanished">Не существует задания для пробы с id %1.</translation>
@@ -3175,7 +3309,7 @@ Do you want to replace them?</source>
     </message>
 </context>
 <context>
-    <name>ZSampleTaskDialog2</name>
+    <name>X_SampleTaskDialog2</name>
     <message>
         <source>Sample task</source>
         <translation type="vanished">Задание для пробы</translation>
@@ -3266,7 +3400,7 @@ Do you want to replace them?</source>
     </message>
 </context>
 <context>
-    <name>ZSampleTaskListDialog</name>
+    <name>X_SampleTaskListDialog</name>
     <message>
         <source>Sample task</source>
         <translation type="vanished">Задание для пробы</translation>
@@ -3285,14 +3419,14 @@ Do you want to replace them?</source>
     </message>
 </context>
 <context>
-    <name>ZSampleTaskTreeMeasuringConditionsItem</name>
+    <name>X_SampleTaskTreeMeasuringConditionsItem</name>
     <message>
         <source>G.F.-%1; Expo-%2</source>
         <translation type="vanished">К.У. - %1, Эксп. - %2</translation>
     </message>
 </context>
 <context>
-    <name>ZSampleTaskTreeModel</name>
+    <name>X_SampleTaskTreeModel</name>
     <message>
         <source>Task</source>
         <translation type="vanished">Задача</translation>
@@ -3323,7 +3457,7 @@ Do you want to replace them?</source>
     </message>
 </context>
 <context>
-    <name>ZSaveSpectraToFilesDialog</name>
+    <name>X_SaveSpectraToFilesDialog</name>
     <message>
         <source>Spectrum saving settings</source>
         <translation type="vanished">Настройка сохранения спектра</translation>
@@ -3334,15 +3468,15 @@ Do you want to replace them?</source>
     </message>
 </context>
 <context>
-    <name>ZSelectedEnergyLineTableModel</name>
+    <name>X_SelectedEnergyLineTableModel</name>
     <message>
-        <location filename="ZEnergyLineManager/ZSelectedEnergyLineTableModel.cpp" line="144"/>
+        <location filename="X_EnergyLineManager/X_SelectedEnergyLineTableModel.cpp" line="144"/>
         <source>Element</source>
         <translation>Элемент</translation>
     </message>
 </context>
 <context>
-    <name>ZSeriesTaskListDialog</name>
+    <name>X_SeriesTaskListDialog</name>
     <message>
         <source>Series tasks:</source>
         <translation type="vanished">Задания для серий:</translation>
@@ -3385,7 +3519,7 @@ Do you want to replace them?</source>
     </message>
 </context>
 <context>
-    <name>ZSeriesTaskListManager</name>
+    <name>X_SeriesTaskListManager</name>
     <message>
         <source>Id</source>
         <translation type="vanished">Id</translation>
@@ -3424,7 +3558,7 @@ Do you want to replace them?</source>
     </message>
 </context>
 <context>
-    <name>ZSeriesTaskTreeModel</name>
+    <name>X_SeriesTaskTreeModel</name>
     <message>
         <source>Append a new sample to the series task</source>
         <translation type="vanished">Добавить пробы в задание для серии</translation>
@@ -3471,7 +3605,7 @@ Do you want to replace them?</source>
     </message>
 </context>
 <context>
-    <name>ZSetGainFactorToCalibrationDialog</name>
+    <name>X_SetGainFactorToCalibrationDialog</name>
     <message>
         <source>Input gain factor value</source>
         <translation type="vanished">Введите значение коэффициента усиления</translation>
@@ -3481,23 +3615,23 @@ Do you want to replace them?</source>
         <translation type="vanished"> для градуировки &quot;%1&quot;</translation>
     </message>
     <message>
-        <location filename="ZDialogs/ZSetGainFactorToCalibrationDialog.cpp" line="26"/>
+        <location filename="X_Dialogs/X_SetGainFactorToCalibrationDialog.cpp" line="26"/>
         <source>Input gain factor value for the calibration &quot;%1&quot;.</source>
         <translation>Введите коэффициент усиления для градуировки &quot;%1&quot;.</translation>
     </message>
     <message>
-        <location filename="ZDialogs/ZSetGainFactorToCalibrationDialog.cpp" line="43"/>
+        <location filename="X_Dialogs/X_SetGainFactorToCalibrationDialog.cpp" line="43"/>
         <source>Ok</source>
         <translation>Ок</translation>
     </message>
     <message>
-        <location filename="ZDialogs/ZSetGainFactorToCalibrationDialog.cpp" line="46"/>
+        <location filename="X_Dialogs/X_SetGainFactorToCalibrationDialog.cpp" line="46"/>
         <source>Cancel</source>
         <translation>Отмена</translation>
     </message>
 </context>
 <context>
-    <name>ZSettingsDialog</name>
+    <name>X_SettingsDialog</name>
     <message>
         <source>Common</source>
         <translation type="vanished">Общие</translation>
@@ -3512,107 +3646,107 @@ Do you want to replace them?</source>
     </message>
 </context>
 <context>
-    <name>ZSpeIOHandler</name>
+    <name>X_SpeIOHandler</name>
     <message>
-        <location filename="ZComponents/ZSpeIOHandler.cpp" line="30"/>
+        <location filename="X_Components/X_SpeIOHandler.cpp" line="30"/>
         <source>File &quot;%1&quot; doesn&apos;t exist!</source>
         <translation>Файла &quot;%1&quot; не существует!</translation>
     </message>
     <message>
-        <location filename="ZComponents/ZSpeIOHandler.cpp" line="41"/>
-        <location filename="ZComponents/ZSpeIOHandler.cpp" line="45"/>
+        <location filename="X_Components/X_SpeIOHandler.cpp" line="41"/>
+        <location filename="X_Components/X_SpeIOHandler.cpp" line="45"/>
         <source>Cannot read file &quot;%1&quot;! %2</source>
         <translation>Невозможно прочитать файл &quot;%1&quot;! %2</translation>
     </message>
     <message>
-        <location filename="ZComponents/ZSpeIOHandler.cpp" line="45"/>
-        <location filename="ZComponents/ZSpeIOHandler.cpp" line="242"/>
+        <location filename="X_Components/X_SpeIOHandler.cpp" line="45"/>
+        <location filename="X_Components/X_SpeIOHandler.cpp" line="242"/>
         <source>Unknown error</source>
         <translation>Неизвестная ошибка</translation>
     </message>
     <message>
-        <location filename="ZComponents/ZSpeIOHandler.cpp" line="59"/>
+        <location filename="X_Components/X_SpeIOHandler.cpp" line="59"/>
         <source>Cannot read file &quot;%1&quot;! The file is not open!</source>
         <translation>Невозможно прочитать файл &quot;%1&quot;! Файл не открыт!</translation>
     </message>
     <message>
-        <location filename="ZComponents/ZSpeIOHandler.cpp" line="66"/>
+        <location filename="X_Components/X_SpeIOHandler.cpp" line="66"/>
         <source>Cannot read file &quot;%1&quot;! The file is not in &quot;Read&quot; mode!</source>
         <translation>Невозможно прочитать файл &quot;%1&quot;! Файл открыт не в режиме чтения!</translation>
     </message>
     <message>
-        <location filename="ZComponents/ZSpeIOHandler.cpp" line="190"/>
+        <location filename="X_Components/X_SpeIOHandler.cpp" line="190"/>
         <source>Cannot create directory &quot;%1&quot;!</source>
         <translation>Невозможно создать папку &quot;%1&quot;!</translation>
     </message>
     <message>
-        <location filename="ZComponents/ZSpeIOHandler.cpp" line="211"/>
+        <location filename="X_Components/X_SpeIOHandler.cpp" line="211"/>
         <source>The file &quot;%1&quot; is already exists.</source>
         <translation>Файл &quot;%1&quot; уже существует.</translation>
     </message>
     <message>
-        <location filename="ZComponents/ZSpeIOHandler.cpp" line="238"/>
-        <location filename="ZComponents/ZSpeIOHandler.cpp" line="242"/>
+        <location filename="X_Components/X_SpeIOHandler.cpp" line="238"/>
+        <location filename="X_Components/X_SpeIOHandler.cpp" line="242"/>
         <source>Cannot write to file &quot;%1&quot;! %2</source>
         <translation>Невозможно записать в файл &quot;%1&quot;! %2</translation>
     </message>
     <message>
-        <location filename="ZComponents/ZSpeIOHandler.cpp" line="256"/>
+        <location filename="X_Components/X_SpeIOHandler.cpp" line="256"/>
         <source>Cannot write to file &quot;%1&quot;! The file is not open!</source>
         <translation>Невозможно записать в файл &quot;%1&quot;! Файл не открыт!</translation>
     </message>
     <message>
-        <location filename="ZComponents/ZSpeIOHandler.cpp" line="263"/>
+        <location filename="X_Components/X_SpeIOHandler.cpp" line="263"/>
         <source>Cannot write to file &quot;%1&quot;! The file is not in &quot;Write&quot; mode!</source>
         <translation>Невозможно записать в файл &quot;%1&quot;! Файл открыт не в режиме записи!</translation>
     </message>
 </context>
 <context>
-    <name>ZSpeSpectrum</name>
+    <name>X_SpeSpectrum</name>
     <message>
-        <location filename="ZComponents/ZSpeSpectrum.cpp" line="38"/>
+        <location filename="X_Components/X_SpeSpectrum.cpp" line="38"/>
         <source>energy unit</source>
         <translation>единица измерения энергии</translation>
     </message>
     <message>
-        <location filename="ZComponents/ZSpeSpectrum.cpp" line="43"/>
+        <location filename="X_Components/X_SpeSpectrum.cpp" line="43"/>
         <source>energy factor K0</source>
         <translation>коэффициент К0</translation>
     </message>
     <message>
-        <location filename="ZComponents/ZSpeSpectrum.cpp" line="48"/>
+        <location filename="X_Components/X_SpeSpectrum.cpp" line="48"/>
         <source>energy factor K1</source>
         <translation>коэффициент К1</translation>
     </message>
     <message>
-        <location filename="ZComponents/ZSpeSpectrum.cpp" line="53"/>
+        <location filename="X_Components/X_SpeSpectrum.cpp" line="53"/>
         <source>energy factor K2</source>
         <translation>коэффициент К2</translation>
     </message>
     <message>
-        <location filename="ZComponents/ZSpeSpectrum.cpp" line="58"/>
+        <location filename="X_Components/X_SpeSpectrum.cpp" line="58"/>
         <source>exposition</source>
         <translation>экспозиция</translation>
     </message>
 </context>
 <context>
-    <name>ZSpectrumArray</name>
+    <name>X_SpectrumArray</name>
     <message>
-        <location filename="ZComponents/ZSpectrumArray.cpp" line="469"/>
+        <location filename="X_Components/X_SpectrumArray.cpp" line="469"/>
         <source>Error: &quot;%1&quot; is not a file!</source>
         <translation>Ошибка: &quot;%1&quot; не файл!</translation>
     </message>
     <message>
-        <location filename="ZComponents/ZSpectrumArray.cpp" line="497"/>
+        <location filename="X_Components/X_SpectrumArray.cpp" line="497"/>
         <source>The following inconsistencies have been found: <byte value="xd"/>
 </source>
-        <translation>Найдены следующие несоответствия:</translation>
+        <translation>Найдены следующие несоответствия: \r\n</translation>
     </message>
     <message>
-        <location filename="ZComponents/ZSpectrumArray.cpp" line="515"/>
+        <location filename="X_Components/X_SpectrumArray.cpp" line="515"/>
         <source>Energy calibration and exposition in spectrum &quot;%1&quot; is different to calibration that have other spectra in the array.<byte value="xd"/>
 </source>
-        <translation>Энергетическая градуировка и экспозиция в спектре &quot;%1&quot; отличается от уже имеющихся в массиве.</translation>
+        <translation>Энергетическая градуировка и экспозиция в спектре &quot;%1&quot; отличается от уже имеющихся в массиве.\r\n</translation>
     </message>
     <message>
         <source>The following inconsistencies have been found: 
@@ -3632,55 +3766,56 @@ Do you want to replace them?</source>
     </message>
 </context>
 <context>
-    <name>ZSpectrumArrayRepository</name>
+    <name>X_SpectrumArrayRepository</name>
     <message>
-        <location filename="ZComponents/ZSpectrumArrayRepository.cpp" line="24"/>
+        <location filename="X_Components/X_SpectrumArrayRepository.cpp" line="24"/>
         <source>Array #</source>
         <translation>Массив #</translation>
     </message>
     <message>
-        <location filename="ZComponents/ZSpectrumArrayRepository.cpp" line="831"/>
+        <location filename="X_Components/X_SpectrumArrayRepository.cpp" line="831"/>
         <source>File &quot;%1&quot; has been changed. </source>
         <translation>Файл &quot;%1&quot; был изменен. </translation>
     </message>
     <message>
-        <location filename="ZComponents/ZSpectrumArrayRepository.cpp" line="833"/>
+        <location filename="X_Components/X_SpectrumArrayRepository.cpp" line="833"/>
         <source>Do you want to save current array changes?</source>
         <translation>Сохранить изменения в массиве?</translation>
     </message>
     <message>
-        <location filename="ZComponents/ZSpectrumArrayRepository.cpp" line="835"/>
-        <location filename="ZComponents/ZSpectrumArrayRepository.cpp" line="846"/>
+        <location filename="X_Components/X_SpectrumArrayRepository.cpp" line="835"/>
+        <location filename="X_Components/X_SpectrumArrayRepository.cpp" line="846"/>
         <source>Array appending</source>
         <translation>Добавление массива</translation>
     </message>
     <message>
-        <location filename="ZComponents/ZSpectrumArrayRepository.cpp" line="845"/>
-        <source>Clear existing array list?</source>
+        <location filename="X_Components/X_SpectrumArrayRepository.cpp" line="845"/>
+        <source>Clear current array list?</source>
+        <oldsource>Clear existing array list?</oldsource>
         <translation>Очистить текущий список массивов?</translation>
     </message>
     <message>
-        <location filename="ZComponents/ZSpectrumArrayRepository.cpp" line="891"/>
+        <location filename="X_Components/X_SpectrumArrayRepository.cpp" line="891"/>
         <source>File &quot;%1&quot; does not exist!</source>
         <translation>Файла &quot;%1&quot; не существует!</translation>
     </message>
     <message>
-        <location filename="ZComponents/ZSpectrumArrayRepository.cpp" line="899"/>
+        <location filename="X_Components/X_SpectrumArrayRepository.cpp" line="899"/>
         <source>&quot;%1&quot; is a folder!</source>
         <translation>&quot;%1&quot; является папкой!</translation>
     </message>
     <message>
-        <location filename="ZComponents/ZSpectrumArrayRepository.cpp" line="926"/>
+        <location filename="X_Components/X_SpectrumArrayRepository.cpp" line="926"/>
         <source>spectra</source>
         <translation>спектров</translation>
     </message>
     <message>
-        <location filename="ZComponents/ZSpectrumArrayRepository.cpp" line="926"/>
+        <location filename="X_Components/X_SpectrumArrayRepository.cpp" line="926"/>
         <source>spectrum</source>
         <translation>спектр</translation>
     </message>
     <message numerus="yes">
-        <location filename="ZComponents/ZSpectrumArrayRepository.cpp" line="927"/>
+        <location filename="X_Components/X_SpectrumArrayRepository.cpp" line="927"/>
         <source>%1 %2 loaded</source>
         <translation>
             <numerusform>%1 %2 загружен</numerusform>
@@ -3689,69 +3824,69 @@ Do you want to replace them?</source>
         </translation>
     </message>
     <message>
-        <location filename="ZComponents/ZSpectrumArrayRepository.cpp" line="1265"/>
+        <location filename="X_Components/X_SpectrumArrayRepository.cpp" line="1265"/>
         <source>Do you want to remove array &quot;%1&quot; from the list?</source>
         <translation>Удалить массив &quot;%1&quot; из списка?</translation>
     </message>
     <message>
-        <location filename="ZComponents/ZSpectrumArrayRepository.cpp" line="1266"/>
+        <location filename="X_Components/X_SpectrumArrayRepository.cpp" line="1266"/>
         <source>Array removing</source>
         <translation>Удаление массива</translation>
     </message>
     <message>
-        <location filename="ZComponents/ZSpectrumArrayRepository.cpp" line="1300"/>
+        <location filename="X_Components/X_SpectrumArrayRepository.cpp" line="1299"/>
         <source>Select an array you want to append spectra to!</source>
         <translation>Выделите массив, в который добавляются спектры.</translation>
     </message>
     <message>
-        <location filename="ZComponents/ZSpectrumArrayRepository.cpp" line="1301"/>
+        <location filename="X_Components/X_SpectrumArrayRepository.cpp" line="1300"/>
         <source>Spectra appending</source>
         <translation>Добавление спектров</translation>
     </message>
     <message>
-        <location filename="ZComponents/ZSpectrumArrayRepository.cpp" line="1317"/>
+        <location filename="X_Components/X_SpectrumArrayRepository.cpp" line="1317"/>
         <source>There is no spectra to remove!</source>
         <translation>Не выделены спектры для удаления!</translation>
     </message>
     <message>
-        <location filename="ZComponents/ZSpectrumArrayRepository.cpp" line="1318"/>
-        <location filename="ZComponents/ZSpectrumArrayRepository.cpp" line="1330"/>
-        <location filename="ZComponents/ZSpectrumArrayRepository.cpp" line="1930"/>
+        <location filename="X_Components/X_SpectrumArrayRepository.cpp" line="1318"/>
+        <location filename="X_Components/X_SpectrumArrayRepository.cpp" line="1330"/>
+        <location filename="X_Components/X_SpectrumArrayRepository.cpp" line="1930"/>
         <source>Spectra removing</source>
         <translation>Удаление спектров</translation>
     </message>
     <message>
-        <location filename="ZComponents/ZSpectrumArrayRepository.cpp" line="1329"/>
+        <location filename="X_Components/X_SpectrumArrayRepository.cpp" line="1329"/>
         <source>Do you want to remove the selected spectra from the list?</source>
         <translation>Удалить выделенные спектры из списка?</translation>
     </message>
     <message>
-        <location filename="ZComponents/ZSpectrumArrayRepository.cpp" line="1396"/>
+        <location filename="X_Components/X_SpectrumArrayRepository.cpp" line="1396"/>
         <source>There is no chemical elements to remove!</source>
         <translation>Не выделены химические элементы для удаления!</translation>
     </message>
     <message>
-        <location filename="ZComponents/ZSpectrumArrayRepository.cpp" line="1397"/>
+        <location filename="X_Components/X_SpectrumArrayRepository.cpp" line="1397"/>
         <source>Chemical element removing</source>
         <translation>Удаление химических элементов</translation>
     </message>
     <message>
-        <location filename="ZComponents/ZSpectrumArrayRepository.cpp" line="1408"/>
+        <location filename="X_Components/X_SpectrumArrayRepository.cpp" line="1408"/>
         <source>Do you want to remove the selected chemical elemnts from the list?</source>
         <translation>Удалить выделенные химические элементы из списка?</translation>
     </message>
     <message>
-        <location filename="ZComponents/ZSpectrumArrayRepository.cpp" line="1409"/>
+        <location filename="X_Components/X_SpectrumArrayRepository.cpp" line="1409"/>
         <source>Chemical elements removing</source>
         <translation>Удаление химических элементов</translation>
     </message>
     <message>
-        <location filename="ZComponents/ZSpectrumArrayRepository.cpp" line="1600"/>
+        <location filename="X_Components/X_SpectrumArrayRepository.cpp" line="1600"/>
         <source>Select a spectrum array for data pasting.</source>
         <translation>Выделите спектры, для которых вставляются данные.</translation>
     </message>
     <message>
-        <location filename="ZComponents/ZSpectrumArrayRepository.cpp" line="1630"/>
+        <location filename="X_Components/X_SpectrumArrayRepository.cpp" line="1630"/>
         <source>In the pasting data are folowing chemical elements not presented in current array:
 %1
 Do you want to create new chemical elements?</source>
@@ -3760,170 +3895,170 @@ Do you want to create new chemical elements?</source>
 Создать новые химические элементы?</translation>
     </message>
     <message>
-        <location filename="ZComponents/ZSpectrumArrayRepository.cpp" line="1648"/>
+        <location filename="X_Components/X_SpectrumArrayRepository.cpp" line="1648"/>
         <source>The number of pasting data row exceeds the number of spectrum in the array.</source>
         <translation>Количество вставляемых строк данных превышает количество спектров в массиве.</translation>
     </message>
     <message>
-        <location filename="ZComponents/ZSpectrumArrayRepository.cpp" line="1652"/>
+        <location filename="X_Components/X_SpectrumArrayRepository.cpp" line="1652"/>
         <source>The number of spectrum in the array exceeds the number of pasting data.</source>
         <translation>Количество спектров в массиве превышает количество вставляемых строк данных.</translation>
     </message>
     <message>
-        <location filename="ZComponents/ZSpectrumArrayRepository.cpp" line="1686"/>
+        <location filename="X_Components/X_SpectrumArrayRepository.cpp" line="1686"/>
         <source>There are hidden chemical element columns.
 Do you want to paste data to them?</source>
         <translation>В таблице есть скрытые колонки химических элементов.
 Вставить в них данные?</translation>
     </message>
     <message>
-        <location filename="ZComponents/ZSpectrumArrayRepository.cpp" line="1724"/>
+        <location filename="X_Components/X_SpectrumArrayRepository.cpp" line="1724"/>
         <source>Select a top left cell in a chemical concentration column for data pasting.</source>
         <translation>Выделите верхнюю левую ячейку в колонках химических концентраций для вставки данных.</translation>
     </message>
     <message>
-        <location filename="ZComponents/ZSpectrumArrayRepository.cpp" line="1733"/>
+        <location filename="X_Components/X_SpectrumArrayRepository.cpp" line="1733"/>
         <source>The number of inserted rows exceeds the number of spectra.</source>
         <translation>Количество вставляемых строк превышает количество спектров.</translation>
     </message>
     <message>
-        <location filename="ZComponents/ZSpectrumArrayRepository.cpp" line="1740"/>
+        <location filename="X_Components/X_SpectrumArrayRepository.cpp" line="1740"/>
         <source>The number of inserted columns exceeds the number of visible chemical elements.</source>
         <translation>Количество вставляемых колонок превышает количество химических элементов.</translation>
     </message>
     <message>
-        <location filename="ZComponents/ZSpectrumArrayRepository.cpp" line="1744"/>
+        <location filename="X_Components/X_SpectrumArrayRepository.cpp" line="1744"/>
         <source>The dimension of inserted data exceeds the numbers of spectra and visible chemical elements.</source>
         <translation>Размер вставляемых данных превышает количество спектров и химических элементов.</translation>
     </message>
     <message>
-        <location filename="ZComponents/ZSpectrumArrayRepository.cpp" line="1929"/>
+        <location filename="X_Components/X_SpectrumArrayRepository.cpp" line="1929"/>
         <source>There is no spectra for energy calibration!</source>
         <translation>Не выделены спектры для расчета энергетической градуировки!</translation>
     </message>
     <message>
-        <location filename="ZComponents/ZSpectrumArrayRepository.cpp" line="2091"/>
+        <location filename="X_Components/X_SpectrumArrayRepository.cpp" line="2091"/>
         <source>New spectrum array</source>
         <translation>Новый массив спектров</translation>
     </message>
     <message>
-        <location filename="ZComponents/ZSpectrumArrayRepository.cpp" line="2092"/>
+        <location filename="X_Components/X_SpectrumArrayRepository.cpp" line="2092"/>
         <source>Append a new spectrum array to the list</source>
         <translation>Добавить новый массив спектров в список</translation>
     </message>
     <message>
-        <location filename="ZComponents/ZSpectrumArrayRepository.cpp" line="2101"/>
+        <location filename="X_Components/X_SpectrumArrayRepository.cpp" line="2101"/>
         <source>Remove current spectrum array</source>
         <translation>Удалить текущий массив спектров</translation>
     </message>
     <message>
-        <location filename="ZComponents/ZSpectrumArrayRepository.cpp" line="2102"/>
+        <location filename="X_Components/X_SpectrumArrayRepository.cpp" line="2102"/>
         <source>Remove current spectrum array from the list</source>
         <translation>Удалить текущий массив спектров из списка</translation>
     </message>
     <message>
-        <location filename="ZComponents/ZSpectrumArrayRepository.cpp" line="2107"/>
+        <location filename="X_Components/X_SpectrumArrayRepository.cpp" line="2107"/>
         <source>Append spectra</source>
         <translation>Добавить спектры</translation>
     </message>
     <message>
-        <location filename="ZComponents/ZSpectrumArrayRepository.cpp" line="2108"/>
+        <location filename="X_Components/X_SpectrumArrayRepository.cpp" line="2108"/>
         <source>Append spectra to current array</source>
         <translation>Добавить спектры в массив</translation>
     </message>
     <message>
-        <location filename="ZComponents/ZSpectrumArrayRepository.cpp" line="2113"/>
+        <location filename="X_Components/X_SpectrumArrayRepository.cpp" line="2113"/>
         <source>Remove selected spectra</source>
         <translation>Удалить выделенные спектры</translation>
     </message>
     <message>
-        <location filename="ZComponents/ZSpectrumArrayRepository.cpp" line="2114"/>
+        <location filename="X_Components/X_SpectrumArrayRepository.cpp" line="2114"/>
         <source>Remove selected spectra from the array</source>
         <translation>Удалить выделенные спектры из массива</translation>
     </message>
     <message>
-        <location filename="ZComponents/ZSpectrumArrayRepository.cpp" line="2120"/>
+        <location filename="X_Components/X_SpectrumArrayRepository.cpp" line="2120"/>
         <source>Energy calibration</source>
         <translation>Энергетическая градуировка</translation>
     </message>
     <message>
-        <location filename="ZComponents/ZSpectrumArrayRepository.cpp" line="2121"/>
+        <location filename="X_Components/X_SpectrumArrayRepository.cpp" line="2121"/>
         <source>Recalculate energy calibration for selected spectra</source>
         <translation>Пересчитать энергетическую градуировку для выделенных спектров</translation>
     </message>
     <message>
-        <location filename="ZComponents/ZSpectrumArrayRepository.cpp" line="2125"/>
+        <location filename="X_Components/X_SpectrumArrayRepository.cpp" line="2125"/>
         <source>New chemical element</source>
         <translation>Новый химический элемент</translation>
     </message>
     <message>
-        <location filename="ZComponents/ZSpectrumArrayRepository.cpp" line="2126"/>
+        <location filename="X_Components/X_SpectrumArrayRepository.cpp" line="2126"/>
         <source>Append a new chemical element to the list</source>
         <translation>Добавить новый химический элемент в список</translation>
     </message>
     <message>
-        <location filename="ZComponents/ZSpectrumArrayRepository.cpp" line="2131"/>
+        <location filename="X_Components/X_SpectrumArrayRepository.cpp" line="2131"/>
         <source>Remove current chemical element</source>
         <translation>Удалить текущий химический элемент</translation>
     </message>
     <message>
-        <location filename="ZComponents/ZSpectrumArrayRepository.cpp" line="2132"/>
+        <location filename="X_Components/X_SpectrumArrayRepository.cpp" line="2132"/>
         <source>Remove current chemical element from the list</source>
         <translation>Удалить текущий химическийэлемент из списка</translation>
     </message>
     <message>
-        <location filename="ZComponents/ZSpectrumArrayRepository.cpp" line="2137"/>
+        <location filename="X_Components/X_SpectrumArrayRepository.cpp" line="2137"/>
         <source>Copy selected concentrations</source>
         <translation>Копировать выделенные концентрации</translation>
     </message>
     <message>
-        <location filename="ZComponents/ZSpectrumArrayRepository.cpp" line="2142"/>
+        <location filename="X_Components/X_SpectrumArrayRepository.cpp" line="2142"/>
         <source>Paste concentrations</source>
         <translation>Вставить концентрации</translation>
     </message>
     <message>
-        <location filename="ZComponents/ZSpectrumArrayRepository.cpp" line="2147"/>
+        <location filename="X_Components/X_SpectrumArrayRepository.cpp" line="2147"/>
         <source>Clear selected concentrations</source>
         <translation>Очистить выделенные концентрации</translation>
     </message>
     <message>
-        <location filename="ZComponents/ZSpectrumArrayRepository.cpp" line="2153"/>
+        <location filename="X_Components/X_SpectrumArrayRepository.cpp" line="2153"/>
         <source>Set spectra visible</source>
         <translation>Показать все спектры</translation>
     </message>
     <message>
-        <location filename="ZComponents/ZSpectrumArrayRepository.cpp" line="2158"/>
+        <location filename="X_Components/X_SpectrumArrayRepository.cpp" line="2158"/>
         <source>Set spectra invisible</source>
         <translation>Скрыть все спектры</translation>
     </message>
     <message>
-        <location filename="ZComponents/ZSpectrumArrayRepository.cpp" line="2163"/>
+        <location filename="X_Components/X_SpectrumArrayRepository.cpp" line="2163"/>
         <source>Invert spectra visibility</source>
         <translation>Инвертировать видимость спектров</translation>
     </message>
     <message>
-        <location filename="ZComponents/ZSpectrumArrayRepository.cpp" line="2168"/>
+        <location filename="X_Components/X_SpectrumArrayRepository.cpp" line="2168"/>
         <source>Set chemical elements visible</source>
         <translation>Показать все химические элементы</translation>
     </message>
     <message>
-        <location filename="ZComponents/ZSpectrumArrayRepository.cpp" line="2173"/>
+        <location filename="X_Components/X_SpectrumArrayRepository.cpp" line="2173"/>
         <source>Set chemical elements invisible</source>
         <translation>Скрыть все химические элементы</translation>
     </message>
     <message>
-        <location filename="ZComponents/ZSpectrumArrayRepository.cpp" line="2178"/>
+        <location filename="X_Components/X_SpectrumArrayRepository.cpp" line="2178"/>
         <source>Invert chemical elements visibility</source>
         <translation>Инвертировать видимость химических элементов</translation>
     </message>
     <message>
-        <location filename="ZComponents/ZSpectrumArrayRepository.h" line="227"/>
+        <location filename="X_Components/X_SpectrumArrayRepository.h" line="227"/>
         <source>Paste concentration</source>
         <translation>Вставить концентрации</translation>
     </message>
 </context>
 <context>
-    <name>ZSpectrumArraySettingsWidget</name>
+    <name>X_SpectrumArraySettingsWidget</name>
     <message>
         <source>&lt;b&gt;&lt;u&gt;G.F. - %1 Exposition: %2&lt;/u&gt;&lt;/b&gt;</source>
         <translation type="vanished">&lt;b&gt;&lt;u&gt;К.У. - %1 Экспозиция: %2&lt;/u&gt;&lt;/b&gt;</translation>
@@ -3946,7 +4081,7 @@ Do you want to paste data to them?</source>
     </message>
 </context>
 <context>
-    <name>ZStartDialog</name>
+    <name>X_StartDialog</name>
     <message>
         <source>New</source>
         <translation type="vanished">Создать</translation>
@@ -4017,7 +4152,7 @@ Do you want to continue?</source>
     </message>
 </context>
 <context>
-    <name>ZStartStopButtonWidget</name>
+    <name>X_StartStopButtonWidget</name>
     <message>
         <source>Start</source>
         <translation type="vanished">Старт</translation>
@@ -4036,170 +4171,170 @@ Do you want to continue?</source>
     </message>
 </context>
 <context>
-    <name>ZTermCorrelationTableManager</name>
+    <name>X_TermCorrelationTableManager</name>
     <message>
-        <location filename="ZComponents/ZTermCorrelationTableManager.cpp" line="141"/>
+        <location filename="X_Components/X_TermCorrelationTableManager.cpp" line="141"/>
         <source>Base</source>
         <translation>База</translation>
     </message>
     <message>
-        <location filename="ZComponents/ZTermCorrelationTableManager.cpp" line="147"/>
+        <location filename="X_Components/X_TermCorrelationTableManager.cpp" line="147"/>
         <source>#Error</source>
         <translation>#Ошибка</translation>
     </message>
     <message>
-        <location filename="ZComponents/ZTermCorrelationTableManager.cpp" line="183"/>
+        <location filename="X_Components/X_TermCorrelationTableManager.cpp" line="184"/>
         <source>Error</source>
         <translation>Ошибка</translation>
     </message>
     <message>
-        <location filename="ZComponents/ZTermCorrelationTableManager.cpp" line="295"/>
+        <location filename="X_Components/X_TermCorrelationTableManager.cpp" line="296"/>
         <source>Factor</source>
         <translation>Коэффициент</translation>
     </message>
     <message>
-        <location filename="ZComponents/ZTermCorrelationTableManager.cpp" line="314"/>
+        <location filename="X_Components/X_TermCorrelationTableManager.cpp" line="315"/>
         <source>Residual</source>
         <translation>Остаток</translation>
     </message>
     <message>
-        <location filename="ZComponents/ZTermCorrelationTableManager.h" line="113"/>
+        <location filename="X_Components/X_TermCorrelationTableManager.h" line="113"/>
         <source>No Element</source>
         <translation>Элемент</translation>
     </message>
 </context>
 <context>
-    <name>ZTermNormalizer</name>
+    <name>X_TermNormalizer</name>
     <message>
-        <location filename="ZComponents/ZTermNormalizer.cpp" line="33"/>
+        <location filename="X_Components/X_TermNormalizer.cpp" line="34"/>
         <source>None</source>
         <translation>Нет</translation>
     </message>
     <message>
-        <location filename="ZComponents/ZTermNormalizer.cpp" line="34"/>
+        <location filename="X_Components/X_TermNormalizer.cpp" line="35"/>
         <source>Coherent</source>
         <translation>Когерентный</translation>
     </message>
     <message>
-        <location filename="ZComponents/ZTermNormalizer.cpp" line="35"/>
+        <location filename="X_Components/X_TermNormalizer.cpp" line="36"/>
         <source>Incoherent</source>
         <translation>Некогерентный</translation>
     </message>
     <message>
-        <location filename="ZComponents/ZTermNormalizer.cpp" line="36"/>
+        <location filename="X_Components/X_TermNormalizer.cpp" line="37"/>
         <source>Coherent / Incoherent</source>
         <translation>Когерентный / Некогерентный</translation>
     </message>
     <message>
-        <location filename="ZComponents/ZTermNormalizer.cpp" line="37"/>
+        <location filename="X_Components/X_TermNormalizer.cpp" line="38"/>
         <source>Incoherent / Coherent</source>
         <translation>Некогерентный / Когерентный</translation>
     </message>
     <message>
-        <location filename="ZComponents/ZTermNormalizer.cpp" line="38"/>
+        <location filename="X_Components/X_TermNormalizer.cpp" line="39"/>
         <source>Custom</source>
-        <translation>Пользовательский</translation>
+        <translation>Пользовательская</translation>
     </message>
 </context>
 <context>
-    <name>ZTranslatorManager</name>
+    <name>X_TranslatorManager</name>
     <message>
-        <location filename="ZComponents/ZTranslatorManager.cpp" line="30"/>
+        <location filename="X_Components/X_TranslatorManager.cpp" line="30"/>
         <source>Cannot install application translator. The pointer of the application is invalid!</source>
         <translation>Невозможно установить переводы. Несуществующий указатель приложения!</translation>
     </message>
     <message>
-        <location filename="ZComponents/ZTranslatorManager.cpp" line="55"/>
+        <location filename="X_Components/X_TranslatorManager.cpp" line="55"/>
         <source>Cannot install application translator. Unknown error.</source>
         <translation>Невозможно установить переводы. Неизвестная ошибка.</translation>
     </message>
     <message>
-        <location filename="ZComponents/ZTranslatorManager.cpp" line="75"/>
+        <location filename="X_Components/X_TranslatorManager.cpp" line="75"/>
         <source>Cannot install Qt translator. Unknown error.</source>
         <translation>Невозможно установить переводы Qt. Неизвестная ошибка.</translation>
     </message>
     <message>
-        <location filename="ZComponents/ZTranslatorManager.cpp" line="202"/>
+        <location filename="X_Components/X_TranslatorManager.cpp" line="202"/>
         <source>Cannot set the selected langusge. Translator not found!</source>
         <translation>Невозможно установить выбранный язык. Не найдены файлы переводов!</translation>
     </message>
     <message>
-        <location filename="ZComponents/ZTranslatorManager.cpp" line="268"/>
+        <location filename="X_Components/X_TranslatorManager.cpp" line="268"/>
         <source>Language for application is not set!</source>
         <translation>Язык приложения не установлен!</translation>
     </message>
     <message>
-        <location filename="ZComponents/ZTranslatorManager.cpp" line="277"/>
+        <location filename="X_Components/X_TranslatorManager.cpp" line="277"/>
         <source>Cannot get translator file name from settings!</source>
         <translation>Невозможно получить имя файла переводов из настроек!</translation>
     </message>
 </context>
 <context>
-    <name>ZUralAdcDeviceConnector</name>
+    <name>X_UralAdcDeviceConnector</name>
     <message>
         <source>The application cannot load library from file &quot;%1&quot;.</source>
         <translation type="vanished">Невозможно загрузить библиотеку из файла &quot;%1&quot;.</translation>
     </message>
 </context>
 <context>
-    <name>ZWidgetWithSidebar</name>
+    <name>X_WidgetWithSidebar</name>
     <message>
-        <location filename="ZWidgets/ZWidgetWithSidebar.cpp" line="21"/>
+        <location filename="X_Widgets/X_WidgetWithSidebar.cpp" line="21"/>
         <source>Hide left panel</source>
         <translation>Скрыть левую панель</translation>
     </message>
     <message>
-        <location filename="ZWidgets/ZWidgetWithSidebar.cpp" line="21"/>
+        <location filename="X_Widgets/X_WidgetWithSidebar.cpp" line="21"/>
         <source>Hide right panel</source>
         <translation>Скрыть правую панель</translation>
     </message>
     <message>
-        <location filename="ZWidgets/ZWidgetWithSidebar.cpp" line="22"/>
+        <location filename="X_Widgets/X_WidgetWithSidebar.cpp" line="22"/>
         <source>Show left panel</source>
         <translation>Показать левую панель</translation>
     </message>
     <message>
-        <location filename="ZWidgets/ZWidgetWithSidebar.cpp" line="22"/>
+        <location filename="X_Widgets/X_WidgetWithSidebar.cpp" line="22"/>
         <source>Show right panel</source>
         <translation>Показать правую панель</translation>
     </message>
 </context>
 <context>
-    <name>ZXMLCalibrationIOHandler</name>
+    <name>X_XMLCalibrationIOHandler</name>
     <message>
-        <location filename="ZComponents/ZXMLCalibrationIOHandler.cpp" line="26"/>
+        <location filename="X_Components/X_XMLCalibrationIOHandler.cpp" line="25"/>
         <source>Select file to open</source>
         <translation>Выбор файла для открытия</translation>
     </message>
     <message>
-        <location filename="ZComponents/ZXMLCalibrationIOHandler.cpp" line="28"/>
-        <location filename="ZComponents/ZXMLCalibrationIOHandler.cpp" line="37"/>
-        <location filename="ZComponents/ZXMLCalibrationIOHandler.cpp" line="45"/>
+        <location filename="X_Components/X_XMLCalibrationIOHandler.cpp" line="27"/>
+        <location filename="X_Components/X_XMLCalibrationIOHandler.cpp" line="51"/>
+        <location filename="X_Components/X_XMLCalibrationIOHandler.cpp" line="83"/>
         <source>XML Calibration files(*.clbx);;XML files(*.xml);;All files(*.*)</source>
         <translation>Файлы градуировки(*.clbx);;Файлы XML(*.xml);;Все файлы(*.*)</translation>
     </message>
     <message>
-        <location filename="ZComponents/ZXMLCalibrationIOHandler.cpp" line="35"/>
+        <location filename="X_Components/X_XMLCalibrationIOHandler.cpp" line="49"/>
         <source>Open file</source>
         <translation>Открыть файл</translation>
     </message>
     <message>
-        <location filename="ZComponents/ZXMLCalibrationIOHandler.cpp" line="43"/>
+        <location filename="X_Components/X_XMLCalibrationIOHandler.cpp" line="81"/>
         <source>Save file</source>
         <translation>Сохранить файл</translation>
     </message>
     <message>
-        <location filename="ZComponents/ZXMLCalibrationIOHandler.cpp" line="73"/>
+        <location filename="X_Components/X_XMLCalibrationIOHandler.cpp" line="113"/>
         <source>File &quot;%1&quot; is not open in write mode!</source>
         <translation>Файл &quot;%1&quot; не открыт в режиме записи!</translation>
     </message>
     <message>
-        <location filename="ZComponents/ZXMLCalibrationIOHandler.cpp" line="260"/>
+        <location filename="X_Components/X_XMLCalibrationIOHandler.cpp" line="301"/>
         <source>Cannot write to file &quot;%1&quot;! %2</source>
         <translation>Невозможно записать в файл &quot;%1&quot;! %2</translation>
     </message>
     <message>
-        <location filename="ZComponents/ZXMLCalibrationIOHandler.cpp" line="284"/>
+        <location filename="X_Components/X_XMLCalibrationIOHandler.cpp" line="324"/>
         <source>File &quot;%1&quot; is not open in read mode!</source>
         <translation>Файл &quot;%1&quot; не открыт в режиме чтения!</translation>
     </message>
@@ -4212,83 +4347,83 @@ Do you want to continue?</source>
         <translation type="vanished">Синтаксический разбор данных градуировки не выполнен! %1</translation>
     </message>
     <message>
-        <location filename="ZComponents/ZXMLCalibrationIOHandler.cpp" line="310"/>
+        <location filename="X_Components/X_XMLCalibrationIOHandler.cpp" line="350"/>
         <source>File &quot;%1&quot; is not recognized!</source>
         <translation>Файл &quot;%1&quot; не распознан как файл градуировки!</translation>
     </message>
     <message>
-        <location filename="ZComponents/ZXMLCalibrationIOHandler.cpp" line="337"/>
+        <location filename="X_Components/X_XMLCalibrationIOHandler.cpp" line="377"/>
         <source>File &quot;%1&quot; parsing failed! %2</source>
         <translation>Синтаксический разбор данных градуировки файла %1 не выполнен! %2</translation>
     </message>
     <message>
-        <location filename="ZComponents/ZXMLCalibrationIOHandler.cpp" line="344"/>
+        <location filename="X_Components/X_XMLCalibrationIOHandler.cpp" line="384"/>
         <source>Cannot read file &quot;%1&quot;! %2</source>
         <translation>Невозможно прочитать файл &quot;%1&quot;! %2</translation>
     </message>
 </context>
 <context>
-    <name>ZXMLCalibrationProjectIOHandler</name>
+    <name>X_XMLCalibrationProjectIOHandler</name>
     <message>
-        <location filename="ZComponents/ZXMLCalibrationProjectIOHandler.cpp" line="19"/>
+        <location filename="X_Components/X_XMLCalibrationProjectIOHandler.cpp" line="19"/>
         <source>File &quot;%1&quot; is not open in write mode!</source>
         <translation>Файл &quot;%1&quot; не открыт в режиме записи!</translation>
     </message>
     <message>
-        <location filename="ZComponents/ZXMLCalibrationProjectIOHandler.cpp" line="61"/>
+        <location filename="X_Components/X_XMLCalibrationProjectIOHandler.cpp" line="61"/>
         <source>Cannot write to file &quot;%1&quot;! %2</source>
         <translation>Невозможно записать в файл &quot;%1&quot;! %2</translation>
     </message>
     <message>
-        <location filename="ZComponents/ZXMLCalibrationProjectIOHandler.cpp" line="97"/>
+        <location filename="X_Components/X_XMLCalibrationProjectIOHandler.cpp" line="97"/>
         <source>File &quot;%1&quot; is not open in read mode!</source>
         <translation>Файл &quot;%1&quot; не открыт в режиме чтения!</translation>
     </message>
     <message>
-        <location filename="ZComponents/ZXMLCalibrationProjectIOHandler.cpp" line="130"/>
+        <location filename="X_Components/X_XMLCalibrationProjectIOHandler.cpp" line="130"/>
         <source>File &quot;%1&quot; is not recognized!</source>
         <translation>Файл &quot;%1&quot; не распознан!</translation>
     </message>
     <message>
-        <location filename="ZComponents/ZXMLCalibrationProjectIOHandler.cpp" line="173"/>
+        <location filename="X_Components/X_XMLCalibrationProjectIOHandler.cpp" line="173"/>
         <source>File &quot;%1&quot; parsing failed! %2</source>
         <translation>Синтаксический разбор данных файла %1 не выполнен! %2</translation>
     </message>
     <message>
-        <location filename="ZComponents/ZXMLCalibrationProjectIOHandler.cpp" line="180"/>
+        <location filename="X_Components/X_XMLCalibrationProjectIOHandler.cpp" line="180"/>
         <source>Cannot read file &quot;%1&quot;! %2</source>
         <translation>Невозможно прочитать файл &quot;%1&quot;! %2</translation>
     </message>
 </context>
 <context>
-    <name>ZXMLSpectrumArrayIOHandler</name>
+    <name>X_XMLSpectrumArrayIOHandler</name>
     <message>
-        <location filename="ZComponents/ZXMLSpectrumArrayIOHandler.cpp" line="23"/>
+        <location filename="X_Components/X_XMLSpectrumArrayIOHandler.cpp" line="23"/>
         <source>File &quot;%1&quot; is not open in read mode!</source>
         <translation>Файл &quot;%1&quot; не открыт в режиме чтения!</translation>
     </message>
     <message>
-        <location filename="ZComponents/ZXMLSpectrumArrayIOHandler.cpp" line="51"/>
+        <location filename="X_Components/X_XMLSpectrumArrayIOHandler.cpp" line="51"/>
         <source>File &quot;%1&quot; is not recognized!</source>
         <translation>Файл &quot;%1&quot; не распознан как файл градуировки!</translation>
     </message>
     <message>
-        <location filename="ZComponents/ZXMLSpectrumArrayIOHandler.cpp" line="80"/>
+        <location filename="X_Components/X_XMLSpectrumArrayIOHandler.cpp" line="80"/>
         <source>File &quot;%1&quot; parsing failed! %2</source>
         <translation>Синтаксический разбор данных градуировки файла %1 не выполнен! %2</translation>
     </message>
     <message>
-        <location filename="ZComponents/ZXMLSpectrumArrayIOHandler.cpp" line="87"/>
+        <location filename="X_Components/X_XMLSpectrumArrayIOHandler.cpp" line="87"/>
         <source>Cannot read file &quot;%1&quot;! %2</source>
         <translation>Невозможно прочитать файл &quot;%1&quot;! %2</translation>
     </message>
     <message>
-        <location filename="ZComponents/ZXMLSpectrumArrayIOHandler.cpp" line="204"/>
+        <location filename="X_Components/X_XMLSpectrumArrayIOHandler.cpp" line="204"/>
         <source>File &quot;%1&quot; is not open in write mode!</source>
         <translation>Файл &quot;%1&quot; не открыт в режиме записи!</translation>
     </message>
     <message>
-        <location filename="ZComponents/ZXMLSpectrumArrayIOHandler.cpp" line="268"/>
+        <location filename="X_Components/X_XMLSpectrumArrayIOHandler.cpp" line="268"/>
         <source>Cannot write to file &quot;%1&quot;! %2</source>
         <translation>SНевозможно записать в файл &quot;%1&quot;! %2</translation>
     </message>

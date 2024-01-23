@@ -1,25 +1,27 @@
-//===============================================
-#include "mainwindow.h"
-#include "ZGeneral.h"
-#include "ZTranslatorManager.h"
+//======================================================
+#include "MainWindow.h"
+#include "X_TranslatorManager.h"
 
-#include <windows.h>
+// #include <windows.h>
 #include <QApplication>
+#include <QDir>
+#include <iostream>
+#include <QOperatingSystemVersion>
+#include <QPixmap>
+#include <QPointer>
+#include <QSet>
+#include <QSplashScreen>
 #include <QTranslator>
 #include <QTextCodec>
-#include <QDir>
-#include <QSplashScreen>
-#include <QPixmap>
-#include <iostream>
-#include <QSet>
-//===============================================
+
+//#include <QException>
 //======================================================
 /*!
 \brief  This module contains a function "messageHandler" for receiving standard
  messages qDebug, qInfo, qWarning, qCritical and qFatal.
 
  Further these messages are redirected to MainWindow that should have a receive function
- "zp_handleStandardLogMessage(QtMsgType type,
+ "xp_handleStandardLogMessage(QtMsgType type,
                          const QMessageLogContext &context,
                          const QString &msg)".
  At the same time the messages are outputing in standard output stream
@@ -40,10 +42,11 @@
 //extern const QString glAppCopyright = APP_COPYRIGHT;
 //extern const QString glAppCompanyURL = APP_COMPANY_URL;
 //======================================================
-namespace
-{
+//namespace
+//{
+
 // main window pointer
-static MainWindow* pMainWindow = nullptr;
+static QPointer<MainWindow> pMainWindow = nullptr;
 static QSet<QtMsgType> msgTypesToHandleInMainWindowSet;
 
 // settings of format of debug output mssages to stderr
@@ -65,7 +68,7 @@ static DebugOutputOptions debugOutputOption =
         // | DO_ShowVersion
         ;
 
-}
+//}
 //======================================================
 void initMsgTypesToHandleInMainWindow()
 {
@@ -80,10 +83,17 @@ void initMsgTypesToHandleInMainWindow()
 //======================================================
 void messageHandler(QtMsgType type, const QMessageLogContext &context, const QString &msg)
 {
-    if(pMainWindow != nullptr && (msgTypesToHandleInMainWindowSet.contains(type)))
+    if(pMainWindow && (msgTypesToHandleInMainWindowSet.contains(type)))
     {
         // let the application handles message (for example for saving in log)
-        pMainWindow->zp_handleStandardLogMessage(type, context, msg);
+        try
+        {
+            pMainWindow->xp_handleStandardLogMessage(type, context, msg);
+        }
+        catch (...)
+        {
+
+        }
     }
 
     // Standard output
@@ -138,7 +148,7 @@ void messageHandler(QtMsgType type, const QMessageLogContext &context, const QSt
 int main(int argc, char *argv[])
 {
     //    QApplication a(argc, argv);
-    //    QPixmap pixmap(":/images/ZImages/SDC_TA3.png");
+    //    QPixmap pixmap(":/images/X_Images/SDC_TA3.png");
     //    QSplashScreen splash(pixmap);
     //    splash.show();
     //    splash.showMessage("Loading codecs...", Qt::AlignBottom | Qt::AlignRight, Qt::white );
@@ -147,101 +157,13 @@ int main(int argc, char *argv[])
     QTextCodec* codec = QTextCodec::codecForName("windows-1251");
     QTextCodec::setCodecForLocale(codec);
 
-    //    QApplication::setOrganizationName(glAppCompany);
-    //    QApplication::setApplicationName(glAppExeBaseName);
-    //    QApplication::setApplicationVersion(qApp->applicationVersion());
 
-    //    splash.showMessage("Loading translations...", Qt::AlignBottom | Qt::AlignRight, Qt::white );
-    //    a.processEvents();
 
-    //    QTranslator appTranslator;
-    //    QDir appDir(QApplication::applicationDirPath());
-
-    //    bool res = appTranslator.load(appDir.absoluteFilePath(QString("%1_%2").arg(glAppExeBaseName, QLocale::system().name())));
-    //    if(!res)
-    //    {
-    //        res = appTranslator.load(QString(":/trans/%1_%2").arg(glAppExeBaseName, QLocale::system().name()));
-    //    }
-
-    //    if(res)
-    //    {
-    //        a.installTranslator(&appTranslator);
-    //    }
-
-    //    QTranslator qtTranslator;
-    //    res = qtTranslator.load(appDir.absoluteFilePath(QString("%1_%2").arg("qtbase", QLocale::system().name())));
-
-    //    if(!res)
-    //    {
-    //        res = qtTranslator.load(QString(":/trans/qtbase_%2").arg(QLocale::system().name()));
-    //    }
-
-    //    if(res)
-    //    {
-    //        a.installTranslator(&qtTranslator);
-    //    }
-
-    //    splash.showMessage("Loading styles...", Qt::AlignBottom | Qt::AlignRight, Qt::white );
-    //    a.processEvents();
-
-    //    splash.showMessage("Loading modules...", Qt::AlignBottom | Qt::AlignRight, Qt::white );
-    //    a.processEvents();
-
-    //    MainWindow w;
-    //    w.show();
-    //    splash.finish(&w);
-
-    //    return a.exec();
     QApplication a(argc, argv);
     //
     initMsgTypesToHandleInMainWindow();
     // custom message handler for logging via qInfo qWarning qCritical
     qInstallMessageHandler(messageHandler);
-
-    // set translators
-    // translator attempts to load from expernal file first and if not from resources
-    //    QDir appDir(QApplication::applicationDirPath());
-    //    QTranslator appTranslator;
-    //    if(appTranslator.load(appDir.absoluteFilePath(QString("%1_%2").arg(APP_EXE_BASE_NAME, QLocale::system().name())))
-    //            || appTranslator.load(QString(":/translators/%1_%2").arg(APP_EXE_BASE_NAME, QLocale::system().name())))
-    //    {
-    //        a.installTranslator(&appTranslator);
-    //    }
-
-    //    QTranslator qtTranslator;
-    //    if(qtTranslator.load(appDir.absoluteFilePath(QString("%1_%2").arg("qtbase", QLocale::system().name())))
-    //            || qtTranslator.load(QString(":/translators/qtbase_%2").arg(QLocale::system().name())))
-    //    {
-    //        a.installTranslator(&qtTranslator);
-    //    }
-
-    //    // set application properties
-    //    QApplication::setOrganizationName(APP_COMPANY);
-    //    QApplication::setApplicationName(APP_EXE_BASE_NAME);
-    //    QApplication::setApplicationVersion(APP_VERSION);
-
-    // create qApp properties and set .pro defines into them
-    //#ifdef APP_EXE_BASE_NAME
-    //    qApp->setProperty("glAppExeBaseName", QString(APP_EXE_BASE_NAME));
-    //#endif
-    //#ifdef APP_PRODUCT
-    //    qApp->setProperty("glAppProduct", QString(APP_PRODUCT));
-    //#endif
-    //#ifdef APP_VERSION
-    //    qApp->setProperty("qApp->applicationVersion()", QString(APP_VERSION));
-    //#endif
-    //#ifdef APP_COMPANY
-    //    qApp->setProperty("glAppCompany", QString(APP_COMPANY));
-    //#endif
-    //#ifdef APP_COPYRIGHT
-    //    qApp->setProperty("glAppCopyright", QString(APP_COPYRIGHT));
-    //#endif
-    //#ifdef APP_COMPANY_URL
-    //    qApp->setProperty("glAppCompanyURL", QString(APP_COMPANY_URL));
-    //#endif
-    //#ifdef APP_ICON
-    //    qApp->setProperty("glAppIcon", QString(APP_ICON));
-    //#endif
 
     // create qApp properties and set .pro defines into them
 #ifdef APP_DISPLAY_NAME
@@ -272,20 +194,39 @@ int main(int argc, char *argv[])
     qApp->setProperty("appIcon", QString(APP_ICON));
 #endif
 
-    ZTranslatorManager languageManager;
-    languageManager.zp_installTranslatorsToApplication();
-
+    X_TranslatorManager languageManager;
+    languageManager.xp_installTranslatorsToApplication();
 
     // set dots on the splitter handle
     qApp->setStyleSheet(
-                "QSplitter::handle:vertical {height: 4px; image: url(:/images/ZImages/vSplitterHandler.png);}"
-                "QSplitter::handle:horizontal {width: 4px; image: url(:/images/ZImages/hSplitterHandler.png);}"
+                "QSplitter::handle:vertical {height: 4px; image: url(:/images/X_Images/vSplitterHandler.png);}"
+                "QSplitter::handle:horizontal {width: 4px; image: url(:/images/X_Images/hSplitterHandler.png);}"
                 );
 
     // horizontal lines on table header views on win10
-    if (QSysInfo::windowsVersion() == QSysInfo::WV_WINDOWS10)
+//    if (QSysInfo::productVersion() == "10")
+//    {
+//        qApp->setStyleSheet("QHeaderView::section{"
+//                            "border-top:0px solid #D8D8D8;"
+//                            "border-left:0px solid #D8D8D8;"
+//                            "border-right:1px solid #D8D8D8;"
+//                            "border-bottom: 1px solid #D8D8D8;"
+//                            "background-color:white;"
+//                            "padding:4px;"
+//                            "}"
+//                            "QTableCornerButton::section{"
+//                            "border-top:0px solid #D8D8D8;"
+//                            "border-left:0px solid #D8D8D8;"
+//                            "border-right:1px solid #D8D8D8;"
+//                            "border-bottom: 1px solid #D8D8D8;"
+//                            "background-color:white;"
+//                            "}");
+//    }
+
+    QOperatingSystemVersion currentOS = QOperatingSystemVersion::current();
+    if (currentOS >= QOperatingSystemVersion(QOperatingSystemVersion::Windows10))
     {
-        qApp->setStyleSheet("QHeaderView::section{"
+        qApp->setStyleSheet("QHeaderView::section {"
                             "border-top:0px solid #D8D8D8;"
                             "border-left:0px solid #D8D8D8;"
                             "border-right:1px solid #D8D8D8;"
@@ -293,27 +234,42 @@ int main(int argc, char *argv[])
                             "background-color:white;"
                             "padding:4px;"
                             "}"
-                            "QTableCornerButton::section{"
+                            "QTableCornerButton::section {"
                             "border-top:0px solid #D8D8D8;"
                             "border-left:0px solid #D8D8D8;"
                             "border-right:1px solid #D8D8D8;"
                             "border-bottom: 1px solid #D8D8D8;"
                             "background-color:white;"
-                            "}");
+                            "}"
+                            "QPushButton {font : bold;}"
+                            "QHeaderView {font : bold;}");
     }
+    else
+    {
+        qApp->setStyleSheet("QPushButton {font : bold;}"
+                            "QHeaderView {font : bold;}");
+    }
+
+    // set path for sqlite plugin
+    QStringList paths = QCoreApplication::libraryPaths();
+    paths.append(".");
+    paths.append("platforms");
+    //paths.append("sqldrivers");
+    QCoreApplication::setLibraryPaths(paths);
+
 
     // launch app
 
-    //  pixmap = QPixmap(":/images/ZImages/Chemistry.png");
+    //  pixmap = QPixmap(":/images/X_Images/Chemistry.png");
     //  QSplashScreen dbSplash(pixmap);
     //  dbSplash.show();
     //  dbSplash.showMessage("Connecting to database...", Qt::AlignBottom | Qt::AlignRight, Qt::white );
 
     // main window
     MainWindow w;
-
     // pointer to main window for message handler
     pMainWindow = &w;
+
     w.show();
     return a.exec();
 }

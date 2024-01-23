@@ -8,6 +8,7 @@
 #include <QApplication>
 #include <QDebug>
 #include <QMessageBox>
+#include <QFileDialog>
 #include <QFileInfo>
 #include <QtAlgorithms>
 #include <QApplication>
@@ -168,7 +169,7 @@ void ZSpectrumArrayRepository::zp_connectToFileActionManager(ZFileActionManager*
             this, &ZSpectrumArrayRepository::zh_onSpectrumArraySaving);
 
     connect(this, &ZSpectrumArrayRepository::zg_initSpectraAppending,
-            manager, &ZFileActionManager::zp_defineSpectrumFilesAndInitAppending);
+            manager, &ZFileActionManager::zp_selectSpeFilesAndInitAppending);
     connect(manager, &ZFileActionManager::zg_requestRawArrayListAndInitSaving,
             this, &ZSpectrumArrayRepository::zh_createRawArrayListAndStartSaving);
     connect(this, &ZSpectrumArrayRepository::zg_saveSpectraArrayList,

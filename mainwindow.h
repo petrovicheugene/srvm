@@ -2,47 +2,48 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 //==========================================================
-#include "ZBaseMainWindow.h"
-#include "ZTermCorrelationTableWidget.h"
+#include "X_BaseMainWindow.h"
+#include "X_TermCorrelationTableWidget.h"
+#include <QDockWidget>
 //==========================================================
-class ZFileActionManager;
-class ZSpectrumArrayWidget;
-class ZJointSpectrumTableWidget;
-class ZChemElementWidget;
-class ZCalibrationTableWidget;
-class ZCalibrationWindowTableWidget;
-class ZTermCorrelationTableWidget;
-class ZEquationSettingsDashBoard;
-class ZCorrelationPlotterWidget;
-class ZWidgetWithSidebar;
-class ZMessagePanel;
-class ZMessageWidget;
-class ZEnergyLineTableWidget;
+class X_FileActionManager;
+class X_SpectrumArrayWidget;
+class X_JointSpectrumTableWidget;
+class X_ChemElementWidget;
+class X_CalibrationTableWidget;
+class X_CalibrationWindowTableWidget;
+class X_TermCorrelationTableWidget;
+class X_EquationSettingsDashBoard;
+class X_CorrelationPlotterWidget;
+class X_WidgetWithSidebar;
+class X_MessagePanel;
+class X_MessageWidget;
+class X_EnergyLineTableWidget;
 
 class QAction;
 class QFrame;
 class QMenu;
-class ZPlotter;
-class ZHelpBrowser;
+class X_Plotter;
+class X_HelpBrowser;
 
-class ZArrayModel;
-class ZJointSpectraModel;
-class ZChemElementModel;
-class ZCalibrationModel;
-class ZCalibrationWindowModel;
-class ZTermCorrelationTableModel;
+class X_ArrayModel;
+class X_JointSpectraModel;
+class X_ChemElementModel;
+class X_CalibrationModel;
+class X_CalibrationWindowModel;
+class X_TermCorrelationTableModel;
 
-class ZSpectrumArrayRepository;
-class ZCalibrationRepository;
+class X_SpectrumArrayRepository;
+class X_CalibrationRepository;
 
-class ZJointSpectraDataManager;
-class ZChemElementDataManager;
-class ZCalibrationWindowDataManager;
-class ZAbstractPlotterDataManager;
-class ZCorrelationPlotterDataManager;
-class ZTermCorrelationTableManager;
+class X_JointSpectraDataManager;
+class X_ChemElementDataManager;
+class X_CalibrationWindowDataManager;
+class X_AbstractPlotterDataManager;
+class X_CorrelationPlotterDataManager;
+class X_TermCorrelationTableManager;
 //==========================================================
-class MainWindow : public ZBaseMainWindow
+class MainWindow : public X_BaseMainWindow
 {
     Q_OBJECT
 
@@ -52,98 +53,97 @@ public:
 
 signals:
 
-    void zg_saveSettings();
+    void xg_saveSettings();
 
-    void zg_plainLogMessage(int msgType,
+    void xg_plainLogMessage(int msgType,
                             const QString &msg);
 
 private slots:
 
-    void zh_messageIconPixmap(int type,
+    void xh_messageIconPixmap(int type,
                               QSize size,
                               QStyle *style,
                               QPixmap& pixmap,
                               bool &ok) const;
 
 
-
 private:
 
     // VARS
     // actions
-    QAction* zv_exitAction;
-    //QAction* zv_languageControlAction;
-    QMenu* zv_languageMenu;
-    // QAction* zv_openCalibrationProjectAction;
-    //    QAction* zv_helpAction;
+    QAction* xv_exitAction = nullptr;
+    //QAction* xv_languageControlAction;
+    QMenu* xv_languageMenu = nullptr;
+    // QAction* xv_openCalibrationProjectAction;
+    //    QAction* xv_helpAction;
 
     // docks
-    QList<QDockWidget*> zv_dockList;
-    QDockWidget* zv_spectrumArrayDock;
-    QDockWidget* zv_calibrationDock;
-    QDockWidget* zv_correlationPlotterDock;
-    QDockWidget* zv_chemElementArrayDock;
-    QDockWidget* zv_messagePanelDock;
-    QDockWidget* zv_energyLineTableDock;
+    QList<QDockWidget*> xv_dockList;
+    QDockWidget* xv_spectrumArrayDock = nullptr;
+    QDockWidget* xv_calibrationDock = nullptr;
+    QDockWidget* xv_correlationPlotterDock = nullptr;
+//    QDockWidget* xv_chemElementArrayDock = nullptr;
+    QDockWidget* xv_messagePanelDock = nullptr;
+    QDockWidget* xv_energyLineTableDock = nullptr;
 
     // views
-    ZWidgetWithSidebar* zv_spectraSidebarWidget;
-    ZWidgetWithSidebar* zv_calibrationSidebarWidget;
+    X_WidgetWithSidebar* xv_spectraSidebarWidget = nullptr;
+    X_WidgetWithSidebar* xv_calibrationSidebarWidget = nullptr;
 
-    ZSpectrumArrayWidget* zv_spectrumArrayWidget;
-    ZJointSpectrumTableWidget* zv_spectrumTableWidget;
-    ZChemElementWidget* zv_chemElementWidget;
-    ZCalibrationTableWidget* zv_calibrationTableWidget;
-    ZCalibrationWindowTableWidget* zv_calibrationWindowTableWidget;
+    X_SpectrumArrayWidget* xv_spectrumArrayWidget = nullptr;
+    X_JointSpectrumTableWidget* xv_spectrumTableWidget = nullptr;
+    X_ChemElementWidget* xv_chemElementWidget = nullptr;
+    X_CalibrationTableWidget* xv_calibrationTableWidget = nullptr;
+    X_CalibrationWindowTableWidget* xv_calibrationWindowTableWidget = nullptr;
 
-    ZTermCorrelationTableWidget* zv_termCorrelationTableWidget;
-    ZEquationSettingsDashBoard* zv_equationSettingsPanelWidget;
-    ZCorrelationPlotterWidget* zv_correlationPlotterWidget;
-    ZEnergyLineTableWidget* zv_energyLineTableWidget;
+    X_TermCorrelationTableWidget* xv_termCorrelationTableWidget = nullptr;
+    X_EquationSettingsDashBoard* xv_equationSettingsPanelWidget = nullptr;
+    X_CorrelationPlotterWidget* xv_correlationPlotterWidget = nullptr;
+    X_EnergyLineTableWidget* xv_energyLineTableWidget = nullptr;
 
-    ZMessageWidget* zv_messageWidget;
-    ZPlotter* zv_plotter;
+    X_MessageWidget* xv_messageWidget = nullptr;
+    X_Plotter* xv_plotter = nullptr;
 
     // models
-    ZArrayModel* zv_arrayModel;
-    ZJointSpectraModel* zv_jointSpectraModel;
-    ZChemElementModel* zv_chemElementModel;
-    ZCalibrationModel* zv_calibrationModel;
-    ZCalibrationWindowModel* zv_jointCalibrationWindowModel;
-    ZTermCorrelationTableModel* zv_termCorrelationTableModel;
+    X_ArrayModel* xv_arrayModel = nullptr;
+    X_JointSpectraModel* xv_jointSpectraModel = nullptr;
+    X_ChemElementModel* xv_chemElementModel = nullptr;
+    X_CalibrationModel* xv_calibrationModel = nullptr;
+    X_CalibrationWindowModel* xv_jointCalibrationWindowModel = nullptr;
+    X_TermCorrelationTableModel* xv_termCorrelationTableModel = nullptr;
 
     // components
-    ZHelpBrowser* mv_helpBrowser;
-    ZFileActionManager* zv_fileActionManager;
-    ZSpectrumArrayRepository* zv_spectrumArrayRepository;
-    ZJointSpectraDataManager* zv_jointSpectraDataManager;
-    ZCalibrationRepository* zv_calibrationRepository;
-    ZCalibrationWindowDataManager* zv_jointCalibrationWindowDataManager;
-    ZChemElementDataManager* zv_chemElementDataManager;
-    ZAbstractPlotterDataManager* zv_plotterDataManager;
-    ZCorrelationPlotterDataManager* zv_calculationPlotterManager;
-    ZTermCorrelationTableManager* zv_termCorrelationTableManager;
+    X_HelpBrowser* mv_helpBrowser = nullptr;
+    X_FileActionManager* xv_fileActionManager = nullptr;
+    X_SpectrumArrayRepository* xv_spectrumArrayRepository = nullptr;
+    X_JointSpectraDataManager* xv_jointSpectraDataManager = nullptr;
+    X_CalibrationRepository* xv_calibrationRepository = nullptr;
+    X_CalibrationWindowDataManager* xv_jointCalibrationWindowDataManager = nullptr;
+    X_ChemElementDataManager* xv_chemElementDataManager = nullptr;
+    X_AbstractPlotterDataManager* xv_plotterDataManager = nullptr;
+    X_CorrelationPlotterDataManager* xv_calculationPlotterManager = nullptr;
+    X_TermCorrelationTableManager* xv_termCorrelationTableManager = nullptr;
 
     // FUNCS
-    void closeEvent(QCloseEvent* e);
-    void zh_createActions();
-    void zh_createComponents();
-    QFrame* zh_setWidgetToFrame(QWidget*);
-    void zh_createMenu();
-    void zh_createToolbar();
-    void zh_createConnections();
+    void closeEvent(QCloseEvent* e) override;
+    void xh_createActions();
+    void xh_createComponents();
+    QFrame* xh_setWidgetToFrame(QWidget*);
+    void xh_createMenu();
+    void xh_createToolbar();
+    void xh_createConnections();
 
-    void zh_appendActionsToMenu(QMenu* menu);
-    void zh_restoreSettings();
-    void zh_saveSettings();
+    void xh_appendActionsToMenu(QMenu* menu);
+    void xh_restoreSettings();
+    void xh_saveSettings();
 
 private slots:
 
 
-    void zh_rebuildCorrelationPlot();
-    void zh_createPlotterWidget();
-    void zh_appLanguageControl();
-    void zh_fillLanguageMenu();
+    void xh_rebuildCorrelationPlot();
+    void xh_createPlotterWidget();
+    void xh_appLanguageControl();
+    void xh_fillLanguageMenu();
 
 };
 Q_DECLARE_METATYPE(QtMsgType)

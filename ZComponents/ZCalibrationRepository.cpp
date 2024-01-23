@@ -15,6 +15,7 @@
 #include <QMessageBox>
 #include <QMimeData>
 #include <QModelIndex>
+#include <QRegularExpression>
 #include <QtAlgorithms>
 //======================================================
 ZCalibrationRepository::ZCalibrationRepository(QObject* parent)
@@ -1736,6 +1737,19 @@ void ZCalibrationRepository::zh_onTermOperation(
                                   first,
                                   last);
         }
+        else if (type == ZCalibration::TOT_TERM_CHANGED)
+        {
+            emit zg_termOperation(TOT_TERM_CHANGED,
+                                  calibrationIndex,
+                                  first,
+                                  last);
+
+            if (!zv_blockCalibrationRecalc)
+            {
+                emit zg_invokeCalibrationRecalc();
+            }
+
+        }
 
         break;
     }
@@ -1979,7 +1993,7 @@ bool ZCalibrationRepository::zh_copyCalibration(int calibrationIndex)
     }
 
     QString numberSeparator = "-";
-    QRegExp digitrx("^\\d{1,}$");
+    QRegularExpression digitrx("^\\d{1,}$");
 
     // Define New Name
     // name w/o number
@@ -1994,7 +2008,7 @@ bool ZCalibrationRepository::zh_copyCalibration(int calibrationIndex)
     if (nameParts.count() > 1)
     {
         digitalPart = nameParts.last();
-        if (digitrx.exactMatch(digitalPart.simplified()))
+        if (digitrx.match(digitalPart.simplified()).hasPartialMatch())
         {
             // remove digital part
             newName.chop(digitalPart.count());
@@ -2028,7 +2042,7 @@ bool ZCalibrationRepository::zh_copyCalibration(int calibrationIndex)
             }
 
             digitalPart = nameParts.last();
-            if (!digitrx.exactMatch(digitalPart.simplified()))
+            if (!digitrx.match(digitalPart.simplified()).hasPartialMatch())
             {
                 continue;
             }

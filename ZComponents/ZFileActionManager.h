@@ -51,7 +51,7 @@ signals:
 
 public slots:
 
-    void zp_defineSpectrumFilesAndInitAppending(int arrayIndex);
+    void zp_selectSpeFilesAndInitAppending(int arrayIndex);
     void zp_saveSettings() const;
     void zp_openCalibrations() const;
 

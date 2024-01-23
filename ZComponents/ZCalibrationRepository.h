@@ -58,7 +58,8 @@ public:
                             TOT_END_RESET,
                             TOT_TERM_STATE_CHANGED,
                             TOT_TERM_WINDOW_MARGIN_CHANGED,
-                            TOT_TERM_FACTOR_CHANGED
+                            TOT_TERM_FACTOR_CHANGED,
+                            TOT_TERM_CHANGED
                            };
 
     // FUNCS

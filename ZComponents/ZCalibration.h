@@ -56,7 +56,8 @@ public:
         TOT_TERM_NAME_CHANGED,
         TOT_TERM_STATE_CHANGED,
         TOT_TERM_WINDOW_MARGIN_CHANGED,
-        TOT_TERM_FACTOR_CHANGED
+        TOT_TERM_FACTOR_CHANGED,
+        TOT_TERM_CHANGED
     };
 
     enum EquationType
@@ -230,13 +231,13 @@ public:
 
 signals:
 
-    void zg_message(QString) const;
-    void zg_windowOperation(ZCalibration::WindowOperationType, int first, int last) const;
-    void zg_visibilityChanged(bool) const;
-    void zg_dirtyChanged(bool) const;
-    void zg_termOperation(ZCalibration::TremOperationType, int first, int last) const;
-    void zg_normalizerChanged() const;
-    void zg_interceptChanged() const;
+    void zg_message(QString);
+    void zg_windowOperation(ZCalibration::WindowOperationType, int first, int last);
+    void zg_visibilityChanged(bool);
+    void zg_dirtyChanged(bool);
+    void zg_termOperation(ZCalibration::TremOperationType, int first, int last);
+    void zg_normalizerChanged();
+    void zg_interceptChanged();
 
 public slots:
 
