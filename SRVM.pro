@@ -14,8 +14,8 @@ greaterThan(QT_MAJOR_VERSION, 5): QT += core5compat
 RC_ICONS = "X_Images/SRVM-8.ico"
 
 #Application version
-VER_MAJ=23
-VER_MIN=04
+VER_MAJ=24
+VER_MIN=01
 VER_PAT=00
 
 PRODUCT_SHORT_NAME="SRVM"
@@ -23,7 +23,7 @@ PRODUCT_FILE_BASE_NAME="SRVM"
 QMAKE_TARGET_PRODUCT="SRV M"
 QMAKE_TARGET_DESCRIPTION="The application for the creation of the spectrometer calibration"
 QMAKE_TARGET_COMPANY="TechnoAnalyt"
-QMAKE_TARGET_COPYRIGHT="Copyright © $${QMAKE_TARGET_COMPANY} Ltd. 2015 - 2023. All rights reserved."
+QMAKE_TARGET_COPYRIGHT="Copyright © $${QMAKE_TARGET_COMPANY} Ltd. 2015 - 2024. All rights reserved."
 COMPANY_URL=www.tehnoanalit.com
 
 win32: OS_SUFFIX = win32
