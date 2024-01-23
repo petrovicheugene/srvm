@@ -35,7 +35,7 @@ CONFIG += c++17
 #preserve src directory structure in build directory
 #CONFIG += object_parallel_to_source
 
-VERSION=$${VER_MAJ}$${VER_MIN}.$${VER_PAT}
+VERSION=$${VER_MAJ}.$${VER_MIN}.$${VER_PAT}
 
 CONFIG(debug, debug|release) {
     BUILD_FLAG = debug
