@@ -93,7 +93,7 @@ void X_SpectrumArrayWidget::xp_connectToSpectrumArrayRepository(X_SpectrumArrayR
     connect(repository, &X_SpectrumArrayRepository::xg_requestCurrentArrayIndex,
             this, &X_SpectrumArrayWidget::xp_currentArrayIndex);
     connect(this, &X_SpectrumArrayWidget::xg_currentArrayChanged,
-            repository, &X_SpectrumArrayRepository::xp_currentArrayChanged);
+            repository, &X_SpectrumArrayRepository::xp_onCurrentArrayChanged);
 }
 //==============================================================
 void X_SpectrumArrayWidget::xp_setMainLayoutMargin(int margin)

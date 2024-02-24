@@ -170,8 +170,9 @@ public slots:
     void xp_getSpectrumCount(int arrayIndex, int&) const;
     void xp_getArrayName(int arrayIndex, QString&) const;
     void xp_getSpectrumName(int arrayIndex, int spectrumIndex, QString&) const;
-    void xp_currentArrayChanged(int current, int previous);
-    void xp_currentSpectrumChanged(int currentSpectrumIndex, int previousSpectrumIndex);
+    void xp_onCurrentArrayChanged(int current, int previous);
+    void xp_onCurrentSpectrumChanged(int currentSpectrumIndex, int previousSpectrumIndex);
+    void xp_onSelectedChemElementChange();
     void xp_chemElementListForCurrentArray(QStringList& chemElementList);
 
     void xp_onSelectionSpectraChange(bool selectionEnabled,
@@ -180,7 +181,6 @@ public slots:
 
     void xp_currentSpectrumWindowIntensity(int firstChannel,
                                            int lastChennel, qreal &intensity) const;
-
 
 private slots:
 

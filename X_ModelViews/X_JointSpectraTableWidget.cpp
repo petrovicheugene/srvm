@@ -187,7 +187,7 @@ void X_JointSpectrumTableWidget::xp_connectToSpectrumArrayRepository(X_SpectrumA
     xp_appendContextMenuActions(repository->xp_spectrumContextMenuActions());
 
     connect(this, &X_JointSpectrumTableWidget::xg_currentSpectrumChanged,
-            repository, &X_SpectrumArrayRepository::xp_currentSpectrumChanged);
+            repository, &X_SpectrumArrayRepository::xp_onCurrentSpectrumChanged);
     connect(repository, &X_SpectrumArrayRepository::xg_setCurrentSpectrumIndex,
             this, &X_JointSpectrumTableWidget::xp_setCurrentSpectrumIndex);
     connect(repository, &X_SpectrumArrayRepository::xg_requestCurrentSpectrumRow,

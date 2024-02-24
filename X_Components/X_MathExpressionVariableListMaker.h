@@ -21,7 +21,7 @@ public:
 
 signals:
 
-    void xg_variableCheckRequest(const QString& name, bool& res);
+    void xg_variableCheckRequest(const QString& name, bool& res) const;
 
 public slots:
 

@@ -2360,6 +2360,14 @@ bool X_CalibrationRepository::xh_createCalibrationFromFile(const QString& fileNa
         res = ioHandler.xp_getCalibrationFromFile(file, calibration);
     }
 
+    // bool res = ioHandler.xp_getCalibrationFromFile(file, calibration);
+
+    // if (res)
+    // {
+    //     // res = ioHandler->xp_getCalibrationFromFile(file, calibration);
+    //     res = xh_appendCalibrationToList(calibration);
+    // }
+
     if (!res)
     {
         for (int c = 0; c < xv_caibrationList.count(); c++)
@@ -2420,7 +2428,6 @@ bool X_CalibrationRepository::xh_appendCalibrationToList(X_Calibration* calibrat
             &X_Calibration::xg_interceptChanged,
             this,
             &X_CalibrationRepository::xh_onCalibrationFreeTermChange);
-
     connect(calibration,
             &X_Calibration::xg_dirtyChanged,
             this,

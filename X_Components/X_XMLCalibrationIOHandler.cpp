@@ -569,6 +569,7 @@ void X_XMLCalibrationIOHandler::xh_parseXMLElement(X_Calibration* calibration,
             }
             else if (currentTagName == xv_TERM)
             {
+                qDebug() << "ADD TERM" << xv_rawTerm.name << xv_rawTerm.termType;
                 if (xv_rawTerm.termType == X_AbstractTerm::TT_CUSTOM)
                 {
                     //X_RawCustomTerm* customTerm = static_cast<X_RawCustomTerm* >(&xv_rawTerm);

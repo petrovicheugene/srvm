@@ -49,8 +49,8 @@ void X_ChemElementWidget::xp_setModel(QAbstractItemModel* model)
     xv_table->horizontalHeader()->setSectionResizeMode(0, QHeaderView::Stretch);
     xv_table->setAlternatingRowColors(true);
 
-    connect(xv_table->selectionModel(), &QItemSelectionModel::currentChanged,
-            this, &X_ChemElementWidget::xh_onCurrentElementChanged);
+    connect(xv_table->selectionModel(), &QItemSelectionModel::selectionChanged,
+            this, &X_ChemElementWidget::xh_onSelectedElementChanged);
 }
 //==============================================================
 void X_ChemElementWidget::xp_appendButtonActions(QList<QAction*> actionList)
@@ -134,10 +134,10 @@ void X_ChemElementWidget::xp_selectedChemElementIndexList(QList<int>& selectedIn
     }
 }
 //==============================================================
-void X_ChemElementWidget::xh_onCurrentElementChanged(const QModelIndex & current,
-                                                    const QModelIndex & previous)
+void X_ChemElementWidget::xh_onSelectedElementChanged(const QItemSelection & current,
+                                                    const QItemSelection & previous)
 {
-    emit xg_currentCalibrationChanged(current.row(), previous.row());
+    emit xg_selectedChemElementChanged();
 }
 //==============================================================
 void X_ChemElementWidget::xh_onContextMenuRequest(const QPoint &pos)

@@ -2,6 +2,7 @@
 #include "X_CustomTerm.h"
 #include "X_CalibrationWindow.h"
 #include "X_MathExpressionVariableListMaker.h"
+#include "qdebug.h"
 
 //===================================================================
 X_CustomTerm::X_CustomTerm(X_Calibration* parent) : X_AbstractTerm(parent)
@@ -20,6 +21,7 @@ void X_CustomTerm::xh_createConnections()
             &X_MathExpressionHandler::xg_errorReport,
             this,
             &X_CustomTerm::xh_handleErrorReport);
+
 }
 //===================================================================
 void X_CustomTerm::xh_handleWindowIntensityRequest(const QString& windowName,
@@ -148,16 +150,24 @@ bool X_CustomTerm::xh_checkExpression(const QString& expression)
             &X_CustomTerm::xg_windowIsExist);
 
     double res;
-    if (!mathExpressionHandler.xp_calculateExpression(expression, res))
+    try
     {
-        QString error;
-        int errorStartPos;
-        int errorEndPos;
-        mathExpressionVariableListMaker.xp_error(error, errorStartPos, errorEndPos);
-        QString msg = tr("Error in the term \"%1\" expression: %2").arg(xv_name, error);
-        emit xg_errorReport(msg);
-        return false;
+        if (!mathExpressionHandler.xp_calculateExpression(expression, res))
+        {
+            QString error;
+            int errorStartPos;
+            int errorEndPos;
+            mathExpressionVariableListMaker.xp_error(error, errorStartPos, errorEndPos);
+            QString msg = tr("Error in the term \"%1\" expression: %2").arg(xv_name, error);
+            emit xg_errorReport(msg);
+            return false;
+        }
     }
+    catch (...)
+    {
+        qDebug() << "";
+    }
+
     xv_windowList = mathExpressionVariableListMaker.xp_variableList();
     return true;
 }
