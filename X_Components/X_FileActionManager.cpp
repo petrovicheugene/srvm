@@ -86,29 +86,7 @@ void X_FileActionManager::xp_initSaveCalibrationFromFileAction(QAction*& action)
     action->setEnabled(xv_saveCalibrationToFileAction->isEnabled());
 
     connect(action, &QAction::triggered, xv_saveCalibrationToFileAction, &QAction::trigger);
-    //    connect(xv_saveCalibrationToFileAction,
-    //            &QAction::changed,
-    //            this,
-    //            &X_FileActionManager::xh_synchronizeSaveCalibrationActions);
-    //    connect(this,
-    //            &X_FileActionManager::xg_saveCalibrationActionEnabledChanged,
-    //            action,
-    //            &QAction::setEnabled);
 }
-//======================================================
-//void X_FileActionManager::xh_synchronizeSaveCalibrationActions()
-//{
-//    QAction* action = qobject_cast<QAction*>(sender());
-//    if (!action)
-//    {
-//        return;
-//    }
-
-//    qDebug() << "synchronizeSaveCalibration"
-//             << "ENABLED" << action->isEnabled();
-
-//    emit xg_saveCalibrationActionEnabledChanged(action->isEnabled());
-//}
 //======================================================
 void X_FileActionManager::xp_initSaveAsCalibrationFromFileAction(QAction*& action) const
 {
@@ -122,26 +100,7 @@ void X_FileActionManager::xp_initSaveAsCalibrationFromFileAction(QAction*& actio
     action->setEnabled(xv_saveCalibrationAsFileAction->isEnabled());
 
     connect(action, &QAction::triggered, xv_saveCalibrationAsFileAction, &QAction::trigger);
-    //    connect(xv_saveCalibrationAsFileAction,
-    //            &QAction::changed,
-    //            this,
-    //            &X_FileActionManager::xh_synchronizeSaveAsCalibrationActions);
-    //    connect(this,
-    //            &X_FileActionManager::xg_saveCalibrationAsActionEnabledChanged,
-    //            action,
-    //            &QAction::setEnabled);
 }
-//======================================================
-//void X_FileActionManager::xh_synchronizeSaveAsCalibrationActions()
-//{
-//    QAction* action = qobject_cast<QAction*>(sender());
-//    if (!action)
-//    {
-//        return;
-//    }
-
-//    emit xg_saveCalibrationAsActionEnabledChanged(action->isEnabled());
-//}
 //======================================================
 void X_FileActionManager::xp_initOpenSpectrumArrayAction(QAction*& action) const
 {

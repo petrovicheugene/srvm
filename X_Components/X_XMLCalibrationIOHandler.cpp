@@ -212,6 +212,7 @@ bool X_XMLCalibrationIOHandler::xp_writeCalibrationToFile(QFile& file,
         writer.writeAttribute(xv_NAME, calibration->xp_termName(t));
         // term type
         writer.writeStartElement(xv_TYPE);
+
         writer.writeCharacters(X_AbstractTerm::xp_termTypeName(calibration->xp_termType(t)));
         writer.writeEndElement(); // type
         // term state
@@ -254,7 +255,7 @@ bool X_XMLCalibrationIOHandler::xp_writeCalibrationToFile(QFile& file,
     writer.writeStartElement(xv_NORMALIX_ER);
     // type
     writer.writeStartElement(xv_TYPE);
-    writer.writeCharacters(X_TermNormalizer::xp_normaTypeString(calibration->xp_normaType()));
+    writer.writeCharacters(X_TermNormalizer::xp_normalizerTypeName(calibration->xp_normaType()));
     writer.writeEndElement(); // type
     // custom string
     writer.writeStartElement(xv_CUSTOM_STRING);
@@ -277,7 +278,7 @@ bool X_XMLCalibrationIOHandler::xp_writeCalibrationToFile(QFile& file,
     writer.writeStartElement(xv_FRACTIONAL_BASE_NORMALIX_ER);
     // type
     writer.writeStartElement(xv_TYPE);
-    writer.writeCharacters(X_TermNormalizer::xp_normaTypeString(calibration->xp_baseTermNormaType()));
+    writer.writeCharacters(X_TermNormalizer::xp_normalizerTypeName(calibration->xp_baseTermNormaType()));
     writer.writeEndElement(); // type
     // custom string
     writer.writeStartElement(xv_CUSTOM_STRING);
@@ -312,6 +313,25 @@ QString X_XMLCalibrationIOHandler::xp_message() const
     return xv_message;
 }
 //==========================================================
+bool X_XMLCalibrationIOHandler::xp_getCalibrationXMLByteArrayFromFile(
+    QFile& file, QByteArray& calibrationXMLByteArray)
+{
+    if (!(file.openMode() & QIODevice::ReadOnly))
+    {
+        xv_message = tr("File \"%1\" is not open in read mode!")
+                         .arg(file.fileName());
+        emit xg_message(xv_message);
+        qCritical().noquote() <<  xv_message;
+        return false;
+    }
+
+    // at start position
+    file.seek(0);
+    calibrationXMLByteArray = file.readAll();
+
+    return true;
+}
+//==========================================================																	  
 bool X_XMLCalibrationIOHandler::xp_getCalibrationFromFile(QFile& file, X_Calibration* calibration)
 {
     if (calibration == nullptr)
@@ -387,6 +407,72 @@ bool X_XMLCalibrationIOHandler::xp_getCalibrationFromFile(QFile& file, X_Calibra
         return false;
     }
 
+    calibration->xp_setDirty(false);
+    return true;
+}
+//==========================================================
+bool X_XMLCalibrationIOHandler::xp_getCalibrationFromString(QString& calibrationString, X_Calibration* calibration)
+{
+    if (calibration == 0 || calibrationString.isEmpty())
+    {
+        return false;
+    }
+
+    QXmlStreamReader reader(calibrationString);
+
+    // root checking
+    bool rootDetectedFlag = false;
+    bool magicStringDetectionFlag = false;
+    //bool parsingErrorFalg = false;
+    parentTagStack.clear();
+    // handling root level
+    while (!reader.atEnd())
+    {
+        reader.readNext();
+        // property root element detection section
+        if (!rootDetectedFlag)
+        {
+            if (!xh_detectRoot(reader, magicStringDetectionFlag))
+            {
+                continue;
+            }
+
+            if (!magicStringDetectionFlag)
+            {
+                xv_message = tr("Calibration data is not recognized!");
+                emit xg_message(xv_message);
+                return false;
+            }
+
+            rootDetectedFlag = true;
+            //calibration = new X_Calibration(file.fileName(), xv_calibrationParent);
+        }
+
+        // root text data handling section
+        if (reader.isCharacters())
+        {
+            if (reader.text().toString().simplified().isEmpty())
+            {
+                continue;
+            }
+        }
+        else if (reader.isStartElement())
+        {
+            // handling inserted levels
+            parentTagStack.push(reader.name().toString());
+            xh_parseXMLElement(calibration, reader);
+        }
+    }
+
+    if (reader.hasError())
+    {
+        xv_message = tr("Calibration data parsing failed! %1")
+                         .arg(reader.errorString());
+        emit xg_message(xv_message);
+        return false;
+    }
+
+    // calibration->xp_setDateTime(xv_dateTime);
     calibration->xp_setDirty(false);
     return true;
 }
@@ -488,12 +574,12 @@ void X_XMLCalibrationIOHandler::xh_parseXMLElement(X_Calibration* calibration,
                 }
                 else if (parentTagStack.last() == xv_NORMALIX_ER)
                 {
-                    calibration->xp_setNormaType(X_TermNormalizer::xp_normaTypeForString(readerText));
+                    calibration->xp_setNormaType(X_TermNormalizer::xp_normalizerTypeFromString(readerText));
                 }
                 else if (parentTagStack.last() == xv_FRACTIONAL_BASE_NORMALIX_ER)
                 {
                     calibration->xp_setBaseTermNormaType(
-                        X_TermNormalizer::xp_normaTypeForString(readerText));
+                        X_TermNormalizer::xp_normalizerTypeFromString(readerText));
                 }
                 else if (parentTagStack.last() == xv_EQUATION)
                 {
@@ -513,20 +599,8 @@ void X_XMLCalibrationIOHandler::xh_parseXMLElement(X_Calibration* calibration,
             {
                 xv_rawTerm.termState = X_AbstractTerm::xp_termStateFromString(readerText);
             }
-
-            else if (currentTagName == xv_STATE)
-            {
-                xv_rawTerm.termState = X_AbstractTerm::xp_termStateFromString(readerText);
-            }
-
-            //            else if(currentTagName == xv_CUSTOM_STRING)
-            //            {
-            //                xv_rawTerm.customString = readerText;
-            //            }
             else if (currentTagName == xv_DESCRIPTION)
             {
-                // X_RawCustomTerm* rawCustomTerm = dynamic_cast<X_RawCustomTerm*>(&xv_rawTerm);
-
                 xv_rawTerm.descriptionString = readerText;
             }
             else if (currentTagName == xv_TERM_WINDOW)
@@ -584,11 +658,6 @@ void X_XMLCalibrationIOHandler::xh_parseXMLElement(X_Calibration* calibration,
             return; // parent tag is closed
         }
     }
-
-    //    if(reader.hasError())
-    //    {
-    //        return;
-    //    }
 }
 //============================================================
 bool X_XMLCalibrationIOHandler::xh_detectRoot(const QXmlStreamReader& reader,

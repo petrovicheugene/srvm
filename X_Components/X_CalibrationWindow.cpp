@@ -5,12 +5,16 @@
 
 //====================================================
 qint64 X_CalibrationWindow::xv_lastWindowId = 0;
-QMap<X_CalibrationWindow::WindowType, QPair<QString, QString>> X_CalibrationWindow::xv_typeNameMap;
-    // = X_CalibrationWindow::xh_intTypeNameMap();
+QMap<X_CalibrationWindow::WindowType, QPair<QString, QString>> X_CalibrationWindow::xv_typeNameMap
+    = X_CalibrationWindow::xh_intTypeNameMap();
+//====================================================
+void X_CalibrationWindow::xp_initStaticVariables()
+{
+    xv_typeNameMap = X_CalibrationWindow::xh_intTypeNameMap();
+}
 //====================================================
 QMap<X_CalibrationWindow::WindowType, QPair<QString, QString>> X_CalibrationWindow::xh_intTypeNameMap()
 {
-
     QMap<X_CalibrationWindow::WindowType, QPair<QString, QString>> map;
     QPair<QString, QString> pair;
     pair.first = "Not defined";
@@ -42,11 +46,12 @@ X_CalibrationWindow::X_CalibrationWindow(QObject* parent) : QObject(parent)
 
     xv_type = WT_NOT_DEFINED;
     xv_visible = true;
-    if(xv_lastWindowId <= 0)
-    {
-        xv_typeNameMap
-            = X_CalibrationWindow::xh_intTypeNameMap();
-    }
+    // if(xv_lastWindowId <= 0)
+    // {
+    //     xv_typeNameMap
+    //         = X_CalibrationWindow::xh_intTypeNameMap();
+    // }
+
     xv_windowId = xv_lastWindowId++;
 }
 //====================================================
@@ -76,11 +81,11 @@ X_CalibrationWindow::X_CalibrationWindow(
     xv_lastChannel = lastChannel;
     xv_visible = true;
 
-    if(xv_lastWindowId <= 0)
-    {
-        xv_typeNameMap
-            = X_CalibrationWindow::xh_intTypeNameMap();
-    }
+    // if(xv_lastWindowId <= 0)
+    // {
+    //     xv_typeNameMap
+    //         = X_CalibrationWindow::xh_intTypeNameMap();
+    // }
 
     xv_windowId = xv_lastWindowId++;
 }

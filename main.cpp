@@ -157,8 +157,6 @@ int main(int argc, char *argv[])
     QTextCodec* codec = QTextCodec::codecForName("windows-1251");
     QTextCodec::setCodecForLocale(codec);
 
-
-
     QApplication a(argc, argv);
     //
     initMsgTypesToHandleInMainWindow();

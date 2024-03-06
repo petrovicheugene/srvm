@@ -87,9 +87,6 @@ public:
     bool xp_isEnergyCalibrationValid() const;
 
     qint64 xp_arrayId() const;
-    //    bool xp_averageChemConcentrationForChemElementId(qint64 chemElementId, qreal&) const;
-    //    bool xp_averageChemConcentration(const QString&, qreal&) const;
-    //    bool xp_averageChemConcentration(int, qreal&) const;
 
 signals:
 
@@ -130,9 +127,6 @@ private:
 
     void xh_saveSpectrumToFile(X_SpeSpectrum* spectrum) const;
     int xh_indexForSpectrum(X_SpeSpectrum* spectrum, bool *ok) const;
-
-    //    bool xh_calcAverageChemConcentration(qint64 chemElementId);
-    //    void xh_calcAverageChemConcentrations();
 
     static QList<QColor> xp_createColorList();
     static bool checkColor(QColor color);

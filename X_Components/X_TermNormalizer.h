@@ -23,12 +23,14 @@ public:
                     NT_CUSTOM
                    };
 
+    static void xp_initStaticVariables();
     explicit X_TermNormalizer(X_Calibration *parent);
 
     // Static
-    static QStringList xp_normaTypeList();
-    static QString xp_normaTypeString(NormaType);
-    static X_TermNormalizer::NormaType xp_normaTypeForString(const QString&);
+    // static QStringList xp_normaTypeList();
+    static QString xp_displayNormalizerTypeName(NormaType);
+    static QString xp_normalizerTypeName(NormaType);
+    static X_TermNormalizer::NormaType xp_normalizerTypeFromString(const QString&typestring);
     // End Static
 
     void xp_connectToWindow(X_CalibrationWindow* window);
@@ -96,10 +98,10 @@ private:
 
     // STATIC
     // VARS
-    static QMap<X_TermNormalizer::NormaType, QString> xv_normaTypeStringMap;
+    static QMap<X_TermNormalizer::NormaType, QPair<QString, QString>> xv_normaTypeStringMap;
 
     // FUNCS
-    static QMap<X_TermNormalizer::NormaType, QString> xh_initNormaTypeStringMap();
+    static QMap<X_TermNormalizer::NormaType, QPair<QString, QString>> xh_initNormaTypeStringMap();
 
 };
 //======================================================================

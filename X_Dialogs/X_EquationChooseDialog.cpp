@@ -51,7 +51,7 @@ void X_EquationChooseDialog::xh_createComponents()
     xv_simplePolynomEquationRadioButton = new QRadioButton(this);
     simplePolynomLayout->addWidget(xv_simplePolynomEquationRadioButton);
     xv_simplePolynomEquationRadioButton->setText(
-        X_Calibration::xp_equationTypeString(X_Calibration::ET_POLYNOMIAL));
+        X_Calibration::xp_displayEquationTypeString(X_Calibration::ET_POLYNOMIAL));
 
     QLabel* label = new QLabel(this);
     label->setText(X_Calibration::simplePolynomEquationString);
@@ -65,7 +65,7 @@ void X_EquationChooseDialog::xh_createComponents()
     xv_fractionalEquationRadioButton = new QRadioButton(this);
     fractionalLayout->addWidget(xv_fractionalEquationRadioButton);
     xv_fractionalEquationRadioButton->setText(
-        X_Calibration::xp_equationTypeString(X_Calibration::ET_FRACTIONAL));
+        X_Calibration::xp_displayEquationTypeString(X_Calibration::ET_FRACTIONAL));
 
     label = new QLabel(this);
     label->setText(X_Calibration::fractionalEquationString);
@@ -247,7 +247,7 @@ void X_EquationChooseDialog::xh_setNormalizationToLineEdit(
     }
     else
     {
-        normaString = X_TermNormalizer::xp_normaTypeString(
+        normaString = X_TermNormalizer::xp_displayNormalizerTypeName(
             xv_fractionalBaseNormaSettingsData.normaType);
     }
 

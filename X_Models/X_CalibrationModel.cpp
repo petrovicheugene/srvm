@@ -60,7 +60,7 @@ QVariant X_CalibrationModel::data(const QModelIndex & index, int role) const
         else if(index.column() == 2)
         {
             X_Calibration::EquationType equationType =  xv_calibrationRepository->xp_equationType(index.row());
-            QString equationString = X_Calibration::xp_equationTypeString(equationType);
+            QString equationString = X_Calibration::xp_displayEquationTypeString(equationType);
             if(equationType == X_Calibration::ET_FRACTIONAL)
             {
                 QString baseString = xv_calibrationRepository->xp_baseTermString(index.row());
@@ -78,7 +78,7 @@ QVariant X_CalibrationModel::data(const QModelIndex & index, int role) const
         else if(index.column() == 3)
         {
             X_TermNormalizer::NormaType type = xv_calibrationRepository->xp_normaType(index.row());
-            QString normaType = X_TermNormalizer::xp_normaTypeString(type);
+            QString normaType = X_TermNormalizer::xp_displayNormalizerTypeName(type);
             return QVariant(normaType);
         }
         else if(index.column() == 4)

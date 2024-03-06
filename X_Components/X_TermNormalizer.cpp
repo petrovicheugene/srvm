@@ -6,37 +6,47 @@
 //======================================================================
 // STATIC
 //======================================================================
-QMap<X_TermNormalizer::NormaType, QString> X_TermNormalizer::xv_normaTypeStringMap;// =
-    //X_TermNormalizer::xh_initNormaTypeStringMap();
+QMap<X_TermNormalizer::NormaType, QPair<QString, QString>> X_TermNormalizer::xv_normaTypeStringMap =
+    X_TermNormalizer::xh_initNormaTypeStringMap();
 //======================================================================
-QStringList X_TermNormalizer::xp_normaTypeList()
+void X_TermNormalizer::xp_initStaticVariables()
 {
-    return xv_normaTypeStringMap.values();
+    xv_normaTypeStringMap = X_TermNormalizer::xh_initNormaTypeStringMap();
 }
 //======================================================================
-QString X_TermNormalizer::xp_normaTypeString(X_TermNormalizer::NormaType type)
+QString X_TermNormalizer::xp_displayNormalizerTypeName(X_TermNormalizer::NormaType type)
 {
-    return xv_normaTypeStringMap.value(type);
+    return xv_normaTypeStringMap.value(type).second;
 }
 //======================================================================
-X_TermNormalizer::NormaType X_TermNormalizer::xp_normaTypeForString(const QString& string)
+QString X_TermNormalizer::xp_normalizerTypeName(X_TermNormalizer::NormaType type)
 {
-    if(!xv_normaTypeStringMap.values().contains(string))
+    return xv_normaTypeStringMap.value(type).first;
+}
+//======================================================================
+X_TermNormalizer::NormaType X_TermNormalizer::xp_normalizerTypeFromString(const QString& typestring)
+{
+    QMap<X_TermNormalizer::NormaType, QPair<QString, QString>>::iterator it;
+    for (it = xv_normaTypeStringMap.begin(); it != xv_normaTypeStringMap.end(); it++)
     {
-        return NT_NONE;
+        if (it.value().first == typestring || it.value().second == typestring)
+        {
+            return it.key();
+        }
     }
-    return xv_normaTypeStringMap.key(string);
+
+    return NT_NONE;
 }
 //======================================================================
-QMap<X_TermNormalizer::NormaType, QString> X_TermNormalizer::xh_initNormaTypeStringMap()
+QMap<X_TermNormalizer::NormaType, QPair<QString, QString>> X_TermNormalizer::xh_initNormaTypeStringMap()
 {
-    QMap<X_TermNormalizer::NormaType, QString> map;
-    map.insert(NT_NONE, tr("None"));
-    map.insert(NT_COHERENT, tr("Coherent"));
-    map.insert(NT_INCOHERENT, tr("Incoherent"));
-    map.insert(NT_COHERENT_INCOHERENT, tr("Coherent / Incoherent"));
-    map.insert(NT_INCOHERENT_COHERENT, tr("Incoherent / Coherent"));
-    map.insert(NT_CUSTOM, tr("Custom"));
+    QMap<X_TermNormalizer::NormaType, QPair<QString, QString> > map;
+    map.insert(NT_NONE, QPair<QString, QString>("None", QObject::tr("None")));
+    map.insert(NT_COHERENT, QPair<QString, QString>("Coherent", QObject::tr("Coherent")));
+    map.insert(NT_INCOHERENT, QPair<QString, QString>("Incoherent", QObject::tr("Incoherent")));
+    map.insert(NT_COHERENT_INCOHERENT, QPair<QString, QString>("Coherent / Incoherent", QObject::tr("Coherent / Incoherent")));
+    map.insert(NT_INCOHERENT_COHERENT, QPair<QString, QString>("Incoherent / Coherent", QObject::tr("Incoherent / Coherent")));
+    map.insert(NT_CUSTOM, QPair<QString, QString>("Custom", QObject::tr("Custom")));
     return map;
 }
 // END STATIC
@@ -44,17 +54,10 @@ QMap<X_TermNormalizer::NormaType, QString> X_TermNormalizer::xh_initNormaTypeStr
 //======================================================================
 X_TermNormalizer::X_TermNormalizer(X_Calibration *parent) : QObject(parent)
 {
-    if(xv_normaTypeStringMap.isEmpty())
-    {
-        xv_normaTypeStringMap =
-            X_TermNormalizer::xh_initNormaTypeStringMap();
-    }
-
     xv_calibration = parent;
     xv_normaType = NT_NONE;
     xv_customNormaString = QString();
     xh_createConnections();
-
 }
 //======================================================================
 void X_TermNormalizer::xp_connectToWindow(X_CalibrationWindow* window)

@@ -44,6 +44,7 @@ private:
     QLineEdit* xv_customNormaLineEdit;
     QCheckBox* xv_useModifierForInsertingCheckBox;
     const QString xv_useModifierString = "useModifier";
+    const char* xv_typeString = "type";
 
     // FUNCS
     void xh_createComponents();
