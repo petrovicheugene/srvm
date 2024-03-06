@@ -18,7 +18,7 @@ public:
     QString customString;
     QString factor;
 
-    qint64 termId;
+    qint64 termId = -1;
     QString descriptionString;
 };
 

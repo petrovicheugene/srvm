@@ -784,21 +784,6 @@ qint64 X_SpectrumArray::xp_arrayId() const
     return xv_arrayId;
 }
 //===============================================
-//bool X_SpectrumArray::xp_averageChemConcentrationForChemElementId(qint64 chemElementId, qreal& averageValue) const
-//{
-//    return xv_chemElementList.xp_averageChemConcentrationForChemElementId(chemElementId, averageValue);
-//}
-////===============================================
-//bool X_SpectrumArray::xp_averageChemConcentration(const QString& chemElement, qreal& averageValue) const
-//{
-//    return xv_chemElementList.xp_averageChemConcentration(chemElement, averageValue);
-//}
-////===============================================
-//bool X_SpectrumArray::xp_averageChemConcentration(int chemElementIndex, qreal& averageValue) const
-//{
-//    return xv_chemElementList.xp_averageChemConcentration(chemElementIndex, averageValue);
-//}
-//===============================================
 void X_SpectrumArray::xh_createConnections()
 {
     connect(&xv_chemElementList, &X_ChemElementList::xg_operationType,
@@ -829,81 +814,3 @@ void X_SpectrumArray::xh_recalcArrayMaxParameters()
     emit xg_arrayMaxParametersChanged(xv_arrayId,  xv_maxArrayIntensity,  xv_maxArrayChannelCount);
 }
 //===============================================
-//bool X_SpectrumArray::xh_calcAverageChemConcentration(qint64 chemElementId)
-//{
-//    if(!xv_chemElementList.xp_containsElementId(chemElementId))
-//    {
-//#ifdef DBG
-//        qDebug() << "X_SpectrumArray: AVERAGE NOT RECALCED FOR CHEM ELEMENT ID" << chemElementId;
-//#endif
-
-//        return false;
-//    }
-
-//    if(xv_spectrumList.isEmpty())
-//    {
-//#ifdef DBG
-//        qDebug() << "X_SpectrumArray: AVERAGE NOT RECALCED FOR CHEM ELEMENT ID" << chemElementId << "SPE LIST IS EMPTY";
-//#endif
-
-//        xv_chemElementList.xp_setAverageChemConcentration(chemElementId, 0.0);
-//        return true;
-//    }
-
-//    qreal averageValue = 0;
-//    bool ok;
-//    qreal currentConcentration;
-//    int checkedSpectrumCount = 0;
-//    for(int s  = 0; s < xv_spectrumList.count(); s++)
-//    {
-//        if(!xv_spectrumList.at(s)->xp_isSpectrumChecked())
-//        {
-//            continue;
-//        }
-//        currentConcentration = xv_spectrumList.at(s)->xp_concentration(chemElementId).toDouble(&ok);
-//        if(!ok)
-//        {
-//            currentConcentration = 0.0;
-//        }
-
-//        averageValue += currentConcentration;
-//        checkedSpectrumCount++;
-//    }
-
-//    if(checkedSpectrumCount == 0)
-//    {
-//#ifdef DBG
-//        qDebug() << "X_SpectrumArray: AVERAGE NOT RECALCED FOR CHEM ELEMENT ID" << chemElementId << "CHECKED SPE COUNT IS X_ERO";
-//#endif
-
-//        xv_chemElementList.xp_setAverageChemConcentration(chemElementId, 0.0);
-//        return true;
-//    }
-//    averageValue /= checkedSpectrumCount;
-//    xv_chemElementList.xp_setAverageChemConcentration(chemElementId, averageValue);
-
-//#ifdef DBG
-//    qDebug() << "X_SpectrumArray: AVERAGE RECALCED FOR CHEM ELEMENT ID" << chemElementId << averageValue;
-//#endif
-
-//    return true;
-//}
-////===============================================
-//void X_SpectrumArray::xh_calcAverageChemConcentrations()
-//{
-//#ifdef DBG
-//    qDebug() << "X_SpectrumArray: START FULL CHEM AVERAGE RECALC ";
-//#endif
-
-//    if(xv_chemElementList.xp_isEmpty())
-//    {
-//        return;
-//    }
-
-//    for(int e = 0; e < xv_chemElementList.xp_chemElementCount(); e++)
-//    {
-//        xh_calcAverageChemConcentration(xv_chemElementList.xp_chemElementId(e));
-//    }
-//}
-//===============================================
-

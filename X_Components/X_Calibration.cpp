@@ -21,6 +21,14 @@
 //=========================================================
 // STATIC
 //=========================================================
+void X_Calibration::xp_initStaticVariables()
+{
+    xv_eqationTypeStringMap = X_Calibration::xh_initEquationTypeStringMap();
+    X_CalibrationWindow::xp_initStaticVariables();
+    X_TermNormalizer::xp_initStaticVariables();
+}
+//=========================================================
+
 const QString X_Calibration::simplePolynomEquationString(
     X_Calibration::xh_initPlynomialEquationString());
 const QString X_Calibration::fractionalEquationString(
@@ -32,15 +40,15 @@ QList<QColor> X_Calibration::xv_colorList = X_Calibration::xp_createColorList();
 qint64 X_Calibration::xv_lastCalibrationId = 0;
 int X_Calibration::xv_lastColorIndex = 0;
 int X_Calibration::xv_precision = 15;
-QMap<X_Calibration::EquationType, QString> X_Calibration::xv_eqationTypeStringMap;
-   //= X_Calibration::xh_initEquationTypeStringMap();
+QMap<X_Calibration::EquationType, QPair<QString, QString>> X_Calibration::xv_eqationTypeStringMap
+    = X_Calibration::xh_initEquationTypeStringMap();
 //=========================================================
-QMap<X_Calibration::EquationType, QString> X_Calibration::xh_initEquationTypeStringMap()
+QMap<X_Calibration::EquationType, QPair<QString, QString>> X_Calibration::xh_initEquationTypeStringMap()
 {
-    QMap<X_Calibration::EquationType, QString> map;
-    map.insert(ET_NOT_DEFINED, tr("Not defined"));
-    map.insert(ET_POLYNOMIAL, tr("Polynomial"));
-    map.insert(ET_FRACTIONAL, tr("Fractional"));
+    QMap<X_Calibration::EquationType, QPair<QString, QString>> map;
+    map.insert(ET_NOT_DEFINED, QPair<QString, QString>("Not defined", QObject::tr("Not defined")));
+    map.insert(ET_POLYNOMIAL, QPair<QString, QString>("Polynomial", QObject::tr("Polynomial")));
+    map.insert(ET_FRACTIONAL, QPair<QString, QString>("Fractional", QObject::tr("Fractional")));
     return map;
 }
 //=========================================================
@@ -131,19 +139,28 @@ QString X_Calibration::xh_initFractionalEquationString1()
     return fractionalEquationString;
 }
 //=========================================================
+QString X_Calibration::xp_displayEquationTypeString(X_Calibration::EquationType type)
+{
+    return xv_eqationTypeStringMap.value(type).second;
+}
+//=========================================================
 QString X_Calibration::xp_equationTypeString(X_Calibration::EquationType type)
 {
-    return xv_eqationTypeStringMap.value(type);
+    return xv_eqationTypeStringMap.value(type).first;
 }
 //=========================================================
 X_Calibration::EquationType X_Calibration::xp_equationTypeFromString(const QString& typestring)
 {
-    if (!xv_eqationTypeStringMap.values().contains(typestring))
+    QMap<X_Calibration::EquationType, QPair<QString, QString>>::const_iterator it;
+    for (it = xv_eqationTypeStringMap.begin(); it != xv_eqationTypeStringMap.end(); it++)
     {
-        return X_Calibration::ET_NOT_DEFINED;
+        if (it.value().first == typestring || it.value().second == typestring)
+        {
+            return it.key();
+        }
     }
 
-    return xv_eqationTypeStringMap.key(typestring);
+    return ET_NOT_DEFINED;
 }
 // END STATIC
 //=========================================================
@@ -176,17 +193,7 @@ X_Calibration::X_Calibration(const QString& name, QObject* parent) : QObject(par
     }
 
     xv_exposition = 0;
-    //    xv_energyCalibrationFactorK0 = 0;
-    //    xv_energyCalibrationFactorK1 = 0;
-    //    xv_energyCalibrationFactorK2 = 0;
     xv_gainFactor = 0;
-    //    xv_energyUnit = "not defined";
-
-    if(xv_lastCalibrationId <= 0)
-    {
-        xv_eqationTypeStringMap
-            = X_Calibration::xh_initEquationTypeStringMap();
-    }
 
     xv_calibrationId = xv_lastCalibrationId++;
     xv_chemElement = glDefaultChemElementString;
@@ -223,11 +230,11 @@ X_Calibration::X_Calibration(const X_Calibration* calibration, const QString& na
     //    xv_energyCalibrationFactorK2 = calibration->xv_energyCalibrationFactorK2;
     xv_gainFactor = calibration->xv_gainFactor;
     //    xv_energyUnit = calibration->xv_energyUnit;
-    if(xv_lastCalibrationId <= 0)
-    {
-        xv_eqationTypeStringMap
-            = X_Calibration::xh_initEquationTypeStringMap();
-    }
+    // if(xv_lastCalibrationId <= 0)
+    // {
+    //     xv_eqationTypeStringMap
+    //         = X_Calibration::xh_initEquationTypeStringMap();
+    // }
     xv_calibrationId = xv_lastCalibrationId++;
     xv_chemElement = calibration->xv_chemElement;
 
@@ -352,35 +359,6 @@ bool X_Calibration::xp_setChemElement(const QString& chemElement)
     return true;
 }
 //=========================================================
-//void X_Calibration::xp_setEnergyCalibration(qreal K0, qreal K1, qreal K2, const QString& energyUnit)
-//{
-//    xv_energyCalibrationFactorK0 = K0;
-//    xv_energyCalibrationFactorK1 = K1;
-//    xv_energyCalibrationFactorK2 = K2;
-//    xv_energyUnit = energyUnit;
-
-//}
-////=========================================================
-//void X_Calibration::xp_setEnergyCalibrationK0(qreal K0)
-//{
-//    xv_energyCalibrationFactorK0 = K0;
-//}
-////=========================================================
-//void X_Calibration::xp_setEnergyCalibrationK1(qreal K1)
-//{
-//    xv_energyCalibrationFactorK1 = K1;
-//}
-////=========================================================
-//void X_Calibration::xp_setEnergyCalibrationK2(qreal K2)
-//{
-//    xv_energyCalibrationFactorK2 = K2;
-//}
-//=========================================================
-//void X_Calibration::xp_setEnergyUnit(const QString& energyUnit)
-//{
-//    xv_energyUnit = energyUnit;
-//}
-//=========================================================
 void X_Calibration::xp_setGainFactor(int gainFactor)
 {
     xv_gainFactor = gainFactor;
@@ -390,26 +368,6 @@ void X_Calibration::xp_setExposition(int exposition)
 {
     xv_exposition = exposition;
 }
-//=========================================================
-//qreal X_Calibration::xp_energyCalibrationK0() const
-//{
-//    return xv_energyCalibrationFactorK0;
-//}
-////=========================================================
-//qreal X_Calibration::xp_energyCalibrationK1() const
-//{
-//    return xv_energyCalibrationFactorK1;
-//}
-////=========================================================
-//qreal X_Calibration::xp_energyCalibrationK2() const
-//{
-//    return xv_energyCalibrationFactorK2;
-//}
-////=========================================================
-//QString X_Calibration::xp_energyUnit() const
-//{
-//    return xv_energyUnit;
-//}
 //=========================================================
 int X_Calibration::xp_gainFactor() const
 {
@@ -1519,8 +1477,6 @@ bool X_Calibration::xh_updateExistingTerm(int termIndex, X_RawTerm& rawTerm)
         res = true;
     }
 
-
-
     return res;
 }
 //=========================================================
@@ -1532,26 +1488,26 @@ int X_Calibration::xh_termIndexForRawTerm(const X_RawTerm& rawTerm) const
         if (rawTerm.name == xv_termList.at(t)->xp_termName()
             && rawTerm.termType == xv_termList.at(t)->xp_termType())
         {
-            //            QList<qint64> termWindowIdList = xv_termList.at(t)->xp_termWindowIdList();
-            //            if (termWindowIdList.count() == rawTerm.windowList.count())
-            //            {
-            //                bool res = true;
-            //                foreach (qint64 id, termWindowIdList)
-            //                {
-            //                    if (!rawTerm.windowList.contains(xp_calibrationWindowNameForId(id)))
-            //                    {
-            //                        res = false;
-            //                        break;
-            //                    }
-            //                }
+            QList<qint64> termWindowIdList = xv_termList.at(t)->xp_termWindowIdList();
+            if (termWindowIdList.count() == rawTerm.windowList.count())
+            {
+                bool res = true;
+                foreach (qint64 id, termWindowIdList)
+                {
+                    if (!rawTerm.windowList.contains(xp_calibrationWindowNameForId(id)))
+                    {
+                        res = false;
+                        break;
+                    }
+                }
 
-            //                // term exists.
-            //                if (res)
-            //                {
-            //                    return t;
-            //                }
-            //            }
-            return t;
+                // term exists.
+                if (res)
+                {
+                    return t;
+                }
+            }
+            continue;
         }
     }
 
@@ -1745,7 +1701,7 @@ QString X_Calibration::xp_baseTermDisplayString() const
 
     if (xv_baseTermNormalizer->xp_normaType() != X_TermNormalizer::NT_NONE)
     {
-        QString normaTypeString = X_TermNormalizer::xp_normaTypeString(
+        QString normaTypeString = X_TermNormalizer::xp_normalizerTypeName(
             xv_baseTermNormalizer->xp_normaType());
 
         if (xv_baseTermNormalizer->xp_normaType() == X_TermNormalizer::NT_COHERENT_INCOHERENT

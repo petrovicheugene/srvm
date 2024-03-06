@@ -50,33 +50,33 @@ QWidget* X_NormaSettingsDialog::xh_createControlWidget()
     widget->setLayout(mainLayout);
 
     xv_noNormaRadioButton = new QRadioButton(this);
-    xv_noNormaRadioButton->setText(X_TermNormalizer::xp_normaTypeString(X_TermNormalizer::NT_NONE));
+    xv_noNormaRadioButton->setText(X_TermNormalizer::xp_displayNormalizerTypeName(X_TermNormalizer::NT_NONE));
     xv_noNormaRadioButton->setChecked(true);
     mainLayout->addWidget(xv_noNormaRadioButton);
 
     xv_coherentNormaRadioButton = new QRadioButton(this);
     xv_coherentNormaRadioButton->setText(
-        X_TermNormalizer::xp_normaTypeString(X_TermNormalizer::NT_COHERENT));
+        X_TermNormalizer::xp_displayNormalizerTypeName(X_TermNormalizer::NT_COHERENT));
     mainLayout->addWidget(xv_coherentNormaRadioButton);
 
     xv_incoherentNormaRadioButton = new QRadioButton(this);
     xv_incoherentNormaRadioButton->setText(
-        X_TermNormalizer::xp_normaTypeString(X_TermNormalizer::NT_INCOHERENT));
+        X_TermNormalizer::xp_displayNormalizerTypeName(X_TermNormalizer::NT_INCOHERENT));
     mainLayout->addWidget(xv_incoherentNormaRadioButton);
 
     xv_coherentToIncoherentNormaRadioButton = new QRadioButton(this);
     xv_coherentToIncoherentNormaRadioButton->setText(
-        X_TermNormalizer::xp_normaTypeString(X_TermNormalizer::NT_COHERENT_INCOHERENT));
+        X_TermNormalizer::xp_displayNormalizerTypeName(X_TermNormalizer::NT_COHERENT_INCOHERENT));
     mainLayout->addWidget(xv_coherentToIncoherentNormaRadioButton);
 
     xv_incoherentToCoherentNormaRadioButton = new QRadioButton(this);
     xv_incoherentToCoherentNormaRadioButton->setText(
-        X_TermNormalizer::xp_normaTypeString(X_TermNormalizer::NT_INCOHERENT_COHERENT));
+        X_TermNormalizer::xp_displayNormalizerTypeName(X_TermNormalizer::NT_INCOHERENT_COHERENT));
     mainLayout->addWidget(xv_incoherentToCoherentNormaRadioButton);
 
     xv_customNormaRadioButton = new QRadioButton(this);
     xv_customNormaRadioButton->setText(
-        X_TermNormalizer::xp_normaTypeString(X_TermNormalizer::NT_CUSTOM));
+        X_TermNormalizer::xp_displayNormalizerTypeName(X_TermNormalizer::NT_CUSTOM));
     mainLayout->addWidget(xv_customNormaRadioButton);
 
     xv_customNormaLineEdit = new QLineEdit(this);

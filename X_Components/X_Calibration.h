@@ -65,6 +65,7 @@ public:
         ET_FRACTIONAL
     };
     // FUNCS
+    static void xp_initStaticVariables();
     QDateTime xp_dateTime() const;
     QString xp_baseName() const;
     void xp_setBaseName(const QString&);
@@ -218,6 +219,7 @@ public:
     static const QString simplePolynomEquationString;
     static const QString fractionalEquationString;
     // FUNCS
+    static QString xp_displayEquationTypeString(X_Calibration::EquationType type);
     static QString xp_equationTypeString(X_Calibration::EquationType type);
     static X_Calibration::EquationType xp_equationTypeFromString(const QString&);
 
@@ -294,7 +296,6 @@ private:
     bool xh_createWindowIndexList(QMap<QString, int>& windowIndexMap, X_RawTerm& rawTerm);
     bool xh_checkCustomString(X_RawTerm& rawTerm);
 
-
     // STATIC
     // VARS
     static QList<QColor> xv_colorList;
@@ -303,12 +304,12 @@ private:
     static int xv_precision;
     static const QString xv_defaultWindowName;
 
-    static QMap<X_Calibration::EquationType, QString> xv_eqationTypeStringMap;
+    static QMap<X_Calibration::EquationType, QPair<QString, QString>> xv_eqationTypeStringMap;
     static bool xv_useBaseTermInFractionalEquationByDefault;
     //  FUNCS
     static QList<QColor> xp_createColorList();
     static bool checkColor(QColor color);
-    static QMap<X_Calibration::EquationType, QString> xh_initEquationTypeStringMap();
+    static QMap<X_Calibration::EquationType, QPair<QString, QString>> xh_initEquationTypeStringMap();
     static QString xh_initPlynomialEquationString();
     static QString xh_initFractionalEquationString();
     static QString xh_initFractionalEquationString1();

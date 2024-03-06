@@ -228,9 +228,6 @@ bool X_MathExpressionHandler::xh_getToken()
                 return true;
 
                 break;
-//            case TT_OPERATOR:
-//                qDebug() << "TOK" << xv_token;
-//                break;
             case TT_VARIABLE:
                 if (xv_operatorSet.contains(xv_token.simplified()))
                 {

@@ -20,6 +20,7 @@ public:
                     WT_COHERENT,
                     WT_INCOHERENT};
 
+    static void xp_initStaticVariables();
     explicit X_CalibrationWindow(QObject* parent);
     // explicit X_CalibrationWindow(const QString&,  WindowType = WT_NOT_DEFINED );
     explicit X_CalibrationWindow(const QString&,
