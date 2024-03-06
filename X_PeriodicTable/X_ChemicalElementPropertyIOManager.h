@@ -61,7 +61,6 @@ private:
     const QString xv_NAME = "name";
 
     // FUNCS
-    // static QMap<QChar, QString> xh_initEscapeControlCharacterMap();
     void xh_writeXMLElement(X_AbstractChemicalElementPropertyRepository* repository,
                             QXmlStreamWriter *writer,
                             int z,

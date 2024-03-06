@@ -113,8 +113,8 @@ protected:
     static QMap<X_AbstractTerm::TermState, QString> xv_stateNameMap;
 
     // FUNCS
-    static QMap<X_AbstractTerm::TermType, QString> xh_intTypeNameMap();
-    static QMap<X_AbstractTerm::TermState, QString>xh_intStateNameMap();
+    static QMap<X_AbstractTerm::TermType, QString> xh_initTypeNameMap();
+    static QMap<X_AbstractTerm::TermState, QString>xh_initStateNameMap();
 
 
 };

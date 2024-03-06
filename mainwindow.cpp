@@ -68,6 +68,7 @@ MainWindow::MainWindow(QWidget *parent)
     qRegisterMetaType<X_EquationSettingsData>("X_EquationSettingsData");
     qRegisterMetaType<X_SpeSpectrum>("X_SpeSpectrum");
 
+    X_Calibration::xp_initStaticVariables();
 
     setWindowTitle(qApp->applicationDisplayName());
 

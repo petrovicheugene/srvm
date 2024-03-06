@@ -50,9 +50,6 @@ X_SpectrumGraphicsItem::X_SpectrumGraphicsItem(const X_AbstractSpectrum *spectru
     setFlags(flags);
     setZValue(gl_defaultSpectrumZValue);
 
-
-    //qDebug() << "SPE VIS" << spectrum->xp_isSpectrumVisible();
-    //setVisible(spectrum->xp_isSpectrumVisible());
     xp_updateSpectrumData(spectrum);
     xp_updateCurrentSpectrum(spectrum->xp_isSpectrumVisible());
 }

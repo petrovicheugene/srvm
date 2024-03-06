@@ -28,6 +28,8 @@ public:
     bool xp_writeCalibrationToFile(QFile&file, const X_Calibration*calibration);
 
     QString xp_message() const;
+    bool xp_getCalibrationXMLByteArrayFromFile(QFile& file, QByteArray& calibrationXMLByteArray);
+    bool xp_getCalibrationFromString(QString& calibrationString, X_Calibration* calibration);
 
 public slots:
 
