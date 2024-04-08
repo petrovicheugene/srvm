@@ -64,8 +64,8 @@ bool X_PasteData::xp_loadData(const QString& dataString, const QStringList &chem
 //====================================================
 bool X_PasteData::xh_devideStringToTerms(const QString& dataString)
 {
-//    QLocale locale;
-//    QString decimalSeparator = locale.decimalPoint();
+    //    QLocale locale;
+    //    QString decimalSeparator = locale.decimalPoint();
 
     // devide into strings and remove empty lines
     static QRegularExpression regExp("\\n|\\v");
