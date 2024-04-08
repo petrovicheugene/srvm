@@ -1178,7 +1178,7 @@ void X_Calibration::xp_calcWindowIntensity(const QString& windowName,
     {
         if (window->xp_windowName() == windowName)
         {
-            window->xp_calcWindowIntensity(spectrumObject, intensityValue, useBuffer, ok);
+            window->xp_calcWindowIntensity(spectrumObject, intensityValue,  ok);
             return;
         }
     }

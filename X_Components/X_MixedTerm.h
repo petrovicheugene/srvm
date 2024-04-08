@@ -24,8 +24,8 @@ public:
 
 signals:
 
-    void xg_requestWindow1Intensity(const QObject* spectrum, qreal& intensityValue, bool useBuffer,  bool* ok = 0);
-    void xg_requestWindow2Intensity(const QObject* spectrum, qreal& intensityValue, bool useBuffer,  bool* ok = 0);
+    void xg_requestWindow1Intensity(const QObject* spectrum, qreal& intensityValue,  bool* ok = 0);
+    void xg_requestWindow2Intensity(const QObject* spectrum, qreal& intensityValue,  bool* ok = 0);
 
 protected slots:
 

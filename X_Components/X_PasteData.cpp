@@ -68,7 +68,8 @@ bool X_PasteData::xh_devideStringToTerms(const QString& dataString)
 //    QString decimalSeparator = locale.decimalPoint();
 
     // devide into strings and remove empty lines
-    QStringList lines =  dataString.split(QRegularExpression("\\n|\\v"));
+    static QRegularExpression regExp("\\n|\\v");
+    QStringList lines =  dataString.split(regExp);
     if(lines.isEmpty())
     {
         return false;
@@ -80,9 +81,12 @@ bool X_PasteData::xh_devideStringToTerms(const QString& dataString)
         lines.removeLast();
     }
 
+    QString line;
+    QString doubleString;
     // devide lines into parts
-    foreach(QString line, lines)
+    for(int k = 0; k < lines.size(); ++k)
     {
+        line =  lines.at(k);
         // remove whitespace from the start and end
         line = line.simplified();
 
@@ -91,7 +95,8 @@ bool X_PasteData::xh_devideStringToTerms(const QString& dataString)
 
         for (int i = 0; i < lineValueList.count(); ++i)
         {
-            lineValueList[i] = X_LocaleDoubleConverter::toLocalDoubleString(lineValueList.at(i));
+            doubleString = X_LocaleDoubleConverter::toLocalDoubleString(lineValueList.at(i));
+            lineValueList[i] = (k==0 && doubleString == "NaN") ?  lineValueList.at(i) : doubleString;
         }
 
         // define column count

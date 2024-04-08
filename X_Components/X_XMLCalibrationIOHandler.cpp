@@ -49,7 +49,7 @@ QStringList X_XMLCalibrationIOHandler::xp_getCalibrationOpenFiles(const QString&
         tr("Open file"),
         locationDirString,
         tr("XML Calibration files(*.clbx);;XML files(*.xml);;All files(*.*)"));
-    xv_fileDialog.setOptions(QFileDialog::DontUseNativeDialog);
+//    xv_fileDialog.setOptions(QFileDialog::DontUseNativeDialog);
     xv_fileDialog.setFileMode(QFileDialog::ExistingFiles);
     xv_fileDialog.exec();
     QStringList fileNames = xv_fileDialog.selectedFiles();

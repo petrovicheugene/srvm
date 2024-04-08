@@ -38,33 +38,8 @@ QMap<X_CalibrationWindow::WindowType, QPair<QString, QString>> X_CalibrationWind
 //====================================================
 X_CalibrationWindow::X_CalibrationWindow(QObject* parent) : QObject(parent)
 {
-    xv_windowName = QString();
-    xv_firstChannel = 0;
-    xv_lastChannel = 0;
-    xv_spectrumId = -1;
-    xv_windowIntensityValue = 0;
-
-    xv_type = WT_NOT_DEFINED;
-    xv_visible = true;
-    // if(xv_lastWindowId <= 0)
-    // {
-    //     xv_typeNameMap
-    //         = X_CalibrationWindow::xh_intTypeNameMap();
-    // }
-
     xv_windowId = xv_lastWindowId++;
 }
-//====================================================
-//X_CalibrationWindow::X_CalibrationWindow(const QString& name,  WindowType type)
-//{
-//    xv_windowName = name;
-//    xv_type = type;
-
-//    xv_firstChannel = 0;
-//    xv_lastChannel = 0;
-//    xv_visible = true;
-//    xv_windowId = xv_lastWindowId++;
-//}
 //====================================================
 X_CalibrationWindow::X_CalibrationWindow(
     const QString& name, WindowType type, int firstChannel, int lastChannel, QObject* parent)
@@ -80,12 +55,6 @@ X_CalibrationWindow::X_CalibrationWindow(
     xv_firstChannel = firstChannel;
     xv_lastChannel = lastChannel;
     xv_visible = true;
-
-    // if(xv_lastWindowId <= 0)
-    // {
-    //     xv_typeNameMap
-    //         = X_CalibrationWindow::xh_intTypeNameMap();
-    // }
 
     xv_windowId = xv_lastWindowId++;
 }
@@ -228,7 +197,6 @@ X_CalibrationWindow::WindowType X_CalibrationWindow::xp_typeFromString(const QSt
 //====================================================
 void X_CalibrationWindow::xp_calcWindowIntensity(const QObject* spectrumObject,
                                                  qreal& intensityValue,
-                                                 bool useBuffer,
                                                  bool* ok)
 {
     const X_AbstractSpectrum* spectrum = qobject_cast<const X_AbstractSpectrum*>(spectrumObject);
@@ -243,27 +211,7 @@ void X_CalibrationWindow::xp_calcWindowIntensity(const QObject* spectrumObject,
         return;
     }
 
-    if (xv_spectrumId >= 0 && xv_spectrumId == spectrum->xp_spectrumId() && useBuffer)
-    {
-        intensityValue = xv_windowIntensityValue;
-        if (ok)
-        {
-            *ok = true;
-        }
-        return;
-    }
-
     bool res = spectrum->xp_intensityInWindow(xv_firstChannel, xv_lastChannel, intensityValue);
-    if (res && useBuffer)
-    {
-        xv_windowIntensityValue = intensityValue;
-        xv_spectrumId = spectrum->xp_spectrumId();
-    }
-    else
-    {
-        xv_windowIntensityValue = 0;
-        xv_spectrumId = -1;
-    }
 
     if (ok)
     {

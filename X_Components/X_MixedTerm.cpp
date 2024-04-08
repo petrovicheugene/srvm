@@ -25,14 +25,14 @@ bool X_MixedTerm::xp_calcValue(const X_AbstractSpectrum * spectrum, qreal& value
     bool ok;
     qreal win1Intensity = 0.0;
 
-    emit xg_requestWindow1Intensity((const QObject*)spectrum, win1Intensity, true, &ok);
+    emit xg_requestWindow1Intensity((const QObject*)spectrum, win1Intensity,  &ok);
     if(!ok)
     {
         return false;
     }
 
     qreal win2Intensity = 0.0;
-    emit xg_requestWindow2Intensity((const QObject*)spectrum, win2Intensity, true, &ok);
+    emit xg_requestWindow2Intensity((const QObject*)spectrum, win2Intensity,  &ok);
     if(!ok)
     {
         return false;
@@ -47,14 +47,14 @@ bool X_MixedTerm::xp_calcTermIntensity(const X_AbstractSpectrum* spectrum, qreal
     value= 0.0;
     bool ok;
     qreal win1Intensity = 0.0;
-    emit xg_requestWindow1Intensity((const QObject*)spectrum, win1Intensity, false, &ok);
+    emit xg_requestWindow1Intensity((const QObject*)spectrum, win1Intensity, &ok);
     if(!ok)
     {
         return false;
     }
 
     qreal win2Intensity = 0.0;
-    emit xg_requestWindow2Intensity((const QObject*)spectrum, win2Intensity, true, &ok);
+    emit xg_requestWindow2Intensity((const QObject*)spectrum, win2Intensity, &ok);
     if(!ok)
     {
         return false;

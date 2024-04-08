@@ -54,7 +54,7 @@ public:
 
 public slots:
 
-    void xp_calcWindowIntensity(const QObject*, qreal &, bool keepBufferClean, bool *ok);
+    void xp_calcWindowIntensity(const QObject*, qreal &, /*bool keepBufferClean,*/ bool *ok);
 
 signals:
 
@@ -65,15 +65,15 @@ signals:
 private:
 
     QString xv_windowName;
-    int xv_firstChannel;
-    int xv_lastChannel;
-    WindowType xv_type;
-    bool xv_visible;
-    qint64 xv_windowId;
+    int xv_firstChannel = 0;
+    int xv_lastChannel = 0;
+    WindowType xv_type = WT_NOT_DEFINED;
+    bool xv_visible = true;
+    qint64 xv_windowId = -1;
 
     // buffer
-    qint64 xv_spectrumId;
-    qreal xv_windowIntensityValue;
+    // qint64 xv_spectrumId = -1;
+    // qreal xv_windowIntensityValue = 0.0;
 
     // STATIC
     // VARS

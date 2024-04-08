@@ -23,7 +23,7 @@ bool X_QuadraticTerm::xp_calcValue(const X_AbstractSpectrum * spectrum, qreal& v
     }
 
     bool ok;
-    emit xg_requestWindowIntensity((const QObject*)spectrum, value, true, &ok);
+    emit xg_requestWindowIntensity((const QObject*)spectrum, value, &ok);
     if(!ok)
     {
         return false;
@@ -37,7 +37,7 @@ bool X_QuadraticTerm::xp_calcTermIntensity(const X_AbstractSpectrum* spectrum, q
 {
     value = 0.0;
     bool ok;
-    emit xg_requestWindowIntensity((const QObject*)spectrum, value, false, &ok);
+    emit xg_requestWindowIntensity((const QObject*)spectrum, value, &ok);
     value = value * value;
     return ok;
 }
