@@ -41,9 +41,6 @@ X_NumericEditor::StepEnabled	X_NumericEditor::stepEnabled () const
 //================================================================
 void X_NumericEditor::stepBy ( int steps )
 {
-    //QLocale locale;
-    //QString decimalSeparator = locale.decimalPoint();
-    //QString numericString = lineEdit()->text();
     bool ok = false;
     QString numericString = X_LocaleDoubleConverter::toLocalDoubleString(lineEdit()->text(), &ok);
     if(!ok)
@@ -53,8 +50,6 @@ void X_NumericEditor::stepBy ( int steps )
 
     int cursorPos = lineEdit()->cursorPosition();
 
-    //numericString.replace(QRegularExpression("[,.]"), decimalSeparator);
-    //numericString.replace(QRegExp("e"), "E");
     static QRegularExpression commaDotEeRegExp("[,.Ee]");
     QStringList parts = numericString.split(commaDotEeRegExp, Qt::KeepEmptyParts);
 
@@ -152,9 +147,33 @@ void X_NumericEditor::stepBy ( int steps )
     {
         if(fractionlPartMax > 0)
         {
-            if((changedPartNumeric <= 0 && steps < 0) || (changedPartNumeric >= fractionlPartMax && steps > 0))
+            // if((changedPartNumeric <= 0 && steps < 0) || (changedPartNumeric >= fractionlPartMax && steps > 0))
+            // {
+            //     partValueEqualLimit = true;
+            // }
+            if(changedPartNumeric == 0 && steps < 0)
             {
-                partValueEqualLimit = true;
+                if(changedPartNumber == 1) // fractional part
+                {
+                    changedPartNumeric = fractionlPartMax;
+                    parts[0] = QString::number(parts[0].toLongLong() - 1);
+                }
+                else
+                {
+                    partValueEqualLimit = true;
+                }
+            }
+            else if(changedPartNumeric >= fractionlPartMax && steps > 0)
+            {
+                if(changedPartNumber == 1) // fractional part
+                {
+                    changedPartNumeric = 0;
+                    parts[0] = QString::number(parts[0].toLongLong() + 1);
+                }
+                else
+                {
+                    partValueEqualLimit = true;
+                }
             }
             else
             {
@@ -174,19 +193,23 @@ void X_NumericEditor::stepBy ( int steps )
 
             break;
         }
+
         if(partValueEqualLimit)
         {
             break;
         }
     }
 
-    lineEdit()->setText(newNumericString);
     ok = false;
     double newValue = X_LocaleDoubleConverter::toDouble(newNumericString, &ok);
-    if(ok)
+
+    if(!ok || newValue < xv_min || newValue > xv_max)
     {
-        emit valueChanged(newValue);
+        return;
     }
+
+    lineEdit()->setText(newNumericString);
+    emit valueChanged(newValue);
 
     int newCursorPos = 0;
     switch (changedPartNumber)
