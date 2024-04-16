@@ -10,6 +10,7 @@
 #include <QPixmap>
 #include <QPointer>
 #include <QSet>
+#include <QStyleFactory>
 #include <QSplashScreen>
 #include <QTranslator>
 #include <QTextCodec>
@@ -158,6 +159,7 @@ int main(int argc, char *argv[])
     QTextCodec::setCodecForLocale(codec);
 
     QApplication a(argc, argv);
+    qApp->setStyle(QStyleFactory::create("windowsvista"));
     //
     initMsgTypesToHandleInMainWindow();
     // custom message handler for logging via qInfo qWarning qCritical
