@@ -885,7 +885,6 @@ void X_Plotter::xh_restoreSettings(const QString & parentName)
     QSettings settings;
     settings.beginGroup(parentName+"plotter");
     QVariant vData = settings.value("itemRelativeSizeFactor");
-    qDebug() << "RESTORE SETTINGS" << parentName+"plotter" << vData;
     if(vData.isValid() && vData.canConvert<double>())
     {
         xv_relativeSizingFactor = vData.toDouble();
@@ -897,7 +896,6 @@ void X_Plotter::xh_saveSettings(const QString & parentName)
 {
     QSettings settings;
     settings.beginGroup(parentName+"plotter");
-    // qDebug() << "SAVE SETTINGS" << parentName+"plotter" << xv_relativeSizingFactor;
     settings.setValue("itemRelativeSizeFactor", xv_relativeSizingFactor);
     settings.endGroup();
 }

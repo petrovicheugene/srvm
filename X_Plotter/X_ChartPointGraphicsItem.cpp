@@ -15,10 +15,10 @@ qint64 X_ChartPointGraphicsItem::xv_currentSpectrumId = -1;
 QColor X_ChartPointGraphicsItem::xv_currentColor = QColor(Qt::red);
 //======================================================
 X_ChartPointGraphicsItem::X_ChartPointGraphicsItem(const X_CorrelationPlotterDataManager* dataManager,
-                                                 const X_VisibilityPointF& visibilityPoint,
-                                                 X_ChartPointOptions *seriesPointOptions,
-                                                 qint64 relatedObjectId,
-                                                 QGraphicsItem *parent) :
+                                                   const X_VisibilityPointF& visibilityPoint,
+                                                   X_ChartPointOptions *seriesPointOptions,
+                                                   qint64 relatedObjectId,
+                                                   QGraphicsItem *parent) :
     QGraphicsItem(parent)
 {
     xv_dataManager = dataManager;
@@ -87,13 +87,7 @@ X_ChartPointOptions* X_ChartPointGraphicsItem::xp_seriesPointOptions() const
 //======================================================
 void X_ChartPointGraphicsItem::xp_setNewBoundingRect(const QRectF& boundingRect)
 {
-    //    if(zv_boundingRect == boundingRect)
-    //    {
-    //        return;
-    //    }
-
     prepareGeometryChange();
-    // zv_boundingRect = boundingRect;
 }
 //======================================================
 qint64 X_ChartPointGraphicsItem::xp_relatedObjectId() const
@@ -102,15 +96,13 @@ qint64 X_ChartPointGraphicsItem::xp_relatedObjectId() const
 }
 //======================================================
 void X_ChartPointGraphicsItem::xp_applyVisibilityAndPos(const X_VisibilityPointF &visibilityPoint,
-                                                       X_ChartPointOptions* chartPointOptions)
+                                                        X_ChartPointOptions* chartPointOptions)
 {
     xv_chartPointOptions = chartPointOptions;
     X_VisibilityPointF vPoint = visibilityPoint;
     vPoint.setY(vPoint.y() * (-1) / xv_chartPointOptions->xp_rulerScaleValue(Qt::Vertical));
     vPoint.setX(vPoint.x() / xv_chartPointOptions->xp_rulerScaleValue(Qt::Horizontal));
-    // zv_boundingRect = seriesPointOptions->zv_boundingRect;
     setPos(vPoint);
-    //    setZValue(2);
     setVisible(vPoint.xp_isVisible());
     xp_updateCurrentItem();
 }
@@ -126,20 +118,15 @@ void X_ChartPointGraphicsItem::xp_updateCurrentItem()
     }
     else
     {
-        //      if(zValue() != gl_defaultSpectrumZValue)
-        //      {
         setZValue(gl_defaultSpectrumZValue);
         xv_paintColor = xv_chartPointOptions->xv_pointColor;
         setVisible(isVisible());
-        //      }
     }
 }
 //======================================================
 void X_ChartPointGraphicsItem::mousePressEvent(QGraphicsSceneMouseEvent* event)
 {
     xv_dataManager->xp_setCurrentSpectrum(xv_relatedObjectId);
-
-    //QGraphicsItem::mousePressEvent(event);
 }
 //======================================================
 void X_ChartPointGraphicsItem::mouseReleaseEvent(QGraphicsSceneMouseEvent* event)
