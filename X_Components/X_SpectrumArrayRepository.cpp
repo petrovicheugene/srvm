@@ -1097,7 +1097,7 @@ void X_SpectrumArrayRepository::xp_getSpectrumName(int arrayIndex, int spectrumI
     spectrumName = xv_arrayList.value(arrayIndex)->xp_spectrumFileName(spectrumIndex);
 }
 //==================================================================
-void X_SpectrumArrayRepository::xp_currentArrayChanged(int current, int previous)
+void X_SpectrumArrayRepository::xp_onCurrentArrayChanged(int current, int previous)
 {
     qint64 arrayId;
     if(current < 0 || current >= xv_arrayList.count() )
@@ -1117,7 +1117,12 @@ void X_SpectrumArrayRepository::xp_currentArrayChanged(int current, int previous
     xh_actionEnablingControl();
 }
 //==================================================================
-void X_SpectrumArrayRepository::xp_currentSpectrumChanged(int currentSpectrumIndex, int previousSpectrumIndex)
+void X_SpectrumArrayRepository::xp_onSelectedChemElementChange()
+{
+    xh_actionEnablingControl();
+}
+//==================================================================
+void X_SpectrumArrayRepository::xp_onCurrentSpectrumChanged(int currentSpectrumIndex, int previousSpectrumIndex)
 {
     int currentArrayIndex;
     qint64 currentSpectrumId;
@@ -2059,7 +2064,6 @@ void X_SpectrumArrayRepository::xh_actionEnablingControl()
         QList<int> selectedChemElementIndexList;
         emit xg_requestSelectedChemElementIndexList(selectedChemElementIndexList);
         xv_removeChemElementAction->setEnabled(!selectedChemElementIndexList.isEmpty());
-
         xv_setChemElementsVisibleAction->setEnabled(true);
         xv_setChemElementsInvisibleAction->setEnabled(true);
         xv_invertChemElementsVisibilityAction->setEnabled(true);
@@ -2067,7 +2071,6 @@ void X_SpectrumArrayRepository::xh_actionEnablingControl()
     else
     {
         xv_removeChemElementAction->setEnabled(false);
-
         xv_setChemElementsVisibleAction->setEnabled(false);
         xv_setChemElementsInvisibleAction->setEnabled(false);
         xv_invertChemElementsVisibilityAction->setEnabled(false);

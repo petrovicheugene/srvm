@@ -1,5 +1,6 @@
 //===================================================
 #include "X_MathExpressionVariableListMaker.h"
+#include "qdebug.h"
 #include <QRandomGenerator>
 //===================================================
 X_MathExpressionVariableListMaker::X_MathExpressionVariableListMaker(QObject* parent)

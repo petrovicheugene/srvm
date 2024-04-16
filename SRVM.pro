@@ -32,6 +32,8 @@ linux-g++: OS_SUFFIX = linux
 CONFIG += c++11
 CONFIG += c++14
 CONFIG += c++17
+CONFIG += c++20
+
 #preserve src directory structure in build directory
 #CONFIG += object_parallel_to_source
 
@@ -380,10 +382,19 @@ DISTFILES += \
     X_BaseMainWindow/green_left.ico \
     X_BaseMainWindow/green_right.ico
 
+
+DOC_SRC_DIR=$$dirname(PWD)/DOC
+DOC_DEST_DIR=$${DESTDIR}/doc
+
+mkpath($${DOC_DEST_DIR})
+
 CONFIG(release, debug|release) {
-    isEmpty(QMAKE_POST_LINK){
-        QMAKE_POST_LINK += "C:/Qt/$$QT_VERSION/mingw_64/bin/windeployqt.exe $$DESTDIR"
-    }else{
-        QMAKE_POST_LINK += & "C:/Qt/$$QT_VERSION/mingw_64/bin/windeployqt.exe $$DESTDIR"
-    }
+    # isEmpty(QMAKE_POST_LINK){
+        QMAKE_POST_LINK += $$quote(C:/Qt/$$QT_VERSION/mingw_64/bin/windeployqt.exe) $$DESTDIR $$escape_expand(\\n\\t)
+        QMAKE_POST_LINK += $$QMAKE_COPY $$quote("\"$${DOC_SRC_DIR}"\") $$quote("\"$${DOC_DEST_DIR}"\") $$escape_expand(\\n\\t)
+        # }
+    # }else{
+    #     QMAKE_POST_LINK += & "C:/Qt/$$QT_VERSION/mingw_64/bin/windeployqt.exe $$DESTDIR"
+    # }
 }
+

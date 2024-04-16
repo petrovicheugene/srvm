@@ -80,18 +80,9 @@ public:
     QString xp_chemElement() const;
     bool xp_setChemElement(const QString&);
 
-    //    void xp_setEnergyCalibration(qreal K0, qreal K1, qreal K2, const QString& energyUnit);
-    //    void xp_setEnergyCalibrationK0(qreal K0);
-    //    void xp_setEnergyCalibrationK1(qreal K1);
-    //    void xp_setEnergyCalibrationK2(qreal K2);
-    //    void xp_setEnergyUnit(const QString& energyUnit);
     void xp_setGainFactor(int gainFactor);
     void xp_setExposition(int exposition);
 
-    //    qreal xp_energyCalibrationK0() const;
-    //    qreal xp_energyCalibrationK1() const;
-    //    qreal xp_energyCalibrationK2() const;
-    //    QString xp_energyUnit() const;
     int xp_gainFactor() const;
     int xp_exposition() const;
 

@@ -21,7 +21,7 @@ bool X_SimpleTerm::xp_calcValue(const X_AbstractSpectrum * spectrum, qreal& valu
     }
 
     bool ok;
-    emit xg_requestWindowIntensity((const QObject*)spectrum, value, true, &ok);
+    emit xg_requestWindowIntensity((const QObject*)spectrum, value, &ok);
     if(!ok)
     {
         return false;
@@ -35,7 +35,7 @@ bool X_SimpleTerm::xp_calcTermIntensity(const X_AbstractSpectrum* spectrum, qrea
 {
     value = 0;
     bool ok;
-    emit xg_requestWindowIntensity((const QObject*)spectrum, value, false, &ok);
+    emit xg_requestWindowIntensity((const QObject*)spectrum, value, &ok);
     return ok;
 }
 //===================================================================

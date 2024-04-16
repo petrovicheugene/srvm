@@ -3,6 +3,7 @@
 #define X_CALIBRATIONARRAYWIDGET_H
 //==============================================================
 #include <QWidget>
+#include <QItemSelection>
 //==============================================================
 class QTableView;
 class QAbstractItemModel;
@@ -25,7 +26,7 @@ public:
 
 signals:
 
-    void xg_currentCalibrationChanged(int, int);
+    void xg_selectedChemElementChanged();
 
 public slots:
 
@@ -48,8 +49,8 @@ private:
 
 private slots:
 
-    void xh_onCurrentElementChanged(const QModelIndex & current,
-                                    const QModelIndex & previous);
+    void xh_onSelectedElementChanged(const QItemSelection & current,
+                                     const QItemSelection & previous);
     void xh_onContextMenuRequest(const QPoint &pos);
 
 };

@@ -17,7 +17,7 @@
 #define MyAppShortPublisher "TechnoAnalyt"
 #define MyAppURL "http://tehnoanalit.com/"
 
-#define QtVersion "6.4.3-64"
+#define QtVersion "6.6.0"
 
 #define SourceFolder "D:\Projects\Qt\SRVM\bin\" 
 #define InnoSetupFolder "D:\Projects\Qt\SRVM\SRVM\InnoSetup\" 
@@ -45,7 +45,7 @@ AppSupportURL={#MyAppURL}
 CreateUninstallRegKey=yes
 DefaultDirName={pf}\{#MyAppShortPublisher}\{#MyAppExeBaseName}
 DefaultGroupName={#MyAppWindowName}
-OutputBaseFilename={#MyAppName}Setup-{#MyAppFullVersion}
+OutputBaseFilename={#MyAppName}Setup-x64-{#MyAppFullVersion}
 Compression=lzma
 SolidCompression=yes
 

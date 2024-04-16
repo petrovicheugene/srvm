@@ -29,7 +29,7 @@ X_AbstractPlotterDataManager::X_AbstractPlotterDataManager(QObject *parent) : QO
     xv_currentCalibrationIndex = -1;
 
     xv_verticalRuleLabel = tr("Intensity");
-    xv_horizontalRuleLabel = tr("Channels");
+    xv_horizontalRuleLabel = tr("Channel");
     xv_horizontalRecalcedRuleLabel = tr("Energy");
 
     xh_createComponents();

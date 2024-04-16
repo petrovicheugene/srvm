@@ -49,7 +49,7 @@ QStringList X_XMLCalibrationIOHandler::xp_getCalibrationOpenFiles(const QString&
         tr("Open file"),
         locationDirString,
         tr("XML Calibration files(*.clbx);;XML files(*.xml);;All files(*.*)"));
-    xv_fileDialog.setOptions(QFileDialog::DontUseNativeDialog);
+//    xv_fileDialog.setOptions(QFileDialog::DontUseNativeDialog);
     xv_fileDialog.setFileMode(QFileDialog::ExistingFiles);
     xv_fileDialog.exec();
     QStringList fileNames = xv_fileDialog.selectedFiles();
@@ -643,6 +643,7 @@ void X_XMLCalibrationIOHandler::xh_parseXMLElement(X_Calibration* calibration,
             }
             else if (currentTagName == xv_TERM)
             {
+                qDebug() << "ADD TERM" << xv_rawTerm.name << xv_rawTerm.termType;
                 if (xv_rawTerm.termType == X_AbstractTerm::TT_CUSTOM)
                 {
                     //X_RawCustomTerm* customTerm = static_cast<X_RawCustomTerm* >(&xv_rawTerm);

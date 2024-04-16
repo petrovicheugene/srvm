@@ -557,18 +557,10 @@ void MainWindow::xh_createConnections()
             xv_chemElementWidget, &X_ChemElementWidget::xp_setCurrentChemElementIndex);
     connect(xv_spectrumArrayRepository, &X_SpectrumArrayRepository::xg_startCurrentChemElementEdition,
             xv_chemElementWidget, &X_ChemElementWidget::xp_startCurrentChemElementEdition);
-    //    connect(xv_spectrumArrayRepository, &X_SpectrumArrayRepository::xg_fitPlotInBoundingRect,
-    //            xv_plotter, &X_Plotter::xp_fitInBoundingRect);
-
 
     // spectra repository <-> joint spectrum view
     connect(xv_spectrumArrayRepository, &X_SpectrumArrayRepository::xg_requestSelectedSpectrumIndexList,
             xv_spectrumTableWidget, &X_JointSpectrumTableWidget::xp_selectedSpectrumIndexList);
-    //    connect(xv_spectrumArrayRepository, &X_SpectrumArrayRepository::xg_requestSelectionToStringConversion,
-    //            xv_spectrumTableWidget, &X_JointSpectrumTableWidget::xp_selectionToString);
-    //    connect(xv_spectrumTableWidget, &X_JointSpectrumTableWidget::xg_selectionEnable,
-    //            xv_spectrumArrayRepository, &X_SpectrumArrayRepository::xp_onSelectionEnable );
-
     // spectra repository <-> chemical element view
     connect(xv_spectrumArrayRepository, &X_SpectrumArrayRepository::xg_requestSelectedChemElementIndexList,
             xv_chemElementWidget, &X_ChemElementWidget::xp_selectedChemElementIndexList);
@@ -579,12 +571,13 @@ void MainWindow::xh_createConnections()
     connect(xv_calibrationTableWidget, &X_CalibrationTableWidget::xg_requestChemElementList,
             xv_spectrumArrayRepository, &X_SpectrumArrayRepository::xp_chemElementListForCurrentArray);
 
+    connect(xv_chemElementWidget, &X_ChemElementWidget::xg_selectedChemElementChanged,
+            xv_spectrumArrayRepository, &X_SpectrumArrayRepository::xp_onSelectedChemElementChange, Qt::QueuedConnection);
+
     // calibration repository <-> calibration model
     xv_calibrationModel->xp_connectToCalibrationRepository(xv_calibrationRepository);
 
     // calibration repository <-> plotter
-    //    connect(xv_calibrationRepository, &X_CalibrationRepository::xg_requestCurrentVisibleSceneRect,
-    //            xv_plotter, &X_Plotter::xp_currentVisibleSceneRect);
     connect(xv_calibrationRepository, &X_CalibrationRepository::xg_setCurrentWindowIndex,
             xv_calibrationWindowTableWidget, &X_CalibrationWindowTableWidget::xp_setCurrentWindowIndex);
     connect(xv_calibrationRepository, &X_CalibrationRepository::xg_startCurrentWindowEdition,

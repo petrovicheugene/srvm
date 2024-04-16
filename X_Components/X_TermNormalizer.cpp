@@ -307,7 +307,7 @@ bool X_TermNormalizer::xh_getWindowsValue(X_CalibrationWindow::WindowType type,
             continue;
         }
 
-        xv_calibration->xv_windowList.at(w)->xp_calcWindowIntensity(spectrum, currentValue, true, &ok);
+        xv_calibration->xv_windowList.at(w)->xp_calcWindowIntensity(spectrum, currentValue, &ok);
         if(!ok)
         {
             return false;

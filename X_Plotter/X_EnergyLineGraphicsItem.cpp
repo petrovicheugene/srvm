@@ -1,6 +1,5 @@
 //======================================================
 #include "X_EnergyLineGraphicsItem.h"
-#include "X_EnergyCalibrationLine.h"
 #include <QDebug>
 #include "X_TextGraphicsItem.h"
 #include <QPainter>
