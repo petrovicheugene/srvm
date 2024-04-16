@@ -35,7 +35,6 @@ public:
 
     qint64 xp_relatedObjectId() const;
     void xp_applyVisibilityAndPos(const X_VisibilityPointF&, X_ChartPointOptions* chartPointOptions);
-    //qint64 zp_pointId();
     void xp_updateCurrentItem();
 
 protected:

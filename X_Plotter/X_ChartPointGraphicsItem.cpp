@@ -114,6 +114,7 @@ void X_ChartPointGraphicsItem::xp_applyVisibilityAndPos(const X_VisibilityPointF
     setVisible(vPoint.xp_isVisible());
     xp_updateCurrentItem();
 }
+
 //======================================================
 void X_ChartPointGraphicsItem::xp_updateCurrentItem()
 {
