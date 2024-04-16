@@ -71,6 +71,7 @@ MainWindow::MainWindow(QWidget *parent)
     X_Calibration::xp_initStaticVariables();
 
     setWindowTitle(qApp->applicationDisplayName());
+    setObjectName("MainWindow");
 
     //    QPalette palette = QPalette(Qt::darkBlue);
     //    this->setPalette(palette);
@@ -192,26 +193,14 @@ void MainWindow::closeEvent(QCloseEvent* e)
 //==========================================================
 void MainWindow::xh_createActions()
 {
-    //    xv_languageControlAction = new QAction(this);
-    //    xv_languageControlAction->setIcon(QIcon(":/images/X_Images/earthGlobe-16.png"));
-    //    xv_languageControlAction->setText(tr("Language"));
-    //    xv_languageControlAction->setToolTip(tr("Application language"));
-
     xv_exitAction = new QAction(this);
     xv_exitAction->setIcon(QIcon(NS_Icons::glIconExitApp));
     xv_exitAction->setText(tr("Exit"));
     xv_exitAction->setToolTip(tr("Exit the application"));
 
-    //    xv_aboutAction = new QAction(this);
     xv_aboutAction->setIcon(QIcon(NS_Icons::glIconAbout));
-    //    xv_aboutAction->setText(tr("About"));
-    //    xv_aboutAction->setToolTip(tr("About the application"));
     xv_aboutQtAction->setIcon(QIcon(NS_Icons::glIconQt));
-    //    xv_helpAction = new QAction(this);
     xv_helpAction->setIcon(QIcon(NS_Icons::glIconHelp));
-    //    xv_helpAction->setText(tr("Help"));
-    //    xv_helpAction->setToolTip(tr("Show user guide"));
-
 }
 //==========================================================
 void MainWindow::xh_createPlotterWidget()
@@ -222,7 +211,7 @@ void MainWindow::xh_createPlotterWidget()
         xv_plotter->deleteLater();
     }
 
-    xv_plotter = new X_Plotter(this);
+    xv_plotter = new X_Plotter("MainPlotter", this);
     QFrame* frame = xh_setWidgetToFrame(xv_plotter);
     setCentralWidget(frame);
 
@@ -297,12 +286,6 @@ void MainWindow::xh_fillLanguageMenu()
 //==========================================================
 void MainWindow::xh_createComponents()
 {
-    // CENTRAL WIDGET
-    //    // Plotter
-    //    xv_plotter = new X_Plotter(this);
-    //    QFrame* frame = xh_setWidgetToFrame(xv_plotter);
-    //    setCentralWidget(frame);
-
     // DOCKS
     // Spectrum array dock
     xv_spectrumArrayDock = new QDockWidget(this);

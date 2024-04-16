@@ -25,9 +25,6 @@ X_PlotGraphicsScene::X_PlotGraphicsScene(double x, double y, double width, doubl
 //====================================================
 X_PlotGraphicsScene::~X_PlotGraphicsScene()
 {
-//    disconnect(this, &QGraphicsScene::sceneRectChanged,
-//               this, &X_PlotGraphicsScene::xh_onSceneRectChange);
-
     QList<QGraphicsItem*> itemList = items();
 
     foreach(auto item, itemList)
@@ -40,23 +37,11 @@ X_PlotGraphicsScene::~X_PlotGraphicsScene()
 //====================================================
 void X_PlotGraphicsScene::xp_addItem(QGraphicsItem * item)
 {
-    //    if(item->type() == WindowItemType)
-    //    {
-    //        X_WindowGraphicsItem* windowItem = qgraphicsitem_cast<X_WindowGraphicsItem*>(item);
-    //        windowItem->xp_fitInSceneRect(this->sceneRect());
-    //        xv_windowItemList << windowItem;
-    //    }
-
     QGraphicsScene::addItem(item);
 }
 //====================================================
 void X_PlotGraphicsScene::xp_removeItem(QGraphicsItem * item)
 {
-    //    if(item->type() == WindowItemType)
-    //    {
-    //        X_WindowGraphicsItem* windowItem = qgraphicsitem_cast<X_WindowGraphicsItem*>(item);
-    //        xv_windowItemList.removeAt(xv_windowItemList.indexOf(windowItem));
-    //    }
     if(!items().contains(item))
     {
         return;
@@ -74,10 +59,6 @@ void X_PlotGraphicsScene::xh_createConnections()
 //====================================================
 void X_PlotGraphicsScene::xh_onSceneRectChange(const QRectF& rect)
 {
-    // fitting window items in scene trect
-    //    foreach(X_WindowGraphicsItem* windowItem, xv_windowItemList)
-    //    {
-    //        windowItem->xp_fitInSceneRect(rect);
-    //    }
+
 }
 //====================================================

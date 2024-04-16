@@ -48,8 +48,7 @@ public slots:
 
 private slots:
 
-    //    void xh_showTermCorrelationChart();
-    //    void xh_showConcentrationChart();
+    void xh_setChartPointSize(double factor);
 
     void xh_currentSpectrumChanged(qint64 currentSpectrumId, int currentSpectrumIndex,
                                    qint64 previousSpectrumId, int previousSpectrumIndex);
@@ -70,23 +69,22 @@ private slots:
 private:
 
     // VARS
-    X_Plotter* xv_plotter;
-    QComboBox* xv_chartDataKindComboBox;
-    // QPushButton* xv_rebuildPlotterButton;
+    X_Plotter* xv_plotter = nullptr;
+    QComboBox* xv_chartDataKindComboBox = nullptr;
     X_ChartPointOptions xv_calibrationChartPointOptions;
     X_ChartPointOptions xv_termChartPointOptions;
     X_ChartPointOptions xv_deviationChartPointOptions;
 
     QRectF xv_defaultSceneRect = QRectF(QPointF(0.0,-100.0), QSizeF(100.0, 100.0));
-    X_DefaultRectGraphicsItem* xv_defaultItem;
+    X_DefaultRectGraphicsItem* xv_defaultItem = nullptr;
 
-    X_SpectrumArrayRepository* xv_spectrumArrayRepository;
-    X_CalibrationRepository* xv_calibrationRepository;
+    X_SpectrumArrayRepository* xv_spectrumArrayRepository = nullptr;
+    X_CalibrationRepository* xv_calibrationRepository = nullptr;
 
-    int xv_currentArrayIndex;
-    qint64 xv_currentArrayId;
-    int xv_currentCalibrationIndex;
-    qint64 xv_currentCalibrationId;
+    int xv_currentArrayIndex = -1;
+    qint64 xv_currentArrayId = -1;
+    int xv_currentCalibrationIndex = -1;
+    qint64 xv_currentCalibrationId = -1;
 
     QString xv_concentrationRulerLabelBaseString;
     QString xv_termRulerLabelBaseString;

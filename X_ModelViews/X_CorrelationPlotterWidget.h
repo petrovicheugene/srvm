@@ -21,12 +21,16 @@ signals:
 
 public slots:
 
+protected:
+
+
 private:
 
 
    // VARS
-   QVBoxLayout* frameLayout;
-   X_Plotter* xv_plotter;
+   QVBoxLayout* frameLayout = nullptr;
+   X_Plotter* xv_plotter = nullptr;
+
    // FUNCS
    void xh_createComponents();
    void xh_createConnections();

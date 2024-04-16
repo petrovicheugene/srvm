@@ -425,7 +425,7 @@ void X_AbstractPlotterDataManager::xp_currentSpectrumChanged(qint64 currentSpect
             continue;
         }
         visible = xv_spectrumArrayRepositiry->xp_isSpectrumVisible(xv_currentArrayId, spectrumItem->xp_spectrumId());
-        spectrumItem->xp_updateCurrentSpectrum(visible);
+        spectrumItem->xp_updateSpectrum(visible);
     }
     xv_plotter->xp_updatePlot();
 }
