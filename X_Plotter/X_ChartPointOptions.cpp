@@ -2,26 +2,13 @@
 #include "X_ChartPointOptions.h"
 #include "X_ChartPointGraphicsItem.h"
 #include <math.h>
+
+//====================================================
+
 //====================================================
 X_ChartPointOptions::X_ChartPointOptions()
 {
-    xv_pointType = PT_ROUND;
-    xv_pointSize = 3;
-    xv_outLineWidth = 1;
-
-    xv_currentPointColor = QColor(Qt::red);
-    xv_outLineColor = QColor(Qt::black);
-    xv_pointColor = QColor(Qt::green);
-
-    xv_horizontalRulerScaleValue = 0.001;
-    xv_horizontalRulerMarkPrecision = 3;
-    xv_horizontalRulerLabelString = QString();
-
-    xv_verticalRulerScaleValue = 0.001;
-    xv_verticalRulerMarkPrecision = 3;
-    xv_verticalRulerLabelString = QString();
-
-    xh_recalcShapeAndBoundingRect();
+    xp_recalcShapeAndBoundingRect();
 }
 //====================================================
 X_ChartPointOptions::PointType X_ChartPointOptions::xp_pointType() const
@@ -37,17 +24,17 @@ bool X_ChartPointOptions::xp_setPointType(X_ChartPointOptions::PointType type)
     }
 
     xv_pointType = type;
-    xh_recalcShapeAndBoundingRect();
-    xh_updateItems();
+    xp_recalcShapeAndBoundingRect();
+    xp_updateItems();
     return true;
 }
 //====================================================
-int X_ChartPointOptions::xp_pointPixelSize() const
+double X_ChartPointOptions::xp_pointPixelSize() const
 {
     return xv_pointSize;
 }
 //====================================================
-bool X_ChartPointOptions::xp_setPointPixelSize(int pointSize)
+bool X_ChartPointOptions::xp_setPointPixelSize(double pointSize)
 {
     if(xv_pointSize == pointSize)
     {
@@ -55,17 +42,17 @@ bool X_ChartPointOptions::xp_setPointPixelSize(int pointSize)
     }
 
     xv_pointSize = pointSize;
-    xh_recalcShapeAndBoundingRect();
-    xh_updateItems();
+    xp_recalcShapeAndBoundingRect();
+    xp_updateItems();
     return true;
 }
 //====================================================
-int X_ChartPointOptions::xp_outLineWidth() const
+double X_ChartPointOptions::xp_outLineWidth() const
 {
     return xv_outLineWidth;
 }
 //====================================================
-bool X_ChartPointOptions::xp_setOutLineWidth(int outLineWidth)
+bool X_ChartPointOptions::xp_setOutLineWidth(double outLineWidth)
 {
     if(xv_outLineWidth == outLineWidth)
     {
@@ -73,7 +60,7 @@ bool X_ChartPointOptions::xp_setOutLineWidth(int outLineWidth)
     }
 
     xv_outLineWidth = outLineWidth;
-    xh_updateItems();
+    xp_updateItems();
     return true;
 }
 //====================================================
@@ -90,7 +77,7 @@ bool X_ChartPointOptions::xp_setCurrentPointColor(QColor currentPointColor)
     }
 
     xv_currentPointColor = currentPointColor;
-    xh_updateItems();
+    xp_updateItems();
     return true;
 }
 //====================================================
@@ -107,7 +94,7 @@ bool X_ChartPointOptions::xp_setOutLineColor(QColor outLineColor)
     }
 
     xv_outLineColor = outLineColor;
-    xh_updateItems();
+    xp_updateItems();
     return true;
 }
 //====================================================
@@ -124,7 +111,7 @@ bool X_ChartPointOptions::xp_setPointColor(QColor pointColor)
     }
 
     xv_pointColor = pointColor;
-    xh_updateItems();
+    xp_updateItems();
     return true;
 }
 //====================================================
@@ -144,11 +131,11 @@ bool X_ChartPointOptions::xp_setRulerScaleValue(Qt::Orientation orientation, qre
 {
     if(orientation == Qt::Horizontal)
     {
-         if(xv_horizontalRulerScaleValue - scaleValue == 0.0)
-         {
-             return false;
-         }
-         xv_horizontalRulerScaleValue = scaleValue;
+        if(xv_horizontalRulerScaleValue - scaleValue == 0.0)
+        {
+            return false;
+        }
+        xv_horizontalRulerScaleValue = scaleValue;
     }
     else
     {
@@ -227,12 +214,12 @@ bool X_ChartPointOptions::xp_setRulerMarkPrecision(Qt::Orientation orientation, 
     return true;
 }
 //====================================================
-void X_ChartPointOptions::xh_recalcShapeAndBoundingRect()
+void X_ChartPointOptions::xp_recalcShapeAndBoundingRect()
 {
     // shape
-    qreal pointHalfSize = (qreal)xv_pointSize / 2.0;
+    qreal pointHalfSize = (xv_pointSize ) / 2.0;
     QRectF rect = QRectF(-1*pointHalfSize, -1*pointHalfSize,
-                         (qreal)xv_pointSize, (qreal)xv_pointSize);
+                         xv_pointSize , xv_pointSize );
 
     QPainterPath newShape;
     QPolygonF polygon;
@@ -260,9 +247,11 @@ void X_ChartPointOptions::xh_recalcShapeAndBoundingRect()
 
     xv_shape = newShape;
     xv_boundingRect = rect;
+
+    xp_updateItems();
 }
 //====================================================
-void X_ChartPointOptions::xh_updateItems() const
+void X_ChartPointOptions::xp_updateItems() const
 {
     foreach(X_ChartPointGraphicsItem* item, xv_seriesPointItemList)
     {

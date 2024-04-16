@@ -14,7 +14,7 @@ class X_PlotGraphicsView : public QGraphicsView
     Q_OBJECT
 public:
     explicit X_PlotGraphicsView(QWidget *parent = nullptr);
-
+    ~X_PlotGraphicsView();
     // FUNC
     QRectF xp_currentVisibleSceneRect() const;
 
@@ -52,7 +52,7 @@ signals:
     void xg_mousePressedAt(QPointF);
     void xg_viewportRectChanged(QRectF) const;
     void xg_rulerToolChanged(QPointF startPoint, QPointF endPoint, bool visibility) const;
-
+    void xs_altCtrlWheel(QPoint);
 
 protected:
 
@@ -71,11 +71,9 @@ protected:
 
     // just hidden
     void setViewport(QWidget * widget);
-
     void fitInView(const QRectF &rect, Qt::AspectRatioMode aspectRatioMode = Qt::IgnoreAspectRatio);
     void fitInView(double x, double y, double w, double h, Qt::AspectRatioMode aspectRatioMode = Qt::IgnoreAspectRatio);
     void fitInView(const QGraphicsItem *item, Qt::AspectRatioMode aspectRatioMode = Qt::IgnoreAspectRatio);
-
 
 private:
 
@@ -103,9 +101,14 @@ private:
 
     int xv_colorPickUpAuxCoverageSize;
     QColor xv_gridColor;
+
     // FUNCS
     void xh_createConnections();
     QImage xh_grabCursorArea(QPoint);
-};
+    void xh_saveSettings();
+    void xh_restoreSettings();
+
+
+ };
 //=============================================================
 #endif // X_GRAPHICSVIEWPLOT_H

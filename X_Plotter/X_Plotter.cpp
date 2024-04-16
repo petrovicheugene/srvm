@@ -1,5 +1,7 @@
 //====================================================
 #include "X_Plotter.h"
+#include "X_ChartPointGraphicsItem.h"
+#include "X_ChartPointOptions.h"
 #include "X_PlotGraphicsScene.h"
 #include "X_PlotGraphicsView.h"
 #include "X_RulersAndGridManager.h"
@@ -9,10 +11,12 @@
 
 #include <QApplication>
 #include <QLabel>
+#include <QMetaObject>
 #include <QScrollBar>
 #include <QVBoxLayout>
 #include <QHBoxLayout>
 #include <QGridLayout>
+#include <QSettings>
 #include <QScrollBar>
 #include <QDebug>
 #include <math.h>
@@ -23,8 +27,9 @@ extern const double gl_defaultWindowZValue = 1;
 extern const double gl_currentWindowZValue = 4;
 
 //====================================================
-X_Plotter::X_Plotter(QWidget *parent) : QWidget(parent)
+X_Plotter::X_Plotter(const QString& objectName, QWidget *parent) : QWidget(parent)
 {
+    setObjectName(objectName);
     xv_rulerWidget = nullptr;
     xv_plotView = nullptr;
     xv_verticalScrollBar = nullptr;
@@ -33,25 +38,28 @@ X_Plotter::X_Plotter(QWidget *parent) : QWidget(parent)
     xv_rulersAndGreedManager = nullptr;
     xv_dashBoard = nullptr;
 
-    xv_verticalAbsMax = 0;
+    xv_verticalAbsMax = 0.0;
     xv_autoDefineVerticalAbsMax = true;
-    xv_verticalDistortionFactor = 0;
-    xv_verticalDistortionCorrectionFactor = 0;
+    xv_verticalDistortionFactor = 0.0;
+    xv_verticalDistortionCorrectionFactor = 0.0;
 
     xv_mouseButtonDown = false;
     xv_userResizesWidget = false;
     xh_createComponents();
     xh_createConnections();
+    xh_restoreSettings(objectName);
     qApp->installEventFilter(this);
+    QMetaObject::invokeMethod(this, "xh_notifySizingFactor", Qt::QueuedConnection);
 }
 //====================================================
-//X_PlotGraphicsScene* X_Plotter::xp_plotScene()
-//{
-//    return xv_plotScene;
-//}
+void X_Plotter::xh_notifySizingFactor()
+{
+    emit xs_chartPointItemSizeChanged(xv_relativeSizingFactor);
+}
 //====================================================
 X_Plotter::~X_Plotter()
 {
+    xh_saveSettings(this->objectName());
     delete xv_plotScene;
 }
 //====================================================
@@ -373,8 +381,6 @@ void X_Plotter::xp_clearItemsForType(int type)
             xv_plotScene->xp_removeItem(itemList.value(i));
         }
     }
-
-    //xv_plotView->update();
 }
 //====================================================
 void X_Plotter::xp_clearItemsExeptType(int type)
@@ -399,6 +405,24 @@ void X_Plotter::xp_addItem(QGraphicsItem * item)
         return;
     }
 
+    if(item->type() == SpectrumItemType)
+    {
+        auto t_item = qgraphicsitem_cast<X_SpectrumGraphicsItem*>(item);
+        if(t_item)
+        {
+            t_item->xp_setLineWidth(xv_relativeSizingFactor);
+        }
+    }
+    else if(item->type() == ChartPointItemType)
+    {
+        auto t_item = qgraphicsitem_cast<X_ChartPointGraphicsItem*>(item);
+        if(t_item)
+        {
+            auto options = t_item->xp_seriesPointOptions();
+            options->xp_setPointPixelSize(options->xp_defaultPointSize() * xv_relativeSizingFactor);
+        }
+    }
+
     xv_plotScene->xp_addItem(item);
     QRectF itemBoundingSceneRect = xv_plotScene->itemsBoundingRect();
 
@@ -410,12 +434,6 @@ void X_Plotter::xp_addItem(QGraphicsItem * item)
 //====================================================
 void X_Plotter::xp_removeItem(QGraphicsItem * item)
 {
-//    if(!item)
-//    {
-//        return;
-//    }
-
-    //item->setVisible(false);
     xv_plotScene->xp_removeItem(item);
     xv_plotView->update();
 }
@@ -850,6 +868,8 @@ void X_Plotter::xh_createConnections()
             this, &X_Plotter::xg_mousePressedAt);
     connect(xv_plotView, &X_PlotGraphicsView::xg_viewportRectChanged,
             this, &X_Plotter::xg_viewportRectChanged);
+    connect(xv_plotView, &X_PlotGraphicsView::xs_altCtrlWheel,
+            this, &X_Plotter::xh_updateGraphicsItemsSizes);
 
     connect(xv_plotView, &X_PlotGraphicsView::xg_mouseScenePositionChanged,
             this, &X_Plotter::xh_mouseScenePositionChanged);
@@ -858,7 +878,52 @@ void X_Plotter::xh_createConnections()
     connect(xv_plotView, &X_PlotGraphicsView::xg_rulerToolChanged,
             this, &X_Plotter::xg_rulerToolChanged);
 
+}
+//====================================================
+void X_Plotter::xh_restoreSettings(const QString & parentName)
+{
+    QSettings settings;
+    settings.beginGroup(parentName+"plotter");
+    QVariant vData = settings.value("itemRelativeSizeFactor");
+    qDebug() << "RESTORE SETTINGS" << parentName+"plotter" << vData;
+    if(vData.isValid() && vData.canConvert<double>())
+    {
+        xv_relativeSizingFactor = vData.toDouble();
+    }
+    settings.endGroup();
+}
+//====================================================
+void X_Plotter::xh_saveSettings(const QString & parentName)
+{
+    QSettings settings;
+    settings.beginGroup(parentName+"plotter");
+    // qDebug() << "SAVE SETTINGS" << parentName+"plotter" << xv_relativeSizingFactor;
+    settings.setValue("itemRelativeSizeFactor", xv_relativeSizingFactor);
+    settings.endGroup();
+}
+//====================================================
+void X_Plotter::xh_updateGraphicsItemsSizes(QPoint wheelPoint)
+{
+    double changeFactor = wheelPoint.y() + wheelPoint.x() > 0?  1.1 : 0.9;
+    xv_relativeSizingFactor = xv_relativeSizingFactor * changeFactor < 1.0? 1.0 : xv_relativeSizingFactor * changeFactor;
 
+    emit xs_chartPointItemSizeChanged(xv_relativeSizingFactor);
+
+    QList<QGraphicsItem *> itemList =  xv_plotView->items();
+    // QSet<X_ChartPointOptions*> optionsSet;
+    foreach(auto item,  itemList)
+    {
+        if(item->type() == SpectrumItemType)
+        {
+            auto t_item = qgraphicsitem_cast<X_SpectrumGraphicsItem*>(item);
+            if(!t_item)
+            {
+                continue;
+            }
+            t_item->xp_setLineWidth(xv_relativeSizingFactor);
+            t_item->update();
+        }
+    }
 }
 //====================================================
 void X_Plotter::xh_connectScrollBars()

@@ -8,14 +8,18 @@
 #include <QStyleOptionGraphicsItem>
 #include <QtMath>
 //======================================================
+// STATIC
+//======================================================
 QColor X_SpectrumGraphicsItem::xv_currentColor = QColor(Qt::red);
 qint64 X_SpectrumGraphicsItem::xv_currentSpectrumId = -1;
 //======================================================
+// END STATIC
+//======================================================
 X_SpectrumGraphicsItem::X_SpectrumGraphicsItem(const X_AbstractSpectrum *spectrum,
-                                             double boundingRectTopFactor,
-                                             double distortionFactor,
-                                             double distortionCorrectionFactor,
-                                             QGraphicsItem *parent) : QGraphicsItem(parent)
+                                               double boundingRectTopFactor,
+                                               double distortionFactor,
+                                               double distortionCorrectionFactor,
+                                               QGraphicsItem *parent) : QGraphicsItem(parent)
 {
     if(boundingRectTopFactor < 1)
     {
@@ -51,7 +55,7 @@ X_SpectrumGraphicsItem::X_SpectrumGraphicsItem(const X_AbstractSpectrum *spectru
     setZValue(gl_defaultSpectrumZValue);
 
     xp_updateSpectrumData(spectrum);
-    xp_updateCurrentSpectrum(spectrum->xp_isSpectrumVisible());
+    xp_updateSpectrum(spectrum->xp_isSpectrumVisible());
 }
 //======================================================
 QRectF X_SpectrumGraphicsItem::boundingRect() const
@@ -63,8 +67,9 @@ void X_SpectrumGraphicsItem::paint(QPainter * painter, const QStyleOptionGraphic
 {
     painter->save();
 
-    QPen pen(QBrush(xv_paintColor),1);
+    QPen pen(QBrush(xv_paintColor), xv_lineWidth);
     pen.setCosmetic(true);
+    pen.setJoinStyle(Qt::MiterJoin);
     painter->setPen(pen);
     painter->drawPath(xv_spectrumPainterPath);
 
@@ -190,7 +195,7 @@ bool X_SpectrumGraphicsItem::xp_isSpectrumCurrent()
     return xv_currentSpectrumId == xv_spectrumId;
 }
 //======================================================
-void X_SpectrumGraphicsItem::xp_updateCurrentSpectrum(bool visible)
+void X_SpectrumGraphicsItem::xp_updateSpectrum(bool visible)
 {
     if(xv_currentSpectrumId == xv_spectrumId)
     {
@@ -200,13 +205,12 @@ void X_SpectrumGraphicsItem::xp_updateCurrentSpectrum(bool visible)
     }
     else
     {
-        //      if(zValue() != gl_defaultSpectrumX_Value)
-        //      {
         setZValue(gl_defaultSpectrumZValue);
         xv_paintColor = xv_color;
         setVisible(visible);
-        //      }
     }
+
+    update();
 }
 //======================================================
 void X_SpectrumGraphicsItem::mouseReleaseEvent(QGraphicsSceneMouseEvent * event)
@@ -233,5 +237,16 @@ void X_SpectrumGraphicsItem::focusOutEvent(QFocusEvent *event)
 QColor X_SpectrumGraphicsItem::xp_spectrumColor() const
 {
     return xv_color;
+}
+//======================================================
+double X_SpectrumGraphicsItem::xp_lineWidth() const
+{
+    return xv_lineWidth;
+}
+//======================================================
+void X_SpectrumGraphicsItem::xp_setLineWidth(double width)
+{
+    xv_lineWidth = width;
+    xp_updateSpectrum(isVisible());
 }
 //======================================================

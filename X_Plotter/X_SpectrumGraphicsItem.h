@@ -30,8 +30,11 @@ public:
     void xp_setDistortion(double distortionFactor, double distortionCorrectionFactor);
     bool xp_isSpectrumCurrent();
 
-    void xp_updateCurrentSpectrum(bool visible);
+    void xp_updateSpectrum(bool visible);
     QColor xp_spectrumColor() const;
+
+    double xp_lineWidth() const;
+    void xp_setLineWidth(double width);
 
 protected:
 
@@ -55,12 +58,8 @@ private:
 
     double xv_distortionFactor;
     double xv_distortionCorrectionFactor;
-    // double xv_sceneRectTop;
     double xv_boundingRectTopFactor;
-    // double xv_k;
-
-    // y' = y^xv_logFactor * xv_k
-    // max = max^logFactor * xv_k
+    double xv_lineWidth = 1.0;
 
     // FUNCS
     void xh_calculatePainterPath();

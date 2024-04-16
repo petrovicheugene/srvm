@@ -40,6 +40,8 @@ X_CorrelationPlotterDataManager::X_CorrelationPlotterDataManager(QObject *parent
 void X_CorrelationPlotterDataManager::xp_connectToPlotter(X_Plotter* plotter)
 {
     xv_plotter = plotter;
+    connect(xv_plotter, &X_Plotter::xs_chartPointItemSizeChanged,
+            this, &X_CorrelationPlotterDataManager::xh_setChartPointSize);
     xv_plotter->xp_setAutoDefineVerticalAbsMax(false);
     xv_defaultItem = new X_DefaultRectGraphicsItem(xv_defaultSceneRect, true, true, true);
     xv_plotter->xp_addItem(xv_defaultItem);
@@ -50,13 +52,6 @@ void X_CorrelationPlotterDataManager::xp_connectToPlotter(X_Plotter* plotter)
                                            X_HorizontalDashBoard::AWP_LEFT_OF_BUTTONS,
                                            Qt::AlignLeft,
                                            10);
-
-    //   QList<QAction*> actionList;
-    //   actionList << xv_switchRuleMetrixAction;
-    //   xv_plotter->xp_appendButtonsToDashboard(actionList, Qt::AlignLeft, 0);
-
-    //   connect(xv_plotter, &X_Plotter::xg_cursorAreaImage,
-    //           this, &X_PlotterDataManager::xh_findItemInCursorAreaImage);
 
     // rule settings // No label on right and top
     xv_plotter->xp_setLeftMarkRecalcFlag(false);
@@ -74,6 +69,13 @@ void X_CorrelationPlotterDataManager::xp_connectToPlotter(X_Plotter* plotter)
     xv_plotter->xp_setBottomRuleLabelVisible(true);
 
     xv_plotter->xp_setDistortionSliderVisible(false);
+}
+//=====================================================================
+void X_CorrelationPlotterDataManager::xh_setChartPointSize(double factor)
+{
+    xv_calibrationChartPointOptions.xp_setPointPixelSize(xv_calibrationChartPointOptions.xp_defaultPointSize()*factor);
+    xv_termChartPointOptions.xp_setPointPixelSize(xv_termChartPointOptions.xp_defaultPointSize()*factor);
+    xv_deviationChartPointOptions.xp_setPointPixelSize(xv_deviationChartPointOptions.xp_defaultPointSize()*factor);
 }
 //=====================================================================
 void X_CorrelationPlotterDataManager::xp_connectToSpectrumArrayRepository(X_SpectrumArrayRepository* repository)
@@ -237,9 +239,6 @@ void X_CorrelationPlotterDataManager::xh_rebuildChart()
         return;
     }
 
-    // bool plotScaled = xv_plotter->xp_isPlotScaled();
-    //    xv_plotter->xp_clearItemsExeptType(DefaultRectItemType);
-
     // chartPointItemList
     QList<QGraphicsItem*> chartPointItemList = xv_plotter->xp_itemListForType(ChartPointItemType);
 
@@ -254,7 +253,7 @@ void X_CorrelationPlotterDataManager::xh_rebuildChart()
     ChartDataKind chartDataKind = static_cast<ChartDataKind>(vData.toInt());
 
     // getting chart data
-    X_ChartPointOptions* chartPointOptions = 0;
+    X_ChartPointOptions* chartPointOptions = nullptr;
     QMap<qint64, X_VisibilityPointF> chartPointMap;
     qreal maxX = 0.0;
     qreal minX = 0.0;
@@ -270,7 +269,6 @@ void X_CorrelationPlotterDataManager::xh_rebuildChart()
             // return;
         }
         xh_setRulerMetrixAndPrecisionToPlot(xv_termChartPointOptions);
-            //xh_setRulerMetrixAndPrecisionToPlot(xv_deviationChartPointOptions);
         xh_recalcAndSetSceneRect(maxX, minX, maxY, minY, chartDataKind,
                                  &xv_termChartPointOptions);
 
@@ -353,13 +351,7 @@ void X_CorrelationPlotterDataManager::xh_rebuildChart()
         xv_plotter->xp_removeItem(item);
     }
 
-    // if(!plotScaled)
-    //{
     xv_plotter->xp_fitInBoundingRect();
-    //        QMetaObject::invokeMethod(xv_plotter, "xp_fitInBoundingRect",
-    //                                  Qt::QueuedConnection);
-
-    //}
 
 }
 //=====================================================================

@@ -22,9 +22,8 @@ class X_Plotter : public QWidget
 {
     Q_OBJECT
 public:
-    explicit X_Plotter(QWidget *parent = nullptr);
+    explicit X_Plotter(const QString &objectName, QWidget *parent = nullptr);
     ~X_Plotter();
-    // X_PlotGraphicsScene* xp_plotScene();
 
     bool xp_setMinimalVerticalScaleInterval(double);
     double xp_minimalVerticalScaleInterval();
@@ -114,8 +113,7 @@ signals:
     void xg_mousePressedAt(QPointF mousePos) const;
     void xg_viewportRectChanged(QRectF) const;
     void xg_rulerToolChanged(QPointF startPoint, QPointF endPoint, bool visibility) const;
-//    void xg_mouseScenePositionChanged(QPointF scenePos) const;
-//    void xg_mouseLeaved() const;
+    void xs_chartPointItemSizeChanged(double relativeSizingFactor);
 
 public slots:
 
@@ -149,6 +147,9 @@ private slots:
 
     void xh_mouseScenePositionChanged(QPointF scenePos) const;
     void xh_mouseLeaved() const;
+    void xh_updateGraphicsItemsSizes(QPoint wheelPoint);
+
+    void xh_notifySizingFactor();
 
 private:
 
@@ -166,25 +167,20 @@ private:
     double xv_verticalDistortionCorrectionFactor;
 
     QList<double> xv_energyCalibrationFactorList;
-    // recalc when max or log base are changed
-    //
-    //
-    // xv_verticalDistortionCorrectionFactor =  max / max^xv_verticalDistortionFactor
-    //
-    //
-
-    //  Y_log = Y^xv_verticalDistortionFactor * xv_verticalDistortionCorrectionFactor
-
 
     // scrollbar
     QScrollBar* xv_verticalScrollBar;
     QScrollBar* xv_horizontalScrollBar;
     bool xv_mouseButtonDown;
     bool xv_userResizesWidget;
+    double xv_relativeSizingFactor = 1.0;
 
     // FUNCS
     void xh_createComponents();
     void xh_createConnections();
+    void xh_restoreSettings(const QString& parentName);
+    void xh_saveSettings(const QString & parentName);
+
     void xh_connectScrollBars();
     void xh_updateScrollBarsVisible();
 
@@ -193,6 +189,8 @@ private:
 
     bool xh_recalcVerticalDistortionFactors(double distortionValue);
     void xh_recalcRulesAndItemCoordinates();
+    void xh_updateItemSize(QGraphicsItem * item);
+
 
 };
 //====================================================

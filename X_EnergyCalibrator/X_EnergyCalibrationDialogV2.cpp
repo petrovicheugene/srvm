@@ -44,6 +44,7 @@ X_EnergyCalibrationDialogV2::X_EnergyCalibrationDialogV2(QMap<quint8, QList<X_Sp
 {
     setWindowTitle(tr("Energy calibration"));
     setWindowFlags(Qt::Tool);
+    setObjectName("X_EnergyCalibrationDialogV2");
 
     xh_createComponents();
     xh_createConnections();
@@ -126,14 +127,8 @@ QWidget* X_EnergyCalibrationDialogV2::xh_createMainWidget()
     rightLayout->setContentsMargins(0, 0, 0, 0);
     mainGroupBoxlayout->addLayout(rightLayout);
 
-    //    QDialogButtonBox* mainWidgetButtonBox = new QDialogButtonBox(this);
-    //    mainGroupBoxlayout->addWidget(mainWidgetButtonBox);
-
-    //    xv_okButton = new QPushButton(NS_Buttons::glButtonOk, this);
-    //    mainWidgetButtonBox->addButton(xv_okButton, QDialogButtonBox::ActionRole);
-
     // plotter
-    xv_plotter = new X_Plotter;
+    xv_plotter = new X_Plotter("EnergyCalibration", this);
     mainGroupBoxlayout->addWidget(xv_plotter, 99999999);
 
     // spectrum list

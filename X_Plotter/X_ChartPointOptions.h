@@ -23,11 +23,11 @@ public:
     X_ChartPointOptions::PointType xp_pointType() const;
     bool xp_setPointType(X_ChartPointOptions::PointType);
 
-    int xp_pointPixelSize() const;
-    bool xp_setPointPixelSize(int);
+    double xp_pointPixelSize() const;
+    bool xp_setPointPixelSize(double);
 
-    int xp_outLineWidth() const;
-    bool xp_setOutLineWidth(int);
+    double xp_outLineWidth() const;
+    bool xp_setOutLineWidth(double);
 
     QColor xp_currentPointColor() const;
     bool xp_setCurrentPointColor(QColor);
@@ -47,6 +47,11 @@ public:
     int xp_rulerMarkPrecision(Qt::Orientation) const;
     bool xp_setRulerMarkPrecision(Qt::Orientation, int);
 
+    void xp_recalcShapeAndBoundingRect();
+    void xp_updateItems() const;
+
+    double xp_defaultPointSize() {return 3.0;};
+
 private:
 
     // VARS
@@ -54,26 +59,25 @@ private:
     QRectF xv_boundingRect;
     QPainterPath xv_shape;
 
-    qreal xv_horizontalRulerScaleValue;
+    qreal xv_horizontalRulerScaleValue = 0.001;
     QString xv_horizontalRulerLabelString;
-    int xv_horizontalRulerMarkPrecision;
+    double xv_horizontalRulerMarkPrecision = 3.0;
 
-    qreal xv_verticalRulerScaleValue;
+    qreal xv_verticalRulerScaleValue = 0.001;
     QString xv_verticalRulerLabelString;
-    int xv_verticalRulerMarkPrecision;
+    double xv_verticalRulerMarkPrecision = 3.0;
 
 
-    X_ChartPointOptions::PointType xv_pointType;
-    int xv_pointSize;
-    int xv_outLineWidth;
-    QColor xv_currentPointColor;
-    QColor xv_outLineColor;
-    QColor xv_pointColor;
+    X_ChartPointOptions::PointType xv_pointType = PT_ROUND;
+
+    double xv_pointSize = 3.0;
+    double xv_outLineWidth = 1.0;
+    QColor xv_currentPointColor = QColor(Qt::red);
+    QColor xv_outLineColor = QColor(Qt::black);
+    QColor xv_pointColor = QColor(Qt::green);
 
     // FUNCS
-    void xh_recalcShapeAndBoundingRect();
 
-    void xh_updateItems() const;
 
 };
 //============================================
