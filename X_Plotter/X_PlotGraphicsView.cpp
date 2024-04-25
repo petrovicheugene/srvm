@@ -640,21 +640,21 @@ void X_PlotGraphicsView::drawForeground(QPainter *painter, const QRectF &rect)
     QGraphicsView::drawForeground(painter, rect);
 }
 //=============================================================
-void X_PlotGraphicsView::contextMenuEvent(QContextMenuEvent *event)
-{
-    if(xv_plotMode == PM_REGULAR && xv_mousePressStartViewPos == event->pos())
-    {
-        QMenu menu;
-        menu.addActions(this->actions());
-        menu.move(mapToGlobal(event->pos()));
-        QAction* action =  menu.exec();
-        if(action != nullptr)
-        {
-            action->setData(QVariant(mapToScene(event->pos())));
-            action->trigger();
-        }
-    }
-}
+// void X_PlotGraphicsView::contextMenuEvent(QContextMenuEvent *event)
+// {
+//     if(xv_plotMode == PM_REGULAR && xv_mousePressStartViewPos == event->pos())
+//     {
+//         QMenu menu;
+//         menu.addActions(this->actions());
+//         menu.move(mapToGlobal(event->pos()));
+//         QAction* action =  menu.exec();
+//         if(action != nullptr)
+//         {
+//             action->setData(QVariant(mapToScene(event->pos())));
+//             action->trigger();
+//         }
+//     }
+// }
 //=============================================================
 void X_PlotGraphicsView::xh_createConnections()
 {
