@@ -129,6 +129,11 @@ void X_CorrelationPlotterDataManager::xp_setCurrentSpectrum(qint64 id) const
     xv_spectrumArrayRepository->xp_setSpectrumCurrent(id);
 }
 //=====================================================================
+void X_CorrelationPlotterDataManager::xp_toogleSpectrum(qint64 id) const
+{
+    xv_spectrumArrayRepository->xp_toggleSpectrum(id);
+}
+//=====================================================================
 bool X_CorrelationPlotterDataManager::xh_setRulerMetrixAndPrecisionToPlot(const X_ChartPointOptions& options) const
 {
     if(!xv_plotter)

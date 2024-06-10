@@ -51,13 +51,15 @@ public:
     void xp_updateItems() const;
 
     double xp_defaultPointSize() {return 3.0;};
+    QRectF xp_boundingRect(bool checked) const;
+    QPainterPath xp_shape(bool checked) const;
 
 private:
 
     // VARS
     QList<X_ChartPointGraphicsItem*> xv_seriesPointItemList;
-    QRectF xv_boundingRect;
-    QPainterPath xv_shape;
+    QRectF xv_checkedBoundingRect;
+    QPainterPath xv_checkedShape;
 
     qreal xv_horizontalRulerScaleValue = 0.001;
     QString xv_horizontalRulerLabelString;

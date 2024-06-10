@@ -58,6 +58,25 @@ void X_JointSpectrumTableWidget::xp_setCurrentSpectrumIndex(int spectrumIndex)
     }
 }
 //=============================================================
+void X_JointSpectrumTableWidget::xp_toggleSpectrum(int spectrumIndex)
+{
+    if(!xv_table->model())
+    {
+        return;
+    }
+
+    QModelIndex previousIndex = xv_table->currentIndex();
+
+    int column = previousIndex.isValid() ? previousIndex.column() : 0;
+    QModelIndex index = xv_table->model()->index(spectrumIndex, column, QModelIndex());
+    if(index.isValid())
+    {
+        Qt::CheckState checkState = index.data(Qt::CheckStateRole) == Qt::Checked? Qt::Unchecked : Qt::Checked;
+        xv_table->model()->setData(index, checkState, Qt::CheckStateRole);
+
+    }
+}
+//=============================================================
 void X_JointSpectrumTableWidget::xp_selectedSpectrumIndexList(QList<int>& selectedSpectrumList)
 {
     QModelIndexList indexList = xv_table->selectionModel()->selectedIndexes();
@@ -190,6 +209,9 @@ void X_JointSpectrumTableWidget::xp_connectToSpectrumArrayRepository(X_SpectrumA
             repository, &X_SpectrumArrayRepository::xp_onCurrentSpectrumChanged);
     connect(repository, &X_SpectrumArrayRepository::xg_setCurrentSpectrumIndex,
             this, &X_JointSpectrumTableWidget::xp_setCurrentSpectrumIndex);
+    connect(repository, &X_SpectrumArrayRepository::xg_querySpectrumToggle,
+            this, &X_JointSpectrumTableWidget::xp_toggleSpectrum);
+
     connect(repository, &X_SpectrumArrayRepository::xg_requestCurrentSpectrumRow,
             this, &X_JointSpectrumTableWidget::xp_currentSpectrumRow);
 

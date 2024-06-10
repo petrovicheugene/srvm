@@ -245,8 +245,8 @@ void X_ChartPointOptions::xp_recalcShapeAndBoundingRect()
         newShape.addEllipse(rect);
     }
 
-    xv_shape = newShape;
-    xv_boundingRect = rect;
+    xv_checkedShape = newShape;
+    xv_checkedBoundingRect = rect;
 
     xp_updateItems();
 }
@@ -255,8 +255,18 @@ void X_ChartPointOptions::xp_updateItems() const
 {
     foreach(X_ChartPointGraphicsItem* item, xv_seriesPointItemList)
     {
-        item->xp_setNewBoundingRect(xv_boundingRect);
+        item->xp_setNewBoundingRect(xv_checkedBoundingRect);
         item->update();
     }
+}
+//====================================================
+QRectF X_ChartPointOptions::xp_boundingRect(bool checked) const
+{
+    return checked? xv_checkedBoundingRect : xv_checkedBoundingRect;
+}
+//====================================================
+QPainterPath X_ChartPointOptions::xp_shape(bool checked) const
+{
+    return checked? xv_checkedShape : xv_checkedShape;
 }
 //====================================================

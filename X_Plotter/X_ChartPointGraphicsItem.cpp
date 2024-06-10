@@ -6,6 +6,7 @@
 #include "X_PlotterDefaultVariables.h"
 
 #include <QGraphicsRectItem>
+#include <QGraphicsSceneMouseEvent>
 #include <QBrush>
 #include <QPen>
 #include <QPainter>
@@ -44,7 +45,7 @@ X_ChartPointGraphicsItem::~X_ChartPointGraphicsItem()
 //======================================================
 QRectF X_ChartPointGraphicsItem::boundingRect() const
 {
-    return xv_chartPointOptions->xv_boundingRect;
+    return xv_chartPointOptions->xv_checkedBoundingRect;
 }
 //======================================================
 void X_ChartPointGraphicsItem::xp_setCurrentSpectrumColor(QColor color)
@@ -66,13 +67,13 @@ void X_ChartPointGraphicsItem::paint(QPainter * painter, const QStyleOptionGraph
     QPen pen(QBrush(xv_chartPointOptions->xv_outLineColor), xv_chartPointOptions->xv_outLineWidth);
     //pen.setCosmetic(true);
     painter->setPen(pen);
-    painter->drawPath(xv_chartPointOptions->xv_shape);
+    painter->drawPath(xv_chartPointOptions->xv_checkedShape);
     painter->restore();
 }
 //======================================================
 QPainterPath X_ChartPointGraphicsItem::shape() const
 {
-    return xv_chartPointOptions->xv_shape;
+    return xv_chartPointOptions->xv_checkedShape;
 }
 //======================================================
 int X_ChartPointGraphicsItem::type() const
@@ -103,10 +104,10 @@ void X_ChartPointGraphicsItem::xp_applyVisibilityAndPos(const X_VisibilityPointF
     vPoint.setY(vPoint.y() * (-1) / xv_chartPointOptions->xp_rulerScaleValue(Qt::Vertical));
     vPoint.setX(vPoint.x() / xv_chartPointOptions->xp_rulerScaleValue(Qt::Horizontal));
     setPos(vPoint);
-    setVisible(vPoint.xp_isVisible());
+    // setVisible(vPoint.xp_isVisible());
+    xv_checked = (vPoint.xp_isVisible());
     xp_updateCurrentItem();
 }
-
 //======================================================
 void X_ChartPointGraphicsItem::xp_updateCurrentItem()
 {
@@ -114,14 +115,16 @@ void X_ChartPointGraphicsItem::xp_updateCurrentItem()
     {
         setZValue(gl_currentSpectrumZValue);
         xv_paintColor = xv_currentColor;
-        setVisible(isVisible());
+        // setVisible(isVisible());
     }
     else
     {
         setZValue(gl_defaultSpectrumZValue);
         xv_paintColor = xv_chartPointOptions->xv_pointColor;
-        setVisible(isVisible());
+        // setVisible(isVisible());
     }
+
+    update();
 }
 //======================================================
 void X_ChartPointGraphicsItem::mousePressEvent(QGraphicsSceneMouseEvent* event)
@@ -131,10 +134,18 @@ void X_ChartPointGraphicsItem::mousePressEvent(QGraphicsSceneMouseEvent* event)
 //======================================================
 void X_ChartPointGraphicsItem::mouseReleaseEvent(QGraphicsSceneMouseEvent* event)
 {
-#ifdef DBG
-    qDebug() << "ITEM MOUSE RELEASE";
-#endif
+    if(event->button() == Qt::RightButton)
+    {
+        qDebug() << "INFO TEXT";
+    }
 
-    xv_dataManager->xp_setCurrentSpectrum(xv_relatedObjectId);
+    // xv_dataManager->xp_setCurrentSpectrum(xv_relatedObjectId);
+}
+//======================================================
+void X_ChartPointGraphicsItem::mouseDoubleClickEvent(QGraphicsSceneMouseEvent * event)
+{
+    qDebug() << "SET CHECKED";
+    xv_dataManager->xp_toogleSpectrum(xv_relatedObjectId);
+
 }
 //======================================================

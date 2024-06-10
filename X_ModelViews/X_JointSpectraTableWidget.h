@@ -39,6 +39,7 @@ signals:
 public slots:
 
     void xp_setCurrentSpectrumIndex(int spectrumIndex);
+    void xp_toggleSpectrum(int spectrumIndex);
     void xp_selectedSpectrumIndexList(QList<int>&);
     void xp_currentIndex(QModelIndex& ) const;
     void xp_currentSpectrumRow(int& row, bool* ok) const;

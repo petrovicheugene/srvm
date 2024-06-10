@@ -42,6 +42,7 @@ protected:
     // FUNCS
     virtual void mousePressEvent(QGraphicsSceneMouseEvent * event) override;
     virtual void mouseReleaseEvent(QGraphicsSceneMouseEvent * event) override;
+    virtual void mouseDoubleClickEvent(QGraphicsSceneMouseEvent * event) override;
 
 private:
 
@@ -50,6 +51,8 @@ private:
     X_ChartPointOptions* xv_chartPointOptions;
     qint64 xv_relatedObjectId;
     QColor xv_paintColor;
+    bool xv_checked = true;
+
     static QColor xv_currentColor;
     static qint64 xv_currentSpectrumId;
 

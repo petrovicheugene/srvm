@@ -1,10 +1,6 @@
 //=============================================================
 #include "X_PlotGraphicsView.h"
-#include "X_ChartPointGraphicsItem.h"
-#include "X_ChartPointOptions.h"
-#include "X_GraphicsItemUserTypes.h"
 #include "X_RulersAndGridManager.h"
-#include "X_SpectrumGraphicsItem.h"
 
 #include <QApplication>
 #include <QRubberBand>
@@ -315,7 +311,7 @@ void X_PlotGraphicsView::wheelEvent(QWheelEvent * event)
         xv_sceneCenterPos = mapToScene(viewport()->rect()).boundingRect().center();
         xv_sceneMousePos = mapToScene(event->position().toPoint());
     }
-    else if(qApp->keyboardModifiers() == Qt::AltModifier | Qt::ControlModifier)
+    else if(qApp->keyboardModifiers() == (Qt::AltModifier | Qt::ControlModifier))
     {
         emit xs_altCtrlWheel(event->angleDelta());
     }
@@ -329,8 +325,7 @@ void X_PlotGraphicsView::mousePressEvent(QMouseEvent* event)
         xv_sceneMousePos = mapToScene(event->pos());
         xv_mousePressStartViewPos = event->pos();
         emit xg_mousePressedAt(xv_sceneMousePos);
-        return;
-        // }
+        // return;
     }
     else if(event->button() == Qt::RightButton)
     {

@@ -764,6 +764,32 @@ void X_SpectrumArrayRepository::xp_setSpectrumCurrent(qint64 spectrumId) const
     }
 }
 //==================================================================
+void X_SpectrumArrayRepository::xp_toggleSpectrum(qint64 spectrumId)
+{
+    qDebug() << "TOGGLE SPECTRUM";
+    if(spectrumId < 0)
+    {
+        return;
+    }
+
+    int currentArrayIndex = -1;
+    emit xg_requestCurrentArrayIndex(currentArrayIndex);
+    if(currentArrayIndex < 0 || currentArrayIndex >= xv_arrayList.count())
+    {
+        return;
+    }
+
+    for(int s = 0; s < xv_arrayList.at(currentArrayIndex)->xp_spectrumCount(); s++)
+    {
+        if(xv_arrayList.at(currentArrayIndex)->xp_spectrumId(s) == spectrumId)
+        {
+            emit xg_querySpectrumToggle(s);
+            break;
+        }
+    }
+
+}
+//==================================================================
 const X_AbstractSpectrum* X_SpectrumArrayRepository::xp_spectrum(int arrayIndex, int spectrumIndex) const
 {
     if(arrayIndex < 0 || arrayIndex >= xv_arrayList.count() )
