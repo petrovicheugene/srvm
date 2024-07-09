@@ -54,12 +54,17 @@ public:
     QRectF xp_boundingRect(bool checked) const;
     QPainterPath xp_shape(bool checked) const;
 
+    QRectF xp_boundingRect(Qt::CheckState checkState) const;
+    QPainterPath xp_shape(Qt::CheckState checkState) const;
+
 private:
 
     // VARS
     QList<X_ChartPointGraphicsItem*> xv_seriesPointItemList;
     QRectF xv_checkedBoundingRect;
     QPainterPath xv_checkedShape;
+    QRectF xv_uncheckedBoundingRect;
+    QPainterPath xv_uncheckedShape;
 
     qreal xv_horizontalRulerScaleValue = 0.001;
     QString xv_horizontalRulerLabelString;
@@ -80,6 +85,7 @@ private:
 
     // FUNCS
 
+    QPainterPath xh_createObliqueCross(const QRectF& rect);
 
 };
 //============================================

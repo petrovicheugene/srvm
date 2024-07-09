@@ -31,7 +31,7 @@ X_ChartPointGraphicsItem::X_ChartPointGraphicsItem(const X_CorrelationPlotterDat
     setFlag(QGraphicsItem::ItemIgnoresTransformations);
     setZValue(gl_defaultSpectrumZValue);
 
-    xp_applyVisibilityAndPos(visibilityPoint, xv_chartPointOptions);
+    xp_applyPointProperties(visibilityPoint, xv_chartPointOptions);
 }
 //======================================================
 X_ChartPointGraphicsItem::~X_ChartPointGraphicsItem()
@@ -45,7 +45,8 @@ X_ChartPointGraphicsItem::~X_ChartPointGraphicsItem()
 //======================================================
 QRectF X_ChartPointGraphicsItem::boundingRect() const
 {
-    return xv_chartPointOptions->xv_checkedBoundingRect;
+    return xv_checkState == Qt::Checked? xv_chartPointOptions->xv_checkedBoundingRect :
+        xv_chartPointOptions->xv_uncheckedBoundingRect;
 }
 //======================================================
 void X_ChartPointGraphicsItem::xp_setCurrentSpectrumColor(QColor color)
@@ -67,13 +68,14 @@ void X_ChartPointGraphicsItem::paint(QPainter * painter, const QStyleOptionGraph
     QPen pen(QBrush(xv_chartPointOptions->xv_outLineColor), xv_chartPointOptions->xv_outLineWidth);
     //pen.setCosmetic(true);
     painter->setPen(pen);
-    painter->drawPath(xv_chartPointOptions->xv_checkedShape);
+    painter->drawPath(xv_checkState == Qt::Checked?
+                          xv_chartPointOptions->xv_checkedShape : xv_chartPointOptions->xv_uncheckedShape);
     painter->restore();
 }
 //======================================================
 QPainterPath X_ChartPointGraphicsItem::shape() const
 {
-    return xv_chartPointOptions->xv_checkedShape;
+    return xv_checkState == Qt::Checked? xv_chartPointOptions->xv_checkedShape : xv_chartPointOptions->xv_uncheckedShape;
 }
 //======================================================
 int X_ChartPointGraphicsItem::type() const
@@ -96,16 +98,17 @@ qint64 X_ChartPointGraphicsItem::xp_relatedObjectId() const
     return xv_relatedObjectId;
 }
 //======================================================
-void X_ChartPointGraphicsItem::xp_applyVisibilityAndPos(const X_VisibilityPointF &visibilityPoint,
+void X_ChartPointGraphicsItem::xp_applyPointProperties(const X_VisibilityPointF &visibilityPoint,
                                                         X_ChartPointOptions* chartPointOptions)
 {
+    // qDebug() << "APPLY VISIBILITY" << visibilityPoint.xp_isVisible();
     xv_chartPointOptions = chartPointOptions;
     X_VisibilityPointF vPoint = visibilityPoint;
     vPoint.setY(vPoint.y() * (-1) / xv_chartPointOptions->xp_rulerScaleValue(Qt::Vertical));
     vPoint.setX(vPoint.x() / xv_chartPointOptions->xp_rulerScaleValue(Qt::Horizontal));
     setPos(vPoint);
     // setVisible(vPoint.xp_isVisible());
-    xv_checked = (vPoint.xp_isVisible());
+    xv_checkState = vPoint.xp_isChecked();
     xp_updateCurrentItem();
 }
 //======================================================

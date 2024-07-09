@@ -342,7 +342,7 @@ void X_CorrelationPlotterDataManager::xh_rebuildChart()
 
         if(itemExists)
         {
-            pointItem->xp_applyVisibilityAndPos(it.value(), chartPointOptions);
+            pointItem->xp_applyPointProperties(it.value(), chartPointOptions);
         }
         else
         {
@@ -432,7 +432,8 @@ bool X_CorrelationPlotterDataManager::xh_getTermToConcentrationData(QMap<qint64,
             minY = termValue;
         }
 
-        point = X_VisibilityPointF(concentration, termValue, spectrum->xp_isSpectrumChecked() && isDataOk);
+        point = X_VisibilityPointF(concentration, termValue, spectrum->xp_isSpectrumVisible() && isDataOk,
+                                   spectrum->xp_isSpectrumChecked());
         chartPointMap.insert(spectrum->xp_spectrumId(), point);
     }
 
@@ -509,7 +510,8 @@ bool X_CorrelationPlotterDataManager::xh_getCalibrationToConcentrationData(QMap<
             minY = calibrationValue;
         }
 
-        point = X_VisibilityPointF(concentration, calibrationValue, spectrum->xp_isSpectrumChecked() && isDataOk);
+        point = X_VisibilityPointF(concentration, calibrationValue, spectrum->xp_isSpectrumVisible() && isDataOk,
+                                   spectrum->xp_isSpectrumChecked());
         chartPointMap.insert(spectrum->xp_spectrumId(), point);
     }
 
@@ -610,7 +612,8 @@ bool X_CorrelationPlotterDataManager::xh_getDeviationToConcentrationData(QMap<qi
             minY = deviationValue;
         }
 
-        point = X_VisibilityPointF(concentration, deviationValue, spectrum->xp_isSpectrumChecked() && isDataOk);
+        point = X_VisibilityPointF(concentration, deviationValue, spectrum->xp_isSpectrumVisible() && isDataOk,
+                                   spectrum->xp_isSpectrumChecked());
         chartPointMap.insert(spectrum->xp_spectrumId(), point);
     }
 

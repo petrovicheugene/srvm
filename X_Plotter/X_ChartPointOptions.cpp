@@ -218,7 +218,7 @@ void X_ChartPointOptions::xp_recalcShapeAndBoundingRect()
 {
     // shape
     qreal pointHalfSize = (xv_pointSize ) / 2.0;
-    QRectF rect = QRectF(-1*pointHalfSize, -1*pointHalfSize,
+    QRectF rect = QRectF(-1.0*pointHalfSize, -1.0*pointHalfSize,
                          xv_pointSize , xv_pointSize );
 
     QPainterPath newShape;
@@ -248,7 +248,25 @@ void X_ChartPointOptions::xp_recalcShapeAndBoundingRect()
     xv_checkedShape = newShape;
     xv_checkedBoundingRect = rect;
 
+    // Unchecked point
+    xv_uncheckedShape = xh_createObliqueCross(rect);
+    xv_uncheckedBoundingRect = rect;
+
     xp_updateItems();
+}
+//====================================================
+QPainterPath X_ChartPointOptions::xh_createObliqueCross(const QRectF& rect)
+{
+    QPainterPath shape;
+    shape.moveTo(rect.center());
+    shape.lineTo(rect.bottomRight());
+
+    shape.moveTo(rect.center());
+    shape.lineTo(rect.bottomLeft());
+
+    // shape.moveTo(rect.topRight());
+
+    return shape;
 }
 //====================================================
 void X_ChartPointOptions::xp_updateItems() const
@@ -262,11 +280,21 @@ void X_ChartPointOptions::xp_updateItems() const
 //====================================================
 QRectF X_ChartPointOptions::xp_boundingRect(bool checked) const
 {
-    return checked? xv_checkedBoundingRect : xv_checkedBoundingRect;
+    return checked? xv_checkedBoundingRect : xv_uncheckedBoundingRect;
 }
 //====================================================
 QPainterPath X_ChartPointOptions::xp_shape(bool checked) const
 {
-    return checked? xv_checkedShape : xv_checkedShape;
+    return checked? xv_checkedShape : xv_uncheckedShape;
+}
+//====================================================
+QRectF X_ChartPointOptions::xp_boundingRect(Qt::CheckState checkState) const
+{
+    return checkState == Qt::Checked? xv_checkedBoundingRect : xv_uncheckedBoundingRect;
+}
+//====================================================
+QPainterPath X_ChartPointOptions::xp_shape(Qt::CheckState checkState) const
+{
+    return checkState == Qt::Checked? xv_checkedShape : xv_uncheckedShape;
 }
 //====================================================
