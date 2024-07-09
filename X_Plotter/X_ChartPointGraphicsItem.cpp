@@ -46,7 +46,7 @@ X_ChartPointGraphicsItem::~X_ChartPointGraphicsItem()
 QRectF X_ChartPointGraphicsItem::boundingRect() const
 {
     return xv_checkState == Qt::Checked? xv_chartPointOptions->xv_checkedBoundingRect :
-        xv_chartPointOptions->xv_uncheckedBoundingRect;
+               xv_chartPointOptions->xv_uncheckedBoundingRect;
 }
 //======================================================
 void X_ChartPointGraphicsItem::xp_setCurrentSpectrumColor(QColor color)
@@ -64,12 +64,16 @@ void X_ChartPointGraphicsItem::paint(QPainter * painter, const QStyleOptionGraph
     painter->save();
     painter->setRenderHint(QPainter::Antialiasing);
     // window body
-    painter->setBrush(QBrush(xv_paintColor));
-    QPen pen(QBrush(xv_chartPointOptions->xv_outLineColor), xv_chartPointOptions->xv_outLineWidth);
-    //pen.setCosmetic(true);
+    painter->setBrush(xv_checkState == Qt::Checked? QBrush(xv_paintColor) : QBrush(Qt::transparent));
+
+    QPen pen(QBrush(xv_chartPointOptions->xv_outLineColor),
+             xv_chartPointOptions->xv_outLineWidth);
+    // pen.setCosmetic(true);
     painter->setPen(pen);
-    painter->drawPath(xv_checkState == Qt::Checked?
-                          xv_chartPointOptions->xv_checkedShape : xv_chartPointOptions->xv_uncheckedShape);
+    // painter->drawPath(xv_checkState == Qt::Checked?
+    //                       xv_chartPointOptions->xv_checkedShape : xv_chartPointOptions->xv_uncheckedShape);
+    painter->drawPath(xv_chartPointOptions->xv_checkedShape);
+
     painter->restore();
 }
 //======================================================
@@ -99,7 +103,7 @@ qint64 X_ChartPointGraphicsItem::xp_relatedObjectId() const
 }
 //======================================================
 void X_ChartPointGraphicsItem::xp_applyPointProperties(const X_VisibilityPointF &visibilityPoint,
-                                                        X_ChartPointOptions* chartPointOptions)
+                                                       X_ChartPointOptions* chartPointOptions)
 {
     // qDebug() << "APPLY VISIBILITY" << visibilityPoint.xp_isVisible();
     xv_chartPointOptions = chartPointOptions;

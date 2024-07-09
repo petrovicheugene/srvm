@@ -217,7 +217,7 @@ bool X_ChartPointOptions::xp_setRulerMarkPrecision(Qt::Orientation orientation, 
 void X_ChartPointOptions::xp_recalcShapeAndBoundingRect()
 {
     // shape
-    qreal pointHalfSize = (xv_pointSize ) / 2.0;
+    qreal pointHalfSize = xv_pointSize  / 2.0;
     QRectF rect = QRectF(-1.0*pointHalfSize, -1.0*pointHalfSize,
                          xv_pointSize , xv_pointSize );
 
@@ -258,11 +258,33 @@ void X_ChartPointOptions::xp_recalcShapeAndBoundingRect()
 QPainterPath X_ChartPointOptions::xh_createObliqueCross(const QRectF& rect)
 {
     QPainterPath shape;
-    shape.moveTo(rect.center());
-    shape.lineTo(rect.bottomRight());
 
-    shape.moveTo(rect.center());
-    shape.lineTo(rect.bottomLeft());
+    shape.addRect(rect);
+    QRectF crossRect = rect.adjusted(2.0, 2.0, -2.0, -2.0);
+    shape.moveTo(crossRect.topLeft());
+    shape.lineTo(crossRect.bottomRight());
+
+    shape.moveTo(crossRect.topRight());
+    shape.lineTo(crossRect.bottomLeft());
+
+    // shape.moveTo(rect.top(), rect.left());
+    // shape.lineTo(rect.bottom(), rect.left());
+    // shape.lineTo(rect.bottom(), rect.right());
+    // shape.lineTo(rect.top(), rect.right());
+    // shape.lineTo(rect.top(), rect.left());
+
+    // shape.lineTo(rect.bottom(), rect.right());
+
+    // shape.moveTo(rect.topLeft());
+    // // shape.moveTo(rect.center());
+    // shape.lineTo(rect.bottomRight());
+    // shape.moveTo(rect.topRight());
+    // // shape.moveTo(rect.center());
+    // shape.lineTo(rect.bottomLeft());
+
+
+    // shape.moveTo(rect.center());
+    // shape.lineTo(rect.bottomLeft());
 
     // shape.moveTo(rect.topRight());
 
