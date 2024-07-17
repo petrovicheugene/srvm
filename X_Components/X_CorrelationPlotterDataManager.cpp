@@ -118,10 +118,6 @@ void X_CorrelationPlotterDataManager::xp_connectToTermCorrelationWidget(X_TermCo
 void X_CorrelationPlotterDataManager::xp_setBottomRulerScaleMetrix(qreal scaleValue, const QString& rulerLabelString )
 {
 
-
-
-
-
 }
 //=====================================================================
 void X_CorrelationPlotterDataManager::xp_setCurrentSpectrum(qint64 id) const
@@ -132,6 +128,47 @@ void X_CorrelationPlotterDataManager::xp_setCurrentSpectrum(qint64 id) const
 void X_CorrelationPlotterDataManager::xp_toogleSpectrum(qint64 id) const
 {
     xv_spectrumArrayRepository->xp_toggleSpectrum(id);
+}
+//=====================================================================
+QString X_CorrelationPlotterDataManager::xp_infoForSpectrumId(qint64 id) const
+{
+    QString infoString = xv_spectrumArrayRepository->xp_spectrumNameForId(xv_currentArrayIndex, id);
+
+    QString calibrationChemElement = xv_calibrationRepository->xp_chemElementForCalibrationId(xv_currentCalibrationId);
+    qint64 chemElementId = xv_spectrumArrayRepository->xp_chemElementIdForName(xv_currentArrayIndex, calibrationChemElement);
+    if(chemElementId < 0)
+    {
+         return infoString;
+    }
+
+    const X_AbstractSpectrum* spectrum = xv_spectrumArrayRepository->xp_spectrumForId(id);
+    if(!spectrum)
+    {
+        return infoString;
+    }
+
+    qreal calibrationValue = 0.0;
+    if(!xv_calibrationRepository->xp_calculateConcentrationForId(xv_currentCalibrationId,
+                                                                  spectrum, calibrationValue))
+    {
+        return infoString;
+    }
+
+    bool ok = false;
+    qreal concentration = X_LocaleDoubleConverter::toDouble(spectrum->xp_concentrationString(chemElementId), &ok);;
+    if(!ok)
+    {
+        return infoString;
+    }
+
+    qreal deviation = std::abs(concentration - calibrationValue);
+    qreal deviationPercent =  (deviation / concentration) * 100.0;
+
+    infoString += QString("\n%1 - %2").arg(tr("Conc."), QString::number(concentration));
+    infoString += QString("\n%1 - %2").arg(tr("Calc."), QString::number(calibrationValue));
+    infoString += QString("\n%1 - %2 (%3%)").arg(tr("Dev."), QString::number(deviation), QString::number(deviationPercent, 'g', 3));
+
+    return infoString;
 }
 //=====================================================================
 bool X_CorrelationPlotterDataManager::xh_setRulerMetrixAndPrecisionToPlot(const X_ChartPointOptions& options) const
@@ -457,13 +494,13 @@ bool X_CorrelationPlotterDataManager::xh_getCalibrationToConcentrationData(QMap<
 
     qint64 chemElementId = xv_spectrumArrayRepository->xp_chemElementIdForName(xv_currentArrayIndex, calibrationChemElement);
 
-    const X_AbstractSpectrum* spectrum;
-    qreal calibrationValue;
-    qreal concentration;
-    bool ok;
+    const X_AbstractSpectrum* spectrum = nullptr;
+    qreal calibrationValue = 0.0;
+    qreal concentration = 0.0;
+    bool ok = false;
     X_VisibilityPointF point;
-    bool isDataOk;
-    qreal maxConcentrationValue;
+    bool isDataOk =false;
+    qreal maxConcentrationValue = 0.0;
 
     maxX = 0.0;
     minX = 0.0;
@@ -828,13 +865,9 @@ void X_CorrelationPlotterDataManager::xh_currentSpectrumArrayChanged(qint64 curr
         return;
     }
 
-    //emit xg_currentOperation(OT_BEGIN_RESET, -1, -1);
     xv_currentArrayIndex = currentArrayIndex;
     xv_currentArrayId = currentArrayId;
     xh_rebuildChart();
-    //    xh_defineColumnCounts();
-    //    xh_calculateCalibrationConcentrations();
-    //    emit xg_currentOperation(OT_END_RESET, -1, -1);
 }
 //=====================================================================
 void X_CorrelationPlotterDataManager::xh_onRepositoryArrayOperation(X_SpectrumArrayRepository::SpectrumOperationType type,

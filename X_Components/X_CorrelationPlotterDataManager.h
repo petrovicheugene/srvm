@@ -38,6 +38,8 @@ public:
     void xp_toogleSpectrum(qint64 id) const;
     void xh_rebuildChart();
 
+    QString xp_infoForSpectrumId(qint64 id) const;
+
 signals:
 
     void xg_requestCurrentTermIndex(int&) const;

@@ -71,6 +71,7 @@ public:
 
     int xp_spectrumCount(int arrayIndex) const;
     QString xp_spectrumName(int arrayIndex, int spectrumIndex) const;
+    QString xp_spectrumNameForId(int arrayIndex, qint64 spectrumId) const;
     qint64 xp_spectrumId(int arrayIndex, int spectrumIndex) const;
     QColor xp_spectrumColor(int arrayIndex, int spectrumIndex) const;
     bool xp_isSpectrumVisible(int arrayIndex, int spectrumIndex) const;

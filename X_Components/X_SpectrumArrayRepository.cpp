@@ -566,12 +566,36 @@ bool X_SpectrumArrayRepository::xp_setSpectrumArrayName(int arrayIndex, const QS
 //==================================================================
 QString X_SpectrumArrayRepository::xp_spectrumName(int arrayIndex, int spectrumIndex) const
 {
-    if(arrayIndex < 0 || arrayIndex >= xv_arrayList.count() )
+    if(arrayIndex < 0 || arrayIndex >= xv_arrayList.count())
     {
         return QString();
     }
 
-    return xv_arrayList.value(arrayIndex)->xp_spectrumFileName(spectrumIndex);
+    X_SpectrumArray* array = xv_arrayList.value(arrayIndex, nullptr);
+
+    if(!array)
+    {
+        return QString();
+    }
+
+    return array->xp_spectrumFileName(spectrumIndex);
+}
+//======================================================
+QString X_SpectrumArrayRepository::xp_spectrumNameForId(int arrayIndex, qint64 spectrumId) const
+{
+    if(arrayIndex < 0 || arrayIndex >= xv_arrayList.count())
+    {
+        return QString();
+    }
+
+    X_SpectrumArray* array = xv_arrayList.value(arrayIndex, nullptr);
+
+    if(!array)
+    {
+        return QString();
+    }
+
+    return array->xp_spectrumFileNameForId(spectrumId);
 }
 //======================================================
 qint64 X_SpectrumArrayRepository::xp_spectrumId(int arrayIndex, int spectrumIndex) const

@@ -139,7 +139,6 @@ private:
 
 private slots:
 
-
     void xh_rebuildCorrelationPlot();
     void xh_createPlotterWidget();
     void xh_appLanguageControl();

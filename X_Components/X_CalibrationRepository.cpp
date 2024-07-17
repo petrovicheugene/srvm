@@ -7,10 +7,12 @@
 #include "X_SetGainFactorToCalibrationDialog.h"
 #include "X_XMLCalibrationIOHandler.h"
 
+#include <QApplication>
 #include <algorithm>
 #include <QDebug>
 #include <QFile>
 #include <QFileInfo>
+#include <QKeyEvent>
 #include <QMessageBox>
 #include <QMimeData>
 #include <QModelIndex>
@@ -44,34 +46,30 @@ X_CalibrationRepository::X_CalibrationRepository(QObject* parent)
     xh_createConnections();
     xh_actionEnablingControl();
     xv_blockCalibrationRecalc = false;
+
+    qApp->installEventFilter(this);
+}
+//==================================================================
+bool X_CalibrationRepository::eventFilter(QObject* object, QEvent* event)
+{
+    if(xv_recalcEquationFactorsAction->isEnabled() && event->type() == QEvent::KeyPress)
+    {
+        QKeyEvent* keyEvent = static_cast<QKeyEvent*>(event);
+        if((keyEvent->key() == Qt::Key_R && qApp->keyboardModifiers() & Qt::ControlModifier) ||
+            keyEvent->key() == Qt::Key_F8)
+        {
+            xv_recalcEquationFactorsAction->trigger();
+            return true;
+        }
+    }
+
+    return false;
 }
 //==================================================================
 void X_CalibrationRepository::xp_appendActionsToMenu(QMenu* menu) const
 {
     if (menu->objectName() == "Edit")
     {
-        //        QMenu* calibrationMenu = new QMenu(tr("Calibrations"));
-        //        calibrationMenu->setIcon(QIcon(glCalibrationIconString));
-        //        calibrationMenu->addAction(xv_newCalibrationAction);
-        //        calibrationMenu->addAction(xv_removeCalibrationAction);
-        //        menu->addMenu(calibrationMenu);
-
-        //        QMenu* windowsMenu = new QMenu(tr("Calibration windows"));
-        //        windowsMenu->setIcon(QIcon(glWindowIconString));
-        //        windowsMenu->addAction(xv_newWindowAction);
-        //        windowsMenu->addAction(xv_removeWindowAction);
-        //        menu->addMenu(windowsMenu);
-
-        //        QMenu* termMenu = new QMenu(tr("Equation terms"));
-        //        termMenu->setIcon(QIcon());
-        //        termMenu->addAction(xv_createMixedTermsAction);
-        //        termMenu->addAction(xv_removeMixedTermsAction);
-        //        termMenu->addSeparator();
-        //        termMenu->addAction(xv_createCustomTermAction);
-        //        termMenu->addAction(xv_removeCustomTermAction);
-
-        //        menu->addMenu(termMenu);
-
         menu->addAction(xv_newCalibrationAction);
         menu->addAction(xv_removeCalibrationAction);
         menu->addSeparator();
@@ -2681,13 +2679,6 @@ void X_CalibrationRepository::xh_createConnections()
             &QAction::triggered,
             this,
             &X_CalibrationRepository::xh_onNewCalibrationAction);
-    //    connect(xv_openCalibrationsAction, &QAction::triggered,
-    //            this, &X_CalibrationRepository::xg_openCalibrationsActionTriggered);
-    //    connect(xv_saveCalibrationsAction, &QAction::triggered,
-    //            this, &X_CalibrationRepository::xg_saveCalibrationsActionTriggered);
-    //    connect(xv_saveAsCalibrationsAction, &QAction::triggered,
-    //            this, &X_CalibrationRepository::xg_saveAsCalibrationsActionTriggered);
-
     connect(xv_removeCalibrationAction,
             &QAction::triggered,
             this,
