@@ -84,7 +84,7 @@ QVariant X_ArrayModel::data(const QModelIndex & index, int role) const
     return QVariant();
 }
 //==================================================================
-bool	X_ArrayModel::setData(const QModelIndex & index, const QVariant & value, int role)
+bool X_ArrayModel::setData(const QModelIndex & index, const QVariant & value, int role)
 {
     if(xv_repositiry == 0 || !index.isValid() || index.row() < 0 || index.row() >= rowCount()
             || index.column() < 0 || index.column() >= columnCount() || !value.isValid())

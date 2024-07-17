@@ -62,6 +62,7 @@ public:
     int xp_exposition() const;
 
     QString xp_spectrumFileName(int index) const;
+    QString xp_spectrumFileNameForId(qint64 id) const;
     qint64 xp_spectrumId(int index) const;
     QColor xp_spectrumColor(int index) const;
     QList<quint32> xp_spectrumData(int index) const;

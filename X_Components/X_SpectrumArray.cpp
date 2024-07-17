@@ -335,6 +335,19 @@ QString X_SpectrumArray::xp_spectrumFileName(int index) const
     return xv_spectrumList.at(index)->xp_name();
 }
 //===============================================
+QString X_SpectrumArray::xp_spectrumFileNameForId(qint64 id) const
+{
+    for(auto& spectrum : xv_spectrumList)
+    {
+        if(spectrum->xp_spectrumId() == id)
+        {
+            return spectrum->xp_name();
+        }
+    }
+
+    return QString();
+}
+//===============================================
 qint64 X_SpectrumArray::xp_spectrumId(int index) const
 {
     if(index < 0 || index >= xv_spectrumList.count())

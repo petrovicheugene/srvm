@@ -131,7 +131,11 @@ bool X_JointSpectraModel::setData(const QModelIndex & index, const QVariant & va
         if(index.column() == 1 && value.canConvert<bool>())
         {
             bool visible = value.toBool();
-            return xv_dataManager->xp_setSpectrumVisible(index.row(), visible);
+            if(xv_dataManager->xp_setSpectrumVisible(index.row(), visible))
+            {
+                emit dataChanged(index, index);
+                return true;
+            }
         }
     }
 
@@ -141,7 +145,12 @@ bool X_JointSpectraModel::setData(const QModelIndex & index, const QVariant & va
         {
             Qt::CheckState checkState = static_cast<Qt::CheckState>(value.toInt());
             bool checked = checkState == Qt::Checked ? true : false;
-            return xv_dataManager->xp_setSpectrumChecked(index.row(), checked);
+            if(xv_dataManager->xp_setSpectrumChecked(index.row(), checked))
+            {
+                emit dataChanged(index, index);
+                return true;
+            }
+
         }
     }
 

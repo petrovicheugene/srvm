@@ -4,7 +4,7 @@
 <context>
     <name>MainWindow</name>
     <message>
-        <location filename="MainWindow.cpp" line="335"/>
+        <location filename="MainWindow.cpp" line="318"/>
         <source>Calibrations</source>
         <translation>Градуировки</translation>
     </message>
@@ -37,32 +37,32 @@
         <translation type="vanished">О библиотеке Qt</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="135"/>
+        <location filename="MainWindow.cpp" line="136"/>
         <source>The spectrum array list has been modified.</source>
         <translation>Массив спектров был изменен.</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="136"/>
+        <location filename="MainWindow.cpp" line="137"/>
         <source>Do you want to save your changes?</source>
         <translation>Сохранить изменения?</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="164"/>
+        <location filename="MainWindow.cpp" line="165"/>
         <source>There are calibrations that have been modified.</source>
         <translation>Градуировки были изменены.</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="165"/>
+        <location filename="MainWindow.cpp" line="166"/>
         <source>Do you want to save them?</source>
         <translation>Сохранить изменения?</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="202"/>
+        <location filename="MainWindow.cpp" line="198"/>
         <source>Exit</source>
         <translation>Выход</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="203"/>
+        <location filename="MainWindow.cpp" line="199"/>
         <source>Exit the application</source>
         <translation>Выйти из приложения</translation>
     </message>
@@ -75,7 +75,7 @@
         <translation type="vanished">Информация о программе</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="487"/>
+        <location filename="MainWindow.cpp" line="470"/>
         <source>Help</source>
         <translation>Помощь</translation>
     </message>
@@ -84,69 +84,69 @@
         <translation type="vanished">Открыть руководство пользователя</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="269"/>
+        <location filename="MainWindow.cpp" line="258"/>
         <source>The language of application has been changed.</source>
         <translation>Язык приложения был изменён.</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="270"/>
+        <location filename="MainWindow.cpp" line="259"/>
         <source>In order for the changes to take effect, please restart the application.</source>
         <oldsource>The language of application has been changed.
 In order for the changes to take effect, please restart the application.</oldsource>
         <translation>Для применения изменений перезапустите приложение.</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="275"/>
+        <location filename="MainWindow.cpp" line="264"/>
         <source>Unknown language settings error.</source>
         <translation>Неизвестная ошибка установки языка приложения.</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="279"/>
+        <location filename="MainWindow.cpp" line="268"/>
         <source>Language settings</source>
         <translation>Настройка языка приложения</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="310"/>
+        <location filename="MainWindow.cpp" line="293"/>
         <source>Spectra</source>
         <translation>Спектры</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="378"/>
+        <location filename="MainWindow.cpp" line="361"/>
         <source>Plot</source>
         <translation>Графики</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="390"/>
+        <location filename="MainWindow.cpp" line="373"/>
         <source>Message</source>
         <translation>Сообщения</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="402"/>
+        <location filename="MainWindow.cpp" line="385"/>
         <source>Energy lines</source>
         <translation>Характеристические линии элементов</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="454"/>
+        <location filename="MainWindow.cpp" line="437"/>
         <source>File</source>
         <translation>Файл</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="463"/>
+        <location filename="MainWindow.cpp" line="446"/>
         <source>Edit</source>
         <translation>Правка</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="471"/>
+        <location filename="MainWindow.cpp" line="454"/>
         <source>View</source>
         <translation>Вид</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="479"/>
+        <location filename="MainWindow.cpp" line="462"/>
         <source>Actions</source>
         <translation>Действия</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="716"/>
+        <location filename="MainWindow.cpp" line="692"/>
         <source>Application language</source>
         <translation>Язык приложения</translation>
     </message>
@@ -232,7 +232,7 @@ In order for the changes to take effect, please restart the application.</oldsou
     </message>
     <message>
         <location filename="X_Components/X_Calibration.cpp" line="49"/>
-        <location filename="X_Components/X_CalibrationWindow.cpp" line="22"/>
+        <location filename="X_Components/X_CalibrationWindow.cpp" line="21"/>
         <source>Not defined</source>
         <translation>Не определено</translation>
     </message>
@@ -247,19 +247,19 @@ In order for the changes to take effect, please restart the application.</oldsou
         <translation>Дробное</translation>
     </message>
     <message>
-        <location filename="X_Components/X_CalibrationWindow.cpp" line="26"/>
+        <location filename="X_Components/X_CalibrationWindow.cpp" line="25"/>
         <source>Peak</source>
         <translation>Пик</translation>
     </message>
     <message>
-        <location filename="X_Components/X_CalibrationWindow.cpp" line="30"/>
-        <location filename="X_Components/X_TermNormalizer.cpp" line="46"/>
+        <location filename="X_Components/X_CalibrationWindow.cpp" line="29"/>
+        <location filename="X_Components/X_TermNormalizer.cpp" line="45"/>
         <source>Coherent</source>
         <translation>Когерентный</translation>
     </message>
     <message>
-        <location filename="X_Components/X_CalibrationWindow.cpp" line="34"/>
-        <location filename="X_Components/X_TermNormalizer.cpp" line="47"/>
+        <location filename="X_Components/X_CalibrationWindow.cpp" line="33"/>
+        <location filename="X_Components/X_TermNormalizer.cpp" line="46"/>
         <source>Incoherent</source>
         <translation>Некогерентный</translation>
     </message>
@@ -308,8 +308,8 @@ In order for the changes to take effect, please restart the application.</oldsou
         <translation type="vanished">Общая интенсивность:</translation>
     </message>
     <message>
-        <location filename="X_Components/X_CalibrationRepository.cpp" line="2321"/>
-        <location filename="X_Components/X_SpectrumArray.cpp" line="481"/>
+        <location filename="X_Components/X_CalibrationRepository.cpp" line="2319"/>
+        <location filename="X_Components/X_SpectrumArray.cpp" line="494"/>
         <source>Cannot handle file of type &quot;%1&quot;!</source>
         <translation>Невозможно обработать файл типа &quot;%1&quot;!</translation>
     </message>
@@ -435,22 +435,22 @@ In order for the changes to take effect, please restart the application.</oldsou
         <translation>Выбор цвета</translation>
     </message>
     <message>
-        <location filename="X_Components/X_TermNormalizer.cpp" line="45"/>
+        <location filename="X_Components/X_TermNormalizer.cpp" line="44"/>
         <source>None</source>
         <translation>Нет</translation>
     </message>
     <message>
-        <location filename="X_Components/X_TermNormalizer.cpp" line="48"/>
+        <location filename="X_Components/X_TermNormalizer.cpp" line="47"/>
         <source>Coherent / Incoherent</source>
         <translation>Когерентный / Некогерентный</translation>
     </message>
     <message>
-        <location filename="X_Components/X_TermNormalizer.cpp" line="49"/>
+        <location filename="X_Components/X_TermNormalizer.cpp" line="48"/>
         <source>Incoherent / Coherent</source>
         <translation>Некогерентный / Когерентный</translation>
     </message>
     <message>
-        <location filename="X_Components/X_TermNormalizer.cpp" line="50"/>
+        <location filename="X_Components/X_TermNormalizer.cpp" line="49"/>
         <source>Custom</source>
         <translation>Пользовательский</translation>
     </message>
@@ -464,8 +464,9 @@ In order for the changes to take effect, please restart the application.</oldsou
     </message>
     <message>
         <location filename="X_Components/X_AbstractPlotterDataManager.cpp" line="32"/>
-        <source>Channels</source>
-        <translation>Каналы</translation>
+        <source>Channel</source>
+        <oldsource>Channels</oldsource>
+        <translation>Канал</translation>
     </message>
     <message>
         <location filename="X_Components/X_AbstractPlotterDataManager.cpp" line="33"/>
@@ -717,7 +718,7 @@ In order for the changes to take effect, please restart the application.</oldsou
         <translation>Тип изменяемого параметра не является пользовательским!</translation>
     </message>
     <message>
-        <location filename="X_Components/X_Calibration.cpp" line="1415"/>
+        <location filename="X_Components/X_Calibration.cpp" line="1420"/>
         <source> (position %1)</source>
         <translation> (позиция %1)</translation>
     </message>
@@ -862,156 +863,156 @@ In order for the changes to take effect, please restart the application.</oldsou
 <context>
     <name>X_CalibrationRepository</name>
     <message>
-        <location filename="X_Components/X_CalibrationRepository.cpp" line="36"/>
+        <location filename="X_Components/X_CalibrationRepository.cpp" line="38"/>
         <source>Calibration #</source>
         <translation>Градуировка #</translation>
     </message>
     <message>
-        <location filename="X_Components/X_CalibrationRepository.cpp" line="1142"/>
+        <location filename="X_Components/X_CalibrationRepository.cpp" line="1140"/>
         <source>Clear current calibration list?</source>
         <translation>Очистить текущий список градуировок?</translation>
     </message>
     <message>
-        <location filename="X_Components/X_CalibrationRepository.cpp" line="1143"/>
+        <location filename="X_Components/X_CalibrationRepository.cpp" line="1141"/>
         <source>Calibration appending</source>
         <translation>Добавление калибровок</translation>
     </message>
     <message>
-        <location filename="X_Components/X_CalibrationRepository.cpp" line="1373"/>
+        <location filename="X_Components/X_CalibrationRepository.cpp" line="1371"/>
         <source>selected calibration</source>
         <oldsource>calibration</oldsource>
         <translation>выделенную градуировку</translation>
     </message>
     <message>
-        <location filename="X_Components/X_CalibrationRepository.cpp" line="1377"/>
+        <location filename="X_Components/X_CalibrationRepository.cpp" line="1375"/>
         <source>selected calibrations</source>
         <oldsource>calibrations</oldsource>
         <translation>выделенные градуировки</translation>
     </message>
     <message>
-        <location filename="X_Components/X_CalibrationRepository.cpp" line="1380"/>
-        <location filename="X_Components/X_CalibrationRepository.cpp" line="1475"/>
+        <location filename="X_Components/X_CalibrationRepository.cpp" line="1378"/>
+        <location filename="X_Components/X_CalibrationRepository.cpp" line="1473"/>
         <source>Do you want to remove %1 from the list?</source>
         <oldsource>Do you want to remove selected %1 from the list?</oldsource>
         <translation>Удалить %1 из списка?</translation>
     </message>
     <message>
-        <location filename="X_Components/X_CalibrationRepository.cpp" line="1383"/>
+        <location filename="X_Components/X_CalibrationRepository.cpp" line="1381"/>
         <source>Calibration removing</source>
         <translation>Удаление градуировки</translation>
     </message>
     <message>
-        <location filename="X_Components/X_CalibrationRepository.cpp" line="1468"/>
+        <location filename="X_Components/X_CalibrationRepository.cpp" line="1466"/>
         <source>selected window</source>
         <oldsource>window</oldsource>
         <translation>выделенное окно</translation>
     </message>
     <message>
-        <location filename="X_Components/X_CalibrationRepository.cpp" line="1472"/>
+        <location filename="X_Components/X_CalibrationRepository.cpp" line="1470"/>
         <source>selected windows</source>
         <oldsource>windows</oldsource>
         <translation>выделенные окна</translation>
     </message>
     <message>
-        <location filename="X_Components/X_CalibrationRepository.cpp" line="1478"/>
+        <location filename="X_Components/X_CalibrationRepository.cpp" line="1476"/>
         <source>Window removing</source>
         <translation>Удаление окон</translation>
     </message>
     <message>
-        <location filename="X_Components/X_CalibrationRepository.cpp" line="2314"/>
+        <location filename="X_Components/X_CalibrationRepository.cpp" line="2312"/>
         <source>Error: &quot;%1&quot; is not a file!</source>
         <translation>Ошибка: &quot;%1&quot; не файл!</translation>
     </message>
     <message>
-        <location filename="X_Components/X_CalibrationRepository.cpp" line="2335"/>
-        <location filename="X_Components/X_CalibrationRepository.cpp" line="2340"/>
+        <location filename="X_Components/X_CalibrationRepository.cpp" line="2333"/>
+        <location filename="X_Components/X_CalibrationRepository.cpp" line="2338"/>
         <source>Cannot read file &quot;%1&quot;! %2</source>
         <translation>Невозможно прочитать файл &quot;%1&quot;! %2</translation>
     </message>
     <message>
-        <location filename="X_Components/X_CalibrationRepository.cpp" line="2341"/>
+        <location filename="X_Components/X_CalibrationRepository.cpp" line="2339"/>
         <source>Unknown error</source>
         <translation>Неизвестная ошибка</translation>
     </message>
     <message>
-        <location filename="X_Components/X_CalibrationRepository.cpp" line="2523"/>
+        <location filename="X_Components/X_CalibrationRepository.cpp" line="2528"/>
         <source>New calibration</source>
         <translation>Новая градуировка</translation>
     </message>
     <message>
-        <location filename="X_Components/X_CalibrationRepository.cpp" line="2525"/>
+        <location filename="X_Components/X_CalibrationRepository.cpp" line="2530"/>
         <source>Append a new calibration to the list</source>
         <translation>Добавить новую градуировку в список</translation>
     </message>
     <message>
-        <location filename="X_Components/X_CalibrationRepository.cpp" line="2546"/>
+        <location filename="X_Components/X_CalibrationRepository.cpp" line="2551"/>
         <source>Remove selected calibrations</source>
         <translation>Удалить выделенные градуировки</translation>
     </message>
     <message>
-        <location filename="X_Components/X_CalibrationRepository.cpp" line="2548"/>
+        <location filename="X_Components/X_CalibrationRepository.cpp" line="2553"/>
         <source>Remove selected calibrations from the list</source>
         <translation>Удалить выделенные градуировки из списка</translation>
     </message>
     <message>
-        <location filename="X_Components/X_CalibrationRepository.cpp" line="2554"/>
+        <location filename="X_Components/X_CalibrationRepository.cpp" line="2559"/>
         <source>New window</source>
         <translation>Новое окно</translation>
     </message>
     <message>
-        <location filename="X_Components/X_CalibrationRepository.cpp" line="2555"/>
+        <location filename="X_Components/X_CalibrationRepository.cpp" line="2560"/>
         <source>Append a new window to the list</source>
         <translation>Добавить новое окно в список</translation>
     </message>
     <message>
-        <location filename="X_Components/X_CalibrationRepository.cpp" line="2560"/>
+        <location filename="X_Components/X_CalibrationRepository.cpp" line="2565"/>
         <source>Remove selected windows</source>
         <translation>Удалить выделенные окна</translation>
     </message>
     <message>
-        <location filename="X_Components/X_CalibrationRepository.cpp" line="2562"/>
+        <location filename="X_Components/X_CalibrationRepository.cpp" line="2567"/>
         <source>Remove selected windows from the list</source>
         <translation>Удалить выделенные окна из списка</translation>
     </message>
     <message>
-        <location filename="X_Components/X_CalibrationRepository.cpp" line="2568"/>
+        <location filename="X_Components/X_CalibrationRepository.cpp" line="2573"/>
         <source>Recalculate calibration</source>
         <translation>Пересчитать градуировку</translation>
     </message>
     <message>
-        <location filename="X_Components/X_CalibrationRepository.cpp" line="2570"/>
+        <location filename="X_Components/X_CalibrationRepository.cpp" line="2575"/>
         <source>Recalculate equation factors for current calibration</source>
         <translation>Пересчитать коэффициенты уравнения для текущей градуировки</translation>
     </message>
     <message>
-        <location filename="X_Components/X_CalibrationRepository.cpp" line="2576"/>
-        <location filename="X_Components/X_CalibrationRepository.cpp" line="2577"/>
+        <location filename="X_Components/X_CalibrationRepository.cpp" line="2581"/>
+        <location filename="X_Components/X_CalibrationRepository.cpp" line="2582"/>
         <source>Create mixed terms</source>
         <translation>Создать смешанный параметр</translation>
     </message>
     <message>
-        <location filename="X_Components/X_CalibrationRepository.cpp" line="2582"/>
+        <location filename="X_Components/X_CalibrationRepository.cpp" line="2587"/>
         <source>Remove mixed terms</source>
         <translation>Удалить смешанные параметры</translation>
     </message>
     <message>
-        <location filename="X_Components/X_CalibrationRepository.cpp" line="2584"/>
+        <location filename="X_Components/X_CalibrationRepository.cpp" line="2589"/>
         <source>Remove mixed terms from the list</source>
         <translation>Удалить смешанные параметры из списка</translation>
     </message>
     <message>
-        <location filename="X_Components/X_CalibrationRepository.cpp" line="2589"/>
-        <location filename="X_Components/X_CalibrationRepository.cpp" line="2590"/>
+        <location filename="X_Components/X_CalibrationRepository.cpp" line="2594"/>
+        <location filename="X_Components/X_CalibrationRepository.cpp" line="2595"/>
         <source>Create custom term</source>
         <translation>Создать пользовательский параметр</translation>
     </message>
     <message>
-        <location filename="X_Components/X_CalibrationRepository.cpp" line="2595"/>
+        <location filename="X_Components/X_CalibrationRepository.cpp" line="2600"/>
         <source>Remove custom term</source>
         <translation>Удалить ползовательский параметр</translation>
     </message>
     <message>
-        <location filename="X_Components/X_CalibrationRepository.cpp" line="2597"/>
+        <location filename="X_Components/X_CalibrationRepository.cpp" line="2602"/>
         <source>Remove custom term from the list</source>
         <translation>Удалить ползовательдский параметр из списка</translation>
     </message>
@@ -1024,74 +1025,74 @@ In order for the changes to take effect, please restart the application.</oldsou
         <translation type="vanished">Удалить выделенные пользовательские предикторы из списка</translation>
     </message>
     <message>
-        <location filename="X_Components/X_CalibrationRepository.cpp" line="2603"/>
+        <location filename="X_Components/X_CalibrationRepository.cpp" line="2608"/>
         <source>Set calibration visible</source>
         <translation>Показать все градуировки</translation>
     </message>
     <message>
-        <location filename="X_Components/X_CalibrationRepository.cpp" line="2605"/>
+        <location filename="X_Components/X_CalibrationRepository.cpp" line="2610"/>
         <source>Set visible calibration column</source>
         <translation>Показать в таблице все колонки градуировок</translation>
     </message>
     <message>
-        <location filename="X_Components/X_CalibrationRepository.cpp" line="2610"/>
+        <location filename="X_Components/X_CalibrationRepository.cpp" line="2615"/>
         <source>Set calibration invisible</source>
         <translation>Скрыть все градуировки</translation>
     </message>
     <message>
-        <location filename="X_Components/X_CalibrationRepository.cpp" line="2612"/>
+        <location filename="X_Components/X_CalibrationRepository.cpp" line="2617"/>
         <source>Set invisible calibration column</source>
         <translation>Скрыть в таблице все колонки градуировок</translation>
     </message>
     <message>
-        <location filename="X_Components/X_CalibrationRepository.cpp" line="2619"/>
-        <location filename="X_Components/X_CalibrationRepository.cpp" line="2621"/>
+        <location filename="X_Components/X_CalibrationRepository.cpp" line="2624"/>
+        <location filename="X_Components/X_CalibrationRepository.cpp" line="2626"/>
         <source>Invert calibration visibility</source>
         <translation>Инвертировать видимость градуировок</translation>
     </message>
     <message>
-        <location filename="X_Components/X_CalibrationRepository.cpp" line="2626"/>
-        <location filename="X_Components/X_CalibrationRepository.cpp" line="2627"/>
+        <location filename="X_Components/X_CalibrationRepository.cpp" line="2631"/>
+        <location filename="X_Components/X_CalibrationRepository.cpp" line="2632"/>
         <source>Set window visible</source>
         <translation>Показать все окна</translation>
     </message>
     <message>
-        <location filename="X_Components/X_CalibrationRepository.cpp" line="2632"/>
-        <location filename="X_Components/X_CalibrationRepository.cpp" line="2633"/>
+        <location filename="X_Components/X_CalibrationRepository.cpp" line="2637"/>
+        <location filename="X_Components/X_CalibrationRepository.cpp" line="2638"/>
         <source>Set window invisible</source>
         <translation>Скрыть все окна</translation>
     </message>
     <message>
-        <location filename="X_Components/X_CalibrationRepository.cpp" line="2639"/>
-        <location filename="X_Components/X_CalibrationRepository.cpp" line="2641"/>
+        <location filename="X_Components/X_CalibrationRepository.cpp" line="2644"/>
+        <location filename="X_Components/X_CalibrationRepository.cpp" line="2646"/>
         <source>Invert window visibility</source>
         <translation>Инвертировать видимость окон</translation>
     </message>
     <message>
-        <location filename="X_Components/X_CalibrationRepository.cpp" line="2648"/>
-        <location filename="X_Components/X_CalibrationRepository.cpp" line="2650"/>
+        <location filename="X_Components/X_CalibrationRepository.cpp" line="2653"/>
+        <location filename="X_Components/X_CalibrationRepository.cpp" line="2655"/>
         <source>Duplicate selected calibrations</source>
         <translation>Копировать выделенные градуировки</translation>
     </message>
     <message>
-        <location filename="X_Components/X_CalibrationRepository.cpp" line="2655"/>
-        <location filename="X_Components/X_CalibrationRepository.cpp" line="2656"/>
+        <location filename="X_Components/X_CalibrationRepository.cpp" line="2660"/>
+        <location filename="X_Components/X_CalibrationRepository.cpp" line="2661"/>
         <source>Copy selected windows</source>
         <translation>Копировать выделенные окна</translation>
     </message>
     <message>
-        <location filename="X_Components/X_CalibrationRepository.cpp" line="2661"/>
-        <location filename="X_Components/X_CalibrationRepository.cpp" line="2662"/>
+        <location filename="X_Components/X_CalibrationRepository.cpp" line="2666"/>
+        <location filename="X_Components/X_CalibrationRepository.cpp" line="2667"/>
         <source>Paste windows</source>
         <translation>Вставить окна</translation>
     </message>
     <message>
-        <location filename="X_Components/X_CalibrationRepository.cpp" line="2667"/>
+        <location filename="X_Components/X_CalibrationRepository.cpp" line="2672"/>
         <source>Reset terms</source>
         <translation>Исключить все  параметры</translation>
     </message>
     <message>
-        <location filename="X_Components/X_CalibrationRepository.cpp" line="2668"/>
+        <location filename="X_Components/X_CalibrationRepository.cpp" line="2673"/>
         <source>Reset equation terms</source>
         <translation>Исключение всех параметров из уравнения</translation>
     </message>
@@ -1841,7 +1842,7 @@ In order for the changes to take effect, please restart the application.</oldsou
     </message>
     <message>
         <location filename="X_Components/X_CorrelationPlotterDataManager.cpp" line="34"/>
-        <location filename="X_Components/X_CorrelationPlotterDataManager.cpp" line="169"/>
+        <location filename="X_Components/X_CorrelationPlotterDataManager.cpp" line="213"/>
         <source>Calibration</source>
         <translation>Градуировка</translation>
     </message>
@@ -1851,17 +1852,32 @@ In order for the changes to take effect, please restart the application.</oldsou
         <translation>Отклонение (%)</translation>
     </message>
     <message>
-        <location filename="X_Components/X_CorrelationPlotterDataManager.cpp" line="160"/>
+        <location filename="X_Components/X_CorrelationPlotterDataManager.cpp" line="167"/>
+        <source>Conc.</source>
+        <translation>Конц.</translation>
+    </message>
+    <message>
+        <location filename="X_Components/X_CorrelationPlotterDataManager.cpp" line="168"/>
+        <source>Calc.</source>
+        <translation>Расч.</translation>
+    </message>
+    <message>
+        <location filename="X_Components/X_CorrelationPlotterDataManager.cpp" line="169"/>
+        <source>Dev.</source>
+        <translation>Откл.</translation>
+    </message>
+    <message>
+        <location filename="X_Components/X_CorrelationPlotterDataManager.cpp" line="204"/>
         <source>Display:</source>
         <translation>Показать:</translation>
     </message>
     <message>
-        <location filename="X_Components/X_CorrelationPlotterDataManager.cpp" line="168"/>
+        <location filename="X_Components/X_CorrelationPlotterDataManager.cpp" line="212"/>
         <source>Equation term</source>
         <translation>Параметр</translation>
     </message>
     <message>
-        <location filename="X_Components/X_CorrelationPlotterDataManager.cpp" line="170"/>
+        <location filename="X_Components/X_CorrelationPlotterDataManager.cpp" line="214"/>
         <source>Deviation</source>
         <translation>Отклонение</translation>
     </message>
@@ -1869,7 +1885,7 @@ In order for the changes to take effect, please restart the application.</oldsou
 <context>
     <name>X_CustomTerm</name>
     <message>
-        <location filename="X_Components/X_CustomTerm.cpp" line="157"/>
+        <location filename="X_Components/X_CustomTerm.cpp" line="161"/>
         <source>Error in the term &quot;%1&quot; expression: %2</source>
         <translation>Ошибка в параметре &quot;%1&quot; выражение: %2</translation>
     </message>
@@ -2131,83 +2147,83 @@ In order for the changes to take effect, please restart the application.</oldsou
         <translation>Энергетическая градуировка</translation>
     </message>
     <message>
-        <location filename="X_EnergyCalibrator/X_EnergyCalibrationDialogV2.cpp" line="87"/>
+        <location filename="X_EnergyCalibrator/X_EnergyCalibrationDialogV2.cpp" line="88"/>
         <source>Gain factor</source>
         <translation>Коэффициент усиления</translation>
     </message>
     <message>
-        <location filename="X_EnergyCalibrator/X_EnergyCalibrationDialogV2.cpp" line="114"/>
+        <location filename="X_EnergyCalibrator/X_EnergyCalibrationDialogV2.cpp" line="115"/>
         <source>Close</source>
         <translation>Закрыть</translation>
     </message>
     <message>
-        <location filename="X_EnergyCalibrator/X_EnergyCalibrationDialogV2.cpp" line="161"/>
+        <location filename="X_EnergyCalibrator/X_EnergyCalibrationDialogV2.cpp" line="156"/>
         <source>Peak count in energy calibration:</source>
         <translation>Количество пиков в энергетической градуировке:</translation>
     </message>
     <message>
-        <location filename="X_EnergyCalibrator/X_EnergyCalibrationDialogV2.cpp" line="165"/>
+        <location filename="X_EnergyCalibrator/X_EnergyCalibrationDialogV2.cpp" line="160"/>
         <source>Two</source>
         <translation>Два</translation>
     </message>
     <message>
-        <location filename="X_EnergyCalibrator/X_EnergyCalibrationDialogV2.cpp" line="166"/>
+        <location filename="X_EnergyCalibrator/X_EnergyCalibrationDialogV2.cpp" line="161"/>
         <source>Three</source>
         <translation>Три</translation>
     </message>
     <message>
-        <location filename="X_EnergyCalibrator/X_EnergyCalibrationDialogV2.cpp" line="186"/>
+        <location filename="X_EnergyCalibrator/X_EnergyCalibrationDialogV2.cpp" line="181"/>
         <source>Calculate</source>
         <translation>Рассчитать</translation>
     </message>
     <message>
-        <location filename="X_EnergyCalibrator/X_EnergyCalibrationDialogV2.cpp" line="187"/>
+        <location filename="X_EnergyCalibrator/X_EnergyCalibrationDialogV2.cpp" line="182"/>
         <source>Calculate energy calibration</source>
         <translation>Рассчитать энергетическую градуировку</translation>
     </message>
     <message>
-        <location filename="X_EnergyCalibrator/X_EnergyCalibrationDialogV2.cpp" line="208"/>
-        <location filename="X_EnergyCalibrator/X_EnergyCalibrationDialogV2.cpp" line="217"/>
+        <location filename="X_EnergyCalibrator/X_EnergyCalibrationDialogV2.cpp" line="203"/>
+        <location filename="X_EnergyCalibrator/X_EnergyCalibrationDialogV2.cpp" line="212"/>
         <source>Energy line #%1</source>
         <translation>Энергетическая линия #%1</translation>
     </message>
     <message>
-        <location filename="X_EnergyCalibrator/X_EnergyCalibrationDialogV2.cpp" line="231"/>
+        <location filename="X_EnergyCalibrator/X_EnergyCalibrationDialogV2.cpp" line="226"/>
         <source>Peak center</source>
         <translation>Центр</translation>
     </message>
     <message>
-        <location filename="X_EnergyCalibrator/X_EnergyCalibrationDialogV2.cpp" line="256"/>
+        <location filename="X_EnergyCalibrator/X_EnergyCalibrationDialogV2.cpp" line="251"/>
         <source>kEv</source>
         <translation>кЭв</translation>
     </message>
     <message>
-        <location filename="X_EnergyCalibrator/X_EnergyCalibrationDialogV2.cpp" line="350"/>
+        <location filename="X_EnergyCalibrator/X_EnergyCalibrationDialogV2.cpp" line="345"/>
         <source>Gain Factor: %1</source>
         <translation>Коэффициент усиления: %1</translation>
     </message>
     <message>
-        <location filename="X_EnergyCalibrator/X_EnergyCalibrationDialogV2.cpp" line="469"/>
+        <location filename="X_EnergyCalibrator/X_EnergyCalibrationDialogV2.cpp" line="464"/>
         <source>Do you want to bind the energy calibration to the current gain factor equals %1?</source>
         <translation>Связать энергетическую градуировку с текущим коэффициентом усиления %1?</translation>
     </message>
     <message>
-        <location filename="X_EnergyCalibrator/X_EnergyCalibrationDialogV2.cpp" line="470"/>
+        <location filename="X_EnergyCalibrator/X_EnergyCalibrationDialogV2.cpp" line="465"/>
         <source>Energy calibration error</source>
         <translation>Ошибка энергетической градуировки</translation>
     </message>
     <message>
-        <location filename="X_EnergyCalibrator/X_EnergyCalibrationDialogV2.cpp" line="696"/>
+        <location filename="X_EnergyCalibrator/X_EnergyCalibrationDialogV2.cpp" line="691"/>
         <source>Cannot calculate energy calibration.&lt;br&gt;Ambiguity in source data of energy lines.</source>
         <translation>Невозможно рассчитать энергетическую градуировку. &lt;br&gt;Неоднозначность в данных линий характеристического излучения.</translation>
     </message>
     <message>
-        <location filename="X_EnergyCalibrator/X_EnergyCalibrationDialogV2.cpp" line="719"/>
+        <location filename="X_EnergyCalibrator/X_EnergyCalibrationDialogV2.cpp" line="714"/>
         <source>Cannot calculate energy calibration.&lt;br&gt;Insufficient source data of energy lines.</source>
         <translation>Невозможно рассчитать энергетическую градуировку. &lt;br&gt;Недостаточно данных линий характеристического излучения.</translation>
     </message>
     <message>
-        <location filename="X_EnergyCalibrator/X_EnergyCalibrationDialogV2.cpp" line="770"/>
+        <location filename="X_EnergyCalibrator/X_EnergyCalibrationDialogV2.cpp" line="765"/>
         <source>Energy calibration has been calculated successfully&lt;br&gt;K0 - %1&lt;br&gt;K1 - %2&lt;br&gt;K2 - %3&lt;br&gt;</source>
         <translation>Энергетическая градуировка успешно рассчитана&lt;br&gt;K0 - %1&lt;br&gt;K1 - %2&lt;br&gt;K2 - %3&lt;br&gt;</translation>
     </message>
@@ -2220,9 +2236,9 @@ In order for the changes to take effect, please restart the application.</oldsou
         <translation type="vanished">Неоднозначность в данных энергетических линий.</translation>
     </message>
     <message>
-        <location filename="X_EnergyCalibrator/X_EnergyCalibrationDialogV2.cpp" line="697"/>
-        <location filename="X_EnergyCalibrator/X_EnergyCalibrationDialogV2.cpp" line="720"/>
-        <location filename="X_EnergyCalibrator/X_EnergyCalibrationDialogV2.cpp" line="760"/>
+        <location filename="X_EnergyCalibrator/X_EnergyCalibrationDialogV2.cpp" line="692"/>
+        <location filename="X_EnergyCalibrator/X_EnergyCalibrationDialogV2.cpp" line="715"/>
+        <location filename="X_EnergyCalibrator/X_EnergyCalibrationDialogV2.cpp" line="755"/>
         <source>Error</source>
         <translation>Ошибка</translation>
     </message>
@@ -2231,7 +2247,7 @@ In order for the changes to take effect, please restart the application.</oldsou
         <translation type="vanished">Не достаточно данных энергетических линий.</translation>
     </message>
     <message>
-        <location filename="X_EnergyCalibrator/X_EnergyCalibrationDialogV2.cpp" line="759"/>
+        <location filename="X_EnergyCalibrator/X_EnergyCalibrationDialogV2.cpp" line="754"/>
         <source>Calculation of energy calibration factors fails. Error: %1.</source>
         <translation>Расчет энергетической градуировки не выполнен. Ошибка: %1.</translation>
     </message>
@@ -2319,43 +2335,43 @@ In order for the changes to take effect, please restart the application.</oldsou
 <context>
     <name>X_FileActionManager</name>
     <message>
-        <location filename="X_Components/X_FileActionManager.cpp" line="201"/>
+        <location filename="X_Components/X_FileActionManager.cpp" line="160"/>
         <source>&amp;Open spectrum array list</source>
         <translation>&amp;Открыть список массивов спектров</translation>
     </message>
     <message>
-        <location filename="X_Components/X_FileActionManager.cpp" line="204"/>
+        <location filename="X_Components/X_FileActionManager.cpp" line="163"/>
         <source>&amp;Save spectrum array list</source>
         <translation>&amp;Сохранить список массивов спектров</translation>
     </message>
     <message>
-        <location filename="X_Components/X_FileActionManager.cpp" line="208"/>
+        <location filename="X_Components/X_FileActionManager.cpp" line="167"/>
         <source>Save spectrum array list &amp;as...</source>
         <translation>Сохранить список массивов спектров как...</translation>
     </message>
     <message>
-        <location filename="X_Components/X_FileActionManager.cpp" line="213"/>
+        <location filename="X_Components/X_FileActionManager.cpp" line="172"/>
         <source>Open &amp;calibrations</source>
         <translation>Открыть &amp;градуировки</translation>
     </message>
     <message>
-        <location filename="X_Components/X_FileActionManager.cpp" line="216"/>
+        <location filename="X_Components/X_FileActionManager.cpp" line="175"/>
         <source>Save calibration</source>
         <translation>Сохранить градуировки</translation>
     </message>
     <message>
-        <location filename="X_Components/X_FileActionManager.cpp" line="220"/>
+        <location filename="X_Components/X_FileActionManager.cpp" line="179"/>
         <source>Save calibration as...</source>
         <translation>Сохранить градуировки как ...</translation>
     </message>
     <message>
-        <location filename="X_Components/X_FileActionManager.cpp" line="225"/>
+        <location filename="X_Components/X_FileActionManager.cpp" line="184"/>
         <source>Open calibration &amp;project</source>
         <translation>Открыть проект &amp;калибровки</translation>
     </message>
     <message>
-        <location filename="X_Components/X_FileActionManager.cpp" line="267"/>
-        <location filename="X_Components/X_FileActionManager.cpp" line="978"/>
+        <location filename="X_Components/X_FileActionManager.cpp" line="226"/>
+        <location filename="X_Components/X_FileActionManager.cpp" line="937"/>
         <source>Select file to open</source>
         <translation>Выбор файла для открытия</translation>
     </message>
@@ -2364,87 +2380,87 @@ In order for the changes to take effect, please restart the application.</oldsou
         <translation type="vanished">Массивы спектров(*.spe);;Все файлы(*.*)</translation>
     </message>
     <message>
-        <location filename="X_Components/X_FileActionManager.cpp" line="269"/>
-        <location filename="X_Components/X_FileActionManager.cpp" line="281"/>
-        <location filename="X_Components/X_FileActionManager.cpp" line="881"/>
-        <location filename="X_Components/X_FileActionManager.cpp" line="904"/>
+        <location filename="X_Components/X_FileActionManager.cpp" line="228"/>
+        <location filename="X_Components/X_FileActionManager.cpp" line="240"/>
+        <location filename="X_Components/X_FileActionManager.cpp" line="840"/>
+        <location filename="X_Components/X_FileActionManager.cpp" line="863"/>
         <source>Spectrum array files(*.%1);;XML files(%2);;All files(%3)</source>
         <translation>Файл массива спектров(*.%1);;XML файлы (%2);;Все файлы(%3)</translation>
     </message>
     <message>
-        <location filename="X_Components/X_FileActionManager.cpp" line="279"/>
-        <location filename="X_Components/X_FileActionManager.cpp" line="902"/>
+        <location filename="X_Components/X_FileActionManager.cpp" line="238"/>
+        <location filename="X_Components/X_FileActionManager.cpp" line="861"/>
         <source>Select file to save</source>
         <translation>Выбор файла для сохранения</translation>
     </message>
     <message>
-        <location filename="X_Components/X_FileActionManager.cpp" line="331"/>
+        <location filename="X_Components/X_FileActionManager.cpp" line="290"/>
         <source>File &quot;%1&quot; does not exist!</source>
         <translation>Файла &quot;%1&quot; не существует!</translation>
     </message>
     <message>
-        <location filename="X_Components/X_FileActionManager.cpp" line="332"/>
-        <location filename="X_Components/X_FileActionManager.cpp" line="341"/>
+        <location filename="X_Components/X_FileActionManager.cpp" line="291"/>
+        <location filename="X_Components/X_FileActionManager.cpp" line="300"/>
         <source>File open error</source>
         <translation>Ошибка открытия файла</translation>
     </message>
     <message>
-        <location filename="X_Components/X_FileActionManager.cpp" line="340"/>
+        <location filename="X_Components/X_FileActionManager.cpp" line="299"/>
         <source>&quot;%1&quot; is a folder!</source>
         <translation>&quot;%1&quot; является папкой!</translation>
     </message>
     <message>
-        <location filename="X_Components/X_FileActionManager.cpp" line="359"/>
+        <location filename="X_Components/X_FileActionManager.cpp" line="318"/>
         <source>Error: &quot;%1&quot; is not a file!</source>
         <translation>Ошибка: &quot;%1&quot; не файл!</translation>
     </message>
     <message>
-        <location filename="X_Components/X_FileActionManager.cpp" line="367"/>
-        <location filename="X_Components/X_FileActionManager.cpp" line="540"/>
+        <location filename="X_Components/X_FileActionManager.cpp" line="326"/>
+        <location filename="X_Components/X_FileActionManager.cpp" line="499"/>
         <source>Error handling file &quot;%1&quot;! Cannot handle &quot;%2&quot; files.</source>
         <translation>Ошибка обработки файла &quot;%1&quot;! Невозможно обработать файлы с расширением &quot;%2&quot;.</translation>
     </message>
     <message>
-        <location filename="X_Components/X_FileActionManager.cpp" line="369"/>
-        <location filename="X_Components/X_FileActionManager.cpp" line="542"/>
+        <location filename="X_Components/X_FileActionManager.cpp" line="328"/>
+        <location filename="X_Components/X_FileActionManager.cpp" line="501"/>
         <source>File handling error</source>
         <translation>Ошибка обработки файла</translation>
     </message>
     <message>
-        <location filename="X_Components/X_FileActionManager.cpp" line="382"/>
-        <location filename="X_Components/X_FileActionManager.cpp" line="386"/>
-        <location filename="X_Components/X_FileActionManager.cpp" line="556"/>
-        <location filename="X_Components/X_FileActionManager.cpp" line="560"/>
-        <location filename="X_Components/X_FileActionManager.cpp" line="678"/>
-        <location filename="X_Components/X_FileActionManager.cpp" line="682"/>
-        <location filename="X_Components/X_FileActionManager.cpp" line="816"/>
-        <location filename="X_Components/X_FileActionManager.cpp" line="820"/>
-        <location filename="X_Components/X_FileActionManager.cpp" line="1106"/>
-        <location filename="X_Components/X_FileActionManager.cpp" line="1110"/>
+        <location filename="X_Components/X_FileActionManager.cpp" line="341"/>
+        <location filename="X_Components/X_FileActionManager.cpp" line="345"/>
+        <location filename="X_Components/X_FileActionManager.cpp" line="515"/>
+        <location filename="X_Components/X_FileActionManager.cpp" line="519"/>
+        <location filename="X_Components/X_FileActionManager.cpp" line="637"/>
+        <location filename="X_Components/X_FileActionManager.cpp" line="641"/>
+        <location filename="X_Components/X_FileActionManager.cpp" line="775"/>
+        <location filename="X_Components/X_FileActionManager.cpp" line="779"/>
+        <location filename="X_Components/X_FileActionManager.cpp" line="1065"/>
+        <location filename="X_Components/X_FileActionManager.cpp" line="1069"/>
         <source>Cannot read file &quot;%1&quot;! %2</source>
         <translation>Невозможно прочитать файл &quot;%1&quot;! %2</translation>
     </message>
     <message>
-        <location filename="X_Components/X_FileActionManager.cpp" line="386"/>
-        <location filename="X_Components/X_FileActionManager.cpp" line="560"/>
-        <location filename="X_Components/X_FileActionManager.cpp" line="682"/>
-        <location filename="X_Components/X_FileActionManager.cpp" line="820"/>
-        <location filename="X_Components/X_FileActionManager.cpp" line="1110"/>
+        <location filename="X_Components/X_FileActionManager.cpp" line="345"/>
+        <location filename="X_Components/X_FileActionManager.cpp" line="519"/>
+        <location filename="X_Components/X_FileActionManager.cpp" line="641"/>
+        <location filename="X_Components/X_FileActionManager.cpp" line="779"/>
+        <location filename="X_Components/X_FileActionManager.cpp" line="1069"/>
         <source>Unknown error</source>
         <translation>Неизвестная ошибка</translation>
     </message>
     <message>
-        <location filename="X_Components/X_FileActionManager.cpp" line="795"/>
+        <location filename="X_Components/X_FileActionManager.cpp" line="754"/>
         <source>Do you want to save calibration project?</source>
         <translation>Сохранить проект градуировки?</translation>
     </message>
     <message>
-        <location filename="X_Components/X_FileActionManager.cpp" line="797"/>
+        <location filename="X_Components/X_FileActionManager.cpp" line="756"/>
         <source>Calibration saving</source>
         <translation>Сохранение градуировки</translation>
     </message>
     <message>
-        <location filename="X_Components/X_FileActionManager.cpp" line="865"/>
+        <location filename="X_Components/X_FileActionManager.cpp" line="824"/>
         <source>Select spectra file</source>
         <translation>Выбор файлов спектров</translation>
     </message>
@@ -2453,29 +2469,29 @@ In order for the changes to take effect, please restart the application.</oldsou
         <translation type="vanished">Выбор файлов спектров</translation>
     </message>
     <message>
-        <location filename="X_Components/X_FileActionManager.cpp" line="867"/>
+        <location filename="X_Components/X_FileActionManager.cpp" line="826"/>
         <source>SRV spectrum files(%1);;All files(%2)</source>
         <translation>Файлы спектров СРВ(%1);;Все файлы(%2)</translation>
     </message>
     <message>
-        <location filename="X_Components/X_FileActionManager.cpp" line="879"/>
-        <location filename="X_Components/X_FileActionManager.cpp" line="935"/>
+        <location filename="X_Components/X_FileActionManager.cpp" line="838"/>
+        <location filename="X_Components/X_FileActionManager.cpp" line="894"/>
         <source>Open file</source>
         <translation>Открыть файл</translation>
     </message>
     <message>
-        <location filename="X_Components/X_FileActionManager.cpp" line="937"/>
-        <location filename="X_Components/X_FileActionManager.cpp" line="959"/>
+        <location filename="X_Components/X_FileActionManager.cpp" line="896"/>
+        <location filename="X_Components/X_FileActionManager.cpp" line="918"/>
         <source>XML Calibration files(*.clbx);;XML files(*.xml);;All files(*.*)</source>
         <translation>Файлы градуировки(*.clbx);;Файлы XML(*.xml);;Все файлы(*.*)</translation>
     </message>
     <message>
-        <location filename="X_Components/X_FileActionManager.cpp" line="957"/>
+        <location filename="X_Components/X_FileActionManager.cpp" line="916"/>
         <source>Save file</source>
         <translation>Сохранить файл</translation>
     </message>
     <message>
-        <location filename="X_Components/X_FileActionManager.cpp" line="980"/>
+        <location filename="X_Components/X_FileActionManager.cpp" line="939"/>
         <source>Calibration project files(%1);;XML files(%2);;All files(%3)</source>
         <translation>Файлы проектов градуировок(%1);;XML файлы(%2);;Всеl файлы(%3)</translation>
     </message>
@@ -2484,14 +2500,14 @@ In order for the changes to take effect, please restart the application.</oldsou
         <translation type="vanished">СРВ спектры(*.spe);;Все файлы(*.*)</translation>
     </message>
     <message>
-        <location filename="X_Components/X_FileActionManager.cpp" line="1043"/>
-        <location filename="X_Components/X_FileActionManager.cpp" line="1137"/>
+        <location filename="X_Components/X_FileActionManager.cpp" line="1002"/>
+        <location filename="X_Components/X_FileActionManager.cpp" line="1096"/>
         <source>Data loading from file &quot;%1&quot; failed.</source>
         <translation>Не удалось загрузить данные из файла &quot;%1&quot;.</translation>
     </message>
     <message>
-        <location filename="X_Components/X_FileActionManager.cpp" line="1044"/>
-        <location filename="X_Components/X_FileActionManager.cpp" line="1138"/>
+        <location filename="X_Components/X_FileActionManager.cpp" line="1003"/>
+        <location filename="X_Components/X_FileActionManager.cpp" line="1097"/>
         <source>Loading error</source>
         <translation>Ошибка загрузки данных</translation>
     </message>
@@ -2520,32 +2536,32 @@ In order for the changes to take effect, please restart the application.</oldsou
 <context>
     <name>X_MathExpressionHandler</name>
     <message>
-        <location filename="X_Components/X_MathExpressionHandler.cpp" line="599"/>
+        <location filename="X_Components/X_MathExpressionHandler.cpp" line="595"/>
         <source>Empty expression</source>
         <translation>Пустое выражение</translation>
     </message>
     <message>
-        <location filename="X_Components/X_MathExpressionHandler.cpp" line="602"/>
+        <location filename="X_Components/X_MathExpressionHandler.cpp" line="598"/>
         <source>Division by zero</source>
         <translation>Деление на ноль</translation>
     </message>
     <message>
-        <location filename="X_Components/X_MathExpressionHandler.cpp" line="605"/>
+        <location filename="X_Components/X_MathExpressionHandler.cpp" line="601"/>
         <source>Wrong token</source>
         <translation>Неправильный токен</translation>
     </message>
     <message>
-        <location filename="X_Components/X_MathExpressionHandler.cpp" line="608"/>
+        <location filename="X_Components/X_MathExpressionHandler.cpp" line="604"/>
         <source>Bracket error</source>
         <translation>Ошибка скобок</translation>
     </message>
     <message>
-        <location filename="X_Components/X_MathExpressionHandler.cpp" line="611"/>
+        <location filename="X_Components/X_MathExpressionHandler.cpp" line="607"/>
         <source>Cannot convert to double</source>
         <translation>Невозможно преобразовать тип в &quot;double&quot;</translation>
     </message>
     <message>
-        <location filename="X_Components/X_MathExpressionHandler.cpp" line="614"/>
+        <location filename="X_Components/X_MathExpressionHandler.cpp" line="610"/>
         <source>Wrong variable</source>
         <translation>Неправильная переменная</translation>
     </message>
@@ -3169,17 +3185,17 @@ Do you want to replace them?</source>
 <context>
     <name>X_Plotter</name>
     <message>
-        <location filename="X_Plotter/X_Plotter.cpp" line="757"/>
+        <location filename="X_Plotter/X_Plotter.cpp" line="775"/>
         <source>Channel: %1</source>
         <translation>Канал: %1</translation>
     </message>
     <message>
-        <location filename="X_Plotter/X_Plotter.cpp" line="767"/>
+        <location filename="X_Plotter/X_Plotter.cpp" line="785"/>
         <source> Energy: %1</source>
         <translation> Энергия: %1</translation>
     </message>
     <message>
-        <location filename="X_Plotter/X_Plotter.cpp" line="771"/>
+        <location filename="X_Plotter/X_Plotter.cpp" line="789"/>
         <source> Intensity: %1</source>
         <translation> Интенсивность: %1</translation>
     </message>
@@ -3766,23 +3782,23 @@ Do you want to replace them?</source>
 <context>
     <name>X_SpectrumArray</name>
     <message>
-        <location filename="X_Components/X_SpectrumArray.cpp" line="470"/>
+        <location filename="X_Components/X_SpectrumArray.cpp" line="483"/>
         <source>Error: &quot;%1&quot; is not a file!</source>
         <translation>Ошибка: &quot;%1&quot; не файл!</translation>
     </message>
     <message>
-        <location filename="X_Components/X_SpectrumArray.cpp" line="498"/>
+        <location filename="X_Components/X_SpectrumArray.cpp" line="511"/>
         <source>The following inconsistencies have been found: <byte value="xd"/>
 </source>
         <translation>Найдены следующие несоответствия: \r\n</translation>
     </message>
     <message>
-        <location filename="X_Components/X_SpectrumArray.cpp" line="512"/>
+        <location filename="X_Components/X_SpectrumArray.cpp" line="525"/>
         <source>Do you want to continue loading?</source>
         <translation>Хотите продолжить загрузку?</translation>
     </message>
     <message>
-        <location filename="X_Components/X_SpectrumArray.cpp" line="516"/>
+        <location filename="X_Components/X_SpectrumArray.cpp" line="529"/>
         <source>Energy calibration and exposition in spectrum &quot;%1&quot; is different to calibration that have other spectra in the array.<byte value="xd"/>
 </source>
         <translation>Энергетическая градуировка и экспозиция в спектре &quot;%1&quot; отличается от уже имеющихся в массиве.\r\n</translation>
@@ -3812,49 +3828,49 @@ Do you want to replace them?</source>
         <translation>Массив #</translation>
     </message>
     <message>
-        <location filename="X_Components/X_SpectrumArrayRepository.cpp" line="831"/>
+        <location filename="X_Components/X_SpectrumArrayRepository.cpp" line="881"/>
         <source>File &quot;%1&quot; has been changed. </source>
         <translation>Файл &quot;%1&quot; был изменен. </translation>
     </message>
     <message>
-        <location filename="X_Components/X_SpectrumArrayRepository.cpp" line="833"/>
+        <location filename="X_Components/X_SpectrumArrayRepository.cpp" line="883"/>
         <source>Do you want to save current array changes?</source>
         <translation>Сохранить изменения в массиве?</translation>
     </message>
     <message>
-        <location filename="X_Components/X_SpectrumArrayRepository.cpp" line="835"/>
-        <location filename="X_Components/X_SpectrumArrayRepository.cpp" line="846"/>
+        <location filename="X_Components/X_SpectrumArrayRepository.cpp" line="885"/>
+        <location filename="X_Components/X_SpectrumArrayRepository.cpp" line="896"/>
         <source>Array appending</source>
         <translation>Добавление массива</translation>
     </message>
     <message>
-        <location filename="X_Components/X_SpectrumArrayRepository.cpp" line="845"/>
+        <location filename="X_Components/X_SpectrumArrayRepository.cpp" line="895"/>
         <source>Clear current array list?</source>
         <oldsource>Clear existing array list?</oldsource>
         <translation>Очистить текущий список массивов?</translation>
     </message>
     <message>
-        <location filename="X_Components/X_SpectrumArrayRepository.cpp" line="891"/>
+        <location filename="X_Components/X_SpectrumArrayRepository.cpp" line="941"/>
         <source>File &quot;%1&quot; does not exist!</source>
         <translation>Файла &quot;%1&quot; не существует!</translation>
     </message>
     <message>
-        <location filename="X_Components/X_SpectrumArrayRepository.cpp" line="899"/>
+        <location filename="X_Components/X_SpectrumArrayRepository.cpp" line="949"/>
         <source>&quot;%1&quot; is a folder!</source>
         <translation>&quot;%1&quot; является папкой!</translation>
     </message>
     <message>
-        <location filename="X_Components/X_SpectrumArrayRepository.cpp" line="926"/>
+        <location filename="X_Components/X_SpectrumArrayRepository.cpp" line="976"/>
         <source>spectra</source>
         <translation>спектров</translation>
     </message>
     <message>
-        <location filename="X_Components/X_SpectrumArrayRepository.cpp" line="926"/>
+        <location filename="X_Components/X_SpectrumArrayRepository.cpp" line="976"/>
         <source>spectrum</source>
         <translation>спектр</translation>
     </message>
     <message numerus="yes">
-        <location filename="X_Components/X_SpectrumArrayRepository.cpp" line="927"/>
+        <location filename="X_Components/X_SpectrumArrayRepository.cpp" line="977"/>
         <source>%1 %2 loaded</source>
         <translation>
             <numerusform>%1 %2 загружен</numerusform>
@@ -3863,69 +3879,69 @@ Do you want to replace them?</source>
         </translation>
     </message>
     <message>
-        <location filename="X_Components/X_SpectrumArrayRepository.cpp" line="1265"/>
+        <location filename="X_Components/X_SpectrumArrayRepository.cpp" line="1320"/>
         <source>Do you want to remove array &quot;%1&quot; from the list?</source>
         <translation>Удалить массив &quot;%1&quot; из списка?</translation>
     </message>
     <message>
-        <location filename="X_Components/X_SpectrumArrayRepository.cpp" line="1266"/>
+        <location filename="X_Components/X_SpectrumArrayRepository.cpp" line="1321"/>
         <source>Array removing</source>
         <translation>Удаление массива</translation>
     </message>
     <message>
-        <location filename="X_Components/X_SpectrumArrayRepository.cpp" line="1299"/>
+        <location filename="X_Components/X_SpectrumArrayRepository.cpp" line="1354"/>
         <source>Select an array you want to append spectra to!</source>
         <translation>Выделите массив, в который добавляются спектры.</translation>
     </message>
     <message>
-        <location filename="X_Components/X_SpectrumArrayRepository.cpp" line="1300"/>
+        <location filename="X_Components/X_SpectrumArrayRepository.cpp" line="1355"/>
         <source>Spectra appending</source>
         <translation>Добавление спектров</translation>
     </message>
     <message>
-        <location filename="X_Components/X_SpectrumArrayRepository.cpp" line="1317"/>
+        <location filename="X_Components/X_SpectrumArrayRepository.cpp" line="1372"/>
         <source>There is no spectra to remove!</source>
         <translation>Не выделены спектры для удаления!</translation>
     </message>
     <message>
-        <location filename="X_Components/X_SpectrumArrayRepository.cpp" line="1318"/>
-        <location filename="X_Components/X_SpectrumArrayRepository.cpp" line="1330"/>
-        <location filename="X_Components/X_SpectrumArrayRepository.cpp" line="1930"/>
+        <location filename="X_Components/X_SpectrumArrayRepository.cpp" line="1373"/>
+        <location filename="X_Components/X_SpectrumArrayRepository.cpp" line="1385"/>
+        <location filename="X_Components/X_SpectrumArrayRepository.cpp" line="1985"/>
         <source>Spectra removing</source>
         <translation>Удаление спектров</translation>
     </message>
     <message>
-        <location filename="X_Components/X_SpectrumArrayRepository.cpp" line="1329"/>
+        <location filename="X_Components/X_SpectrumArrayRepository.cpp" line="1384"/>
         <source>Do you want to remove the selected spectra from the list?</source>
         <translation>Удалить выделенные спектры из списка?</translation>
     </message>
     <message>
-        <location filename="X_Components/X_SpectrumArrayRepository.cpp" line="1396"/>
+        <location filename="X_Components/X_SpectrumArrayRepository.cpp" line="1451"/>
         <source>There is no chemical elements to remove!</source>
         <translation>Не выделены химические элементы для удаления!</translation>
     </message>
     <message>
-        <location filename="X_Components/X_SpectrumArrayRepository.cpp" line="1397"/>
+        <location filename="X_Components/X_SpectrumArrayRepository.cpp" line="1452"/>
         <source>Chemical element removing</source>
         <translation>Удаление химических элементов</translation>
     </message>
     <message>
-        <location filename="X_Components/X_SpectrumArrayRepository.cpp" line="1408"/>
+        <location filename="X_Components/X_SpectrumArrayRepository.cpp" line="1463"/>
         <source>Do you want to remove the selected chemical elemnts from the list?</source>
         <translation>Удалить выделенные химические элементы из списка?</translation>
     </message>
     <message>
-        <location filename="X_Components/X_SpectrumArrayRepository.cpp" line="1409"/>
+        <location filename="X_Components/X_SpectrumArrayRepository.cpp" line="1464"/>
         <source>Chemical elements removing</source>
         <translation>Удаление химических элементов</translation>
     </message>
     <message>
-        <location filename="X_Components/X_SpectrumArrayRepository.cpp" line="1600"/>
+        <location filename="X_Components/X_SpectrumArrayRepository.cpp" line="1655"/>
         <source>Select a spectrum array for data pasting.</source>
         <translation>Выделите спектры, для которых вставляются данные.</translation>
     </message>
     <message>
-        <location filename="X_Components/X_SpectrumArrayRepository.cpp" line="1630"/>
+        <location filename="X_Components/X_SpectrumArrayRepository.cpp" line="1685"/>
         <source>In the pasting data are folowing chemical elements not presented in current array:
 %1
 Do you want to create new chemical elements?</source>
@@ -3934,164 +3950,164 @@ Do you want to create new chemical elements?</source>
 Создать новые химические элементы?</translation>
     </message>
     <message>
-        <location filename="X_Components/X_SpectrumArrayRepository.cpp" line="1648"/>
+        <location filename="X_Components/X_SpectrumArrayRepository.cpp" line="1703"/>
         <source>The number of pasting data row exceeds the number of spectrum in the array.</source>
         <translation>Количество вставляемых строк данных превышает количество спектров в массиве.</translation>
     </message>
     <message>
-        <location filename="X_Components/X_SpectrumArrayRepository.cpp" line="1652"/>
+        <location filename="X_Components/X_SpectrumArrayRepository.cpp" line="1707"/>
         <source>The number of spectrum in the array exceeds the number of pasting data.</source>
         <translation>Количество спектров в массиве превышает количество вставляемых строк данных.</translation>
     </message>
     <message>
-        <location filename="X_Components/X_SpectrumArrayRepository.cpp" line="1686"/>
+        <location filename="X_Components/X_SpectrumArrayRepository.cpp" line="1741"/>
         <source>There are hidden chemical element columns.
 Do you want to paste data to them?</source>
         <translation>В таблице есть скрытые колонки химических элементов.
 Вставить в них данные?</translation>
     </message>
     <message>
-        <location filename="X_Components/X_SpectrumArrayRepository.cpp" line="1724"/>
+        <location filename="X_Components/X_SpectrumArrayRepository.cpp" line="1779"/>
         <source>Select a top left cell in a chemical concentration column for data pasting.</source>
         <translation>Выделите верхнюю левую ячейку в колонках химических концентраций для вставки данных.</translation>
     </message>
     <message>
-        <location filename="X_Components/X_SpectrumArrayRepository.cpp" line="1733"/>
+        <location filename="X_Components/X_SpectrumArrayRepository.cpp" line="1788"/>
         <source>The number of inserted rows exceeds the number of spectra.</source>
         <translation>Количество вставляемых строк превышает количество спектров.</translation>
     </message>
     <message>
-        <location filename="X_Components/X_SpectrumArrayRepository.cpp" line="1740"/>
+        <location filename="X_Components/X_SpectrumArrayRepository.cpp" line="1795"/>
         <source>The number of inserted columns exceeds the number of visible chemical elements.</source>
         <translation>Количество вставляемых колонок превышает количество химических элементов.</translation>
     </message>
     <message>
-        <location filename="X_Components/X_SpectrumArrayRepository.cpp" line="1744"/>
+        <location filename="X_Components/X_SpectrumArrayRepository.cpp" line="1799"/>
         <source>The dimension of inserted data exceeds the numbers of spectra and visible chemical elements.</source>
         <translation>Размер вставляемых данных превышает количество спектров и химических элементов.</translation>
     </message>
     <message>
-        <location filename="X_Components/X_SpectrumArrayRepository.cpp" line="1929"/>
+        <location filename="X_Components/X_SpectrumArrayRepository.cpp" line="1984"/>
         <source>There is no spectra for energy calibration!</source>
         <translation>Не выделены спектры для расчета энергетической градуировки!</translation>
     </message>
     <message>
-        <location filename="X_Components/X_SpectrumArrayRepository.cpp" line="2091"/>
+        <location filename="X_Components/X_SpectrumArrayRepository.cpp" line="2144"/>
         <source>New spectrum array</source>
         <translation>Новый массив спектров</translation>
     </message>
     <message>
-        <location filename="X_Components/X_SpectrumArrayRepository.cpp" line="2092"/>
+        <location filename="X_Components/X_SpectrumArrayRepository.cpp" line="2145"/>
         <source>Append a new spectrum array to the list</source>
         <translation>Добавить новый массив спектров в список</translation>
     </message>
     <message>
-        <location filename="X_Components/X_SpectrumArrayRepository.cpp" line="2101"/>
+        <location filename="X_Components/X_SpectrumArrayRepository.cpp" line="2154"/>
         <source>Remove current spectrum array</source>
         <translation>Удалить текущий массив спектров</translation>
     </message>
     <message>
-        <location filename="X_Components/X_SpectrumArrayRepository.cpp" line="2102"/>
+        <location filename="X_Components/X_SpectrumArrayRepository.cpp" line="2155"/>
         <source>Remove current spectrum array from the list</source>
         <translation>Удалить текущий массив спектров из списка</translation>
     </message>
     <message>
-        <location filename="X_Components/X_SpectrumArrayRepository.cpp" line="2107"/>
+        <location filename="X_Components/X_SpectrumArrayRepository.cpp" line="2160"/>
         <source>Append spectra</source>
         <translation>Добавить спектры</translation>
     </message>
     <message>
-        <location filename="X_Components/X_SpectrumArrayRepository.cpp" line="2108"/>
+        <location filename="X_Components/X_SpectrumArrayRepository.cpp" line="2161"/>
         <source>Append spectra to current array</source>
         <translation>Добавить спектры в массив</translation>
     </message>
     <message>
-        <location filename="X_Components/X_SpectrumArrayRepository.cpp" line="2113"/>
+        <location filename="X_Components/X_SpectrumArrayRepository.cpp" line="2166"/>
         <source>Remove selected spectra</source>
         <translation>Удалить выделенные спектры</translation>
     </message>
     <message>
-        <location filename="X_Components/X_SpectrumArrayRepository.cpp" line="2114"/>
+        <location filename="X_Components/X_SpectrumArrayRepository.cpp" line="2167"/>
         <source>Remove selected spectra from the array</source>
         <translation>Удалить выделенные спектры из массива</translation>
     </message>
     <message>
-        <location filename="X_Components/X_SpectrumArrayRepository.cpp" line="2120"/>
+        <location filename="X_Components/X_SpectrumArrayRepository.cpp" line="2173"/>
         <source>Energy calibration</source>
         <translation>Энергетическая градуировка</translation>
     </message>
     <message>
-        <location filename="X_Components/X_SpectrumArrayRepository.cpp" line="2121"/>
+        <location filename="X_Components/X_SpectrumArrayRepository.cpp" line="2174"/>
         <source>Recalculate energy calibration for selected spectra</source>
         <translation>Пересчитать энергетическую градуировку для выделенных спектров</translation>
     </message>
     <message>
-        <location filename="X_Components/X_SpectrumArrayRepository.cpp" line="2125"/>
+        <location filename="X_Components/X_SpectrumArrayRepository.cpp" line="2178"/>
         <source>New chemical element</source>
         <translation>Новый химический элемент</translation>
     </message>
     <message>
-        <location filename="X_Components/X_SpectrumArrayRepository.cpp" line="2126"/>
+        <location filename="X_Components/X_SpectrumArrayRepository.cpp" line="2179"/>
         <source>Append a new chemical element to the list</source>
         <translation>Добавить новый химический элемент в список</translation>
     </message>
     <message>
-        <location filename="X_Components/X_SpectrumArrayRepository.cpp" line="2131"/>
+        <location filename="X_Components/X_SpectrumArrayRepository.cpp" line="2184"/>
         <source>Remove current chemical element</source>
         <translation>Удалить текущий химический элемент</translation>
     </message>
     <message>
-        <location filename="X_Components/X_SpectrumArrayRepository.cpp" line="2132"/>
+        <location filename="X_Components/X_SpectrumArrayRepository.cpp" line="2185"/>
         <source>Remove current chemical element from the list</source>
         <translation>Удалить текущий химическийэлемент из списка</translation>
     </message>
     <message>
-        <location filename="X_Components/X_SpectrumArrayRepository.cpp" line="2137"/>
+        <location filename="X_Components/X_SpectrumArrayRepository.cpp" line="2190"/>
         <source>Copy selected concentrations</source>
         <translation>Копировать выделенные концентрации</translation>
     </message>
     <message>
-        <location filename="X_Components/X_SpectrumArrayRepository.cpp" line="2142"/>
+        <location filename="X_Components/X_SpectrumArrayRepository.cpp" line="2195"/>
         <source>Paste concentrations</source>
         <translation>Вставить концентрации</translation>
     </message>
     <message>
-        <location filename="X_Components/X_SpectrumArrayRepository.cpp" line="2147"/>
+        <location filename="X_Components/X_SpectrumArrayRepository.cpp" line="2200"/>
         <source>Clear selected concentrations</source>
         <translation>Очистить выделенные концентрации</translation>
     </message>
     <message>
-        <location filename="X_Components/X_SpectrumArrayRepository.cpp" line="2153"/>
+        <location filename="X_Components/X_SpectrumArrayRepository.cpp" line="2206"/>
         <source>Set spectra visible</source>
         <translation>Показать все спектры</translation>
     </message>
     <message>
-        <location filename="X_Components/X_SpectrumArrayRepository.cpp" line="2158"/>
+        <location filename="X_Components/X_SpectrumArrayRepository.cpp" line="2211"/>
         <source>Set spectra invisible</source>
         <translation>Скрыть все спектры</translation>
     </message>
     <message>
-        <location filename="X_Components/X_SpectrumArrayRepository.cpp" line="2163"/>
+        <location filename="X_Components/X_SpectrumArrayRepository.cpp" line="2216"/>
         <source>Invert spectra visibility</source>
         <translation>Инвертировать видимость спектров</translation>
     </message>
     <message>
-        <location filename="X_Components/X_SpectrumArrayRepository.cpp" line="2168"/>
+        <location filename="X_Components/X_SpectrumArrayRepository.cpp" line="2221"/>
         <source>Set chemical elements visible</source>
         <translation>Показать все химические элементы</translation>
     </message>
     <message>
-        <location filename="X_Components/X_SpectrumArrayRepository.cpp" line="2173"/>
+        <location filename="X_Components/X_SpectrumArrayRepository.cpp" line="2226"/>
         <source>Set chemical elements invisible</source>
         <translation>Скрыть все химические элементы</translation>
     </message>
     <message>
-        <location filename="X_Components/X_SpectrumArrayRepository.cpp" line="2178"/>
+        <location filename="X_Components/X_SpectrumArrayRepository.cpp" line="2231"/>
         <source>Invert chemical elements visibility</source>
         <translation>Инвертировать видимость химических элементов</translation>
     </message>
     <message>
-        <location filename="X_Components/X_SpectrumArrayRepository.h" line="227"/>
+        <location filename="X_Components/X_SpectrumArrayRepository.h" line="231"/>
         <source>Paste concentration</source>
         <translation>Вставить концентрации</translation>
     </message>
@@ -4367,30 +4383,33 @@ Do you want to continue?</source>
         <translation>Невозможно записать в файл &quot;%1&quot;! %2</translation>
     </message>
     <message>
-        <location filename="X_Components/X_XMLCalibrationIOHandler.cpp" line="325"/>
+        <location filename="X_Components/X_XMLCalibrationIOHandler.cpp" line="321"/>
+        <location filename="X_Components/X_XMLCalibrationIOHandler.cpp" line="344"/>
         <source>File &quot;%1&quot; is not open in read mode!</source>
         <translation>Файл &quot;%1&quot; не открыт в режиме чтения!</translation>
     </message>
     <message>
+        <location filename="X_Components/X_XMLCalibrationIOHandler.cpp" line="442"/>
         <source>Calibration data is not recognized!</source>
-        <translation type="vanished">Невозможно распознать данные градуировки!</translation>
+        <translation>Невозможно распознать данные градуировки!</translation>
     </message>
     <message>
+        <location filename="X_Components/X_XMLCalibrationIOHandler.cpp" line="469"/>
         <source>Calibration data parsing failed! %1</source>
-        <translation type="vanished">Синтаксический разбор данных градуировки не выполнен! %1</translation>
+        <translation>Синтаксический разбор данных градуировки не выполнен! %1</translation>
     </message>
     <message>
-        <location filename="X_Components/X_XMLCalibrationIOHandler.cpp" line="351"/>
+        <location filename="X_Components/X_XMLCalibrationIOHandler.cpp" line="370"/>
         <source>File &quot;%1&quot; is not recognized!</source>
         <translation>Файл &quot;%1&quot; не распознан как файл градуировки!</translation>
     </message>
     <message>
-        <location filename="X_Components/X_XMLCalibrationIOHandler.cpp" line="378"/>
+        <location filename="X_Components/X_XMLCalibrationIOHandler.cpp" line="397"/>
         <source>File &quot;%1&quot; parsing failed! %2</source>
         <translation>Синтаксический разбор данных градуировки файла %1 не выполнен! %2</translation>
     </message>
     <message>
-        <location filename="X_Components/X_XMLCalibrationIOHandler.cpp" line="385"/>
+        <location filename="X_Components/X_XMLCalibrationIOHandler.cpp" line="404"/>
         <source>Cannot read file &quot;%1&quot;! %2</source>
         <translation>Невозможно прочитать файл &quot;%1&quot;! %2</translation>
     </message>

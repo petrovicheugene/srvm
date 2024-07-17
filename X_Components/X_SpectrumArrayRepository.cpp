@@ -566,12 +566,36 @@ bool X_SpectrumArrayRepository::xp_setSpectrumArrayName(int arrayIndex, const QS
 //==================================================================
 QString X_SpectrumArrayRepository::xp_spectrumName(int arrayIndex, int spectrumIndex) const
 {
-    if(arrayIndex < 0 || arrayIndex >= xv_arrayList.count() )
+    if(arrayIndex < 0 || arrayIndex >= xv_arrayList.count())
     {
         return QString();
     }
 
-    return xv_arrayList.value(arrayIndex)->xp_spectrumFileName(spectrumIndex);
+    X_SpectrumArray* array = xv_arrayList.value(arrayIndex, nullptr);
+
+    if(!array)
+    {
+        return QString();
+    }
+
+    return array->xp_spectrumFileName(spectrumIndex);
+}
+//======================================================
+QString X_SpectrumArrayRepository::xp_spectrumNameForId(int arrayIndex, qint64 spectrumId) const
+{
+    if(arrayIndex < 0 || arrayIndex >= xv_arrayList.count())
+    {
+        return QString();
+    }
+
+    X_SpectrumArray* array = xv_arrayList.value(arrayIndex, nullptr);
+
+    if(!array)
+    {
+        return QString();
+    }
+
+    return array->xp_spectrumFileNameForId(spectrumId);
 }
 //======================================================
 qint64 X_SpectrumArrayRepository::xp_spectrumId(int arrayIndex, int spectrumIndex) const
@@ -762,6 +786,32 @@ void X_SpectrumArrayRepository::xp_setSpectrumCurrent(qint64 spectrumId) const
             break;
         }
     }
+}
+//==================================================================
+void X_SpectrumArrayRepository::xp_toggleSpectrum(qint64 spectrumId)
+{
+    qDebug() << "TOGGLE SPECTRUM";
+    if(spectrumId < 0)
+    {
+        return;
+    }
+
+    int currentArrayIndex = -1;
+    emit xg_requestCurrentArrayIndex(currentArrayIndex);
+    if(currentArrayIndex < 0 || currentArrayIndex >= xv_arrayList.count())
+    {
+        return;
+    }
+
+    for(int s = 0; s < xv_arrayList.at(currentArrayIndex)->xp_spectrumCount(); s++)
+    {
+        if(xv_arrayList.at(currentArrayIndex)->xp_spectrumId(s) == spectrumId)
+        {
+            emit xg_querySpectrumToggle(s);
+            break;
+        }
+    }
+
 }
 //==================================================================
 const X_AbstractSpectrum* X_SpectrumArrayRepository::xp_spectrum(int arrayIndex, int spectrumIndex) const

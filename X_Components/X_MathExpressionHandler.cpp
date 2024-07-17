@@ -226,7 +226,6 @@ bool X_MathExpressionHandler::xh_getToken()
                 xv_tokenEndPosition = xv_charPosition;
                 xv_charPosition++;
                 return true;
-
                 break;
             case TT_VARIABLE:
                 if (xv_operatorSet.contains(xv_token.simplified()))

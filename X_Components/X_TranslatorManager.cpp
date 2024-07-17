@@ -108,6 +108,7 @@ void X_TranslatorManager::xh_createAvailableLocaleList()
 
     // get all qm file list
     QDir dir(qApp->applicationDirPath());
+    dir.cd("/translations");
     QStringList translatorFileNameStringList;
     translatorFileNameStringList = dir.entryList(QStringList(QString("%1.qm").arg(appBaseName+"*")));
 

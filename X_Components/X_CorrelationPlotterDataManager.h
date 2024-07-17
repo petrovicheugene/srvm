@@ -35,7 +35,10 @@ public:
 
     void xp_setBottomRulerScaleMetrix(qreal scaleValue, const QString& rulerLabelString);
     void xp_setCurrentSpectrum(qint64 id) const;
+    void xp_toogleSpectrum(qint64 id) const;
     void xh_rebuildChart();
+
+    QString xp_infoForSpectrumId(qint64 id) const;
 
 signals:
 

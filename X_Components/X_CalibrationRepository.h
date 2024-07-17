@@ -224,6 +224,10 @@ public slots:
                                           X_CalibrationQualityData);
     void xp_onTermDoubleClocked(int row);
 
+protected:
+
+    bool eventFilter(QObject* object, QEvent* event);
+
 private slots:
 
     void xh_appendCalibrationsToArray(const QStringList&fileNameList);

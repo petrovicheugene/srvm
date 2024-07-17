@@ -165,7 +165,7 @@ bool X_CustomTerm::xh_checkExpression(const QString& expression)
     }
     catch (...)
     {
-        qDebug() << "";
+
     }
 
     xv_windowList = mathExpressionVariableListMaker.xp_variableList();

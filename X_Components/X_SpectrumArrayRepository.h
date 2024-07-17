@@ -71,6 +71,7 @@ public:
 
     int xp_spectrumCount(int arrayIndex) const;
     QString xp_spectrumName(int arrayIndex, int spectrumIndex) const;
+    QString xp_spectrumNameForId(int arrayIndex, qint64 spectrumId) const;
     qint64 xp_spectrumId(int arrayIndex, int spectrumIndex) const;
     QColor xp_spectrumColor(int arrayIndex, int spectrumIndex) const;
     bool xp_isSpectrumVisible(int arrayIndex, int spectrumIndex) const;
@@ -84,6 +85,7 @@ public:
     bool xp_setSpectrumChecked(int arrayIndex, int spectrumIndex, bool checked);
     bool xp_setSpectrumCheckedForId(qint64 arrayId, qint64 spectrumId, bool checked);
     void xp_setSpectrumCurrent(qint64 spectrumId) const;
+    void xp_toggleSpectrum(qint64 spectrumId);
 
     const X_AbstractSpectrum *xp_spectrum(int arrayIndex, int spectrumIndex) const;
     QList<X_AbstractSpectrum*> xp_spectrumListForArray(int arrayIndex) const;
@@ -136,6 +138,8 @@ signals:
     void xg_setCurrentArrayIndex(int arrayIndex) const;
     void xg_setCurrentChemElementIndex(int chemElementIndex) const;
     void xg_setCurrentSpectrumIndex(int spectrumIndex) const;
+
+    void xg_querySpectrumToggle(int spectrumIndex) const;
 
     void xg_requestCurrentArrayIndex(int& arrayIndex) const;
     void xg_requestSelectedSpectrumIndexList(QList<int>&);

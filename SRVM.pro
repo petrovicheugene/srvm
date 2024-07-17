@@ -15,13 +15,13 @@ RC_ICONS = "X_Images/SRVM-8.ico"
 
 #Application version
 VER_MAJ=24
-VER_MIN=04
+VER_MIN=07
 VER_PAT=01
 
 PRODUCT_SHORT_NAME="SRVM"
 PRODUCT_FILE_BASE_NAME="SRVM"
 QMAKE_TARGET_PRODUCT="SRV M"
-QMAKE_TARGET_DESCRIPTION="The application for the creation of the spectrometer calibration"
+QMAKE_TARGET_DESCRIPTION="Spectrometer calibrator"
 QMAKE_TARGET_COMPANY="TechnoAnalyt"
 QMAKE_TARGET_COPYRIGHT="Copyright © $${QMAKE_TARGET_COMPANY} Ltd. 2015 - 2024. All rights reserved."
 COMPANY_URL=www.tehnoanalit.com
@@ -73,7 +73,7 @@ CONFIG(debug, debug|release) {
     TARGET=$${PRODUCT_FILE_BASE_NAME}-$${VERSION}.$${BUILD_FLAG}
 } else {
     TARGET=$${PRODUCT_FILE_BASE_NAME}
-    DESTDIR=$$dirname(PWD)/bin/
+    DESTDIR=$$dirname(PWD)/bin
 }
 
 #END OF CHIEF SETTINGS
@@ -108,6 +108,7 @@ INCLUDEPATH += X_Plotter \
 SOURCES += main.cpp \
     MainWindow.cpp \
     X_Components/X_AbstractPlotterDataManager.cpp \
+    X_Components/X_ChartPointInfoLabel.cpp \
     X_Components/X_LocaleDoubleConverter.cpp \
     X_Components/X_MathExpressionHandler.cpp \
     X_Components/X_MathExpressionVariableListMaker.cpp \
@@ -233,6 +234,7 @@ SOURCES += main.cpp \
 HEADERS  += \
     MainWindow.h \
     X_Components/X_AbstractPlotterDataManager.h \
+    X_Components/X_ChartPointInfoLabel.h \
     X_Components/X_LocaleDoubleConverter.h \
     X_Components/X_MathExpressionHandler.h \
     X_Components/X_MathExpressionVariableListMaker.h \
@@ -383,15 +385,18 @@ DISTFILES += \
     X_BaseMainWindow/green_right.ico
 
 
-DOC_SRC_DIR=$$dirname(PWD)/DOC
-DOC_DEST_DIR=$${DESTDIR}/doc
+DOC_SRC_DIR=$$dirname(PWD)/DOC/
+DOC_DEST_DIR=$${DESTDIR}/doc/
+SRC_DIR=$$dirname(PWD)/SRVM/
+TRANSL_DEST_DIR=$${DESTDIR}/translations/
 
 mkpath($${DOC_DEST_DIR})
 
 CONFIG(release, debug|release) {
     # isEmpty(QMAKE_POST_LINK){
         QMAKE_POST_LINK += $$quote(C:/Qt/$$QT_VERSION/mingw_64/bin/windeployqt.exe) $$DESTDIR $$escape_expand(\\n\\t)
-        QMAKE_POST_LINK += $$QMAKE_COPY $$quote("\"$${DOC_SRC_DIR}"\") $$quote("\"$${DOC_DEST_DIR}"\") $$escape_expand(\\n\\t)
+        QMAKE_POST_LINK += $$QMAKE_COPY $$quote("\"$${DOC_SRC_DIR}"\"*.*) $$quote("\"$${DOC_DEST_DIR}"\") $$escape_expand(\\n\\t)
+        QMAKE_POST_LINK += $$QMAKE_COPY $$quote("\"$${SRC_DIR}"\"*.qm) $$quote("\"$${TRANSL_DEST_DIR}"\") $$escape_expand(\\n\\t)
         # }
     # }else{
     #     QMAKE_POST_LINK += & "C:/Qt/$$QT_VERSION/mingw_64/bin/windeployqt.exe $$DESTDIR"
