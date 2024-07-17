@@ -1,10 +1,6 @@
 //=============================================================
 #include "X_PlotGraphicsView.h"
-#include "X_ChartPointGraphicsItem.h"
-#include "X_ChartPointOptions.h"
-#include "X_GraphicsItemUserTypes.h"
 #include "X_RulersAndGridManager.h"
-#include "X_SpectrumGraphicsItem.h"
 
 #include <QApplication>
 #include <QRubberBand>
@@ -315,7 +311,7 @@ void X_PlotGraphicsView::wheelEvent(QWheelEvent * event)
         xv_sceneCenterPos = mapToScene(viewport()->rect()).boundingRect().center();
         xv_sceneMousePos = mapToScene(event->position().toPoint());
     }
-    else if(qApp->keyboardModifiers() == Qt::AltModifier | Qt::ControlModifier)
+    else if(qApp->keyboardModifiers() == (Qt::AltModifier | Qt::ControlModifier))
     {
         emit xs_altCtrlWheel(event->angleDelta());
     }
@@ -329,8 +325,7 @@ void X_PlotGraphicsView::mousePressEvent(QMouseEvent* event)
         xv_sceneMousePos = mapToScene(event->pos());
         xv_mousePressStartViewPos = event->pos();
         emit xg_mousePressedAt(xv_sceneMousePos);
-        return;
-        // }
+        // return;
     }
     else if(event->button() == Qt::RightButton)
     {
@@ -640,21 +635,21 @@ void X_PlotGraphicsView::drawForeground(QPainter *painter, const QRectF &rect)
     QGraphicsView::drawForeground(painter, rect);
 }
 //=============================================================
-void X_PlotGraphicsView::contextMenuEvent(QContextMenuEvent *event)
-{
-    if(xv_plotMode == PM_REGULAR && xv_mousePressStartViewPos == event->pos())
-    {
-        QMenu menu;
-        menu.addActions(this->actions());
-        menu.move(mapToGlobal(event->pos()));
-        QAction* action =  menu.exec();
-        if(action != nullptr)
-        {
-            action->setData(QVariant(mapToScene(event->pos())));
-            action->trigger();
-        }
-    }
-}
+// void X_PlotGraphicsView::contextMenuEvent(QContextMenuEvent *event)
+// {
+//     if(xv_plotMode == PM_REGULAR && xv_mousePressStartViewPos == event->pos())
+//     {
+//         QMenu menu;
+//         menu.addActions(this->actions());
+//         menu.move(mapToGlobal(event->pos()));
+//         QAction* action =  menu.exec();
+//         if(action != nullptr)
+//         {
+//             action->setData(QVariant(mapToScene(event->pos())));
+//             action->trigger();
+//         }
+//     }
+// }
 //=============================================================
 void X_PlotGraphicsView::xh_createConnections()
 {

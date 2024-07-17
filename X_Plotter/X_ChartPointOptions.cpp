@@ -217,8 +217,8 @@ bool X_ChartPointOptions::xp_setRulerMarkPrecision(Qt::Orientation orientation, 
 void X_ChartPointOptions::xp_recalcShapeAndBoundingRect()
 {
     // shape
-    qreal pointHalfSize = (xv_pointSize ) / 2.0;
-    QRectF rect = QRectF(-1*pointHalfSize, -1*pointHalfSize,
+    qreal pointHalfSize = xv_pointSize  / 2.0;
+    QRectF rect = QRectF(-1.0*pointHalfSize, -1.0*pointHalfSize,
                          xv_pointSize , xv_pointSize );
 
     QPainterPath newShape;
@@ -245,18 +245,78 @@ void X_ChartPointOptions::xp_recalcShapeAndBoundingRect()
         newShape.addEllipse(rect);
     }
 
-    xv_shape = newShape;
-    xv_boundingRect = rect;
+    xv_checkedShape = newShape;
+    xv_checkedBoundingRect = rect;
+
+    // Unchecked point
+    xv_uncheckedShape = xh_createObliqueCross(rect);
+    xv_uncheckedBoundingRect = rect;
 
     xp_updateItems();
+}
+//====================================================
+QPainterPath X_ChartPointOptions::xh_createObliqueCross(const QRectF& rect)
+{
+    QPainterPath shape;
+
+    shape.addRect(rect);
+    QRectF crossRect = rect.adjusted(2.0, 2.0, -2.0, -2.0);
+    shape.moveTo(crossRect.topLeft());
+    shape.lineTo(crossRect.bottomRight());
+
+    shape.moveTo(crossRect.topRight());
+    shape.lineTo(crossRect.bottomLeft());
+
+    // shape.moveTo(rect.top(), rect.left());
+    // shape.lineTo(rect.bottom(), rect.left());
+    // shape.lineTo(rect.bottom(), rect.right());
+    // shape.lineTo(rect.top(), rect.right());
+    // shape.lineTo(rect.top(), rect.left());
+
+    // shape.lineTo(rect.bottom(), rect.right());
+
+    // shape.moveTo(rect.topLeft());
+    // // shape.moveTo(rect.center());
+    // shape.lineTo(rect.bottomRight());
+    // shape.moveTo(rect.topRight());
+    // // shape.moveTo(rect.center());
+    // shape.lineTo(rect.bottomLeft());
+
+
+    // shape.moveTo(rect.center());
+    // shape.lineTo(rect.bottomLeft());
+
+    // shape.moveTo(rect.topRight());
+
+    return shape;
 }
 //====================================================
 void X_ChartPointOptions::xp_updateItems() const
 {
     foreach(X_ChartPointGraphicsItem* item, xv_seriesPointItemList)
     {
-        item->xp_setNewBoundingRect(xv_boundingRect);
+        item->xp_setNewBoundingRect(xv_checkedBoundingRect);
         item->update();
     }
+}
+//====================================================
+QRectF X_ChartPointOptions::xp_boundingRect(bool checked) const
+{
+    return checked? xv_checkedBoundingRect : xv_uncheckedBoundingRect;
+}
+//====================================================
+QPainterPath X_ChartPointOptions::xp_shape(bool checked) const
+{
+    return checked? xv_checkedShape : xv_uncheckedShape;
+}
+//====================================================
+QRectF X_ChartPointOptions::xp_boundingRect(Qt::CheckState checkState) const
+{
+    return checkState == Qt::Checked? xv_checkedBoundingRect : xv_uncheckedBoundingRect;
+}
+//====================================================
+QPainterPath X_ChartPointOptions::xp_shape(Qt::CheckState checkState) const
+{
+    return checkState == Qt::Checked? xv_checkedShape : xv_uncheckedShape;
 }
 //====================================================

@@ -67,7 +67,7 @@ protected:
     void drawBackground(QPainter * painter, const QRectF & rect);
     void drawForeground(QPainter *painter, const QRectF &rect);
 
-    void contextMenuEvent(QContextMenuEvent *event);
+    // void contextMenuEvent(QContextMenuEvent *event);
 
     // just hidden
     void setViewport(QWidget * widget);

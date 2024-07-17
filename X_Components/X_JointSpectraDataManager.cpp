@@ -823,6 +823,7 @@ bool X_JointSpectraDataManager::xh_calculateCalibrationConcentrationForCalibrati
             //residualList.append(std::numeric_limits::quiet_NaN());
         }
     }
+
     xv_calibrationConcentrationMap.insert(calibrationId, concentrationList);
     //xv_concentrationResidualMap.insert(calibrationId, residualList);
     emit xg_calibrationValuesChanged(calibrationId);

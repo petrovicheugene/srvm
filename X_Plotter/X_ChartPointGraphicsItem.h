@@ -34,7 +34,7 @@ public:
     void xp_setNewBoundingRect(const QRectF& boundingRect);
 
     qint64 xp_relatedObjectId() const;
-    void xp_applyVisibilityAndPos(const X_VisibilityPointF&, X_ChartPointOptions* chartPointOptions);
+    void xp_applyPointProperties(const X_VisibilityPointF&, X_ChartPointOptions* chartPointOptions);
     void xp_updateCurrentItem();
 
 protected:
@@ -42,6 +42,7 @@ protected:
     // FUNCS
     virtual void mousePressEvent(QGraphicsSceneMouseEvent * event) override;
     virtual void mouseReleaseEvent(QGraphicsSceneMouseEvent * event) override;
+    virtual void mouseDoubleClickEvent(QGraphicsSceneMouseEvent * event) override;
 
 private:
 
@@ -50,6 +51,8 @@ private:
     X_ChartPointOptions* xv_chartPointOptions;
     qint64 xv_relatedObjectId;
     QColor xv_paintColor;
+    Qt::CheckState xv_checkState = Qt::Checked;
+
     static QColor xv_currentColor;
     static qint64 xv_currentSpectrumId;
 
