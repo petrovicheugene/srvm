@@ -392,14 +392,17 @@ TRANSL_DEST_DIR=$${DESTDIR}/translations/
 
 mkpath($${DOC_DEST_DIR})
 
+# Paths to dependencies and tools
+WINDEPLOYQT_PATH = $$quote(C:/Qt/$$QT_VERSION/mingw_64/bin/windeployqt.exe)
+LIBGCC_PATH = $$quote(C:/Qt/$$QT_VERSION/mingw_64/bin/libgcc_s_seh-1.dll)
+LIBSTDCXX_PATH = $$quote(C:/Qt/$$QT_VERSION/mingw_64/bin/libstdc++-6.dll)
+LIBWINPTHREAD1_PATH = $$quote(C:/Qt/$$QT_VERSION/mingw_64/bin/libwinpthread-1.dll)
+# Post-build steps
 CONFIG(release, debug|release) {
-    # isEmpty(QMAKE_POST_LINK){
-        QMAKE_POST_LINK += $$quote(C:/Qt/$$QT_VERSION/mingw_64/bin/windeployqt.exe) $$DESTDIR $$escape_expand(\\n\\t)
-        QMAKE_POST_LINK += $$QMAKE_COPY $$quote("\"$${DOC_SRC_DIR}"\"*.*) $$quote("\"$${DOC_DEST_DIR}"\") $$escape_expand(\\n\\t)
-        QMAKE_POST_LINK += $$QMAKE_COPY $$quote("\"$${SRC_DIR}"\"*.qm) $$quote("\"$${TRANSL_DEST_DIR}"\") $$escape_expand(\\n\\t)
-        # }
-    # }else{
-    #     QMAKE_POST_LINK += & "C:/Qt/$$QT_VERSION/mingw_64/bin/windeployqt.exe $$DESTDIR"
-    # }
+    QMAKE_POST_LINK += $$WINDEPLOYQT_PATH $$DESTDIR $$escape_expand(\\n\\t)
+    QMAKE_POST_LINK += $$QMAKE_COPY $$quote($${DOC_SRC_DIR}*.*) $$quote($${DOC_DEST_DIR}) $$escape_expand(\\n\\t)
+    QMAKE_POST_LINK += $$QMAKE_COPY $$quote($${SRC_DIR}*.qm) $$quote($${TRANSL_DEST_DIR}) $$escape_expand(\\n\\t)
+    QMAKE_POST_LINK += $$QMAKE_COPY $$LIBGCC_PATH $$quote($${DESTDIR}) $$escape_expand(\\n\\t)
+    QMAKE_POST_LINK += $$QMAKE_COPY $$LIBSTDCXX_PATH $$quote($${DESTDIR}) $$escape_expand(\\n\\t)
+    QMAKE_POST_LINK += $$QMAKE_COPY $$LIBWINPTHREAD1_PATH $$quote($${DESTDIR}) $$escape_expand(\\n\\t)
 }
-
